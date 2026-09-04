@@ -154,3 +154,13 @@ signatures, and its measured quirks. `references/_solver-layer.md` covers cvxpy 
 ```bash
 grep -ril "risk_free\|annualiz" plugins/fin-core/skills/portfolio-and-risk/references/
 ```
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-pyportfolioopt`** — pyportfolioopt
+- **`lib-quantstats`** — quantstats
+- **`lib-riskfolio`** — riskfolio
+- **`lib-skfolio`** — skfolio

@@ -19,3 +19,5 @@
 19. is there an MCP for SEC filings
 20. will an LSTM beat a linear model for return prediction
 21. NSE India trading calendar
+22. HRPOpt gave me nonsense weights
+23. tushare qfq prices change when I change end_date

@@ -226,3 +226,11 @@ series actually have ALFRED vintages · whether OECD still publishes its revisio
 new SDMX structure (**assume no vintage support**) · a general DBnomics vintage-enumeration endpoint
 (two paths returned 404) · Bank of England / Riksbank SDMX availability · the `acceptanceDateTime`
 timezone is an **empirical inference**, not SEC-documented — which is itself the hazard.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-edgartools`** — edgartools
+- **`lib-fredapi`** — fredapi

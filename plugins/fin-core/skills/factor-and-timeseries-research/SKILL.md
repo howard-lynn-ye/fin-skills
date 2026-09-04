@@ -162,3 +162,10 @@ volatility remains hard to beat, and any TSFM claim should be checked against it
 
 `references/<library>.md` for exact versions, licences, signatures and quirks;
 `references/_event-study-method.md` for the methodology you have to implement yourself.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-alphalens`** — alphalens

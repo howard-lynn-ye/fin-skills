@@ -148,3 +148,10 @@ A backtest you cannot re-run bit-for-bit is an anecdote. The minimum:
 **No benchmarks were run** — polars, duckdb and pyarrow were not installed on the research machine,
 so **every throughput and latency claim in the reference files is marked ⚠️ or ❓.** Treat the
 performance guidance as directional and measure on your own data.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-polars`** — polars

@@ -220,3 +220,11 @@ These corrupt results before any pricing code runs. ✅ **Measured on a live SPY
 ## 7. Reference files
 
 `references/<library>.md` for versions, licences, exact signatures and measured comparisons.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-quantlib`** — quantlib
+- **`lib-vollib`** — vollib

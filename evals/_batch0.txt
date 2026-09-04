@@ -19,3 +19,6 @@
 19. which finance MCP server should I install
 20. finrl import fails with ModuleNotFoundError
 21. korean stock delisted list and short selling ban dates
+22. quantstats cagr is ignoring my risk free rate
+23. arch SPA test says my worst strategy is best
+24. freqtrade stoploss filled exactly at my stop price

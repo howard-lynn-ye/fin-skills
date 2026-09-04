@@ -8,8 +8,9 @@ description: >-
   an engine models fills, slippage, commissions, partial fills, margin, shorting or delistings;
   taking a strategy from backtest to live; "my backtest looks too good"; "works in backtest but
   loses money live". Several popular engines fill at the signal's own bar close by default. SKIP
-  for judging whether a finished result is real (backtest-validation) and for A-share rules
-  (china-trading-stack).
+  for judging whether a finished result is real (backtest-validation) for A-share rules
+  (china-trading-stack), and for crypto engines that must model funding and perpetuals
+  (crypto-data-and-execution).
 license: MIT
 metadata:
   version: "0.1.0"
@@ -169,3 +170,11 @@ story, and its specific footguns.
 grep -ril "same-bar\|look-ahead" plugins/fin-core/skills/backtesting-engines/references/
 grep -i -A8 "FOOTGUN" plugins/fin-core/skills/backtesting-engines/references/vectorbt.md
 ```
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-freqtrade`** — freqtrade
+- **`lib-vectorbt`** — vectorbt

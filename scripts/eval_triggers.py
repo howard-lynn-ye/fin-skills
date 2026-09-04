@@ -62,7 +62,7 @@ def load_skills() -> list[dict]:
         pos = desc[: m.start()] if m else desc
         neg = m.group(1) if m else ""
         out.append({
-            "name": name, "desc": desc,
+            "name": name, "desc": desc, "path": md.relative_to(ROOT).as_posix(),
             "toks": Counter(toks(name + " " + pos)),
             "neg": Counter(toks(neg)),
         })
@@ -73,9 +73,9 @@ def score(qt: list[str], skill: dict, idf: dict) -> float:
     """idf-weighted overlap with the positive part, minus overlap with the SKIP clause."""
     st, neg = skill["toks"], skill["neg"]
     q = set(qt)
-    pos_hits = sum(idf.get(t, 1.0) for t in q if st.get(t))
-    neg_hits = sum(idf.get(t, 1.0) for t in q if neg.get(t) and not st.get(t))
-    return pos_hits - 0.75 * neg_hits
+    pos_hits = sum(idf.get(t, 1.0) for t in sorted(q) if st.get(t))
+    neg_hits = sum(idf.get(t, 1.0) for t in sorted(q) if neg.get(t) and not st.get(t))
+    return round(pos_hits - 0.75 * neg_hits, 9)
 
 
 def main() -> int:
@@ -94,7 +94,17 @@ def main() -> int:
 
     qs = [json.loads(l) for l in (ROOT / "evals" / "queries.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
 
+    # A miss is not always a routing failure: if the skill the model picked explicitly
+    # cross-references the expected skill, the agent still lands in the right place after
+    # one hop. Measured from the file bodies, not assumed.
+    names = {s["name"] for s in skills}
+    xref = {}
+    for s in skills:
+        body = (ROOT / s["path"]).read_text(encoding="utf-8") if "path" in s else ""
+        xref[s["name"]] = {o for o in names if o != s["name"] and o in body}
+
     hits = 0
+    routed = 0
     thin: list[tuple] = []
     misses: list[tuple] = []
     for case in qs:
@@ -103,6 +113,7 @@ def main() -> int:
         top, second = ranked[0], ranked[1]
         ok = top[1] == case["expect"]
         hits += ok
+        routed += ok or (case["expect"] in xref.get(top[1], ()))
         margin = (top[0] - second[0]) / top[0] if top[0] > 0 else 0.0
         if not ok:
             misses.append((case["q"], case["expect"], top[1], second[1]))
@@ -114,6 +125,8 @@ def main() -> int:
 
     acc = hits / len(qs)
     print(f"\ntop-1 accuracy : {hits}/{len(qs)} = {acc:.0%}")
+    print(f"routed correct : {routed}/{len(qs)} = {routed/len(qs):.0%}  "
+          f"(top-1, or the picked skill links to the expected one)")
     print(f"thin margins   : {len(thin)} (top-2 gap < {MARGIN_FLOOR:.0%})")
 
     if misses:

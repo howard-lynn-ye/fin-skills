@@ -1,1 +1,117 @@
-["market-data-sourcing","market-data-engineering","market-data-engineering","fundamental-and-macro-data","backtesting-engines","backtesting-engines","broker-execution-apis","signal-construction","factor-and-timeseries-research","portfolio-and-risk","portfolio-and-risk","backtest-validation","derivatives-pricing","research-integrity-guards","china-ashare-data","china-trading-stack","crypto-data-and-execution","llm-finance-agents","rl-and-ml-trading","asia-pacific-markets"]
+{
+  "1": {
+    "pick": "lib-yfinance",
+    "runner_up": "market-data-sourcing",
+    "confident": true
+  },
+  "2": {
+    "pick": "market-data-engineering",
+    "runner_up": null,
+    "confident": true
+  },
+  "3": {
+    "pick": "market-data-engineering",
+    "runner_up": "backtesting-engines",
+    "confident": true
+  },
+  "4": {
+    "pick": "fundamental-and-macro-data",
+    "runner_up": "lib-edgartools",
+    "confident": false
+  },
+  "5": {
+    "pick": "backtesting-engines",
+    "runner_up": null,
+    "confident": true
+  },
+  "6": {
+    "pick": "backtesting-engines",
+    "runner_up": "research-integrity-guards",
+    "confident": true
+  },
+  "7": {
+    "pick": "lib-alpaca-py",
+    "runner_up": "broker-execution-apis",
+    "confident": false
+  },
+  "8": {
+    "pick": "signal-construction",
+    "runner_up": "lib-talib",
+    "confident": true
+  },
+  "9": {
+    "pick": "factor-and-timeseries-research",
+    "runner_up": null,
+    "confident": true
+  },
+  "10": {
+    "pick": "portfolio-and-risk",
+    "runner_up": "lib-pyportfolioopt",
+    "confident": true
+  },
+  "11": {
+    "pick": "portfolio-and-risk",
+    "runner_up": "lib-riskfolio",
+    "confident": true
+  },
+  "12": {
+    "pick": "backtest-validation",
+    "runner_up": "lib-purgedcv",
+    "confident": true
+  },
+  "13": {
+    "pick": "derivatives-pricing",
+    "runner_up": "lib-quantlib",
+    "confident": true
+  },
+  "14": {
+    "pick": "research-integrity-guards",
+    "runner_up": "backtest-validation",
+    "confident": true
+  },
+  "15": {
+    "pick": "china-ashare-data",
+    "runner_up": "lib-akshare",
+    "confident": true
+  },
+  "16": {
+    "pick": "china-trading-stack",
+    "runner_up": "backtesting-engines",
+    "confident": true
+  },
+  "17": {
+    "pick": "crypto-data-and-execution",
+    "runner_up": "backtesting-engines",
+    "confident": false
+  },
+  "18": {
+    "pick": "llm-finance-agents",
+    "runner_up": "factor-and-timeseries-research",
+    "confident": true
+  },
+  "19": {
+    "pick": "rl-and-ml-trading",
+    "runner_up": null,
+    "confident": true
+  },
+  "20": {
+    "pick": "asia-pacific-markets",
+    "runner_up": "market-data-sourcing",
+    "confident": true
+  },
+  "21": {
+    "pick": "lib-yfinance",
+    "runner_up": "market-data-sourcing",
+    "confident": true
+  },
+  "22": {
+    "pick": "lib-quantlib",
+    "runner_up": "derivatives-pricing",
+    "confident": true
+  },
+  "23": {
+    "pick": "lib-polars",
+    "runner_up": "market-data-engineering",
+    "confident": true
+  }
+}

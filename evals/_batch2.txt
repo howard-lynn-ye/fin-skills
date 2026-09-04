@@ -18,3 +18,6 @@
 18. does LLM news sentiment actually predict returns
 19. train a reinforcement learning agent to trade
 20. get Hong Kong stock data and handle the lot size
+21. yfinance KeyError Adj Close after upgrade
+22. QuantLib NPV returns 0.0 and I don't know why
+23. polars join_asof gave wrong rows silently

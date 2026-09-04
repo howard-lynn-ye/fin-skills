@@ -7,8 +7,9 @@ description: >-
   of backtest overfitting, PBO; purged or combinatorial cross-validation, embargo, walk-forward,
   "cross validation on time series without leaking"; a grid search, hyperopt or AutoML picked a
   winner; triple-barrier labeling, meta-labeling, fractional differentiation, mlfinlab. Load
-  whenever a Sharpe ratio is about to be offered as evidence for trading. SKIP for computing the
-  metric itself (portfolio-and-risk).
+  whenever a Sharpe ratio is about to be offered as evidence for trading. SKIP only for plain
+  performance metrics - Sharpe, Sortino, CAGR, drawdown (portfolio-and-risk); the deflated and
+  probabilistic Sharpe ratios are computed HERE.
 license: MIT
 metadata:
   version: "0.1.0"
@@ -206,3 +207,11 @@ the cost model; and the confidence interval. A 3-year Sharpe of 1.0 has a standa
 **A negative result is a result.** "The baseline did not clear the pre-registered threshold" is the
 correct output far more often than a positive one, and pre-registering the threshold is what makes
 it credible.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-arch`** — arch
+- **`lib-purgedcv`** — purgedcv

@@ -233,3 +233,11 @@ tushare 积分 per-minute rate table and RMB prices (thresholds ✅, frequencies
 for Wind / JQData / rqdatac / TqSdk Pro / Choice (none publish prices; every figure in circulation
 is secondhand) · JoinQuant's post-2021 regulatory status (site geo-blocked) · whether akshare returns
 *price history* for delisted tickers · what baostock's new API key unlocks · Futu / Tiger HK SDKs.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-akshare`** — akshare
+- **`lib-tushare`** — tushare

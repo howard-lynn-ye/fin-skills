@@ -8,7 +8,8 @@ description: >-
   quickfix, simplefix; "make sure I don't send a live order"; a broker connection being refused.
   Load before any code that can transmit an order. SKIP for crypto exchanges and ccxt
   (crypto-data-and-execution), and for vnpy, CTP, QMT or any Chinese broker gateway
-  (china-trading-stack).
+  (china-trading-stack). This skill answers TWS/Gateway port and connection failures on its own -
+  the fin-libraries deep dive is optional and most installs will not have it.
 license: MIT
 metadata:
   version: "0.1.0"
@@ -190,3 +191,11 @@ intervention and liquidations all desynchronize it.
 
 `references/<broker>.md` — auth model, paper availability, order types, TIF matrix, rate limits,
 market-data terms, and the specific ways that broker lets you trade by accident.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-alpaca-py`** — alpaca-py
+- **`lib-ccxt`** — ccxt

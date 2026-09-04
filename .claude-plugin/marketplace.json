@@ -135,7 +135,7 @@
     {
       "name": "fin-libraries",
       "source": "./plugins/fin-libraries",
-      "description": "One skill per library — fine-grained retrieval for 24 of the most-used Python quant packages, each leading with the single default or bug that silently produces wrong numbers. OPT-IN: this plugin alone costs roughly 2,400 tokens of skill-listing budget, so raise skillListingBudgetFraction to 0.05 before installing it alongside fin-core.",
+      "description": "One skill per library - fine-grained retrieval for 24 of the most-used Python quant packages, each leading with the single default or bug that silently produces wrong numbers. OPT-IN AND EXPENSIVE: measured at ~4,960 tokens of skill-listing budget on its own, and 24 skills already exceeds the ~20 at which Claude Code starts silently dropping descriptions to name-only. Set skillListingBudgetFraction to 0.05 before installing it, and 0.08 to run it alongside fin-core.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [

@@ -1,1 +1,26 @@
-["market-data-sourcing","market-data-sourcing","market-data-engineering","market-data-engineering","fundamental-and-macro-data","backtesting-engines","broker-execution-apis","broker-execution-apis","signal-construction","factor-and-timeseries-research","portfolio-and-risk","backtest-validation","backtest-validation","derivatives-pricing","market-data-sourcing","china-ashare-data","china-trading-stack","crypto-data-and-execution","finance-mcp-servers","rl-and-ml-trading","asia-pacific-markets"]
+{
+  "1": {"pick": "lib-yfinance", "runner_up": "market-data-sourcing", "confident": true},
+  "2": {"pick": "market-data-sourcing", "runner_up": "lib-yfinance", "confident": true},
+  "3": {"pick": "market-data-engineering", "runner_up": "lib-polars", "confident": true},
+  "4": {"pick": "market-data-engineering", "runner_up": null, "confident": true},
+  "5": {"pick": "fundamental-and-macro-data", "runner_up": "lib-fredapi", "confident": false},
+  "6": {"pick": "backtesting-engines", "runner_up": "quant-stack-router", "confident": true},
+  "7": {"pick": "broker-execution-apis", "runner_up": "lib-ib-async", "confident": true},
+  "8": {"pick": "lib-ib-async", "runner_up": "broker-execution-apis", "confident": false},
+  "9": {"pick": "signal-construction", "runner_up": "lib-talib", "confident": false},
+  "10": {"pick": "factor-and-timeseries-research", "runner_up": "lib-arch", "confident": false},
+  "11": {"pick": "portfolio-and-risk", "runner_up": "lib-quantstats", "confident": true},
+  "12": {"pick": "backtest-validation", "runner_up": "research-integrity-guards", "confident": true},
+  "13": {"pick": "backtest-validation", "runner_up": "lib-purgedcv", "confident": false},
+  "14": {"pick": "derivatives-pricing", "runner_up": "lib-vollib", "confident": true},
+  "15": {"pick": "market-data-sourcing", "runner_up": "research-integrity-guards", "confident": false},
+  "16": {"pick": "china-ashare-data", "runner_up": "quant-stack-router", "confident": true},
+  "17": {"pick": "china-trading-stack", "runner_up": "broker-execution-apis", "confident": true},
+  "18": {"pick": "lib-ccxt", "runner_up": "crypto-data-and-execution", "confident": true},
+  "19": {"pick": "finance-mcp-servers", "runner_up": null, "confident": true},
+  "20": {"pick": "rl-and-ml-trading", "runner_up": null, "confident": true},
+  "21": {"pick": "asia-pacific-markets", "runner_up": null, "confident": true},
+  "22": {"pick": "lib-quantstats", "runner_up": "portfolio-and-risk", "confident": true},
+  "23": {"pick": "lib-arch", "runner_up": "backtest-validation", "confident": true},
+  "24": {"pick": "lib-freqtrade", "runner_up": "backtesting-engines", "confident": true}
+}

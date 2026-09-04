@@ -163,3 +163,10 @@ grep -i -A6 "TRAP" plugins/fin-core/skills/market-data-sourcing/references/yfina
 ```
 
 Start from `references/_decision-table.md` for the full side-by-side comparison.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-yfinance`** — yfinance

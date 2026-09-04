@@ -117,3 +117,10 @@ Everything in `broker-execution-apis` §3 applies, plus:
 
 `references/<framework>.md` for architecture, licence, gateway coverage and setup;
 `references/_ashare-rules.md` for the machine-checkable version of §3.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-qlib`** — qlib

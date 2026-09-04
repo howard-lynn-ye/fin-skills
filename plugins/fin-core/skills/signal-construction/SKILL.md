@@ -136,3 +136,10 @@ tool that measures the unstable-period problem directly**).
 
 `references/<library>.md` carries the full per-indicator comparison tables, exact signatures and
 gotchas. `references/_repainting.md` is the blacklist above with worked detections.
+
+## Per-library deep dives
+
+The optional `fin-libraries` plugin carries a dedicated skill for each library below. Load one
+only after this skill has told you which library you want:
+
+- **`lib-talib`** — talib

@@ -75,7 +75,18 @@ def score() -> int:
         if len(ans) != len(batch):
             print(f"batch{i}: {len(ans)} answers for {len(batch)} queries — skipped")
             continue
-        for c, a in zip(batch, ans):
+        # `ans` is a dict keyed by 1-based query number. Iterating it yields KEYS, so
+        # zip(batch, ans) silently compares query numbers to skill names and reports 0%.
+        # Order by numeric key, and accept either a bare name or a {"pick": ...} object.
+        def pick(v, key):
+            if isinstance(v, str):
+                return v
+            if isinstance(v, dict) and isinstance(v.get("pick"), str):
+                return v["pick"]
+            raise SystemExit(f"batch{i} answer {key!r} is {v!r} — expected a skill name "
+                             f"or an object with a 'pick' string")
+        picks = [pick(ans[k], k) for k in sorted(ans, key=lambda s: int(s))]
+        for c, a in zip(batch, picks):
             total += 1
             if a == c["expect"]:
                 hits += 1

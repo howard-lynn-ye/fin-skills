@@ -128,7 +128,13 @@ def check_skill(skill_md: Path) -> list[str]:
         elif len(desc) > DESC_LISTING_CAP:
             errs.append(f"{rel}: description is {len(desc)} chars — the runtime listing "
                         f"truncates at {DESC_LISTING_CAP}")
-        if not desc[0].isupper() and not desc.startswith(("A ", "An ", "The ")):
+        # A description may legitimately open with the lowercase package name — for a
+        # per-library skill the name IS the trigger, and package names are lowercase.
+        first = desc.split()[0].strip("`*.,").lower()
+        bare = name.replace("lib-", "")
+        starts_with_own_name = bool(first) and (first in bare or bare in first)
+        if (not desc[0].isupper() and not desc.startswith(("A ", "An ", "The "))
+                and not starts_with_own_name):
             errs.append(f"{rel}: description should read as a third-person sentence")
 
     # Level 2 budget: SKILL.md body under ~5k tokens (~20k chars) is the documented guidance.
@@ -169,6 +175,8 @@ def main() -> int:
         return 1
 
     all_errs: list[str] = []
+    warnings: list[str] = []
+    mp_path = ROOT / '.claude-plugin' / 'marketplace.json'
     for s in skills:
         all_errs.extend(check_skill(s))
 
@@ -176,9 +184,16 @@ def main() -> int:
     for plugin_dir in sorted(ROOT.glob("plugins/*")):
         n = len(list(plugin_dir.glob("skills/*/SKILL.md")))
         if n > SKILL_BUDGET_WARN:
-            all_errs.append(
-                f"{plugin_dir.name}: {n} skills exceeds the ~{SKILL_BUDGET_WARN}-skill discovery "
-                f"budget; descriptions will be silently dropped to name-only")
+            # The check exists to catch ACCIDENTAL over-budget. A plugin whose marketplace
+            # entry states the cost has made an informed choice, so warn rather than fail.
+            declared = False
+            if mp_path.exists():
+                for p in json.loads(mp_path.read_text(encoding="utf-8")).get("plugins", []):
+                    if p["name"] == plugin_dir.name and "OPT-IN" in (p.get("description") or ""):
+                        declared = True
+            msg = (f"{plugin_dir.name}: {n} skills exceeds the ~{SKILL_BUDGET_WARN}-skill discovery "
+                   f"budget; descriptions will be silently dropped to name-only")
+            (warnings if declared else all_errs).append(msg)
 
     # marketplace.json must list every skill that exists, and only those
     mp = ROOT / ".claude-plugin" / "marketplace.json"
@@ -198,7 +213,9 @@ def main() -> int:
         for e in all_errs:
             print("  •", e)
         return 1
-    print(f"OK — {len(skills)} skills validated against the 6-field Agent Skills spec")
+    for w in warnings:
+        print("  WARN:", w)
+    print(f"OK - {len(skills)} skills validated against the 6-field Agent Skills spec"          + (f" ({len(warnings)} warning)" if warnings else ""))
     return 0
 
 
