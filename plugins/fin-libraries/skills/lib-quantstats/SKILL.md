@@ -74,9 +74,16 @@ quantstats' `rf=` is **ANNUAL** (converted geometrically), as are ffn's `rf=` an
 `period='daily'`, so almost everyone passes an annual rate.
 
 ```python
-qs.stats.sharpe(r, rf=0.05)                     #   1.021119   correct: 5% annual
-ep.sharpe_ratio(r, risk_free=0.05)              # -65.565185   <- 5% PER DAY, the signature
+qs.stats.sharpe(r, rf=0.05)                     #   -0.285948  correct: 5% annual
+ep.sharpe_ratio(r, risk_free=0.05)              #  -81.323237  <- 5% PER DAY, the signature
+ep.sharpe_ratio(r, risk_free=0.05 / 252)        #   -0.293729  <- de-annualised by division
 ```
+
+✅ Reproduce with `scripts/rf_convention.py` (seed 0, 4 years of daily returns). The residual
+between −0.293729 and −0.285948 is quantstats de-annualising **geometrically**, not by dividing
+by 252 — so `/252` gets you close to its answer but never equals it. The script's own reference
+implementations match both installed libraries to every printed digit, so it demonstrates the
+trap on a machine where neither package is installed.
 
 ⚠️ Geometric vs simple: `(1.05)**(1/252)-1` → 1.021119, `0.05/252` → 1.014726 — never identical.
 
