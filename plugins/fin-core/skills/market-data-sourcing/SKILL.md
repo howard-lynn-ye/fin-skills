@@ -123,8 +123,22 @@ df = yf.download(
 
 ## 5. Calendars and identifiers
 
-- Sessions/holidays: `exchange_calendars` (4.13.2) or `pandas_market_calendars` (5.4.0). Never
-  hand-roll a business-day calendar — half-days and holiday drift will break your alignment.
+- Sessions/holidays: `exchange_calendars` (4.13.2, Apache-2.0, genuinely well maintained) or
+  `pandas_market_calendars` (5.4.0). Never hand-roll a business-day calendar — half-days and holiday
+  drift will break your alignment. **But it has verified defects — see below.**
+
+🚨 **`exchange_calendars`' default date bounds are a MOVING TARGET, and this breaks reproducibility.**
+✅ Verified: `GLOBAL_DEFAULT_START` / `_END` are computed from `pd.Timestamp.now()` **at import** as
+**today − 20 years** and **today + 1 year**. Running on 2026-09-04, `get_calendar("XTKS")` returns
+`first_session=2006-09-04`, `last_session=2027-09-03`. **The same code returns a different calendar
+tomorrow.** → **Always pass explicit `start=` and `end=`.**
+
+🚨 **There is no `XNSE`.** ✅ Verified: `"XNSE" in get_calendar_names()` → **False**. India is
+**`XBOM`** (BSE) only — used as a silent proxy for NSE, which carries most Indian volume. (`XBSE` is
+Bucharest, not Bombay.) Other verified gaps: **Korean CSAT late-open dates stop at 2021-11-18 even on
+master**, so `XKRX.session_open("2024-11-14")` wrongly returns 09:00; **`XSES` models no lunch break
+ever** despite SGX having one until 2011; and **`XBOM` has zero sessions in 2027** because Indian
+holidays are hand-maintained annually. Detail: `../../../fin-asia/skills/asia-pacific-markets/SKILL.md`.
 - Never resample intraday bars over wall-clock time across a session break. Compute rolling windows
   over **bar index**.
 - Identifier mapping (ticker ↔ CIK ↔ FIGI ↔ PERMNO) is a source of silent joins onto the wrong

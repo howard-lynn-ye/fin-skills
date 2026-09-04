@@ -58,6 +58,24 @@
       ]
     },
     {
+      "name": "fin-asia",
+      "source": "./plugins/fin-asia",
+      "description": "Asia-Pacific ex-mainland-China: Hong Kong, Taiwan, Japan, Korea, India, Singapore and Australia — futu-api, tigeropen, shioaji, FinMind, J-Quants, pykrx, FinanceDataReader, kiteconnect and the date-keyed regime changes (Korea's short-selling bans, India's T+1/SEBI overhaul, the 2022 TSE restructuring) that silently break backtests.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "hong-kong",
+        "japan",
+        "korea",
+        "india",
+        "taiwan",
+        "asia"
+      ],
+      "skills": [
+        "./skills/asia-pacific-markets"
+      ]
+    },
+    {
       "name": "fin-crypto",
       "source": "./plugins/fin-crypto",
       "description": "Crypto market data and execution: ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot — and the 24/7-market assumptions that break equity-derived tooling.",

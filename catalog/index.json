@@ -1,20 +1,35 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 17,
+  "n_skills": 18,
   "n_reference_files": 33,
   "n_scripts": 4,
   "discovery_cost": {
-    "total_description_chars": 12951,
-    "approx_tokens": 3237,
+    "total_description_chars": 13666,
+    "approx_tokens": 3416,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
+    "fin-asia",
     "fin-china",
     "fin-core",
     "fin-crypto",
     "fin-llm"
   ],
   "skills": [
+    {
+      "name": "asia-pacific-markets",
+      "plugin": "fin-asia",
+      "path": "plugins/fin-asia/skills/asia-pacific-markets/SKILL.md",
+      "description": "Get data and trade in Asia-Pacific markets outside mainland China — Hong Kong, Taiwan, Japan, Korea, India, Singapore and Australia. Covers futu-api, tigeropen, shioaji, twstock, FinMind, jquants-api-client, pykrx, FinanceDataReader, nsepython, jugaad-data, kiteconnect, upstox, breeze-connect, python-kis, tejapi and trading-ig, plus the exchange_calendars defects that affect these venues. TRIGGER — use for HKEX, TWSE, TSE/JPX, KRX/KOSPI/KOSDAQ, NSE/BSE, SGX or ASX data or trading; for Hong Kong, Taiwan, Japanese, Korean, Indian, Singaporean or Australian stocks; when the task mentions Stock Connect, VCM, Muhurat, CSAT, STT, or lot sizes that vary per stock; or when porting a US strategy to an Asian market.",
+      "summary": "Get data and trade in Asia-Pacific markets outside mainland China — Hong Kong, Taiwan, Japan, Korea, India, Singapore and Australia.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 10415,
+      "approx_body_tokens": 2603,
+      "references": [],
+      "scripts": []
+    },
     {
       "name": "china-ashare-data",
       "plugin": "fin-china",
@@ -40,8 +55,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 6835,
-      "approx_body_tokens": 1708,
+      "body_chars": 6917,
+      "approx_body_tokens": 1729,
       "references": [
         "_ashare-rules.md"
       ],
@@ -181,8 +196,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 8355,
-      "approx_body_tokens": 2088,
+      "body_chars": 9504,
+      "approx_body_tokens": 2376,
       "references": [
         "_decision-table.md",
         "yfinance.md"
@@ -217,8 +232,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 10530,
-      "approx_body_tokens": 2632,
+      "body_chars": 10762,
+      "approx_body_tokens": 2690,
       "references": [],
       "scripts": []
     },

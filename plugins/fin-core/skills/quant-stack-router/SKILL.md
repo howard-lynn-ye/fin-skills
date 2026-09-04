@@ -103,6 +103,9 @@ Written in the words you would actually use. `->` is a literal path to read next
 **A-share / 沪深 / akshare / tushare / baostock / 复权 / 涨跌停 / T+1 / vnpy / qlib / 北交所**
 -> `fin-china` plugin: `china-ashare-data`, `china-trading-stack`.
 
+**Hong Kong / Taiwan / Japan / Korea / India / SGX / ASX / HKEX / TWSE / KRX / NSE / Stock Connect / J-Quants / 港股 / 台股**
+-> `fin-asia` plugin: `asia-pacific-markets`. **Its exchange_calendars defect list applies to US work too.**
+
 **crypto / ccxt / Binance / perpetuals / funding rate / freqtrade / hummingbot**
 -> `fin-crypto` plugin: `crypto-data-and-execution`.
 

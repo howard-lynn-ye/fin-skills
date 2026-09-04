@@ -32,7 +32,7 @@ Data sourcing is a separate skill: `china-ashare-data`.
 | Event-driven A-share backtest | **RQAlpha** 6.3.0 | 🚨 **custom licence: non-commercial only**; sdist-only, no Windows wheel |
 | C++-core multi-asset | wondertrader / wtpy (MIT) | wtpy slowing (last push 2025-08) |
 | Retail broker automation | easytrader 0.23.7 (MIT, 10,124★) | Slowing; GUI-automation fragility |
-| HK/US via a Chinese broker | `futu-api`, `tigeropen` | Vendor-maintained. 🚨 `futu-api` is **sdist-only, no Windows wheel** |
+| HK/US via a Chinese broker | `futu-api`, `tigeropen` | Vendor-maintained. ⚠️ `futu-api` is sdist-only **but pure Python, so it installs fine on Windows**; it does require the separate **FutuOpenD daemon** |
 
 ## 2. 🚨 Qlib's China dataset is disabled
 

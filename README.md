@@ -38,6 +38,7 @@ Then install only the market plugins you need:
 
 | Plugin | Skill | Covers | Refs | Scripts |
 |---|---|---|---:|---:|
+| `fin-asia` | [`asia-pacific-markets`](plugins/fin-asia/skills/asia-pacific-markets/SKILL.md) | Get data and trade in Asia-Pacific markets outside mainland China — Hong Kong, Taiwan, Japan, Korea, India, Singapore and Australia. | 0 | 0 |
 | `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Choose and correctly use a China A-share / Greater China market data source in Python, and avoid the ecosystem's specific traps. | 1 | 0 |
 | `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies. | 1 | 0 |
 | `fin-core` | [`backtest-validation`](plugins/fin-core/skills/backtest-validation/SKILL.md) | Decide whether a backtest result survives the number of things you tried. | 1 | 1 |
