@@ -2,7 +2,7 @@
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 19,
   "n_reference_files": 59,
-  "n_scripts": 4,
+  "n_scripts": 10,
   "discovery_cost": {
     "total_description_chars": 12937,
     "approx_tokens": 3234,
@@ -84,6 +84,7 @@
         "significance-tests.md"
       ],
       "scripts": [
+        "cost_curve.py",
         "trial_ledger.py"
       ]
     },
@@ -181,7 +182,9 @@
         "fredapi.md",
         "sec-edgar.md"
       ],
-      "scripts": []
+      "scripts": [
+        "pit_fundamentals.py"
+      ]
     },
     {
       "name": "market-data-engineering",
@@ -200,7 +203,10 @@
         "storage-formats.md",
         "timeseries-stores.md"
       ],
-      "scripts": []
+      "scripts": [
+        "fold_leak_test.py",
+        "safe_asof.py"
+      ]
     },
     {
       "name": "market-data-sourcing",
@@ -211,8 +217,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 9607,
-      "approx_body_tokens": 2401,
+      "body_chars": 9937,
+      "approx_body_tokens": 2484,
       "references": [
         "_decision-table.md",
         "alternative-data.md",
@@ -222,7 +228,9 @@
         "openbb.md",
         "yfinance.md"
       ],
-      "scripts": []
+      "scripts": [
+        "adjustment_check.py"
+      ]
     },
     {
       "name": "portfolio-and-risk",
@@ -270,14 +278,15 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 14391,
-      "approx_body_tokens": 3597,
+      "body_chars": 14755,
+      "approx_body_tokens": 3688,
       "references": [
         "adjustment-conventions.md",
         "leakage-checklist.md"
       ],
       "scripts": [
-        "result_manifest.py"
+        "result_manifest.py",
+        "survivorship_audit.py"
       ]
     },
     {

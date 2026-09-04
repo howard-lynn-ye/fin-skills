@@ -1,7 +1,41 @@
 # Price adjustment conventions
 
-Three conventions exist. Two are safe for research; one is a look-ahead bug that most libraries
-choose by default.
+Three conventions exist. Two are safe for research; one rewrites history every time a corporate
+action occurs — and **that one is what almost every Western data source gives you by default.**
+
+## 🚨 The English names are not reliable — define behaviourally
+
+"Forward-adjusted" and "back-adjusted" mean **opposite things** in different traditions:
+
+- **Chinese market usage** (the source of the 前复权/后复权 terms): 前复权 is glossed "forward-adjusted"
+  and **rewrites history**; 后复权 is glossed "backward-adjusted" and **does not**.
+- **Western futures usage**: a "back-adjusted" continuous contract is one whose *past* has been
+  adjusted to remove roll gaps — so **history changes** when a new contract rolls.
+
+The same two English words therefore point at opposite behaviours depending on who is speaking.
+**Never rely on the label. Ask one question instead:**
+
+> **When a new split or dividend occurs, does yesterday's stored value change?**
+
+If yes, the series is anchored at the present and is not reproducible. If no, it is anchored at the
+start and is safe. Everything below uses that test, not the names.
+
+## 🚨 Yahoo / yfinance adjusted prices ARE rewritten by new corporate actions
+
+The tell: on the most recent date, `Adj Close == Close`. That is the signature of anchoring at the
+present — `adj[t] = raw[t] × factor[t] / factor[latest]`. When a new dividend or split lands,
+`factor[latest]` changes and **every historical adjusted value changes with it.**
+
+So `yf.download(auto_adjust=True)` — the default since 1.0 — has **the same reproducibility problem
+as A-share 前复权**, which is usually flagged only for Chinese data:
+
+- The same query, same `start`, run a month later, returns **different historical prices**.
+- A cached adjusted series silently disagrees with a fresh pull.
+- A backtest cannot be reproduced bit-for-bit across a dividend date.
+
+**This is not a reason to avoid yfinance.** It is a reason to **snapshot and hash the series you
+actually used** (`../../market-data-engineering/SKILL.md` §8), and to reconstruct returns from
+`raw + actions` when reproducibility matters more than convenience.
 
 ## The three
 

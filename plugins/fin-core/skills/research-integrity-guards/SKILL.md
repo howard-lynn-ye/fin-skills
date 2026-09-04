@@ -147,11 +147,16 @@ trades on numbers published up to a decade later.
 
 ### 2d. Price adjustment
 
-Backward-adjusted (hfq) is anchored at the listing date: new dividends only append, history never
-changes. Forward-adjusted (qfq) is anchored at *now*: **every new corporate action rescales the
-entire history retroactively**, so a qfq price at *t* is a function of events after *t*.
+🚨 **Do not trust the English labels** — "forward-adjusted" and "back-adjusted" mean opposite
+things in Chinese-market and Western-futures usage. Ask the behavioural question instead:
+**when a new split or dividend occurs, does yesterday's stored value change?**
 
-**Use backward-adjusted or raw+factors. Never forward-adjusted.** If you must display qfq,
+If yes, the series is anchored at the present and **is not reproducible**: the same query run a
+month later returns different history, and a value at *t* depends on events after *t*.
+🚨 **That includes Yahoo/yfinance `auto_adjust=True`**, whose tell is `Adj Close == Close` on the
+most recent date — the same problem usually flagged only for A-share 前复权.
+
+**Use a series anchored at the start (A-share 后复权/hfq), or raw prices plus the factor series.** If you must display qfq,
 recompute at render time and never persist it. Details and per-library defaults:
 `references/adjustment-conventions.md`.
 

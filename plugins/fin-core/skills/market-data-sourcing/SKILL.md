@@ -61,6 +61,11 @@ Full coverage table: `research-integrity-guards` §1.
 
 ### 2b. Adjustment defaults disagree across libraries
 
+🚨 **And the adjusted series itself is not stable.** Yahoo-style adjusted prices are anchored at the
+present (`Adj Close == Close` on the latest date), so **every new dividend or split rewrites the
+whole history**. Snapshot and hash what you actually used; see
+`../research-integrity-guards/references/adjustment-conventions.md`.
+
 | Call | Default | Result |
 |---|---|---|
 | `yf.download()` | `auto_adjust=True` (since 1.0) | **Adjusted, and no `Adj Close` column** |
