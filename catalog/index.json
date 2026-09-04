@@ -1,0 +1,271 @@
+{
+  "generated_by": "scripts/build_index.py — do not edit by hand",
+  "n_skills": 16,
+  "n_reference_files": 12,
+  "n_scripts": 4,
+  "discovery_cost": {
+    "total_description_chars": 12185,
+    "approx_tokens": 3046,
+    "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
+  },
+  "plugins": [
+    "fin-china",
+    "fin-core",
+    "fin-crypto",
+    "fin-llm"
+  ],
+  "skills": [
+    {
+      "name": "china-ashare-data",
+      "plugin": "fin-china",
+      "path": "plugins/fin-china/skills/china-ashare-data/SKILL.md",
+      "description": "Choose and correctly use a China A-share / Greater China market data source in Python, and avoid the ecosystem's specific traps. Covers akshare, tushare (pro), baostock, efinance, adata, qstock, mootdx, easyquotation, Ashare, pytdx, jqdatasdk (JoinQuant), rqdatac (RiceQuant), WindPy, Choice EMQuantAPI, tqsdk, and the qlib China dataset. TRIGGER — use for any task involving A-shares, 沪深 or 北交所 stocks, CSI/HS300/中证 indices, Chinese futures or convertible bonds, or the terms 复权 qfq/hfq, 涨跌停 price limits, T+1, ST/*ST, 停牌 suspension, 退市 delisting, 公告日 vs 报告期, or 夜盘. Also use when Chinese price data disagrees between two libraries, when an A-share backtest looks implausibly good, or when picking between free scrapers and licensed vendors.",
+      "summary": "Choose and correctly use a China A-share / Greater China market data source in Python, and avoid the ecosystem's specific traps.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 13207,
+      "approx_body_tokens": 3301,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "china-trading-stack",
+      "plugin": "fin-china",
+      "path": "plugins/fin-china/skills/china-trading-stack/SKILL.md",
+      "description": "Backtest and execute Chinese-market strategies. Covers vnpy (and its CTP/gateway/datafeed ecosystem), Microsoft Qlib and its China dataset situation, RQAlpha, wondertrader/wtpy, tqsdk for futures, QMT/miniQMT, easytrader, and the Futu and Tiger broker SDKs — plus the settlement, price-limit and session rules that make Western backtest engines wrong on A-shares. TRIGGER — use when backtesting or trading A-shares, Chinese futures, options or convertible bonds; when the task mentions vnpy, qlib, RQAlpha, CTP, QMT, miniQMT, easytrader, tqsdk, 掘金, 聚宽 or 米筐; when connecting to a Chinese broker; or when porting a US-market strategy to China.",
+      "summary": "Backtest and execute Chinese-market strategies.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 6835,
+      "approx_body_tokens": 1708,
+      "references": [
+        "_ashare-rules.md"
+      ],
+      "scripts": []
+    },
+    {
+      "name": "backtest-validation",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/backtest-validation/SKILL.md",
+      "description": "Decide whether a backtest result survives the number of things you tried. Covers purged and combinatorial-purged cross-validation (purgedcv, skfolio, RiskLabAI), the Deflated and Probabilistic Sharpe Ratio, Probability of Backtest Overfitting, and the multiple-comparison procedures in arch.bootstrap — White's Reality Check, Hansen's SPA, Romano-Wolf StepM and the Model Confidence Set — plus the López de Prado / AFML labeling and sample-weight stack. TRIGGER — use when a backtest or model result must be judged real or spurious; when the task mentions overfitting, p-hacking, data snooping, multiple testing, walk-forward, cross-validation on time series, deflated Sharpe, PBO, or \"I tried N strategies\"; when a parameter sweep, hyperopt, grid search or AutoML produced a winner; and whenever a Sharpe ratio is about to be reported as evidence for trading.",
+      "summary": "Decide whether a backtest result survives the number of things you tried.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 12112,
+      "approx_body_tokens": 3028,
+      "references": [],
+      "scripts": [
+        "trial_ledger.py"
+      ]
+    },
+    {
+      "name": "backtesting-engines",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/backtesting-engines/SKILL.md",
+      "description": "Choose a Python backtesting engine and know exactly what it models correctly versus what it silently gets wrong. Covers vectorbt, backtesting.py, backtrader, zipline-reloaded, PyBroker, bt, nautilus_trader, QuantConnect LEAN, Qlib, lumibot, qstrader, freqtrade, jesse, hummingbot, OctoBot, RQAlpha, vnpy and wondertrader. TRIGGER — use when the task says backtest, simulate a strategy, walk-forward, parameter sweep, or \"test this trading idea\"; when choosing or comparing backtest frameworks; when a backtest result looks too good; when porting a strategy from backtest to live; or when asking how an engine models fills, slippage, commissions, partial fills, margin, shorting, splits/dividends, or delistings.",
+      "summary": "Choose a Python backtesting engine and know exactly what it models correctly versus what it silently gets wrong.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 10389,
+      "approx_body_tokens": 2597,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "broker-execution-apis",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/broker-execution-apis/SKILL.md",
+      "description": "Connect to a broker from Python and place orders without accidentally trading live money. Covers Interactive Brokers (ib_async, ib_insync, ibapi, TWS vs Gateway, Client Portal Web API), Alpaca, Schwab (schwab-py), Tastytrade, Tradier, Robinhood, ccxt for crypto venues, and FIX (quickfix, simplefix) — plus the order-safety patterns every piece of order-sending code needs: paper-account assertion, read-only gates, idempotent client order IDs, kill switches, and position reconciliation. TRIGGER — use whenever code will connect to a broker or exchange, place, modify or cancel an order, read positions or account balances, or stream live quotes; when choosing a broker API; when setting up paper trading; or when the task mentions TWS, IB Gateway, client order ID, order types, time-in-force, or going from backtest to live.",
+      "summary": "Connect to a broker from Python and place orders without accidentally trading live money.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 11815,
+      "approx_body_tokens": 2953,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "derivatives-pricing",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/derivatives-pricing/SKILL.md",
+      "description": "Price options and fixed-income instruments in Python and get the Greeks, implied volatility and curve conventions right. Covers QuantLib, vollib (formerly py_vollib), lets_be_rational, financepy, rateslib, optionlab, pysabr and tf-quant-finance, plus vol-surface fitting (SVI, SABR, ZABR), American exercise, and options market-data sources. TRIGGER — use for option pricing, implied volatility, Greeks (delta, gamma, vega, theta, rho), volatility surfaces or smiles, Black-Scholes, binomial or Monte Carlo pricing, American exercise, exotics, yield curves, bond pricing, swaps, discount factors, day-count conventions, or option chain data. Load before computing any Greek — the scaling conventions differ by 100x and 365x between libraries.",
+      "summary": "Price options and fixed-income instruments in Python and get the Greeks, implied volatility and curve conventions right.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 9790,
+      "approx_body_tokens": 2447,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "factor-and-timeseries-research",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md",
+      "description": "Evaluate cross-sectional factors and forecast financial time series without leaking. Covers alphalens-reloaded, Qlib Alpha158/360, Alpha101 ports, gplearn, Fama-French factor data, linearmodels (Fama-MacBeth, PanelOLS), pyfixest, event-study methodology, and the forecasting stack — Nixtla (statsforecast/mlforecast/neuralforecast), sktime, darts, gluonts, pytorch-forecasting, skforecast, tsfresh, arch, and time-series foundation models (Chronos, TimesFM, Moirai, MOMENT, TiRex). TRIGGER — use when testing whether a factor or alpha signal has predictive power; computing IC, quantile spreads, or factor returns; running Fama-MacBeth, panel or cross-sectional asset-pricing regressions; running an event study or computing abnormal returns/CAR; or forecasting returns, volatility or any financial series with statistical or ML models.",
+      "summary": "Evaluate cross-sectional factors and forecast financial time series without leaking.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 9513,
+      "approx_body_tokens": 2378,
+      "references": [
+        "_event-study-method.md",
+        "arch.md"
+      ],
+      "scripts": []
+    },
+    {
+      "name": "fundamental-and-macro-data",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md",
+      "description": "Get company fundamentals and macroeconomic data with correct point-in-time semantics. Covers SEC EDGAR (submissions, companyfacts, companyconcept, frames, full-text search, Financial Statement Data Sets), edgartools, sec-edgar-downloader, secedgar, Arelle and XBRL parsing; and FRED/ALFRED via fredapi, the Philadelphia Fed Real-Time Data Set, World Bank (wbgapi), IMF (imfp), Eurostat, OECD, BLS and SDMX (sdmx1). TRIGGER — use for 10-K, 10-Q, 8-K, 13F, Forms 3/4/5, filings, XBRL, CIK, accession numbers, earnings dates, revenue/EPS/balance-sheet data, restatements; or for CPI, GDP, payrolls, unemployment, interest rates, FRED series, data vintages and revisions. Load this before joining any fundamental or macro series to prices — the default join is a look-ahead bug.",
+      "summary": "Get company fundamentals and macroeconomic data with correct point-in-time semantics.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 13111,
+      "approx_body_tokens": 3277,
+      "references": [
+        "fredapi.md"
+      ],
+      "scripts": []
+    },
+    {
+      "name": "market-data-sourcing",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/market-data-sourcing/SKILL.md",
+      "description": "Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries. Covers yfinance, pandas-datareader, yahooquery, defeatbeta-api, stockdex, FinanceDataReader, financetoolkit, financedatabase, openbb, findatapy, EODHD, Tiingo, Twelve Data, Finnhub, Alpha Vantage, Polygon, Databento, Nasdaq Data Link, WRDS, Bloomberg (blpapi/xbbg), plus exchange calendars and ticker/CIK/FIGI identifier mapping. TRIGGER — use when the task says download, fetch, pull, or load prices, OHLCV, quotes, bars, ticks, or a ticker universe; when choosing between data vendors or comparing their coverage, cost, or free-tier limits; when prices from two sources disagree; when hitting rate limits or 429s; or when building a backtest's data layer.",
+      "summary": "Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 8112,
+      "approx_body_tokens": 2028,
+      "references": [
+        "_decision-table.md"
+      ],
+      "scripts": []
+    },
+    {
+      "name": "portfolio-and-risk",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/portfolio-and-risk/SKILL.md",
+      "description": "Construct portfolio weights and compute performance and risk metrics correctly. Covers PyPortfolioOpt, Riskfolio-Lib, skfolio, cvxportfolio, deepdow and the cvxpy solver layer for optimization; quantstats, pyfolio-reloaded, empyrical-reloaded, ffn and alphalens-reloaded for analytics; plus VaR/CVaR, drawdown, GARCH volatility via arch, and attribution. TRIGGER — use when the task involves portfolio weights, allocation, rebalancing, mean-variance, Black-Litterman, risk parity, HRP/HERC/NCO, covariance shrinkage or denoising, the efficient frontier, position sizing across assets; OR when computing or reporting Sharpe, Sortino, Calmar, CAGR, volatility, max drawdown, VaR, CVaR, beta, alpha, a tearsheet, or performance attribution. Load this before quoting any performance number — several popular libraries disagree on the same input.",
+      "summary": "Construct portfolio weights and compute performance and risk metrics correctly.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 8745,
+      "approx_body_tokens": 2186,
+      "references": [
+        "_attribution.md",
+        "_solver-layer.md"
+      ],
+      "scripts": []
+    },
+    {
+      "name": "quant-stack-router",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/quant-stack-router/SKILL.md",
+      "description": "Entry point for Python quantitative finance and algorithmic trading: picks the right library and flags where the model's training prior is stale. Routes to market data, point-in-time SEC and macro data, backtesting engines, broker APIs, indicators, factor research, portfolio and risk analytics, backtest validation, and derivatives pricing. TRIGGER — read BEFORE writing code whenever the task involves stock, ETF, futures, FX, options, crypto or bond data; a backtest, strategy, signal, alpha or factor; a broker, order or paper-trading connection; Sharpe, drawdown, tearsheet or attribution; portfolio weights; or any of yfinance, pandas-datareader, openbb, polygon, databento, EODHD, akshare, tushare, ccxt, edgartools, fredapi, TA-Lib, pandas-ta, vectorbt, backtrader, backtesting.py, zipline, nautilus_trader, freqtrade, qlib, ib_insync, ib_async, alpaca, alphalens, PyPortfolioOpt, riskfolio, skfolio, quantstats, mlfinlab, QuantLib, arch. SKIP only for generic Python with no market, money or trading semantics.",
+      "summary": "Entry point for Python quantitative finance and algorithmic trading: picks the right library and flags where the model's training prior is stale.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 9337,
+      "approx_body_tokens": 2334,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "research-integrity-guards",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/research-integrity-guards/SKILL.md",
+      "description": "The audit that decides whether a quantitative finance result is real. Covers point-in-time data discipline, survivorship bias, look-ahead and label leakage, transaction-cost realism, and multiple-testing correction. TRIGGER — load this whenever you are about to report, interpret, or act on a backtest, factor test, event study, or model score; whenever a result looks good (\"Sharpe 2.5\", \"beats SPY\", \"85% accuracy\"); whenever the task says validate, verify, review, sanity-check, or \"why is this not working live\"; and BEFORE designing any research that will later be used to justify a trade. Also load when joining fundamentals or macro data to prices, when building a ticker universe, or when choosing a cross-validation splitter for financial data.",
+      "summary": "The audit that decides whether a quantitative finance result is real.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 14453,
+      "approx_body_tokens": 3613,
+      "references": [
+        "adjustment-conventions.md",
+        "leakage-checklist.md"
+      ],
+      "scripts": [
+        "result_manifest.py"
+      ]
+    },
+    {
+      "name": "signal-construction",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/signal-construction/SKILL.md",
+      "description": "Compute technical indicators and engineered features without leaking the future. Covers TA-Lib, pandas-ta-classic, ta (bukosabino), talipp, finta, tulipy, polars-based indicators and vectorbt's built-ins, with a measured numerical comparison against TA-Lib; plus which indicator classes inherently repaint or look ahead, and how to detect it automatically. TRIGGER — use when computing RSI, MACD, moving averages, Bollinger Bands, ATR, ADX, Ichimoku, PSAR, stochastics or any technical indicator; when choosing an indicator library or reconciling two that disagree; when an indicator's values differ between backtest and live; when building features for a model from price data; or when the task mentions repainting, warm-up, unstable period, or zigzag.",
+      "summary": "Compute technical indicators and engineered features without leaking the future.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 8903,
+      "approx_body_tokens": 2225,
+      "references": [
+        "_repainting.md"
+      ],
+      "scripts": [
+        "assert_causal.py"
+      ]
+    },
+    {
+      "name": "crypto-data-and-execution",
+      "plugin": "fin-crypto",
+      "path": "plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md",
+      "description": "Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for equities. Covers ccxt (and why ccxt.pro is now free), cryptofeed, python-binance, freqtrade, jesse, hummingbot, OctoBot, and exchange/testnet realities. TRIGGER — use for any task involving crypto, digital assets, Bitcoin, Ethereum, perpetual futures, funding rates, order books, or exchange connectivity; when choosing a crypto data source, backtester or trading bot; or when porting an equity strategy to a 24/7 market.",
+      "summary": "Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for equities.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 6057,
+      "approx_body_tokens": 1514,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "finance-mcp-servers",
+      "plugin": "fin-llm",
+      "path": "plugins/fin-llm/skills/finance-mcp-servers/SKILL.md",
+      "description": "Pick a finance MCP server and know its licence, maintenance status and blast radius before connecting it. Covers the Alpaca, Alpha Vantage, QuantConnect and OpenBB vendor-official servers, the Massive (formerly Polygon) server, SEC EDGAR and FRED servers, Yahoo Finance servers, Interactive Brokers community servers, and Financial Modeling Prep. TRIGGER — use when adding, choosing, evaluating or debugging an MCP server for market data, filings, macro data, brokerage or trading; when asked which finance MCP to install; or when an MCP server's licence or data-redistribution terms matter. Also use before granting any MCP server the ability to place orders.",
+      "summary": "Pick a finance MCP server and know its licence, maintenance status and blast radius before connecting it.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 5723,
+      "approx_body_tokens": 1430,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "llm-finance-agents",
+      "plugin": "fin-llm",
+      "path": "plugins/fin-llm/skills/llm-finance-agents/SKILL.md",
+      "description": "What the published evidence actually says about LLM trading agents, and the status of the frameworks that implement them — TradingAgents, FinRobot, FinMem, FinCON, FinAgent, FinGPT, FinRL, Microsoft RD-Agent, and the FinBERT model family. TRIGGER — load this BEFORE building, recommending, evaluating or citing any LLM-driven trading system, sentiment-to-signal pipeline, or multi-agent finance architecture; when asked \"does AI trading work\", \"should I use TradingAgents\", or to reproduce a reported Sharpe ratio from an LLM-trading paper; and when designing an evaluation for an LLM that touches market data, because the training-cutoff contamination check in this skill has to happen first.",
+      "summary": "What the published evidence actually says about LLM trading agents, and the status of the frameworks that implement them — TradingAgents, FinRobot, FinMem, FinCON, FinAgent, FinGPT",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 10540,
+      "approx_body_tokens": 2635,
+      "references": [
+        "_evidence-papers.md",
+        "_regulatory.md"
+      ],
+      "scripts": [
+        "contamination_probe.py"
+      ]
+    }
+  ]
+}

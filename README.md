@@ -1,0 +1,148 @@
+# fin-skills
+
+A source-verified knowledge base of the Python quantitative-finance ecosystem, packaged as
+[Agent Skills](https://agentskills.io/specification).
+
+It exists because the middle of this domain is empty. The ecosystem is saturated at two ends — API
+wrappers and knowledge dumps — and nearly vacant at **the methodology that decides whether a result
+is real**. `anthropics/skills` contains zero finance skills; the community repos that do exist cover
+compliance, crypto execution and bookkeeping well, and research integrity barely at all.
+
+Every claim carries a verification date and a marker: ✅ verified at a primary source · ⚠️ secondhand
+· ❓ could not verify. Where a library's behaviour was *measured* rather than read, the skill says so.
+
+## Install
+
+```bash
+/plugin marketplace add howard-lynn-ye/fin-skills
+/plugin install fin-core@fin-skills
+```
+
+Then install only the market plugins you need:
+
+```bash
+/plugin install fin-china@fin-skills     # A-share / Greater China
+/plugin install fin-crypto@fin-skills    # crypto
+/plugin install fin-llm@fin-skills       # LLM agents + the evidence on whether they work
+```
+
+> **Raise your skill-listing budget.** Claude Code's default budget is ~1% of the context window
+> (~2,000 tokens), and past roughly 20 skills it **silently drops descriptions to name-only** — a
+> dropped skill never auto-triggers. `fin-core` alone costs ~2,233 tokens. Set
+> `"skillListingBudgetFraction": 0.02` in `~/.claude/settings.json` before installing more than one
+> plugin. Check with `/context` (Skills row) or `/doctor`.
+
+## What's here
+
+<!-- BEGIN GENERATED SKILL TABLE -->
+
+| Plugin | Skill | Covers | Refs | Scripts |
+|---|---|---|---:|---:|
+| `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Choose and correctly use a China A-share / Greater China market data source in Python, and avoid the ecosystem's specific traps. | 0 | 0 |
+| `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies. | 1 | 0 |
+| `fin-core` | [`backtest-validation`](plugins/fin-core/skills/backtest-validation/SKILL.md) | Decide whether a backtest result survives the number of things you tried. | 0 | 1 |
+| `fin-core` | [`backtesting-engines`](plugins/fin-core/skills/backtesting-engines/SKILL.md) | Choose a Python backtesting engine and know exactly what it models correctly versus what it silently gets wrong. | 0 | 0 |
+| `fin-core` | [`broker-execution-apis`](plugins/fin-core/skills/broker-execution-apis/SKILL.md) | Connect to a broker from Python and place orders without accidentally trading live money. | 0 | 0 |
+| `fin-core` | [`derivatives-pricing`](plugins/fin-core/skills/derivatives-pricing/SKILL.md) | Price options and fixed-income instruments in Python and get the Greeks, implied volatility and curve conventions right. | 0 | 0 |
+| `fin-core` | [`factor-and-timeseries-research`](plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md) | Evaluate cross-sectional factors and forecast financial time series without leaking. | 2 | 0 |
+| `fin-core` | [`fundamental-and-macro-data`](plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md) | Get company fundamentals and macroeconomic data with correct point-in-time semantics. | 1 | 0 |
+| `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries. | 1 | 0 |
+| `fin-core` | [`portfolio-and-risk`](plugins/fin-core/skills/portfolio-and-risk/SKILL.md) | Construct portfolio weights and compute performance and risk metrics correctly. | 2 | 0 |
+| `fin-core` | [`quant-stack-router`](plugins/fin-core/skills/quant-stack-router/SKILL.md) | Entry point for Python quantitative finance and algorithmic trading: picks the right library and flags where the model's training prior is stale. | 0 | 0 |
+| `fin-core` | [`research-integrity-guards`](plugins/fin-core/skills/research-integrity-guards/SKILL.md) | The audit that decides whether a quantitative finance result is real. | 2 | 1 |
+| `fin-core` | [`signal-construction`](plugins/fin-core/skills/signal-construction/SKILL.md) | Compute technical indicators and engineered features without leaking the future. | 1 | 1 |
+| `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for equities. | 0 | 0 |
+| `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server and know its licence, maintenance status and blast radius before connecting it. | 0 | 0 |
+| `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence actually says about LLM trading agents, and the status of the frameworks that implement them — TradingAgents, FinRobot, FinMem, FinCON, FinAgent, FinGPT | 2 | 1 |
+
+<!-- END GENERATED SKILL TABLE -->
+
+Start at **`quant-stack-router`** — it holds the version-drift table and routes to everything else.
+If you only read one other skill, read **`research-integrity-guards`**.
+
+## A sample of what it corrects
+
+Facts verified 2026-09-03/04 that contradict what most models and tutorials still say:
+
+| Common belief | Verified reality |
+|---|---|
+| TA-Lib needs the C library compiled by hand | **Solved.** 0.7.1 ships 54 wheels including `cp311-win_amd64` |
+| QuantLib is a nightmare to install | **Solved.** 1.43 ships `cp39-abi3-win_amd64` — but **no sdist at all** |
+| Use `ib_insync` for IBKR | **Dead** since 2023-07; successor is `ib_async` |
+| `pdr.get_data_yahoo(...)` | **Removed in pandas-datareader 0.11.0** — it is now macro-only |
+| `yf.download()` returns raw OHLC + `Adj Close` | **`auto_adjust=True` since 1.0** — there is no `Adj Close` column |
+| vectorbt's `from_signals` is safe out of the box | **Fills at the signal's own bar close** (`price=np.inf`) |
+| `empyrical.sharpe_ratio(risk_free=0.05)` means 5% annual | It means **5% per day**. The result is a Sharpe of −65 |
+| `quantstats.cagr(rf=...)` uses the risk-free rate | **It silently discards it** — `"cagr"` is on an exclusion list |
+| `arch`'s SPA/StepM/MCS take returns | **They take losses.** Pass returns and the test inverts |
+| `mlfinlab` implements AFML | **Off PyPI; the GitHub source is stubbed — every function body is `pass`** |
+| `rateslib` is open source | **It never was.** Source-available non-commercial + paid commercial licence |
+| `py_vollib` is the options library | **A dead shim since 1.0.12** — the real package is `vollib` |
+| Moirai/TimesFM weights are Apache | **Moirai is `cc-by-nc-4.0`** on all variants |
+| PDT limits your day trading | **PDT was eliminated 2026-06-04** (SEC Release 34-105226) |
+
+Greek scaling, measured against QuantLib on identical inputs: `vollib`'s **vega is 100× smaller**
+(per vol point), **theta 365× smaller** (per calendar day), **rho 100× smaller** (per 1% rate).
+
+## Layout
+
+```
+plugins/<plugin>/skills/<skill>/
+    SKILL.md          the router: task -> file, plus what will silently lie to you
+    references/*.md   one file per library — versions, licence, traps, snippets
+    scripts/*.py      runnable, tested tools
+catalog/index.json    generated from frontmatter; never hand-edited
+scripts/validate.py   enforces the 6-field spec + discovery budget + reference integrity
+scripts/build_index.py
+```
+
+Skills live in category folders on disk, which Claude Code does **not** discover by default
+(`.claude/skills/<category>/<skill>/` is not scanned — issue #39138, closed as not planned). The
+plugin manifest's explicit `skills` array is the supported escape hatch, which is why this repo ships
+as plugins rather than loose skills.
+
+## The runnable parts
+
+| Script | What it does |
+|---|---|
+| `signal-construction/scripts/assert_causal.py` | Perturbs only future bars and asserts the past did not move. Catches centered windows, negative shifts, full-sample normalization |
+| `backtest-validation/scripts/trial_ledger.py` | Append-only trial ledger + Deflated Sharpe using its honest trial count |
+| `research-integrity-guards/scripts/result_manifest.py` | A result card that **refuses to render** without universe provenance, a cost curve, a trial count and a falsifier |
+| `llm-finance-agents/scripts/contamination_probe.py` | Training-cutoff overlap check + the accuracy-collapse-at-cutoff probe |
+
+```bash
+python plugins/fin-core/skills/backtest-validation/scripts/trial_ledger.py
+# 50 noise strategies, best Sharpe 0.88, expected max from noise 0.94
+# -> "NOT distinguishable from noise"
+```
+
+## Contributing / maintaining
+
+```bash
+python scripts/validate.py      # spec compliance, budget, reference integrity
+python scripts/build_index.py   # regenerate catalog/index.json and the table above
+```
+
+`validate.py` restricts frontmatter to the six spec fields (`name`, `description`, `license`,
+`compatibility`, `metadata`, `allowed-tools`). Claude Code accepts more, but any extra key is a hard
+error on claude.ai upload and the Skills API, so the portable subset is enforced here.
+
+When a fact goes stale, update the claim **and** its `verified_on` date. A dated wrong answer is
+recoverable; an undated one is not.
+
+## Scope
+
+Deliberately **not** covered, because other repos own them: crypto/DeFi execution plumbing and MEV
+(`agiprolabs/claude-trading-skills`), RIA compliance and practice ops (`JoelLewis/finance_skills`),
+personal bookkeeping and tax (`openaccountant/skills`). Leakage-safe quant ML overlaps with
+`ml4t/skills` (Apache-2.0) — that repo is excellent and worth reading alongside this one.
+
+Nothing here is investment advice, and no skill in this repo places an order.
+
+## Licence
+
+MIT for the repo's own content. **Library licences are a separate matter and are recorded per
+library** — this domain contains AGPL (`openbb`, `backtesting.py`, `dbnomics`), GPL (`backtrader`,
+`freqtrade`, `financepy`, `cvxportfolio`), Commons Clause (`vectorbt`, `lib-pybroker`),
+source-available non-commercial (`rateslib`, `RQAlpha`), and packages with **no licence at all**
+(`pytdx`, `Ashare`, `ProsusAI/finbert`). Code licence never implies data licence.
