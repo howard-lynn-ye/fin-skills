@@ -2,7 +2,7 @@
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 22,
   "n_reference_files": 67,
-  "n_scripts": 20,
+  "n_scripts": 21,
   "discovery_cost": {
     "total_description_chars": 14982,
     "approx_tokens": 3745,
@@ -88,6 +88,7 @@
       ],
       "scripts": [
         "cost_curve.py",
+        "spa_test.py",
         "trial_ledger.py"
       ]
     },

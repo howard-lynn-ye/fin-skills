@@ -158,16 +158,6 @@ def brinson_hood_beebower(panel: pd.DataFrame, **kw) -> pd.DataFrame:
 # --------------------------------------------------------------------------------------
 # multi-period linking -- Carino (1999)
 # --------------------------------------------------------------------------------------
-def carino_coefficient(r: float) -> float:
-    """k = log(1+Rp) - log(1+Rb) all over (Rp - Rb). Here for the single-argument case.
-
-    Not used directly; `carino_coefficients` handles the pair and the removable
-    singularity at Rp == Rb. Kept because the scalar form log(1+r)/r is the coefficient
-    that appears in the literature when the active return is zero.
-    """
-    return float(np.log1p(r) / r) if r != 0.0 else 1.0
-
-
 def carino_coefficients(rp: Sequence[float],
                         rb: Sequence[float]) -> tuple[np.ndarray, float, float, float]:
     """Per-period smoothing coefficients k_t and the horizon coefficient K.

@@ -52,11 +52,32 @@ skewed — use bootstrapped or skewness-adjusted t-statistics, not the plain one
 The naive cross-sectional t-test `mean(CAR) / (sd(CAR)/sqrt(N))` assumes independent, homoskedastic
 abnormal returns. Events violate both.
 
-**Event-induced variance.** Volatility rises *because* of the event, so the estimation-window
-variance understates the event-window variance and the plain t-test **over-rejects**. The standard
-fix is **Boehmer, Musumeci & Poulsen (1991)** — standardize each firm's abnormal return by its own
-forecast-error-adjusted standard deviation, then do the cross-sectional test on the standardized
-values. **Almost every homegrown event study omits this.**
+**Event-induced variance — and a correction to what this file used to say.** Volatility rises
+*because* of the event, so the **estimation-window** variance understates the **event-window**
+variance. This file previously claimed that makes the plain cross-sectional t-test over-reject.
+✅ **Measured on 300 null panels with event-induced variance, that is wrong:**
+
+| Test | Standardises by | Rejects at nominal 5% |
+|---|---|---|
+| **Patell** (standardised residual) | **estimation-window** SE | 🚨 **47.0%** — over-rejects catastrophically |
+| Corrado rank, classic SE | time-series SE | 🚨 **16.3%** |
+| Plain cross-sectional t on raw CARs | cross-sectional SD of CARs | ✅ **3–5%** — correctly sized |
+| **BMP** (standardised, cross-sectional) | forecast-error-adjusted SD, then cross-sectional | ✅ **4.3%** |
+
+**Why the plain test survives:** its denominator is the *cross-sectional* dispersion of CARs, which
+inflates along with the event-induced variance. Numerator and denominator move together, so a
+symmetric scale mixture cancels. **Patell's denominator comes from the estimation window, which
+knows nothing about the event** — so its denominator is too small and it rejects a true null nearly
+half the time.
+
+**So the reason to use BMP is POWER, not size.** On identical data with a planted +4.0% effect,
+BMP's t is **7.57 against the plain test's 3.86 — 2× the statistic**, and it recovers +3.908%
+against the planted +4.000%. Use BMP because it detects a real effect the raw test may miss, and
+use it *instead of Patell* because Patell is unusable under exactly the conditions event studies
+create.
+
+⚠️ Skewness was tested as an alternative mechanism and **hurts BMP as much as the raw test**, so it
+is not the separator either. `../scripts/event_study.py` reproduces all of this.
 
 **Cross-sectional correlation.** If events cluster in calendar time (an industry shock, a regulatory
 date, an earnings season), abnormal returns are correlated across firms and the effective N is far

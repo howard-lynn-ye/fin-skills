@@ -267,8 +267,7 @@ def audit_universe_stability(universe: dict[pd.Timestamp, Sequence[str]] | Itera
 # putting a number on it
 # --------------------------------------------------------------------------------------
 def equal_weight_backtest(universe: dict[pd.Timestamp, Sequence[str]],
-                          prices: pd.DataFrame,
-                          periods_per_year: int = TRADING_DAYS) -> pd.Series:
+                          prices: pd.DataFrame) -> pd.Series:
     """Equal-weight the universe at each rebalance and hold to the next one.
 
     Deliberately simple, because its only job is to price the difference between two
