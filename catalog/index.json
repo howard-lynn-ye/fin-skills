@@ -1,7 +1,7 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 16,
-  "n_reference_files": 17,
+  "n_reference_files": 27,
   "n_scripts": 4,
   "discovery_cost": {
     "total_description_chars": 12185,
@@ -58,7 +58,9 @@
       "verified_on": "2026-09-03",
       "body_chars": 12112,
       "approx_body_tokens": 3028,
-      "references": [],
+      "references": [
+        "afml-stack.md"
+      ],
       "scripts": [
         "trial_ledger.py"
       ]
@@ -124,7 +126,11 @@
       "approx_body_tokens": 2378,
       "references": [
         "_event-study-method.md",
-        "arch.md"
+        "alpha-factor-libraries.md",
+        "alphalens-reloaded.md",
+        "arch.md",
+        "forecasting-stack.md",
+        "linearmodels.md"
       ],
       "scripts": []
     },
@@ -140,7 +146,8 @@
       "body_chars": 13111,
       "approx_body_tokens": 3277,
       "references": [
-        "fredapi.md"
+        "fredapi.md",
+        "sec-edgar.md"
       ],
       "scripts": []
     },
@@ -156,7 +163,8 @@
       "body_chars": 8355,
       "approx_body_tokens": 2088,
       "references": [
-        "_decision-table.md"
+        "_decision-table.md",
+        "yfinance.md"
       ],
       "scripts": []
     },
@@ -173,7 +181,9 @@
       "approx_body_tokens": 2186,
       "references": [
         "_attribution.md",
-        "_solver-layer.md"
+        "_solver-layer.md",
+        "analytics-libraries.md",
+        "optimizers.md"
       ],
       "scripts": []
     },
@@ -222,7 +232,8 @@
       "body_chars": 8903,
       "approx_body_tokens": 2225,
       "references": [
-        "_repainting.md"
+        "_repainting.md",
+        "indicator-libraries.md"
       ],
       "scripts": [
         "assert_causal.py"
