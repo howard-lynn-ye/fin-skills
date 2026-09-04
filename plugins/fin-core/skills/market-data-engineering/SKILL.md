@@ -1,14 +1,14 @@
 ---
 name: market-data-engineering
 description: >-
-  Store, join and parallelize market data without silently corrupting it. Covers pandas 3.x, polars,
-  pyarrow, duckdb, dask, ray and ibis; time-series stores (ArcticDB, QuestDB, ClickHouse, TimescaleDB,
-  kdb/pykx, Parquet layouts); as-of joins in pandas, polars, DuckDB, QuestDB and ClickHouse; float and
-  timestamp precision; timezone round-tripping; partitioning; and reproducible immutable snapshots.
-  TRIGGER — use when joining quotes to trades or signals to prices, when writing or reading Parquet,
-  Feather, HDF5 or CSV of market data, when choosing a dataframe engine or time-series database, when
-  a panel is too big for memory, when parallelizing a walk-forward backtest, when timestamps or
-  timezones come back wrong, or when two runs of the same pipeline disagree.
+  Store, join and parallelize market data you already hold, without corrupting it. TRIGGER - as-of
+  join, merge_asof, join_asof, ASOF JOIN, "join quotes to trades", aligning signals to prices;
+  reading or writing Parquet, Feather, HDF5 or CSV of market data; choosing between pandas,
+  polars, DuckDB, pyarrow, dask or ray; a time-series store such as ArcticDB, QuestDB, ClickHouse,
+  TimescaleDB or kdb; storing years of minute bars for thousands of tickers; a dataset too big for
+  memory; partitioning; timestamps or timezones coming back wrong; float precision on prices or
+  volume; "different numbers when I parallelise". SKIP for choosing a data VENDOR
+  (market-data-sourcing) - this skill starts once the bytes are yours.
 license: MIT
 metadata:
   version: "0.1.0"

@@ -1,14 +1,13 @@
 ---
 name: signal-construction
 description: >-
-  Compute technical indicators and engineered features without leaking the future. Covers TA-Lib,
-  pandas-ta-classic, ta (bukosabino), talipp, finta, tulipy, polars-based indicators and vectorbt's
-  built-ins, with a measured numerical comparison against TA-Lib; plus which indicator classes
-  inherently repaint or look ahead, and how to detect it automatically. TRIGGER — use when
-  computing RSI, MACD, moving averages, Bollinger Bands, ATR, ADX, Ichimoku, PSAR, stochastics or
-  any technical indicator; when choosing an indicator library or reconciling two that disagree;
-  when an indicator's values differ between backtest and live; when building features for a model
-  from price data; or when the task mentions repainting, warm-up, unstable period, or zigzag.
+  Compute technical indicators and engineered features without leaking the future. TRIGGER - RSI,
+  MACD, moving average, Bollinger, ATR, ADX, Ichimoku, PSAR, stochastic or any named technical
+  indicator; TA-Lib, pandas-ta, pandas-ta-classic, ta, talipp, finta; choosing an indicator
+  library or reconciling two that disagree; "does this indicator repaint"; warm-up, unstable
+  period, or an indicator differing between backtest and live; zigzag, fractals, swing highs. SKIP
+  for judging whether a finished signal predicts returns (factor-and-timeseries-research) and for
+  the backtest that consumes it (backtesting-engines).
 license: MIT
 metadata:
   version: "0.1.0"

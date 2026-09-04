@@ -1,15 +1,14 @@
 ---
 name: research-integrity-guards
 description: >-
-  The audit that decides whether a quantitative finance result is real. Covers point-in-time
-  data discipline, survivorship bias, look-ahead and label leakage, transaction-cost realism,
-  and multiple-testing correction. TRIGGER — load this whenever you are about to report,
-  interpret, or act on a backtest, factor test, event study, or model score; whenever a result
-  looks good ("Sharpe 2.5", "beats SPY", "85% accuracy"); whenever the task says validate,
-  verify, review, sanity-check, or "why is this not working live"; and BEFORE designing any
-  research that will later be used to justify a trade. Also load when joining fundamentals or
-  macro data to prices, when building a ticker universe, or when choosing a cross-validation
-  splitter for financial data.
+  Second-pass audit that decides whether a finance result is real, applied after the work exists.
+  TRIGGER - about to REPORT, publish or act on a backtest, factor test or model score; a result
+  that looks good ("Sharpe 2.5", "beats SPY", "85% accuracy") and needs challenging; asked to
+  validate, verify, sanity-check or critique a research design; asked "what should I check".
+  Covers five gates: universe survivorship, availability timestamps, label leakage, cost realism,
+  trial count. SKIP when the task is to BUILD something rather than judge it - go to the domain
+  skill first (market-data-sourcing, backtesting-engines, factor-and-timeseries-research) and
+  return here before reporting a number.
 license: MIT
 metadata:
   version: "0.1.0"

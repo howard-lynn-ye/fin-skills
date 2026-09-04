@@ -1,0 +1,62 @@
+{"q": "download SPY daily prices with yfinance and plot the 200 day moving average", "expect": "market-data-sourcing"}
+{"q": "which data provider should I use if I need delisted tickers", "expect": "market-data-sourcing"}
+{"q": "df['Adj Close'] raises KeyError after I upgraded yfinance", "expect": "market-data-sourcing"}
+{"q": "my prices from yahooquery and yfinance don't match around a split", "expect": "market-data-sourcing"}
+{"q": "帮我拉一下美股 ETF 的历史日线数据", "expect": "market-data-sourcing"}
+{"q": "join my signal table to the quote table at the right timestamp", "expect": "market-data-engineering"}
+{"q": "merge_asof is matching the wrong quote", "expect": "market-data-engineering"}
+{"q": "how should I store 10 years of minute bars for 3000 tickers", "expect": "market-data-engineering"}
+{"q": "my backtest gives different numbers when I parallelise it", "expect": "market-data-engineering"}
+{"q": "timestamps come back wrong after writing to parquet", "expect": "market-data-engineering"}
+{"q": "get Apple's quarterly revenue as it was known in 2019", "expect": "fundamental-and-macro-data"}
+{"q": "pull 10-K filings from EDGAR and parse the income statement", "expect": "fundamental-and-macro-data"}
+{"q": "I need GDP data but without the later revisions", "expect": "fundamental-and-macro-data"}
+{"q": "what CIK maps to this ticker", "expect": "fundamental-and-macro-data"}
+{"q": "backtest a moving average crossover on AAPL", "expect": "backtesting-engines"}
+{"q": "which backtesting library should I use for a multi asset portfolio strategy", "expect": "backtesting-engines"}
+{"q": "my vectorbt equity curve looks amazing, is something wrong", "expect": "backtesting-engines"}
+{"q": "my strategy works in backtest but loses money live", "expect": "backtesting-engines"}
+{"q": "connect to interactive brokers and read my positions", "expect": "broker-execution-apis"}
+{"q": "make sure this script cannot accidentally send a real order", "expect": "broker-execution-apis"}
+{"q": "how do I place a bracket order on alpaca", "expect": "broker-execution-apis"}
+{"q": "TWS paper trading port keeps refusing the connection", "expect": "broker-execution-apis"}
+{"q": "compute RSI and MACD on this dataframe", "expect": "signal-construction"}
+{"q": "does the zigzag indicator repaint", "expect": "signal-construction"}
+{"q": "ta library RSI doesn't match tradingview", "expect": "signal-construction"}
+{"q": "is my factor any good, compute the information coefficient", "expect": "factor-and-timeseries-research"}
+{"q": "run a Fama-MacBeth regression on this panel", "expect": "factor-and-timeseries-research"}
+{"q": "forecast realized volatility with a GARCH model", "expect": "factor-and-timeseries-research"}
+{"q": "do an event study around earnings announcements", "expect": "factor-and-timeseries-research"}
+{"q": "optimize portfolio weights with mean variance", "expect": "portfolio-and-risk"}
+{"q": "compute the Sharpe ratio and max drawdown of this return series", "expect": "portfolio-and-risk"}
+{"q": "empyrical is giving me a Sharpe of -65", "expect": "portfolio-and-risk"}
+{"q": "build a risk parity portfolio", "expect": "portfolio-and-risk"}
+{"q": "I tried 200 parameter combinations and the best one has Sharpe 2.5", "expect": "backtest-validation"}
+{"q": "is this backtest result statistically real", "expect": "backtest-validation"}
+{"q": "how do I do cross validation on time series without leaking", "expect": "backtest-validation"}
+{"q": "compute the deflated sharpe ratio", "expect": "backtest-validation"}
+{"q": "price an american put option with dividends", "expect": "derivatives-pricing"}
+{"q": "fit an SVI volatility smile", "expect": "derivatives-pricing"}
+{"q": "my vega is 100x off between two libraries", "expect": "derivatives-pricing"}
+{"q": "bootstrap a yield curve from swap rates", "expect": "derivatives-pricing"}
+{"q": "review my research design for look-ahead bias", "expect": "research-integrity-guards"}
+{"q": "how do I avoid survivorship bias in my universe", "expect": "research-integrity-guards"}
+{"q": "my strategy has a Sharpe of 4, what should I check", "expect": "research-integrity-guards"}
+{"q": "获取 A 股日线数据并做前复权", "expect": "china-ashare-data"}
+{"q": "akshare vs tushare which should I use", "expect": "china-ashare-data"}
+{"q": "how do I get delisted A share tickers", "expect": "china-ashare-data"}
+{"q": "backtest an A share strategy with T+1 and price limits", "expect": "china-trading-stack"}
+{"q": "set up vnpy with a CTP gateway", "expect": "china-trading-stack"}
+{"q": "download BTC perpetual funding rates from binance", "expect": "crypto-data-and-execution"}
+{"q": "which crypto backtesting framework handles funding", "expect": "crypto-data-and-execution"}
+{"q": "use ccxt to place a limit order", "expect": "crypto-data-and-execution"}
+{"q": "should I build a TradingAgents style multi agent trader", "expect": "llm-finance-agents"}
+{"q": "does LLM news sentiment actually predict returns", "expect": "llm-finance-agents"}
+{"q": "which finance MCP server should I install", "expect": "finance-mcp-servers"}
+{"q": "is there an MCP for SEC filings", "expect": "finance-mcp-servers"}
+{"q": "train a reinforcement learning agent to trade", "expect": "rl-and-ml-trading"}
+{"q": "finrl import fails with ModuleNotFoundError", "expect": "rl-and-ml-trading"}
+{"q": "will an LSTM beat a linear model for return prediction", "expect": "rl-and-ml-trading"}
+{"q": "get Hong Kong stock data and handle the lot size", "expect": "asia-pacific-markets"}
+{"q": "korean stock delisted list and short selling ban dates", "expect": "asia-pacific-markets"}
+{"q": "NSE India trading calendar", "expect": "asia-pacific-markets"}

@@ -1,14 +1,14 @@
 ---
 name: fundamental-and-macro-data
 description: >-
-  Get company fundamentals and macroeconomic data with correct point-in-time semantics. Covers SEC
-  EDGAR (submissions, companyfacts, companyconcept, frames, full-text search, Financial Statement
-  Data Sets), edgartools, sec-edgar-downloader, secedgar, Arelle and XBRL parsing; and FRED/ALFRED
-  via fredapi, the Philadelphia Fed Real-Time Data Set, World Bank (wbgapi), IMF (imfp), Eurostat,
-  OECD, BLS and SDMX (sdmx1). TRIGGER — use for 10-K, 10-Q, 8-K, 13F, Forms 3/4/5, filings, XBRL,
-  CIK, accession numbers, earnings dates, revenue/EPS/balance-sheet data, restatements; or for CPI,
-  GDP, payrolls, unemployment, interest rates, FRED series, data vintages and revisions. Load this
-  before joining any fundamental or macro series to prices — the default join is a look-ahead bug.
+  Company fundamentals and macro series with correct point-in-time semantics. TRIGGER - 10-K,
+  10-Q, 8-K, 13F, Forms 3/4/5, filings, EDGAR, XBRL, accession number, CIK, "which CIK is this
+  ticker", ticker-to-CIK mapping, edgartools; parsing an income statement or balance sheet out of
+  a filing; revenue, EPS or balance-sheet history as it was known on a past date; restatements;
+  earnings dates; or CPI, GDP, payrolls, unemployment, interest rates, FRED, ALFRED, data vintages
+  and revisions. Load before joining ANY fundamental or macro series to prices: the obvious join
+  is a look-ahead bug, and the SEC frames API cannot be made point-in-time. SKIP for price and
+  OHLCV vendors (market-data-sourcing) and Chinese filings (china-ashare-data).
 license: MIT
 metadata:
   version: "0.1.0"

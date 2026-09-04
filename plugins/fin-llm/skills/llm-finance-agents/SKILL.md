@@ -1,14 +1,14 @@
 ---
 name: llm-finance-agents
 description: >-
-  What the published evidence actually says about LLM trading agents, and the status of the
-  frameworks that implement them — TradingAgents, FinRobot, FinMem, FinCON, FinAgent, FinGPT,
-  FinRL, Microsoft RD-Agent, and the FinBERT model family. TRIGGER — load this BEFORE building,
-  recommending, evaluating or citing any LLM-driven trading system, sentiment-to-signal pipeline,
-  or multi-agent finance architecture; when asked "does AI trading work", "should I use
-  TradingAgents", or to reproduce a reported Sharpe ratio from an LLM-trading paper; and when
-  designing an evaluation for an LLM that touches market data, because the training-cutoff
-  contamination check in this skill has to happen first.
+  What the published evidence says about LLM trading agents, and the real status of the
+  frameworks. TRIGGER - TradingAgents, FinGPT, FinRobot, FinMem, FinCON, FinAgent, AlphaAgent, RD-
+  Agent, AI4Finance; building or evaluating an LLM-driven trading system, a multi-agent trader, or
+  a news-sentiment-to-signal pipeline; "does AI trading work"; FinBERT and financial sentiment
+  models; reproducing a Sharpe from an LLM-trading paper; whether a backtest window overlaps a
+  model's training cutoff. No credible evidence exists that any of it produces alpha net of costs.
+  SKIP for reinforcement learning and deep learning specifically (rl-and-ml-trading) and for MCP
+  servers (finance-mcp-servers).
 license: MIT
 metadata:
   version: "0.1.0"

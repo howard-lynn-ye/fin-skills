@@ -1,14 +1,13 @@
 ---
 name: finance-mcp-servers
 description: >-
-  Pick a finance MCP server and know its licence, maintenance status and blast radius before
-  connecting it. Covers the Alpaca, Alpha Vantage, QuantConnect and OpenBB vendor-official servers,
-  the Massive (formerly Polygon) server, SEC EDGAR and FRED servers, Yahoo Finance servers,
-  Interactive Brokers community servers, and Financial Modeling Prep. TRIGGER — use when adding,
-  choosing, evaluating or debugging an MCP server for market data, filings, macro data, brokerage
-  or trading; when asked which finance MCP to install; or when an MCP server's licence or
-  data-redistribution terms matter. Also use before granting any MCP server the ability to place
-  orders.
+  Pick a finance MCP server, and know its licence and blast radius before connecting it. TRIGGER -
+  an MCP server for market data, filings, macro data, brokerage or trading; adding, choosing,
+  comparing or debugging a finance MCP; Alpaca MCP, Alpha Vantage MCP, Polygon or Massive MCP,
+  OpenBB MCP, SEC EDGAR MCP, FRED MCP, yfinance MCP, QuantConnect MCP; "which finance MCP should I
+  install"; granting an MCP server the ability to place orders. Several are AGPL-3.0, one places
+  real trades, and the most-starred one is over a year stale. SKIP for the Python libraries behind
+  them (market-data-sourcing).
 license: MIT
 metadata:
   version: "0.1.0"

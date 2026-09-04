@@ -1,15 +1,15 @@
 ---
 name: portfolio-and-risk
 description: >-
-  Construct portfolio weights and compute performance and risk metrics correctly. Covers
-  PyPortfolioOpt, Riskfolio-Lib, skfolio, cvxportfolio, deepdow and the cvxpy solver layer for
-  optimization; quantstats, pyfolio-reloaded, empyrical-reloaded, ffn and alphalens-reloaded for
-  analytics; plus VaR/CVaR, drawdown, GARCH volatility via arch, and attribution. TRIGGER — use
-  when the task involves portfolio weights, allocation, rebalancing, mean-variance, Black-Litterman,
-  risk parity, HRP/HERC/NCO, covariance shrinkage or denoising, the efficient frontier, position
-  sizing across assets; OR when computing or reporting Sharpe, Sortino, Calmar, CAGR, volatility,
-  max drawdown, VaR, CVaR, beta, alpha, a tearsheet, or performance attribution. Load this before
-  quoting any performance number — several popular libraries disagree on the same input.
+  Turn signals into weights, and compute performance metrics that are actually correct. TRIGGER -
+  portfolio weights, allocation, rebalancing, mean-variance, Black-Litterman, risk parity, HRP,
+  HERC, NCO, efficient frontier, covariance shrinkage or denoising, PyPortfolioOpt, riskfolio,
+  skfolio, cvxportfolio; or computing Sharpe, Sortino, Calmar, CAGR, annualized volatility, max
+  drawdown, VaR, CVaR, beta, alpha, a tearsheet, quantstats, pyfolio, empyrical, ffn, or
+  performance attribution. Load before quoting any performance number: popular libraries disagree
+  on identical input, one silently discards the risk-free rate you pass it, and an absurdly
+  negative Sharpe has one known cause. SKIP for whether the result survives multiple testing
+  (backtest-validation).
 license: MIT
 metadata:
   version: "0.1.0"

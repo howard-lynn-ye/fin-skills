@@ -1,17 +1,15 @@
 ---
 name: quant-stack-router
 description: >-
-  Entry point for Python quantitative finance and algorithmic trading: picks the right library and
-  flags where the model's training prior is stale. Routes to market data, point-in-time SEC and
-  macro data, backtesting engines, broker APIs, indicators, factor research, portfolio and risk
-  analytics, backtest validation, and derivatives pricing. TRIGGER — read BEFORE writing code
-  whenever the task involves stock, ETF, futures, FX, options, crypto or bond data; a backtest,
-  strategy, signal, alpha or factor; a broker, order or paper-trading connection; Sharpe, drawdown,
-  tearsheet or attribution; portfolio weights; or any of yfinance, pandas-datareader, openbb,
-  polygon, databento, EODHD, akshare, tushare, ccxt, edgartools, fredapi, TA-Lib, pandas-ta,
-  vectorbt, backtrader, backtesting.py, zipline, nautilus_trader, freqtrade, qlib, ib_insync,
-  ib_async, alpaca, alphalens, PyPortfolioOpt, riskfolio, skfolio, quantstats, mlfinlab, QuantLib,
-  arch. SKIP only for generic Python with no market, money or trading semantics.
+  Entry router for Python quantitative finance: names the right library and flags where the
+  model's training prior is stale. TRIGGER - read this FIRST when a quant task names no specific
+  sub-domain, when asked "which library should I use" for anything financial, or when a plan spans
+  several of data, backtest, risk and execution. Also read it before importing any finance package
+  whose status you are assuming from memory - several widely used ones are dead, relicensed, or
+  have flipped a default since training. SKIP when the task already names its own domain - go
+  straight to market-data-sourcing, backtesting-engines, broker-execution-apis,
+  portfolio-and-risk, factor-and-timeseries-research, china-ashare-data or
+  crypto-data-and-execution rather than routing through here.
 license: MIT
 metadata:
   version: "0.1.0"

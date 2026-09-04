@@ -1,15 +1,13 @@
 ---
 name: factor-and-timeseries-research
 description: >-
-  Evaluate cross-sectional factors and forecast financial time series without leaking. Covers
-  alphalens-reloaded, Qlib Alpha158/360, Alpha101 ports, gplearn, Fama-French factor data,
-  linearmodels (Fama-MacBeth, PanelOLS), pyfixest, event-study methodology, and the forecasting
-  stack — Nixtla (statsforecast/mlforecast/neuralforecast), sktime, darts, gluonts,
-  pytorch-forecasting, skforecast, tsfresh, arch, and time-series foundation models (Chronos,
-  TimesFM, Moirai, MOMENT, TiRex). TRIGGER — use when testing whether a factor or alpha signal has
-  predictive power; computing IC, quantile spreads, or factor returns; running Fama-MacBeth, panel
-  or cross-sectional asset-pricing regressions; running an event study or computing abnormal
-  returns/CAR; or forecasting returns, volatility or any financial series with statistical or ML models.
+  Judge whether a cross-sectional factor predicts returns, and forecast financial series. TRIGGER
+  - information coefficient, IC, quantile returns, factor decay, turnover, alphalens; Fama-French,
+  Fama-MacBeth, PanelOLS, linearmodels, cross-sectional asset pricing; event study, abnormal
+  returns, CAR, BHAR; Alpha101, Alpha158, symbolic alpha mining, gplearn; or forecasting with
+  ARIMA, GARCH, volatility models, arch, Nixtla, statsforecast, mlforecast, sktime, darts, Prophet
+  or a time-series foundation model. SKIP for computing the indicator itself (signal-construction)
+  and for portfolio weights or Sharpe (portfolio-and-risk).
 license: MIT
 metadata:
   version: "0.1.0"

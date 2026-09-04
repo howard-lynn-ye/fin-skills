@@ -1,13 +1,12 @@
 ---
 name: china-trading-stack
 description: >-
-  Backtest and execute Chinese-market strategies. Covers vnpy (and its CTP/gateway/datafeed
-  ecosystem), Microsoft Qlib and its China dataset situation, RQAlpha, wondertrader/wtpy, tqsdk for
-  futures, QMT/miniQMT, easytrader, and the Futu and Tiger broker SDKs — plus the settlement,
-  price-limit and session rules that make Western backtest engines wrong on A-shares. TRIGGER — use
-  when backtesting or trading A-shares, Chinese futures, options or convertible bonds; when the task
-  mentions vnpy, qlib, RQAlpha, CTP, QMT, miniQMT, easytrader, tqsdk, 掘金, 聚宽 or 米筐; when
-  connecting to a Chinese broker; or when porting a US-market strategy to China.
+  Backtest and execute Chinese-market strategies under the rules a Western engine gets wrong.
+  TRIGGER - T+1 settlement, 涨跌停 price limits, 印花税 stamp duty, 夜盘 night session, 集合竞价, the lunch
+  break, 240 minute bars; vnpy, CTP, QMT, miniQMT, easytrader, tqsdk, 天勤, RQAlpha, wondertrader,
+  掘金; Microsoft Qlib's China dataset; backtesting or live-trading A-shares, Chinese futures,
+  options or convertible bonds; porting a US strategy to China. SKIP for sourcing the data itself
+  (china-ashare-data).
 license: MIT
 metadata:
   version: "0.1.0"

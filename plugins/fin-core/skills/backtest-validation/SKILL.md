@@ -1,16 +1,14 @@
 ---
 name: backtest-validation
 description: >-
-  Decide whether a backtest result survives the number of things you tried. Covers purged and
-  combinatorial-purged cross-validation (purgedcv, skfolio, RiskLabAI), the Deflated and
-  Probabilistic Sharpe Ratio, Probability of Backtest Overfitting, and the multiple-comparison
-  procedures in arch.bootstrap — White's Reality Check, Hansen's SPA, Romano-Wolf StepM and the
-  Model Confidence Set — plus the López de Prado / AFML labeling and sample-weight stack.
-  TRIGGER — use when a backtest or model result must be judged real or spurious; when the task
-  mentions overfitting, p-hacking, data snooping, multiple testing, walk-forward, cross-validation
-  on time series, deflated Sharpe, PBO, or "I tried N strategies"; when a parameter sweep,
-  hyperopt, grid search or AutoML produced a winner; and whenever a Sharpe ratio is about to be
-  reported as evidence for trading.
+  Decide whether a result survives the number of things you tried. TRIGGER - "I tried N strategies
+  or parameters and the best one..."; overfitting, p-hacking, data snooping, multiple testing, "is
+  this result real", "is this statistically significant"; deflated Sharpe, DSR, PSR, probability
+  of backtest overfitting, PBO; purged or combinatorial cross-validation, embargo, walk-forward,
+  "cross validation on time series without leaking"; a grid search, hyperopt or AutoML picked a
+  winner; triple-barrier labeling, meta-labeling, fractional differentiation, mlfinlab. Load
+  whenever a Sharpe ratio is about to be offered as evidence for trading. SKIP for computing the
+  metric itself (portfolio-and-risk).
 license: MIT
 metadata:
   version: "0.1.0"

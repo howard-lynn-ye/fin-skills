@@ -94,6 +94,18 @@ def check_skill(skill_md: Path) -> list[str]:
     for f in REQUIRED - set(fm):
         errs.append(f"{rel}: missing required field '{f}'")
 
+    # A block scalar that is not de-indented correctly swallows the keys that follow it,
+    # so `license:`/`metadata:` end up INSIDE the description and disappear as fields.
+    # Both required fields are still present, so the checks above pass. Catch it directly.
+    for key in ("license", "metadata", "name", "compatibility", "allowed-tools"):
+        if re.search(rf"(?<![\w-]){key}\s*:", str(fm.get("description", ""))):
+            errs.append(f"{rel}: the description contains '{key}:' — the block scalar has "
+                        f"swallowed the frontmatter keys that follow it")
+    if "license" not in fm:
+        errs.append(f"{rel}: missing 'license' (present on every other skill — likely swallowed)")
+    if not (fm.get("metadata") or {}).get("verified_on"):
+        errs.append(f"{rel}: metadata.verified_on missing — every claim in this repo carries a date")
+
     name = fm.get("name", "")
     if name:
         if not NAME_RE.match(name):

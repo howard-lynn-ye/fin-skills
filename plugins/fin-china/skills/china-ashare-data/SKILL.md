@@ -1,14 +1,13 @@
 ---
 name: china-ashare-data
 description: >-
-  Choose and correctly use a China A-share / Greater China market data source in Python, and avoid
-  the ecosystem's specific traps. Covers akshare, tushare (pro), baostock, efinance, adata, qstock,
-  mootdx, easyquotation, Ashare, pytdx, jqdatasdk (JoinQuant), rqdatac (RiceQuant), WindPy, Choice
-  EMQuantAPI, tqsdk, and the qlib China dataset. TRIGGER — use for any task involving A-shares,
-  沪深 or 北交所 stocks, CSI/HS300/中证 indices, Chinese futures or convertible bonds, or the terms
-  复权 qfq/hfq, 涨跌停 price limits, T+1, ST/*ST, 停牌 suspension, 退市 delisting, 公告日 vs 报告期,
-  or 夜盘. Also use when Chinese price data disagrees between two libraries, when an A-share
-  backtest looks implausibly good, or when picking between free scrapers and licensed vendors.
+  Get China A-share and Greater China market data without the ecosystem's silent traps. TRIGGER -
+  A股, 沪深, 北交所, 科创板, 创业板; akshare, tushare, baostock, efinance, adata, qstock, mootdx,
+  easyquotation, jqdatasdk, 聚宽, rqdatac, 米筐, Wind, 万得, Choice, 东方财富; 复权, qfq, hfq, 前复权, 后复权; ST,
+  退市, delisted A-share tickers, 退市股票列表; 停牌 suspension; 公告日 versus 报告期; CSI300, HS300, 中证 index
+  membership. Three popular libraries default to forward-adjusted prices, which are rewritten
+  retroactively and are therefore look-ahead contaminated. SKIP for backtesting or trading
+  A-shares (china-trading-stack) and for Hong Kong, Taiwan, Japan or Korea (asia-pacific-markets).
 license: MIT
 metadata:
   version: "0.1.0"

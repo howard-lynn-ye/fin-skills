@@ -1,14 +1,15 @@
 ---
 name: backtesting-engines
 description: >-
-  Choose a Python backtesting engine and know exactly what it models correctly versus what it
-  silently gets wrong. Covers vectorbt, backtesting.py, backtrader, zipline-reloaded, PyBroker,
-  bt, nautilus_trader, QuantConnect LEAN, Qlib, lumibot, qstrader, freqtrade, jesse, hummingbot,
-  OctoBot, RQAlpha, vnpy and wondertrader. TRIGGER — use when the task says backtest, simulate a
-  strategy, walk-forward, parameter sweep, or "test this trading idea"; when choosing or comparing
-  backtest frameworks; when a backtest result looks too good; when porting a strategy from
-  backtest to live; or when asking how an engine models fills, slippage, commissions, partial
-  fills, margin, shorting, splits/dividends, or delistings.
+  Choose a backtesting engine and know what it silently models wrong. TRIGGER - "backtest this",
+  backtest a crossover or a moving-average strategy, simulate a strategy, walk-forward, parameter
+  sweep, "test this trading idea"; comparing or choosing backtest frameworks; vectorbt,
+  backtesting.py, backtrader, zipline, PyBroker, bt, nautilus_trader, LEAN, freqtrade, jesse; how
+  an engine models fills, slippage, commissions, partial fills, margin, shorting or delistings;
+  taking a strategy from backtest to live; "my backtest looks too good"; "works in backtest but
+  loses money live". Several popular engines fill at the signal's own bar close by default. SKIP
+  for judging whether a finished result is real (backtest-validation) and for A-share rules
+  (china-trading-stack).
 license: MIT
 metadata:
   version: "0.1.0"

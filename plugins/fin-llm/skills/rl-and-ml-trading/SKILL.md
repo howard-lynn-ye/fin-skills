@@ -1,13 +1,14 @@
 ---
 name: rl-and-ml-trading
 description: >-
-  Reinforcement learning and deep learning for trading — which packages actually install, and what
-  the evidence says about whether any of it beats a linear model. Covers FinRL, FinRL-Meta,
-  ElegantRL, stable-baselines3, gymnasium, gym-anytrading, TensorTrade, Qlib's RL module, and the
-  LSTM/Transformer-versus-linear literature. TRIGGER — use before building or recommending an RL
-  trading agent, a deep-learning return predictor, or a custom trading gym environment; when asked
-  whether RL or deep learning works for trading; when choosing between LSTM, Transformer and linear
-  models for returns; or when FinRL, gym or TensorTrade fail to import.
+  Reinforcement learning and deep learning for trading: what installs, and what the evidence says.
+  TRIGGER - reinforcement learning, RL agent, trading gym, custom trading environment, reward
+  function, PPO or DQN for trading; FinRL, FinRL-Meta, ElegantRL, stable-baselines3, gymnasium,
+  gym, gym-anytrading, TensorTrade; LSTM, GRU, TCN or Transformer for return prediction; "does
+  deep learning beat a linear model"; FinRL or gym failing to import with ModuleNotFoundError.
+  FinRL's published wheel declares no dependencies and cannot import, and linear models beat deep
+  ones in the published return-prediction comparisons. SKIP for LLM agents specifically
+  (llm-finance-agents).
 license: MIT
 metadata:
   version: "0.1.0"

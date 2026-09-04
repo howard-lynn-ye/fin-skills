@@ -1,14 +1,13 @@
 ---
 name: asia-pacific-markets
 description: >-
-  Get data and trade in Asia-Pacific markets outside mainland China — Hong Kong, Taiwan, Japan,
-  Korea, India, Singapore and Australia. Covers futu-api, tigeropen, shioaji, twstock, FinMind,
-  jquants-api-client, pykrx, FinanceDataReader, nsepython, jugaad-data, kiteconnect, upstox,
-  breeze-connect, python-kis, tejapi and trading-ig, plus the exchange_calendars defects that affect
-  these venues. TRIGGER — use for HKEX, TWSE, TSE/JPX, KRX/KOSPI/KOSDAQ, NSE/BSE, SGX or ASX data or
-  trading; for Hong Kong, Taiwan, Japanese, Korean, Indian, Singaporean or Australian stocks; when
-  the task mentions Stock Connect, VCM, Muhurat, CSAT, STT, or lot sizes that vary per stock; or when
-  porting a US strategy to an Asian market.
+  Data and trading for Asia-Pacific outside mainland China. TRIGGER - Hong Kong, HKEX, 港股, Stock
+  Connect, VCM, per-stock lot sizes; Taiwan, TWSE, 台股, shioaji, FinMind, twstock; Japan, TSE, JPX,
+  J-Quants, jquants-api-client, the 2022 TSE restructuring; Korea, KRX, KOSPI, KOSDAQ, pykrx,
+  FinanceDataReader, CSAT, Korean short-selling ban dates, Korean delisted-stock lists; India,
+  NSE, BSE, kiteconnect, Zerodha, Upstox, STT, Muhurat; Singapore SGX, Australia ASX; futu-api,
+  tigeropen. Also documents four verified exchange_calendars defects that affect US work too. SKIP
+  for mainland A-shares (china-ashare-data, china-trading-stack).
 license: MIT
 metadata:
   version: "0.1.0"

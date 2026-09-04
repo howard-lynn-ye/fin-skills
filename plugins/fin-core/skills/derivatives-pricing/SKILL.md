@@ -1,14 +1,14 @@
 ---
 name: derivatives-pricing
 description: >-
-  Price options and fixed-income instruments in Python and get the Greeks, implied volatility and
-  curve conventions right. Covers QuantLib, vollib (formerly py_vollib), lets_be_rational,
-  financepy, rateslib, optionlab, pysabr and tf-quant-finance, plus vol-surface fitting (SVI, SABR,
-  ZABR), American exercise, and options market-data sources. TRIGGER — use for option pricing,
-  implied volatility, Greeks (delta, gamma, vega, theta, rho), volatility surfaces or smiles,
-  Black-Scholes, binomial or Monte Carlo pricing, American exercise, exotics, yield curves, bond
-  pricing, swaps, discount factors, day-count conventions, or option chain data. Load before
-  computing any Greek — the scaling conventions differ by 100x and 365x between libraries.
+  Price options and fixed income, and get the Greeks and conventions right. TRIGGER - option
+  pricing, implied volatility, IV, Greeks, delta, gamma, vega, theta, rho; Black-Scholes,
+  binomial, Monte Carlo, American exercise, early exercise, exotics; volatility surface, smile,
+  skew, SVI, SABR, ZABR; QuantLib, vollib, py_vollib, financepy, rateslib, optionlab; option
+  chains; or yield curve, discount factor, curve bootstrapping, day count, swap and bond pricing.
+  Greek scaling differs by 100x and 365x between the three common libraries, and one popular
+  fixed-income package is not open source. SKIP for choosing an option DATA vendor
+  (market-data-sourcing).
 license: MIT
 metadata:
   version: "0.1.0"

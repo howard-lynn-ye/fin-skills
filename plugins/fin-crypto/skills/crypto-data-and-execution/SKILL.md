@@ -1,12 +1,13 @@
 ---
 name: crypto-data-and-execution
 description: >-
-  Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for
-  equities. Covers ccxt (and why ccxt.pro is now free), cryptofeed, python-binance, freqtrade,
-  jesse, hummingbot, OctoBot, and exchange/testnet realities. TRIGGER — use for any task involving
-  crypto, digital assets, Bitcoin, Ethereum, perpetual futures, funding rates, order books, or
-  exchange connectivity; when choosing a crypto data source, backtester or trading bot; or when
-  porting an equity strategy to a 24/7 market.
+  Crypto market data and execution, and how a 24/7 market breaks equity tooling. TRIGGER - crypto,
+  Bitcoin, BTC, Ethereum, ETH, digital assets, perpetuals, perps, funding rate, crypto order book;
+  ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot, OctoBot; a crypto exchange,
+  testnet or sandbox; annualizing crypto returns; porting an equity strategy to crypto.
+  Annualization is 365 not 252, funding is frequently larger than the alpha being measured, and
+  exchange pair lists are chronically survivorship-biased. SKIP for equity and futures brokers
+  (broker-execution-apis).
 license: MIT
 metadata:
   version: "0.1.0"

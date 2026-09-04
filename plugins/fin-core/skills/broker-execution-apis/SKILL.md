@@ -1,15 +1,14 @@
 ---
 name: broker-execution-apis
 description: >-
-  Connect to a broker from Python and place orders without accidentally trading live money.
-  Covers Interactive Brokers (ib_async, ib_insync, ibapi, TWS vs Gateway, Client Portal Web API),
-  Alpaca, Schwab (schwab-py), Tastytrade, Tradier, Robinhood, ccxt for crypto venues, and FIX
-  (quickfix, simplefix) — plus the order-safety patterns every piece of order-sending code needs:
-  paper-account assertion, read-only gates, idempotent client order IDs, kill switches, and
-  position reconciliation. TRIGGER — use whenever code will connect to a broker or exchange,
-  place, modify or cancel an order, read positions or account balances, or stream live quotes;
-  when choosing a broker API; when setting up paper trading; or when the task mentions TWS,
-  IB Gateway, client order ID, order types, time-in-force, or going from backtest to live.
+  Connect to a broker and place orders without accidentally trading live money. TRIGGER - connect
+  to Interactive Brokers, TWS, IB Gateway, ib_async, ib_insync, ibapi, Alpaca, Schwab, schwab-py,
+  Tastytrade, Tradier or Robinhood; place, modify or cancel an order; read positions or balances;
+  set up paper trading; order types, time-in-force, bracket or OCO orders, client order ID; FIX,
+  quickfix, simplefix; "make sure I don't send a live order"; a broker connection being refused.
+  Load before any code that can transmit an order. SKIP for crypto exchanges and ccxt
+  (crypto-data-and-execution), and for vnpy, CTP, QMT or any Chinese broker gateway
+  (china-trading-stack).
 license: MIT
 metadata:
   version: "0.1.0"
