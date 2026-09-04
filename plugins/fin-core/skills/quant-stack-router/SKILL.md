@@ -109,6 +109,12 @@ Written in the words you would actually use. `->` is a literal path to read next
 **crypto / ccxt / Binance / perpetuals / funding rate / freqtrade / hummingbot**
 -> `fin-crypto` plugin: `crypto-data-and-execution`.
 
+**reinforcement learning / RL agent / FinRL / gym / gymnasium / stable-baselines3 / TensorTrade / LSTM / Transformer for returns / "does deep learning beat linear"**
+-> `fin-llm` plugin: `rl-and-ml-trading`. **FinRL does not install; the evidence section is the point.**
+
+**alternative data / satellite / credit card / web traffic / ESG / Numerai / WallStreetBets / news sentiment sources**
+-> `plugins/fin-core/skills/market-data-sourcing/references/alternative-data.md`
+
 **"LLM trading agent" / TradingAgents / FinGPT / FinRobot / RD-Agent / "does AI trading work" / finance MCP server**
 -> `fin-llm` plugin: `llm-finance-agents` (read its evidence section before building anything), `finance-mcp-servers`.
 

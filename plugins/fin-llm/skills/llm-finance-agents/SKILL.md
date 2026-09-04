@@ -103,9 +103,13 @@ faster than any human can.
 
 **FinGPT / FinRL / FinNLP / FinRobot** (AI4Finance): FinGPT is a language *component*, not a trading
 system; FinRobot's perception/brain/action layering is useful for report generation, but wiring its
-action layer to execution carries semantic uncertainty across the order boundary. FinRL is research
-and education infrastructure — with daily bars on a handful of ETFs, RL adds sample-efficiency,
-non-stationarity and hyperparameter-trial problems simultaneously.
+action layer to execution carries semantic uncertainty across the order boundary.
+
+🚨 **FinRL does not install.** ✅ Verified: its 0.3.7 wheel (2024-04-12) declares
+**`requires_dist: None`**, so `pip install finrl` pulls **zero dependencies** and `import finrl` dies
+on `ModuleNotFoundError`. `elegantrl` and `finrl-meta` share the failure mode and have been frozen
+since 2023-02-07. See **`../rl-and-ml-trading/SKILL.md`** for the verified state of the whole RL
+stack and the evidence on whether any of it works.
 
 **Do not install these into a production environment to "evaluate" them.** Each brings its own data
 sources, caches, prompts, state and execution assumptions, which destroys the auditability of

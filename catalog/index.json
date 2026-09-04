@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 18,
-  "n_reference_files": 33,
+  "n_skills": 19,
+  "n_reference_files": 34,
   "n_scripts": 4,
   "discovery_cost": {
-    "total_description_chars": 13666,
-    "approx_tokens": 3416,
+    "total_description_chars": 14308,
+    "approx_tokens": 3577,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -200,6 +200,7 @@
       "approx_body_tokens": 2376,
       "references": [
         "_decision-table.md",
+        "alternative-data.md",
         "yfinance.md"
       ],
       "scripts": []
@@ -232,8 +233,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 10762,
-      "approx_body_tokens": 2690,
+      "body_chars": 11235,
+      "approx_body_tokens": 2808,
       "references": [],
       "scripts": []
     },
@@ -314,8 +315,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 10540,
-      "approx_body_tokens": 2635,
+      "body_chars": 10789,
+      "approx_body_tokens": 2697,
       "references": [
         "_evidence-papers.md",
         "_regulatory.md"
@@ -323,6 +324,20 @@
       "scripts": [
         "contamination_probe.py"
       ]
+    },
+    {
+      "name": "rl-and-ml-trading",
+      "plugin": "fin-llm",
+      "path": "plugins/fin-llm/skills/rl-and-ml-trading/SKILL.md",
+      "description": "Reinforcement learning and deep learning for trading — which packages actually install, and what the evidence says about whether any of it beats a linear model. Covers FinRL, FinRL-Meta, ElegantRL, stable-baselines3, gymnasium, gym-anytrading, TensorTrade, Qlib's RL module, and the LSTM/Transformer-versus-linear literature. TRIGGER — use before building or recommending an RL trading agent, a deep-learning return predictor, or a custom trading gym environment; when asked whether RL or deep learning works for trading; when choosing between LSTM, Transformer and linear models for returns; or when FinRL, gym or TensorTrade fail to import.",
+      "summary": "Reinforcement learning and deep learning for trading — which packages actually install, and what the evidence says about whether any of it beats a linear model.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 7890,
+      "approx_body_tokens": 1972,
+      "references": [],
+      "scripts": []
     }
   ]
 }

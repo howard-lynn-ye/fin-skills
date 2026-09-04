@@ -48,7 +48,7 @@ Then install only the market plugins you need:
 | `fin-core` | [`factor-and-timeseries-research`](plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md) | Evaluate cross-sectional factors and forecast financial time series without leaking. | 6 | 0 |
 | `fin-core` | [`fundamental-and-macro-data`](plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md) | Get company fundamentals and macroeconomic data with correct point-in-time semantics. | 2 | 0 |
 | `fin-core` | [`market-data-engineering`](plugins/fin-core/skills/market-data-engineering/SKILL.md) | Store, join and parallelize market data without silently corrupting it. | 2 | 0 |
-| `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries. | 2 | 0 |
+| `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries. | 3 | 0 |
 | `fin-core` | [`portfolio-and-risk`](plugins/fin-core/skills/portfolio-and-risk/SKILL.md) | Construct portfolio weights and compute performance and risk metrics correctly. | 4 | 0 |
 | `fin-core` | [`quant-stack-router`](plugins/fin-core/skills/quant-stack-router/SKILL.md) | Entry point for Python quantitative finance and algorithmic trading: picks the right library and flags where the model's training prior is stale. | 0 | 0 |
 | `fin-core` | [`research-integrity-guards`](plugins/fin-core/skills/research-integrity-guards/SKILL.md) | The audit that decides whether a quantitative finance result is real. | 2 | 1 |
@@ -56,6 +56,7 @@ Then install only the market plugins you need:
 | `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for equities. | 1 | 0 |
 | `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server and know its licence, maintenance status and blast radius before connecting it. | 0 | 0 |
 | `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence actually says about LLM trading agents, and the status of the frameworks that implement them — TradingAgents, FinRobot, FinMem, FinCON, FinAgent, FinGPT | 2 | 1 |
+| `fin-llm` | [`rl-and-ml-trading`](plugins/fin-llm/skills/rl-and-ml-trading/SKILL.md) | Reinforcement learning and deep learning for trading — which packages actually install, and what the evidence says about whether any of it beats a linear model. | 0 | 0 |
 
 <!-- END GENERATED SKILL TABLE -->
 

@@ -94,19 +94,21 @@
     {
       "name": "fin-llm",
       "source": "./plugins/fin-llm",
-      "description": "LLM-for-finance: agent frameworks (TradingAgents, FinRobot, RD-Agent, FinGPT), finance MCP servers, and the published evidence on whether any of it survives lookahead leakage, transaction costs, and multiple-testing correction.",
+      "description": "LLM- and ML-for-finance: agent frameworks (TradingAgents, FinRobot, RD-Agent, FinGPT), reinforcement learning and deep learning for trading, finance MCP servers, and the published evidence on whether any of it survives lookahead leakage, transaction costs, and multiple-testing correction.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
         "llm",
         "agents",
         "mcp",
-        "fingpt",
+        "reinforcement-learning",
+        "deep-learning",
         "tradingagents"
       ],
       "skills": [
         "./skills/llm-finance-agents",
-        "./skills/finance-mcp-servers"
+        "./skills/finance-mcp-servers",
+        "./skills/rl-and-ml-trading"
       ]
     }
   ]
