@@ -1,7 +1,7 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 16,
-  "n_reference_files": 27,
+  "n_reference_files": 31,
   "n_scripts": 4,
   "discovery_cost": {
     "total_description_chars": 12185,
@@ -77,7 +77,9 @@
       "body_chars": 10389,
       "approx_body_tokens": 2597,
       "references": [
-        "_engine-matrix.md"
+        "_engine-matrix.md",
+        "execution-realism.md",
+        "vectorbt.md"
       ],
       "scripts": []
     },
@@ -93,7 +95,8 @@
       "body_chars": 11815,
       "approx_body_tokens": 2953,
       "references": [
-        "_broker-matrix.md"
+        "_broker-matrix.md",
+        "interactive-brokers.md"
       ],
       "scripts": []
     },
@@ -109,7 +112,8 @@
       "body_chars": 13241,
       "approx_body_tokens": 3310,
       "references": [
-        "_library-matrix.md"
+        "_library-matrix.md",
+        "quantlib.md"
       ],
       "scripts": []
     },
