@@ -30,11 +30,10 @@ and Greeks. MIT, no compiler, best-in-class solver.
 
 ## The trap that costs you money
 
-🚨 **`py_vollib` is a DEAD SHIM.** As of 1.0.12 (2026-06-01) its PyPI summary reads verbatim
-*"Deprecated transition package for vollib."* — **4 files, zero library code**, sole dependency
-`vollib>=1.0.11,<2.0.0`. Importing it emits *"py_vollib is deprecated and will be removed in a future release; please
-import from vollib"*. Old code works **for now**; write new code against
-**`vollib`**.
+🚨 **`py_vollib` is a DEAD SHIM.** As of 1.0.12 (2026-06-01) its PyPI summary reads verbatim *"Deprecated transition
+package for vollib."* — **4 files, zero library code**, sole dependency `vollib>=1.0.11,<2.0.0`. Importing it emits
+*"py_vollib is deprecated and will be removed in a future release; please import from vollib"*. Old code works **for
+now**; write new code against **`vollib`**.
 
 The real library is PyPI **`vollib`**: `vollib/black/`, `vollib/black_scholes/`, `vollib/black_scholes_merton/`, each
 with `implied_volatility.py` and `greeks/{analytical,numerical}.py`, plus `vollib/ref_python/` and a `py_vollib/`
