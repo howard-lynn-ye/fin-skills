@@ -245,3 +245,11 @@ what would falsify this result
   distinguishable from zero.
 - A negative result is a result. "The unconditional baseline did not clear the threshold" is a
   finding, and it is the correct output far more often than a positive one.
+
+## The reporting standard has a regulatory floor
+
+The SEC **Marketing Rule (206(4)-1)** treats a backtest as hypothetical performance and
+requires the assumptions, the limitations and the trial count to travel with the number. That
+is the same content this skill's gates already demand, so meeting the gates meets the floor —
+but the floor applies whether or not you care about the gates. See
+`../us-market-rules/SKILL.md` §6.

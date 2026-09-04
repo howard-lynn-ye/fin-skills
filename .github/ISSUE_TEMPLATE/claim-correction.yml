@@ -1,0 +1,64 @@
+name: Claim correction
+description: A claim in a skill is wrong, or has gone stale since it was verified
+title: "[claim] "
+labels: ["claim-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the most useful issue you can open here. Every claim in this repo is dated, and
+        libraries change defaults, relicense and break — so claims go stale by default, not by
+        accident. Several claims in this repo have already been reversed by reports like this,
+        including one where the safe default was documented backwards.
+
+        You do not need to propose a fix. A reproduction is enough.
+
+  - type: input
+    id: location
+    attributes:
+      label: File and line
+      description: Path in this repo, with a line number if you have one.
+      placeholder: plugins/fin-core/skills/market-data-sourcing/SKILL.md:42
+    validations:
+      required: true
+
+  - type: textarea
+    id: claim
+    attributes:
+      label: What it currently says
+      description: Quote the claim as written.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: What you actually observed
+      description: >-
+        Paste the command or code and its real output. If the claim is about a licence, a
+        deprecation or a maintainer's position, link the primary source — the LICENSE file, the
+        commit, the issue comment — rather than a summary of it.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Versions and date
+      description: Package version, Python version, OS, and the date you checked.
+      placeholder: yfinance 0.2.66, Python 3.12, Windows 11, checked 2026-09-04
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem is this
+      options:
+        - The claim was always wrong
+        - The claim was right and the library has since changed
+        - The claim is right but the number cannot be reproduced as written
+        - The claim is right but points at the wrong skill or a dead link
+    validations:
+      required: true

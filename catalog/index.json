@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 46,
+  "n_skills": 47,
   "n_reference_files": 67,
-  "n_scripts": 21,
+  "n_scripts": 24,
   "discovery_cost": {
-    "total_description_chars": 36412,
-    "approx_tokens": 9103,
+    "total_description_chars": 37436,
+    "approx_tokens": 9359,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -102,8 +102,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 10786,
-      "approx_body_tokens": 2696,
+      "body_chars": 11187,
+      "approx_body_tokens": 2796,
       "references": [
         "_engine-matrix.md",
         "backtesting-py.md",
@@ -123,8 +123,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 12501,
-      "approx_body_tokens": 3125,
+      "body_chars": 12885,
+      "approx_body_tokens": 3221,
       "references": [
         "_broker-matrix.md",
         "alpaca.md",
@@ -313,8 +313,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 14755,
-      "approx_body_tokens": 3688,
+      "body_chars": 15183,
+      "approx_body_tokens": 3795,
       "references": [
         "adjustment-conventions.md",
         "leakage-checklist.md"
@@ -344,6 +344,20 @@
         "assert_causal.py",
         "warmup_probe.py"
       ]
+    },
+    {
+      "name": "us-market-rules",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/us-market-rules/SKILL.md",
+      "description": "US trading rules that decide whether a strategy is executable at all - short-sale restrictions, margin, settlement, day-trading limits, wash sales, and what a data licence lets you keep. TRIGGER - can I short this, locate, hard to borrow, borrow fee, short interest, Reg SHO, uptick rule, SSR, short sale restricted; PDT, pattern day trader, the 25k rule, day trade limit; Reg T, initial or maintenance margin, margin call, buying power, leverage limit; T+1, settlement, free riding, good faith violation, cash account; wash sale, 30 day rule, tax-loss harvesting, after-tax returns; \"can I redistribute this data\"; may_cache, may_redistribute, non-display use, market data licence; presenting or publishing backtested performance, Marketing Rule, hypothetical performance disclosure. Two of the most-cited rules moved in 2024-2026, so a training-prior answer is usually stale. SKIP for A-share T+1 and price limits (china-ashare-data) and for the order-safety mechanics of actually sending an order (broker-execution-apis).",
+      "summary": "US trading rules that decide whether a strategy is executable at all - short-sale restrictions, margin, settlement, day-trading limits, wash sales, and what a data licence lets you",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 7912,
+      "approx_body_tokens": 1978,
+      "references": [],
+      "scripts": []
     },
     {
       "name": "crypto-data-and-execution",
@@ -450,7 +464,9 @@
       "body_chars": 7722,
       "approx_body_tokens": 1930,
       "references": [],
-      "scripts": []
+      "scripts": [
+        "spa_direction.py"
+      ]
     },
     {
       "name": "lib-backtesting-py",
@@ -629,10 +645,12 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 7006,
-      "approx_body_tokens": 1751,
+      "body_chars": 7532,
+      "approx_body_tokens": 1883,
       "references": [],
-      "scripts": []
+      "scripts": [
+        "rf_convention.py"
+      ]
     },
     {
       "name": "lib-riskfolio",
@@ -716,7 +734,9 @@
       "body_chars": 7568,
       "approx_body_tokens": 1892,
       "references": [],
-      "scripts": []
+      "scripts": [
+        "greeks_scaling.py"
+      ]
     },
     {
       "name": "lib-yfinance",

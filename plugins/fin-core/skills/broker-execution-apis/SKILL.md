@@ -199,3 +199,10 @@ only after this skill has told you which library you want:
 
 - **`lib-alpaca-py`** — alpaca-py
 - **`lib-ccxt`** — ccxt
+
+## US rules that decide what the account can do
+
+Settlement is **T+1 since 2024-05-28** and the **Pattern Day Trader rule was eliminated on
+2026-06-04** (SEC 34-105226) — a model answering from its training prior will get both wrong.
+Reg T initial margin and the broker's own maintenance number decide the leverage this account
+can actually reach. See `../us-market-rules/SKILL.md`.

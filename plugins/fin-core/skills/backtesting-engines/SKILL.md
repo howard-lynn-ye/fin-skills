@@ -178,3 +178,10 @@ only after this skill has told you which library you want:
 
 - **`lib-freqtrade`** — freqtrade
 - **`lib-vectorbt`** — vectorbt
+
+## Constraints no engine models for you
+
+Two US rules bind hardest exactly where a backtest books its best trades, and no engine in the
+matrix above models either: **Reg SHO Rule 201** blocks shorting into a 10% intraday drop at
+the price you assumed, and a short leg needs a **locate and a borrow fee** that moves with the
+same demand your signal is reading. See `../us-market-rules/SKILL.md` §2-3.

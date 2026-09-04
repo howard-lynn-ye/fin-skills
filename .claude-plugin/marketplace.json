@@ -24,19 +24,20 @@
         "python"
       ],
       "skills": [
-        "./skills/quant-stack-router",
-        "./skills/research-integrity-guards",
-        "./skills/market-data-sourcing",
-        "./skills/market-data-engineering",
-        "./skills/fundamental-and-macro-data",
+        "./skills/backtest-validation",
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
-        "./skills/signal-construction",
-        "./skills/factor-and-timeseries-research",
-        "./skills/portfolio-and-risk",
-        "./skills/backtest-validation",
         "./skills/derivatives-pricing",
-        "./skills/external-skill-index"
+        "./skills/external-skill-index",
+        "./skills/factor-and-timeseries-research",
+        "./skills/fundamental-and-macro-data",
+        "./skills/market-data-engineering",
+        "./skills/market-data-sourcing",
+        "./skills/portfolio-and-risk",
+        "./skills/quant-stack-router",
+        "./skills/research-integrity-guards",
+        "./skills/signal-construction",
+        "./skills/us-market-rules"
       ]
     },
     {
