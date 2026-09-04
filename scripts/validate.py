@@ -215,6 +215,18 @@ def main() -> int:
             for ghost in sorted(declared - actual):
                 all_errs.append(f"marketplace.json: {p['name']} lists {ghost!r} which has no SKILL.md")
 
+    # The README's opening line is the first thing a visitor and a search indexer read, and it
+    # is hand-written, so it drifts silently as skills are added. It claimed 19 when there
+    # were 46. Pin it to the real count.
+    readme = ROOT / "README.md"
+    if readme.exists():
+        m = re.search(r"\*\*(\d+) \[Agent Skills\]", readme.read_text(encoding="utf-8")[:600])
+        if not m:
+            all_errs.append("README.md: opening line no longer states a skill count")
+        elif int(m.group(1)) != len(skills):
+            all_errs.append(f"README.md: opening line claims {m.group(1)} skills, "
+                            f"there are {len(skills)}")
+
     if all_errs:
         print(f"FAIL — {len(all_errs)} problem(s):\n")
         for e in all_errs:

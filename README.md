@@ -1,8 +1,9 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**19 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**46 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
+result is real.** 22 domain skills, plus 24 optional per-library deep dives you install only if
+you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
 
