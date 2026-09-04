@@ -41,6 +41,14 @@ moderate, not high.
 garbage correlation tree and plausible-looking weights you cannot tell from correct ones. This is the single most
 reported PyPortfolioOpt error. Assert your input contains negative values before you hand it over.
 
+The type check is real but **shallow**: `HRPOpt(returns=<numpy array>)` raises `TypeError: returns are not a
+dataframe`, so it validates the *container* and never the *content*. A prices DataFrame is a DataFrame, so it sails
+through. ✅ Measured with `scripts/weight_traps.py` (seed 0, 3-year 6-asset panel): feeding prices moves **85.18%** of
+the book into the single **highest-volatility** name, an **L1 weight distance of 1.5648** out of a possible 2.0, and
+**+141.4%** realised annualised vol (0.3486 vs 0.1444) — worse even than 1/N at 0.1976. The mechanism is units:
+`cov(prices)` is in dollars-squared, so HRP's inverse-variance split collapses into **inverse-share-price weighting**
+(the $8 ticker shows 3,654x less "variance" than the $620 one). The output is still long-only and still sums to 1.0000.
+
 Its `linkage_method` default is **`'single'`** (the AFML original) vs skfolio's **Ward** — the two libraries give
 different HRP weights *by design*. State the linkage explicitly when reproducing.
 
@@ -109,6 +117,18 @@ alloc, cash = DiscreteAllocation(w, prices.iloc[-1],
 ⚠️ Before optimizing on `mu` at all: mean-variance is an **error maximizer**, loading onto whatever asset has the most
 overstated return and most understated variance. If you cannot defend your expected-return estimates, use
 `min_volatility()` or HRP — neither needs a forecast — and always benchmark against **1/N after costs**.
+
+## Scripts
+
+- `scripts/weight_traps.py` — the HRPOpt prices-vs-returns trap, end to end. Reproduces HRP from the AFML definition
+  in numpy/pandas/scipy, then verifies that reference against the installed `HRPOpt` (**exact match, max
+  |reference − HRPOpt| = 0.00e+00** on both the correct and the trapped input). Prints both weight vectors side by
+  side, the dollar-variance table that explains the collapse, the two different quasi-diagonal cluster orders, the
+  realised-vol penalty, and that `assert (returns < 0).any().any()` is the only thing between you and the bad number.
+  Runs without PyPortfolioOpt installed.
+
+Verified on 1.6.0: `EfficientFrontier` reuse raises `InstantiationError: Adding constraints to an already solved
+problem might have unintended consequences.` — it **raises cleanly, it does not return stale state**.
 
 ## See also
 

@@ -66,6 +66,18 @@ docstring states the in-memory engine cannot check the sortedness if `by` groups
 error. **The real asymmetry:** data sorted by *neither* key is always caught by pandas and never by
 polars, so porting a working pandas join to polars can start silently returning wrong rows.
 
+✅ **Re-verified by execution on 1.44.1** (`scripts/join_asof_sortedness.py`). It **does not raise**
+when `by=` is present — it emits a `UserWarning: Sortedness of columns cannot be checked when 'by'
+groups provided` and returns the wrong rows. That warning fires on **every** `by=` call, correctly
+sorted ones included, so it carries no information and is not a guard; `check_sortedness=False`
+(a real parameter, default `True`) silences it while changing nothing else. Neither the lazy nor the
+`engine="streaming"` path catches it, and an unsorted *right* frame fails the same silent way.
+Without `by=` every path raises `InvalidOperationError: argument in operation 'asof_join' is not
+sorted`. Measured on a 450-signal seeded panel with only the left frame shuffled: **316 of 450 rows
+(70.2%) matched a quote from the FUTURE**, versus **0** after sorting. 🚨 **The row count survives
+the whole failure** (450 either way), so the `j.height == sig.height` assert below passes on corrupt
+output — only the carried-through timestamp assert catches it.
+
 ## The two engines disagree on what "sorted" means
 
 - **pandas** wants **one global ascending sort by the `on` key**; its docstring says sorting by any
@@ -114,6 +126,16 @@ assert j.height == sig.height, "as-of join dropped rows"
 #   polars==1.44.1
 #   polars-runtime-32==1.44.1     # the actual engine; the polars wheel is an empty shim
 ```
+
+## Scripts
+
+- `scripts/join_asof_sortedness.py` — the `by=` sortedness trap, end to end. A 4-signal/6-quote pair
+  where one unsorted row matches a quote **3 steps in the future** (1 of 4 rows wrong), then the same
+  failure on a 450-row seeded panel. Implements both the correct as-of join and the forward-only
+  cursor that causes the bug in numpy/pandas, then verifies both against the installed polars: the
+  cursor reference reproduces polars' unsorted output **row for row**, and the correct reference
+  matches polars' sorted output exactly. Prints the full raise-vs-warn matrix across eager / lazy /
+  streaming, `by=` vs no `by=`, and `check_sortedness=False`. Runs without polars installed.
 
 ## See also
 
