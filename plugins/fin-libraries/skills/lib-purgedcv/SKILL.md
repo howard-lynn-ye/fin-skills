@@ -107,6 +107,31 @@ cpcv = CombinatorialPurgedCV(n_splits=6, n_test_groups=2,
                              prediction_times=t0, evaluation_times=t1)
 ```
 
+## Scripts
+
+✅ **`scripts/purge_effect.py`** measures the leak on data with **no signal at all**: N=2000 observations, label
+horizon H=100, five AR(1) features (phi=0.995) drawn from a generator that never touches the returns being
+labelled, so the honest out-of-sample AUC is 0.500 by construction. Lag-1 label autocorrelation 0.9020. Mean k-NN
+AUC over 24 independent datasets (seeds 0-23, 5 folds each, 119-120 scored folds):
+
+| splitter | mean AUC | std err | apparent skill |
+|---|---|---|---|
+| `KFold(shuffle=True)` | 0.9801 | 0.0007 | **+0.4801** |
+| `KFold(shuffle=False)` | 0.5563 | 0.0131 | +0.0563 |
+| `TimeSeriesSplit` | 0.5498 | 0.0150 | +0.0498 |
+| purged H=100, no embargo | 0.5016 | 0.0141 | +0.0016 |
+| purged H=100 + embargo 100 | 0.4991 | 0.0139 | -0.0009 |
+
+🚨 **Measured gap: +0.0572 AUC of skill that is not there**, and `RandomForestClassifier(n_estimators=100)` on
+scikit-learn's own splitters reproduces it — 0.5601 vs 0.4999, gap +0.0601 — so it is not an artefact of the toy
+k-NN. 🚨 **`TimeSeriesSplit` leaks too** (+0.0498): it is forward-only, but its last training row still abuts the
+first test row. ⚠️ In *this* dataset the purge alone closes the gap and the embargo then moves the score by -0.0025
+against a standard error of 0.0139 — not measurable, because the features are independent of the labelled return
+series, so only the label-overlap channel is live. The embargo closes the *feature* channel, which needs features
+built as rolling functions of that same series; it is not exercised here and this run is not evidence against it.
+The script's hand-written `KFold` and `TimeSeriesSplit` reproduce scikit-learn's folds index-for-index and its
+`roc_auc_score` to 1.11e-16, so the comparison still runs with scikit-learn absent.
+
 ## See also
 
 - `../../../fin-core/skills/backtest-validation/SKILL.md` — the domain skill for leakage and multiple testing

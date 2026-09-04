@@ -114,6 +114,23 @@ mcs = MCS(losses_mdl, size=0.10, reps=1000, block_size=bs); mcs.compute()
 print(mcs.included, mcs.excluded)               # no benchmark argument
 ```
 
+## Scripts
+
+✅ **`scripts/spa_direction.py`** runs the inversion end to end. Six synthetic strategies whose *realised* annualised
+Sharpes are pinned to -1.5, -0.9, 0.0, +0.5, +1.0, +1.6 against a +0.3 benchmark (seed 0, T=1500 daily observations,
+`reps=1000`, `seed=7`). Measured, with `arch` 8.0.0:
+
+| call | `SPA.better_models` | `StepM.superior_models` | `MCS.included` |
+|---|---|---|---|
+| `losses = -returns` (correct) | `['S6_excellent']` | `['S6_excellent']` | `['S5_good', 'S6_excellent']` |
+| returns passed as losses (trap) | `['S1_terrible', 'S2_bad']` | `['S1_terrible', 'S2_bad']` | `['S1_terrible', 'S2_bad']` |
+
+The trap names the two **worst** strategies in the set as the superior ones — a swing of 3.1 Sharpe between what it
+crowns and what actually won. Nothing raised and nothing warned. 🚨 **The consistent p-value is 0.0050 the correct
+way round and 0.0000 the wrong way round**, so it rejects either way and cannot tell you which input you passed.
+The script's numpy-only reference SPA reproduces `arch`'s p-values to `max|diff| = 0.000000` and its StepM sets
+exactly, so the demonstration still runs on a machine without `arch`.
+
 ## See also
 
 - `../../../fin-core/skills/backtest-validation/SKILL.md` — the domain skill for the `arch.bootstrap` half
