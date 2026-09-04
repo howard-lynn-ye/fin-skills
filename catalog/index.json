@@ -2,7 +2,7 @@
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 19,
   "n_reference_files": 59,
-  "n_scripts": 10,
+  "n_scripts": 14,
   "discovery_cost": {
     "total_description_chars": 12937,
     "approx_tokens": 3234,
@@ -65,7 +65,9 @@
         "qlib.md",
         "vnpy.md"
       ],
-      "scripts": []
+      "scripts": [
+        "ashare_rules.py"
+      ]
     },
     {
       "name": "backtest-validation",
@@ -126,7 +128,9 @@
         "interactive-brokers.md",
         "schwab-and-others.md"
       ],
-      "scripts": []
+      "scripts": [
+        "paper_account_guard.py"
+      ]
     },
     {
       "name": "derivatives-pricing",
@@ -144,7 +148,9 @@
         "quantlib.md",
         "vollib.md"
       ],
-      "scripts": []
+      "scripts": [
+        "greeks_convention.py"
+      ]
     },
     {
       "name": "factor-and-timeseries-research",
@@ -305,7 +311,8 @@
         "indicator-libraries.md"
       ],
       "scripts": [
-        "assert_causal.py"
+        "assert_causal.py",
+        "warmup_probe.py"
       ]
     },
     {
