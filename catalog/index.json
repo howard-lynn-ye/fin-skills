@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 19,
-  "n_reference_files": 59,
-  "n_scripts": 14,
+  "n_skills": 22,
+  "n_reference_files": 67,
+  "n_scripts": 20,
   "discovery_cost": {
-    "total_description_chars": 12937,
-    "approx_tokens": 3234,
+    "total_description_chars": 14982,
+    "approx_tokens": 3745,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -13,6 +13,7 @@
     "fin-china",
     "fin-core",
     "fin-crypto",
+    "fin-futures-fx",
     "fin-llm"
   ],
   "skills": [
@@ -146,11 +147,26 @@
       "references": [
         "_library-matrix.md",
         "quantlib.md",
+        "rateslib-financepy.md",
         "vollib.md"
       ],
       "scripts": [
         "greeks_convention.py"
       ]
+    },
+    {
+      "name": "external-skill-index",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/external-skill-index/SKILL.md",
+      "description": "A verified index of every public finance Agent Skill repository — 139 repos, 4,851 SKILL.md files — so you can find what already exists instead of rebuilding it, and avoid the third that is legally unusable. TRIGGER - looking for an existing skill, plugin or marketplace for anything financial; \"is there already a skill for X\"; choosing between competing finance skill packs; before writing a new finance skill; checking whether a skill repo's licence permits use; or asked what the Claude/agent finance skill ecosystem contains. Also load before recommending any third-party finance skill repository, because 44 of the 139 declare no usable licence and 12 advertise skills while shipping none.",
+      "summary": "A verified index of every public finance Agent Skill repository — 139 repos, 4,851 SKILL.md files — so you can find what already exists instead of rebuilding it, and avoid the thir",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 6033,
+      "approx_body_tokens": 1508,
+      "references": [],
+      "scripts": []
     },
     {
       "name": "factor-and-timeseries-research",
@@ -169,9 +185,12 @@
         "alphalens-reloaded.md",
         "arch.md",
         "forecasting-stack.md",
-        "linearmodels.md"
+        "linearmodels.md",
+        "sktime-darts.md"
       ],
-      "scripts": []
+      "scripts": [
+        "event_study.py"
+      ]
     },
     {
       "name": "fundamental-and-macro-data",
@@ -185,6 +204,7 @@
       "body_chars": 13074,
       "approx_body_tokens": 3268,
       "references": [
+        "edgartools.md",
         "fredapi.md",
         "sec-edgar.md"
       ],
@@ -228,10 +248,14 @@
       "references": [
         "_decision-table.md",
         "alternative-data.md",
+        "databento.md",
+        "defeatbeta.md",
         "eodhd.md",
         "exchange-calendars.md",
+        "financetoolkit.md",
         "findatapy.md",
         "openbb.md",
+        "tiingo-twelvedata-finnhub.md",
         "yfinance.md"
       ],
       "scripts": [
@@ -253,13 +277,16 @@
         "_attribution.md",
         "_solver-layer.md",
         "analytics-libraries.md",
+        "cvxportfolio.md",
         "optimizers.md",
         "pyportfolioopt.md",
         "risk-measures.md",
         "riskfolio-lib.md",
         "skfolio.md"
       ],
-      "scripts": []
+      "scripts": [
+        "brinson_attribution.py"
+      ]
     },
     {
       "name": "quant-stack-router",
@@ -291,6 +318,7 @@
         "leakage-checklist.md"
       ],
       "scripts": [
+        "pit_universe.py",
         "result_manifest.py",
         "survivorship_audit.py"
       ]
@@ -332,6 +360,39 @@
         "freqtrade.md"
       ],
       "scripts": []
+    },
+    {
+      "name": "futures-continuous-contracts",
+      "plugin": "fin-futures-fx",
+      "path": "plugins/fin-futures-fx/skills/futures-continuous-contracts/SKILL.md",
+      "description": "Build and use a futures price series correctly — a continuous contract does not exist in the market, it is stitched, and the stitching method changes your answer. TRIGGER - futures, continuous contract, back-adjusted, Panama adjustment, ratio adjustment, roll, roll yield, contango, backwardation, front month, expiry, first notice day, open interest roll, CME, Globex, ES, CL, NG, VX, GC, ZN; joining futures bars to an equity calendar; \"my futures backtest returns look wrong\"; negative prices in a price series; norgatedata, databento continuous symbols, yfinance CL=F or ES=F. SKIP for Chinese futures and 夜盘 (china-trading-stack) and for crypto perpetuals, which have funding rather than rolls (crypto-data-and-execution).",
+      "summary": "Build and use a futures price series correctly — a continuous contract does not exist in the market, it is stitched, and the stitching method changes your answer.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 8651,
+      "approx_body_tokens": 2162,
+      "references": [],
+      "scripts": [
+        "continuous_contract.py",
+        "roll_schedule.py"
+      ]
+    },
+    {
+      "name": "fx-markets",
+      "plugin": "fin-futures-fx",
+      "path": "plugins/fin-futures-fx/skills/fx-markets/SKILL.md",
+      "description": "Trade and backtest FX correctly — quote conventions, pip sizing, and the carry that a spot-only backtest silently omits. TRIGGER - forex, FX, currency pair, EURUSD, USDJPY, GBPUSD, AUDUSD, USDCHF, USDCAD, NZDUSD; pip, pipette, lot sizing on a currency pair; carry trade, swap points, rollover, interest rate parity, covered or uncovered parity; NDF, forward points, T+2 value date; \"there is no official FX close\"; DukasCopy or free tick FX; forex-python or a similar package. SKIP for crypto pairs, which have funding rather than swap (crypto-data-and-execution), and for FX options and vol surfaces (derivatives-pricing).",
+      "summary": "Trade and backtest FX correctly — quote conventions, pip sizing, and the carry that a spot-only backtest silently omits.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 5677,
+      "approx_body_tokens": 1419,
+      "references": [],
+      "scripts": [
+        "fx_conventions.py"
+      ]
     },
     {
       "name": "finance-mcp-servers",

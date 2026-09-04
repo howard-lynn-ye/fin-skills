@@ -8,7 +8,7 @@ this domain is either narrow, copyleft, or not open source.
 | pip | **`QuantLib`** · import `QuantLib` (conventionally `import QuantLib as ql`) |
 | Version | **1.43 (2026-07-14)** · 31 releases, first `1.16.1` on 2019-08-31 |
 | Licence | **BSD-3-Clause** (declared; `LICENSE.TXT` is a BSD-3-style QuantLib licence) |
-| Upstream | `lballabio/QuantLib` — 7,573★, 2,312 forks, pushed **2026-09-03**, 54 open issues |
+| Upstream | `lballabio/QuantLib` — 7,573★, 2,312 forks, pushed **2026-09-03**, 27 open issues |
 | Bindings | `lballabio/QuantLib-SWIG` — 399★, pushed 2026-09-01 |
 
 ⚠️ GitHub reports `NOASSERTION` on both repos — the custom BSD-derived text confuses the detector.

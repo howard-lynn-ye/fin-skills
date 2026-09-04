@@ -12,7 +12,7 @@ Verified 2026-09-03 against the PyPI JSON API, the GitHub REST API, and official
 | alpacahq/alpaca-py | `alpaca-py` | 0.44.0 | 2026-08-11 | 1,481 | Apache-2.0 | 2026-09-02 | ✅ active |
 | (legacy) | `alpaca-trade-api` | 3.2.0 | 2024-01-12 | — | — | — | 🔴 deprecated |
 | tastyware/tastytrade | `tastytrade` | 13.2.3 | 2026-08-07 | 256 | MIT | 2026-08-07 | ✅ active, small |
-| alexgolec/schwab-py | `schwab-py` | 1.5.1 | 2025-06-30 | 468 | MIT | **2025-08-04** | ⚠️ **stalled**, 88 open issues |
+| alexgolec/schwab-py | `schwab-py` | 1.5.1 | 2025-06-30 | 468 | MIT | **2025-08-04** | ⚠️ **stalled**, 39 open issues |
 | alexgolec/tda-api | `tda-api` | 1.6.0 | 2022-06-07 | 1,323 | MIT | 2024-06-16 | 🔴 **DEAD — TDA absorbed by Schwab** |
 | jmfernandes/robin_stocks | `robin_stocks` | 3.4.0 | 2025-05-18 | 2,120 | MIT | 2026-02-11 | ⚠️ limping, **322 open issues** |
 | robinhood-unofficial/pyrh | — | — | — | 1,789 | MIT | 2024-08-08 | 🔴 dead |

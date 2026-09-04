@@ -6,7 +6,7 @@ four specific ways that produce silently bad intraday numbers. It models **sessi
 | | |
 |---|---|
 | pip | `exchange_calendars` · **4.13.2 (2026-03-10)** |
-| GitHub | `gerrymanoim/exchange_calendars` — **666★**, 176 forks, 27 open issues, pushed 2026-09-02 |
+| GitHub | `gerrymanoim/exchange_calendars` — **666★**, 176 forks, 22 open issues, pushed 2026-09-02 |
 | Licence | **Apache-2.0** ✅ (PyPI + GitHub agree) |
 | Python | `>=3.10,<4` · wheel + sdist · classifiers through 3.14 |
 | Maintenance | ✅ **Active.** Per-venue holiday commits land regularly ("XKRX: … CSAT updates" 2026-06-04, "XKLS: 2026 trading calendar" 2026-03-02, "XIDX: add 2026 holidays" 2026-07-22) |

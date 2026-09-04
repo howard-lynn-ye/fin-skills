@@ -6,7 +6,7 @@ and an optimistic backtester whose assumptions it is honest enough to publish in
 | | |
 |---|---|
 | pip | `freqtrade` · **2026.8 (2026-08-31)** · 98 releases · monthly `YYYY.M` scheme |
-| GitHub | `freqtrade/freqtrade` — **54,007★**, only 30 open issues, pushed 2026-09-04 ✅ |
+| GitHub | `freqtrade/freqtrade` — **54,007★**, only 23 open issues, pushed 2026-09-04 ✅ |
 | Licence | 🚨 **GPL-3.0** ✅ (PyPI `GPLv3` + GitHub `spdx_id: GPL-3.0` agree) |
 | Python | `requires_python >=3.11` ✅ · pure-python wheel + sdist — installs cleanly on Windows |
 | Exchange layer | `ccxt` — every venue quirk in `ccxt.md` applies here |

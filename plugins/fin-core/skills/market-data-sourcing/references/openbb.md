@@ -7,7 +7,7 @@ whether a backtest is honest**.
 | | |
 |---|---|
 | pip | `openbb` · **4.7.2 (2026-05-26)** |
-| GitHub | `OpenBB-finance/OpenBB` — **72,668★**, 7,504 forks, 115 open issues, pushed 2026-07-30 |
+| GitHub | `OpenBB-finance/OpenBB` — **72,668★**, 7,504 forks, 55 open issues, pushed 2026-07-30 |
 | Licence | 🚨 **AGPL-3.0-only** ✅ (PyPI `info.license` = `AGPL-3.0-only`; classifier = "GNU Affero General Public License v3"). GitHub reports `NOASSERTION` — ignore it, PyPI metadata is explicit |
 | Python | `>=3.10,<4` · wheel + sdist |
 | Maintenance | ✅ Healthy and actively developed |

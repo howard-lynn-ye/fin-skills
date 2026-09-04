@@ -6,7 +6,7 @@ The default free source, the best-maintained one, and the one whose defaults hav
 | | |
 |---|---|
 | pip | `yfinance` · **1.7.0 (2026-08-26)** · 150 releases |
-| GitHub | `ranaroussi/yfinance` — **25,158★**, 3,412 forks, 104 open issues, pushed 2026-08-27 |
+| GitHub | `ranaroussi/yfinance` — **25,158★**, 3,412 forks, 57 open issues, pushed 2026-08-27 |
 | Licence | **Apache-2.0** (verified three ways: PyPI `info.license`, classifier, and `LICENSE.txt`) |
 | Python | `requires_python` is **null** — misleading; the deps require a modern Python |
 | Cadence 2026 | 1.4.0 (05-23) · 1.4.1 (05-28) · 1.5.1 (06-28) · 1.5.2 (07-23) · 1.6.0 (08-13) · 1.7.0 (08-26) |

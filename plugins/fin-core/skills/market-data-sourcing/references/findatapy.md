@@ -7,7 +7,7 @@ package *"a highly experimental alpha project"*.
 | | |
 |---|---|
 | pip | `findatapy` · **0.1.42 (2026-03-20)** · cadence 0.1.39/0.1.40 (2025-03-08) → 0.1.41 (2026-01-02) → 0.1.42 |
-| GitHub | `cuemacro/findatapy` — **2,114★**, 221 forks, 28 open issues, pushed 2026-07-02 |
+| GitHub | `cuemacro/findatapy` — **2,114★**, 221 forks, 24 open issues, pushed 2026-07-02 |
 | Licence | **Apache-2.0** ✅ (GitHub SPDX; PyPI `license` field reads "Apache 2.0", no classifier ⚠️) |
 | Python | `requires_python` is **null** ⚠️ — no declared floor |
 | Maintenance | ⚠️ **Single-author, slow cadence, self-described alpha.** Alive, not abandoned |

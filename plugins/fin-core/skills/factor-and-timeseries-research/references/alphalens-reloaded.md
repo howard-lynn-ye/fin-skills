@@ -9,7 +9,7 @@ source of overstated factor results**, and it is a default, not a bug.
 | Version | **0.4.6** (2025-06-02); prior 0.4.5 (2024-09-26); 8 releases total |
 | Licence | Apache-2.0 |
 | Python | `>=3.10`, classifiers 3.10–3.13 |
-| GitHub | `stefan-jansen/alphalens-reloaded` — 642★, 144 forks, 14 open issues, pushed **2025-12-15** |
+| GitHub | `stefan-jansen/alphalens-reloaded` — 642★, 144 forks, 4 open issues, pushed **2025-12-15** |
 | Deps | `pandas<3.0,>=1.5.0`, numpy, statsmodels, `empyrical-reloaded>=0.5.7`, seaborn, IPython |
 | Status | ⚠️ **alive but low-velocity maintenance**, not active development. `main` runs ahead of PyPI |
 

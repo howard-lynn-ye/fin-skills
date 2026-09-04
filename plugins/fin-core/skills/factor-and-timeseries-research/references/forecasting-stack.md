@@ -43,7 +43,7 @@ if you live in wide-format panels.
 |---|---|
 | Version | **1.1.0** (2026-07-28); **1.0.0 landed 2026-06-11** after ~7 years and 103 releases |
 | Licence | BSD-3-Clause · Python `>=3.10,<3.15` |
-| GitHub | 9,988★, 2,323 forks, 🚨 **2,445 open issues**, pushed 2026-09-03 |
+| GitHub | 9,988★, 2,323 forks, 🚨 **1,422 open issues**, pushed 2026-09-03 |
 
 ✅ **What 1.0 means:** the release notes say only *"Major release with some breaking changes"* and
 defer to the changelog — ⚠️ I could not verify an itemized breaking-change list. What it signals
@@ -51,7 +51,13 @@ concretely is a commitment to **API stability guarantees the 0.x line refused** 
 interfaces routinely). **Treat the version number as a stability promise, not a feature
 announcement.**
 
-**2,445 open issues against 9,988 stars is the worst ratio in this catalogue.** sktime's scope
+**1,422 open issues against 9,989 stars — 14.2% — is the worst ratio in this catalogue by an
+order of magnitude** (next worst: vectorbt 1.35%, qlib 0.62%, ccxt 0.53%).
+
+⚠️ **The 2,445 figure that circulates for sktime is wrong, and this repo repeated it.** It is
+GitHub's `open_issues_count`, which **counts pull requests as issues** — sktime had 1,029 open
+PRs. The correct source is the search API (`is:issue+is:open`). The conclusion survives the
+correction; the number did not. Run `scripts/check_repo_stats.py` to re-verify every such count. sktime's scope
 (forecasting + classification + regression + clustering + annotation + transformations) is enormous
 and correspondingly hard to keep coherent.
 

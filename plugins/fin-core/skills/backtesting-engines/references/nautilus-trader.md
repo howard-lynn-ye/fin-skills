@@ -7,7 +7,7 @@ object** runs the backtest and the live session — but it will not even install
 |---|---|
 | pip | `nautilus_trader` · import `nautilus_trader` |
 | Version | **1.231.0 (2026-08-02)** · ⚠️ a **2.0.0** line is in release candidates (`v2.0.0rc4`, 2026-09-02) |
-| GitHub | `nautechsystems/nautilus_trader` — 28,367★, 129 open issues, pushed **2026-09-04** |
+| GitHub | `nautechsystems/nautilus_trader` — 28,367★, 107 open issues, pushed **2026-09-04** |
 | Licence | 🚨 **LGPL-3.0-or-later** (declared and classified), CLA required for contributors |
 | Python | 🚨 **`>=3.12,<3.15`** — wheels are cp312 / cp313 / cp314 only |
 | Wheels | macOS **arm64 only**, `manylinux_2_35` x86_64 + aarch64, `win_amd64`, plus an sdist |

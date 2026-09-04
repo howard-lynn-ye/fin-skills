@@ -5,7 +5,7 @@ unattended automation entirely**, and it is the one most people reach for.
 
 | Project | PyPI | Version | Released | ★ | Licence | Verdict |
 |---|---|---|---|---:|---|---|
-| `alexgolec/schwab-py` | `schwab-py` | 1.5.1 | 2025-06-30 | 468 | MIT | ⚠️ **stalled**, 88 open issues |
+| `alexgolec/schwab-py` | `schwab-py` | 1.5.1 | 2025-06-30 | 468 | MIT | ⚠️ **stalled**, 39 open issues |
 | `alexgolec/tda-api` | `tda-api` | 1.6.0 | **2022-06-07** | 1,323 | MIT | 🔴 **DEAD** |
 | `tastyware/tastytrade` | `tastytrade` | 13.2.3 | 2026-08-07 | 256 | MIT | ✅ active, small |
 | `jmfernandes/robin_stocks` | `robin_stocks` | 3.4.0 | 2025-05-18 | 2,120 | MIT | ⚠️ limping, **322 open issues** |

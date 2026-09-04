@@ -35,7 +35,8 @@
         "./skills/factor-and-timeseries-research",
         "./skills/portfolio-and-risk",
         "./skills/backtest-validation",
-        "./skills/derivatives-pricing"
+        "./skills/derivatives-pricing",
+        "./skills/external-skill-index"
       ]
     },
     {
@@ -73,6 +74,26 @@
       ],
       "skills": [
         "./skills/asia-pacific-markets"
+      ]
+    },
+    {
+      "name": "fin-futures-fx",
+      "source": "./plugins/fin-futures-fx",
+      "description": "Futures and FX: continuous-contract construction (difference vs ratio vs unadjusted and when each is wrong), roll rules as researcher degrees of freedom, contract specs and margin, CME session structure, plus FX quote conventions, pip sizing and carry — the parts an equity-shaped toolchain silently gets wrong.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "futures",
+        "fx",
+        "forex",
+        "continuous-contract",
+        "roll",
+        "cme",
+        "carry"
+      ],
+      "skills": [
+        "./skills/futures-continuous-contracts",
+        "./skills/fx-markets"
       ]
     },
     {

@@ -7,7 +7,7 @@ volume-limited partial fills, and point-in-time corporate actions** at once — 
 |---|---|
 | pip | `zipline-reloaded` · 🚨 import **`zipline`** (the PyPI name and the module name differ) |
 | Version | **3.1.1 (2025-07-19)** — over a year old |
-| GitHub | `stefan-jansen/zipline-reloaded` — 1,933★, 44 open issues |
+| GitHub | `stefan-jansen/zipline-reloaded` — 1,933★, 25 open issues |
 | Licence | ✅ **Apache-2.0** (declared as a licence expression) |
 | Python | `>=3.10`; wheels **cp310–cp313 only — no 3.14** |
 | Wheels | macOS x86_64 + arm64, `manylinux2014` **x86_64 only**, `win_amd64` · ⚠️ **no Linux aarch64** |

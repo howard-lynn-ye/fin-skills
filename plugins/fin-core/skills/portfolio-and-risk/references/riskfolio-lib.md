@@ -15,7 +15,7 @@ measures**, so you can run HRP or risk parity under CVaR, CDaR, EVaR or Ulcer in
 
 Verified 2026-09-04 via the PyPI JSON API and the GitHub REST API.
 
-🔑 **18 open issues against 4,480 stars is an outlier in this ecosystem** — the maintainer actually
+🔑 **10 open issues against 4,480 stars is an outlier in this ecosystem** — the maintainer actually
 closes things. Cadence: 7.0.1 (2025-05) → 7.1.0 (2025-11) → 7.2.0 (2026-01) → 7.2.1 (2026-02) →
 7.3.0 (2026-05).
 

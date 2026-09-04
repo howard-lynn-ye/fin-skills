@@ -91,7 +91,7 @@ a t-stat of 2 becomes a t-stat of 5.
 | Fast classical baselines at scale | **Nixtla `statsforecast`** | All five Nixtla packages Apache-2.0, all pushed within 3 weeks — healthiest forecasting ecosystem in Python |
 | Tree/ML forecasting on panels | **`mlforecast`** | |
 | Deep forecasting | **`neuralforecast`** | |
-| Unified API, many estimators | `sktime` | ✅ **hit 1.0.0 on 2026-06-11** (now 1.1.0) — an API-stability commitment. ⚠️ **2,445 open issues** |
+| Unified API, many estimators | `sktime` | ✅ **hit 1.0.0 on 2026-06-11** (now 1.1.0) — an API-stability commitment. ⚠️ **1,422 open issues** |
 | Unified API, deep-learning leaning | `darts` | See the leakage warning below |
 | **Volatility (GARCH/EGARCH/HAR)** | **`arch`** | The reference implementation. Also the home of SPA/StepM/MCS |
 | Automated feature extraction | `tsfresh` | ✅ Its defaults are statistically correct — see §2.2 |

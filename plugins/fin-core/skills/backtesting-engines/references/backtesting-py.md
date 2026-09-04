@@ -7,7 +7,7 @@ licence and what `trade_on_close` actually does.
 |---|---|
 | pip | `backtesting` · import `backtesting` |
 | Version | **0.6.6 (2026-07-22)** |
-| GitHub | `kernc/backtesting.py` — 8,931★, 80 open issues, pushed **2026-08-05** ✅ active |
+| GitHub | `kernc/backtesting.py` — 8,931★, 46 open issues, pushed **2026-08-05** ✅ active |
 | Licence | 🚨 **AGPL-3.0-or-later** (declared *and* classified) |
 | Python | `>=3.9` · pure-Python `py3-none-any` wheel — installs anywhere, no compiler |
 | Scope | 🚨 **Single asset. Full stop.** No portfolios, no cross-sectional anything |

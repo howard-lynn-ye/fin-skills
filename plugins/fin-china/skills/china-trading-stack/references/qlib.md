@@ -8,7 +8,7 @@ leakage-safe; its default preprocessing is not, and its official dataset is swit
 |---|---|
 | pip | 🚨 **`pyqlib`**, imported as `qlib`. The PyPI package named `qlib` is an unrelated abandoned 2018 package |
 | Version | **0.9.7 (2025-08-15)** ✅ — while `microsoft/qlib` was pushed **2026-09-02**. **Packaging lags the repo by ~12 months** |
-| GitHub | `microsoft/qlib` — **48,285★**, 472 open issues ✅ |
+| GitHub | `microsoft/qlib` — **48,285★**, 301 open issues ✅ |
 | Licence | **MIT** ✅ (PyPI classifier + GitHub SPDX) |
 | Python | ⚠️ `requires_python >=3.8.0`, but see the wheel trap below |
 | Wheels | 🚨 **cp38–cp312 only, and NO sdist** ✅ — `pip install pyqlib` **fails outright on Python 3.13+** |

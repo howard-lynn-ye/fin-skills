@@ -1,0 +1,2504 @@
+{
+  "generated_on": "2026-09-04",
+  "note": "Machine-readable index of publicly available finance/trading/quant/accounting Agent Skill repositories. Every field was verified by a live `gh api repos/<o>/<r>` call on 2026-09-04; skill_count is a literal count of files matching (^|/)SKILL.md$ in `gh api repos/<o>/<r>/git/trees/HEAD?recursive=1`. No figure here is estimated or recalled. skill_count is the RAW file count: where a repo duplicates skills across directories or ships versioned copies, the `caution` field says so. Inclusion threshold: any repo surfaced by the listed searches that is finance-domain AND either ships >=1 SKILL.md or is widely starred while shipping none (recorded so the gap is visible). The long tail of sub-10-star single-skill repos is deliberately not exhaustive — GitHub holds hundreds and they turn over weekly. `relation` is judged against this repository's scope: Python quant-finance library selection and research methodology (whether a backtest result is real). `avoid` means a licence, provenance or substance problem, not low quality per se.",
+  "tag_vocabulary": [
+    "market-data",
+    "data-vendor",
+    "broker-api",
+    "execution",
+    "backtesting",
+    "research-integrity",
+    "factor-research",
+    "ml",
+    "portfolio",
+    "risk",
+    "options",
+    "derivatives",
+    "fixed-income",
+    "macro",
+    "equity-research",
+    "valuation",
+    "technical-analysis",
+    "crypto",
+    "defi",
+    "prediction-markets",
+    "a-share",
+    "india",
+    "accounting",
+    "tax",
+    "compliance",
+    "wealth-advisory",
+    "personal-finance",
+    "real-estate",
+    "sentiment",
+    "event-study",
+    "education",
+    "meta"
+  ],
+  "sources_searched": [
+    "gh search repos: 'claude skill trading', 'agent skills quant', 'claude code skills finance', 'agent skill stock market', 'claude skills investing'",
+    "gh search repos: 'agent skill backtesting', 'claude skill options trading', 'agent skill accounting bookkeeping', 'claude skill crypto trading', 'agent skill portfolio analysis'",
+    "gh search repos: 'agent skill risk management VaR', 'claude skill fixed income bonds', 'agent skill SEC EDGAR filings', 'skill factor research alpha', 'agent skill macroeconomics FRED', 'claude skill valuation DCF', 'agent skill market data API', 'claude skill hedge fund'",
+    "gh search repos: '量化 skill agent', 'claude plugin marketplace finance', 'agent skill financial statements audit', 'openclaw skill finance'",
+    "gh api orgs/quantskills/repos --paginate (all 230 repos enumerated, SKILL.md counted per repo)",
+    "gh api repos/ComposioHQ/awesome-claude-skills/readme (74466 stars) — README read in full; NO finance/trading/quant section exists, only an invoice-organizer entry",
+    "gh api repos/travisvn/awesome-claude-skills/readme (14966 stars) — README read in full; NO finance entries at all",
+    "gh api repos/anthropics/skills/git/trees/HEAD?recursive=1 — all 20 SKILL.md paths listed, ZERO finance skills confirmed"
+  ],
+  "aggregate": {
+    "repos_indexed": 139,
+    "total_skill_md_raw": 4851,
+    "total_skill_md_deduped": 4556,
+    "total_skill_md_finance_dominant": 3127,
+    "counting_notes": [
+      "total_skill_md_raw is the literal sum of verified SKILL.md file counts across every indexed repo.",
+      "total_skill_md_deduped subtracts republished copies of other people's skills: Serennity007/awesome-stock-quant-skills (227 vendored third-party skills), Serennity007/claude-trading-skills-67 (67, a mirror of agiprolabs/claude-trading-skills), and quantskills/skill-backtest-overfit (1, already inside the quantskills org aggregate). Total removed: 295.",
+      "total_skill_md_finance_dominant additionally removes general-purpose repos whose finance content is a small minority of their skills: alirezarezvani/claude-skills (846, ~8 are finance), mphinance/alpha-skills (220, mostly a dev/design kit), nicepkg/ai-workflow (198, thin finance slice), franklee16/academic-research-skills (97, general research workflow), itsadrianxv/quant-strategy-builder-skill (42, mostly vendored generic coding skills), and machina-sports/sports-skills (26, mostly sports data). Total further removed: 1429. This is the fairest single number for 'how many finance Agent Skills exist publicly'."
+    ],
+    "repos_with_zero_skill_md": 12,
+    "license_breakdown": {
+      "NONE": 33,
+      "MIT": 76,
+      "GPL-3.0 (org, mixed)": 1,
+      "NOASSERTION": 11,
+      "Apache-2.0": 14,
+      "MIT-0": 1,
+      "GPL-3.0": 2,
+      "AGPL-3.0": 1
+    },
+    "relation_breakdown": {
+      "complementary": 80,
+      "overlapping": 9,
+      "avoid": 50
+    }
+  },
+  "repos": [
+    {
+      "full_name": "anthropics/skills",
+      "url": "https://github.com/anthropics/skills",
+      "stars": 174001,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-09-03",
+      "skill_count": 20,
+      "tags": [
+        "meta",
+        "education",
+        "accounting"
+      ],
+      "quality": "The official skills repo. 20 skills, all document/design/dev tooling. Confirmed ZERO finance skills — xlsx is spreadsheet mechanics, not a finance domain skill.",
+      "relation": "complementary",
+      "caution": "No repo-level LICENSE (per-skill LICENSE.txt files only). The absence of finance here is the single clearest statement of where the gap is."
+    },
+    {
+      "full_name": "alirezarezvani/claude-skills",
+      "url": "https://github.com/alirezarezvani/claude-skills",
+      "stars": 25529,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-30",
+      "skill_count": 846,
+      "tags": [
+        "meta",
+        "accounting",
+        "equity-research"
+      ],
+      "quality": "The largest general skill repo found — 846 SKILL.md (468 unique) across every business domain.",
+      "relation": "complementary",
+      "caution": "MIT. Only ~8 skills are genuinely finance (financial-analyst, finance-lead, stock-analysis, research-finance) and none are quant. Proof that the mega-repos do not cover this domain."
+    },
+    {
+      "full_name": "tradermonty/claude-trading-skills",
+      "url": "https://github.com/tradermonty/claude-trading-skills",
+      "stars": 2773,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 94,
+      "tags": [
+        "equity-research",
+        "technical-analysis",
+        "macro",
+        "backtesting",
+        "risk",
+        "sentiment"
+      ],
+      "quality": "The most-starred dedicated trading skill repo. Screeners, breadth, COT, earnings, drawdown circuit-breakers and an edge-discovery pipeline. Practitioner-grade and actively maintained.",
+      "relation": "complementary",
+      "caution": "MIT. Raw count 94 includes 20 duplicated copies under examples/ — roughly 74 unique skills. Discretionary/technical rather than statistical."
+    },
+    {
+      "full_name": "quantskills/* (org, 230 repos)",
+      "url": "https://github.com/quantskills",
+      "stars": 2181,
+      "license": "GPL-3.0 (192/230 repos; 16 NOASSERTION, 15 NONE, 6 MIT, 1 Apache-2.0)",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 1094,
+      "tags": [
+        "a-share",
+        "factor-research",
+        "backtesting",
+        "research-integrity",
+        "ml",
+        "macro",
+        "equity-research"
+      ],
+      "quality": "By raw volume the largest finance skill body in existence: 1094 SKILL.md across 230 repos. But 803 of those (73%) sit in three auto-generated factor repos (directional-alpha 297, risk-pattern-alpha 289, volume-stat-alpha 217); the remaining ~291 spread across 227 repos average barely one skill each. skill-backtest-overfit is genuinely excellent.",
+      "relation": "overlapping",
+      "caution": "THREE traps at once: (1) GPL-3.0 on 192 of 230 repos — copyleft, so adapting the code forces your library to GPL; (2) most skills require a Pandadata/PandaAI account, so they are vendor-locked and unusable without a paid subscription; (3) the star counts are near-zero on the individual repos while the org navigator holds 2181, so traction is concentrated in the index, not the content. Read for ideas, do not vendor."
+    },
+    {
+      "full_name": "quantskills/quantskills",
+      "url": "https://github.com/quantskills/quantskills",
+      "stars": 2181,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-09-01",
+      "skill_count": 0,
+      "tags": [
+        "meta",
+        "a-share",
+        "factor-research"
+      ],
+      "quality": "Navigator/index for the 230-repo QuantSkills org. Useful as a map of Chinese A-share quant skills.",
+      "relation": "avoid",
+      "caution": "NO LICENCE on the navigator itself; the org it points to is 192/230 GPL-3.0 and most skills require a Pandadata/PandaAI account."
+    },
+    {
+      "full_name": "KylinMountain/TradingAgents-AShare",
+      "url": "https://github.com/KylinMountain/TradingAgents-AShare",
+      "stars": 809,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-09-03",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "ml",
+        "equity-research",
+        "sentiment"
+      ],
+      "quality": "Multi-agent A-share investment research system with 15 debating agents, Docker deployment.",
+      "relation": "avoid",
+      "caution": "NOASSERTION licence and only 1 SKILL.md — it is an application with a Claude Code integration, not a skill library."
+    },
+    {
+      "full_name": "komako-workshop/digital-oracle",
+      "url": "https://github.com/komako-workshop/digital-oracle",
+      "stars": 808,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-26",
+      "skill_count": 1,
+      "tags": [
+        "macro",
+        "prediction-markets",
+        "market-data",
+        "sentiment"
+      ],
+      "quality": "A single large macro skill that mines 13 sources (Polymarket, Kalshi, CFTC, SEC) into probability estimates. Popular and readable, but it is one monolithic skill, not a library.",
+      "relation": "complementary",
+      "caution": "MIT. 808 stars against 1 SKILL.md — stars measure the pitch, not the depth."
+    },
+    {
+      "full_name": "quant-sentiment-ai/claude-equity-research",
+      "url": "https://github.com/quant-sentiment-ai/claude-equity-research",
+      "stars": 709,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 0,
+      "tags": [
+        "equity-research",
+        "sentiment",
+        "meta"
+      ],
+      "quality": "Popular institutional-equity-research plugin, installed via /plugin marketplace.",
+      "relation": "avoid",
+      "caution": "ZERO SKILL.md — it is a slash-command plugin (one research.md command), not Agent Skills. 709 stars overstate what is inside."
+    },
+    {
+      "full_name": "MobiusQuant/OpenMobius-skill",
+      "url": "https://github.com/MobiusQuant/OpenMobius-skill",
+      "stars": 673,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 1,
+      "tags": [
+        "technical-analysis",
+        "education",
+        "execution"
+      ],
+      "quality": "A single large ICT/SMC trading-knowledge skill. 673 stars for one file.",
+      "relation": "complementary",
+      "caution": "Apache-2.0. ICT/Smart-Money-Concepts is a discretionary framework with no published statistical evidence; treat as folk knowledge."
+    },
+    {
+      "full_name": "GMGNAI/gmgn-skills",
+      "url": "https://github.com/GMGNAI/gmgn-skills",
+      "stars": 503,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 13,
+      "tags": [
+        "defi",
+        "crypto",
+        "execution"
+      ],
+      "quality": "13 Solana memecoin skills — contract due diligence, holder analysis, dev score, wallet scoring, swaps.",
+      "relation": "complementary",
+      "caution": "MIT. Squarely memecoin/degen tooling; no research methodology."
+    },
+    {
+      "full_name": "moss-site/moss-trade-bot-skills",
+      "url": "https://github.com/moss-site/moss-trade-bot-skills",
+      "stars": 381,
+      "license": "MIT-0",
+      "archived": false,
+      "last_push": "2026-08-19",
+      "skill_count": 12,
+      "tags": [
+        "execution",
+        "technical-analysis",
+        "crypto"
+      ],
+      "quality": "Natural-language strategy generation across trend/mean-reversion/momentum/volume/risk pillars.",
+      "relation": "complementary",
+      "caution": "MIT-0. The 12 SKILL.md are 12 VERSIONED COPIES of one skill (moss-trade-bot-factory 1.0.21-1.0.27) — effectively a single skill."
+    },
+    {
+      "full_name": "staskh/trading_skills",
+      "url": "https://github.com/staskh/trading_skills",
+      "stars": 356,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-01",
+      "skill_count": 28,
+      "tags": [
+        "options",
+        "broker-api",
+        "equity-research",
+        "risk"
+      ],
+      "quality": "Interactive Brokers options advisor — Greeks, PMCC, collars, short rolls, delta-adjusted notional. Genuinely specialist options-income tooling.",
+      "relation": "complementary",
+      "caution": "MIT. Tightly bound to IBKR; skills live under .claude/skills so they need path fixups to reuse."
+    },
+    {
+      "full_name": "agiprolabs/claude-trading-skills",
+      "url": "https://github.com/agiprolabs/claude-trading-skills",
+      "stars": 342,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-03",
+      "skill_count": 68,
+      "tags": [
+        "crypto",
+        "defi",
+        "execution",
+        "backtesting",
+        "options",
+        "tax",
+        "prediction-markets"
+      ],
+      "quality": "Broad and genuinely useful on Solana/DeFi plumbing and trade accounting; the quant-methodology skills (walk-forward-validation, vectorbt) are thin next to the execution ones.",
+      "relation": "complementary",
+      "caution": "MIT, actively maintained. Overlaps only lightly on backtesting; its centre of mass is DeFi/Solana execution, which fin-skills does not cover."
+    },
+    {
+      "full_name": "okx/onchainos-skills",
+      "url": "https://github.com/okx/onchainos-skills",
+      "stars": 329,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 7,
+      "tags": [
+        "crypto",
+        "defi",
+        "broker-api"
+      ],
+      "quality": "Official OKX OnchainOS skills — wallet, token discovery, DEX swaps, market data.",
+      "relation": "avoid",
+      "caution": "NO LICENCE on a 329-star official vendor repo. Exchange-locked and legally unreusable."
+    },
+    {
+      "full_name": "lzwme/finance-quant-skills",
+      "url": "https://github.com/lzwme/finance-quant-skills",
+      "stars": 321,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-06-29",
+      "skill_count": 14,
+      "tags": [
+        "a-share",
+        "market-data",
+        "backtesting",
+        "data-vendor"
+      ],
+      "quality": "Library-selection skills for the Chinese quant stack — akshare, tushare, baostock, backtrader, rqalpha, miniQMT, joinquant, pywencai. Same shape as fin-skills' china plugin.",
+      "relation": "avoid",
+      "caution": "NO LICENCE on a 321-star repo. Directly overlaps fin-skills' china-ashare-data and cannot be borrowed from."
+    },
+    {
+      "full_name": "nicepkg/ai-workflow",
+      "url": "https://github.com/nicepkg/ai-workflow",
+      "stars": 283,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-01-20",
+      "skill_count": 198,
+      "tags": [
+        "meta",
+        "execution",
+        "education"
+      ],
+      "quality": "198 general-purpose skills across marketing, SEO, video, PM — trading is one advertised category.",
+      "relation": "complementary",
+      "caution": "MIT but dormant since January 2026, and the finance slice is thin."
+    },
+    {
+      "full_name": "ALAGENT-HKU/x2strategy",
+      "url": "https://github.com/ALAGENT-HKU/x2strategy",
+      "stars": 270,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-06-12",
+      "skill_count": 1,
+      "tags": [
+        "factor-research",
+        "research-integrity",
+        "ml"
+      ],
+      "quality": "Extracts structured strategy specs from quant finance papers — genuinely adjacent to research methodology, and the one academic-pipeline skill with traction.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. 270 stars but all rights reserved by default: you cannot legally copy, adapt or redistribute any of it. Reference only, never vendor."
+    },
+    {
+      "full_name": "zubair-trabzada/ai-trading-claude",
+      "url": "https://github.com/zubair-trabzada/ai-trading-claude",
+      "stars": 242,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-07",
+      "skill_count": 16,
+      "tags": [
+        "equity-research",
+        "options",
+        "risk",
+        "portfolio",
+        "sentiment"
+      ],
+      "quality": "16 skills for stock/options research with parallel agents and PDF reports. Well packaged consumer research tool.",
+      "relation": "complementary",
+      "caution": "MIT. Dormant since April 2026."
+    },
+    {
+      "full_name": "gauss314/skills",
+      "url": "https://github.com/gauss314/skills",
+      "stars": 234,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-14",
+      "skill_count": 32,
+      "tags": [
+        "data-vendor",
+        "market-data",
+        "macro",
+        "options",
+        "equity-research"
+      ],
+      "quality": "32 thin wrappers over financial data sources — Alpaca, FRED, SEC, Finviz, CBOE, BYMA, BCRA. Good breadth of Argentine and US sources.",
+      "relation": "complementary",
+      "caution": "MIT. These are API-access skills, the saturated end of the ecosystem; almost no methodology."
+    },
+    {
+      "full_name": "Bitget-AI/agent_hub",
+      "url": "https://github.com/Bitget-AI/agent_hub",
+      "stars": 223,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-30",
+      "skill_count": 0,
+      "tags": [
+        "crypto",
+        "broker-api",
+        "meta"
+      ],
+      "quality": "Official Bitget agent toolkit — MCP, SDK, CLI installer.",
+      "relation": "avoid",
+      "caution": "Advertises skills but ships ZERO SKILL.md files. It is an MCP/SDK hub, not an Agent Skill repo."
+    },
+    {
+      "full_name": "franklee16/academic-research-skills",
+      "url": "https://github.com/franklee16/academic-research-skills",
+      "stars": 214,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-04-26",
+      "skill_count": 97,
+      "tags": [
+        "research-integrity",
+        "macro",
+        "meta"
+      ],
+      "quality": "97 SKILL.md (82 unique) for academic research in economics, finance and social sciences — ideation, citations, replication.",
+      "relation": "avoid",
+      "caution": "NO LICENCE on a 214-star repo. Content is general research workflow, not finance methodology."
+    },
+    {
+      "full_name": "machina-sports/sports-skills",
+      "url": "https://github.com/machina-sports/sports-skills",
+      "stars": 211,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 26,
+      "tags": [
+        "prediction-markets",
+        "market-data",
+        "data-vendor"
+      ],
+      "quality": "26 skills for live sports data plus Kalshi/Polymarket. Only the prediction-market subset is finance.",
+      "relation": "complementary",
+      "caution": "MIT. Mostly sports data; included because prediction-market skills are scarce."
+    },
+    {
+      "full_name": "Superior-Trade/superior-skills",
+      "url": "https://github.com/Superior-Trade/superior-skills",
+      "stars": 207,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-03",
+      "skill_count": 31,
+      "tags": [
+        "crypto",
+        "defi",
+        "execution",
+        "backtesting",
+        "prediction-markets"
+      ],
+      "quality": "31 skills for Hyperliquid/Lighter perps — funding-rate arb, basis arb, grid, regime overlays. Vendor-specific but concrete.",
+      "relation": "complementary",
+      "caution": "MIT, but the venue lock (Superior Trade / Hyperliquid) limits transferability."
+    },
+    {
+      "full_name": "marketcalls/vectorbt-backtesting-skills",
+      "url": "https://github.com/marketcalls/vectorbt-backtesting-skills",
+      "stars": 200,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-07-12",
+      "skill_count": 6,
+      "tags": [
+        "backtesting",
+        "technical-analysis",
+        "india",
+        "crypto"
+      ],
+      "quality": "Practical vectorbt guidance with realistic transaction costs across Indian, US and crypto markets. Narrow and well executed.",
+      "relation": "avoid",
+      "caution": "NO LICENCE despite 200 stars. Cannot be reused or adapted legally."
+    },
+    {
+      "full_name": "JoelLewis/finance_skills",
+      "url": "https://github.com/JoelLewis/finance_skills",
+      "stars": 179,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-18",
+      "skill_count": 91,
+      "tags": [
+        "compliance",
+        "wealth-advisory",
+        "portfolio",
+        "fixed-income",
+        "execution",
+        "risk",
+        "tax"
+      ],
+      "quality": "The best compliance and RIA-operations coverage in the ecosystem — Reg BI, GIPS, AML, books-and-records, suitability. Practitioner-shaped, not quant-shaped.",
+      "relation": "complementary",
+      "caution": "MIT and well organised, but untouched since July 2026. Regulatory content decays; verify citations before relying on it."
+    },
+    {
+      "full_name": "okx/agent-skills",
+      "url": "https://github.com/okx/agent-skills",
+      "stars": 171,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-01",
+      "skill_count": 10,
+      "tags": [
+        "crypto",
+        "broker-api",
+        "execution",
+        "sentiment"
+      ],
+      "quality": "Official OKX CEX skills — auth, trade, portfolio, earn, smart-money tracking.",
+      "relation": "complementary",
+      "caution": "MIT but exchange-locked; useful only if you trade on OKX."
+    },
+    {
+      "full_name": "cloudQuant/backtrader",
+      "url": "https://github.com/cloudQuant/backtrader",
+      "stars": 162,
+      "license": "GPL-3.0",
+      "archived": false,
+      "last_push": "2026-09-02",
+      "skill_count": 7,
+      "tags": [
+        "backtesting",
+        "execution",
+        "technical-analysis"
+      ],
+      "quality": "A maintained backtrader fork claiming 45% speedups, 50+ indicators, plus an MCP server and agent skills.",
+      "relation": "avoid",
+      "caution": "GPL-3.0 — copyleft, inherited from backtrader. Seven SKILL.md are a thin layer on a Python framework."
+    },
+    {
+      "full_name": "dfkai/xtquantai",
+      "url": "https://github.com/dfkai/xtquantai",
+      "stars": 161,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-11",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "broker-api",
+        "factor-research",
+        "backtesting"
+      ],
+      "quality": "QMT/xtquant skill set for Chinese quant workflows and factor backtest script generation.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill; requires the QMT desktop client on Windows."
+    },
+    {
+      "full_name": "angieruiz17/claude-fintech-skills",
+      "url": "https://github.com/angieruiz17/claude-fintech-skills",
+      "stars": 144,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-03",
+      "skill_count": 0,
+      "tags": [
+        "execution",
+        "meta",
+        "broker-api"
+      ],
+      "quality": "Advertises fintech infrastructure and broker-side systems skills.",
+      "relation": "avoid",
+      "caution": "ZERO SKILL.md — it is a TypeScript fintech application (src/, frontend/, telephony/), mislabelled as a skills repo despite 144 stars."
+    },
+    {
+      "full_name": "Hainrixz/maia-skill",
+      "url": "https://github.com/Hainrixz/maia-skill",
+      "stars": 141,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-18",
+      "skill_count": 2,
+      "tags": [
+        "equity-research",
+        "crypto",
+        "macro",
+        "technical-analysis"
+      ],
+      "quality": "Five parallel agents across crypto, stocks, forex and commodities with a bilingual dashboard.",
+      "relation": "complementary",
+      "caution": "MIT. Two SKILL.md behind a broad pitch; educational framing."
+    },
+    {
+      "full_name": "BaggaT236/AI-Trading-Skills",
+      "url": "https://github.com/BaggaT236/AI-Trading-Skills",
+      "stars": 121,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-03",
+      "skill_count": 72,
+      "tags": [
+        "execution",
+        "technical-analysis",
+        "risk",
+        "backtesting"
+      ],
+      "quality": "72 SKILL.md (62 unique) around disciplined trading workflows on a TypeScript platform.",
+      "relation": "complementary",
+      "caution": "MIT. Very recent, thin README relative to skill count; unverified depth."
+    },
+    {
+      "full_name": "roman-rr/trading-skills",
+      "url": "https://github.com/roman-rr/trading-skills",
+      "stars": 111,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-05-12",
+      "skill_count": 1,
+      "tags": [
+        "crypto",
+        "technical-analysis",
+        "execution"
+      ],
+      "quality": "One aggregate 'trading-signals' skill claiming 17 triggers x 44 algorithms with three AI experts.",
+      "relation": "avoid",
+      "caution": "NOASSERTION licence, single SKILL.md, 'free during beta' — a funnel to a paid service, not a library."
+    },
+    {
+      "full_name": "pseudo-longinus/quant-buddy-skills",
+      "url": "https://github.com/pseudo-longinus/quant-buddy-skills",
+      "stars": 108,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 2,
+      "tags": [
+        "a-share",
+        "market-data",
+        "factor-research",
+        "backtesting",
+        "equity-research"
+      ],
+      "quality": "A-share/HK/US quant analysis — quotes, fundamentals, screening, factors, backtests, in two skills.",
+      "relation": "complementary",
+      "caution": "MIT and actively maintained, but only 2 SKILL.md carrying a lot of claimed surface."
+    },
+    {
+      "full_name": "VernonOY/alpha-skills",
+      "url": "https://github.com/VernonOY/alpha-skills",
+      "stars": 105,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-04-14",
+      "skill_count": 9,
+      "tags": [
+        "factor-research",
+        "backtesting",
+        "ml",
+        "a-share"
+      ],
+      "quality": "Nine focused factor-research skills — discover, mine, evaluate, backtest, monitor, decay. Clean decomposition of the alpha pipeline.",
+      "relation": "overlapping",
+      "caution": "Apache-2.0 (safe), but dormant since April 2026."
+    },
+    {
+      "full_name": "javajack/skill-algotrader",
+      "url": "https://github.com/javajack/skill-algotrader",
+      "stars": 94,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-02-14",
+      "skill_count": 0,
+      "tags": [
+        "india",
+        "execution",
+        "broker-api"
+      ],
+      "quality": "Advertises a quantitative trading skill with Zerodha integration.",
+      "relation": "avoid",
+      "caution": "NO LICENCE and ZERO SKILL.md. 94 stars for a repo that ships no skills."
+    },
+    {
+      "full_name": "lanfuli/aleabito-serenity-skills",
+      "url": "https://github.com/lanfuli/aleabito-serenity-skills",
+      "stars": 94,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-07",
+      "skill_count": 3,
+      "tags": [
+        "equity-research",
+        "sentiment",
+        "education"
+      ],
+      "quality": "Skills distilled from one X/Twitter investor's public archive.",
+      "relation": "complementary",
+      "caution": "MIT. Persona-mining; useful as a pattern, not as analysis."
+    },
+    {
+      "full_name": "ahacker-1/cre-agent-skills",
+      "url": "https://github.com/ahacker-1/cre-agent-skills",
+      "stars": 91,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-09-02",
+      "skill_count": 14,
+      "tags": [
+        "real-estate",
+        "valuation",
+        "compliance"
+      ],
+      "quality": "14 commercial-real-estate skills — underwriting, due diligence, financing, brokerage, legal, closing.",
+      "relation": "complementary",
+      "caution": "Apache-2.0 (safe) and actively maintained. Entirely outside fin-skills' scope."
+    },
+    {
+      "full_name": "mjunaidca/polymarket-skills",
+      "url": "https://github.com/mjunaidca/polymarket-skills",
+      "stars": 91,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-02-26",
+      "skill_count": 6,
+      "tags": [
+        "prediction-markets",
+        "execution",
+        "backtesting"
+      ],
+      "quality": "Composable Polymarket skills, paper-trading-first with a security audit. Thoughtful design.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Dormant since February 2026."
+    },
+    {
+      "full_name": "prof-little-bear/cc-equity-research",
+      "url": "https://github.com/prof-little-bear/cc-equity-research",
+      "stars": 88,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-05-13",
+      "skill_count": 9,
+      "tags": [
+        "equity-research",
+        "macro",
+        "sentiment"
+      ],
+      "quality": "Nine sell-side-shaped skills — initiating coverage, model update, morning note, thesis tracker. Clean and realistic.",
+      "relation": "complementary",
+      "caution": "Apache-2.0 (safe to reuse). Dormant since May 2026."
+    },
+    {
+      "full_name": "HubbleVision/polyhub-skills",
+      "url": "https://github.com/HubbleVision/polyhub-skills",
+      "stars": 78,
+      "license": "MIT",
+      "archived": true,
+      "last_push": "2026-04-07",
+      "skill_count": 6,
+      "tags": [
+        "prediction-markets",
+        "execution",
+        "crypto"
+      ],
+      "quality": "Polymarket copy-trading control from chat clients.",
+      "relation": "avoid",
+      "caution": "ARCHIVED (read-only) since April 2026. Do not depend on it."
+    },
+    {
+      "full_name": "StanleyChanH/Tushare-Finance-Skill-for-Claude-Code",
+      "url": "https://github.com/StanleyChanH/Tushare-Finance-Skill-for-Claude-Code",
+      "stars": 78,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-31",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "data-vendor",
+        "market-data",
+        "macro"
+      ],
+      "quality": "Tushare Pro coverage across 220+ interfaces for A-share quotes, financials and macro.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill; needs a Tushare token with sufficient points for most endpoints."
+    },
+    {
+      "full_name": "gaaiyun/joinquant-skill",
+      "url": "https://github.com/gaaiyun/joinquant-skill",
+      "stars": 77,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-08-31",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "backtesting",
+        "factor-research"
+      ],
+      "quality": "Generates JoinQuant quant strategy code.",
+      "relation": "avoid",
+      "caution": "NOASSERTION licence. Platform-locked to JoinQuant."
+    },
+    {
+      "full_name": "Niceck/hhxg-top-hhxg-python",
+      "url": "https://github.com/Niceck/hhxg-top-hhxg-python",
+      "stars": 74,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-03",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "market-data",
+        "sentiment"
+      ],
+      "quality": "One-line A-share daily market data — money effect, hot themes, limit-up ladder, LHB. Zero config, no token.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill scraping a third-party site; fragile by construction."
+    },
+    {
+      "full_name": "asterdex/aster-skills-hub",
+      "url": "https://github.com/asterdex/aster-skills-hub",
+      "stars": 69,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-04-16",
+      "skill_count": 25,
+      "tags": [
+        "crypto",
+        "broker-api",
+        "execution"
+      ],
+      "quality": "25 skills for the Aster Futures API (v1 HMAC and v3).",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Venue-locked."
+    },
+    {
+      "full_name": "ajeeshworkspace/indian-trading-skills",
+      "url": "https://github.com/ajeeshworkspace/indian-trading-skills",
+      "stars": 68,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-23",
+      "skill_count": 10,
+      "tags": [
+        "india",
+        "technical-analysis",
+        "market-data",
+        "derivatives"
+      ],
+      "quality": "10 skills for NSE/BSE equities, F&O, institutional flows and market breadth.",
+      "relation": "complementary",
+      "caution": "MIT. India-specific; fin-skills has no India coverage."
+    },
+    {
+      "full_name": "ZhiweiChen-coder/OpenAshare",
+      "url": "https://github.com/ZhiweiChen-coder/OpenAshare",
+      "stars": 67,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-31",
+      "skill_count": 0,
+      "tags": [
+        "a-share",
+        "market-data",
+        "technical-analysis"
+      ],
+      "quality": "A-share/HK research web app with agent Q&A.",
+      "relation": "avoid",
+      "caution": "ZERO SKILL.md — it is a Next.js application, not an Agent Skill repo."
+    },
+    {
+      "full_name": "youdotcom-oss/agent-skills",
+      "url": "https://github.com/youdotcom-oss/agent-skills",
+      "stars": 66,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-31",
+      "skill_count": 8,
+      "tags": [
+        "market-data",
+        "sentiment",
+        "meta"
+      ],
+      "quality": "You.com skills for web search, content extraction and finance lookups.",
+      "relation": "complementary",
+      "caution": "MIT. Search-vendor skills; finance is one slice."
+    },
+    {
+      "full_name": "openaccountant/skills",
+      "url": "https://github.com/openaccountant/skills",
+      "stars": 64,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-09",
+      "skill_count": 44,
+      "tags": [
+        "accounting",
+        "tax",
+        "personal-finance"
+      ],
+      "quality": "Tight, concrete small-business bookkeeping: month-end close, depreciation, sales-tax nexus, Stripe/Square/PayPal imports. Does one thing well.",
+      "relation": "complementary",
+      "caution": "MIT. Last pushed April 2026; US tax thresholds inside will drift year to year."
+    },
+    {
+      "full_name": "mirror29/openfinclaw-cli",
+      "url": "https://github.com/mirror29/openfinclaw-cli",
+      "stars": 63,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-05-27",
+      "skill_count": 1,
+      "tags": [
+        "backtesting",
+        "execution",
+        "market-data"
+      ],
+      "quality": "One-stop quant agent — research, strategy, backtest, paper trade — via MCP.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Single skill fronting a CLI product."
+    },
+    {
+      "full_name": "algoderiv/agent-skills",
+      "url": "https://github.com/algoderiv/agent-skills",
+      "stars": 59,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-03-14",
+      "skill_count": 7,
+      "tags": [
+        "a-share",
+        "backtesting",
+        "factor-research"
+      ],
+      "quality": "Seven skills for China quant trading.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Dormant since March 2026."
+    },
+    {
+      "full_name": "fn2ai/fn2-hermes-skill",
+      "url": "https://github.com/fn2ai/fn2-hermes-skill",
+      "stars": 57,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-09",
+      "skill_count": 1,
+      "tags": [
+        "equity-research",
+        "market-data",
+        "sentiment"
+      ],
+      "quality": "Grounded stock/market research with schedulable research agents.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill; agentskills.io vendor ecosystem."
+    },
+    {
+      "full_name": "zubair-trabzada/ai-finance-claude",
+      "url": "https://github.com/zubair-trabzada/ai-finance-claude",
+      "stars": 56,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-05-12",
+      "skill_count": 15,
+      "tags": [
+        "personal-finance",
+        "tax",
+        "portfolio"
+      ],
+      "quality": "15 skills for cash flow, debt, retirement and protection with a FIRE calculator and PDF plans.",
+      "relation": "complementary",
+      "caution": "NOASSERTION licence. Dormant since May 2026."
+    },
+    {
+      "full_name": "ElmatadorZ/MoneyAtlas-ClaudeSkill-Agent",
+      "url": "https://github.com/ElmatadorZ/MoneyAtlas-ClaudeSkill-Agent",
+      "stars": 54,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-08-04",
+      "skill_count": 1,
+      "tags": [
+        "macro",
+        "technical-analysis",
+        "sentiment"
+      ],
+      "quality": "Macro and geopolitics intelligence with an SMC price-structure layer.",
+      "relation": "complementary",
+      "caution": "Apache-2.0. 'Genesis Protocol' framing is unfalsifiable marketing; one skill."
+    },
+    {
+      "full_name": "jeremylongshore/excel-analyst-pro-skill-md",
+      "url": "https://github.com/jeremylongshore/excel-analyst-pro-skill-md",
+      "stars": 54,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-09-01",
+      "skill_count": 1,
+      "tags": [
+        "valuation",
+        "accounting",
+        "equity-research"
+      ],
+      "quality": "DCF, LBO, variance reports and pivot tables driven from natural language.",
+      "relation": "complementary",
+      "caution": "NOASSERTION licence — treat as unlicensed. Single skill."
+    },
+    {
+      "full_name": "DaviddTech/ai-trading-agent",
+      "url": "https://github.com/DaviddTech/ai-trading-agent",
+      "stars": 53,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-05-11",
+      "skill_count": 6,
+      "tags": [
+        "crypto",
+        "backtesting",
+        "technical-analysis"
+      ],
+      "quality": "Six skills for Pine Script authoring, crypto backtests and parameter optimisation, fronting Trader Dev MCP.",
+      "relation": "complementary",
+      "caution": "MIT. Parameter optimisation with no overfitting controls is exactly the failure mode fin-skills warns about."
+    },
+    {
+      "full_name": "noahnan-max/chanlun-trading-system",
+      "url": "https://github.com/noahnan-max/chanlun-trading-system",
+      "stars": 53,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-08-03",
+      "skill_count": 1,
+      "tags": [
+        "technical-analysis",
+        "a-share",
+        "education"
+      ],
+      "quality": "Chan Theory (缠论) as an operational skill — level first, structure first, invalidation point first.",
+      "relation": "complementary",
+      "caution": "NOASSERTION licence. Chan Theory has no peer-reviewed statistical support; treat as a discretionary framework."
+    },
+    {
+      "full_name": "ThomasPraun/mql-developer",
+      "url": "https://github.com/ThomasPraun/mql-developer",
+      "stars": 46,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-02-08",
+      "skill_count": 1,
+      "tags": [
+        "execution",
+        "technical-analysis",
+        "backtesting"
+      ],
+      "quality": "MQL4/MQL5 development for MetaTrader Expert Advisors and indicators.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill; dormant since February 2026. Retail-FX platform niche."
+    },
+    {
+      "full_name": "mariourquia/cre-skills-plugin",
+      "url": "https://github.com/mariourquia/cre-skills-plugin",
+      "stars": 46,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-07-27",
+      "skill_count": 182,
+      "tags": [
+        "real-estate",
+        "valuation",
+        "accounting"
+      ],
+      "quality": "182 SKILL.md of institutional CRE workflow — 1031 exchanges, capital stack, CAM reconciliation, cost segregation.",
+      "relation": "complementary",
+      "caution": "NOASSERTION licence — treat as unlicensed. Easily the deepest CRE skill set found."
+    },
+    {
+      "full_name": "gate/gate-for-ai",
+      "url": "https://github.com/gate/gate-for-ai",
+      "stars": 44,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-03-15",
+      "skill_count": 0,
+      "tags": [
+        "crypto",
+        "broker-api",
+        "meta"
+      ],
+      "quality": "Gate.io AI infrastructure for trading and on-chain queries.",
+      "relation": "avoid",
+      "caution": "MIT but ships ZERO SKILL.md — MCP servers only, mislabelled as skills."
+    },
+    {
+      "full_name": "brandononchain/opentrade",
+      "url": "https://github.com/brandononchain/opentrade",
+      "stars": 41,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-05-17",
+      "skill_count": 0,
+      "tags": [
+        "crypto",
+        "execution",
+        "technical-analysis"
+      ],
+      "quality": "TradingView AI agent with Pine Script and multi-model support.",
+      "relation": "avoid",
+      "caution": "NO LICENCE and ZERO SKILL.md despite the 'skills' pitch."
+    },
+    {
+      "full_name": "alva-ai/skills",
+      "url": "https://github.com/alva-ai/skills",
+      "stars": 40,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-02",
+      "skill_count": 1,
+      "tags": [
+        "market-data",
+        "backtesting",
+        "data-vendor"
+      ],
+      "quality": "Agentic finance apps on the Alva platform with 250+ data sources and cloud-side backtests.",
+      "relation": "complementary",
+      "caution": "MIT but a single skill; the value is behind the Alva platform account."
+    },
+    {
+      "full_name": "hodgesmr/agent-fecfile",
+      "url": "https://github.com/hodgesmr/agent-fecfile",
+      "stars": 40,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-12",
+      "skill_count": 1,
+      "tags": [
+        "compliance",
+        "market-data",
+        "data-vendor"
+      ],
+      "quality": "FEC campaign-finance filing analysis — plugin, skill and MCP server.",
+      "relation": "complementary",
+      "caution": "MIT. Political finance, not markets; well built for its niche."
+    },
+    {
+      "full_name": "EodHistoricalData/eodhd-claude-skills",
+      "url": "https://github.com/EodHistoricalData/eodhd-claude-skills",
+      "stars": 38,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-27",
+      "skill_count": 13,
+      "tags": [
+        "data-vendor",
+        "market-data",
+        "macro",
+        "options",
+        "equity-research"
+      ],
+      "quality": "13 skills over EODHD — 150k tickers, 70+ exchanges, screening, options, macro dashboard.",
+      "relation": "complementary",
+      "caution": "MIT and vendor-official. Requires a paid EODHD key; useful as a reference for vendor-skill design."
+    },
+    {
+      "full_name": "Bhala-Srinivash/nse-trading-skills",
+      "url": "https://github.com/Bhala-Srinivash/nse-trading-skills",
+      "stars": 37,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-03-05",
+      "skill_count": 9,
+      "tags": [
+        "india",
+        "technical-analysis",
+        "risk"
+      ],
+      "quality": "Nine zero-dependency skills — position sizing, stop-loss, trailing stops, RSI divergence, Fibonacci.",
+      "relation": "complementary",
+      "caution": "MIT. Dormant since March 2026; requires a Groww MCP for data."
+    },
+    {
+      "full_name": "videGavin/serenity-analyst",
+      "url": "https://github.com/videGavin/serenity-analyst",
+      "stars": 35,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-05-31",
+      "skill_count": 1,
+      "tags": [
+        "equity-research",
+        "sentiment",
+        "education"
+      ],
+      "quality": "AI-hardware/semiconductor supply-chain chokepoint analysis from the same investor's posts.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill, narrow thesis."
+    },
+    {
+      "full_name": "AIPMAndy/youzi-trading-skill",
+      "url": "https://github.com/AIPMAndy/youzi-trading-skill",
+      "stars": 34,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-05-12",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "technical-analysis",
+        "sentiment"
+      ],
+      "quality": "A-share ultra-short-term system distilled from 23 famous 游资 (hot-money) traders.",
+      "relation": "complementary",
+      "caution": "MIT. Folk trading knowledge, explicitly sentiment-cycle based; no statistical validation."
+    },
+    {
+      "full_name": "lyra81604/who-is-the-best-manager",
+      "url": "https://github.com/lyra81604/who-is-the-best-manager",
+      "stars": 31,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-06-23",
+      "skill_count": 1,
+      "tags": [
+        "equity-research",
+        "a-share",
+        "portfolio"
+      ],
+      "quality": "Traceable comparison of four Chinese equity fund managers using their own words and real holdings.",
+      "relation": "complementary",
+      "caution": "NOASSERTION licence. Narrow but methodologically careful about sourcing."
+    },
+    {
+      "full_name": "SuperJayLiu/AI-for-Economics-and-Finance-Research",
+      "url": "https://github.com/SuperJayLiu/AI-for-Economics-and-Finance-Research",
+      "stars": 30,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-24",
+      "skill_count": 2,
+      "tags": [
+        "research-integrity",
+        "education",
+        "macro"
+      ],
+      "quality": "A practical guide to using LLMs responsibly in economics and finance research.",
+      "relation": "complementary",
+      "caution": "MIT. Two skills; mostly prose guidance."
+    },
+    {
+      "full_name": "quantskills/skill-backtest-overfit",
+      "url": "https://github.com/quantskills/skill-backtest-overfit",
+      "stars": 30,
+      "license": "GPL-3.0",
+      "archived": false,
+      "last_push": "2026-07-16",
+      "skill_count": 1,
+      "tags": [
+        "research-integrity",
+        "backtesting",
+        "factor-research"
+      ],
+      "quality": "Deflated Sharpe, PBO via CSCV, purged/embargoed CV and Harvey-Liu haircuts with runnable Python. The single best standalone overfitting skill found.",
+      "relation": "overlapping",
+      "caution": "GPL-3.0 — copyleft. Adapting its scripts into an MIT/Apache skill library would force your library to GPL. Read it, do not vendor it."
+    },
+    {
+      "full_name": "panaversity/agentfactory-business-plugins",
+      "url": "https://github.com/panaversity/agentfactory-business-plugins",
+      "stars": 28,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-03-26",
+      "skill_count": 97,
+      "tags": [
+        "accounting",
+        "compliance",
+        "wealth-advisory",
+        "meta"
+      ],
+      "quality": "97 SKILL.md across a marketplace of business plugins including finance and banking operations.",
+      "relation": "complementary",
+      "caution": "Apache-2.0. Business-process automation, not market analysis."
+    },
+    {
+      "full_name": "vivy-yi/finance-skills",
+      "url": "https://github.com/vivy-yi/finance-skills",
+      "stars": 26,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-14",
+      "skill_count": 157,
+      "tags": [
+        "accounting",
+        "compliance",
+        "valuation",
+        "personal-finance"
+      ],
+      "quality": "157 SKILL.md across 29 CFO work domains with SAP/Power BI integration. The largest corporate-finance skill set found.",
+      "relation": "complementary",
+      "caution": "MIT. Corporate FP&A and controllership, no market/quant content. Dormant since June 2026."
+    },
+    {
+      "full_name": "samyakjain0606/awesome-stock-skills",
+      "url": "https://github.com/samyakjain0606/awesome-stock-skills",
+      "stars": 25,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-04-26",
+      "skill_count": 5,
+      "tags": [
+        "india",
+        "equity-research",
+        "meta"
+      ],
+      "quality": "Five skills for Indian equity research including concall transcripts.",
+      "relation": "avoid",
+      "caution": "NO LICENCE."
+    },
+    {
+      "full_name": "coinglass-official/coinglass-api-skills",
+      "url": "https://github.com/coinglass-official/coinglass-api-skills",
+      "stars": 24,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-03-26",
+      "skill_count": 1,
+      "tags": [
+        "crypto",
+        "market-data",
+        "data-vendor"
+      ],
+      "quality": "CoinGlass API access for crypto derivatives market data.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Single skill, dormant since March 2026."
+    },
+    {
+      "full_name": "atorber/qmt-trading-skill",
+      "url": "https://github.com/atorber/qmt-trading-skill",
+      "stars": 22,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-14",
+      "skill_count": 22,
+      "tags": [
+        "a-share",
+        "broker-api",
+        "execution"
+      ],
+      "quality": "22 skills pairing a QMT Bridge HTTP/WebSocket service with natural-language trading workflows.",
+      "relation": "complementary",
+      "caution": "MIT. Requires QMT running on Windows; execution-oriented."
+    },
+    {
+      "full_name": "itsadrianxv/quant-strategy-builder-skill",
+      "url": "https://github.com/itsadrianxv/quant-strategy-builder-skill",
+      "stars": 20,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-08-08",
+      "skill_count": 42,
+      "tags": [
+        "backtesting",
+        "execution",
+        "meta"
+      ],
+      "quality": "Quant strategy design skill.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Of 42 SKILL.md, most are vendored generic coding skills (code-review, diagnosing-bugs) under .codex/ — the quant portion is small."
+    },
+    {
+      "full_name": "Abel-ai-lab/predict-anything",
+      "url": "https://github.com/Abel-ai-lab/predict-anything",
+      "stars": 19,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-08-29",
+      "skill_count": 4,
+      "tags": [
+        "factor-research",
+        "ml",
+        "research-integrity",
+        "backtesting"
+      ],
+      "quality": "Causal market analysis, alpha discovery, backtesting and validation.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Pitches 'causal' analysis without published identification strategy."
+    },
+    {
+      "full_name": "get-zeked/finance-super-skill",
+      "url": "https://github.com/get-zeked/finance-super-skill",
+      "stars": 19,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-03-03",
+      "skill_count": 1,
+      "tags": [
+        "accounting",
+        "equity-research",
+        "ml"
+      ],
+      "quality": "Merges seven Perplexity finance skills with data-science and financial-analysis workflows.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Single skill; derivative aggregation."
+    },
+    {
+      "full_name": "mphinance/alpha-skills",
+      "url": "https://github.com/mphinance/alpha-skills",
+      "stars": 19,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-28",
+      "skill_count": 220,
+      "tags": [
+        "backtesting",
+        "factor-research",
+        "equity-research"
+      ],
+      "quality": "Advertised as trading skills for Claude/Gemini agents.",
+      "relation": "avoid",
+      "caution": "MIT, but 220 SKILL.md (136 unique) are mostly a general dev/design kit (blog-post, dashboard, design-brief). The finance content is a small minority — the count is misleading."
+    },
+    {
+      "full_name": "Alexzjt/stock-trading-strategist",
+      "url": "https://github.com/Alexzjt/stock-trading-strategist",
+      "stars": 18,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-06-26",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "technical-analysis",
+        "education"
+      ],
+      "quality": "A-share analysis grounded in classic trading books.",
+      "relation": "avoid",
+      "caution": "NO LICENCE."
+    },
+    {
+      "full_name": "VictorVVedtion/trading-skills",
+      "url": "https://github.com/VictorVVedtion/trading-skills",
+      "stars": 18,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-07",
+      "skill_count": 10,
+      "tags": [
+        "technical-analysis",
+        "risk",
+        "education"
+      ],
+      "quality": "68 trader personas as skills (Buffett reviews your trades, Simons asks if you backtested). Entertaining framing over a thin base.",
+      "relation": "complementary",
+      "caution": "MIT. 10 SKILL.md, not 68 personas' worth of content. Novelty repo."
+    },
+    {
+      "full_name": "coopersimson96/kronos-claude-skill",
+      "url": "https://github.com/coopersimson96/kronos-claude-skill",
+      "stars": 18,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-05-28",
+      "skill_count": 1,
+      "tags": [
+        "technical-analysis",
+        "ml",
+        "equity-research"
+      ],
+      "quality": "Wraps the Kronos price-prediction model as a skill.",
+      "relation": "avoid",
+      "caution": "NO LICENCE, and 'Wall Street's billion dollar stock prediction AI' is marketing, not evidence."
+    },
+    {
+      "full_name": "6missedcalls/personal-finance-skill",
+      "url": "https://github.com/6missedcalls/personal-finance-skill",
+      "stars": 17,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-02-27",
+      "skill_count": 1,
+      "tags": [
+        "personal-finance",
+        "broker-api",
+        "data-vendor"
+      ],
+      "quality": "Personal finance with 75 tools across banking (Plaid) and trading extensions.",
+      "relation": "complementary",
+      "caution": "MIT. Single SKILL.md; dormant since February 2026."
+    },
+    {
+      "full_name": "zirui-song/claude-skills",
+      "url": "https://github.com/zirui-song/claude-skills",
+      "stars": 17,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-12",
+      "skill_count": 15,
+      "tags": [
+        "research-integrity",
+        "macro",
+        "ml"
+      ],
+      "quality": "15 skills for empirical research in economics and finance.",
+      "relation": "complementary",
+      "caution": "MIT. Econometrics workflow rather than market methodology, but the closest academic-rigour repo with a clean licence."
+    },
+    {
+      "full_name": "d-wwei/openclaw-financial-services",
+      "url": "https://github.com/d-wwei/openclaw-financial-services",
+      "stars": 16,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-02-25",
+      "skill_count": 100,
+      "tags": [
+        "wealth-advisory",
+        "equity-research",
+        "compliance",
+        "accounting"
+      ],
+      "quality": "100 skills across banking, equity research, private equity and wealth management.",
+      "relation": "complementary",
+      "caution": "Apache-2.0 (safe). Dormant since February 2026; breadth unverified."
+    },
+    {
+      "full_name": "spyderweb47/Vibe-Trade",
+      "url": "https://github.com/spyderweb47/Vibe-Trade",
+      "stars": 15,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-04-22",
+      "skill_count": 6,
+      "tags": [
+        "execution",
+        "backtesting",
+        "technical-analysis"
+      ],
+      "quality": "An agent framework where you drop a SKILL.md to declare tools; includes planner and backtester.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Dormant since April 2026."
+    },
+    {
+      "full_name": "xvary-research/claude-code-stock-analysis-skill",
+      "url": "https://github.com/xvary-research/claude-code-stock-analysis-skill",
+      "stars": 15,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-03-23",
+      "skill_count": 2,
+      "tags": [
+        "equity-research",
+        "market-data",
+        "valuation"
+      ],
+      "quality": "SEC EDGAR plus market data with /analyze /score /compare, local Python tools, no paid API.",
+      "relation": "complementary",
+      "caution": "MIT. Only two skills, dormant since March 2026."
+    },
+    {
+      "full_name": "cmoralesm/P123-Claude-Skill",
+      "url": "https://github.com/cmoralesm/P123-Claude-Skill",
+      "stars": 14,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-11",
+      "skill_count": 1,
+      "tags": [
+        "factor-research",
+        "backtesting",
+        "data-vendor",
+        "equity-research"
+      ],
+      "quality": "Portfolio123 wrapper — 464 functions and 4456 factors verified line-by-line against official docs. Unusual documentation discipline.",
+      "relation": "complementary",
+      "caution": "MIT but requires a paid Portfolio123 subscription; single skill."
+    },
+    {
+      "full_name": "kesslerio/finance-news-openclaw-skill",
+      "url": "https://github.com/kesslerio/finance-news-openclaw-skill",
+      "stars": 14,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-08-29",
+      "skill_count": 1,
+      "tags": [
+        "sentiment",
+        "macro",
+        "market-data"
+      ],
+      "quality": "Finance news skill for OpenClaw.",
+      "relation": "complementary",
+      "caution": "Apache-2.0. Single skill, no description in the repo."
+    },
+    {
+      "full_name": "tellmefrankie/ai-investment-skills",
+      "url": "https://github.com/tellmefrankie/ai-investment-skills",
+      "stars": 14,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-05-24",
+      "skill_count": 14,
+      "tags": [
+        "options",
+        "equity-research",
+        "risk"
+      ],
+      "quality": "Six retail-investor skills — options flow scanner, stop-loss monitor, earnings risk, sector rotation.",
+      "relation": "complementary",
+      "caution": "MIT. Explicit 'free tier' framing suggests a commercial funnel."
+    },
+    {
+      "full_name": "Weaxs/stock-analysis-plugin",
+      "url": "https://github.com/Weaxs/stock-analysis-plugin",
+      "stars": 13,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 20,
+      "tags": [
+        "market-data",
+        "equity-research",
+        "technical-analysis"
+      ],
+      "quality": "20 skills for market data tools and strategy analysis on Pi Agent.",
+      "relation": "avoid",
+      "caution": "NO LICENCE."
+    },
+    {
+      "full_name": "elfa-ai/claude-ai-trading-skill",
+      "url": "https://github.com/elfa-ai/claude-ai-trading-skill",
+      "stars": 13,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-03-17",
+      "skill_count": 1,
+      "tags": [
+        "crypto",
+        "sentiment",
+        "data-vendor"
+      ],
+      "quality": "Elfa API skill for trending tokens, social mentions and narratives.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Single skill, dormant."
+    },
+    {
+      "full_name": "lj22503/awesome-finai-tools-zn",
+      "url": "https://github.com/lj22503/awesome-finai-tools-zn",
+      "stars": 13,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-29",
+      "skill_count": 1,
+      "tags": [
+        "meta",
+        "a-share",
+        "market-data"
+      ],
+      "quality": "Chinese finance-AI landscape map — market-data MCPs, quant frameworks, broker skills, Python libraries.",
+      "relation": "complementary",
+      "caution": "MIT. The single most useful discovery index for the Chinese half of this ecosystem."
+    },
+    {
+      "full_name": "brainbytes-dev/everything-claude-trading",
+      "url": "https://github.com/brainbytes-dev/everything-claude-trading",
+      "stars": 12,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-03-14",
+      "skill_count": 82,
+      "tags": [
+        "backtesting",
+        "research-integrity",
+        "options",
+        "derivatives",
+        "ml",
+        "execution",
+        "macro",
+        "portfolio"
+      ],
+      "quality": "82 skills spanning overfitting-prevention, walk-forward optimization, vol surfaces, TCA, Black-Litterman and RL. The widest topical map of quant finance in the ecosystem — breadth over verified depth.",
+      "relation": "overlapping",
+      "caution": "MIT. Only 12 stars and untouched since March 2026; treat the coverage map as a checklist, not as vetted content."
+    },
+    {
+      "full_name": "flyhunterl/pi2-skill",
+      "url": "https://github.com/flyhunterl/pi2-skill",
+      "stars": 10,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-04-29",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "market-data",
+        "execution"
+      ],
+      "quality": "OpenAI-compatible API bridge to the π弈 quant platform for A-share data and advice.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Vendor bridge."
+    },
+    {
+      "full_name": "skills-il/accounting",
+      "url": "https://github.com/skills-il/accounting",
+      "stars": 10,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-27",
+      "skill_count": 14,
+      "tags": [
+        "accounting",
+        "tax",
+        "compliance"
+      ],
+      "quality": "14 skills for Israeli accounting — payroll, e-invoice, bank reconciliation, Hashavshevet.",
+      "relation": "complementary",
+      "caution": "MIT. Jurisdiction-specific (Israel) and the better for it."
+    },
+    {
+      "full_name": "alphaparkinc/openclaw-genpark-finance",
+      "url": "https://github.com/alphaparkinc/openclaw-genpark-finance",
+      "stars": 9,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-04-22",
+      "skill_count": 1,
+      "tags": [
+        "equity-research",
+        "valuation",
+        "education"
+      ],
+      "quality": "GenPark value-investing skill.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Single skill."
+    },
+    {
+      "full_name": "daringanitch/claude-stock-analyst",
+      "url": "https://github.com/daringanitch/claude-stock-analyst",
+      "stars": 9,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-29",
+      "skill_count": 17,
+      "tags": [
+        "equity-research",
+        "technical-analysis",
+        "valuation"
+      ],
+      "quality": "17 skills covering stocks and ETFs with a single install script.",
+      "relation": "complementary",
+      "caution": "MIT. Modest traction; unverified depth."
+    },
+    {
+      "full_name": "seuzxh/quant-factor-skill",
+      "url": "https://github.com/seuzxh/quant-factor-skill",
+      "stars": 9,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-05-10",
+      "skill_count": 1,
+      "tags": [
+        "factor-research",
+        "a-share",
+        "ml"
+      ],
+      "quality": "Bundles Qlib Alpha158/360 with WorldQuant Alpha101 — 619 factors.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill; a factor dump without evaluation methodology."
+    },
+    {
+      "full_name": "HHFinAi/claude-equity-research-skills",
+      "url": "https://github.com/HHFinAi/claude-equity-research-skills",
+      "stars": 8,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-15",
+      "skill_count": 7,
+      "tags": [
+        "equity-research",
+        "valuation",
+        "portfolio"
+      ],
+      "quality": "Buy-side fundamental analysis playbook as seven skills.",
+      "relation": "complementary",
+      "caution": "MIT. Small and dormant."
+    },
+    {
+      "full_name": "Sperax/sperax-skills",
+      "url": "https://github.com/Sperax/sperax-skills",
+      "stars": 8,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-06",
+      "skill_count": 42,
+      "tags": [
+        "defi",
+        "crypto",
+        "execution"
+      ],
+      "quality": "42 skills for DeFi, MCP servers and Web3 tooling in the Sperax ecosystem.",
+      "relation": "complementary",
+      "caution": "MIT. Ecosystem-specific; yield/tooling rather than research."
+    },
+    {
+      "full_name": "mncrftfrcnm/mexc-agent-trading-skills",
+      "url": "https://github.com/mncrftfrcnm/mexc-agent-trading-skills",
+      "stars": 8,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-08-12",
+      "skill_count": 12,
+      "tags": [
+        "crypto",
+        "broker-api",
+        "execution"
+      ],
+      "quality": "12 skills over the official MEXC API — spot and futures.",
+      "relation": "complementary",
+      "caution": "Apache-2.0. Venue-locked."
+    },
+    {
+      "full_name": "xxbbzy/ptrade-agent-skills",
+      "url": "https://github.com/xxbbzy/ptrade-agent-skills",
+      "stars": 8,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-06",
+      "skill_count": 1,
+      "tags": [
+        "a-share",
+        "broker-api",
+        "execution"
+      ],
+      "quality": "Ptrade strategy authoring skill for Chinese brokerages.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill, narrow platform."
+    },
+    {
+      "full_name": "rgourley/quant-garage",
+      "url": "https://github.com/rgourley/quant-garage",
+      "stars": 7,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-07-19",
+      "skill_count": 62,
+      "tags": [
+        "equity-research",
+        "event-study",
+        "options",
+        "factor-research",
+        "execution",
+        "risk",
+        "macro"
+      ],
+      "quality": "62 analyst workflow skills — event studies, signal decay, Hurst exponent, regime audit, TCA, corporate-actions reconciliation. Unusually sophisticated for a 7-star repo.",
+      "relation": "overlapping",
+      "caution": "NOASSERTION licence (GitHub could not identify it) — treat as unlicensed until confirmed. Depends on the paid Massive API in places."
+    },
+    {
+      "full_name": "teamtinvio/jaz-ai",
+      "url": "https://github.com/teamtinvio/jaz-ai",
+      "stars": 7,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 28,
+      "tags": [
+        "accounting",
+        "meta",
+        "data-vendor"
+      ],
+      "quality": "28 skills plus MCP tools and CLI for the Jaz accounting platform.",
+      "relation": "complementary",
+      "caution": "MIT. Vendor-locked to Jaz."
+    },
+    {
+      "full_name": "MantaDigital/stingray-agent-skills",
+      "url": "https://github.com/MantaDigital/stingray-agent-skills",
+      "stars": 6,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-07-20",
+      "skill_count": 1,
+      "tags": [
+        "backtesting",
+        "execution",
+        "technical-analysis"
+      ],
+      "quality": "Single skill for building and testing strategies with the Stingray platform.",
+      "relation": "complementary",
+      "caution": "Apache-2.0 but platform-locked and minimal."
+    },
+    {
+      "full_name": "StanleyChanH/super-hedge-fund-skill",
+      "url": "https://github.com/StanleyChanH/super-hedge-fund-skill",
+      "stars": 6,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-03-07",
+      "skill_count": 1,
+      "tags": [
+        "equity-research",
+        "portfolio",
+        "risk"
+      ],
+      "quality": "Multi-agent hedge-fund analyst with eight roles.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill; dormant since March 2026."
+    },
+    {
+      "full_name": "ml4t/skills",
+      "url": "https://github.com/ml4t/skills",
+      "stars": 6,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 61,
+      "tags": [
+        "research-integrity",
+        "backtesting",
+        "factor-research",
+        "ml",
+        "portfolio",
+        "market-data"
+      ],
+      "quality": "The closest thing to a rigorous methodology library: explicit skills for data leakage, lookahead bias, survivorship, purging/embargo, CPCV, deflated Sharpe and walk-forward CV. Stefan Jansen's ML4T material, cleanly decomposed.",
+      "relation": "overlapping",
+      "caution": "Direct scope overlap with fin-skills' research-integrity core. Apache-2.0 so reuse is clean, but it is brand new (6 stars) and unproven in the wild."
+    },
+    {
+      "full_name": "Assaad-FT/assaad-skills",
+      "url": "https://github.com/Assaad-FT/assaad-skills",
+      "stars": 5,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-02-04",
+      "skill_count": 0,
+      "tags": [
+        "equity-research",
+        "valuation",
+        "education"
+      ],
+      "quality": "Advertises 48 Wall Street analyst and legendary-investor frameworks.",
+      "relation": "avoid",
+      "caution": "NO LICENCE and ZERO SKILL.md."
+    },
+    {
+      "full_name": "Greenrestlessness223/alpha-skills",
+      "url": "https://github.com/Greenrestlessness223/alpha-skills",
+      "stars": 5,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 9,
+      "tags": [
+        "factor-research",
+        "backtesting",
+        "ml"
+      ],
+      "quality": "Factor discovery, alpha testing and decay tracking. Near-identical structure to VernonOY/alpha-skills.",
+      "relation": "overlapping",
+      "caution": "Apache-2.0. Appears to be a fork/derivative of VernonOY/alpha-skills; verify provenance before citing."
+    },
+    {
+      "full_name": "moinsen-dev/stock-analysis",
+      "url": "https://github.com/moinsen-dev/stock-analysis",
+      "stars": 5,
+      "license": "NONE",
+      "archived": true,
+      "last_push": "2026-02-03",
+      "skill_count": 1,
+      "tags": [
+        "equity-research",
+        "crypto",
+        "portfolio"
+      ],
+      "quality": "Stock and crypto analysis with portfolio tracking.",
+      "relation": "avoid",
+      "caution": "ARCHIVED and NO LICENCE."
+    },
+    {
+      "full_name": "AlexLiu0130/ibkr-options-assistant",
+      "url": "https://github.com/AlexLiu0130/ibkr-options-assistant",
+      "stars": 4,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-05-15",
+      "skill_count": 1,
+      "tags": [
+        "options",
+        "broker-api",
+        "risk"
+      ],
+      "quality": "IBKR options assistant — Greeks, McMillan/Overby strategies, wheel tracking.",
+      "relation": "complementary",
+      "caution": "MIT but a single skill; overlaps staskh/trading_skills."
+    },
+    {
+      "full_name": "Receiptor-AI/bookkeeping-skills",
+      "url": "https://github.com/Receiptor-AI/bookkeeping-skills",
+      "stars": 4,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-03",
+      "skill_count": 14,
+      "tags": [
+        "accounting",
+        "tax",
+        "personal-finance"
+      ],
+      "quality": "14 US bookkeeping skills — Schedule C, 1099, depreciation, home office, mileage.",
+      "relation": "complementary",
+      "caution": "MIT. Overlaps openaccountant/skills heavily."
+    },
+    {
+      "full_name": "moremeds/unusual-whales-skill",
+      "url": "https://github.com/moremeds/unusual-whales-skill",
+      "stars": 4,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-03-22",
+      "skill_count": 1,
+      "tags": [
+        "options",
+        "data-vendor",
+        "sentiment"
+      ],
+      "quality": "Unusual Whales options analysis — GEX, flow, VRP put-selling.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Requires a paid Unusual Whales subscription."
+    },
+    {
+      "full_name": "rucmeteor1025/chanlun-skills",
+      "url": "https://github.com/rucmeteor1025/chanlun-skills",
+      "stars": 4,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-12",
+      "skill_count": 2,
+      "tags": [
+        "technical-analysis",
+        "a-share",
+        "backtesting"
+      ],
+      "quality": "Chan Theory engine with fractal/stroke/pivot pipeline and walk-forward backtesting.",
+      "relation": "complementary",
+      "caution": "MIT. Walk-forward on a discretionary pattern language; the engine is more interesting than the theory."
+    },
+    {
+      "full_name": "6missedcalls/awesome-agent-skills",
+      "url": "https://github.com/6missedcalls/awesome-agent-skills",
+      "stars": 3,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-02-27",
+      "skill_count": 0,
+      "tags": [
+        "meta",
+        "education",
+        "market-data"
+      ],
+      "quality": "A curated list of open-source agent skills including finance.",
+      "relation": "avoid",
+      "caution": "NO LICENCE and ZERO SKILL.md; a README list, and a short one."
+    },
+    {
+      "full_name": "bquirog/biotech-valuation-workflow",
+      "url": "https://github.com/bquirog/biotech-valuation-workflow",
+      "stars": 3,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-11",
+      "skill_count": 0,
+      "tags": [
+        "valuation",
+        "equity-research",
+        "meta"
+      ],
+      "quality": "Pre-commercial biotech equity research with disease models.",
+      "relation": "avoid",
+      "caution": "ZERO SKILL.md despite being described as a skill."
+    },
+    {
+      "full_name": "kc-lui/quant-research-agent",
+      "url": "https://github.com/kc-lui/quant-research-agent",
+      "stars": 3,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-18",
+      "skill_count": 8,
+      "tags": [
+        "factor-research",
+        "backtesting",
+        "portfolio",
+        "ml"
+      ],
+      "quality": "Encodes the Green Book knowledge base into eight skills with executable Python.",
+      "relation": "overlapping",
+      "caution": "MIT. Only 3 stars, dormant since April 2026, but the scope is fin-skills-adjacent."
+    },
+    {
+      "full_name": "tradeparadex/paradex-skills",
+      "url": "https://github.com/tradeparadex/paradex-skills",
+      "stars": 3,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-15",
+      "skill_count": 13,
+      "tags": [
+        "crypto",
+        "execution",
+        "options",
+        "backtesting",
+        "risk"
+      ],
+      "quality": "13 skills for Paradex — execution analyst, risk guardian, strategy backtester, options pricer. Better structured than most venue repos.",
+      "relation": "complementary",
+      "caution": "MIT but venue-locked to Paradex."
+    },
+    {
+      "full_name": "Howard-Jerry/quant-agent-skills",
+      "url": "https://github.com/Howard-Jerry/quant-agent-skills",
+      "stars": 2,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-05",
+      "skill_count": 3,
+      "tags": [
+        "equity-research",
+        "a-share",
+        "factor-research"
+      ],
+      "quality": "Concept, single-stock and industry research orchestration from six months of daily use.",
+      "relation": "complementary",
+      "caution": "MIT. Three skills; author reports real usage, which is rare."
+    },
+    {
+      "full_name": "Serennity007/awesome-stock-quant-skills",
+      "url": "https://github.com/Serennity007/awesome-stock-quant-skills",
+      "stars": 2,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 227,
+      "tags": [
+        "meta",
+        "a-share",
+        "factor-research"
+      ],
+      "quality": "Aggregates 227 SKILL.md copied from other people's repos into one index.",
+      "relation": "avoid",
+      "caution": "NOASSERTION licence over vendored copies of third-party skills with mixed original licences. Redistribution provenance is unclear."
+    },
+    {
+      "full_name": "artherahq/skills",
+      "url": "https://github.com/artherahq/skills",
+      "stars": 2,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-09-04",
+      "skill_count": 23,
+      "tags": [
+        "research-integrity",
+        "factor-research",
+        "backtesting",
+        "portfolio",
+        "equity-research",
+        "execution"
+      ],
+      "quality": "Small but pointed: backtest-validation, multiple-testing-correction, point-in-time-research, factor-research. Exactly fin-skills' thesis, at a fraction of the depth, mixed in with unrelated UI-design skills.",
+      "relation": "overlapping",
+      "caution": "Apache-2.0. Only 2 stars and half the repo is design/UI skills — a hybrid dump rather than a focused library."
+    },
+    {
+      "full_name": "cynco-labs/ai-accounting-skills",
+      "url": "https://github.com/cynco-labs/ai-accounting-skills",
+      "stars": 2,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-09",
+      "skill_count": 95,
+      "tags": [
+        "accounting",
+        "compliance",
+        "tax"
+      ],
+      "quality": "95 SKILL.md (48 unique) for folder-dump-to-books with Beancount/Fava, MPERS-aware, with hard gates.",
+      "relation": "complementary",
+      "caution": "MIT. Malaysia/MPERS-flavoured; the 'hard gates' design is notable."
+    },
+    {
+      "full_name": "gokulsvision/crewm8-cfo-skills",
+      "url": "https://github.com/gokulsvision/crewm8-cfo-skills",
+      "stars": 2,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-29",
+      "skill_count": 36,
+      "tags": [
+        "accounting",
+        "personal-finance",
+        "valuation"
+      ],
+      "quality": "36 modular startup-finance skills.",
+      "relation": "complementary",
+      "caution": "MIT. Two stars, dormant."
+    },
+    {
+      "full_name": "m-binimran/finance-pack",
+      "url": "https://github.com/m-binimran/finance-pack",
+      "stars": 2,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-14",
+      "skill_count": 15,
+      "tags": [
+        "compliance",
+        "equity-research",
+        "research-integrity"
+      ],
+      "quality": "Data-integrity citation enforcement, SEC/FINRA disclaimers and projection labelling.",
+      "relation": "complementary",
+      "caution": "MIT. Small, but the disclaimer/citation-discipline angle is genuinely scarce."
+    },
+    {
+      "full_name": "Denymbird/accounts-receivable-skills",
+      "url": "https://github.com/Denymbird/accounts-receivable-skills",
+      "stars": 1,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-13",
+      "skill_count": 1,
+      "tags": [
+        "accounting",
+        "data-vendor",
+        "compliance"
+      ],
+      "quality": "Accounts receivable for Xero and QuickBooks — aged receivables, DSO, chase emails.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill."
+    },
+    {
+      "full_name": "FoundationalResearch/fixedincome",
+      "url": "https://github.com/FoundationalResearch/fixedincome",
+      "stars": 1,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-03-03",
+      "skill_count": 1,
+      "tags": [
+        "fixed-income",
+        "risk",
+        "portfolio"
+      ],
+      "quality": "Bond analysis, yield curves, duration, credit spreads and portfolio construction.",
+      "relation": "complementary",
+      "caution": "MIT. A single skill, but fixed income is one of the emptiest corners of the ecosystem."
+    },
+    {
+      "full_name": "Kuan-1113/kuan-trading-skills",
+      "url": "https://github.com/Kuan-1113/kuan-trading-skills",
+      "stars": 1,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-06-10",
+      "skill_count": 9,
+      "tags": [
+        "technical-analysis",
+        "crypto",
+        "options",
+        "portfolio"
+      ],
+      "quality": "Taiwan stocks, crypto, futures, options and Kelly sizing.",
+      "relation": "avoid",
+      "caution": "NO LICENCE."
+    },
+    {
+      "full_name": "anasvakyathodi/indian-stock-analysis",
+      "url": "https://github.com/anasvakyathodi/indian-stock-analysis",
+      "stars": 1,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-07",
+      "skill_count": 1,
+      "tags": [
+        "india",
+        "equity-research",
+        "tax",
+        "personal-finance"
+      ],
+      "quality": "Indian market skill covering stocks, mutual funds, SIP planning, tax and backtesting.",
+      "relation": "complementary",
+      "caution": "MIT. Single skill spread across many claimed features."
+    },
+    {
+      "full_name": "yeshelloAB/investment-analysis-skills",
+      "url": "https://github.com/yeshelloAB/investment-analysis-skills",
+      "stars": 1,
+      "license": "Apache-2.0",
+      "archived": false,
+      "last_push": "2026-06-17",
+      "skill_count": 14,
+      "tags": [
+        "equity-research",
+        "valuation",
+        "research-integrity"
+      ],
+      "quality": "Stage-locked, red-team-reviewed investment analysis. The stage-gating idea is unusually disciplined.",
+      "relation": "complementary",
+      "caution": "Apache-2.0. One star; unproven but structurally sound."
+    },
+    {
+      "full_name": "DrDivS/notsosebi-trading-skills",
+      "url": "https://github.com/DrDivS/notsosebi-trading-skills",
+      "stars": 0,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-04-04",
+      "skill_count": 23,
+      "tags": [
+        "india",
+        "options",
+        "technical-analysis",
+        "backtesting"
+      ],
+      "quality": "22 skills for Indian NSE/BSE F&O — OI analysis, VCP, ICT, Greeks, and Vedic astrology.",
+      "relation": "avoid",
+      "caution": "MIT, but bundling Vedic astrology with options Greeks disqualifies it as a methodology source."
+    },
+    {
+      "full_name": "MosoFin/mosofin-finance-skills",
+      "url": "https://github.com/MosoFin/mosofin-finance-skills",
+      "stars": 0,
+      "license": "AGPL-3.0",
+      "archived": false,
+      "last_push": "2026-09-01",
+      "skill_count": 11,
+      "tags": [
+        "accounting",
+        "data-vendor",
+        "compliance"
+      ],
+      "quality": "11 read-only accounting skills running against your own books via the MosoFin MCP gateway.",
+      "relation": "avoid",
+      "caution": "AGPL-3.0 — the strongest copyleft in this catalogue. Network use triggers source-disclosure obligations. Do not vendor."
+    },
+    {
+      "full_name": "Serennity007/claude-trading-skills-67",
+      "url": "https://github.com/Serennity007/claude-trading-skills-67",
+      "stars": 0,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-25",
+      "skill_count": 67,
+      "tags": [
+        "crypto",
+        "defi",
+        "execution"
+      ],
+      "quality": "A self-declared unofficial mirror of agiprolabs/claude-trading-skills.",
+      "relation": "avoid",
+      "caution": "Mirror, not an original source. Use the upstream agiprolabs repo instead."
+    },
+    {
+      "full_name": "Viprasol-Tech/viprasol-agent-skills",
+      "url": "https://github.com/Viprasol-Tech/viprasol-agent-skills",
+      "stars": 0,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-06-14",
+      "skill_count": 0,
+      "tags": [
+        "crypto",
+        "execution",
+        "personal-finance"
+      ],
+      "quality": "Fintech-focused agent skills collection.",
+      "relation": "avoid",
+      "caution": "ZERO SKILL.md — an empty shell."
+    },
+    {
+      "full_name": "blaze10011/market-flow-desk",
+      "url": "https://github.com/blaze10011/market-flow-desk",
+      "stars": 0,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-07-10",
+      "skill_count": 18,
+      "tags": [
+        "factor-research",
+        "macro",
+        "execution"
+      ],
+      "quality": "18 skills plus 23 Python engines modelling capital rotation and sector flows.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Zero stars but unusually substantial — worth reading, not reusing."
+    },
+    {
+      "full_name": "carollefkowitr0-a11y/freqtrade-agent-skills",
+      "url": "https://github.com/carollefkowitr0-a11y/freqtrade-agent-skills",
+      "stars": 0,
+      "license": "NOASSERTION",
+      "archived": false,
+      "last_push": "2026-05-15",
+      "skill_count": 8,
+      "tags": [
+        "crypto",
+        "backtesting",
+        "execution"
+      ],
+      "quality": "Eight skills for Freqtrade strategy coding, backtesting and risk gates.",
+      "relation": "avoid",
+      "caution": "NOASSERTION licence, zero stars, throwaway-looking account name."
+    },
+    {
+      "full_name": "shinny-xuyida/tqsdk-agent-skills",
+      "url": "https://github.com/shinny-xuyida/tqsdk-agent-skills",
+      "stars": 0,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-06-02",
+      "skill_count": 1,
+      "tags": [
+        "derivatives",
+        "backtesting",
+        "broker-api",
+        "a-share"
+      ],
+      "quality": "TqSdk skills for Chinese futures market data, simulation and backtesting.",
+      "relation": "avoid",
+      "caution": "NO LICENCE. Single skill."
+    },
+    {
+      "full_name": "sujoypaulhome/claude-options-trading-skills",
+      "url": "https://github.com/sujoypaulhome/claude-options-trading-skills",
+      "stars": 0,
+      "license": "NONE",
+      "archived": false,
+      "last_push": "2026-03-28",
+      "skill_count": 5,
+      "tags": [
+        "options",
+        "execution",
+        "backtesting"
+      ],
+      "quality": "Five TastyTrade vertical-credit-spread skills claiming an 86.7% win rate.",
+      "relation": "avoid",
+      "caution": "NO LICENCE, and a headline win-rate claim with no deflated-Sharpe or multiple-testing evidence — the exact pattern fin-skills exists to catch."
+    },
+    {
+      "full_name": "tidyflowhq/accounting-firm-skills",
+      "url": "https://github.com/tidyflowhq/accounting-firm-skills",
+      "stars": 0,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-08-06",
+      "skill_count": 12,
+      "tags": [
+        "accounting",
+        "tax",
+        "compliance"
+      ],
+      "quality": "12 skills for accounting-firm operations — document chasing, engagement letters, month-end close.",
+      "relation": "complementary",
+      "caution": "MIT. Zero stars; practice-management rather than accounting mechanics."
+    },
+    {
+      "full_name": "yonatangross/finance-skills",
+      "url": "https://github.com/yonatangross/finance-skills",
+      "stars": 0,
+      "license": "MIT",
+      "archived": false,
+      "last_push": "2026-07-05",
+      "skill_count": 3,
+      "tags": [
+        "equity-research",
+        "market-data",
+        "portfolio"
+      ],
+      "quality": "Global capital-markets skills — stock analysis, S&P/NASDAQ screener, ETF analyzer.",
+      "relation": "complementary",
+      "caution": "MIT. Zero stars, three skills."
+    }
+  ]
+}

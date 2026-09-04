@@ -6,7 +6,7 @@ backtester**. It has no simulation layer at all; everything it returns is live v
 | | |
 |---|---|
 | pip | `ccxt` · **4.5.77 (2026-09-01)** · **1,617 releases** — roughly daily |
-| GitHub | `ccxt/ccxt` — **43,863★**, 846 open issues, pushed 2026-09-04 ✅ |
+| GitHub | `ccxt/ccxt` — **43,863★**, 234 open issues, pushed 2026-09-04 ✅ |
 | Licence | **MIT** ✅ (GitHub API `license.spdx_id`). ⚠️ PyPI `info.license` is null and there is **no licence classifier** — do not read PyPI metadata as the answer |
 | Python | `requires_python >=3.10` ✅ · pure-python wheel (`py3-none-any`) + sdist — installs anywhere |
 | Maintenance | ✅ Extremely active. Multi-language repo (JS/TS/Python/C#/PHP/Go) generated from one source |

@@ -35,7 +35,7 @@ hard dependency). Peak speed traded for install reliability — the opposite bar
 ## 🚨 `py_vollib_vectorized` is a trap
 
 `py_vollib_vectorized` **0.1.1, released 2021-02-28 — no PyPI release in 5.5 years.** Repo
-`marcdemers/py_vollib_vectorized`, 160★, 20 open issues, last pushed 2024-12-02.
+`marcdemers/py_vollib_vectorized`, 160★, 4 open issues, last pushed 2024-12-02.
 
 Its mechanism is the problem: it **monkey-patches `py_vollib` internals**, pinning
 `py-vollib>=1.0.1` and `numba>=0.51`. But `py_vollib` is now a **4-file shim with no library code** —

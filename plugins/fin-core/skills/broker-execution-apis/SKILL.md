@@ -29,7 +29,7 @@ order, regardless of broker.
 | IB, vendor code | `ibapi` **10.x from IB's own site** | PyPI's 9.81.1 (2020-12-06) is badly stale. IB non-commercial licence |
 | IB, reconciliation | `ibflex` | Parses IB Flex XML activity/trade reports — end-of-day truth |
 | **Alpaca** | **`alpaca-py` 0.44.0** | ✅ active. `alpaca-trade-api` is deprecated |
-| **Schwab** | `schwab-py` 1.5.1 | ⚠️ works, but `main` stalled ~13 months, 88 open issues. See the 7-day token limit below |
+| **Schwab** | `schwab-py` 1.5.1 | ⚠️ works, but `main` stalled ~13 months, 39 open issues. See the 7-day token limit below |
 | Tastytrade | `tastytrade` 13.2.3 | ✅ active, small |
 | **Crypto, any venue** | **`ccxt` 4.5.77** | ✅ MIT, ~daily releases, 100+ venues |
 | FIX, full session | `quickfix` | The reference open FIX engine. Heavyweight, C++ toolchain |

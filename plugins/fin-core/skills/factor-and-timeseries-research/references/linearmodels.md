@@ -10,7 +10,7 @@ cross-sectional asset pricing this is not one option among several — it is the
 | Version | **7.0** (2025-10-21) — a major bump from 6.1 (2024-09-24). 45 releases since 1.0 (2017) |
 | Licence | ⚠️ **NCSA** — permissive and BSD-like, but **not** BSD or MIT. Flag it if you have a strict licence allowlist |
 | Python | `>=3.10`, classifiers 3.10–3.13 |
-| GitHub | `bashtage/linearmodels` — 1,066★, 198 forks, 51 open issues, pushed **2026-08-31** |
+| GitHub | `bashtage/linearmodels` — 1,066★, 198 forks, 43 open issues, pushed **2026-08-31** |
 | Deps | numpy, pandas, scipy, `statsmodels>=0.13`, **`formulaic>=1.2.1`** (not patsy), `pyhdfe>=0.1` |
 | Status | ✅ healthy, actively maintained. Same author as `arch` (Kevin Sheppard) |
 

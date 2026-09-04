@@ -6,7 +6,7 @@ important footgun in the domain**, which is a default, not a bug.
 | | |
 |---|---|
 | pip | `vectorbt` · **1.1.0 (2026-07-05)**; **1.0.0 landed 2026-04-22** |
-| GitHub | `polakowo/vectorbt` — 8,978★, 140 open issues, pushed 2026-08-02 |
+| GitHub | `polakowo/vectorbt` — 8,978★, 121 open issues, pushed 2026-08-02 |
 | Licence | 🚨 **Apache-2.0 + Commons Clause** (read in `LICENSE.md`) — **not OSI open source** |
 | Status | ✅ **revived.** The OSS edition was widely believed frozen behind PRO. It is not |
 
