@@ -98,8 +98,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 9790,
-      "approx_body_tokens": 2447,
+      "body_chars": 13241,
+      "approx_body_tokens": 3310,
       "references": [],
       "scripts": []
     },
@@ -145,8 +145,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 8112,
-      "approx_body_tokens": 2028,
+      "body_chars": 8355,
+      "approx_body_tokens": 2088,
       "references": [
         "_decision-table.md"
       ],

@@ -27,10 +27,14 @@ and 365× between libraries**, and **a licence trap in the most-recommended fixe
 | **Anything serious, broad coverage** | **QuantLib** 1.43 | ✅ **BSD-3 — the only broadly-permissive mature full-coverage option** |
 | Vanilla IV + Greeks, fast and simple | **`vollib`** 1.0.11 | MIT |
 | Jaeckel's "Let's Be Rational" IV | `lets_be_rational` 1.1.2 | MIT |
-| Option strategy P&L / payoff analysis | `optionlab` 1.8.5 | — |
+| Option strategy P&L / payoff analysis | `optionlab` 1.8.5 | 🚨 **GPL-3.0** — its PyPI licence field is **blank**; the repo says GPL-3.0 |
 | Broad instrument coverage, readable source | `financepy` 1.1.2 | 🚨 **GPL-3.0-or-later — copyleft** |
 | Fixed income / swaps / curves | `rateslib` | 🚨🚨 **NOT open source — see §2** |
 | SABR only | `pysabr` | ⚠️ stale since 2022-04-21 |
+| Asian/exotic closed forms | `pyfeng` | 🚨 **GPL-2.0** |
+
+⚠️ **A blank PyPI licence field does not mean permissive.** `optionlab` declares nothing on PyPI and
+is GPL-3.0 in its repository. Check the repo's LICENSE file, not the package metadata.
 
 🚨 **`py_vollib` is now a dead shim.** As of 1.0.12 (2026-06-01) it contains **zero library code** —
 4 files, summary *"Deprecated transition package for vollib"*, depending on `vollib>=1.0.11`.
@@ -73,12 +77,31 @@ your problem involves a *convention* — accrual, settlement, roll — QuantLib 
 your hand-rolled version does not.
 
 **The friction points that produce "why is my NPV zero":**
-- `ql.Settings.instance().evaluationDate` is a **global**. Set it before constructing anything. An
-  instrument priced after its expiry relative to that global returns 0.
+- 🚨 `ql.Settings.instance().evaluationDate` is a **global**. ✅ Reproduced live: moving it past the
+  instrument's expiry returns **NPV exactly `0.0`, silently** — no warning, no exception. Set it
+  before constructing anything, and assert it is where you think it is.
 - `ql.Date(d, m, y)` is **day-first**, unlike `datetime`.
 - Everything is an object: `Calendar`, `DayCounter`, `Quote`, `YieldTermStructureHandle`. Handles
-  exist so curves can be re-linked; passing a raw curve where a handle is expected is a common error.
-- Some Python bindings do not expose every C++ method — check `dir()` rather than assuming.
+  exist so curves can be re-linked; an **empty handle fails at pricing time**, not construction time.
+- 🚨 **The engine names in most tutorials do not exist.** There is no `BaroneAdesiWhaleyEngine` or
+  `BjerksundStenslandEngine` — they are `BaroneAdesiWhaleyApproximationEngine` and
+  `BjerksundStenslandApproximationEngine`. Check `dir(ql)` rather than trusting a blog.
+
+### American exercise — measured across 9 engines
+
+✅ Benchmarked against a high-accuracy reference:
+
+| Engine | Verdict |
+|---|---|
+| **`QdFpAmericanEngine`** | ✅ **the default choice** — accurate and fast |
+| **`FdBlackScholesVanillaEngine`** | ✅ use when you need Greeks (see below) |
+| `BaroneAdesiWhaleyApproximationEngine` | 🚨 **overprices the early-exercise premium by +118%** |
+| `BinomialVanillaEngine` (CRR, 100 steps) | 🚨 **understates the premium by 79%** while the *total* price still looks fine — the error hides in the premium |
+| `MCAmericanEngine` (Longstaff-Schwartz) | 🚨 **worst on both axes**: 37× slower, +0.71% error, and biased **high in-sample** |
+
+🚨 **`delta()` raises** on `BaroneAdesiWhaleyApproximationEngine`, `QdPlusAmericanEngine`,
+`QdFpAmericanEngine` and the MC engines. If you need Greeks from an American option, use
+`FdBlackScholesVanillaEngine` — or bump numerically and accept the noise.
 
 ## 4. 🚨 Greek scaling — measured, and it will cost you 100×
 
@@ -95,6 +118,10 @@ your hand-rolled version does not.
 | **rho** | 0.53232482 | 53.23248155 | **100×** | vollib is **per 1% rate** (÷100) |
 
 ✅ QuantLib's `theta()` is **annual**; its `thetaPerDay()` returns −0.01757268, matching vollib exactly.
+
+🚨 **`financepy` matches QuantLib, NOT vollib.** So the three most common libraries split two-to-one
+on convention, and **mixing `financepy` and `vollib` Greeks in one book is a live 100× error.**
+There is no way to tell from the number alone which convention produced it.
 
 **The precise errors:**
 - **Vega 100× off** — textbook vega is dV/dσ with σ in absolute units (0.20); vollib reports per vol
@@ -140,15 +167,43 @@ from α=0.25, β=0.6, ν=0.4, ρ=−0.25 with β fixed recovered all four parame
 - `.update()`, `.rmsError()`, `.maxError()` are **not exposed** in the Python bindings — calibration
   runs in the constructor; compute residuals yourself.
 
+🚨 **The SABR α trap, measured:** **α is not the ATM vol unless β = 1.** It scales as `α / F^(1−β)` —
+so α=0.20 with β=0.5 and F=100 gives an ATM vol of about **2%**, not 20%. Calibrations seeded with
+"α ≈ ATM vol" diverge or land in a false minimum for any β < 1.
+
 ⚠️ `pysabr` (624★, MIT) is the best-known standalone and is **stale since 2022-04-21**; it also
-depends on **`falcon`, a web framework**, as a hard runtime dependency.
+depends on **`falcon`, a web framework**, as a hard runtime dependency. GitHub's other SVI/SABR repos
+are 2–77★ hobby projects. **Use QuantLib.**
+
+## 5b. financepy — trust the maths, not the API
+
+✅ Its numerics **agree with QuantLib to ~1e-6**, so the "poor quality" reputation is only half
+earned. The problems are packaging, not mathematics:
+- An unfinished module rename left **duplicated modules** (`discount_curve_flat` *and*
+  `flat_discount_curve`), so the widely-documented **`DiscountCurveFlat` now raises `ImportError`**.
+- A module is literally named `yield_curve_XXX`.
+- It prints an **unsolicited banner to stdout on import**.
+- 🚨 And it is **GPL-3.0-or-later**.
 
 ## 6. 🚨 Options data traps
 
-These corrupt results before any pricing code runs:
+These corrupt results before any pricing code runs. ✅ **Measured on a live SPY chain:**
+
+| Finding | Number |
+|---|---|
+| Call `lastPrice` values **outside** the bid-ask | **54.6%** |
+| Contracts stale by >1 hour | **100%** (max **8.3 days**) |
+| Put-call parity residual noise, `last` vs `mid` | `last` was **53.5× noisier** |
+
+**That is the quantified argument for mid-only.** Never compute IV from `lastPrice`.
 
 - **IV from a stale or one-sided quote is garbage.** Use the **mid**, and reject quotes where the
   spread exceeds a threshold or the bid is 0. Illiquid strikes produce IVs that are pure noise.
+- 🚨 **Yahoo's `impliedVolatility` field is untrustworthy.** ✅ Measured: call vs put IV at the *same
+  near-ATM strike* differed by a mean of **4.82 vol points**, and at one strike Yahoo's IV sat
+  **outside the entire bid-ask IV range**. Compute your own from the mid.
+- **yfinance gives no Greeks and no historical chains** — its `date` argument selects the *expiry*,
+  not a historical as-of date. It is a live snapshot only.
 - **Put-call parity is your data-quality check.** For matched strikes/expiries,
   `C − P ≈ S·e^(−qT) − K·e^(−rT)`. Large violations mean stale quotes, a wrong dividend assumption,
   or a mismatched timestamp — not an arbitrage.

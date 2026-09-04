@@ -35,7 +35,7 @@ every one of them has a default that is wrong for research.
 | **Free tick-level FX** | `findatapy` (DukasCopy backend) | Nothing else in the free tier offers tick data |
 | **Point-in-time macro** | `findatapy` (ALFRED) or `fredapi` | → `fundamental-and-macro-data` |
 | Tick/full-depth US equities & futures | `databento` | Actively released (2026-09-01); pay-per-use |
-| Options chains, aggregates, delisted | `polygon-api-client` | |
+| Options chains, aggregates, delisted | `polygon-api-client` | 🚨 **Polygon.io has rebranded to Massive.com** — `polygon.io/pricing` 301-redirects to `massive.com/pricing`, and the client has had **no PyPI release since 2025-10-30** (the announcement date). Update links and expect the package name to move |
 | Symbol/metadata universe, no key | `financedatabase` | 300k+ symbols offline — 🚨 but a *today* snapshot |
 | Long-history financial statements | `financetoolkit` (`enforce_source="YahooFinance"` = free, keyless) | ~150 ratios computed transparently |
 | Korea / Japan / HK / Vietnam free | `FinanceDataReader` | Only free source with an explicit `KRX-DELISTING` list |
