@@ -1,15 +1,23 @@
-# fin-skills
+# fin-skills — Agent Skills for Python quantitative finance
 
-A source-verified knowledge base of the Python quantitative-finance ecosystem, packaged as
-[Agent Skills](https://agentskills.io/specification).
+**19 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
+result is real.** Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
+APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
+pricing, China A-shares, crypto, and the evidence on LLM trading agents.
+
+Every claim carries a verification date and a marker: ✅ verified at a primary source · ⚠️ secondhand
+· ❓ could not verify. Where a library's behaviour was **measured** rather than read — by installing
+it and running the comparison — the skill says so.
 
 It exists because the middle of this domain is empty. The ecosystem is saturated at two ends — API
 wrappers and knowledge dumps — and nearly vacant at **the methodology that decides whether a result
 is real**. `anthropics/skills` contains zero finance skills; the community repos that do exist cover
 compliance, crypto execution and bookkeeping well, and research integrity barely at all.
 
-Every claim carries a verification date and a marker: ✅ verified at a primary source · ⚠️ secondhand
-· ❓ could not verify. Where a library's behaviour was *measured* rather than read, the skill says so.
+**Keywords:** Claude Code skills · agent skills · quantitative finance · algorithmic trading ·
+backtesting · look-ahead bias · survivorship bias · point-in-time data · yfinance · vectorbt ·
+QuantLib · akshare · tushare · ccxt · alphalens · deflated Sharpe ratio
 
 ## Install
 
@@ -118,6 +126,25 @@ python plugins/fin-core/skills/backtest-validation/scripts/trial_ledger.py
 # 50 noise strategies, best Sharpe 0.88, expected max from noise 0.94
 # -> "NOT distinguishable from noise"
 ```
+
+## Trigger accuracy — measured, not asserted
+
+A skill that never fires is worth nothing. Two harnesses measure whether these descriptions
+actually get selected:
+
+| Harness | What it measures | Result |
+|---|---|---|
+| `scripts/eval_triggers.py` | idf-weighted term overlap; catches descriptions competing for the same words | **58/62 = 94%** (was 63% before the rewrite) |
+| `scripts/eval_blind.py` | **a model choosing from the descriptions alone**, seeing exactly the discovery-time view | **61/62 = 98%** |
+
+Both run against `evals/queries.jsonl` — 62 realistic queries including Chinese, pasted error
+strings (`finrl import fails with ModuleNotFoundError`) and symptom phrasings (`my strategy works
+in backtest but loses money live`). The single blind miss routes "how do I avoid survivorship bias"
+to `market-data-sourcing` rather than `research-integrity-guards`, which is defensible — that skill
+carries the per-vendor delisted-coverage table.
+
+Descriptions follow the pattern Anthropic's own highest-precision skill uses: a `TRIGGER` keyword
+list plus a `SKIP` negative override naming the competing skill.
 
 ## Contributing / maintaining
 

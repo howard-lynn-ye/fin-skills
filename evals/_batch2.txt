@@ -1,0 +1,20 @@
+1. df['Adj Close'] raises KeyError after I upgraded yfinance
+2. join my signal table to the quote table at the right timestamp
+3. my backtest gives different numbers when I parallelise it
+4. pull 10-K filings from EDGAR and parse the income statement
+5. backtest a moving average crossover on AAPL
+6. my strategy works in backtest but loses money live
+7. how do I place a bracket order on alpaca
+8. does the zigzag indicator repaint
+9. run a Fama-MacBeth regression on this panel
+10. optimize portfolio weights with mean variance
+11. build a risk parity portfolio
+12. how do I do cross validation on time series without leaking
+13. fit an SVI volatility smile
+14. review my research design for look-ahead bias
+15. 获取 A 股日线数据并做前复权
+16. backtest an A share strategy with T+1 and price limits
+17. which crypto backtesting framework handles funding
+18. does LLM news sentiment actually predict returns
+19. train a reinforcement learning agent to trade
+20. get Hong Kong stock data and handle the lot size

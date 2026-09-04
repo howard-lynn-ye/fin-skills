@@ -1,0 +1,21 @@
+1. which data provider should I use if I need delisted tickers
+2. 帮我拉一下美股 ETF 的历史日线数据
+3. how should I store 10 years of minute bars for 3000 tickers
+4. get Apple's quarterly revenue as it was known in 2019
+5. what CIK maps to this ticker
+6. my vectorbt equity curve looks amazing, is something wrong
+7. make sure this script cannot accidentally send a real order
+8. compute RSI and MACD on this dataframe
+9. is my factor any good, compute the information coefficient
+10. do an event study around earnings announcements
+11. empyrical is giving me a Sharpe of -65
+12. is this backtest result statistically real
+13. price an american put option with dividends
+14. bootstrap a yield curve from swap rates
+15. my strategy has a Sharpe of 4, what should I check
+16. how do I get delisted A share tickers
+17. download BTC perpetual funding rates from binance
+18. should I build a TradingAgents style multi agent trader
+19. is there an MCP for SEC filings
+20. will an LSTM beat a linear model for return prediction
+21. NSE India trading calendar

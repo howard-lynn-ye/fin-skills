@@ -1,0 +1,21 @@
+1. download SPY daily prices with yfinance and plot the 200 day moving average
+2. my prices from yahooquery and yfinance don't match around a split
+3. merge_asof is matching the wrong quote
+4. timestamps come back wrong after writing to parquet
+5. I need GDP data but without the later revisions
+6. which backtesting library should I use for a multi asset portfolio strategy
+7. connect to interactive brokers and read my positions
+8. TWS paper trading port keeps refusing the connection
+9. ta library RSI doesn't match tradingview
+10. forecast realized volatility with a GARCH model
+11. compute the Sharpe ratio and max drawdown of this return series
+12. I tried 200 parameter combinations and the best one has Sharpe 2.5
+13. compute the deflated sharpe ratio
+14. my vega is 100x off between two libraries
+15. how do I avoid survivorship bias in my universe
+16. akshare vs tushare which should I use
+17. set up vnpy with a CTP gateway
+18. use ccxt to place a limit order
+19. which finance MCP server should I install
+20. finrl import fails with ModuleNotFoundError
+21. korean stock delisted list and short selling ban dates
