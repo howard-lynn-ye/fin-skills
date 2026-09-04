@@ -118,3 +118,9 @@ the risk-free convention and annualization factor with the metric. A 3-year Shar
 - `../../../fin-core/skills/portfolio-and-risk/references/analytics-libraries.md` — the source card and measured audit
 - `../../../fin-core/skills/portfolio-and-risk/references/risk-measures.md` — VaR/CVaR estimator families
 - `../../../fin-core/skills/backtest-validation/SKILL.md` — PSR, DSR and PBO, which quantstats does not have
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`portfolio-and-risk`** (`../../../fin-core/skills/portfolio-and-risk/SKILL.md`).

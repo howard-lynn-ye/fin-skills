@@ -113,3 +113,9 @@ cpcv = CombinatorialPurgedCV(n_splits=6, n_test_groups=2,
 - `../../../fin-core/skills/backtest-validation/references/purgedcv.md` — the source card
 - `../../../fin-core/skills/backtest-validation/references/afml-stack.md` — labeling and sample weights
 - `../../../fin-core/skills/backtest-validation/references/significance-tests.md` — what to do once the folds are clean
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`backtest-validation`** (`../../../fin-core/skills/backtest-validation/SKILL.md`).

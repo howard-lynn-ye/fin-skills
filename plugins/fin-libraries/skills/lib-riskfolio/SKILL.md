@@ -113,3 +113,9 @@ cov_dn = af.denoiseCov(returns.cov().values,
 - `../../../fin-core/skills/portfolio-and-risk/references/riskfolio-lib.md` — the source card
 - `../../../fin-core/skills/portfolio-and-risk/references/risk-measures.md` — what CVaR/CDaR/EVaR mean before you optimize one
 - `../../../fin-core/skills/portfolio-and-risk/references/_solver-layer.md` — which solver each conic risk measure needs
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`portfolio-and-risk`** (`../../../fin-core/skills/portfolio-and-risk/SKILL.md`).

@@ -120,3 +120,9 @@ print(mcs.included, mcs.excluded)               # no benchmark argument
 - `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` — the domain skill for the GARCH half
 - `../../../fin-core/skills/factor-and-timeseries-research/references/arch.md` — the source card
 - `../../../fin-core/skills/backtest-validation/references/significance-tests.md` — which test answers which question
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`backtest-validation`** (`../../../fin-core/skills/backtest-validation/SKILL.md`).

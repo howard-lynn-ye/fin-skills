@@ -117,3 +117,9 @@ delta, theta_annual, theta_day = opt.delta(), opt.theta(), opt.thetaPerDay()
 - `../../../fin-core/skills/derivatives-pricing/SKILL.md` — library choice and the licence traps
 - `../../../fin-core/skills/derivatives-pricing/references/quantlib.md` — the source card
 - `../../../fin-core/skills/derivatives-pricing/references/_library-matrix.md` — licences and the measured Greek scaling
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`derivatives-pricing`** (`../../../fin-core/skills/derivatives-pricing/SKILL.md`).

@@ -116,3 +116,9 @@ overstated return and most understated variance. If you cannot defend your expec
 - `../../../fin-core/skills/portfolio-and-risk/references/pyportfolioopt.md` — the source card
 - `../../../fin-core/skills/portfolio-and-risk/references/optimizers.md` — head-to-head table and the estimation-error problem
 - `../../../fin-core/skills/portfolio-and-risk/references/_solver-layer.md` — cvxpy, solver classes and licences
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`portfolio-and-risk`** (`../../../fin-core/skills/portfolio-and-risk/SKILL.md`).

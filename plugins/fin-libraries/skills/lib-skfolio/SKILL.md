@@ -110,3 +110,9 @@ for train_idx, test_idx_list in cv.split(X):                        # 🚨 non-s
 - `../../../fin-core/skills/portfolio-and-risk/references/skfolio.md` — the source card
 - `../../../fin-core/skills/portfolio-and-risk/references/optimizers.md` — head-to-head table
 - `../../../fin-core/skills/backtest-validation/references/purgedcv.md` — CPCV alternatives compared
+
+## Where this sits
+
+This file is the deep dive on **one** library and assumes the choice is already made.
+For which library to pick, how it compares with the alternatives, and the traps that span
+several of them, the entry point is the domain skill **`portfolio-and-risk`** (`../../../fin-core/skills/portfolio-and-risk/SKILL.md`).

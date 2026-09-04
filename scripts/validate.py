@@ -161,6 +161,13 @@ def check_skill(skill_md: Path) -> list[str]:
         errs.append(f"{rel}: references/ exists but is empty — add files or remove the directory "
                     f"(an empty one invites the model to grep nothing)")
 
+    # A per-library skill is only half a skill without a pointer back to the domain skill
+    # that owns it: on its own it answers "how do I use X" but never "should I use X".
+    # A concurrent writer dropped this section from 8 files once and nothing caught it.
+    if skill_dir.parent.parent.name == "fin-libraries" and "## Where this sits" not in text:
+        errs.append(f"{rel}: no '## Where this sits' section — a lib skill must link back to "
+                    f"the domain skill that owns it, or the two tiers compete instead of chaining")
+
     # Same for scripts/.
     scr_dir = skill_dir / "scripts"
     if scr_dir.is_dir() and not list(scr_dir.glob("*.py")):
