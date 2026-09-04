@@ -32,6 +32,10 @@ on the same price series. **The sign of the result flips.**
 **If your FX backtest computes `pct_change()` on a spot series and stops, it is not a backtest of a
 position anyone can hold.** Add `carry_return(spot, r_base, r_quote, days)`.
 
+✅ **Covered interest parity verified live to 0.001%** across two CME contracts. The size of the
+omission: leaving FX rollover out **overstates a long-EURUSD backtest by 1.30%/yr — or 3.91%/yr of
+equity at 3x leverage**, which is where most FX strategies actually run.
+
 ⚠️ Retail rollover is not the interbank differential — brokers mark it up, often asymmetrically, so
 the carry you actually receive is smaller than parity implies and the carry you pay is larger. Model
 the broker's published swap rates, not the policy rates, when the strategy is carry-dependent.
@@ -81,6 +85,21 @@ Consequences that break research:
 - Backtests that assume a single global price cannot model the venue selection a real execution
   would face.
 
+## 4b. 🚨 Free FX bars are quantised, and futures invert the convention
+
+✅ **Yahoo's hourly EURUSD is quantised to 1.34 pips — 6.7x the real 0.20-pip spread.** Measured:
+**44 distinct values across 116 bars**, all exactly representable in float32, with `1/p` landing on
+a 1e-4 grid. There is **no bid/ask and volume is all zeros**. A spread or microstructure study on it
+is measuring the storage format, not the market.
+
+🚨 **CME FX futures invert the spot convention for JPY, CAD and CHF.** `6J` quotes **0.00645** while
+`USDJPY` quotes **156.10** — reciprocals. Joining a futures series to a spot series without
+inverting produces a perfectly plausible, entirely wrong correlation.
+
+✅ **DukasCopy free tick FX is real** — verified end-to-end: **8,717 ticks in one hour** with genuine
+bid/ask and a **median spread of 0.20 pips**. Two gotchas: **the month in the URL is zero-indexed**
+(January is `00`), and **findatapy's base URL now 301-redirects**.
+
 ## 5. Value dates and settlement
 
 Spot is **T+2** for most pairs, with **T+1 for USDCAD** (and a few others). That matters for carry
@@ -102,8 +121,15 @@ For point-in-time interest rates to compute carry honestly, use FRED/ALFRED vint
 revised and republished, and using today's rate history to compute yesterday's carry is the same
 look-ahead as any other macro series.
 
-⚠️ Several small FX convenience packages exist on PyPI and are stale or thin; prefer a real vendor
-plus your own conventions layer over a wrapper that hides which side of §3 you are on.
+🚨 **`forex-python` is alive but serves ECB *reference* rates**, and the ECB itself states:
+*"Using the rates for transaction purposes is strongly discouraged."* They are a daily 16:00 CET
+fixing for accounting, **not a tradeable price**. Backtesting execution on them is not a backtest.
+
+🔴 **Dead FX/broker clients:** `v20`, `fxcmpy`, `forexconnect`, `oandapyV20` have all rotted.
+`ib_insync` is archived — use `ib_async`.
+
+⚠️ Prefer a real vendor plus your own conventions layer over a wrapper that hides which side of §3
+you are on.
 
 ## 7. Scripts
 

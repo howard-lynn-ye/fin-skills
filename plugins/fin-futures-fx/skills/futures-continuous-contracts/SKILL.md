@@ -101,6 +101,18 @@ CL Oct26 90.84 → Nov26 87.97 = **−3.16%/month ≈ −32%/yr backwardation**,
 "The index returned X" and "a futures position returned X" are different numbers, and for
 commodities the gap is usually larger than the alpha being claimed.
 
+### ✅ Measured on real ETFs — the roll cost is not a rounding error
+
+| Rolling ETF | vs the underlying | Gap |
+|---|---|---|
+| **UNG** −23.51%/yr | NG=F −0.26%/yr | **−23.25 pp/yr** |
+| **VIXY** −47.74%/yr | ^VIX −1.84%/yr | **−45.9 pp/yr** |
+| GLD −0.50 pp/yr vs GC=F | — | ✅ **the control** — gold is near-zero carry, so the method is not manufacturing the gap |
+
+**A strategy backtested on `^VIX` and traded through `VIXY` loses ~46 percentage points a year to
+something that never appears in the price series.** The GLD row is what makes the other two
+credible: the same method finds almost no gap where there should be none.
+
 ## 6. Roll rules are a second researcher degree of freedom
 
 Calendar (N business days before expiry) · open-interest crossover · volume crossover · first notice
@@ -133,18 +145,30 @@ move with `Timestamp.now()`.
 | Source | Gives you | The catch |
 |---|---|---|
 | **Databento** | Individual contracts **and** roll rules (`.c.` calendar, `.n.` open interest, `.v.` volume, rank `.0/.1/…`) | ✅ prices are the raw prices of whichever instrument is current — **you do the stitching**. That is the right division of labour |
-| **Norgate** | Pre-built continuous series | 🚨 **The Python API cannot see or set the adjustment method.** `price_timeseries()` exposes only `stock_price_adjustment_setting` (an *equity* enum) and `padding_setting`. **The construction is configured in the desktop app — outside your code, your requirements file and your git history.** |
+| **Norgate** | Pre-built continuous series | 🚨 **The Python API cannot see or set the adjustment method.** `price_timeseries()` exposes only `stock_price_adjustment_setting` (an *equity* enum) and `padding_setting`. **The construction is configured in the desktop app (a local service on `localhost:38889`) — outside your code, your requirements file and your git history.** |
 | **yfinance** | `CL=F`, `ES=F` | 🚨 unadjusted front-month splice; expired contracts deleted (§4) |
+| **openbb** futures | — | 🚨 ✅ source-verified: **it is literally yfinance** under the hood. Same splice, plus AGPL-3.0 |
+| 🔴 `quandl` / `nasdaq-data-link` | continuous series | repo **archived**; last release **2022-08-29** |
 | IB / `ib_async` | Individual contracts, live | Contract definitions and pacing limits — see `../../../fin-core/skills/broker-execution-apis/references/interactive-brokers.md` |
 
 🔑 **Prefer a source that gives you individual contracts.** A pre-stitched series whose method you
 cannot see or record is not reproducible research, however good the data is.
 
-## 9. Contract specs a backtest must encode
+## 9. 🚨 Contract specs — the multiplier does NOT determine tick value
 
-**Tick size, tick value and multiplier differ per contract** — ES is $12.50/tick with a $50
-multiplier, CL is $10/tick with 1,000 barrels. A P&L computed in "points" is meaningless across
-contracts.
+The intuitive shortcut `tick_value = multiplier x tick_size` is wrong often enough to matter.
+✅ Measured across 219 futures: **47 distinct multipliers, 28 tick sizes, 13 currencies.**
+
+- **ES and RTY both have a x50 multiplier — but tick values of $12.50 and $5.00.**
+- **M6E ticks 2x coarser than 6E**, despite being the micro version.
+- **Treasuries tick in 1/32 to 1/256**, not decimals.
+- 🚨 **11 contracts carry a `price_magnifier` of 100** — the quoted number is not the price.
+
+**A P&L computed in "points" is meaningless across contracts.** Look the spec up per contract;
+do not derive it.
+
+⚠️ **`cmegroup.com` returns HTTP 403 to all programmatic access**, so the specs cannot be scraped —
+get them from your broker's contract details (`ib_async` `reqContractDetails`) or your data vendor.
 
 Margin is **not a cost** — it is collateral, and initial ≠ maintenance. Settlement is physical or
 cash, and **first notice day binds before last trading day** for physically-settled contracts.

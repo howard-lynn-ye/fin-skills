@@ -371,8 +371,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 8651,
-      "approx_body_tokens": 2162,
+      "body_chars": 10173,
+      "approx_body_tokens": 2543,
       "references": [],
       "scripts": [
         "continuous_contract.py",
@@ -388,8 +388,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 5677,
-      "approx_body_tokens": 1419,
+      "body_chars": 7247,
+      "approx_body_tokens": 1811,
       "references": [],
       "scripts": [
         "fx_conventions.py"
