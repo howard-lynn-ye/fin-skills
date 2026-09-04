@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 16,
-  "n_reference_files": 31,
+  "n_skills": 17,
+  "n_reference_files": 33,
   "n_scripts": 4,
   "discovery_cost": {
-    "total_description_chars": 12185,
-    "approx_tokens": 3046,
+    "total_description_chars": 12951,
+    "approx_tokens": 3237,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -156,6 +156,23 @@
       "scripts": []
     },
     {
+      "name": "market-data-engineering",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/market-data-engineering/SKILL.md",
+      "description": "Store, join and parallelize market data without silently corrupting it. Covers pandas 3.x, polars, pyarrow, duckdb, dask, ray and ibis; time-series stores (ArcticDB, QuestDB, ClickHouse, TimescaleDB, kdb/pykx, Parquet layouts); as-of joins in pandas, polars, DuckDB, QuestDB and ClickHouse; float and timestamp precision; timezone round-tripping; partitioning; and reproducible immutable snapshots. TRIGGER — use when joining quotes to trades or signals to prices, when writing or reading Parquet, Feather, HDF5 or CSV of market data, when choosing a dataframe engine or time-series database, when a panel is too big for memory, when parallelizing a walk-forward backtest, when timestamps or timezones come back wrong, or when two runs of the same pipeline disagree.",
+      "summary": "Store, join and parallelize market data without silently corrupting it.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 9746,
+      "approx_body_tokens": 2436,
+      "references": [
+        "asof-joins.md",
+        "storage-formats.md"
+      ],
+      "scripts": []
+    },
+    {
       "name": "market-data-sourcing",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/market-data-sourcing/SKILL.md",
@@ -200,8 +217,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 9647,
-      "approx_body_tokens": 2411,
+      "body_chars": 10530,
+      "approx_body_tokens": 2632,
       "references": [],
       "scripts": []
     },

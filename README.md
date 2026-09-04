@@ -46,6 +46,7 @@ Then install only the market plugins you need:
 | `fin-core` | [`derivatives-pricing`](plugins/fin-core/skills/derivatives-pricing/SKILL.md) | Price options and fixed-income instruments in Python and get the Greeks, implied volatility and curve conventions right. | 2 | 0 |
 | `fin-core` | [`factor-and-timeseries-research`](plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md) | Evaluate cross-sectional factors and forecast financial time series without leaking. | 6 | 0 |
 | `fin-core` | [`fundamental-and-macro-data`](plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md) | Get company fundamentals and macroeconomic data with correct point-in-time semantics. | 2 | 0 |
+| `fin-core` | [`market-data-engineering`](plugins/fin-core/skills/market-data-engineering/SKILL.md) | Store, join and parallelize market data without silently corrupting it. | 2 | 0 |
 | `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries. | 2 | 0 |
 | `fin-core` | [`portfolio-and-risk`](plugins/fin-core/skills/portfolio-and-risk/SKILL.md) | Construct portfolio weights and compute performance and risk metrics correctly. | 4 | 0 |
 | `fin-core` | [`quant-stack-router`](plugins/fin-core/skills/quant-stack-router/SKILL.md) | Entry point for Python quantitative finance and algorithmic trading: picks the right library and flags where the model's training prior is stale. | 0 | 0 |

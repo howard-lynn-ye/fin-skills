@@ -45,11 +45,13 @@ re-check the primary source listed in `shared/live-sources.md` rather than trust
 | **`pandas-ta`** | "the pandas-native TA-Lib" | See `signal-construction` — there is a **supply-chain caution** on the current PyPI package. Maintained successor: **`pandas-ta-classic`**. |
 | **`openbb`** | MIT | **Relicensed to AGPL-3.0 on 2024-05-14.** Network copyleft. |
 | **`backtesting.py`** | permissive | **AGPL-3.0.** |
-| **`PyBroker`** | open source | `lib-pybroker` is **"Free for non-commercial use"** — not OSI. |
+| **`PyBroker`** / **`vectorbt`** | open source | Both are **Apache-2.0 + Commons Clause** — you may not sell a product or service deriving substantially from them. Not OSI-open-source. |
 | **`nautilus_trader`** | "works everywhere" | Requires **Python >=3.12,<3.15**. Will not install on 3.11. |
 | **`fracdiff`** | the fractional-differencing package | **Archived** 2023-12; `requires_python <3.10`. Unusable on modern Python. |
 | **Microsoft Qlib CN data** | `qlib_data --region cn` downloads it | **Official dataset disabled** ("more restrict data security policy"). Use the community mirror `chenditc/investment_data`. |
 | **Alpha Vantage free tier** | 500 requests/day | **25 requests/day.** Effectively a demo. |
+| **`polars`** | "a fast Rust dataframe library" | The `polars` wheel is now an **empty 865 KB shim** (`py3-none-any`, no compiled code) that hard-depends on `polars-runtime-32`. **A lockfile listing only `polars` does not pin the engine.** |
+| **`polars.join_asof`** | "pandas is the one that silently misjoins" | **Inverted.** `pandas.merge_asof` **raises** on unsorted keys; **`polars.join_asof` does NOT check sortedness when `by=` is given** — silently wrong rows. |
 | **SEC XBRL `frames` API** | "a clean cross-section" | **Not point-in-time and cannot be made so** — no `filed` field. 53% of its CY2023 values come from filings made in 2026. Never backtest on it. |
 
 ## 2. Quick task reference
@@ -58,6 +60,9 @@ Written in the words you would actually use. `->` is a literal path to read next
 
 **"get stock prices" / "download OHLCV" / "which data source" / yfinance / polygon / databento / EODHD / tiingo / survivorship-free universe / delisted tickers / trading calendar / split & dividend adjustment**
 -> `market-data-sourcing` skill. Start with its `plugins/fin-core/skills/market-data-sourcing/references/_decision-table.md`.
+
+**"as-of join" / merge_asof / "join quotes to trades" / Parquet / polars / DuckDB / ArcticDB / "store tick data" / "my timestamps are wrong" / "too big for memory" / "different numbers when I parallelise"**
+-> `market-data-engineering` skill. **Its as-of-join section is where look-ahead most often enters a pipeline.**
 
 **"fundamentals" / 10-K / 10-Q / 8-K / EDGAR / XBRL / "point-in-time financials" / "as-of-date fundamentals" / earnings dates / CIK / restatements**
 -> `fundamental-and-macro-data` skill, §SEC. **Read its restatement and `acceptanceDateTime` sections before writing any event study.**

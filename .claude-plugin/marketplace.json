@@ -12,14 +12,22 @@
     {
       "name": "fin-core",
       "source": "./plugins/fin-core",
-      "description": "US/global quant stack: market data, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest.",
+      "description": "US/global quant stack: market data sourcing and engineering, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest.",
       "version": "0.1.0",
       "license": "MIT",
-      "keywords": ["finance", "quant", "trading", "backtesting", "market-data", "python"],
+      "keywords": [
+        "finance",
+        "quant",
+        "trading",
+        "backtesting",
+        "market-data",
+        "python"
+      ],
       "skills": [
         "./skills/quant-stack-router",
         "./skills/research-integrity-guards",
         "./skills/market-data-sourcing",
+        "./skills/market-data-engineering",
         "./skills/fundamental-and-macro-data",
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
@@ -36,7 +44,14 @@
       "description": "China A-share / Greater China quant stack: akshare, tushare, baostock, efinance, adata, mootdx, jqdatasdk, rqdatac, Wind, plus vnpy / qlib / RQAlpha / tqsdk and the A-share-specific traps (qfq look-ahead, T+1, price limits, suspension, 公告日 vs 报告期).",
       "version": "0.1.0",
       "license": "MIT",
-      "keywords": ["a-share", "china", "akshare", "tushare", "vnpy", "qlib"],
+      "keywords": [
+        "a-share",
+        "china",
+        "akshare",
+        "tushare",
+        "vnpy",
+        "qlib"
+      ],
       "skills": [
         "./skills/china-ashare-data",
         "./skills/china-trading-stack"
@@ -48,7 +63,12 @@
       "description": "Crypto market data and execution: ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot — and the 24/7-market assumptions that break equity-derived tooling.",
       "version": "0.1.0",
       "license": "MIT",
-      "keywords": ["crypto", "ccxt", "freqtrade", "binance"],
+      "keywords": [
+        "crypto",
+        "ccxt",
+        "freqtrade",
+        "binance"
+      ],
       "skills": [
         "./skills/crypto-data-and-execution"
       ]
@@ -59,7 +79,13 @@
       "description": "LLM-for-finance: agent frameworks (TradingAgents, FinRobot, RD-Agent, FinGPT), finance MCP servers, and the published evidence on whether any of it survives lookahead leakage, transaction costs, and multiple-testing correction.",
       "version": "0.1.0",
       "license": "MIT",
-      "keywords": ["llm", "agents", "mcp", "fingpt", "tradingagents"],
+      "keywords": [
+        "llm",
+        "agents",
+        "mcp",
+        "fingpt",
+        "tradingagents"
+      ],
       "skills": [
         "./skills/llm-finance-agents",
         "./skills/finance-mcp-servers"
