@@ -122,9 +122,17 @@ python plugins/fin-core/skills/backtest-validation/scripts/trial_ledger.py
 ## Contributing / maintaining
 
 ```bash
-python scripts/validate.py      # spec compliance, budget, reference integrity
+python scripts/validate.py      # spec compliance, budget, reference integrity, frontmatter
+python scripts/eval_triggers.py  # do the descriptions actually select correctly?
 python scripts/build_index.py   # regenerate catalog/index.json and the table above
 ```
+
+`eval_triggers.py` scores all 62 queries in `evals/queries.jsonl` against every description and
+reports top-1 accuracy plus the top-2 margin. It is a **lexical proxy, not a live model test** —
+but the failure it catches is real: a query whose distinctive words match three descriptions
+equally is being resolved close to arbitrarily. Current: **58/62 (94%)**, up from 39/62 (63%)
+before the descriptions were rewritten with `TRIGGER`/`SKIP` clauses. Treat a thin margin as a
+defect even when the top pick is right.
 
 `validate.py` restricts frontmatter to the six spec fields (`name`, `description`, `license`,
 `compatibility`, `metadata`, `allowed-tools`). Claude Code accepts more, but any extra key is a hard

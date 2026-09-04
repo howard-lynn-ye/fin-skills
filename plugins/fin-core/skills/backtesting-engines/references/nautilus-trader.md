@@ -16,8 +16,10 @@ object** runs the backtest and the live session — but it will not even install
 ## 🚨 The install gate nobody reads
 
 `requires_python` is **`<3.15,>=3.12`**. On Python 3.11 `pip install nautilus_trader` does not
-warn, downgrade, or degrade — it **fails to resolve**. Every other engine in this skill installs on
-3.10 or 3.11; this one does not. Check your interpreter before you plan the project.
+warn, downgrade, or degrade — it **fails to resolve**. Its neighbours in this skill are far more
+permissive (`./zipline-reloaded.md` is `>=3.10`, `./backtesting-py.md` is `>=3.9`), so an existing
+3.11 research environment cannot simply add nautilus. Check your interpreter before you plan the
+project.
 
 Two further packaging edges verified from the file list:
 - **No macOS x86_64 wheel.** Intel Macs get a Rust source build, not a wheel.
@@ -38,15 +40,29 @@ with tiny tick sizes; it is also slower and the two modes are not interchangeabl
 
 ## The models that do not exist elsewhere
 
-**`FillModel`** — the two defaults are the ones to notice:
+**`FillModel`** — ✅ read from `nautilus_trader/backtest/models/fill.pyx` at tag `v1.231.0`:
+`def __init__(self, double prob_fill_on_limit = 1.0, double prob_slippage = 0.0, random_seed: int | None = None)`
 
 | Parameter | Default | Meaning |
 |---|---|---|
 | `prob_fill_on_limit` | 🚨 **1.0** | Probability a limit order fills when the market *touches but does not cross* its price. **1.0 means you are always at the front of the queue.** |
-| `prob_slippage` | 🚨 **0.0** | Probability of a one-tick adverse move — **L1 only**, and off by default. |
+| `prob_slippage` | 🚨 **0.0** | Probability of a one-tick adverse move — **L1 only** (on L2/L3 the recorded book determines impact), and off by default. |
+| `random_seed` | 🚨 **`None`** | With `prob_slippage > 0` fills are **random**. Unseeded runs are **not reproducible** and two "identical" backtests will disagree. |
 
 Out of the box the fill model is therefore *optimistic*: perfect queue position, zero slippage.
 It is a model you must configure, not a model you inherit.
+
+✅ The 1.231.0 `backtest.models` package exports far more than the research literature suggests:
+`BestPriceFillModel`, `OneTickSlippageFillModel`, `ProbabilisticFillModel`,
+`LimitOrderPartialFillModel`, `SizeAwareFillModel`, `VolumeSensitiveFillModel`,
+`CompetitionAwareFillModel`, `MarketHoursFillModel`, `TwoTierFillModel`, `ThreeTierFillModel`, plus
+`FixedFeeModel` / `MakerTakerFeeModel` / `PerContractFeeModel`. Subclass only after checking whether
+one of these already does the job.
+
+⚠️ **The 2.0 line renames it.** In the current default branch the base model is `DefaultFillModel`,
+imported from `nautilus_trader.execution`, and `CompetitionAwareFillModel` gains a `liquidity_factor`
+(default `0.3`). The parameter names and defaults are unchanged. Code written against 1.x imports
+will need the import updated when 2.0 ships.
 
 **`LatencyModel`** — `base_latency_nanos`, `insert_latency_nanos`, `update_latency_nanos`
 (e.g. 5 ms base + 2 ms insert + 3 ms update). ✅ **Real order-arrival latency inside a backtest is
@@ -84,24 +100,23 @@ you load them unchanged, every bar becomes visible one interval early and the en
 complain — **it silently makes bars visible early**, and every metric looks better for it.
 
 ```python
+from nautilus_trader.backtest.models import FillModel      # 2.0: DefaultFillModel, from ...execution
+from nautilus_trader.model.data import Bar
+
 # Bars timestamped at the OPEN must be shifted before they are valid nautilus data.
-interval_ns = 60 * 1_000_000_000            # 1-minute bars, in nanoseconds
+INTERVAL_NS = 60 * 1_000_000_000                 # 1-minute bars, in nanoseconds
 bar = Bar(
-    bar_type=bar_type,
-    open=o, high=h, low=l, close=c, volume=v,
-    ts_event=ts_open,                        # when the bar's period began
-    ts_init=ts_open + interval_ns,           # 🚨 CLOSE — not ts_open
+    bar_type, Price(o, 2), Price(h, 2), Price(l, 2), Price(c, 2), Quantity(v, 0),
+    ts_event=ts_open,                            # when the bar's period began
+    ts_init=ts_open + INTERVAL_NS,               # 🚨 the CLOSE — not ts_open
 )
 
 fill_model = FillModel(
-    prob_fill_on_limit=0.2,   # default 1.0 = always front of queue; be pessimistic
+    prob_fill_on_limit=0.2,   # default 1.0 = always at the front of the queue
     prob_slippage=0.5,        # default 0.0 = no slippage at all; L1 only
-    random_seed=42,           # fills are stochastic — pin the seed or results are not reproducible
+    random_seed=42,           # default None -> unseeded -> not reproducible
 )
 ```
-
-Note the seed: with `prob_slippage > 0` the fill model is **random**, so an unseeded run is not
-reproducible and two "identical" backtests will disagree.
 
 ## What it does not model — stated plainly in its own docs
 

@@ -20,48 +20,38 @@ All rows ✅ verified against PyPI JSON + GitHub API, probed 2026-09-04.
 I read **both** primary sources on `man-group/ArcticDB@master`. They do not say the same thing.
 Reported as found, not resolved.
 
-**`LICENSE.txt` — ✅ verbatim:**
-
-> **Additional Use Grant:** You may make use of the Licensed Work under the terms of this License,
-> provided that you may not use the Licensed Work for a Database Service. A "Database Service" is a
-> commercial offering that allows third parties … to access the functionality of the Licensed Work by
-> creating tables whose schemas are controlled by such third parties.
-
-Under standard BSL 1.1 the base grant is *non-production only*, and the Additional Use Grant is what
-**expands** it (*"…permitting limited production use."* — ✅ same file). Read literally, this permits
+**`LICENSE.txt` — ✅ verbatim:** *"**Additional Use Grant:** You may make use of the Licensed Work under
+the terms of this License, provided that you may not use the Licensed Work for a Database Service."*
+Under standard BSL 1.1 the base grant is *non-production only* and the Additional Use Grant is what
+**expands** it (*"…permitting limited production use."* — ✅ same file), so read literally this permits
 everything **except** a multi-tenant Database Service.
 
-**`README.md` — ✅ verbatim, and it says something else:**
-
-> …users may not use ArcticDB **for production use or** for a Database Service, without agreement with
-> Man Group Operations Limited.
+**`README.md` — ✅ verbatim, and it says something else:** *"…users may not use ArcticDB **for
+production use or** for a Database Service, without agreement with Man Group Operations Limited."*
 
 🚨 **The conflict:** LICENSE.txt carves out *only* Database Service; the README additionally carves out
 *production use*. For an in-house fund running ArcticDB on its own research cluster, the two readings
 give **opposite answers**. ❓ Which controls is unresolved and this is not legal advice — if you intend
 production use, get written confirmation from `info@arcticdb.io` before building on it.
 
-**Conversion to Apache-2.0 is per-version and two years deep** ✅ — LICENSE.txt: *"This License applies
-separately for each version … and the Change Date may vary for each version"*, with a BSL backstop at
-the fourth anniversary, whichever is earlier. The README's table runs 1.0 → 2025-03-16 through
-**6.21 → 2028-08-04**. 🚨 **Current 6.24.0 is not in the table at all** ✅, and conversion never lets you
-stay current: by the time 6.21 turns Apache-2.0 in Aug 2028, ArcticDB will be ~9.x and still BSL.
-"Wait for it to open-source" pins you permanently two years behind.
+**Conversion to Apache-2.0 is per-version and two years deep** ✅ — *"This License applies separately for
+each version … and the Change Date may vary for each version"*, with a fourth-anniversary backstop. The
+README's table runs 1.0 → 2025-03-16 through **6.21 → 2028-08-04**. 🚨 **Current 6.24.0 is not in the
+table at all** ✅, and conversion never lets you stay current: when 6.21 turns Apache-2.0 in Aug 2028,
+ArcticDB will be ~9.x and still BSL. "Wait for it to open-source" pins you two years behind, forever.
 
 ## 🚨 Trap 2 — ArcticDB's `as_of` is version-as-of, not join-as-of
 
-The most confused point in the domain. Two completely different features share the name:
-**(A) version as-of / vintage** — *"what did this dataset look like on 2024-03-15, before the
-restatement?"*, which defends against **restatement and revision bias**; and **(B) temporal as-of
-join** — *"what was the prevailing quote at the instant of this trade?"*, which defends against
-**look-ahead bias**.
+The most confused point in the domain. Two different features share the name: **(A) version as-of /
+vintage** — *"what did this dataset look like on 2024-03-15, before the restatement?"*, defending
+against **restatement and revision bias**; and **(B) temporal as-of join** — *"what was the prevailing
+quote at the instant of this trade?"*, defending against **look-ahead bias**.
 
 ✅ Verified from `python/arcticdb/version_store/library.py` on master, `Library.read` — `as_of` accepts
 *"int: specific version number … str: snapshot name … datetime.datetime: the version of the data that
-existed as_of the requested point in time"*.
-
-**So ArcticDB's `as_of` is (A).** It selects a *version of the symbol*, never a row-level temporal
-match. Anyone saying "ArcticDB does as-of joins" has conflated the two.
+existed as_of the requested point in time"*. **So ArcticDB's `as_of` is (A).** It selects a *version of
+the symbol*, never a row-level temporal match. Anyone saying "ArcticDB does as-of joins" has conflated
+the two.
 
 | Store | (A) version as-of | (B) as-of join |
 |---|---|---|
@@ -80,17 +70,15 @@ neither does an as-of *join*.
 
 ✅ Same source file. ArcticDB tracks a per-symbol `sorted` status: `ASCENDING` *"guarantees that
 operations such as append, update, and read with `date_range` work as expected"*; for `DESCENDING` and
-`UNSORTED`, *"update and read with `date_range` **will not work**"*; `UNKNOWN` means no timestamp index.
-`UNSORTED` *"can only be created by calling `write` … or `append_batch` with **`validate_index` set to
-False**"*.
+`UNSORTED`, *"update and read with `date_range` **will not work**"*. `UNSORTED` *"can only be created by
+calling `write` … or `append_batch` with **`validate_index` set to False**"*.
 
 🚨 Someone sets `validate_index=False` to speed a slow bulk load. The write succeeds. Months later every
 `date_range` read on that symbol returns wrong rows — and `date_range` is **exactly how you slice a
 backtest window**. It records `UNSORTED` instead of raising at read time. **Never write market data
-with `validate_index=False`; audit `sorted` on existing symbols before trusting them.**
-
-Also ✅: `date_range` on `read()` is **inclusive at both ends**, and `(None, ts)` is allowed. Inclusive-
-both-ends is unusual — a loop reading `[d, d+1day]` per day **double-counts the boundary timestamp**.
+with `validate_index=False`; audit `sorted` on existing symbols before trusting them.** Also ✅:
+`date_range` is **inclusive at both ends** — unusual, so a loop reading `[d, d+1day]` per day
+**double-counts the boundary timestamp**.
 
 ## QuestDB — the cleanest as-of design of the four
 
@@ -104,25 +92,22 @@ Plus a first-class **`TOLERANCE`** clause ✅ — a left row at `t1.ts` joins `t
 `t2.ts <= t1.ts` **and** `t1.ts - t2.ts <= tolerance`. Units: `n` ns, `T` ms, `s`, `m`, `h`, `d`.
 
 ```sql
-SELECT market_data.timestamp, market_data.symbol, bids, core_price.*
-FROM market_data
-LT JOIN core_price ON (symbol) TOLERANCE 50T;   -- strictly prior, max 50 ms stale
+SELECT md.timestamp, md.symbol, bids, cp.* FROM market_data md
+LT JOIN core_price cp ON (symbol) TOLERANCE 50T;   -- strictly prior, max 50 ms stale
 ```
 
 ✅ Also documented: QuestDB joins a microsecond `TIMESTAMP` to a nanosecond `TIMESTAMP_NS` *"without
-explicit casting — QuestDB aligns the timestamps internally"*, removing a whole class of unit-mismatch
-bug that bites in pandas (`dataframe-engines.md` §Trap 2).
+explicit casting — QuestDB aligns the timestamps internally"*, removing a class of unit-mismatch bug
+that bites in pandas (`dataframe-engines.md` §Trap 2).
 
 ## ClickHouse — ASOF JOIN, but restricted
 
 ⚠️ From vendor docs; not executed here. Closest-match operators `>`, `>=`, `<`, `<=` are explicit in the
 `ON` clause (good, like DuckDB); *"any number of equality conditions and **exactly one** closest match
-condition"*.
-
-🚨 **`ASOF JOIN` is supported only by the `hash` and `full_sorting_merge` join algorithms. It is not
-supported in the `Join` table engine.** And for `hash`, the asof column *"can't be the only column in
-the `JOIN` clause"* — you **must** supply at least one equality key (e.g. `symbol`). A pure time-only
-as-of join therefore requires `full_sorting_merge`. Set the algorithm explicitly; do not let a server
+condition"*. 🚨 **`ASOF JOIN` is supported only by the `hash` and `full_sorting_merge` join algorithms.
+It is not supported in the `Join` table engine.** And for `hash`, the asof column *"can't be the only
+column in the `JOIN` clause"* — you **must** supply at least one equality key (e.g. `symbol`), so a pure
+time-only as-of join requires `full_sorting_merge`. Set the algorithm explicitly; do not let a server
 default decide whether your join is even legal.
 
 ## 🚨 Trap 4 — pykx is proprietary with 78 stars
@@ -158,11 +143,10 @@ from datetime import datetime
 import pandas as pd
 from arcticdb import Arctic
 
-ac = Arctic("lmdb:///data/arctic")
-lib = ac.get_library("bars", create_if_missing=True)
+lib = Arctic("lmdb:///data/arctic").get_library("bars", create_if_missing=True)
 
-# validate_index=True is the default -- NEVER turn it off for market data.
-# UNSORTED symbols make every later date_range read return wrong rows, silently.
+# validate_index=True is the default -- NEVER turn it off for market data. UNSORTED
+# symbols make every later date_range read return wrong rows, silently, forever.
 lib.write("AAPL", df, validate_index=True)
 
 # as_of selects a VERSION (restatement defence), NOT a row-level temporal match.

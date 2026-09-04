@@ -89,9 +89,14 @@ telling you to buy ccxt.pro is out of date.** Today: `ccxt` (sync REST), `ccxt.a
 - `client_order_id` is caller-supplied — **this is your idempotency primitive**.
 - **Free data is IEX only** (a small fraction of consolidated volume); **SIP needs the paid Algo
   Trader Plus tier**. **Backtests built on free IEX will not match live SIP execution.**
-- Paper and live have **separate key pairs and separate hosts**. 🚨 **A live key with `paper` unset
-  trades for real, with no second confirmation — the most common accidental-live-order in the retail
-  Python world.**
+- Paper and live have **separate key pairs and separate hosts**.
+  ✅ **`alpaca-py`'s default is SAFE** — verified in the 0.44.0 wheel:
+  `TradingClient.__init__(..., paper: bool = True, ...)`, so **omitting the flag gives you paper.**
+  🚨 **The legacy `alpaca-trade-api` is the dangerous one** — verified in the 3.2.0 wheel:
+  `get_base_url()` returns **`https://api.alpaca.markets`, the LIVE host**, unless
+  `APCA_API_BASE_URL` is set. Old tutorials and old code default to production.
+  🚨 In `alpaca-py`, **`url_override` bypasses the paper→URL mapping** while still setting
+  `sandbox=paper` — so the flag and the host can disagree. Assert on the account, not the flag.
 
 ### Schwab
 🚨 **The refresh token hard-expires after 7 days.** Access tokens last 30 minutes and `schwab-py`

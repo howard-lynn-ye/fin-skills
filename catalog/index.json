@@ -117,8 +117,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 11653,
-      "approx_body_tokens": 2913,
+      "body_chars": 12109,
+      "approx_body_tokens": 3027,
       "references": [
         "_broker-matrix.md",
         "alpaca.md",

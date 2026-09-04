@@ -28,10 +28,9 @@ polars-runtime-64==1.44.1 ; extra == "rt64"
 polars-runtime-compat==1.44.1 ; extra == "rtcompat"
 ```
 
-The engine lives in `polars-runtime-32` — ✅ 9 files at 1.44.1, MIT, wheels tagged
-`cp310-abi3-{macosx_10_12_x86_64, macosx_11_0_arm64, manylinux_2_17_{x86_64,aarch64},
-musllinux_1_2_{x86_64,aarch64}, win_amd64, win_arm64}`, 47–54 MB each. `cp310-abi3` means **one wheel
-covers Python 3.10 through 3.14+**.
+The engine lives in `polars-runtime-32` — ✅ 9 files at 1.44.1, MIT, `cp310-abi3` wheels for macOS
+x86_64/arm64, manylinux + **musllinux** x86_64/aarch64, win_amd64/arm64, 47–54 MB each. `cp310-abi3`
+means one wheel covers Python 3.10 through 3.14+. (`ray`, not polars, is the one with no musl wheel.)
 
 ✅ **The split landed at 1.34.0b2 (2025-09-26)** — a 5,966-byte wheel, where 1.34.0b1 (2025-09-23) still
 shipped ~40 MB binaries. Everything from 1.34 on is split. ✅ Corroborating: `polars-lts-cpu` is frozen
@@ -59,9 +58,8 @@ verified against upstream `doc/source/whatsnew/v3.0.0.rst`.
 
 | Input | 2.x | 3.0 |
 |---|---|---|
-| `pd.to_datetime(["2024-03-22 11:36"])` | `datetime64[ns]` | **`datetime64[us]`** |
+| `pd.to_datetime(["2024-03-22 11:36"])` · `pd.Series([stdlib_datetime])` | `datetime64[ns]` | **`datetime64[us]`** |
 | `pd.to_datetime([0], unit="s")` | `datetime64[ns]` | **`datetime64[s]`** |
-| `pd.Series([stdlib_datetime])` | `datetime64[ns]` | **`datetime64[us]`** |
 | string with 9 decimal places | `datetime64[ns]` | `datetime64[ns]` (falls back) |
 
 String parsing now defaults to microseconds, **explicitly including `read_csv` and `read_json`**.
@@ -80,18 +78,16 @@ smaller."*
 ### (b) `SettingWithCopyWarning` is removed — chained assignment is a silent no-op
 
 Copy-on-Write is mandatory. Every indexing operation *"**always** behaves as a copy"*, chained
-assignment *"will stop working"*, and **`SettingWithCopyWarning` is removed**. `mode.copy_on_write`
-*"no longer has any impact"*.
-
-🚨 **Worse than it sounds for a backtester.** In 2.x, `df[df.symbol=="AAPL"]["signal"] = 1` **warned**
-and did nothing. In 3.0 it **does nothing, silently**. A no-op in signal construction gives an all-zero
-signal column and a flat, entirely plausible equity curve. ✅ Upstream's advice: **upgrade to 2.3 first**
-to collect the deprecation warnings before jumping.
+assignment *"will stop working"*, and **`SettingWithCopyWarning` is removed** (`mode.copy_on_write`
+*"no longer has any impact"*). 🚨 **Worse than it sounds for a backtester.** In 2.x,
+`df[df.symbol=="AAPL"]["signal"] = 1` **warned** and did nothing. In 3.0 it **does nothing, silently**.
+A no-op in signal construction gives an all-zero signal column and a flat, entirely plausible equity
+curve. ✅ Upstream's advice: **upgrade to 2.3 first** to collect the deprecation warnings before jumping.
 
 ### (c) pytz is gone
 
-`Timestamp.tz_localize("US/Pacific").tz` now returns `zoneinfo.ZoneInfo`, not a pytz `DstTzInfo`.
-Ambiguous/nonexistent times raise **`ValueError`**, not `pytz.AmbiguousTimeError`. Two breakages:
+`Timestamp.tz_localize("US/Pacific").tz` now returns `zoneinfo.ZoneInfo`, not a pytz `DstTzInfo`, and
+ambiguous/nonexistent times raise **`ValueError`**, not `pytz.AmbiguousTimeError`. Two breakages:
 🚨 `except pytz.exceptions.AmbiguousTimeError` blocks around exchange-calendar DST handling **stop
 catching**, and 🚨 **`pytz` is no longer installed with pandas** — `import pytz` in your own code
 `ImportError`s on a fresh env. Use `pandas[timezone]` or pin `pytz` yourself.
@@ -104,7 +100,7 @@ Removed, not deprecated: `M`/`Q`/`Y`/`BM`/`SM`/`CBM`/`BQ`/`BY` → `ME`/`QE`/`YE
 `closed="right", label="right"`; **everything intraday is `closed="left", label="left"`**. That
 asymmetry is the actual look-ahead trap and it predates 3.0; see `asof-joins.md`.
 
-### (e) Two more silent numeric changes
+### (e) Three more silent numeric changes
 
 - **String dtype by default (PDEP-14).** `pd.Series(["a","b"]).dtype` is `str`, not `object`.
   🚨 `select_dtypes(include="object")` **stops selecting your symbol column**; stuffing a sentinel
@@ -125,8 +121,7 @@ asymmetry is the actual look-ahead trap and it predates 3.0; see `asof-joins.md`
 | **pandas** 3.x | NumPy blocks (+ Arrow opt-in), CoW | eager only | ❌ | Default for anything that fits in RAM. Widest ecosystem. `pd.col()` in 3.0 is "initial support" for expressions, ✅ **not** a lazy engine |
 | **polars** | Arrow columnar, own pool | ✅ `LazyFrame` + optimiser | ✅ streaming | Best single-node default for large panels. Multi-threaded Rust, **releases the GIL**. ❓ streaming coverage of *all* ops at 1.44 unverified |
 | **duckdb** | vectorised ~2048-row chunks | ✅ SQL planner | ✅ **spills to disk** ⚠️ | When the access pattern is SQL-shaped, and for `ASOF JOIN` — see `asof-joins.md` |
-| **pyarrow** | Arrow, immutable | dataset API pushdown | ✅ | The interchange layer, not a compute layer |
-| **ibis** | none — a **compiler** | by construction | inherits backend | One expression API across backends |
+| **pyarrow** · **ibis** | Arrow, immutable · none (a **compiler**) | pushdown · by construction | ✅ · inherits | The interchange layer, not compute · one expression API across backends |
 | **dask** | partitioned pandas | ✅ task graph | ✅ | Only if you actually have a cluster; scheduler overhead is real at billions of rows |
 | **ray** | `ray.data` Arrow blocks | ✅ | ✅ object-store spill | Distributed compute wholesale. ✅ **no musllinux wheels** — Alpine containers cannot `pip install ray` |
 
@@ -139,11 +134,10 @@ running it on top of pandas 3.0's CoW/string-dtype semantics is ❓ an unverifie
 ✅ Arithmetic: 390 min × 252 d × 10 y = **982,800 bars/ticker** → **≈2.95 B rows**. At
 `{ts int64, sym int32, ohlc float64, vol int64}` = 52 B → **≈153 GB raw**; ~20–40 GB Parquet+ZSTD ⚠️.
 **It does not fit in RAM in any engine.** Loop one symbol (~51 MB) or one day (~61 MB) at a time, or
-`scan_parquet` with predicate pushdown.
-
-🚨 **The `pivot`/`unstack` bomb:** a wide close-price matrix alone is 982,800 × 3000 × 8 B =
-**23.6 GB for one field** ✅, all four OHLC ≈ 94 GB — and it is **dense**, so every minute a ticker did
-not trade costs a full 8-byte NaN. If you need wide, do it **per field, per year, in float32**.
+`scan_parquet` with predicate pushdown. 🚨 **The `pivot`/`unstack` bomb:** a wide close-price matrix
+alone is 982,800 × 3000 × 8 B = **23.6 GB for one field** ✅, all four OHLC ≈ 94 GB — and it is
+**dense**, so every minute a ticker did not trade costs a full 8-byte NaN. If you need wide, do it
+**per field, per year, in float32**.
 
 ## Minimal correct setup
 

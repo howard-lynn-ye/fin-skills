@@ -58,19 +58,34 @@ resolves against you.**
 
 ## 🚨 `trade_on_close=True` does not mean "fill at this bar's close"
 
-✅ From the source: with `trade_on_close=True` the fill price is **`data.Close[-2]`**, indexed at
-`self._i - 1` — *the previous bar's close* as seen from inside `broker.next()`.
+✅ Verified in `backtesting/backtesting.py`. The fill price is `data.Close[-2]`:
 
-Because `broker.next()` runs one iteration after the `next()` that queued the order, that price is
-the close of **the bar whose `next()` generated the signal**. Two consequences, and people usually
-notice only one:
+```python
+prev_close = data.Close[-2]
+price = prev_close if self._trade_on_close and not order.is_contingent else open
+```
 
-1. It is **not** the close of the bar currently being processed. Reading it that way and then
-   reasoning about "the next bar" puts every subsequent timing argument off by one.
+and the fill is timestamped at `self._i - 1`. Meanwhile the `Backtest` docstring says market orders
+fill *"with respect to the current bar's closing price"*. **Both are true, in different frames**, and
+that is exactly why it gets misread:
+
+- Inside `broker.next()` at iteration `i`, data is already sliced to `i+1`, so `Close[-1]` is bar `i`
+  and `Close[-2]` is bar `i-1`.
+- The order was queued during `strategy.next()` of iteration `i-1`.
+- So the fill lands on **the close of the bar the strategy was looking at when it placed the order** —
+  the docstring's "current bar", the source's `Close[-2]`.
+
+Three consequences people usually miss:
+
+1. Reading `Close[-2]` as "two bars ago from the signal" puts every subsequent timing argument off by
+   one. It is one bar back **from the broker's frame**, zero bars back from the strategy's.
 2. It is effectively a **market-on-close fill at the signal bar's close** — legitimate only if you
    can actually trade that close (an MOC order, an auction). If your live path sends a market order
-   *after* the close prints, you will not get that price. Leave it `False` unless you can name the
-   order type that produces the fill.
+   *after* the close prints, you will not get that price.
+3. ✅ **It applies only to non-contingent market orders** (`not order.is_contingent`). SL/TP orders
+   ignore `trade_on_close` entirely and keep the intrabar behaviour above.
+
+**Leave it `False` unless you can name the live order type that produces the fill.**
 
 ## 🚨 `Strategy.I` computes over the FULL series, then slices
 
