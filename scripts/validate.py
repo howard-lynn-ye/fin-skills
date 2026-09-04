@@ -134,6 +134,19 @@ def check_skill(skill_md: Path) -> list[str]:
     for m in re.finditer(r"`(scripts/[\w./-]+\.py)`", text):
         if not (skill_dir / m.group(1)).exists():
             errs.append(f"{rel}: references missing script {m.group(1)}")
+
+    # An existing-but-empty references/ is the state that makes a skill's own pointers
+    # unfulfillable: the model follows the instruction, finds nothing, and is worse off
+    # than if the directory had never existed. Either put files in it or delete it.
+    ref_dir = skill_dir / "references"
+    if ref_dir.is_dir() and not list(ref_dir.glob("*.md")):
+        errs.append(f"{rel}: references/ exists but is empty — add files or remove the directory "
+                    f"(an empty one invites the model to grep nothing)")
+
+    # Same for scripts/.
+    scr_dir = skill_dir / "scripts"
+    if scr_dir.is_dir() and not list(scr_dir.glob("*.py")):
+        errs.append(f"{rel}: scripts/ exists but is empty — add files or remove the directory")
     return errs
 
 

@@ -38,12 +38,12 @@ Then install only the market plugins you need:
 
 | Plugin | Skill | Covers | Refs | Scripts |
 |---|---|---|---:|---:|
-| `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Choose and correctly use a China A-share / Greater China market data source in Python, and avoid the ecosystem's specific traps. | 0 | 0 |
+| `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Choose and correctly use a China A-share / Greater China market data source in Python, and avoid the ecosystem's specific traps. | 1 | 0 |
 | `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies. | 1 | 0 |
 | `fin-core` | [`backtest-validation`](plugins/fin-core/skills/backtest-validation/SKILL.md) | Decide whether a backtest result survives the number of things you tried. | 0 | 1 |
-| `fin-core` | [`backtesting-engines`](plugins/fin-core/skills/backtesting-engines/SKILL.md) | Choose a Python backtesting engine and know exactly what it models correctly versus what it silently gets wrong. | 0 | 0 |
-| `fin-core` | [`broker-execution-apis`](plugins/fin-core/skills/broker-execution-apis/SKILL.md) | Connect to a broker from Python and place orders without accidentally trading live money. | 0 | 0 |
-| `fin-core` | [`derivatives-pricing`](plugins/fin-core/skills/derivatives-pricing/SKILL.md) | Price options and fixed-income instruments in Python and get the Greeks, implied volatility and curve conventions right. | 0 | 0 |
+| `fin-core` | [`backtesting-engines`](plugins/fin-core/skills/backtesting-engines/SKILL.md) | Choose a Python backtesting engine and know exactly what it models correctly versus what it silently gets wrong. | 1 | 0 |
+| `fin-core` | [`broker-execution-apis`](plugins/fin-core/skills/broker-execution-apis/SKILL.md) | Connect to a broker from Python and place orders without accidentally trading live money. | 1 | 0 |
+| `fin-core` | [`derivatives-pricing`](plugins/fin-core/skills/derivatives-pricing/SKILL.md) | Price options and fixed-income instruments in Python and get the Greeks, implied volatility and curve conventions right. | 1 | 0 |
 | `fin-core` | [`factor-and-timeseries-research`](plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md) | Evaluate cross-sectional factors and forecast financial time series without leaking. | 2 | 0 |
 | `fin-core` | [`fundamental-and-macro-data`](plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md) | Get company fundamentals and macroeconomic data with correct point-in-time semantics. | 1 | 0 |
 | `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose and correctly use a market price/reference data source in Python, and avoid the adjustment, survivorship, timezone and rate-limit traps each one carries. | 1 | 0 |
@@ -51,7 +51,7 @@ Then install only the market plugins you need:
 | `fin-core` | [`quant-stack-router`](plugins/fin-core/skills/quant-stack-router/SKILL.md) | Entry point for Python quantitative finance and algorithmic trading: picks the right library and flags where the model's training prior is stale. | 0 | 0 |
 | `fin-core` | [`research-integrity-guards`](plugins/fin-core/skills/research-integrity-guards/SKILL.md) | The audit that decides whether a quantitative finance result is real. | 2 | 1 |
 | `fin-core` | [`signal-construction`](plugins/fin-core/skills/signal-construction/SKILL.md) | Compute technical indicators and engineered features without leaking the future. | 1 | 1 |
-| `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for equities. | 0 | 0 |
+| `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Get crypto market data and trade it, and correct for the ways crypto breaks tooling built for equities. | 1 | 0 |
 | `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server and know its licence, maintenance status and blast radius before connecting it. | 0 | 0 |
 | `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence actually says about LLM trading agents, and the status of the frameworks that implement them — TradingAgents, FinRobot, FinMem, FinCON, FinAgent, FinGPT | 2 | 1 |
 

@@ -106,18 +106,23 @@ Written in the words you would actually use. `->` is a literal path to read next
 
 ## 3. Searching this library
 
-Every skill has a `references/` directory with **one file per library**. When the table above does
-not name your library, grep for it rather than guessing:
+Most library detail lives **inline in each skill's own tables**, not in separate files. Some skills
+additionally carry `references/*.md` for material too long to inline — a decision table, a
+methodology, a single deep library note. `catalog/index.json` lists exactly which, generated from
+frontmatter, so check there rather than assuming a file exists.
+
+When the table above does not name your library, grep the skill bodies first:
 
 ```bash
 # Which skill covers a given package?
-grep -ril "riskfolio" plugins/*/skills/*/references/
+grep -ril "riskfolio" plugins/*/skills/*/SKILL.md
 
-# What does this library get wrong?
-grep -i -A4 "TRAP\|GOTCHA\|LEAK" plugins/fin-core/skills/*/references/quantstats.md
+# What does it get wrong? (traps are marked with a siren in every skill)
+grep -i -B2 -A6 "quantstats" plugins/fin-core/skills/portfolio-and-risk/SKILL.md
+
+# Only some skills have reference files; list them before reading
+ls plugins/*/skills/*/references/
 ```
-
-`catalog/index.json` lists every skill and reference file with tags, generated from frontmatter.
 
 ## 4. Three rules that override any library's defaults
 

@@ -1,7 +1,7 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 16,
-  "n_reference_files": 12,
+  "n_reference_files": 17,
   "n_scripts": 4,
   "discovery_cost": {
     "total_description_chars": 12185,
@@ -26,7 +26,9 @@
       "verified_on": "2026-09-03",
       "body_chars": 13207,
       "approx_body_tokens": 3301,
-      "references": [],
+      "references": [
+        "_source-matrix.md"
+      ],
       "scripts": []
     },
     {
@@ -72,7 +74,9 @@
       "verified_on": "2026-09-03",
       "body_chars": 10389,
       "approx_body_tokens": 2597,
-      "references": [],
+      "references": [
+        "_engine-matrix.md"
+      ],
       "scripts": []
     },
     {
@@ -86,7 +90,9 @@
       "verified_on": "2026-09-03",
       "body_chars": 11815,
       "approx_body_tokens": 2953,
-      "references": [],
+      "references": [
+        "_broker-matrix.md"
+      ],
       "scripts": []
     },
     {
@@ -100,7 +106,9 @@
       "verified_on": "2026-09-03",
       "body_chars": 13241,
       "approx_body_tokens": 3310,
-      "references": [],
+      "references": [
+        "_library-matrix.md"
+      ],
       "scripts": []
     },
     {
@@ -178,8 +186,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 9337,
-      "approx_body_tokens": 2334,
+      "body_chars": 9647,
+      "approx_body_tokens": 2411,
       "references": [],
       "scripts": []
     },
@@ -231,7 +239,9 @@
       "verified_on": "2026-09-03",
       "body_chars": 6057,
       "approx_body_tokens": 1514,
-      "references": [],
+      "references": [
+        "_venue-notes.md"
+      ],
       "scripts": []
     },
     {
