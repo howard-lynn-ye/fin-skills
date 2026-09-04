@@ -113,6 +113,20 @@ assert th < 0 and -1.0 <= delta("p", S, K, t, r, sigma, q) <= 0.0
 bid-ask, and `last`-vs-`mid` put-call-parity residuals were **53.5× noisier**. Deps: `lets-be-rational`,
 `cody-special`, `piecewise-rational`, numpy≥1.20, pandas≥2.0, scipy≥1.10.
 
+## Scripts
+
+`scripts/greeks_scaling.py` — re-derives the scaling factors from what the installed library actually
+returns, then prices the confusion. ✅ **The table above was re-verified on 2026-09-04 against vollib
+1.0.11 via the `py_vollib` shim: all three factors reproduce exactly** (measured raw/vollib =
+`100.00000000`, `365.00000000`, `100.00000000`), and a numpy/scipy reference implementation matches
+all six Greeks to a worst absolute disagreement of **3.55e-15**. 🚨 Note the direction — vollib is the
+one that is **pre-scaled**; QuantLib, financepy and the textbook derivative are raw. On **500
+contracts × 100 multiplier (50,000 units)** the script prints the cost of getting it backwards:
+vega on a +1 vol point move is **$18,762.02**, but a raw vega used as if scaled reads
+**$1,876,201.73** — a **$1,857,439.72** mis-statement. Theta is **−$878.63/day** against
+**−$320,701.38/day**; rho **$26,616.24** against **$2,661,624.08**. The script runs and demonstrates
+the trap with vollib absent.
+
 ## See also
 
 - `../../../fin-core/skills/derivatives-pricing/SKILL.md` — library choice and the licence traps

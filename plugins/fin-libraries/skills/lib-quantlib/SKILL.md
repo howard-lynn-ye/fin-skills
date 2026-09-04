@@ -112,6 +112,28 @@ opt.setPricingEngine(ql.FdBlackScholesVanillaEngine(process))  # 🚨 delta() RA
 delta, theta_annual, theta_day = opt.delta(), opt.theta(), opt.thetaPerDay()
 ```
 
+## Scripts
+
+`scripts/npv_zero.py` — builds the same European call four ways and shows what each date does.
+Measured on QuantLib 1.43, S=K=100, r=5%, q=0, σ=20%, ACT/365:
+
+| Construction | NPV |
+|---|---|
+| `evaluationDate` never set (OS clock is past the expiry) | 🚨 **0.0000000000** — exact zero, no warning |
+| `evaluationDate` moved **after** the curves were built | 🚨 **8.7577616333** — plausible, **16.20% wrong** |
+| `evaluationDate` set **before** the curves were built | ✅ **10.4505835722** |
+| expiry **on** the evaluation date, spot 120 vs strike 100 | 🚨 **0.0000000000** — 20 points ITM, priced at zero |
+
+🚨 The middle row is the dangerous one: a fixed-reference `ql.FlatForward(refDate, ...)` freezes its
+anchor at construction, so after the global moves the engine measured **0.7479452055y** of variance and
+discounting instead of **1.0000000000y** — confirmed by QuantLib's own `yearFraction`. The expiry test
+runs against `evaluationDate`; the time to expiry is measured from the **curve's** reference date, and
+nothing compares the two. ✅ Two fixes, both printed: set the date first, or build curves as
+`ql.FlatForward(0, calendar, rate, dc)` so the reference **tracks** the global (immune to ordering —
+built at the stale date, it still priced 10.4505835722). ⚠️ `Settings.instance().includeReferenceDateEvents
+= True` turns the last row into **20.0000000000**. An empty handle raises only at pricing time, with
+`'empty Handle cannot be dereferenced'`. The script runs and demonstrates the trap with QuantLib absent.
+
 ## See also
 
 - `../../../fin-core/skills/derivatives-pricing/SKILL.md` — library choice and the licence traps
