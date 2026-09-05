@@ -4,8 +4,8 @@
   "n_reference_files": 68,
   "n_scripts": 30,
   "discovery_cost": {
-    "total_description_chars": 39615,
-    "approx_tokens": 9903,
+    "total_description_chars": 39592,
+    "approx_tokens": 9898,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -160,13 +160,13 @@
       "name": "execution-cost-analysis",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/execution-cost-analysis/SKILL.md",
-      "description": "Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and why a backtest that beat the market loses money live. TRIGGER - transaction cost analysis, TCA, implementation shortfall, arrival price, decision price, slippage analysis, execution quality, fill quality, did I get a good fill; VWAP or TWAP benchmark, beat VWAP, participation rate, POV, percentage of volume, child orders, order slicing; market impact, temporary vs permanent impact, square-root law, Almgren-Chriss, price reversion after my order; \"my strategy works in backtest but loses money live\" WHEN you have real fills to measure - with no fills yet the suspect is the backtest's own fill model (backtesting-engines); \"how much size can this strategy take\", capacity, alpha decay with size. SKIP for assuming a cost inside a backtest, which is backtesting-engines and research-integrity-guards, and for broker order types (broker-execution-apis).",
+      "description": "Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and why a backtest that beat the market loses money live. TRIGGER - transaction cost analysis, TCA, implementation shortfall, arrival price, decision price, slippage analysis, execution quality, fill quality, did I get a good fill; VWAP or TWAP benchmark, beat VWAP, participation rate, POV, percentage of volume, child orders, order slicing; market impact, temporary vs permanent impact, square-root law, Almgren-Chriss, price reversion after my order; \"my strategy works in backtest but loses money live\" WHEN you have real fills to measure - with no fills yet the suspect is the backtest's own fill model (backtesting-engines); \"how much size can this strategy take\", capacity, alpha decay with size. SKIP for a cost you have not measured yet - is the assumption credible is research-integrity-guards - and for broker order types (broker-execution-apis).",
       "summary": "Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and why a backtest that beat the market loses mo",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 7869,
-      "approx_body_tokens": 1967,
+      "body_chars": 7867,
+      "approx_body_tokens": 1966,
       "references": [],
       "scripts": [
         "benchmark_choice.py"
@@ -284,13 +284,13 @@
       "name": "options-backtesting",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/options-backtesting/SKILL.md",
-      "description": "Backtest an options strategy without inventing the P&L - assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that decides whether the position fits. TRIGGER - backtest a covered call, cash-secured put, wheel, credit spread, iron condor, butterfly, calendar, diagonal, straddle, strangle, PMCC; short option assigned, early exercise, exercise by exception, expires in the money, pin risk, pinned at the strike; historical option chain, options history, chain panel, OSI symbol, adjusted option, non-standard deliverable; 0DTE, weeklies, third Friday, AM vs PM settlement, cash settled index options; option margin, naked margin requirement, portfolio margin, SPAN, buying power reduction; \"my options backtest returns look too good\"; optopsy, optionlab, an options backtesting library. SKIP for pricing a single option or fitting a vol surface (derivatives-pricing) and for futures rolls (futures-continuous-contracts).",
-      "summary": "Backtest an options strategy without inventing the P&L - assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that decides whethe",
+      "description": "Options positions end in ways you do not control - live or in a backtest. assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that decides whether the position fits. TRIGGER - backtest a covered call, cash-secured put, wheel, credit spread, iron condor, butterfly, calendar, diagonal, straddle, strangle, PMCC; short option assigned, early exercise, exercise by exception, expires in the money, pin risk, pinned at the strike; historical option chain, options history, chain panel, OSI symbol, adjusted option, non-standard deliverable; 0DTE, weeklies, third Friday, AM vs PM settlement, cash settled index options; option margin, naked margin requirement, portfolio margin, SPAN, buying power reduction; \"my options backtest returns look too good\"; optopsy, optionlab, an options backtesting library. SKIP for pricing a single option or fitting a vol surface (derivatives-pricing) and for futures rolls (futures-continuous-contracts).",
+      "summary": "Options positions end in ways you do not control - live or in a backtest.",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 19926,
-      "approx_body_tokens": 4981,
+      "body_chars": 19943,
+      "approx_body_tokens": 4985,
       "references": [
         "_reverify.md"
       ],
@@ -383,13 +383,13 @@
       "name": "us-market-rules",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/us-market-rules/SKILL.md",
-      "description": "US trading rules that decide whether a strategy is executable at all - short-sale restrictions, margin, settlement, day-trading limits, wash sales, and what a data licence lets you keep. TRIGGER - can I short this, locate, hard to borrow, borrow fee, short interest, Reg SHO, uptick rule, SSR, short sale restricted; PDT, pattern day trader, the 25k rule, day trade limit; Reg T, initial or maintenance margin, margin call, buying power, leverage limit; T+1, settlement, free riding, good faith violation, cash account; wash sale, 30 day rule, tax-loss harvesting, after-tax returns; \"can I redistribute this data\"; may_cache, may_redistribute, non-display use, market data licence; presenting or publishing backtested performance, Marketing Rule, hypothetical performance disclosure. Two of the most-cited rules moved in 2024-2026, so a training-prior answer is usually stale. SKIP for A-share T+1 and price limits (china-ashare-data) and for the order-safety mechanics of actually sending an order (broker-execution-apis).",
+      "description": "US trading rules that decide whether a strategy is executable at all - short-sale restrictions, margin, settlement, day-trading limits, wash sales, and what a data licence lets you keep. TRIGGER - can I short this, locate, hard to borrow, borrow fee, short interest, Reg SHO, uptick rule, SSR, short sale restricted; PDT, pattern day trader, day trade limit; Reg T, initial or maintenance margin, margin call, buying power, leverage limit; T+1, settlement, cash account; wash sale, tax-loss harvesting, after-tax returns; \"can I redistribute this data\"; may_cache, may_redistribute, market data licence; presenting or publishing backtested performance, Marketing Rule. Two of the most-cited rules moved in 2024-2026, so a training-prior answer is usually stale. US ONLY - SKIP for short-selling bans or calendars in Asia (asia-pacific-markets), for A-share T+1 and price limits (china-ashare-data) and for the order-safety mechanics of actually sending an order (broker-execution-apis).",
       "summary": "US trading rules that decide whether a strategy is executable at all - short-sale restrictions, margin, settlement, day-trading limits, wash sales, and what a data licence lets you",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 7912,
-      "approx_body_tokens": 1978,
+      "body_chars": 7872,
+      "approx_body_tokens": 1968,
       "references": [],
       "scripts": []
     },

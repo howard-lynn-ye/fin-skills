@@ -10,8 +10,8 @@ description: >-
   reversion after my order; "my strategy works in backtest but loses money live" WHEN you have
   real fills to measure - with no fills yet the suspect is the backtest's own fill model
   (backtesting-engines); "how much size can this strategy take", capacity, alpha decay with size.
-  SKIP for assuming a cost inside a backtest, which is backtesting-engines and
-  research-integrity-guards, and for broker order types (broker-execution-apis).
+  SKIP for a cost you have not measured yet - is the assumption credible is
+  research-integrity-guards - and for broker order types (broker-execution-apis).
 license: MIT
 metadata:
   version: "0.1.0"

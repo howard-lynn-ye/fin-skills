@@ -1,17 +1,17 @@
 ---
 name: options-backtesting
 description: >-
-  Backtest an options strategy without inventing the P&L - assignment, expiry settlement, pin risk,
-  multi-leg lifecycle, historical chain assembly, and the margin that decides whether the position
-  fits. TRIGGER - backtest a covered call, cash-secured put, wheel, credit spread, iron condor,
-  butterfly, calendar, diagonal, straddle, strangle, PMCC; short option assigned, early exercise,
-  exercise by exception, expires in the money, pin risk, pinned at the strike; historical option
-  chain, options history, chain panel, OSI symbol, adjusted option, non-standard deliverable;
-  0DTE, weeklies, third Friday, AM vs PM settlement, cash settled index options; option margin,
-  naked margin requirement, portfolio margin, SPAN, buying power reduction; "my options backtest
-  returns look too good"; optopsy, optionlab, an options backtesting library. SKIP for pricing a
-  single option or fitting a vol surface (derivatives-pricing) and for futures rolls
-  (futures-continuous-contracts).
+  Options positions end in ways you do not control - live or in a backtest. assignment, expiry
+  settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that
+  decides whether the position fits. TRIGGER - backtest a covered call, cash-secured put, wheel,
+  credit spread, iron condor, butterfly, calendar, diagonal, straddle, strangle, PMCC; short
+  option assigned, early exercise, exercise by exception, expires in the money, pin risk, pinned
+  at the strike; historical option chain, options history, chain panel, OSI symbol, adjusted
+  option, non-standard deliverable; 0DTE, weeklies, third Friday, AM vs PM settlement, cash
+  settled index options; option margin, naked margin requirement, portfolio margin, SPAN, buying
+  power reduction; "my options backtest returns look too good"; optopsy, optionlab, an options
+  backtesting library. SKIP for pricing a single option or fitting a vol surface
+  (derivatives-pricing) and for futures rolls (futures-continuous-contracts).
 license: MIT
 metadata:
   version: "0.1.0"
