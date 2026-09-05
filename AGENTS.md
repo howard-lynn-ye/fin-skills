@@ -69,6 +69,7 @@ There is no unit-test suite. Verification is:
 | `scripts/eval_blind.py` | the real measurement: a model picks a skill from the listing alone. `prepare`, then have models answer, then `score` |
 | `scripts/check_drift.py` | re-checks version claims against PyPI (network) |
 | `scripts/check_repo_stats.py` | re-checks GitHub stats. Note `open_issues_count` includes pull requests |
+| `scripts/check_scripts.py` | runs every skill script in a subprocess with `PYTHONIOENCODING` stripped. A script that prints a non-ASCII character passes under UTF-8 and dies on a stock Windows console |
 
 `eval_triggers.py` is a bag-of-words proxy and degrades once two skills cover the same package.
 `eval_blind.py` is the ground truth. Do not tune descriptions to the proxy.

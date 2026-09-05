@@ -28,6 +28,7 @@
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
         "./skills/derivatives-pricing",
+        "./skills/execution-cost-analysis",
         "./skills/external-skill-index",
         "./skills/factor-and-timeseries-research",
         "./skills/fundamental-and-macro-data",

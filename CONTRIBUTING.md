@@ -28,6 +28,7 @@ python scripts/validate.py      # spec compliance, cross-links, README count
 python scripts/build_index.py   # regenerates catalog/index.json and the README table
 python scripts/eval_triggers.py # lexical smoke test for skill selection
 python scripts/check_drift.py   # re-checks version claims against PyPI (needs network)
+python scripts/check_scripts.py # runs every skill script on the DEFAULT console encoding
 ```
 
 `validate.py` must print OK. `build_index.py` must leave the tree clean — if `git diff` shows

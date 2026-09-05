@@ -172,6 +172,7 @@ def check_skill(skill_md: Path) -> list[str]:
     scr_dir = skill_dir / "scripts"
     if scr_dir.is_dir() and not list(scr_dir.glob("*.py")):
         errs.append(f"{rel}: scripts/ exists but is empty — add files or remove the directory")
+
     return errs
 
 

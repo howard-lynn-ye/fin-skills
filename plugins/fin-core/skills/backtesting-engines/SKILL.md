@@ -185,3 +185,10 @@ Two US rules bind hardest exactly where a backtest books its best trades, and no
 matrix above models either: **Reg SHO Rule 201** blocks shorting into a 10% intraday drop at
 the price you assumed, and a short leg needs a **locate and a borrow fee** that moves with the
 same demand your signal is reading. See `../us-market-rules/SKILL.md` §2-3.
+
+## Measuring the cost, not assuming it
+
+This skill and `../research-integrity-guards/SKILL.md` both help you pick a cost ASSUMPTION
+before you have fills. Once you have real fills, the assumption is testable — and
+"works in backtest, loses money live" is an answerable question rather than a complaint.
+See `../execution-cost-analysis/SKILL.md`.
