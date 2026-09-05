@@ -22,3 +22,7 @@
 22. quantstats cagr is ignoring my risk free rate
 23. arch SPA test says my worst strategy is best
 24. freqtrade stoploss filled exactly at my stop price
+25. wash sale rule and my high turnover strategy
+26. my short call got assigned before ex-dividend
+27. did my execution beat VWAP or did it cost us money
+28. what slippage should I assume in my backtest

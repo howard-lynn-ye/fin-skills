@@ -1,16 +1,17 @@
 ---
 name: execution-cost-analysis
 description: >-
-  Measure what your execution actually cost instead of assuming a number - implementation shortfall,
-  benchmark choice, impact models, and why a backtest that beat the market loses money live. TRIGGER
-  - transaction cost analysis, TCA, implementation shortfall, arrival price, decision price, slippage
-  analysis, execution quality, fill quality, did I get a good fill; VWAP or TWAP benchmark, beat
-  VWAP, participation rate, POV, percentage of volume, child orders, order slicing; market impact,
-  temporary vs permanent impact, square-root law, Almgren-Chriss, price reversion after my order;
-  "my strategy works in backtest but loses money live"; "how much size can this strategy take",
-  capacity, alpha decay with size. SKIP for assuming a cost inside a backtest, which is
-  backtesting-engines and research-integrity-guards, and for broker order types
-  (broker-execution-apis).
+  Measure what your execution actually cost instead of assuming a number - implementation
+  shortfall, benchmark choice, impact models, and why a backtest that beat the market loses money
+  live. TRIGGER - transaction cost analysis, TCA, implementation shortfall, arrival price,
+  decision price, slippage analysis, execution quality, fill quality, did I get a good fill; VWAP
+  or TWAP benchmark, beat VWAP, participation rate, POV, percentage of volume, child orders, order
+  slicing; market impact, temporary vs permanent impact, square-root law, Almgren-Chriss, price
+  reversion after my order; "my strategy works in backtest but loses money live" WHEN you have
+  real fills to measure - with no fills yet the suspect is the backtest's own fill model
+  (backtesting-engines); "how much size can this strategy take", capacity, alpha decay with size.
+  SKIP for assuming a cost inside a backtest, which is backtesting-engines and
+  research-integrity-guards, and for broker order types (broker-execution-apis).
 license: MIT
 metadata:
   version: "0.1.0"

@@ -21,3 +21,7 @@
 21. NSE India trading calendar
 22. HRPOpt gave me nonsense weights
 23. tushare qfq prices change when I change end_date
+24. can I short this stock, is it hard to borrow
+25. am I allowed to redistribute this price data
+26. where do I get historical option chains
+27. compute implementation shortfall on these fills

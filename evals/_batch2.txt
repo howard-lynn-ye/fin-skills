@@ -21,3 +21,7 @@
 21. yfinance KeyError Adj Close after upgrade
 22. QuantLib NPV returns 0.0 and I don't know why
 23. polars join_asof gave wrong rows silently
+24. does the pattern day trader rule still apply
+25. backtest a wheel strategy selling cash secured puts
+26. what happens if the stock pins my strike at expiry
+27. how much size can this strategy take before impact eats it

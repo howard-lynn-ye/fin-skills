@@ -9,8 +9,9 @@ description: >-
   taking a strategy from backtest to live; "my backtest looks too good"; "works in backtest but
   loses money live". Several popular engines fill at the signal's own bar close by default. SKIP
   for judging whether a finished result is real (backtest-validation) for A-share rules
-  (china-trading-stack), and for crypto engines that must model funding and perpetuals
-  (crypto-data-and-execution).
+  (china-trading-stack), for crypto funding and perpetuals (crypto-data-and-execution), for
+  options, which need assignment and settlement no engine here models (options-backtesting), and
+  for measuring fills you already have (execution-cost-analysis).
 license: MIT
 metadata:
   version: "0.1.0"
