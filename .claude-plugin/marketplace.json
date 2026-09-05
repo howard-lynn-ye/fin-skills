@@ -33,6 +33,7 @@
         "./skills/fundamental-and-macro-data",
         "./skills/market-data-engineering",
         "./skills/market-data-sourcing",
+        "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
         "./skills/quant-stack-router",
         "./skills/research-integrity-guards",
