@@ -1,7 +1,7 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 48,
-  "n_reference_files": 67,
+  "n_reference_files": 68,
   "n_scripts": 29,
   "discovery_cost": {
     "total_description_chars": 38406,
@@ -273,9 +273,11 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 19553,
-      "approx_body_tokens": 4888,
-      "references": [],
+      "body_chars": 19926,
+      "approx_body_tokens": 4981,
+      "references": [
+        "_reverify.md"
+      ],
       "scripts": [
         "option_lifecycle.py"
       ]

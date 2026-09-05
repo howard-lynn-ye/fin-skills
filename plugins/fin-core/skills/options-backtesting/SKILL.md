@@ -329,7 +329,14 @@ off the **closing price**, but holders have until **5:30 pm ET** to submit instr
 **OTM at the close can still be exercised**, and one ITM by $0.01 or more can be **abandoned**. For
 `|S_close − K|` small, assignment is a draw driven by the after-hours move, not by the close.
 
-## 8. Scripts
+## 8. What still needs a second source
+
+The ⚠️ markers above are a queue, not a permanent hedge. `references/_reverify.md` lists exactly
+which claims need re-fetching and why, ranked — the `optopsy` LICENSE file, a hashed copy of the
+OCC Rules PDF, and the ThetaData pricing conflict are the top three. It also records what is
+already citation-grade so nobody re-does it.
+
+## 9. Scripts
 
 `scripts/option_lifecycle.py` — the early-exercise premium table, the pin-risk boundary, and the
 sign-flipping assignment error. Carries its own CRR binomial tree, so it runs and makes its point
