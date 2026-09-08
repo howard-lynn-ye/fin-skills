@@ -180,6 +180,55 @@
       ]
     },
     {
+      "name": "fin-models",
+      "source": "./plugins/fin-models",
+      "description": "Quantitative model families - factor models, covariance and risk models, VaR/CVaR and their backtests, portfolio optimizers, volatility models, state-space and Kalman, cointegration and statistical arbitrage, time-series forecasting, option pricing and implied-volatility surfaces, term-structure and credit models. One skill per model family: which Python implementation is verified, the pitfalls that produce wrong numbers, and an executable script that reproduces the claim.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "factor-model",
+        "risk-model",
+        "covariance",
+        "var",
+        "cvar",
+        "optimizer",
+        "garch",
+        "volatility",
+        "kalman",
+        "cointegration",
+        "pairs",
+        "forecasting",
+        "option-pricing",
+        "heston",
+        "sabr",
+        "term-structure",
+        "credit"
+      ],
+      "skills": []
+    },
+    {
+      "name": "fin-strategies",
+      "source": "./plugins/fin-strategies",
+      "description": "Strategy and execution algorithms - trend following and time-series momentum, alpha combination and neutralization, execution algorithms (VWAP, TWAP, POV, Almgren-Chriss), market-making models, position sizing and Kelly. One skill per family, source-verified, each with an executable script and the traps that flatter a backtest.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "trend-following",
+        "momentum",
+        "alpha",
+        "neutralization",
+        "execution",
+        "vwap",
+        "twap",
+        "almgren-chriss",
+        "market-making",
+        "avellaneda-stoikov",
+        "kelly",
+        "position-sizing"
+      ],
+      "skills": []
+    },
+    {
       "name": "trading-skills",
       "source": {
         "source": "github",
