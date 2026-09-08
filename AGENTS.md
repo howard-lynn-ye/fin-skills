@@ -13,8 +13,8 @@ Two tiers:
 
 - **domain skills** (`fin-core`, `fin-china`, `fin-asia`, `fin-crypto`, `fin-futures-fx`,
   `fin-llm`) — one per task a person has. These answer "which library, and what will bite me".
-- **`fin-libraries`** — one skill per library, opt-in because it costs ~5,273 tokens of listing
-  budget on its own. These answer "how do I use this one correctly", and each links back to its
+- **`fin-libraries`** — one skill per library, opt-in because it costs ~5,300 tokens of listing
+  budget on its own (`build_index.py` prints the current figure per plugin). These answer "how do I use this one correctly", and each links back to its
   domain skill.
 
 ## Before you commit
@@ -61,7 +61,11 @@ the validator checks for that specifically.
 
 ## Testing
 
-There is no unit-test suite. Verification is:
+`python -m pytest -q` runs the unit-test suite under `tests/` - one module per generated skill
+script plus the `fin_skills.api` layer (over 500 tests; slow demo paths are marked `slow` and
+deselected by default, `-m slow` runs them). Tests import the GENERATED package, so after editing
+a plugin script run `build_package.py` before the tests can see the change. Library-specific
+tests skip when the library is absent. Beyond the unit tests, verification is:
 
 | Script | Checks |
 |---|---|

@@ -63,7 +63,8 @@ from fin_skills.core.option_lifecycle import crr                # a CRR tree, no
 ```
 
 The same checks behind one interface — 28 guards that return a `GuardResult` instead of raising, and
-16 typed conventions, the way PyOD puts its detectors behind one API. PyOD's uniformity comes from a
+a typed `conventions` module (annualisation, risk-free, pip and liquidation arithmetic), the way
+PyOD puts its detectors behind one API. PyOD's uniformity comes from a
 uniform data container (every detector is `fit(X)`); here the container is a `Bundle` — the artefacts
 of one research run under a fixed vocabulary — and `check()` runs every guard whose inputs are present:
 
@@ -99,9 +100,10 @@ API reference, one page per module: **https://howard-lynn-ye.github.io/fin-skill
 `scripts/build_docs.py` with pdoc and published to the `gh-pages` branch).
 
 `fin_skills/` is generated from the skills by `scripts/build_package.py`; the skills stay the
-source of truth and `validate.py` fails if the two drift apart. Namespaces follow the plugins:
-`core`, `libraries`, `china`, `asia`, `futures_fx`, `crypto`, `llm`. Every skill script runs
-standalone too (`python plugins/<plugin>/skills/<skill>/scripts/<name>.py`).
+source of truth and `validate.py` fails if the two drift apart. Namespaces follow the plugins that
+ship scripts: `core`, `libraries`, `china`, `futures_fx`, `crypto`, `llm` (a plugin without
+scripts, such as `fin-asia`, has no namespace; its skill text is still in `fin_skills.load()`). Every
+skill script runs standalone too (`python plugins/<plugin>/skills/<skill>/scripts/<name>.py`).
 
 ### Federated third-party packs
 
@@ -267,12 +269,12 @@ python scripts/eval_triggers.py  # do the descriptions actually select correctly
 python scripts/build_index.py   # regenerate catalog/index.json and the table above
 ```
 
-`eval_triggers.py` scores all 62 queries in `evals/queries.jsonl` against every description and
-reports top-1 accuracy plus the top-2 margin. It is a **lexical proxy, not a live model test** —
-but the failure it catches is real: a query whose distinctive words match three descriptions
-equally is being resolved close to arbitrarily. Current: **58/62 (94%)**, up from 39/62 (63%)
-before the descriptions were rewritten with `TRIGGER`/`SKIP` clauses. Treat a thin margin as a
-defect even when the top pick is right.
+`eval_triggers.py` scores the 108 queries in `evals/queries.jsonl` against every description and
+reports strict top-1 and routed accuracy plus the top-2 margin. It is a **lexical proxy, not a live
+model test** — the numbers that matter are in the table above, and the blind eval is the one to
+believe — but the failure it catches is real: a query whose distinctive words match three
+descriptions equally is being resolved close to arbitrarily. Treat a thin margin as a defect even
+when the top pick is right, and re-run both evals after any description change.
 
 `validate.py` restricts frontmatter to the six spec fields (`name`, `description`, `license`,
 `compatibility`, `metadata`, `allowed-tools`). Claude Code accepts more, but any extra key is a hard

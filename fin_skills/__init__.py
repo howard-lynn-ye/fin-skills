@@ -6,7 +6,7 @@ Two ways in:
     fin_skills.catalog()                          # every skill: name, plugin, description
     fin_skills.load("backtest-validation")        # that skill's SKILL.md text
     fin_skills.references("options-backtesting")  # {filename: text} for its references/
-    fin_skills.find("survivorship")               # skills whose description mentions it
+    fin_skills.find("survivorship")               # skills whose SKILL.md text mentions it
 
     from fin_skills.core.safe_asof import safe_asof             # the executable guards
     from fin_skills.core.assert_causal import assert_causal
