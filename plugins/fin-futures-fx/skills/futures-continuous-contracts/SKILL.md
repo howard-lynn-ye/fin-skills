@@ -2,13 +2,14 @@
 name: futures-continuous-contracts
 description: >-
   Build and use a futures price series correctly — a continuous contract does not exist in the
-  market, it is stitched, and the stitching method changes your answer. TRIGGER - futures, continuous
-  contract, back-adjusted, Panama adjustment, ratio adjustment, roll, roll yield, contango,
-  backwardation, front month, expiry, first notice day, open interest roll, CME, Globex, ES, CL, NG,
-  VX, GC, ZN; joining futures bars to an equity calendar; "my futures backtest returns look wrong";
-  negative prices in a price series; norgatedata, databento continuous symbols, yfinance CL=F or
-  ES=F. SKIP for Chinese futures and 夜盘 (china-trading-stack) and for crypto perpetuals, which have
-  funding rather than rolls (crypto-data-and-execution).
+  market, it is stitched, and the stitching method changes your answer. TRIGGER - futures,
+  continuous contract, back-adjusted, Panama adjustment, ratio adjustment, roll, roll yield,
+  contango, backwardation, front month, expiry, first notice day, open interest roll, CME, Globex,
+  ES, CL, NG, VX, GC, ZN; joining futures bars to an equity calendar; "my futures backtest returns
+  look wrong"; negative prices in a price series; norgatedata, databento continuous symbols,
+  yfinance CL=F or ES=F. SKIP for Chinese futures and 夜盘 (china-trading-stack) and for crypto
+  perpetuals, which have funding rather than rolls, and for dated crypto futures and basis trades
+  (crypto-data-and-execution).
 license: MIT
 metadata:
   version: "0.1.0"

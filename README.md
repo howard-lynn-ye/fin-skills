@@ -195,10 +195,10 @@ actually get selected:
 
 | Harness | What it measures | Result |
 |---|---|---|
-| `scripts/eval_triggers.py` | idf-weighted term overlap; catches descriptions competing for the same words | **58/62 = 94%** (was 63% before the rewrite) |
-| `scripts/eval_blind.py` | **a model choosing from the descriptions alone**, seeing exactly the discovery-time view | **61/62 = 98%** |
+| `scripts/eval_triggers.py` | idf-weighted term overlap; catches descriptions competing for the same words | **84/108 = 78%** strict top-1, **105/108 = 97%** routed (the pick links to the expected skill) |
+| `scripts/eval_blind.py` | **a model choosing from the descriptions alone**, seeing exactly the discovery-time view | **106/108 = 98%** |
 
-Both run against `evals/queries.jsonl` — 62 realistic queries including Chinese, pasted error
+Both run against `evals/queries.jsonl` — 108 realistic queries including Chinese, pasted error
 strings (`finrl import fails with ModuleNotFoundError`) and symptom phrasings (`my strategy works
 in backtest but loses money live`). The single blind miss routes "how do I avoid survivorship bias"
 to `market-data-sourcing` rather than `research-integrity-guards`, which is defensible — that skill

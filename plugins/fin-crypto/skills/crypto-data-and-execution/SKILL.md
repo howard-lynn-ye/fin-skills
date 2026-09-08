@@ -6,9 +6,11 @@ description: >-
   cash-and-carry, liquidation price, maintenance margin, inverse or coin-margined contract,
   Deribit, crypto options, crypto order book; ccxt, cryptofeed, python-binance, freqtrade, jesse,
   hummingbot, OctoBot; a crypto exchange, testnet or sandbox; annualizing crypto returns, 365 vs
-  252; porting an equity strategy to crypto. Annualization is 365 not 252, funding is a carry
-  that spot backtests omit, liquidation is not a stop-loss, and exchange pair lists are
-  chronically survivorship-biased. SKIP for equity and futures brokers (broker-execution-apis).
+  252; porting an equity strategy to crypto. Annualization is 365 not 252, funding is a carry that
+  spot backtests omit, liquidation is not a stop-loss, and exchange pair lists are chronically
+  survivorship-biased. SKIP for equity and futures brokers (broker-execution-apis), for RL or
+  deep-learning agents even on crypto (rl-and-ml-trading), and for ccxt or freqtrade specifics
+  once the library is named (lib-ccxt, lib-freqtrade).
 license: MIT
 metadata:
   version: "0.1.0"

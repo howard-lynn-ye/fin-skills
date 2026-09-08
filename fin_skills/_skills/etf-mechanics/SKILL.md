@@ -3,14 +3,14 @@ name: etf-mechanics
 description: >-
   Why an ETF's price series does not behave like the index it tracks - daily-reset leverage, NAV
   vs price, distributions, holdings files and fees. TRIGGER - "why is my 3x ETF down when the
-  index is flat", TQQQ decay, SQQQ, UPRO, SOXL, leveraged ETF long term, inverse ETF, volatility
-  drag, daily reset, beta slippage; premium to NAV, discount to NAV, iNAV, creation/redemption,
-  "bond ETF trading below NAV"; ETF distribution, capital gains distribution, return of capital,
-  "ETF dropped on the ex-date", phantom drop; ETF holdings file, constituents CSV, index
-  reconstitution, Russell rebalance, "I used today's holdings for the backtest"; expense ratio
-  drag, tracking difference vs tracking error, "ETF returned less than the index". SKIP for
-  downloading prices and vendor adjustment defaults (market-data-sourcing), for UNG, USO or VIXY
-  roll yield and contango (futures-continuous-contracts), for auditing a finished backtest
+  index is flat", TQQQ decay, SQQQ, leveraged ETF long term, inverse ETF, volatility drag, daily
+  reset; premium to NAV, discount to NAV, iNAV, creation/redemption, "bond ETF trading below NAV";
+  ETF distribution, capital gains distribution, return of capital, "ETF dropped on the ex-date",
+  phantom drop; ETF holdings file, constituents CSV, index reconstitution, Russell rebalance, "I
+  used today's holdings for the backtest"; expense ratio drag, tracking difference vs tracking
+  error, "ETF returned less than the index". SKIP for downloading price series and vendor
+  adjustment defaults (market-data-sourcing) - holdings files stay here, for UNG, USO or VIXY roll
+  yield and contango (futures-continuous-contracts), for auditing a finished backtest
   (research-integrity-guards), and for weights, Sharpe or drawdown (portfolio-and-risk).
 license: MIT
 metadata:

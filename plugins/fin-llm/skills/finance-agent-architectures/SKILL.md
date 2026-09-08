@@ -5,11 +5,11 @@ description: >-
   pipeline whose gates are code. TRIGGER - build a multi-agent trading system; TradingAgents
   architecture; the ai-hedge-fund repo; RD-Agent for quant; Vibe-Trading; FinRobot vs FinGPT;
   FinMem layered memory; a LangGraph, CrewAI, AutoGen or Claude Agent SDK pipeline for stock
-  research; analyst, researcher, trader and risk-manager agents, bull-bear debate; an agent
-  that reads 10-Ks and trades; "how should the pipeline be staged", where the LLM sits,
-  human-in-the-loop gates, prompt injection through scraped filings, agent reproducibility;
-  交易 agent 架构, 多智能体 pipeline. SKIP for whether any of it makes money
-  (llm-finance-agents), choosing an MCP server (finance-mcp-servers), RL agents
+  research; analyst, researcher, trader and risk-manager agents, bull-bear debate; an agent that
+  reads 10-Ks and trades; "how should the pipeline be staged", where the LLM sits,
+  human-in-the-loop gates, prompt injection through scraped filings, agent reproducibility; 交易
+  agent 架构, 多智能体 pipeline. SKIP for whether any of it makes money or whether you should build one
+  at all (llm-finance-agents), choosing an MCP server (finance-mcp-servers), RL agents
   (rl-and-ml-trading), and order safety at the broker (broker-execution-apis).
 license: MIT
 metadata:

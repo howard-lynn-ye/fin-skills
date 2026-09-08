@@ -1,17 +1,17 @@
 ---
 name: intraday-microstructure
 description: >-
-  Measure the market at the tick level and know when the measure is lying. TRIGGER - build
-  dollar bars, volume bars, tick bars, imbalance bars; classify trades as buyer or seller
-  initiated, Lee-Ready, tick rule, bulk volume classification, BVC; quoted vs effective vs
-  realized spread, price impact, Kyle's lambda, Amihud illiquidity, order flow imbalance, OFI,
-  VPIN, flow toxicity; reconstruct the order book from MBO, market by order, L2 vs L3, queue
-  position, NBBO, odd lots, SIP vs direct feed, dark prints, trade-throughs, TAQ; "my tick
-  strategy works on bars but not on ticks", exchange clock vs vendor clock, the 5-second rule.
-  SKIP for downloading tick data or picking a vendor (market-data-sourcing), for as-of joins and
-  tick storage (market-data-engineering), for the cost of your own fills
+  Measure the market at the tick level and know when the measure is lying. TRIGGER - build dollar
+  bars, volume bars, tick bars, imbalance bars; classify trades as buyer or seller initiated,
+  Lee-Ready, tick rule, bulk volume classification, BVC; quoted vs effective vs realized spread,
+  price impact, Kyle's lambda, Amihud illiquidity, order flow imbalance, OFI, VPIN; reconstruct
+  the order book from MBO, market by order, L2 vs L3, queue position, NBBO, odd lots, dark prints;
+  "my tick strategy works on bars but not on ticks", exchange clock vs vendor clock, the 5-second
+  rule. SKIP for downloading tick data or picking a vendor (market-data-sourcing), for as-of joins
+  and tick storage (market-data-engineering), for the cost of your own fills
   (execution-cost-analysis), for indicator look-ahead on bars (signal-construction), for how an
-  engine fills orders (backtesting-engines) and for short-sale or margin rules (us-market-rules).
+  engine fills orders or what spread to assume in a bar backtest (backtesting-engines) and for
+  short-sale or margin rules (us-market-rules).
 license: MIT
 metadata:
   version: "0.1.0"
