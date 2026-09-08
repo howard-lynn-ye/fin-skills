@@ -1,7 +1,7 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 49,
-  "n_reference_files": 68,
+  "n_reference_files": 70,
   "n_scripts": 30,
   "discovery_cost": {
     "total_description_chars": 39758,
@@ -289,10 +289,12 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 26410,
-      "approx_body_tokens": 6602,
+      "body_chars": 23549,
+      "approx_body_tokens": 5887,
       "references": [
-        "_reverify.md"
+        "_reverify.md",
+        "options-data-vendors.md",
+        "regulatory-sources.md"
       ],
       "scripts": [
         "option_lifecycle.py"
