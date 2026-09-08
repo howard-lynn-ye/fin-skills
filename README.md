@@ -62,6 +62,9 @@ from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 from fin_skills.core.option_lifecycle import crr                # a CRR tree, no QuantLib
 ```
 
+API reference, one page per module: **https://howard-lynn-ye.github.io/fin-skills/** (built by
+`scripts/build_docs.py` with pdoc and published to the `gh-pages` branch).
+
 `fin_skills/` is generated from the skills by `scripts/build_package.py`; the skills stay the
 source of truth and `validate.py` fails if the two drift apart. Namespaces follow the plugins:
 `core`, `libraries`, `china`, `asia`, `futures_fx`, `crypto`, `llm`. Every skill script runs
