@@ -8,8 +8,9 @@ description: >-
   arch.unitroot, GARCH, EGARCH, GJR-GARCH, TARCH, APARCH, FIGARCH, HARCH, HAR-RV, skewt,
   conditional_volatility, or a GARCH fit emitting convergence warnings. Memory is stale on licence
   and version - it is 8.0.0 (2025-10-21) under NCSA, not one of the three usual permissive
-  licences. SKIP for PSR/DSR/PBO (lib-purgedcv) and for reporting Sharpe (lib-quantstats). SKIP
-  for choosing between libraries - that is the domain skill's job.
+  licences. SKIP for PSR and DSR (backtest-validation), for PBO and CPCV (lib-purgedcv) and for
+  reporting Sharpe (lib-quantstats). SKIP for choosing between libraries - that is the domain
+  skill's job.
 license: MIT
 metadata:
   version: "0.1.0"

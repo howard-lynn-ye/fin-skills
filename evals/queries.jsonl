@@ -79,4 +79,4 @@
 {"q": "did my execution beat VWAP or did it cost us money", "expect": "execution-cost-analysis"}
 {"q": "compute implementation shortfall on these fills", "expect": "execution-cost-analysis"}
 {"q": "how much size can this strategy take before impact eats it", "expect": "execution-cost-analysis"}
-{"q": "what slippage should I assume in my backtest", "expect": "research-integrity-guards"}
+{"q": "what slippage should I assume in my backtest", "expect": "backtesting-engines", "note": "ownership decision 2026-09-05: choosing the assumption is engine configuration; RIG judges it after"}

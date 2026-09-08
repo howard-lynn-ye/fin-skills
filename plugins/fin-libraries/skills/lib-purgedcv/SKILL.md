@@ -4,12 +4,13 @@ description: >-
   The only genuinely sklearn-protocol-compliant purged and embargoed splitter, and the one that
   refuses to run until you state when each label resolved - understate evaluation_times and it
   silently reintroduces the leak while reporting clean folds. TRIGGER - purgedcv, PurgedKFold,
-  CombinatorialPurgedCV, PurgedGroupKFold, WalkForwardSplit, prediction_times, evaluation_times,
-  purge_horizon, embargo, audit_splitter, reconstruct_paths, path_metrics, overlapping labels,
-  triple-barrier touch time, mlfinlab.cross_validation. Memory is stale or absent - this package
-  first shipped 2026-05-16 and is at 0.1.6. SKIP for CPCV over portfolio models (lib-skfolio) and
-  for SPA/StepM/MCS (lib-arch). SKIP when the question is WHICH library to choose rather than how
-  to use this one - that belongs to the domain skill.
+  PBO, CPCV, probability of backtest overfitting, CombinatorialPurgedCV, PurgedGroupKFold,
+  WalkForwardSplit, prediction_times, evaluation_times, purge_horizon, embargo, audit_splitter,
+  reconstruct_paths, path_metrics, overlapping labels, triple-barrier touch time,
+  mlfinlab.cross_validation. Memory is stale or absent - this package first shipped 2026-05-16 and
+  is at 0.1.6. SKIP for CPCV over portfolio models (lib-skfolio) and for SPA/StepM/MCS (lib-arch).
+  SKIP when the question is WHICH library to choose rather than how to use this one - that belongs
+  to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

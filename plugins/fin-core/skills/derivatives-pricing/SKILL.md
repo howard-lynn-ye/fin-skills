@@ -7,8 +7,9 @@ description: >-
   skew, SVI, SABR, ZABR; QuantLib, vollib, py_vollib, financepy, rateslib, optionlab; option
   chains; or yield curve, discount factor, curve bootstrapping, day count, swap and bond pricing.
   Greek scaling differs by 100x and 365x between the three common libraries, and one popular
-  fixed-income package is not open source. SKIP for backtesting an options STRATEGY - assignment,
-  pin risk (options-backtesting) - for choosing an option DATA vendor (market-data-sourcing).
+  fixed-income package is not open source. SKIP for option lifecycle events - assignment, pin
+  risk, expiry - live or backtested, and for historical option chains and vendors
+  (options-backtesting).
 license: MIT
 metadata:
   version: "0.1.0"

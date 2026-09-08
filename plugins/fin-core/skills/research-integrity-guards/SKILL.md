@@ -3,7 +3,7 @@ name: research-integrity-guards
 description: >-
   Second-pass audit that decides whether a finance result is real, applied after the work exists.
   TRIGGER - about to REPORT, publish or act on a backtest, factor test or model score; a result
-  that looks good ("Sharpe 2.5", "beats SPY", "85% accuracy") and needs challenging; asked to
+  that looks good ("Sharpe 3.5", "beats SPY", "85% accuracy") and needs challenging; asked to
   validate, verify, sanity-check or critique a research design; asked "what should I check".
   Covers five gates: universe survivorship, availability timestamps, label leakage, cost realism,
   trial count. SKIP when the task is to BUILD something rather than judge it - go to the domain
