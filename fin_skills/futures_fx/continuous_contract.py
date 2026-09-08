@@ -18,20 +18,23 @@ Three failures this catches, all of which pass every unit test you would think t
    anything level-dependent -- margin, tick value, limit moves, "is it above 100" -- because
    those are the prices that actually printed.
 
-2. DIFFERENCE (Panama / back-adjusted) subtracts the cumulative roll gap from history. Over
-   enough rolls the cumulative gap exceeds the price level and HISTORICAL PRICES GO
-   NEGATIVE. Not a bug -- an arithmetic certainty. A back-adjusted series is a P&L path
+2. DIFFERENCE (Panama / back-adjusted) shifts all history by the cumulative roll gap so the
+   series is continuous at every roll and anchored at today's contract. Under sustained
+   backwardation the shift is negative; over enough rolls it exceeds the price level and
+   HISTORICAL PRICES GO NEGATIVE. Not a bug -- an arithmetic certainty. A back-adjusted series is a P&L path
    wearing a price's clothes: `pct_change()` on it divides by a number that crosses zero and
    changes sign, producing infinities and returns whose SIGN IS FLIPPED. `log()` of it is
    NaN. Every vol estimate, every z-score, every stop-loss in percent is garbage.
 
-   SIGN CONVENTION -- read this before comparing to a vendor. Here `gap = P_new - P_old` is
-   subtracted from older prices, so a CONTANGO market drives history negative. Other vendors
-   add it, which drives a BACKWARDATED market negative instead (this is why back-adjusted
-   continuous crude goes negative in the 1980s at most data shops). Both conventions are in
-   production somewhere, both produce a series that is not a price, and neither one's
-   `pct_change()` means anything. Which is exactly why you check against `true_roll_return`
-   instead of trusting the label on the file.
+   SIGN CONVENTION -- read this before comparing to a vendor. Back-adjusting anchors the
+   NEWEST contract and shifts every older price by the cumulative gap (P_new - P_old, added);
+   forward-adjusting anchors the OLDEST and shifts newer prices the other way. Both are
+   continuous at every roll; which one goes negative depends on the term structure, not on
+   the vendor. An earlier version of this file SUBTRACTED the gap on the back-adjusted side
+   and called that a convention. It is not: it leaves a discontinuity of twice the gap at
+   every roll, and the test suite caught it on a six-day toy. What remains true is that
+   neither adjusted series is a price, and neither one's `pct_change()` means anything --
+   which is why you check against `true_roll_return` instead of trusting the label.
 
 3. RATIO (proportional) multiplies history by the cumulative price ratio at each roll. It
    cannot cross zero, so percentage returns survive -- and they are EXACTLY the returns of a
@@ -154,9 +157,11 @@ def stitch(contracts: pd.DataFrame, roll_dates: Sequence,
                    and any level threshold. WRONG for returns -- it carries a fake jump at
                    every roll.
     'difference' : back-adjusted. Walking backward from the newest contract, at each roll
-                   gap = P_new(roll) - P_old(roll); the cumulative gap is SUBTRACTED from
-                   all older prices. Historical prices can and do go NEGATIVE. Not a price,
-                   not a return base -- see the module docstring on sign conventions.
+                   gap = P_new(roll) - P_old(roll); the cumulative gap is ADDED to all older
+                   prices, so the series is continuous at every roll and anchored at
+                   today's contract. Under backwardation the gap is negative and history
+                   can and does go NEGATIVE. Not a price, not a return base -- see the
+                   module docstring.
     'ratio'      : proportional. Older prices are multiplied by the cumulative
                    P_new(roll)/P_old(roll). Sign-preserving; `pct_change()` reproduces the
                    true rolled-position return exactly. Levels are still not tradeable.
@@ -190,7 +195,7 @@ def stitch(contracts: pd.DataFrame, roll_dates: Sequence,
             else:
                 cum[k] = cum[k + 1] * (p_new / p_old)
         adj = cum[seg]
-        out = pd.Series(raw - adj if method == "difference" else raw * adj,
+        out = pd.Series(raw + adj if method == "difference" else raw * adj,
                         index=active.index)
 
     out.name = f"continuous_{method}"
@@ -400,40 +405,53 @@ if __name__ == "__main__":
     print()
     print(render(table))
 
-    # -------------------------------------------------- 1. the negative-price crossing
     diff = stitch(contracts, rolls, "difference")
     ratio = stitch(contracts, rolls, "ratio")
     unadj = stitch(contracts, rolls, "unadjusted")
     truth = true_roll_return(contracts, rolls)
 
+    # -------------------------------------------------- 1. the negative-price crossing
+    # Back-adjustment ADDS the roll gap (P_new - P_old) to older history. Under CONTANGO
+    # (deferred dearer, gap > 0) that pushes history UP -- the market above never goes
+    # negative. The negative-price phenomenon is a BACKWARDATION fact: gap < 0, so distant
+    # history is dragged below zero. That is the crude-oil case, so demonstrate it on a
+    # backwardated market rather than assert it.
+    bw_contracts, bw_rolls, bw_spot = _synthetic_contango(contango=-0.20, seed=5)
+    bw_diff = stitch(bw_contracts, bw_rolls, "difference")
+    bw_ratio = stitch(bw_contracts, bw_rolls, "ratio")
+    bw_unadj = stitch(bw_contracts, bw_rolls, "unadjusted")
+    bw_truth = true_roll_return(bw_contracts, bw_rolls)
+
     # The denominator of pct_change() passes through zero here, so this is where the
     # arithmetic detonates. Everything either side of it is quietly sign-flipped.
-    cross = int(np.argmin(np.abs(diff.to_numpy())))
+    cross = int(np.argmin(np.abs(bw_diff.to_numpy())))
     win = slice(max(0, cross - 3), cross + 4)
-    d_ret = diff.pct_change(fill_method=None)
+    d_ret = bw_diff.pct_change(fill_method=None)
     print("\n" + "=" * 108)
-    print("1. THE DIFFERENCE-ADJUSTED SERIES CROSSING ZERO  (the seven days that break "
-          "everything)")
+    print("1. A BACKWARDATED MARKET DRIVES THE DIFFERENCE-ADJUSTED SERIES THROUGH ZERO")
+    print(f"   (spot {bw_spot.iloc[0]:.0f} -> {bw_spot.iloc[-1]:.0f}; the contango market above "
+          f"climbed instead and never went negative)")
     print("=" * 108)
     print(f"{'date':<12} {'unadjusted':>11} {'difference':>11} {'ratio':>11} "
           f"{'TRUE ret':>10} {'diff pct_change()':>20}   verdict")
     print("-" * 108)
-    for d in diff.index[win]:
+    for d in bw_diff.index[win]:
         dr = d_ret.get(d, np.nan)
-        tr = truth.get(d, np.nan)
+        tr = bw_truth.get(d, np.nan)
         verdict = ("--" if not np.isfinite(dr) or not np.isfinite(tr) else
                    "SIGN FLIPPED" if np.sign(dr) != np.sign(tr) else
                    f"{abs(dr / tr):,.0f}x too big" if abs(dr) > 5 * abs(tr) else "ok")
-        print(f"{d:%Y-%m-%d}  {unadj[d]:>11.2f} {diff[d]:>11.2f} {ratio[d]:>11.2f} "
+        print(f"{d:%Y-%m-%d}  {bw_unadj[d]:>11.2f} {bw_diff[d]:>11.2f} {bw_ratio[d]:>11.2f} "
               f"{tr:>10.2%} {dr:>20,.1%}   {verdict}")
     print("-" * 108)
-    print(f"difference-adjusted range: {diff.min():,.1f} .. {diff.max():,.1f}  "
-          f"({int((diff < 0).sum()):,} of {len(diff):,} days are NEGATIVE PRICES)")
-    print(f"np.log(difference) is NaN on all {int((diff <= 0).sum()):,} of them, so every "
+    neg = int((bw_diff < 0).sum())
+    print(f"difference-adjusted range: {bw_diff.min():,.1f} .. {bw_diff.max():,.1f}  "
+          f"({neg:,} of {len(bw_diff):,} days are NEGATIVE PRICES)")
+    print(f"np.log(difference) is NaN on all {int((bw_diff <= 0).sum()):,} of them, so every "
           f"log-return, vol and z-score built on it is NaN or nonsense.")
     print(f"worst single day pct_change() reports: "
           f"{d_ret.replace([np.inf, -np.inf], np.nan).abs().max():,.0%} -- on a day the "
-          f"market moved {truth.loc[d_ret.abs().idxmax()]:.2%}.")
+          f"market moved {bw_truth.loc[d_ret.abs().idxmax()]:.2%}.")
 
     # ------------------------------------------------------------ 2. ratio == the truth
     print("\n" + "=" * 108)

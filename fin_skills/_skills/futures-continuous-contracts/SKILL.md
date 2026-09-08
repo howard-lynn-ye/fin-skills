@@ -38,17 +38,28 @@ This is a 2×2, not a preference. ✅ Measured over 180 rolls against true dolla
 implies **+6.2%/yr against a true −12.9%/yr — 19 percentage points wrong**, while ratio matches the
 truth to **+0.0 pp**.
 
-## 2. 🚨 Back-adjusted prices go negative, and you can predict when
+## 2. 🚨 Back-adjusted prices go negative under backwardation, and you can predict when
 
-A difference-adjusted series subtracts the cumulative roll gap from all history. Under sustained
-backwardation the subtraction eventually exceeds the price level.
+A difference-adjusted series **adds** the cumulative roll gap (`P_new − P_old`) to all older
+history — that is what removes the jump at each roll and anchors the series at today's contract.
+The direction of the drift is the term structure's: **contango pushes history up, backwardation
+pushes it down**, and under sustained backwardation the downward shift eventually exceeds the price
+level. This is the crude-oil case, and it is why back-adjusted continuous crude goes negative in the
+deep past at most data shops.
 
-🔑 **Crossing time = `1 / (annual roll yield)` years — independent of the price level.** At crude's
-current front-month backwardation the series crosses zero in **well under 5 years of history**.
+🔑 **Crossing time ≈ `1 / (annual roll yield)` years — independent of the price level.** At crude's
+typical front-month backwardation the series crosses zero within a few years of history.
 
-✅ Measured on one run: **1,141 of 3,780 bars ≤ 0**, 51 sign changes, `np.log()` returns NaN,
-`pct_change()` produced a **+16,247% "return"**, and annualised "vol" came out **55.5 against a true
-4.17**. The demo in `scripts/continuous_contract.py` shows **1,084 of 2,014 days negative**.
+✅ Measured on the demo's backwardated market (`scripts/continuous_contract.py`, seed 5, 8 synthetic
+years): **1,043 of 2,014 days are negative**, and once the series is near zero `pct_change()`
+detonates — it reports a **847% one-day "return" on a day the market moved 1.87%**, and flips sign
+outright. `np.log()` is NaN on every negative day. The mirror-image contango market in the same demo
+never goes negative; it climbs from 165 to 339.
+
+⚠️ An earlier version of this skill had the sign backwards — it *subtracted* the gap and therefore
+showed contango going negative. The convention is: back-adjustment adds the gap, and **backwardation**
+is what drives it below zero. `diff()` on the corrected series equals the true dollar P&L exactly
+(§1), which is the check that pins the sign.
 
 **A negative price is not a bug in the data.** It is the correct output of the construction. It means
 `pct_change()`, `log()`, and every volatility estimate built on them are meaningless on that series.
