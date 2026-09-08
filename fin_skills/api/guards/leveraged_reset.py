@@ -20,10 +20,10 @@ class LeveragedResetGuard(Guard):
                           same days (typically lev x the index's total return).
         financing       : annual rate on the borrowed (lev - 1) x NAV. Default 0.
         expense         : annual expense ratio. Default 0.
-        tol             : absolute tolerance on the return gap. Default 1e-4.
+        return_tol      : absolute tolerance on the return gap. Default 1e-4.
 
     Fails when `modelled_return` differs from the daily-reset product's exact return
-    by more than `tol`. Without it, the guard reports the gap between lev x index and
+    by more than `return_tol`. Without it, the guard reports the gap between lev x index and
     the exact path result as information, together with the analytic drag estimate.
     """
 
@@ -33,11 +33,11 @@ class LeveragedResetGuard(Guard):
     wraps = ("fin_skills.core.leveraged_reset.leveraged_wealth",
              "fin_skills.core.leveraged_reset.analytic_lev_return")
     required = ("index_returns", "lev")
-    optional = ("modelled_return", "financing", "expense", "tol")
+    optional = ("modelled_return", "financing", "expense", "return_tol")
 
     def check(self, index_returns: pd.Series | np.ndarray, lev: float,
               modelled_return: float | None = None, financing: float = 0.0,
-              expense: float = 0.0, tol: float = 1e-4) -> Outcome:
+              expense: float = 0.0, return_tol: float = 1e-4) -> Outcome:
         out = Outcome()
         r = as_1d(index_returns, "index_returns")
         if len(r) < 1 or not np.isfinite(r).all():
@@ -56,12 +56,12 @@ class LeveragedResetGuard(Guard):
             modelled_return = require_number(modelled_return, "modelled_return")
             gap = modelled_return - exact
             out.note(modelled_return=modelled_return, gap_vs_exact=gap)
-            if abs(gap) > tol:
+            if abs(gap) > return_tol:
                 out.error(f"modelled {modelled_return:+.4%} vs daily-reset exact {exact:+.4%} "
                           f"over {len(r)} days (gap {gap:+.4%}); lev x index is "
                           f"{naive:+.4%}", where="modelled_return")
             else:
-                out.info(f"modelled return matches the daily-reset product within {tol:g}",
+                out.info(f"modelled return matches the daily-reset product within {return_tol:g}",
                          where="modelled_return")
         else:
             out.info(f"{lev:g}x product over {len(r)} days: exact {exact:+.4%}, lev x index "

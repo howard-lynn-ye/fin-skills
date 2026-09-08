@@ -60,8 +60,10 @@ def annualize_sharpe(returns: pd.Series | np.ndarray | Sequence[float],
     Owner: crypto-data-and-execution (perp_mechanics.sharpe). Trap: every library defaults
     to 252, which is wrong for anything that trades at weekends or by the hour.
     """
-    periods = periods_per_year if isinstance(periods_per_year, int) \
-        else annualization_factor(periods_per_year)
+    if isinstance(periods_per_year, (int, np.integer)) and not isinstance(periods_per_year, bool):
+        periods = int(periods_per_year)
+    else:
+        periods = annualization_factor(periods_per_year)
     return _perp.sharpe(pd.Series(np.asarray(returns, dtype=float)), periods)
 
 

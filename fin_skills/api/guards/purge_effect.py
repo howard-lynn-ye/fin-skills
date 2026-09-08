@@ -31,13 +31,13 @@ class PurgeGuard(Guard):
         n_splits : folds for the reference splitters. Default 5.
         embargo  : bars dropped after each test block on top of the purge. Default 0.
         score_fn : (x_tr, y_tr, x_te) -> scores. Default the script's k-NN.
-        tol      : AUC inflation above the purged reference that earns a warning.
+        auc_tol  : AUC inflation above the purged reference that earns a warning.
                    Default 0.01.
 
     Fails when any of your training rows carries a label overlapping the test block's
     label span (purge violation). Rows inside the embargo window are warnings. The AUC
     comparison is corroboration: your splits scoring above the purged reference by more
-    than `tol` is reported as a warning, since a single draw is noisy.
+    than `auc_tol` is reported as a warning, since a single draw is noisy.
     """
 
     name = "purge_effect"
@@ -48,12 +48,12 @@ class PurgeGuard(Guard):
              "fin_skills.libraries.purge_effect.kfold",
              "fin_skills.libraries.purge_effect.knn_scores")
     required = ("x", "y", "horizon")
-    optional = ("splits", "n_splits", "embargo", "score_fn", "tol")
+    optional = ("splits", "n_splits", "embargo", "score_fn", "auc_tol")
 
     def check(self, x: Any, y: Any, horizon: int,
               splits: Iterable[tuple[Sequence[int], Sequence[int]]] | None = None,
               n_splits: int = N_SPLITS, embargo: int = 0,
-              score_fn: Callable[..., np.ndarray] | None = None, tol: float = 0.01) -> Outcome:
+              score_fn: Callable[..., np.ndarray] | None = None, auc_tol: float = 0.01) -> Outcome:
         out = Outcome()
         xa = as_2d(x, "x")
         ya = as_1d(y, "y")
@@ -120,8 +120,8 @@ class PurgeGuard(Guard):
         msg = (f"{user_label} mean AUC {np.mean(user_aucs):.4f} vs purged"
                f"{'+embargo' if embargo else ''} {np.mean(ref_aucs):.4f} "
                f"({inflation:+.4f})")
-        if inflation > tol:
-            out.warning(msg + f": skill above tol={tol:g} that a purged split does not see",
+        if inflation > auc_tol:
+            out.warning(msg + f": skill above auc_tol={auc_tol:g} that a purged split does not see",
                         where="auc")
         else:
             out.info(msg, where="auc")

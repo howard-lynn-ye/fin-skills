@@ -18,7 +18,7 @@ class AShareRulesGuard(Guard):
                          (paused / trade_status honoured if present).
         code           : 6-digit code with optional exchange prefix/suffix.
         date           : the bar's date - REQUIRED because every limit has changed.
-        name           : stock name, to detect the ST marker (halves the main-board limit).
+        stock_name     : stock name, to detect the ST marker (halves the main-board limit).
         side           : 'buy' (default) or 'sell'.
         days_since_ipo : trading days since listing (first 5 have no limit on the
                          registration-based boards).
@@ -37,9 +37,9 @@ class AShareRulesGuard(Guard):
              "fin_skills.china.ashare_rules.can_sell",
              "fin_skills.china.ashare_rules.sellable_qty")
     required = ("bar", "code", "date")
-    optional = ("name", "side", "days_since_ipo", "lots")
+    optional = ("stock_name", "side", "days_since_ipo", "lots")
 
-    def check(self, bar: Mapping[str, Any], code: str, date: Any, name: str | None = None,
+    def check(self, bar: Mapping[str, Any], code: str, date: Any, stock_name: str | None = None,
               side: str = "buy", days_since_ipo: int | None = None,
               lots: Iterable[Mapping[str, Any] | Sequence[Any]] | None = None) -> Outcome:
         out = Outcome()
@@ -55,7 +55,7 @@ class AShareRulesGuard(Guard):
         if date is None:
             raise TypeError("date is required: every limit and fee rate has changed at least once")
 
-        pct = daily_limit_pct(code, name, date, days_since_ipo)   # ValueError -> TypeError
+        pct = daily_limit_pct(code, stock_name, date, days_since_ipo)   # ValueError -> TypeError
         prev_close = bar.get("prev_close", bar.get("pre_close", bar.get("preclose")))
         if prev_close is None:
             raise TypeError("bar needs prev_close: the limit is a function of the PREVIOUS close")

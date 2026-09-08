@@ -22,7 +22,7 @@ class RfConventionGuard(Guard):
     Inputs
         returns         : per-period strategy returns.
         rf              : the risk-free rate you pass, as an ANNUAL decimal (0.05 = 5%).
-        periods         : periods per year. Default 252.
+        periods_per_year: periods per year. Default 252.
         reported_sharpe : optional - the Sharpe a library gave you; the guard says
                           which convention produced it.
 
@@ -37,16 +37,16 @@ class RfConventionGuard(Guard):
     wraps = ("fin_skills.libraries.rf_convention._sharpe_annual_rf",
              "fin_skills.libraries.rf_convention._sharpe_per_period_rf")
     required = ("returns", "rf")
-    optional = ("periods", "reported_sharpe")
+    optional = ("periods_per_year", "reported_sharpe")
 
-    def check(self, returns: pd.Series | np.ndarray, rf: float, periods: int = PERIODS,
+    def check(self, returns: pd.Series | np.ndarray, rf: float, periods_per_year: int = PERIODS,
               reported_sharpe: float | None = None) -> Outcome:
         out = Outcome()
         r = pd.Series(as_1d(returns, "returns"))
         if len(r) < 3 or not np.isfinite(r).all():
             raise TypeError("returns needs at least 3 finite values")
         rf = require_number(rf, "rf")
-        periods = require_int(periods, "periods", minimum=1)
+        periods = require_int(periods_per_year, "periods_per_year", minimum=1)
         annual = _sharpe_annual_rf(r, rf, periods)
         per_period_raw = _sharpe_per_period_rf(r, rf, periods)
         per_period_scaled = _sharpe_per_period_rf(r, rf / periods, periods)
