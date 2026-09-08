@@ -1,0 +1,5 @@
+# Generated files are compared byte-for-byte by scripts/build_package.py --check and
+# scripts/build_index.py; a CRLF checkout on Windows would fail both. Force LF everywhere.
+* text=auto eol=lf
+*.pdf binary
+*.png binary
