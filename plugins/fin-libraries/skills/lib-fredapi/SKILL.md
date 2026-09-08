@@ -9,8 +9,8 @@ description: >-
   full-fred, DBnomics, "Bad Request. The value for variable api_key is not registered". Frozen at
   0.5.2 since 2024-05, so these bugs are current behaviour, not history you remember from an old
   version. SKIP for lib-edgartools, which is the skill for company filings and fundamentals. SKIP
-  when the question is WHICH library to choose rather than how to use this one - that belongs to
-  the domain skill.
+  when the question is WHICH library to choose, or names no library at all - both belong to the
+  domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

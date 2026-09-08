@@ -9,8 +9,8 @@ description: >-
   User-Agent required, SEC 10 requests per second, edgartools MCP server, edgartools[ai]. 442
   releases have moved the API repeatedly and the classifier is still Beta, so any snippet recalled
   from memory is probably wrong for the installed version. SKIP for lib-fredapi, which is the
-  skill for macro series and revisions. SKIP when the question is WHICH library to choose rather
-  than how to use this one - that belongs to the domain skill.
+  skill for macro series and revisions. SKIP when the question is WHICH library to choose, or
+  names no library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

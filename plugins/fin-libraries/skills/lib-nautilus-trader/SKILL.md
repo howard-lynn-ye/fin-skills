@@ -11,7 +11,7 @@ description: >-
   Memory is stale here: 1.231.0 shipped 2026-08-02, a 2.0 line is in release candidates that moves
   the fill model to nautilus_trader.execution, and the licence is LGPL-3.0-or-later. SKIP for
   choosing among engines generally (backtesting-engines). SKIP when the question is WHICH library
-  to choose rather than how to use this one - that belongs to the domain skill.
+  to choose, or names no library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

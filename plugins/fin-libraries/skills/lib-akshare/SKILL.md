@@ -8,8 +8,8 @@ description: >-
   matching distribution found for akshare==", akshare 报错, akshare 封 IP. akshare ships roughly 2.3
   releases a week and deletes the old ones, so any signature, column name or version pin you
   remember is probably already gone. SKIP for lib-tushare, which is the skill for point-in-time
-  fundamentals and dated index membership. SKIP when the question is WHICH library to choose
-  rather than how to use this one - that belongs to the domain skill.
+  fundamentals and dated index membership. SKIP when the question is WHICH library to choose, or
+  names no library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

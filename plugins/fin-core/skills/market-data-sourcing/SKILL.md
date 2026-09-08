@@ -9,9 +9,10 @@ description: >-
   yfinance, yahooquery, defeatbeta, EODHD, Tiingo, Twelve Data, Finnhub, Alpha Vantage,
   Polygon/Massive, Databento, openbb, findatapy, financetoolkit, exchange_calendars, and
   alternative data. Also covers 美股 and global 行情数据 requests. SKIP for historical option chains
-  (options-backtesting), storing, partitioning or as-of joining data you already hold
-  (market-data-engineering); for EDGAR filings, XBRL, CIK and macro vintages
-  (fundamental-and-macro-data); and for A-share, 沪深 or 退市 queries (china-ashare-data).
+  (options-backtesting), Asian calendars and lot sizes (asia-pacific-markets), storing,
+  partitioning or as-of joining data you already hold (market-data-engineering); for EDGAR
+  filings, XBRL, CIK and macro vintages (fundamental-and-macro-data); and for A-share, 沪深 or 退市
+  queries (china-ashare-data).
 license: MIT
 metadata:
   version: "0.1.0"

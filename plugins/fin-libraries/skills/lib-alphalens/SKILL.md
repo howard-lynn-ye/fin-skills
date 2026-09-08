@@ -9,8 +9,8 @@ description: >-
   cumulative_returns, information coefficient, IC decay, quantile spread, "pip install alphalens".
   The original quantopian package is dead at 0.4.0 (2020-04-27) and most snippets you recall
   target it or its removed pandas internals. SKIP for lib-qlib, which is the skill for the feature
-  pipeline and model. SKIP when the question is WHICH library to choose rather than how to use
-  this one - that belongs to the domain skill.
+  pipeline and model. SKIP when the question is WHICH library to choose, or names no library at
+  all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

@@ -10,7 +10,8 @@ description: >-
   WalkForward, purged_size, embargo_size, RiskMeasure. Memory is stale and will break code - 1.0.0
   landed 2026-08-23, so every recalled snippet predates the API stability commitment. SKIP for the
   widest risk-measure menu (lib-riskfolio) and for a strictly sklearn-compliant purged splitter
-  (lib-purgedcv). SKIP for choosing between libraries - that is the domain skill's job.
+  (lib-purgedcv). SKIP for choosing between libraries, or when no library is named - the domain
+  skill's job.
 license: MIT
 metadata:
   version: "0.1.0"

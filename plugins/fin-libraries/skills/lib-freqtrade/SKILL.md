@@ -9,8 +9,8 @@ description: >-
   dry_run_wallet, config.json, user_data/strategies, FreqAI, freqtrade GPL. Monthly YYYY.M
   releases have renamed the strategy callbacks repeatedly, so remembered method names are usually
   the old ones. SKIP for backtesting-engines, the skill for equity and futures bar engines. SKIP
-  when the question is WHICH library to choose rather than how to use this one - that belongs to
-  the domain skill.
+  when the question is WHICH library to choose, or names no library at all - both belong to the
+  domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

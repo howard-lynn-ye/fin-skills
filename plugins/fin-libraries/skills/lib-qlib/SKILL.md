@@ -9,7 +9,7 @@ description: >-
   Wheels are cp38-cp312 with no sdist so it fails outright on Python 3.13+, packaging lags the
   repo by about a year, and the official China dataset was switched off. SKIP for lib-alphalens,
   which is the skill for scoring a factor you already have. SKIP when the question is WHICH
-  library to choose rather than how to use this one - that belongs to the domain skill.
+  library to choose, or names no library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

@@ -9,8 +9,8 @@ description: >-
   reconstruct_paths, path_metrics, overlapping labels, triple-barrier touch time,
   mlfinlab.cross_validation. Memory is stale or absent - this package first shipped 2026-05-16 and
   is at 0.1.6. SKIP for CPCV over portfolio models (lib-skfolio) and for SPA/StepM/MCS (lib-arch).
-  SKIP when the question is WHICH library to choose rather than how to use this one - that belongs
-  to the domain skill.
+  SKIP when the question is WHICH library to choose, or names no library at all - both belong to
+  the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

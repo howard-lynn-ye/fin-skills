@@ -10,8 +10,8 @@ description: >-
   funding rate history; an order rejected on precision or min-notional, fewer candles returned
   than requested. Memory is stale here: CCXT Pro was merged into the free MIT package at v1.95,
   prediction markets landed at 4.5.66, and 4.5.77 shipped 2026-09-01. SKIP for equity and futures
-  brokers (broker-execution-apis). SKIP when the question is WHICH library to choose rather than
-  how to use this one - that belongs to the domain skill.
+  brokers (broker-execution-apis). SKIP when the question is WHICH library to choose, or names no
+  library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

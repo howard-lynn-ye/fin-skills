@@ -9,7 +9,7 @@ description: >-
   merge_asof to polars.join_asof, polars sortedness. The runtime split landed at 1.34.0b2 on
   2025-09-26, so install matrices, wheel audits and lockfiles written from memory are wrong. SKIP
   for market-data-engineering, the skill for storage formats and time-series stores. SKIP when the
-  question is WHICH library to choose rather than how to use this one - that belongs to the domain
+  question is WHICH library to choose, or names no library at all - both belong to the domain
   skill.
 license: MIT
 metadata:

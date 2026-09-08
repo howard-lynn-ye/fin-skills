@@ -10,8 +10,8 @@ description: >-
   solved - 0.7.1 (2026-07-16) ships 54 prebuilt wheels bundling the C library, including
   cp311-win_amd64 - while pandas-ta's repo, homepage and release history are all gone. SKIP for
   whether a signal actually predicts returns (factor-and-timeseries-research) and for leak-free
-  signal construction generally (signal-construction). SKIP for choosing between libraries - that
-  is the domain skill's job.
+  signal construction generally (signal-construction). SKIP for choosing between libraries, or
+  when no library is named - the domain skill's job.
 license: MIT
 metadata:
   version: "0.1.0"

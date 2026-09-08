@@ -10,7 +10,7 @@ description: >-
   here: auto_adjust flipped at 0.2.51 and hardened at 1.0, intraday timezones changed at 1.4.0,
   the proxy= constructor kwarg is gone, and 1.7.0 shipped 2026-08-26. SKIP for choosing between
   data vendors (market-data-sourcing) and for A-share data (china-ashare-data). SKIP when the
-  question is WHICH library to choose rather than how to use this one - that belongs to the domain
+  question is WHICH library to choose, or names no library at all - both belong to the domain
   skill.
 license: MIT
 metadata:

@@ -9,8 +9,8 @@ description: >-
   risk_models.risk_matrix, "efficient frontier", "whole-share allocation". Memory is stale - the
   repo moved to the PyPortfolio org and 1.6.0 shipped 2026-02-26 after three dormant years under a
   new maintainer. SKIP for Marcenko-Pastur denoising, HERC or NCO (lib-riskfolio) and for
-  GridSearchCV over portfolio models (lib-skfolio). SKIP for choosing between libraries - that is
-  the domain skill's job.
+  GridSearchCV over portfolio models (lib-skfolio). SKIP for choosing between libraries, or when
+  no library is named - the domain skill's job.
 license: MIT
 metadata:
   version: "0.1.0"

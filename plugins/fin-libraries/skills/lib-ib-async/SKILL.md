@@ -10,8 +10,8 @@ description: >-
   account prefix. Memory is stale here: ib_insync was archived 2024-03-14 after its author died,
   ib_async 2.1.0 (2025-12-08) is the successor and does not wrap ibapi, its main branch has been
   static about nine months, and ib_fut does not exist. SKIP for non-IB brokers and for the general
-  order-safety patterns (broker-execution-apis). SKIP for choosing between libraries - that is the
-  domain skill's job.
+  order-safety patterns (broker-execution-apis). SKIP for choosing between libraries, or when no
+  library is named - the domain skill's job.
 license: MIT
 metadata:
   version: "0.1.0"

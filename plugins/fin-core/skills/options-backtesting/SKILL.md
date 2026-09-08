@@ -47,20 +47,26 @@ else is a pricer, a payoff plotter, or a live-broker SDK.
 
 | Package | Latest | Multi-leg | Assignment | Margin | What it actually is |
 |---|---|---|---|---|---|
-| **LEAN** (`lean` 1.0.229, 2026-08-28, Apache-2.0) | ✅ | ✅ | ✅ **position-group** | ✅ | The only complete answer |
-| **`optopsy` 2.3.0** (2026-03-04) | ✅ 38 strategies | 🚨 **explicitly disclaimed** | ❌ | ❌ | Best pure-Python option, know the limit |
+| **LEAN** (`lean` 1.0.229, 2026-08-28, Apache-2.0; ✅ `lean-cli` 326★, pushed 2026-09-04 — the CLI repo, not the engine) | ✅ | ✅ | ✅ **position-group** | ✅ | The only complete answer |
+| **`optopsy` 2.3.0** (2026-03-04; ✅ 1,470★, last commit 2026-04-02, AGPL-3.0 since 2026-02-23) | ✅ 38 strategies | 🚨 **explicitly disclaimed** | ❌ | ❌ | Best pure-Python option, know the limit |
 | `optionlab` 1.8.5 (2026-08-10) | ✅ legs | ❌ | ❌ | ❌ | Single-date P&L / probability calculator |
-| `backtrader` (last release **2023-04-19**) | ❌ | ❌ | ❌ | ❌ | 🔴 No options support at all |
-| `vectorbt` 1.1.0 | ❌ | ❌ | ❌ | ❌ | No option-contract model |
+| `backtrader` (last release **2023-04-19**; ✅ 23,156★, pushed 2024-08-19, GPL-3.0) | ❌ | ❌ | ❌ | ❌ | 🔴 No options support at all |
+| `vectorbt` 1.1.0 (✅ 9,026★, pushed 2026-08-02) | ❌ | ❌ | ❌ | ❌ | No option-contract model |
 | `mibian` 0.1.3 (**2016-03-12**) | ❌ | ❌ | ❌ | ❌ | 🔴 Dead ten years |
 | `opstrat`, `Optlib`, `wallstreet` | payoff only | ❌ | ❌ | ❌ | 🔴 Dead or pricing-only |
 
-🚨 **`optopsy` is AGPL-3.0-or-later, not MIT.** The widely-cited `michaelchu/optopsy` was MIT and has
-been dead since 2021-06-04; the live project is `goldspanlabs/optopsy` and its own README states
-AGPL-3.0. **AGPL's network clause reaches SaaS use** — this is load-bearing if you deploy. ✅ Settled
-by the `LICENSE` file on `main` itself (fetched 2026-09-05): *GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3*. A search result claiming GPL-3.0 was wrong. PyPI's `license` field is `None` with no
-classifier, so the package metadata will not tell you this — only the file does.
+🚨 **`optopsy` relicensed from GPL-3.0 to AGPL-3.0 on 2026-02-23.** ✅ From the repository's own
+commit history (`gh api`, fetched 2026-09-05): the LICENSE file was last changed by the commit
+*"chore: switch license from GPL-3.0 to AGPL-3.0"*, and the `LICENSE` on `main` reads *GNU AFFERO
+GENERAL PUBLIC LICENSE Version 3*. **AGPL's network clause reaches SaaS use** — this is
+load-bearing if you deploy. Anything you remember about this package's licence from before
+2026-02-23 is stale, and a GPL-3.0 claim is not wrong, it is seven months out of date.
+
+✅ **It is one repository, not a dead fork and a live one.** `michaelchu/optopsy` (created
+2017-09-17) *redirects* to `goldspanlabs/optopsy` — a transfer, with 1,470 stars and a last commit
+on 2026-04-02. An earlier draft of this file called the michaelchu repo dead since 2021; the GitHub
+API says otherwise. PyPI's `license` field is `None` with no classifier, so package metadata will
+not tell you any of this — only the file and the commit log do.
 
 ✅ A keyword scan of `optopsy`'s own README: `margin` **0 hits**, `exercise` **0**, `settle` **0**,
 `American`/`European` **0**, `multiplier` **0**. `assignment` appears once, in a disclaimer. Its data
@@ -205,14 +211,16 @@ everything below is about which paid source to buy.
 
 | Source | History from | Greeks / IV | Note |
 |---|---|---|---|
-| **Alpha Vantage** `HISTORICAL_OPTIONS` | **2008-01** | ✅ full greeks + IV + OI | ⚠️ The cheapest API-accessible full history with greeks. One call = one symbol-date, so bulk pulls are painful |
+| **Alpha Vantage** `HISTORICAL_OPTIONS` | **2008-01** | ✅ full greeks + IV + OI | ⚠️ The cheapest API-accessible full history with greeks. One call = one symbol-date, and ✅ **the free key is capped at 25 requests per DAY** (vendor page, 2026-09-05) — so a free-key backfill of one ticker's history is weeks of calendar time. Premium monthly tiers seen at $149.99 / $199.99 / $249.99; the rate-limit mapping and whether this endpoint is on the free key at all are still unconfirmed |
 | **historicaloptiondata.com** | 2002 | L2+ only | ⚠️ ~$585-865/yr flat files, full universe |
 | **optionsdx.com** | 2010 | ✅ | ⚠️ Free tier, but only ~7 tickers (SPX, SPY, QQQ, VIX…) — has 1-minute intraday |
 | **FirstRateData** | 2010 | ✅ | ⚠️ Includes **4,000+ delisted tickers** — rare at any price, and the survivorship fix |
 | **ORATS** | EOD 2007, 1-min 2020-08 | ✅ it is the product | ⚠️ Product is "**Near** EOD", not a true close |
 | **CBOE DataShop** | 2012-01 | paid add-on, not default | 🚨 **Methodology break 2026-06-22** — quote sizes now captured at last price change; silently discontinuous against earlier data. Open-Close is **Cboe exchanges only, not consolidated OPRA** |
 | **OptionMetrics / IvyDB** | 1996-01 | ✅ + constant-maturity surface | ⚠️ Negotiated pricing; WRDS is the practical route |
-| **Databento** OPRA | 🚨 **two dates**: quotes 2023-03-28, trades 2013-04-01 | ❌ you compute both | ⚠️ Never quote it as one history depth |
+| **Databento** OPRA | 🚨 **two dates**: quotes 2023-03-28, trades 2013-04-01 | ❌ you compute both | ⚠️ Never quote it as one history depth. ✅ Plans (vendor page, 2026-09-05): **Standard $199/mo** (16+ yrs L0, 1 yr L1, 1 mo L2/L3, then pay per GB), Plus $1,750/mo and Unlimited $4,500/mo on annual contracts; $125 signup credit, 6-month expiry. Per-GB rates sit behind the estimator, not on the page |
+| **ThetaData** | ✅ by tier: **4 / 8 / 12 years** | ✅ | ✅ Vendor page in a browser, 2026-09-05 — **Options Value $40/mo** (4 yrs, 1-min), **Standard $80/mo** (8 yrs, tick, every OPRA NBBO), **Pro $160/mo** (12 yrs, stream every trade). Individual use. The $25/$60/$200 figures that circulate are wrong; $80/$160 was right and is missing the $40 entry tier |
+| **Massive** (ex-Polygon.io) | 2 / 2 / 4 / 5+ years by tier | ✅ real-time greeks + IV from Starter | ✅ Vendor page in a browser, 2026-09-05 — **Basic $0** (5 calls/min, 2 yrs, EOD only), **Starter $29/mo** (unlimited calls, 15-min delayed, daily OI, flat files), **Developer $79/mo** (4 yrs, + trades), **Advanced $199/mo** (5+ yrs, real-time, + quotes; non-pros only). Individual use |
 | **DoltHub** `post-no-preference/options` (free) | ⚠️ unverified | ✅ IV + delta, gamma, theta, vega, rho | ✅ **Schema fetched 2026-09-05** via the SQL API (default branch is `master`, not `main`): `date, act_symbol, expiration, strike, call_put, bid, ask, vol, delta, gamma, theta, vega, rho`. **No open interest. No volume.** `vol` is `decimal(5,4)` — four decimals, capped at 9.9999 — so it is implied volatility, not volume. Without OI or volume you cannot reject illiquid strikes, which §6 says you must. **Not usable for a backtest that filters on liquidity.** |
 
 🚨 **Polygon.io is now Massive** (renamed 2025-10-30). ⚠️ Most third-party pages describing its
@@ -251,10 +259,11 @@ standard model, and the error looks like a vol anomaly rather than a data bug.
 the root padding (`SPY260116P00452500`, 18 chars) — that is a **vendor variant, not OSI**, and
 round-tripping requires knowing which your file uses.
 
-⚠️ **Everything in the rest of this section is secondhand** — retrieved from OCC and Cboe documents
-via search rather than read from the source PDFs, because network access failed mid-verification.
-**Re-fetch before hard-coding any of it**, and pin a hashed copy: the OCC Rules PDF is live-updated
-and returned two different Last-Modified dates for one URL.
+⚠️ **The OSI layout, the adjusted-root suffix conventions, and the Saturday→Friday change below are
+secondhand** — retrieved from OCC and Cboe documents via search rather than read from the source
+PDFs, because network access failed mid-verification. The exercise-by-exception rule (§7b) and the
+dividend-adjustment rule (end of this section) have since been quoted from hashed copies of the OCC
+Rules and By-Laws; `references/_reverify.md` records which is which.
 
 ### Three traps that break cross-time joins
 
@@ -283,10 +292,53 @@ IRSA GDS**.
 🚨 **So `notional = 100 × price` stays right while `intrinsic = max(S − K, 0)` goes wrong.** The
 error looks like a volatility anomaly rather than a data bug, which is why it survives review.
 
-## 7b. ⚠️ Exercise by exception is $0.01 × multiplier
+### Which cash dividends adjust the contract — the "10% rule" is gone
 
-⚠️ Secondhand, from Cboe Regulatory Circular RG08-73: a position **in the money by $0.01 or more**
-is automatically exercised, **for all account types since the June 2008 expiration**.
+✅ **OCC By-Laws, Article VI, Section 3A(a)(3)** (`occ_bylaws.pdf`, Last-Modified 2026-04-24, sha256
+`812f5e4c43de81ccda1c165b43115757e4c320f088da7720616dacdca0548c62`, p. 129): *"It shall be the
+general rule that there will be no adjustment to reflect (x) ordinary cash dividends or distributions
+… or (y) any cash dividend or distribution by the issuer of the underlying equity security if such
+dividend or distribution is less than $.125 per unit of trading."* And Interpretation .01 (p. 130):
+cash dividends *"(regardless of size)"* that the Corporation believes were *"declared pursuant to a
+policy or practice of paying such dividends or distributions on a quarterly or other regular basis"*
+are deemed ordinary.
+
+**So the test is regularity first, then a $0.125-per-share floor — $12.50 on a standard contract.**
+The "10% of market value" rule in older material, and in most models' training data, is not in the
+current by-laws. A special dividend under $0.125 does not adjust; one over it does, whatever the
+issuer calls it; a regular dividend of any size does not. 🚨 Getting this wrong flips whether the
+deliverable carries a cash component, which is the silent-intrinsic error above.
+
+## 7b. ✅ Exercise by exception is $0.01 × multiplier
+
+✅ **Cboe Regulatory Circular RG08-073, dated June 13, 2008** (PDF fetched 2026-09-05, sha256
+`939825b597f0943ab814ba1cfa4e1e6bff38c5db95430241a165ca56c22f918a`): the threshold moved *"from $.05 to
+$.01 in a clearing member's customer, firm, and market maker account"*, and *"if a clearing member has
+an equity option position in the customer account, which is in the money by $.01 or more, the position
+will be automatically exercised."* *"This change is effective for the June 2008 expiration, which is
+Saturday, June 21st"* — note the Saturday, which is §7's pre-2015 expiration convention in the wild.
+
+✅ **And the OCC rule itself, Rule 805(d)(2)** (`occ_rules.pdf`, Last-Modified 2026-08-26, sha256
+`facaed0569bc45f3a7c1872a0be33f6365a69daf094107c720a8b91f53043a9e`, p. 91). A Clearing Member is deemed
+to have tendered an exercise notice for *"every option contract of each series listed in the Clearing
+Member's Expiration Exercise Report that has an exercise price below (in the case of a call) or above (in
+the case of a put) the closing price of the underlying security by $0.01 or more … provided that in the
+case of options with an exercise price expressed as a multiple of the per-unit price, in making the
+above calculations such multiple shall be applied to the closing price."* That last clause is the
+`× multiplier` in this section's title, in the rule's own words. Interpretation .02 (p. 92) is the
+caveat: the thresholds *"are part of the administrative procedures established by the Corporation to
+expedite its processing of exercises … and are not intended to dictate to Clearing Members which
+positions in customers' accounts …"* — which is exactly why your broker's threshold can differ from
+OCC's. Rule 805 was last amended **2025-12-31** (SR-OCC-2025-017).
+
+✅ **Index options are the same rule at a different unit — Rule 1804(c), pp. 171-172 of the same
+hashed copy.** For cash-settled index options *"with a multiplier other than one"*, exercise by
+exception applies to each contract *"that has an exercise settlement value of $1.00 or more per
+contract"*; for those *"with a multiplier of one"*, *"$0.01 or more per contract"*. $1.00 per standard
+contract is $0.01 × 100. **The "$0.01 per contract" you will read elsewhere is the One-Multiplier
+figure being quoted as if it were universal** — the units error this section opens with, and here is
+the rule text that settles it. Both amounts are *"such other amount as the Corporation may from time
+to time establish on not less than 30 days prior notice"*, so they are policy, not statute.
 
 🚨 **Two claims to stop repeating:**
 

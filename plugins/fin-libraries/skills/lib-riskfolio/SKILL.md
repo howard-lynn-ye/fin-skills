@@ -8,8 +8,8 @@ description: >-
   denoiseCov, riskfolio.src.AuxFunctions, ParamsEstimation, entropy_pooling, OWA, MVSK, "solver
   did not converge". Memory is stale - it is at 7.3.0 (2026-05-31) with an unusual 18 open issues
   against 4,480 stars. SKIP for GridSearchCV over portfolio models (lib-skfolio) and for
-  whole-share allocation (lib-pyportfolioopt). SKIP when the question is WHICH library to choose
-  rather than how to use this one - that belongs to the domain skill.
+  whole-share allocation (lib-pyportfolioopt). SKIP when the question is WHICH library to choose,
+  or names no library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

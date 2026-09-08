@@ -11,7 +11,7 @@ description: >-
   alpaca-trade-api was deprecated in 2024 and defaulted to LIVE, whereas alpaca-py 0.44.0
   (2026-08-11) declares paper=True - the widely repeated warning is inverted. SKIP for Interactive
   Brokers and for the general order-safety patterns (broker-execution-apis). SKIP for choosing
-  between libraries - that is the domain skill's job.
+  between libraries, or when no library is named - the domain skill's job.
 license: MIT
 metadata:
   version: "0.1.0"

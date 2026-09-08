@@ -8,8 +8,8 @@ description: >-
   greeks.analytical, BelowIntrinsicException, AboveMaximumException, "py_vollib is deprecated", or
   implied volatility returning 0.0. Memory is stale on the package name, on the C++ dependency (it
   is now pure Python) and on the Greek scaling. SKIP for American exercise, exotics, curves or
-  conventions (lib-quantlib). SKIP when the question is WHICH library to choose rather than how to
-  use this one - that belongs to the domain skill.
+  conventions (lib-quantlib). SKIP when the question is WHICH library to choose, or names no
+  library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

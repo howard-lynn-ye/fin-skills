@@ -10,8 +10,8 @@ description: >-
   dies live. Memory is stale here: v1.0 (2026-04-22) was a breaking rewrite with an optional Rust
   engine, 1.1.0 shipped 2026-07-05, and the licence is Apache-2.0 plus Commons Clause - not OSI
   open source. SKIP for choosing among engines (backtesting-engines) and for judging a finished
-  result (backtest-validation). SKIP when the question is WHICH library to choose rather than how
-  to use this one - that belongs to the domain skill.
+  result (backtest-validation). SKIP when the question is WHICH library to choose, or names no
+  library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

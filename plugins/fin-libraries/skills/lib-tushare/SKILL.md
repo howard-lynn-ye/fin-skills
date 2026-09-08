@@ -8,8 +8,8 @@ description: >-
   api.waditu.com, "抱歉，您没有接口访问权限", tushare 权限不够. The public GitHub repo has been idle since 2024-03
   while PyPI kept shipping through 2026, so recalled behaviour does not match the installed wheel.
   SKIP for lib-akshare, which is the skill for breadth of free Chinese coverage rather than PIT.
-  SKIP when the question is WHICH library to choose rather than how to use this one - that belongs
-  to the domain skill.
+  SKIP when the question is WHICH library to choose, or names no library at all - both belong to
+  the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

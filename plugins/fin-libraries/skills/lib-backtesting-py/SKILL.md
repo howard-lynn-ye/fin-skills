@@ -10,8 +10,8 @@ description: >-
   Memory is stale here: it is alive at 0.6.6 (2026-07-22), it is AGPL-3.0-or-later rather than
   MIT, and trade_on_close fills at data.Close[-2] rather than the current bar's close. SKIP for
   multi-asset or cross-sectional work and for engine choice generally (backtesting-engines). SKIP
-  when the question is WHICH library to choose rather than how to use this one - that belongs to
-  the domain skill.
+  when the question is WHICH library to choose, or names no library at all - both belong to the
+  domain skill.
 license: MIT
 metadata:
   version: "0.1.0"

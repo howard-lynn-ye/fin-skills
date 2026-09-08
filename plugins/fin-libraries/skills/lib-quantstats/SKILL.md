@@ -9,8 +9,8 @@ description: >-
   Memory is stale on status and correctness - 0.0.81 shipped in a single-day hotfix burst on
   2026-01-13 with no default-branch commits since, and the cagr bug survived it. SKIP for
   optimizing against these measures (lib-riskfolio, lib-skfolio) and for PSR/DSR, which it does
-  not have (backtest-validation). SKIP when the question is WHICH library to choose rather than
-  how to use this one - that belongs to the domain skill.
+  not have (backtest-validation). SKIP when the question is WHICH library to choose, or names no
+  library at all - both belong to the domain skill.
 license: MIT
 metadata:
   version: "0.1.0"
