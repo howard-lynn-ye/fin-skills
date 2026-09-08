@@ -42,9 +42,18 @@ def build() -> None:
     # The top-level __init__ restricts __all__ to the text API, which makes pdoc skip the
     # namespace subpackages; name them explicitly so every generated module gets a page.
     pkg = ROOT / "fin_skills"
-    modules = ["fin_skills"] + sorted(
-        f"fin_skills.{d.name}" for d in pkg.iterdir()
-        if d.is_dir() and (d / "__init__.py").exists() and not d.name.startswith("_"))
+    modules = ["fin_skills"]
+    for p in sorted(pkg.rglob("*.py")):
+        rel = p.relative_to(pkg)
+        if "__pycache__" in rel.parts or any(part.startswith("_") and part != "__init__.py"
+                                             for part in rel.parts):
+            continue                       # _skills/ data, _common.py helpers
+        parts = list(rel.with_suffix("").parts)
+        if parts[-1] == "__init__":
+            parts = parts[:-1]
+        if parts:
+            modules.append("fin_skills." + ".".join(parts))
+    modules = sorted(set(modules))
     r = run(sys.executable, "-m", "pdoc", *modules, "-o", str(SITE), "--docformat", "google",
             "--no-show-source", check=False)
     if r.returncode != 0:
