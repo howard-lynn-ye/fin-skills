@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-plugin-marketplace.json",
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "fin-skills",
   "owner": {
     "name": "howard-lynn-ye"
@@ -178,6 +178,222 @@
         "./skills/lib-freqtrade",
         "./skills/lib-polars"
       ]
+    },
+    {
+      "name": "trading-skills",
+      "source": {
+        "source": "github",
+        "repo": "agiprolabs/claude-trading-skills"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. agiprolabs' 68 skills: Solana execution (RPC, Jito bundles, pump.fun), DeFi analytics (DefiLlama, DexScreener, Birdeye), MEV, wallet profiling, prediction markets, and tax lots (cost basis, wash-sale detection, harvesting). About 3x the default listing budget, and ~20 skills overlap fin-core topics - its vectorbt skill does not mention the same-bar-fill default that lib-vectorbt leads with. Installs disabled; enable after reading its README.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "solana",
+        "defi",
+        "tax-lots"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/agiprolabs/claude-trading-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-09-03",
+        "skill_count": 68,
+        "stars_on_verified_on": 350,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      }
+    },
+    {
+      "name": "tradermonty-trading-skills",
+      "source": {
+        "source": "github",
+        "repo": "tradermonty/claude-trading-skills"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. 74 skills: breadth, follow-through-day and distribution-day detectors, PEAD/VCP/CANSLIM screeners, earnings, exposure and drawdown gates, trade journaling, JP dividend tax. 3.7x the default listing budget; several skills require a paid FMP key; discretionary technical analysis; its backtest skill has walk-forward but no multiple-testing correction. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "screeners",
+        "breadth",
+        "journaling"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/tradermonty/claude-trading-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 74,
+        "stars_on_verified_on": 2793,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      }
+    },
+    {
+      "name": "eodhd-api",
+      "source": {
+        "source": "github",
+        "repo": "EodHistoricalData/eodhd-claude-skills"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Vendor-official EODHD workflows: screeners, options analyzer, macro dashboard, earnings monitor, portfolio risk. Installing registers a remote OAuth MCP server (mcp.eodhd.com) and most endpoints need a paid key. This repo separately recommends EODHD as the cheap survivorship-free universe. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "eodhd",
+        "vendor",
+        "mcp"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/EodHistoricalData/eodhd-claude-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-08-27",
+        "skill_count": 13,
+        "stars_on_verified_on": 38,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      }
+    },
+    {
+      "name": "ib-options-income",
+      "source": {
+        "source": "github",
+        "repo": "staskh/trading_skills"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. 28 Interactive Brokers options-income workflows: PMCC, collars, short-roll finder, delta-adjusted notional, portfolio action reports, stops. Needs TWS or IB Gateway, Python 3.12 and uv; some names overlap derivatives-pricing and portfolio-and-risk. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "interactive-brokers",
+        "options-income",
+        "pmcc"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/staskh/trading_skills",
+        "license": "MIT",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-09-01",
+        "skill_count": 28,
+        "stars_on_verified_on": 362,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      },
+      "skills": [
+        "./.claude/skills"
+      ]
+    },
+    {
+      "name": "cre-agent-skills",
+      "source": {
+        "source": "github",
+        "repo": "ahacker-1/cre-agent-skills"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Commercial real estate: underwriting, due diligence, financing, asset management - a market this repo does not cover. Each file is a multi-skill suite written for several agent runtimes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "underwriting"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/ahacker-1/cre-agent-skills",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-09-02",
+        "skill_count": 14,
+        "stars_on_verified_on": 92,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      },
+      "skills": [
+        "./claude-code-plugins"
+      ]
+    },
+    {
+      "name": "okx-agent-skills",
+      "source": {
+        "source": "github",
+        "repo": "okx/agent-skills",
+        "ref": "github-main"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. OKX's official skills for LIVE CEX execution, grid and DCA bots, Earn, smart-money and sentiment through the okx CLI. Live orders - read broker-execution-apis first; requires npm i -g @okx_ai/okx-trade-cli and an OAuth helper binary. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "okx",
+        "crypto",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/okx/agent-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 10,
+        "stars_on_verified_on": 171,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      }
+    },
+    {
+      "name": "qmt-trading-skill",
+      "source": {
+        "source": "github",
+        "repo": "atorber/qmt-trading-skill"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A-share data and LIVE trading through a QMT/miniQMT bridge (xtquant), in Chinese; 22 skills. Needs the author's bridge service and a Windows QMT client from a broker; read china-trading-stack and broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "qmt",
+        "live-execution",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/atorber/qmt-trading-skill",
+        "license": "MIT",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-08-14",
+        "skill_count": 22,
+        "stars_on_verified_on": 22,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      }
+    },
+    {
+      "name": "banking-regulatory",
+      "source": {
+        "source": "git-subdir",
+        "url": "panaversity/agentfactory-business-plugins",
+        "path": "banking"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Basel III/IV and FRTB risk-weighted assets, IFRS 9 expected credit loss, AML/KYC/sanctions across seven jurisdictions; 17 skills. Upstream idle since 2026-03-26 - regulatory content drifts, check before relying on it. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "basel",
+        "ifrs9",
+        "aml"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/panaversity/agentfactory-business-plugins",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-08",
+        "upstream_pushed_at": "2026-03-26",
+        "skill_count": 17,
+        "stars_on_verified_on": 29,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
+      }
     }
   ]
 }

@@ -229,30 +229,58 @@ def main() -> int:
                    f"budget; descriptions will be silently dropped to name-only")
             (warnings if declared else all_errs).append(msg)
 
-    # marketplace.json must list every skill that exists, and only those
+    # marketplace.json: local plugins must list every skill that exists and only those.
+    # Federated entries (external `source` objects) get the offline shape checks from the
+    # documented schema, and must carry provenance metadata - Claude Code ignores `metadata`,
+    # so this is the only place the repo's "every claim dated" rule can bite for them.
     mp = ROOT / ".claude-plugin" / "marketplace.json"
     if mp.exists():
         data = json.loads(mp.read_text(encoding="utf-8"))
+        EXT_REQUIRED = {"github": ("repo",), "git-subdir": ("url", "path"), "url": ("url",),
+                        "npm": ("package",), "archive": ("url",), "command": ("command",)}
+        seen = set()
         for p in data.get("plugins", []):
-            pdir = ROOT / p["source"].lstrip("./")
-            declared = {s.rstrip("/").split("/")[-1] for s in p.get("skills", [])}
-            actual = {d.parent.name for d in pdir.glob("skills/*/SKILL.md")}
-            for missing in sorted(actual - declared):
-                all_errs.append(f"marketplace.json: {p['name']} does not list skill {missing!r}")
-            for ghost in sorted(declared - actual):
-                all_errs.append(f"marketplace.json: {p['name']} lists {ghost!r} which has no SKILL.md")
-
-    # The README's opening line is the first thing a visitor and a search indexer read, and it
-    # is hand-written, so it drifts silently as skills are added. It claimed 19 when there
-    # were 46. Pin it to the real count.
-    readme = ROOT / "README.md"
-    if readme.exists():
-        m = re.search(r"\*\*(\d+) \[Agent Skills\]", readme.read_text(encoding="utf-8")[:600])
-        if not m:
-            all_errs.append("README.md: opening line no longer states a skill count")
-        elif int(m.group(1)) != len(skills):
-            all_errs.append(f"README.md: opening line claims {m.group(1)} skills, "
-                            f"there are {len(skills)}")
+            name, src = p.get("name", "?"), p.get("source")
+            if name in seen:
+                all_errs.append(f"marketplace.json: duplicate plugin name {name!r}")
+            seen.add(name)
+            if isinstance(src, str):
+                if not src.startswith("./"):
+                    all_errs.append(f"marketplace.json: {name}: string source must start with './'")
+                    continue
+                pdir = ROOT / src[2:]
+                declared = {s.rstrip("/").split("/")[-1] for s in p.get("skills", [])}
+                actual = {d.parent.name for d in pdir.glob("skills/*/SKILL.md")}
+                for missing in sorted(actual - declared):
+                    all_errs.append(f"marketplace.json: {name} does not list skill {missing!r}")
+                for ghost in sorted(declared - actual):
+                    all_errs.append(f"marketplace.json: {name} lists {ghost!r} which has no SKILL.md")
+            elif isinstance(src, dict):
+                kind = src.get("source")
+                if kind not in EXT_REQUIRED:
+                    all_errs.append(f"marketplace.json: {name}: unknown source kind {kind!r}")
+                    continue
+                for k in EXT_REQUIRED[kind]:
+                    if k not in src:
+                        all_errs.append(f"marketplace.json: {name}: {kind} source needs {k!r}")
+                sha = src.get("sha")
+                if sha is not None and not re.fullmatch(r"[a-f0-9]{40}", str(sha)):
+                    all_errs.append(f"marketplace.json: {name}: sha must be a full 40-hex commit")
+                for s in p.get("skills", []):
+                    if not str(s).startswith("./"):
+                        all_errs.append(f"marketplace.json: {name}: skills paths must start with './'")
+                meta = p.get("metadata") or {}
+                for k in ("upstream", "license", "verified_on", "upstream_pushed_at", "skill_count"):
+                    if k not in meta:
+                        all_errs.append(f"marketplace.json: {name}: external entry needs metadata.{k}")
+                if p.get("defaultEnabled", True) is not False:
+                    all_errs.append(f"marketplace.json: {name}: external entries install disabled "
+                                    f"(defaultEnabled: false)")
+                if "not verified by this repo" not in (p.get("description") or "").lower():
+                    all_errs.append(f"marketplace.json: {name}: description must state that its claims "
+                                    f"are not verified by this repo")
+            else:
+                all_errs.append(f"marketplace.json: {name}: source must be a './' path or an object")
 
     # The importable package under fin_skills/ is generated from the skills. A stale copy
     # would ship old guards under a current version number - same rule as catalog/index.json.

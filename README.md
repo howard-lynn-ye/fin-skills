@@ -70,6 +70,22 @@ source of truth and `validate.py` fails if the two drift apart. Namespaces follo
 `core`, `libraries`, `china`, `asia`, `futures_fx`, `crypto`, `llm`. Every skill script runs
 standalone too (`python plugins/<plugin>/skills/<skill>/scripts/<name>.py`).
 
+### Federated third-party packs
+
+The marketplace also lists eight third-party skill packs by their own GitHub source, so they
+install through this marketplace without being copied here: `trading-skills` (Solana, DeFi, tax
+lots), `tradermonty-trading-skills` (breadth, screeners, journaling), `eodhd-api` (vendor-official),
+`ib-options-income` (IBKR PMCC and collars), `cre-agent-skills` (commercial real estate),
+`okx-agent-skills` (live OKX execution), `qmt-trading-skill` (A-share QMT bridge, 中文), and
+`banking-regulatory` (Basel, IFRS 9, AML).
+
+Every one installs **disabled**; its description says what it needs, what it costs in listing
+budget, and where it overlaps. What this repo verified is the licence, activity, and that real
+`SKILL.md` files exist on the date in `metadata.verified_on`. **The claims inside them are not
+verified by this repo.** Federation is per plugin - a pack's skills cannot be cherry-picked - so
+the two big packs cost three to four times the default listing budget on their own. Candidates
+considered and left out, with reasons, are in `catalog/federation-notes.md`.
+
 ## What's here
 
 <!-- BEGIN GENERATED SKILL TABLE -->
