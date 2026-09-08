@@ -10,7 +10,7 @@ description: >-
   may_redistribute, market data licence; presenting or publishing backtested performance,
   Marketing Rule. Two of the most-cited rules moved in 2024-2026, so a training-prior answer is
   usually stale. US ONLY - SKIP for short-selling bans or calendars in Asia
-  (asia-pacific-markets), for A-share T+1 and price limits (china-ashare-data) and for the
+  (asia-pacific-markets), for A-share T+1 and price limits (china-trading-stack) and for the
   order-safety mechanics of actually sending an order (broker-execution-apis).
 license: MIT
 metadata:
