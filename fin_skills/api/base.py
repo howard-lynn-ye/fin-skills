@@ -255,9 +255,12 @@ class RunReport(list):
     """A list[GuardResult] that also remembers which guards were skipped and why."""
 
     def __init__(self, results: list[GuardResult] | None = None,
-                 skipped: dict[str, list[str]] | None = None) -> None:
+                 skipped: dict[str, list[str]] | None = None,
+                 rejected: dict[str, str] | None = None) -> None:
         super().__init__(results or [])
         self.skipped: dict[str, list[str]] = dict(skipped or {})
+        # guards whose inputs were present but refused (run() raised TypeError): name -> why
+        self.rejected: dict[str, str] = dict(rejected or {})
 
     @property
     def passed(self) -> bool:
@@ -274,10 +277,13 @@ class RunReport(list):
     def summary(self) -> str:
         n_fail = len(self.failed)
         lines = [f"ran {len(self)} guard(s), {len(self) - n_fail} passed, {n_fail} failed, "
-                 f"{len(self.skipped)} skipped"]
+                 f"{len(self.skipped)} skipped"
+                 + (f", {len(self.rejected)} rejected" if self.rejected else "")]
         lines += [r.summary() for r in self]
         for name, missing in self.skipped.items():
             lines.append(f"SKIP  {name}  (missing {missing})")
+        for name, why in self.rejected.items():
+            lines.append(f"REJECT  {name}  ({why})")
         return ascii_only("\n".join(lines))
 
     def __iter__(self) -> Iterator[GuardResult]:  # typing aid only

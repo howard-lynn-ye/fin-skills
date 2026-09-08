@@ -63,22 +63,35 @@ from fin_skills.core.option_lifecycle import crr                # a CRR tree, no
 ```
 
 The same checks behind one interface — 28 guards that return a `GuardResult` instead of raising, and
-16 typed conventions, the way PyOD puts its detectors behind one API:
+16 typed conventions, the way PyOD puts its detectors behind one API. PyOD's uniformity comes from a
+uniform data container (every detector is `fit(X)`); here the container is a `Bundle` — the artefacts
+of one research run under a fixed vocabulary — and `check()` runs every guard whose inputs are present:
 
 ```python
-from fin_skills.api import get, run_all, conventions as c
+from fin_skills.api import Bundle, check
+
+b = Bundle(returns=strategy_returns, turnover=turn, rf=0.05,          # one slot feeds every guard
+           bars=bars, signal_fn=lambda d: d.close.rolling(20).mean(),  # that means the same thing by it
+           close=aapl_close, actions=aapl_actions)
+print(b.coverage().summary())  # ready: cost_curve, rf_convention, assert_causal, adjustment_check, ...
+                               # one slot away: + prices unlocks survivorship_audit
+report = check(b)              # every ready guard, one call; skipped ones say what they still need
+print(report.summary())
+
+from fin_skills.api import get, Suite, conventions as c              # the per-guard forms
 
 r = get("assert_causal").run(fn=lambda d: d.close.shift(-1), df=bars, k=250)
 r.passed, r.summary()          # False, "FAIL: LOOK-AHEAD ... cells before index 250 changed"
-
-report = run_all(left=signals, right=quotes, on="time", by="symbol", tolerance="5min",
-                 returns=strategy_returns, turnover=1.5, pair=["EURUSD", "USDJPY"])
-print(report.summary())        # which guards ran, passed, failed, and which were skipped for missing inputs
+Suite("assert_causal", "warmup_probe", "cost_curve").check(b)        # a reusable subset
 
 c.annualization_factor("crypto")            # 365
 c.liquidation_price(entry=100, leverage=10, mmr=0.004, side="long")
 c.pip_value("USDJPY", notional=100_000, price=150.25).value_usd
 ```
+
+`fin_skills.api.slots()` lists the vocabulary — which guards each slot reaches — and a `Bundle` rejects
+an unknown slot name, a DataFrame where a Series belongs, or an unsorted DatetimeIndex at construction,
+with a message naming the slot.
 
 `python -m pytest -q` runs the suite (slow tests are marked and deselected by default).
 
