@@ -30,6 +30,11 @@ import re
 import sys
 from pathlib import Path
 
+# Tooling output carries markers and dashes; on a stock Windows console (cp1252) a bare
+# print of them raises UnicodeEncodeError. Skill scripts stay ASCII; tooling may not.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent.parent
 EVALS = ROOT / "evals"
 N_BATCHES = 3

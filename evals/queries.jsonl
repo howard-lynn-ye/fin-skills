@@ -80,3 +80,29 @@
 {"q": "compute implementation shortfall on these fills", "expect": "execution-cost-analysis"}
 {"q": "how much size can this strategy take before impact eats it", "expect": "execution-cost-analysis"}
 {"q": "what slippage should I assume in my backtest", "expect": "backtesting-engines", "note": "ownership decision 2026-09-05: choosing the assumption is engine configuration; RIG judges it after"}
+{"q": "why is TQQQ down this month when the Nasdaq is flat", "expect": "etf-mechanics"}
+{"q": "leveraged ETF decay how bad is it really", "expect": "etf-mechanics"}
+{"q": "my ETF is trading at a premium to NAV, is that an arbitrage", "expect": "etf-mechanics"}
+{"q": "what does return of capital mean in this ETF distribution", "expect": "etf-mechanics"}
+{"q": "where do I get the daily holdings file for an ETF", "expect": "etf-mechanics"}
+{"q": "ETF price dropped on the ex-dividend date but nothing happened to the index", "expect": "etf-mechanics"}
+{"q": "build dollar bars from tick data", "expect": "intraday-microstructure"}
+{"q": "classify each trade as buyer or seller initiated", "expect": "intraday-microstructure"}
+{"q": "compute the effective spread and realized spread from quotes and trades", "expect": "intraday-microstructure"}
+{"q": "estimate Kyle's lambda from signed order flow", "expect": "intraday-microstructure"}
+{"q": "reconstruct the limit order book from market by order data", "expect": "intraday-microstructure"}
+{"q": "detect bull and bear regimes with a hidden markov model", "expect": "regime-detection"}
+{"q": "result_manifest says no regime coverage stated, what do I put", "expect": "regime-detection"}
+{"q": "markov switching smoothed vs filtered probabilities in a backtest", "expect": "regime-detection"}
+{"q": "my strategy only works in the low volatility regime", "expect": "regime-detection"}
+{"q": "how much funding will I pay holding a long BTC perp for a month", "expect": "crypto-data-and-execution"}
+{"q": "liquidation price for a 5x long on a perpetual", "expect": "crypto-data-and-execution"}
+{"q": "annualize daily crypto returns with 365 or 252", "expect": "crypto-data-and-execution"}
+{"q": "cash and carry basis trade between BTC spot and the quarterly future", "expect": "crypto-data-and-execution"}
+{"q": "build a multi agent trading system with analyst, trader and risk manager roles", "expect": "finance-agent-architectures"}
+{"q": "how is the TradingAgents architecture put together", "expect": "finance-agent-architectures"}
+{"q": "the ai-hedge-fund repo, how does its pipeline work", "expect": "finance-agent-architectures"}
+{"q": "how should I stage a research to execution pipeline that uses an LLM", "expect": "finance-agent-architectures"}
+{"q": "backtest a moving average crossover on SPY", "expect": "backtesting-engines", "note": "control: SPY is an ETF but the task is backtesting"}
+{"q": "what bid ask spread should I assume in my daily backtest", "expect": "backtesting-engines", "note": "control: spread as an assumption, not microstructure measurement"}
+{"q": "train a reinforcement learning agent to trade crypto", "expect": "rl-and-ml-trading", "note": "control: RL, not agent architectures or crypto data"}

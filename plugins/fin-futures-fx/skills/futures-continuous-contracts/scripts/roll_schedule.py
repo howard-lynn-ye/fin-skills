@@ -50,10 +50,13 @@ import pandas as pd
 # annualised differently, the rule comparison below would be measuring the difference
 # between two Sharpe conventions rather than between two roll rules.
 try:
-    from continuous_contract import TRADING_DAYS, _stats, true_roll_return
-except ImportError:  # imported from outside this scripts/ directory
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from continuous_contract import TRADING_DAYS, _stats, true_roll_return
+    from .continuous_contract import TRADING_DAYS, _stats, true_roll_return  # inside fin_skills.futures_fx
+except ImportError:  # run as a script: no parent package
+    try:
+        from continuous_contract import TRADING_DAYS, _stats, true_roll_return
+    except ImportError:  # imported from outside this scripts/ directory
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from continuous_contract import TRADING_DAYS, _stats, true_roll_return
 
 RULES = ("calendar", "open_interest", "volume", "first_notice")
 

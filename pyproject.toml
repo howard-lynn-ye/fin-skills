@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fin-skills"
+version = "0.1.0"
+description = "Source-verified knowledge base of the Python quant-finance ecosystem - the Agent Skills as importable text, and their executable guards as importable functions"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Howard Ye" }]
+keywords = ["quantitative-finance", "agent-skills", "backtesting", "market-data", "claude-code", "llm-agents"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+# scripts that verify themselves against a real library when it is importable
+stats = ["statsmodels>=0.14", "scikit-learn>=1.3"]
+all = ["statsmodels>=0.14", "scikit-learn>=1.3"]
+
+[project.urls]
+Homepage = "https://github.com/howard-lynn-ye/fin-skills"
+Repository = "https://github.com/howard-lynn-ye/fin-skills"
+Issues = "https://github.com/howard-lynn-ye/fin-skills/issues"
+
+[tool.setuptools.packages.find]
+include = ["fin_skills*"]
+
+[tool.setuptools.package-data]
+fin_skills = ["_skills/**/*.md", "_skills/*.json"]

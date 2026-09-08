@@ -24,7 +24,8 @@ python scripts/validate.py      # must print OK
 python scripts/build_index.py   # must leave the tree clean
 ```
 
-`catalog/index.json` and the README skill table are **generated**. Never hand-edit them.
+`catalog/index.json`, the README skill table and everything under `fin_skills/` except `__init__.py` are
+**generated**. Never hand-edit them.
 
 ## Rules that exist because they were broken
 
@@ -70,6 +71,7 @@ There is no unit-test suite. Verification is:
 | `scripts/check_drift.py` | re-checks version claims against PyPI (network) |
 | `scripts/check_repo_stats.py` | re-checks GitHub stats. Note `open_issues_count` includes pull requests |
 | `scripts/check_scripts.py` | runs every skill script in a subprocess with `PYTHONIOENCODING` stripped. A script that prints a non-ASCII character passes under UTF-8 and dies on a stock Windows console |
+| `scripts/build_package.py` | regenerates `fin_skills/` - the skills as an importable package (`--check` is run by `validate.py`). Never edit `fin_skills/` by hand |
 
 `eval_triggers.py` is a bag-of-words proxy and degrades once two skills cover the same package.
 `eval_blind.py` is the ground truth. Do not tune descriptions to the proxy.

@@ -28,15 +28,18 @@
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
         "./skills/derivatives-pricing",
+        "./skills/etf-mechanics",
         "./skills/execution-cost-analysis",
         "./skills/external-skill-index",
         "./skills/factor-and-timeseries-research",
         "./skills/fundamental-and-macro-data",
+        "./skills/intraday-microstructure",
         "./skills/market-data-engineering",
         "./skills/market-data-sourcing",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
         "./skills/quant-stack-router",
+        "./skills/regime-detection",
         "./skills/research-integrity-guards",
         "./skills/signal-construction",
         "./skills/us-market-rules"
@@ -130,15 +133,16 @@
         "tradingagents"
       ],
       "skills": [
-        "./skills/llm-finance-agents",
+        "./skills/finance-agent-architectures",
         "./skills/finance-mcp-servers",
+        "./skills/llm-finance-agents",
         "./skills/rl-and-ml-trading"
       ]
     },
     {
       "name": "fin-libraries",
       "source": "./plugins/fin-libraries",
-      "description": "One skill per library - fine-grained retrieval for 24 of the most-used Python quant packages, each leading with the single default or bug that silently produces wrong numbers. OPT-IN AND EXPENSIVE: measured at ~5,273 tokens of skill-listing budget on its own, and 24 skills already exceeds the ~20 at which Claude Code starts silently dropping descriptions to name-only. Set skillListingBudgetFraction to 0.05 before installing it, and 0.08 to run it alongside fin-core.",
+      "description": "One skill per library - fine-grained retrieval for 24 of the most-used Python quant packages, each leading with the single default or bug that silently produces wrong numbers. OPT-IN AND EXPENSIVE: measured at ~5,298 tokens of skill-listing budget on its own, and 24 skills already exceeds the ~20 at which Claude Code starts silently dropping descriptions to name-only. Set skillListingBudgetFraction to 0.03 before installing it, 0.05 to run it alongside fin-core, and 0.06 for every plugin.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [

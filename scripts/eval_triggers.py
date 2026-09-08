@@ -27,6 +27,11 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).parent))
 from validate import parse_frontmatter  # noqa: E402
 
+# Tooling output carries markers and dashes; on a stock Windows console (cp1252) a bare
+# print of them raises UnicodeEncodeError. Skill scripts stay ASCII; tooling may not.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 MARGIN_FLOOR = 0.15   # top1 must beat top2 by this fraction of top1
 STOP = set("""a an and are as at be but by for from how i if in is it my me of on or that the
 this to use used using want with what when which who why you your do does can could should would

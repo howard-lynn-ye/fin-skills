@@ -29,6 +29,7 @@ python scripts/build_index.py   # regenerates catalog/index.json and the README 
 python scripts/eval_triggers.py # lexical smoke test for skill selection
 python scripts/check_drift.py   # re-checks version claims against PyPI (needs network)
 python scripts/check_scripts.py # runs every skill script on the DEFAULT console encoding
+python scripts/build_package.py # regenerates the importable fin_skills/ package (validate.py checks it)
 ```
 
 `validate.py` must print OK. `build_index.py` must leave the tree clean — if `git diff` shows
@@ -88,7 +89,10 @@ Scripts must:
 - when the library **is** importable, verify the reference implementation against it and print the
   comparison rather than asserting agreement
 
-`plugins/fin-libraries/skills/lib-quantstats/scripts/rf_convention.py` is the template.
+`plugins/fin-libraries/skills/lib-quantstats/scripts/rf_convention.py` is the template. A script that
+needs a sibling script uses the dual-mode import (`try: from .sib import x` / `except ImportError:
+from sib import x`) so it works both standalone and inside the generated `fin_skills` package;
+`validate.py` rejects a bare sibling import.
 
 ## Style
 

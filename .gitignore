@@ -11,3 +11,5 @@ __pycache__/
 aapl_facts.json
 venv/
 yf.json
+build/
+dist/

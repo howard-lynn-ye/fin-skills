@@ -26,3 +26,11 @@
 26. my short call got assigned before ex-dividend
 27. did my execution beat VWAP or did it cost us money
 28. what slippage should I assume in my backtest
+29. my ETF is trading at a premium to NAV, is that an arbitrage
+30. ETF price dropped on the ex-dividend date but nothing happened to the index
+31. compute the effective spread and realized spread from quotes and trades
+32. detect bull and bear regimes with a hidden markov model
+33. my strategy only works in the low volatility regime
+34. annualize daily crypto returns with 365 or 252
+35. how is the TradingAgents architecture put together
+36. backtest a moving average crossover on SPY

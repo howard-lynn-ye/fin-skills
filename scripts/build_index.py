@@ -18,6 +18,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from validate import parse_frontmatter  # noqa: E402
 
+# Tooling output carries markers and dashes; on a stock Windows console (cp1252) a bare
+# print of them raises UnicodeEncodeError. Skill scripts stay ASCII; tooling may not.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent.parent
 BEGIN = "<!-- BEGIN GENERATED SKILL TABLE -->"
 END = "<!-- END GENERATED SKILL TABLE -->"

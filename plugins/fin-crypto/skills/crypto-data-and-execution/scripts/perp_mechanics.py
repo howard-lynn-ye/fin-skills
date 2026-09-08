@@ -1,0 +1,449 @@
+#!/usr/bin/env python3
+"""Crypto perpetual-swap mechanics that a spot-price backtest omits, and the 365-day trap.
+
+Seven demonstrations, each printing the numbers quoted in ../SKILL.md:
+
+  1. annualisation  - sqrt(252) on a 365-row crypto series, and the mistake in the other direction
+  2. funding        - notional x rate x periods, the sign convention, and a REAL year of it
+  3. basis          - annualised basis on live dated-future marks, and the cash-and-carry margin trap
+  4. liquidation    - liquidation price at 3x / 5x / 10x, why it is not a stop-loss, funding drift
+  5. inverse        - coin-margined P&L vs linear P&L for the same move; the BTC-settled call
+  6. venue access   - which venue APIs answered from this location, and with what HTTP code
+  7. data           - three different "daily closes" for one date, and cross-venue dispersion
+
+Everything is arithmetic on constants pulled from the venues' own public APIs on 2026-09-08
+(endpoints named next to each constant). No network access at run time, numpy/pandas only,
+fixed seed. quantstats and empyrical are optional: when they are importable the section-1
+reference arithmetic is checked against them and the comparison is printed, not asserted.
+
+Run:  python perp_mechanics.py
+"""
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+
+SEED = 0
+CRYPTO_DAYS = 365
+EQUITY_DAYS = 252
+AS_OF = pd.Timestamp("2026-09-08T13:25:00Z")        # fetch time of the Deribit book summary
+
+# ----------------------------------------------------------------------------------------------
+# Constants fetched 2026-09-08 (primary sources, all public, no key)
+# ----------------------------------------------------------------------------------------------
+
+# Deribit  GET /api/v2/public/get_instrument?instrument_name=BTC-PERPETUAL
+DERIBIT_PERP = dict(contract_size_usd=10.0, settlement_currency="BTC", instrument_type="reversed",
+                    max_leverage=50, maker_commission=0.00015, taker_commission=0.00035,
+                    max_liquidation_commission=0.01, funding_8h=2.95e-05)
+# Deribit  GET /api/v2/public/get_instruments?currency=BTC&kind=option&expired=false
+DERIBIT_BTC_OPTIONS = dict(count=908, settlement_currency="BTC", contract_size_btc=1.0,
+                           tick_size_btc=0.0001, expiries=11, expiry_utc_hour=8)
+# Deribit  GET /api/v2/public/get_instruments?currency=USDC&kind=option&expired=false
+DERIBIT_USDC_OPTIONS = {"total": 3538, "SOL": 724, "BTC": 616, "ETH": 568, "HYPE": 496,
+                        "XRP": 470, "AVAX": 334, "TRX": 330}
+# Deribit  GET /api/v2/public/get_book_summary_by_currency?currency=BTC&kind=future
+DERIBIT_INDEX = 78449.67                                # estimated_delivery_price (= index)
+DERIBIT_FUTURES = {                                     # mark_price, expiry 08:00 UTC
+    "BTC-25SEP26": (78561.31, "2026-09-25"),
+    "BTC-30OCT26": (78888.05, "2026-10-30"),
+    "BTC-27NOV26": (79192.98, "2026-11-27"),
+    "BTC-25DEC26": (79513.65, "2026-12-25"),
+    "BTC-26MAR27": (80458.36, "2027-03-26"),
+    "BTC-25JUN27": (81460.24, "2027-06-25"),
+}
+# OKX  GET /api/v5/public/mark-price?instType=FUTURES&uly=BTC-USD  and  market/index-tickers
+OKX_DEC26_MARK, OKX_USD_INDEX = 79572.5, 78440.2
+# OKX  GET /api/v5/public/position-tiers?instType=SWAP&tdMode=cross&uly=BTC-USDT  (tier 1)
+OKX_TIER1 = dict(mmr=0.004, imr=0.01, max_lever=100, max_contracts=1000, contract_btc=0.01)
+OKX_USDT_INDEX = 78462.2
+# OKX  GET /api/v5/public/funding-rate?instId=BTC-USDT-SWAP
+OKX_FUNDING_CAP = 0.00375                               # maxFundingRate per interval
+OKX_FUNDING_INTEREST = 0.0001                           # interestRate component
+# OKX  GET /api/v5/public/funding-rate?instId=ANY  -> nextFundingTime - fundingTime, per swap
+OKX_INTERVALS = {"8h": 357, "4h": 286, "1h": 1}         # 644 swaps in total
+# ccxt 4.5.78 python source, exchange `has` dict (raw.githubusercontent.com/ccxt/ccxt/master)
+CCXT_FUNDING_HISTORY = {"binance": True, "bybit": True, "okx": True, "deribit": True,
+                        "coinbase": False, "kraken": False}
+# HTTP status returned to a plain GET from this location on 2026-09-08
+VENUE_HTTP = {"fapi.binance.com / dapi / api.binance.com": 451, "api.bybit.com": 403,
+              "www.okx.com": 200, "www.deribit.com": 200, "api.exchange.coinbase.com": 200,
+              "api.kraken.com": 200, "www.bitstamp.net": 200, "api.gemini.com": 200}
+
+# Deribit  GET /api/v2/public/get_funding_rate_history?instrument_name=BTC-PERPETUAL
+# 8,760 hourly records 2025-09-08 .. 2026-09-07 (no gaps), summed per UTC day into bps of
+# position value; index_price is the last hourly index print of each day.
+DERIBIT_DAYS = pd.date_range("2025-09-08", "2026-09-07", freq="D", tz="UTC")
+DERIBIT_INDEX_PREV = 111245.0                           # last index print of 2025-09-07
+DERIBIT_FUND_BPS = [1.807,2.992,2.538,2.147,2.869,3.028,3.720,2.505,0.415,1.119,2.867,1.152,0.030,0.125,1.233,0.726,2.127,4.142,0.932,0.159,0.590,2.449,4.639,2.789,6.941,4.885,6.237,7.359,5.494,2.072,1.028,0.897,5.993,3.340,2.165,0.201,0.504,0.683,2.947,1.756,2.015,2.478,1.649,1.170,0.029,1.510,0.938,0.198,4.037,3.004,3.074,2.150,0.542,2.179,0.781,3.155,0.162,-0.466,-0.008,-1.504,0.035,-0.212,0.081,1.055,0.155,0.171,0.116,-0.435,-0.669,-1.244,0.141,0.034,-0.459,0.465,-1.093,-0.124,-0.417,-0.366,-0.003,0.159,0.143,0.829,0.027,0.354,0.059,0.098,0.654,0.190,0.059,-0.138,0.344,0.609,0.360,0.177,0.427,0.449,0.004,0.242,0.740,0.202,0.740,1.526,2.118,0.907,0.140,1.239,0.356,0.811,0.483,3.090,1.738,1.498,3.928,1.611,3.608,3.149,3.180,1.505,3.245,3.212,2.092,1.391,0.458,0.903,2.328,1.776,2.502,1.912,1.051,0.067,0.688,0.068,0.008,0.539,0.358,2.734,2.237,2.094,1.786,1.049,1.720,0.994,2.405,0.777,0.338,1.071,-0.025,-0.145,-0.076,0.686,0.061,-3.394,-0.120,-0.001,0.001,-0.027,-0.479,0.194,-0.540,-0.000,-0.045,-0.071,-0.023,-0.230,-0.115,0.127,0.319,-0.187,-0.606,-2.033,-0.353,-0.765,-1.263,-1.958,-1.197,-0.040,-0.218,-0.318,0.313,-0.180,-0.190,-0.076,0.152,0.038,-0.025,0.016,0.197,0.012,0.019,0.116,0.099,0.139,0.025,0.218,1.011,-0.131,0.926,0.226,0.629,0.158,0.311,-0.052,0.425,0.686,0.895,1.010,-0.868,0.835,0.562,0.105,0.752,0.045,1.216,0.002,0.236,0.021,0.182,-0.208,-0.307,-0.020,0.175,-0.378,-0.229,0.103,-0.095,0.056,-1.056,-0.818,-0.401,-0.773,0.002,-0.045,-0.402,-0.131,-0.017,0.702,0.019,0.129,0.006,-0.435,-0.150,0.524,0.133,0.784,0.685,1.166,0.130,0.507,-0.118,-0.003,-0.005,-0.361,-0.086,0.000,0.560,0.665,0.305,-0.262,-0.155,0.007,0.036,0.420,0.934,1.688,0.409,0.284,0.031,-0.266,-0.259,-3.132,-1.654,-0.050,-0.019,-0.029,0.184,0.064,0.162,0.223,0.002,0.017,0.002,0.238,0.106,0.072,-0.172,-0.038,0.147,0.056,-0.044,0.035,-0.677,0.696,0.654,0.138,1.677,0.232,0.580,0.416,1.012,0.030,0.834,2.362,1.465,1.174,1.449,2.428,1.837,1.025,2.077,0.351,2.093,1.098,0.316,0.558,2.309,1.268,1.805,1.968,0.300,0.556,0.242,0.214,2.036,0.929,2.196,2.986,0.966,0.624,0.662,1.390,1.037,0.544,0.349,0.143,0.004,0.002,0.359,0.717,1.865,2.476,1.758,0.152,0.027,1.113,0.315,1.138,2.847,1.765,3.103,2.055,1.318,0.651,1.031,1.784,0.111,0.488,0.932,2.464,1.844,1.645,1.576,-0.189,-0.638,-0.003,0.056]  # noqa: E501
+DERIBIT_INDEX_DAILY = [112261,111561,113908,115138,116102,115929,116055,115320,116893,116597,117125,115670,115839,115583,112725,112191,113372,109467,109612,109648,111954,114233,113953,117814,120336,122556,122352,123261,125094,122067,123249,121756,114042,111169,115337,115610,113273,110720,107825,107026,107158,109187,110836,109113,107204,109991,111038,111645,114690,114114,113245,111040,107899,109541,110034,109879,106454,101247,103701,101379,103602,102361,104701,106030,102962,101966,99787,95110,95557,94120,92146,93111,90384,87963,84236,85021,87984,88617,87609,90383,91319,91122,90783,91233,86600,92015,93808,92365,89273,89311,89618,90846,92886,92537,92382,90350,90157,88428,86244,87776,86315,85534,88294,88253,88455,88619,87347,87951,87604,87479,87508,87837,87243,88338,87599,88535,90162,90552,91187,94178,93326,91100,91163,90511,90315,90408,91158,95723,96898,95550,95474,95138,95462,92506,88386,89697,89266,89526,89305,86436,88049,89142,89254,84428,84093,78072,77174,78742,75619,72399,63790,71305,69356,71019,70341,68668,67377,66233,68956,69938,68948,68562,67509,66376,66895,68058,67967,67645,64706,64120,68467,67579,65636,67119,65257,69446,68328,72722,71217,68320,67255,66240,68645,69716,70383,70185,70819,70729,72754,74762,74330,71156,70187,70765,70268,68321,70761,70289,71350,68846,65987,66705,65811,66735,68118,68117,66982,66886,67392,68318,68813,71501,71072,71959,72903,73405,70921,74662,74064,74987,74887,77334,75850,74076,76003,75666,78636,78264,77357,77580,78342,77066,76236,75902,76208,78147,78831,79169,80059,81111,81342,79910,80277,80761,82034,81815,80644,79405,81454,79072,78159,77962,77029,76652,77435,77560,75656,76494,76718,77051,75644,74315,73374,73393,73781,73848,71318,66298,64821,63680,61574,60529,62846,63426,61685,61329,63444,63476,64433,65386,66169,65723,64248,62825,63262,64210,63731,63906,62519,60786,59759,59963,60143,58988,60273,58523,60417,61405,62517,63137,63684,64206,63507,62285,63179,64074,64163,63851,61851,64823,64829,63920,63942,64768,64630,65104,66265,66011,65145,64107,64353,65348,63739,63708,63860,64791,62893,62776,63353,63554,64221,64588,64298,64853,64895,65027,63963,63610,63367,63466,62818,63069,62851,64237,64595,69221,72660,78445,76987,77600,78733,78874,78696,80319,77754,78220,78419,78571,77234,77003,81150,79658,79795,80050,78936]  # noqa: E501
+
+# OKX  GET /api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP  (linear, 8h intervals)
+# realizedRate in bps, 277 settlements 2026-06-08 08:00 .. 2026-09-08 08:00 UTC; the endpoint
+# serves at most three months. Prices are the 1D swap closes nearest each end (history-candles).
+OKX_PRICE_START, OKX_PRICE_END = 63744.0, 78442.1
+OKX_FUND_BPS = [0.4246,-0.7555,-0.1252,-0.0770,0.3635,0.4761,-0.1593,-0.0878,-0.4346,-0.6032,-0.2396,-0.0495,0.1338,-0.2236,0.0911,0.0869,-0.6396,-0.3129,-0.3390,-0.7591,-0.5835,-0.6892,-0.7390,-0.1310,-0.5923,-0.1086,0.3599,-0.2490,-0.3424,0.0500,0.2712,0.3565,0.0134,0.3245,-0.0499,0.2059,-0.1883,0.0208,-0.0883,-0.1492,-0.1192,-0.2885,0.2875,0.4146,0.4866,0.1063,0.2752,0.2599,0.8328,0.4325,-0.4593,-0.7799,-0.3443,0.0134,0.0966,0.8207,0.4063,0.5055,0.3227,0.4023,0.3200,0.3954,0.0466,0.5036,0.7180,0.8458,0.5219,0.6412,0.4771,0.1304,0.3770,0.9034,1.0000,0.3115,1.0000,1.0000,0.5383,0.4078,0.6090,0.6444,1.0000,0.7361,0.2115,0.6177,0.9825,0.4357,1.0000,0.6781,0.5896,0.5688,0.4446,0.8516,0.7234,0.0131,0.3518,0.7324,0.8409,0.7550,0.8225,-0.2152,0.3403,0.6652,0.6277,0.5646,0.6710,0.0702,0.8855,0.6660,0.1570,0.7995,1.0000,1.0000,0.2957,0.8113,0.3781,0.1499,0.5377,0.2956,0.5463,0.3802,0.5080,0.8637,0.1668,0.5948,0.4221,0.1491,-0.0106,0.1511,0.0786,0.1707,-0.3865,0.6460,-0.0461,0.0723,0.3453,-0.3331,0.3094,0.0015,-0.0835,0.4636,0.2972,0.2855,-0.0195,0.4045,0.2911,0.1071,0.7564,0.5251,0.2283,0.2424,-0.1916,0.2178,0.6305,0.2967,0.8325,0.4043,0.9621,0.6542,0.8372,0.6146,0.8530,0.5398,0.2589,-0.1676,0.0393,0.3866,0.1458,0.4660,0.5590,0.0939,0.2074,0.7656,0.8616,0.2472,0.5835,-0.1264,0.6788,0.6415,0.5950,0.5170,0.7328,0.1187,0.3778,0.3560,0.2511,0.4653,0.0740,0.1043,0.9221,0.5744,0.9672,1.0000,1.0000,1.0000,0.4953,0.6652,0.8871,1.0000,0.6912,0.5591,1.0000,0.8260,1.0000,0.8859,0.7659,0.6474,0.5094,0.4589,0.6569,1.0000,0.3251,0.2340,-0.1720,0.5213,0.1969,0.5914,0.9584,0.4676,1.0000,1.0000,0.5890,0.1157,0.8071,1.0000,1.0000,1.0000,1.0000,1.0000,1.0000,1.0000,1.0000,1.0000,1.0000,0.7216,1.0000,0.5610,0.8395,0.6636,0.5660,0.4421,0.4185,-0.0409,0.2998,0.9998,1.0000,1.0000,0.6781,0.4383,0.3053,0.6429,0.3489,0.6465,0.8305,0.7446,0.3006,0.7529,0.5322,0.8803,0.7402,0.7646,0.5832,0.4579,0.3832,0.4187,0.4825,0.3455,0.0070,-0.1354,-0.2716,0.0387,0.6152,0.1656,-0.0159,0.3229,0.3057,0.2953,0.5701]  # noqa: E501
+
+# Daily closes, 60 closed UTC days 2026-07-10 .. 2026-09-07, 00:00 UTC bucket on all three:
+#   Coinbase GET /products/BTC-USD/candles?granularity=86400
+#   Kraken   GET /0/public/OHLC?pair=XBTUSD&interval=1440
+#   Gemini   GET /v2/candles/btcusd/1day
+CLOSE_DAYS = pd.date_range("2026-07-10", "2026-09-07", freq="D", tz="UTC")
+COINBASE60 = [64128.49,63773.04,63740.32,62264.94,64988.64,64716.63,63770.60,63894.00,64796.36,64681.78,65213.05,66516.18,66086.61,65051.23,64083.32,64295.61,65341.07,63694.43,63847.12,63896.14,64721.90,62825.90,62764.20,63499.49,63466.51,64050.51,64603.03,64267.30,64891.61,64908.72,64848.69,63911.88,63531.75,63411.72,63425.35,62975.19,63018.75,62836.66,64484.18,64681.33,69300.01,73011.87,78325.54,77054.44,77729.36,78981.59,78526.80,79026.18,80275.34,77839.19,78233.93,77665.14,78562.74,77398.69,77307.36,81263.99,79675.12,79831.57,80339.13,79091.97]  # noqa: E501
+KRAKEN60 = [64126.40,63779.50,63737.40,62253.50,64977.20,64709.40,63789.50,63907.00,64796.70,64678.10,65215.70,66511.70,66072.50,65050.10,64087.80,64312.90,65336.60,63697.10,63859.60,63901.00,64723.00,62822.00,62760.00,63500.00,63461.70,64053.70,64599.20,64259.20,64886.10,64901.10,64860.00,63922.10,63541.10,63412.00,63423.30,62979.40,63024.30,62819.10,64471.70,64677.20,69285.00,73001.10,78327.20,77082.60,77737.50,78966.10,78509.40,79008.60,80265.90,77841.80,78227.80,77681.60,78566.10,77398.10,77305.10,81276.10,79676.40,79828.40,80334.30,79090.30]  # noqa: E501
+GEMINI60 = [64136.67,63788.43,63757.20,62269.28,64990.96,64719.83,63782.62,63898.39,64800.00,64684.97,65215.42,66516.68,66091.31,65056.38,64091.21,64311.14,65346.43,63708.10,63845.18,63893.00,64730.70,62814.64,62772.20,63511.93,63475.95,64056.59,64603.87,64268.63,64896.37,64911.02,64852.65,63917.74,63537.31,63418.39,63428.00,62983.74,63024.77,62839.68,64480.05,64689.41,69311.71,73004.82,78326.93,77062.99,77714.32,78985.84,78519.48,79028.31,80275.01,77823.41,78246.00,77698.53,78549.80,77397.17,77317.24,81278.94,79681.79,79846.18,80358.96,79101.21]  # noqa: E501
+# The same calendar date, 2026-09-07, as three venues label it:
+CLOSE_0907 = {
+    "Coinbase BTC-USD  (bar 00:00-24:00 UTC)": 79091.97,
+    "Kraken   XBT/USD  (bar 00:00-24:00 UTC)": 79090.30,
+    "Bitstamp btcusd   (bar 00:00-24:00 UTC)": 79090.41,
+    "Gemini   btcusd   (bar 00:00-24:00 UTC)": 79101.21,
+    "OKX      BTC-USDT 1D (opens 00:00 UTC+8 = 16:00 UTC prev day)": 78834.1,
+    "Deribit  BTC-PERPETUAL 1D (opens 08:00 UTC)": 78453.5,
+}
+
+
+# ----------------------------------------------------------------------------------------------
+# helpers
+# ----------------------------------------------------------------------------------------------
+def sharpe(r: pd.Series, periods: int) -> float:
+    return float(r.mean() / r.std(ddof=1) * np.sqrt(periods))
+
+
+def vol(r: pd.Series, periods: int) -> float:
+    return float(r.std(ddof=1) * np.sqrt(periods))
+
+
+def cagr_calendar(r: pd.Series) -> float:
+    days = (r.index[-1] - r.index[0]).days + 1
+    return float((1.0 + r).prod() ** (CRYPTO_DAYS / days) - 1.0)
+
+
+def liq_ratio(lev: float, mmr: float, side: str, exact: bool = True) -> float:
+    """Liquidation price / entry price for an isolated linear position, fees ignored.
+
+    exact:  maintenance margin charged on the position value AT the liquidation price.
+    approx: the venue-manual form entry x (1 -/+ 1/L +/- mmr), which charges it on entry value.
+    """
+    if side == "long":
+        return (1 - 1 / lev) / (1 - mmr) if exact else 1 - 1 / lev + mmr
+    return (1 + 1 / lev) / (1 + mmr) if exact else 1 + 1 / lev - mmr
+
+
+def hr(title: str) -> None:
+    print("\n" + "=" * 98 + f"\n{title}\n" + "=" * 98)
+
+
+# ----------------------------------------------------------------------------------------------
+# 1. annualisation
+# ----------------------------------------------------------------------------------------------
+def section_annualisation() -> None:
+    hr("1. ANNUALISATION - a crypto series has 365 rows a year, not 252")
+    rng = np.random.default_rng(SEED)
+    n = CRYPTO_DAYS * 4
+    r = pd.Series(rng.normal(0.0012, 0.025, n), index=pd.date_range("2022-01-01", periods=n, freq="D"))
+
+    s365, s252 = sharpe(r, CRYPTO_DAYS), sharpe(r, EQUITY_DAYS)
+    v365, v252 = vol(r, CRYPTO_DAYS), vol(r, EQUITY_DAYS)
+    ratio = np.sqrt(EQUITY_DAYS / CRYPTO_DAYS)
+    print(f"  synthetic daily returns, {n} calendar days, seed={SEED}")
+    print(f"  Sharpe  x sqrt(365) = {s365:.4f}   x sqrt(252) = {s252:.4f}   ratio {s252 / s365:.6f}"
+          f"  -> sqrt(252) UNDERSTATES by {(1 - s252 / s365) * 100:.1f}%")
+    print(f"  vol     x sqrt(365) = {v365:.4f}   x sqrt(252) = {v252:.4f}   ratio {v252 / v365:.6f}"
+          f"  -> same {(1 - ratio) * 100:.1f}% understatement")
+    m365, m252 = r.mean() * CRYPTO_DAYS, r.mean() * EQUITY_DAYS
+    print(f"  mean    x 365 = {m365 * 100:.2f}%/yr   x 252 = {m252 * 100:.2f}%/yr   ratio {m252 / m365:.6f}"
+          f"  -> understated by {(1 - m252 / m365) * 100:.1f}%")
+    c = cagr_calendar(r)
+    print(f"  CAGR by calendar time = {c * 100:.2f}%/yr.  A 'return / vol' ratio that annualises the"
+          f" return by calendar time\n  but the vol by sqrt(252) is {c / v252:.4f} against the"
+          f" consistent {c / v365:.4f}: OVERSTATED by {(v365 / v252 - 1) * 100:.1f}%")
+    print("  -> which way the 252 error goes depends on which formula the library uses; both are wrong.")
+
+    # the mistake in the other direction: a strategy that is flat at weekends
+    weekday = r[r.index.dayofweek < 5]                      # 252-ish rows a year, weekend rows dropped
+    padded = r.where(r.index.dayofweek < 5, 0.0)            # 365 rows a year, zeros at weekends
+    print("\n  a strategy that only holds Monday-Friday and is flat at weekends:")
+    print(f"    weekday rows only ({len(weekday)} rows)  x sqrt(252) = {sharpe(weekday, 252):.4f}"
+          f"   x sqrt(365) = {sharpe(weekday, 365):.4f}  -> sqrt(365) OVERSTATES by"
+          f" {(sharpe(weekday, 365) / sharpe(weekday, 252) - 1) * 100:.1f}%")
+    print(f"    same P&L padded with weekend zeros ({len(padded)} rows) x sqrt(365) = {sharpe(padded, 365):.4f}"
+          f"  (differs from the weekday/252 answer by {abs(sharpe(padded, 365) - sharpe(weekday, 252)):.4f})")
+    print("    rule: the factor is the number of ROWS per year in the series you hand the function:")
+    print(f"    {CRYPTO_DAYS} calendar days, {EQUITY_DAYS} weekday rows, {CRYPTO_DAYS * 24} hourly rows,"
+          f" {CRYPTO_DAYS * 3} eight-hour funding rows")
+
+    try:
+        import warnings
+        warnings.filterwarnings("ignore")
+        import quantstats as qs
+        print(f"\n  LIVE quantstats {qs.__version__}:")
+        print(f"    qs.stats.sharpe(r)                 = {float(qs.stats.sharpe(r)):.4f}   (default periods=252)")
+        print(f"    qs.stats.sharpe(r, periods=365)    = {float(qs.stats.sharpe(r, periods=365)):.4f}")
+        print(f"    qs.stats.volatility(r)             = {float(qs.stats.volatility(r)):.4f}   (default periods=252)")
+        print(f"    qs.stats.cagr(r)                   = {float(qs.stats.cagr(r)) * 100:.2f}%  (years = len/252:"
+              f" a {CRYPTO_DAYS}-row year counts as {CRYPTO_DAYS / EQUITY_DAYS:.2f} years)")
+        print(f"    qs.stats.cagr(r, periods=365)      = {float(qs.stats.cagr(r, periods=365)) * 100:.2f}%"
+              f"   calendar CAGR = {c * 100:.2f}%")
+    except ImportError:
+        print("\n  quantstats not installed - reference arithmetic only")
+    try:
+        import empyrical as ep
+        print(f"  LIVE empyrical {ep.__version__}:")
+        print(f"    ep.sharpe_ratio(r)                 = {float(ep.sharpe_ratio(r)):.4f}   (period='daily' -> 252)")
+        print(f"    ep.sharpe_ratio(r, annualization=365) = {float(ep.sharpe_ratio(r, annualization=365)):.4f}")
+    except ImportError:
+        print("  empyrical not installed - reference arithmetic only")
+
+
+# ----------------------------------------------------------------------------------------------
+# 2. funding
+# ----------------------------------------------------------------------------------------------
+def section_funding() -> None:
+    hr("2. PERPETUAL FUNDING - notional x rate x periods, and a real year of it")
+    notional, rate, lev = 100_000.0, OKX_FUNDING_INTEREST, 10
+    per = notional * rate
+    print(f"  payment per interval = notional x rate = {notional:,.0f} x {rate:.4%} = ${per:,.2f}")
+    print(f"  at 8h intervals: ${per * 3:,.2f}/day, ${per * 90:,.2f}/30 days = {rate * 90:.2%} of notional")
+    print(f"  the SAME position at {lev}x leverage: {rate * 90 * lev:.1%} of the margin per 30 days")
+    print("  sign (OKX docs, public/funding-rate): positive = longs pay shorts; negative = shorts pay longs.")
+    print(f"  OKX caps the per-interval rate at +/-{OKX_FUNDING_CAP:.3%}; pinned at the cap for 30 days that"
+          f" is {OKX_FUNDING_CAP * 90:.2%} of notional (a hypothetical, not an observation).")
+
+    f = pd.Series(DERIBIT_FUND_BPS, index=DERIBIT_DAYS) / 1e4
+    px = pd.Series(DERIBIT_INDEX_DAILY, index=DERIBIT_DAYS, dtype=float)
+    p = pd.concat([pd.Series({DERIBIT_DAYS[0] - pd.Timedelta(days=1): DERIBIT_INDEX_PREV}), px])
+    print(f"\n  REAL: Deribit BTC-PERPETUAL, {len(f)} days {DERIBIT_DAYS[0].date()} .. {DERIBIT_DAYS[-1].date()}"
+          f" (hourly interest_1h summed per day)")
+    print(f"    funding paid by a long over the year: {f.sum():.3%} of notional"
+          f"  | index {DERIBIT_INDEX_PREV:,.0f} -> {px.iloc[-1]:,.0f} = {px.iloc[-1] / DERIBIT_INDEX_PREV - 1:+.2%}")
+    print(f"    days with funding > 0: {int((f > 0).sum())} of {len(f)};  max day {f.max() * 1e4:.2f} bps"
+          f" ({f.idxmax().date()});  min day {f.min() * 1e4:.2f} bps ({f.idxmin().date()})")
+    w = 30
+    f30 = f.rolling(w).sum().dropna()
+    m30 = (p / p.shift(w) - 1).reindex(f30.index)
+    both = pd.DataFrame({"fund": f30, "move": m30}).dropna()
+    big = both.fund.abs() > both.move.abs()
+    flip = (both.move > 0) & (both.fund > both.move)
+    k = both.fund.idxmax()
+    print(f"    rolling 30-day windows: {len(both)}")
+    print(f"      largest 30-day funding bill: {both.fund.max():.3%} of notional (window ending {k.date()}),"
+          f" price move in that window {both.move[k]:+.2%}")
+    print(f"      |funding| > |price move| in {int(big.sum())} windows;"
+          f" price up but funding larger (a long's sign flips) in {int(flip.sum())}")
+    print(f"      median |30-day move| {both.move.abs().median():.2%} vs median 30-day funding"
+          f" {both.fund.median():.3%}: in this year funding was a tax, rarely the whole story")
+    last = f.iloc[-30:]
+    print(f"    last 30 days ({last.index[0].date()} .. {last.index[-1].date()}): funding {last.sum():.4%},"
+          f" price {px.iloc[-1] / p.iloc[-31] - 1:+.2%}")
+    print(f"    at {lev}x the year's {f.sum():.2%} of notional is {f.sum() * lev:.1%} of margin; the worst"
+          f" 30-day window costs {both.fund.max() * lev:.1%} of margin")
+
+    o = pd.Series(OKX_FUND_BPS) / 1e4
+    days = len(o) / 3
+    print(f"\n  REAL: OKX BTC-USDT-SWAP (linear), {len(o)} settlements at 8h = {days:.0f} days")
+    print(f"    total {o.sum():.4%} of notional -> {o.sum() / days * 365:.2%} annualised;"
+          f" price {OKX_PRICE_START:,.0f} -> {OKX_PRICE_END:,.0f} = {OKX_PRICE_END / OKX_PRICE_START - 1:+.2%}")
+    print(f"    settlements printed at exactly {OKX_FUNDING_INTEREST:.2%}, the instrument's interestRate field:"
+          f" {int((o.round(8) == OKX_FUNDING_INTEREST).sum())} of {len(o)};  min {o.min():.4%}  max {o.max():.4%}")
+    ill = 0.0005
+    print(f"\n  ILLUSTRATIVE (not observed in either sample): a bull-market path at {ill:.2%} per 8h"
+          f" costs a long {ill * 90:.2%} of notional in 30 days, {ill * 90 * lev:.0%} of margin at {lev}x")
+
+
+# ----------------------------------------------------------------------------------------------
+# 3. basis / cash-and-carry
+# ----------------------------------------------------------------------------------------------
+def section_basis() -> None:
+    hr("3. BASIS - dated future vs index, annualised, and what the short leg needs")
+    print(f"  Deribit marks {AS_OF:%Y-%m-%d %H:%M} UTC, index (estimated_delivery_price) {DERIBIT_INDEX:,.2f}")
+    print(f"  {'contract':<13}{'mark':>12}{'days':>8}{'basis':>9}{'simple/yr':>12}{'compound/yr':>13}")
+    rows = {}
+    for name, (mark, exp) in DERIBIT_FUTURES.items():
+        d = (pd.Timestamp(exp + "T08:00:00Z") - AS_OF).total_seconds() / 86400
+        b = mark / DERIBIT_INDEX - 1
+        simple, comp = b * 365 / d, (1 + b) ** (365 / d) - 1
+        rows[name] = (d, b, simple, comp)
+        print(f"  {name:<13}{mark:>12,.2f}{d:>8.1f}{b:>9.3%}{simple:>12.2%}{comp:>13.2%}")
+    d, b, simple, comp = rows["BTC-25DEC26"]
+    ob = OKX_DEC26_MARK / OKX_USD_INDEX - 1
+    print(f"  cross-check OKX BTC-USD-261225: mark {OKX_DEC26_MARK:,.1f} vs index {OKX_USD_INDEX:,.1f}"
+          f" = {ob:.3%} -> {ob * 365 / d:.2%}/yr simple")
+    fund_yr = pd.Series(DERIBIT_FUND_BPS).sum() / 1e4
+    print(f"  for comparison the perp paid {fund_yr:.2%}/yr of funding over the last year (section 2)")
+
+    notional = 100_000.0
+    print(f"\n  cash-and-carry on ${notional:,.0f}: buy spot, sell BTC-25DEC26, hold {d:.0f} days to expiry")
+    fee = DERIBIT_PERP["taker_commission"]
+    print(f"    locked basis ${notional * b:,.0f} = {b:.3%}; Deribit futures taker fee {fee:.3%} per leg"
+          f" = ${notional * fee:,.0f} to open; spot-leg fees are venue-specific and not counted")
+    print(f"    net of the futures fee: {b - fee:.3%} over {d:.0f} days = {(b - fee) * 365 / d:.2%}/yr")
+    for up in (0.30, 0.50):
+        print(f"    if BTC rallies {up:.0%} before expiry: the short leg is marked {-notional * up:,.0f}"
+              f" and a linear venue wants that in cash NOW; the spot gain is a coin, not cash")
+    mmr = OKX_TIER1["mmr"]
+    for lev in (3, 5):
+        print(f"    short leg at {lev}x isolated (mmr {mmr:.1%}): liquidated at"
+              f" {liq_ratio(lev, mmr, 'short') - 1:+.1%} -> a {liq_ratio(lev, mmr, 'short') - 1:.0%} rally"
+              f" turns the hedge into a naked long spot position")
+    print("    with BTC as collateral on an INVERSE future, a 1x short is a synthetic dollar and cannot be"
+          " liquidated (section 5) - the hedge a coin holder can actually keep on")
+    print("    a perp instead of the dated future: the carry is the funding stream, which is not locked"
+          " and changes sign (section 2), and the position never expires into the basis")
+
+
+# ----------------------------------------------------------------------------------------------
+# 4. liquidation
+# ----------------------------------------------------------------------------------------------
+def section_liquidation() -> None:
+    hr("4. LIQUIDATION - price levels at 3x / 5x / 10x, and why it is not a stop-loss")
+    mmr, imr = OKX_TIER1["mmr"], OKX_TIER1["imr"]
+    cap = OKX_TIER1["max_contracts"] * OKX_TIER1["contract_btc"]
+    print(f"  maintenance margin rate {mmr:.1%} (OKX BTC-USDT-SWAP tier 1: up to {cap:.0f} BTC ="
+          f" ${cap * OKX_USDT_INDEX:,.0f} at index {OKX_USDT_INDEX:,.1f}; initial {imr:.0%}, max leverage"
+          f" {OKX_TIER1['max_lever']}x). Tiers rise with size; fees ignored below.")
+    print(f"  {'lev':>5}{'long liq':>11}{'(simple)':>10}{'bankrupt':>10}{'short liq':>11}{'(simple)':>10}"
+          f"{'bankrupt':>10}{'margin left':>13}")
+    for lev in (3, 5, 10):
+        ll, la = liq_ratio(lev, mmr, "long"), liq_ratio(lev, mmr, "long", exact=False)
+        sl, sa = liq_ratio(lev, mmr, "short"), liq_ratio(lev, mmr, "short", exact=False)
+        left = mmr * lev * ll                       # equity / initial margin at the exact long liq
+        print(f"  {lev:>4}x{ll - 1:>11.2%}{la - 1:>10.2%}{-1 / lev:>10.2%}{sl - 1:>11.2%}{sa - 1:>10.2%}"
+              f"{1 / lev:>10.2%}{left:>13.1%}")
+    print("  'simple' = entry x (1 - 1/L + mmr), maintenance charged on entry value; the other column charges"
+          " it on the value at the liquidation price. The gap is a few bps; funding and fees move it more.")
+
+    lev = 10
+    ll = liq_ratio(lev, mmr, "long")
+    left = mmr * lev * ll
+    liq_fee = DERIBIT_PERP["max_liquidation_commission"]
+    taker = DERIBIT_PERP["taker_commission"]
+    print(f"\n  10x long, liquidated at {ll - 1:.2%}: equity left = {left:.1%} of margin.")
+    print(f"    a liquidation fee of up to {liq_fee:.0%} of position value (Deribit instrument field"
+          f" max_liquidation_commission) is {liq_fee * lev:.0%} of margin -> more than remains -> 100% loss")
+    print(f"    an on-exchange stop at the same price pays the taker fee {taker:.3%} x {lev} ="
+          f" {taker * lev:.2%} of margin and keeps {left - taker * lev:.1%}")
+    print("    and the stop is YOUR price; the liquidation engine's market order is filled wherever the"
+          " book is, and in a cascade the book is thin")
+    print("    OKX docs, positions.liqPx: 'estimated MARK price at which this position would be forcibly"
+          " liquidated ... can change\n    quickly due to funding rate accrual' - the trigger is the mark,"
+          " not the last trade, and funding moves it")
+
+    rate, days = OKX_FUNDING_INTEREST, 30
+    m0 = 1 / lev
+    m1 = m0 - rate * 3 * days                       # funding is debited from the margin
+    ll1 = (1 - m1) / (1 - mmr)
+    print(f"\n  funding walks the liquidation price toward you: {lev}x long paying {rate:.2%} per 8h for"
+          f" {days} days\n    margin {m0:.1%} -> {m1:.1%} of notional; liquidation {ll - 1:.2%} -> {ll1 - 1:.2%}"
+          f" ({(ll1 - ll) * 1e4:.0f} bps closer) with the price unchanged")
+    mm2 = 0.005
+    print(f"  sensitivity: at a {mm2:.1%} maintenance rate the 10x long liquidates at"
+          f" {liq_ratio(lev, mm2, 'long') - 1:.2%} instead of {ll - 1:.2%}")
+
+
+# ----------------------------------------------------------------------------------------------
+# 5. inverse / coin-margined contracts
+# ----------------------------------------------------------------------------------------------
+def section_inverse() -> None:
+    hr("5. INVERSE CONTRACTS - the same move, settled in BTC vs settled in dollars")
+    p0, notional = DERIBIT_INDEX, 100_000.0
+    d = DERIBIT_PERP
+    print(f"  Deribit BTC-PERPETUAL: contract_size {d['contract_size_usd']:.0f} USD, settlement"
+          f" {d['settlement_currency']}, instrument_type '{d['instrument_type']}', max_leverage"
+          f" {d['max_leverage']}x, maker {d['maker_commission']:.3%} / taker {d['taker_commission']:.3%}")
+    o = DERIBIT_BTC_OPTIONS
+    print(f"  Deribit BTC options: {o['count']} listed, every one settled in {o['settlement_currency']},"
+          f" contract_size {o['contract_size_btc']:.0f} BTC, tick {o['tick_size_btc']} BTC,"
+          f" {o['expiries']} expiries at {o['expiry_utc_hour']:02d}:00 UTC")
+    u = DERIBIT_USDC_OPTIONS
+    print(f"  Deribit USDC-settled LINEAR options also exist: {u['total']} listed"
+          f" ({', '.join(f'{k} {v}' for k, v in u.items() if k != 'total')})")
+
+    print(f"\n  ${notional:,.0f} notional opened at {p0:,.2f}, 1x, held through one move:")
+    print(f"  {'move':>7}{'linear USD P&L':>16}{'inverse P&L (BTC)':>19}{'inverse, BTC collateral, USD':>30}"
+          f"{'1x inverse SHORT + BTC':>24}")
+    btc_pnl = {}
+    for mv in (-0.30, -0.20, -0.10, 0.10, 0.20, 0.30):
+        p1 = p0 * (1 + mv)
+        lin = notional * mv
+        inv_btc = notional * (1 / p0 - 1 / p1)                      # long inverse, settled in BTC
+        m_btc = notional / p0                                       # 1x: collateral = notional in BTC
+        inv_usd = (m_btc + inv_btc) * p1 - notional                 # equity change in dollars
+        short_usd = (m_btc + notional * (1 / p1 - 1 / p0)) * p1 - notional
+        short_usd = 0.0 if abs(short_usd) < 1e-6 else short_usd     # kill the float dust, keep the sign test honest
+        btc_pnl[mv] = inv_btc
+        print(f"  {mv:>+7.0%}{lin:>+16,.0f}{inv_btc:>+19.4f}{inv_usd:>+30,.0f}{short_usd:>24,.0f}")
+    print("  long inverse with BTC collateral = 2x the linear dollar P&L: the collateral is itself long BTC.")
+    print(f"  the BTC column is asymmetric: +20% earns {btc_pnl[0.20]:.4f} BTC, -20% costs {-btc_pnl[-0.20]:.4f} BTC"
+          f" on the same notional;")
+    print(f"  gains in BTC are capped at notional/entry = {notional / p0:.4f} BTC, losses in BTC are unbounded"
+          " as the price falls.")
+    print("  1x inverse short + BTC collateral: equity is a constant $100,000 - a synthetic dollar, no"
+          " liquidation price at any maintenance rate below 100%.")
+
+    k = 80_000.0
+    print(f"\n  BTC-settled call, strike {k:,.0f}: payoff = max(S - K, 0) / S in BTC")
+    for s in (90_000, 100_000, 160_000, 1_000_000):
+        pay = max(s - k, 0) / s
+        print(f"    S = {s:>9,}  payoff {pay:.4f} BTC = ${pay * s:>10,.0f}")
+    print("    the dollar payoff is the usual straight line; the BTC payoff approaches 1 BTC and never"
+          " exceeds it, and the premium you paid in BTC is worth more dollars exactly when the call wins")
+
+
+# ----------------------------------------------------------------------------------------------
+# 6. venue access
+# ----------------------------------------------------------------------------------------------
+def section_venue() -> None:
+    hr("6. VENUE ACCESS - HTTP status of a plain GET to each public API from this location, 2026-09-08")
+    for host, code in VENUE_HTTP.items():
+        note = {451: "unavailable for legal reasons (geo-block)", 403: "forbidden (reason not stated)"}.get(code, "ok")
+        print(f"  {code}  {host:<45} {note}")
+    print("  a backtest that assumes it can trade on a venue is also assuming the venue will serve it.")
+
+
+# ----------------------------------------------------------------------------------------------
+# 7. data
+# ----------------------------------------------------------------------------------------------
+def section_data() -> None:
+    hr("7. DATA - there is no official close, and 'daily' means three different things")
+    print("  the close of 2026-09-07 as each venue's 1D candle reports it:")
+    for k, v in CLOSE_0907.items():
+        print(f"    {v:>10,.2f}  {k}")
+    utc = [v for k, v in CLOSE_0907.items() if "00:00-24:00" in k]
+    print(f"    same 00:00 UTC boundary, four USD venues: range {(max(utc) / min(utc) - 1) * 1e4:.1f} bps")
+    ref = CLOSE_0907["Coinbase BTC-USD  (bar 00:00-24:00 UTC)"]
+    for k in CLOSE_0907:
+        if "00:00-24:00" not in k:
+            print(f"    {k.split()[0]:<8} labelled '2026-09-07' is {(CLOSE_0907[k] / ref - 1) * 1e4:+.1f} bps"
+                  f" from Coinbase's - a day-boundary difference, not a venue difference")
+    df = pd.DataFrame({"coinbase": COINBASE60, "kraken": KRAKEN60, "gemini": GEMINI60}, index=CLOSE_DAYS)
+    rng = (df.max(axis=1) / df.min(axis=1) - 1) * 1e4
+    print(f"\n  cross-venue close dispersion, {len(df)} closed UTC days {CLOSE_DAYS[0].date()} .."
+          f" {CLOSE_DAYS[-1].date()}, Coinbase/Kraken/Gemini:")
+    print(f"    median {rng.median():.2f} bps, max {rng.max():.2f} bps ({rng.idxmax().date()})"
+          f" - small, and not zero, and it is USD venues only; USDT pairs add the stablecoin premium")
+
+    tot = sum(OKX_INTERVALS.values())
+    print(f"\n  funding interval is per SYMBOL: OKX, {tot} live swaps on 2026-09-08 ->"
+          f" {', '.join(f'{v} at {k}' for k, v in OKX_INTERVALS.items())}")
+    print("    read nextFundingTime - fundingTime (OKX docs) or instruments-info (Bybit docs); do not assume 8h")
+    print("  ccxt 4.5.78 fetchFundingRateHistory in each exchange's `has`:",
+          ", ".join(f"{k}={'yes' if v else 'NO'}" for k, v in CCXT_FUNDING_HISTORY.items()))
+    print("  funding-history depth served: OKX 3 months (documented), Deribit >= 420 days hourly (pulled),"
+          " Bybit 200 rows per call (documented)")
+
+
+if __name__ == "__main__":
+    pd.set_option("display.width", 120)
+    print("perp_mechanics.py - constants fetched 2026-09-08 from Deribit, OKX, Coinbase, Kraken, Gemini,"
+          "\nBitstamp and the ccxt source tree; synthetic series seed=0. Nothing here touches the network.")
+    section_annualisation()
+    section_funding()
+    section_basis()
+    section_liquidation()
+    section_inverse()
+    section_venue()
+    section_data()
+    print("\nRules: 365 rows a year -> sqrt(365). Funding is charged on notional, so leverage multiplies"
+          "\nit against margin. Liquidation is a forced market close at the maintenance line plus a fee,"
+          "\nnot a stop. An inverse contract's P&L lives in the coin. Venues fail; price them in.")

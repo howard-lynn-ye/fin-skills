@@ -25,3 +25,12 @@
 25. backtest a wheel strategy selling cash secured puts
 26. what happens if the stock pins my strike at expiry
 27. how much size can this strategy take before impact eats it
+28. leveraged ETF decay how bad is it really
+29. where do I get the daily holdings file for an ETF
+30. classify each trade as buyer or seller initiated
+31. reconstruct the limit order book from market by order data
+32. markov switching smoothed vs filtered probabilities in a backtest
+33. liquidation price for a 5x long on a perpetual
+34. build a multi agent trading system with analyst, trader and risk manager roles
+35. how should I stage a research to execution pipeline that uses an LLM
+36. train a reinforcement learning agent to trade crypto

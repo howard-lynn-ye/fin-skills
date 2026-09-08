@@ -25,3 +25,12 @@
 25. am I allowed to redistribute this price data
 26. where do I get historical option chains
 27. compute implementation shortfall on these fills
+28. why is TQQQ down this month when the Nasdaq is flat
+29. what does return of capital mean in this ETF distribution
+30. build dollar bars from tick data
+31. estimate Kyle's lambda from signed order flow
+32. result_manifest says no regime coverage stated, what do I put
+33. how much funding will I pay holding a long BTC perp for a month
+34. cash and carry basis trade between BTC spot and the quarterly future
+35. the ai-hedge-fund repo, how does its pipeline work
+36. what bid ask spread should I assume in my daily backtest

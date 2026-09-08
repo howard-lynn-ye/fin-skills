@@ -15,6 +15,11 @@ import re
 import sys
 from pathlib import Path
 
+# Tooling output carries markers and dashes; on a stock Windows console (cp1252) a bare
+# print of them raises UnicodeEncodeError. Skill scripts stay ASCII; tooling may not.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent.parent
 
 SPEC_FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
@@ -173,6 +178,27 @@ def check_skill(skill_md: Path) -> list[str]:
     if scr_dir.is_dir() and not list(scr_dir.glob("*.py")):
         errs.append(f"{rel}: scripts/ exists but is empty — add files or remove the directory")
 
+    # A skill script must run standalone AND import inside the generated package, where a
+    # bare `import sibling` no longer resolves. The accepted form is the dual-mode idiom:
+    #     try:    from .sibling import x      # inside fin_skills.<ns>
+    #     except ImportError: from sibling import x   # run as a script
+    # so a bare sibling import is flagged only when no relative form for it exists.
+    if scr_dir.is_dir():
+        sibs = {p.stem for p in scr_dir.glob('*.py')}
+        hits = set()
+        for py in sorted(scr_dir.glob('*.py')):
+            src = [l.strip() for l in py.read_text(encoding='utf-8').splitlines()]
+            for sib in sibs - {py.stem}:
+                bare = any(s == f'import {sib}' or s.startswith(f'import {sib} ')
+                           or s.startswith(f'from {sib} import') for s in src)
+                relative = any(s.startswith(f'from .{sib} import') or s == f'from . import {sib}'
+                               for s in src)
+                if bare and not relative:
+                    hits.add((py.name, sib))
+        for name, sib in sorted(hits):
+            errs.append(f'{rel}: {name} imports sibling script {sib} with no relative form - use '
+                        f'try: from .{sib} import ... except ImportError: from {sib} import ...')
+
     return errs
 
 
@@ -227,6 +253,15 @@ def main() -> int:
         elif int(m.group(1)) != len(skills):
             all_errs.append(f"README.md: opening line claims {m.group(1)} skills, "
                             f"there are {len(skills)}")
+
+    # The importable package under fin_skills/ is generated from the skills. A stale copy
+    # would ship old guards under a current version number - same rule as catalog/index.json.
+    import subprocess
+    r = subprocess.run([sys.executable, str(ROOT / 'scripts' / 'build_package.py'), '--check'],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        first = (r.stdout.strip().splitlines() or ['no output'])[0]
+        all_errs.append('fin_skills/ is out of date - run scripts/build_package.py (' + first + ')')
 
     if all_errs:
         print(f"FAIL — {len(all_errs)} problem(s):\n")
