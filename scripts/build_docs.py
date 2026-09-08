@@ -39,7 +39,13 @@ def build() -> None:
         shutil.rmtree(SITE)
     # One page per module, plus the package index. Google-style docstrings; the generated
     # modules carry their own docstrings, and the api/ layer documents the owning skill.
-    r = run(sys.executable, "-m", "pdoc", "fin_skills", "-o", str(SITE), "--docformat", "google",
+    # The top-level __init__ restricts __all__ to the text API, which makes pdoc skip the
+    # namespace subpackages; name them explicitly so every generated module gets a page.
+    pkg = ROOT / "fin_skills"
+    modules = ["fin_skills"] + sorted(
+        f"fin_skills.{d.name}" for d in pkg.iterdir()
+        if d.is_dir() and (d / "__init__.py").exists() and not d.name.startswith("_"))
+    r = run(sys.executable, "-m", "pdoc", *modules, "-o", str(SITE), "--docformat", "google",
             "--no-show-source", check=False)
     if r.returncode != 0:
         sys.exit("pdoc failed:\n" + r.stderr[-2000:])
@@ -89,7 +95,8 @@ def publish() -> None:
     if r.returncode != 0:
         r = run("gh", "api", "--method", "POST", f"repos/{REPO}/pages",
                 "-f", "source[branch]=gh-pages", "-f", "source[path]=/", check=False)
-        print("pages: enabled" if r.returncode == 0 else "pages: could not enable - " + r.stderr[-300:])
+        ok = r.returncode == 0 or "already enabled" in r.stderr   # a gh-pages push auto-enables it
+        print("pages: enabled" if ok else "pages: could not enable - " + r.stderr[-300:])
     else:
         url = json.loads(r.stdout).get("html_url", "?")
         print(f"pages: already enabled at {url}")
