@@ -35,6 +35,63 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
+                    <a class="class" href="#Bundle">Bundle</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Bundle.__init__">Bundle</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.has">has</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.get">get</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.slots">slots</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.with_">with_</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.without">without</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.missing_for">missing_for</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.inputs_for">inputs_for</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.coverage">coverage</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Bundle.check">check</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#Coverage">Coverage</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Coverage.__init__">Coverage</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Coverage.ready">ready</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Coverage.missing">missing</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Coverage.unlocks">unlocks</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Coverage.summary">summary</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
                     <a class="class" href="#Finding">Finding</a>
                             <ul class="memberlist">
                         <li>
@@ -170,6 +227,9 @@
                                 <a class="variable" href="#RunReport.skipped">skipped</a>
                         </li>
                         <li>
+                                <a class="variable" href="#RunReport.rejected">rejected</a>
+                        </li>
+                        <li>
                                 <a class="variable" href="#RunReport.passed">passed</a>
                         </li>
                         <li>
@@ -185,6 +245,51 @@
 
             </li>
             <li>
+                    <a class="class" href="#Slot">Slot</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Slot.__init__">Slot</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Slot.name">name</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Slot.kind">kind</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Slot.doc">doc</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#Suite">Suite</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Suite.__init__">Suite</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Suite.names">names</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Suite.coverage">coverage</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Suite.check">check</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Suite.describe">describe</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="function" href="#check">check</a>
+            </li>
+            <li>
+                    <a class="function" href="#coverage">coverage</a>
+            </li>
+            <li>
                     <a class="function" href="#get">get</a>
             </li>
             <li>
@@ -198,6 +303,12 @@
             </li>
             <li>
                     <a class="function" href="#run_all">run_all</a>
+            </li>
+            <li>
+                    <a class="function" href="#slots">slots</a>
+            </li>
+            <li>
+                    <a class="function" href="#vocabulary">vocabulary</a>
             </li>
     </ul>
 
@@ -219,7 +330,21 @@
 
 <p>The generated modules under fin_skills.<namespace> are the skill scripts, verbatim. This
 layer wraps the CORE function of each one in a Guard with a single calling convention,
-the way PyOD gives every detector one fit / decision_function:</p>
+the way PyOD gives every detector one fit / decision_function. PyOD's uniformity comes
+from a uniform data container (every detector is fit(X)); here the container is a Bundle:</p>
+
+<pre><code>from <a href="">fin_skills.api</a> import Bundle, check
+
+b = Bundle(returns=strategy, turnover=turn, rf=0.05, bars=bars,
+           signal_fn=lambda d: d.close.rolling(20).mean())
+print(b.coverage().summary())   # which guards are ready, what the others still need
+report = check(b)               # every ready guard, one call; skipped ones say why
+print(report.summary())
+</code></pre>
+
+<p>One slot feeds every guard that means the same thing by it (<code>returns</code> reaches cost_curve,
+rf_convention and regime_coverage; <code>close</code> reaches adjustment_check, reconcile_sources and
+warmup_probe). <code><a href="#slots">slots()</a></code> lists the vocabulary. The per-guard form is still there:</p>
 
 <pre><code>from <a href="">fin_skills.api</a> import get, run_all, registry, conventions
 
@@ -249,6 +374,238 @@ The same keyword means the same thing in every guard - <code><a href="#input_nam
                 
                 
             </section>
+                <section id="Bundle">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">Bundle</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle"></a>
+    
+            <div class="docstring"><p>The artefacts of one research run, under the shared vocabulary. Immutable: use
+with_() / without() to derive a new one.</p>
+</div>
+
+
+                            <div id="Bundle.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Bundle</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">**</span><span class="n">slots</span><span class="p">:</span> <span class="n">Any</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Bundle.has" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">has</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.has"></a>
+    
+    
+
+                            </div>
+                            <div id="Bundle.get" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.get"></a>
+    
+    
+
+                            </div>
+                            <div id="Bundle.slots" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">slots</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.slots"></a>
+    
+            <div class="docstring"><p>A copy of the slot mapping.</p>
+</div>
+
+
+                            </div>
+                            <div id="Bundle.with_" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">with_</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">**</span><span class="n">more</span><span class="p">:</span> <span class="n">Any</span></span><span class="return-annotation">) -> <span class="n"><a href="#Bundle">Bundle</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.with_"></a>
+    
+            <div class="docstring"><p>A new Bundle with these slots added or replaced.</p>
+</div>
+
+
+                            </div>
+                            <div id="Bundle.without" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">without</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n"><a href="#Bundle">Bundle</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.without"></a>
+    
+    
+
+                            </div>
+                            <div id="Bundle.missing_for" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">missing_for</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">guard</span><span class="p">:</span> <span class="n"><a href="#Guard">Guard</a></span> <span class="o">|</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.missing_for"></a>
+    
+            <div class="docstring"><p>Required slots this bundle lacks for <code>guard</code>, in slot names.</p>
+</div>
+
+
+                            </div>
+                            <div id="Bundle.inputs_for" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">inputs_for</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">guard</span><span class="p">:</span> <span class="n"><a href="#Guard">Guard</a></span> <span class="o">|</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.inputs_for"></a>
+    
+            <div class="docstring"><p>The keyword arguments guard.run() takes from this bundle (aliases resolved).</p>
+</div>
+
+
+                            </div>
+                            <div id="Bundle.coverage" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">coverage</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">guards</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n"><a href="#Coverage">Coverage</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.coverage"></a>
+    
+    
+
+                            </div>
+                            <div id="Bundle.check" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">check</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">guards</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n"><a href="#RunReport">RunReport</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Bundle.check"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="Coverage">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass</div>
+
+    <span class="def">class</span>
+    <span class="name">Coverage</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Coverage"></a>
+    
+            <div class="docstring"><p>Which guards a bundle can run, and what each of the others still needs.</p>
+</div>
+
+
+                            <div id="Coverage.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Coverage</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">ready</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>, </span><span class="param"><span class="n">missing</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Coverage.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Coverage.ready" class="classattr">
+                                <div class="attr variable">
+            <span class="name">ready</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Coverage.ready"></a>
+    
+    
+
+                            </div>
+                            <div id="Coverage.missing" class="classattr">
+                                <div class="attr variable">
+            <span class="name">missing</span><span class="annotation">: dict[str, list[str]]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Coverage.missing"></a>
+    
+    
+
+                            </div>
+                            <div id="Coverage.unlocks" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">unlocks</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Coverage.unlocks"></a>
+    
+            <div class="docstring"><p>{slot: guards that become ready if ONLY that slot is added} - the next thing
+to put in the bundle.</p>
+</div>
+
+
+                            </div>
+                            <div id="Coverage.summary" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">summary</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Coverage.summary"></a>
+    
+    
+
+                            </div>
+                </section>
                 <section id="Finding">
                     <div class="attr class">
                     <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
@@ -746,7 +1103,7 @@ The same keyword means the same thing in every guard - <code><a href="#input_nam
                             <div id="RunReport.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">RunReport</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#GuardResult">GuardResult</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">skipped</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
+        <span class="name">RunReport</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#GuardResult">GuardResult</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">skipped</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">rejected</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
 
         
     </div>
@@ -762,6 +1119,17 @@ The same keyword means the same thing in every guard - <code><a href="#input_nam
         
     </div>
     <a class="headerlink" href="#RunReport.skipped"></a>
+    
+    
+
+                            </div>
+                            <div id="RunReport.rejected" class="classattr">
+                                <div class="attr variable">
+            <span class="name">rejected</span><span class="annotation">: dict[str, str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#RunReport.rejected"></a>
     
     
 
@@ -812,6 +1180,177 @@ The same keyword means the same thing in every guard - <code><a href="#input_nam
     
 
                             </div>
+                </section>
+                <section id="Slot">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">Slot</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Slot"></a>
+    
+            <div class="docstring"><p>One name in the vocabulary: what kind of value it holds and what it means.</p>
+</div>
+
+
+                            <div id="Slot.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Slot</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">doc</span><span class="p">:</span> <span class="nb">str</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Slot.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Slot.name" class="classattr">
+                                <div class="attr variable">
+            <span class="name">name</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Slot.name"></a>
+    
+    
+
+                            </div>
+                            <div id="Slot.kind" class="classattr">
+                                <div class="attr variable">
+            <span class="name">kind</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Slot.kind"></a>
+    
+    
+
+                            </div>
+                            <div id="Slot.doc" class="classattr">
+                                <div class="attr variable">
+            <span class="name">doc</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Slot.doc"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="Suite">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">Suite</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Suite"></a>
+    
+            <div class="docstring"><p>A named, reusable subset of guards: Suite("assert_causal", "warmup_probe").</p>
+</div>
+
+
+                            <div id="Suite.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Suite</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Suite.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Suite.names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">names</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Suite.names"></a>
+    
+    
+
+                            </div>
+                            <div id="Suite.coverage" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">coverage</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">bundle</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n"><a href="#Bundle">Bundle</a></span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="n"><a href="#Coverage">Coverage</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Suite.coverage"></a>
+    
+    
+
+                            </div>
+                            <div id="Suite.check" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">check</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">bundle</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n"><a href="#Bundle">Bundle</a></span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">*</span>,</span><span class="param">	<span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>,</span><span class="param">	<span class="o">**</span><span class="n">slots</span><span class="p">:</span> <span class="n">Any</span></span><span class="return-annotation">) -> <span class="n"><a href="#RunReport">RunReport</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Suite.check"></a>
+    
+    
+
+                            </div>
+                            <div id="Suite.describe" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">describe</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Suite.describe"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="check">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">check</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">bundle</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n"><a href="#Bundle">Bundle</a></span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">*</span>,</span><span class="param">	<span class="n">guards</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>,</span><span class="param">	<span class="o">**</span><span class="n">slots</span><span class="p">:</span> <span class="n">Any</span></span><span class="return-annotation">) -> <span class="n"><a href="#RunReport">RunReport</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#check"></a>
+    
+            <div class="docstring"><p>Run every guard (or the named subset) whose required slots are present.</p>
+
+<p>Skipped guards are listed in report.skipped with the slots they still need. A guard
+whose inputs are present but rejected (its run() raised TypeError - wrong shape, bad
+value) is recorded in report.rejected with the message instead of aborting the
+run, unless strict=True.</p>
+</div>
+
+
+                </section>
+                <section id="coverage">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">coverage</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">bundle</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n"><a href="#Bundle">Bundle</a></span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>,</span><span class="param">	<span class="n">guards</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n"><a href="#Coverage">Coverage</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#coverage"></a>
+    
+    
+
                 </section>
                 <section id="get">
                     <div class="attr function">
@@ -892,6 +1431,36 @@ thing in every guard (see <code><a href="#input_names">input_names()</a></code>)
                  tolerance="5min", returns=strategy, turnover=turn)
 print(report.summary())          # includes which guards were skipped and why
 </code></pre>
+</div>
+
+
+                </section>
+                <section id="slots">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">slots</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#Slot">Slot</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#slots"></a>
+    
+            <div class="docstring"><p>Every accepted slot name, curated ones first, with what it means and who reads it.</p>
+</div>
+
+
+                </section>
+                <section id="vocabulary">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">vocabulary</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#vocabulary"></a>
+    
+            <div class="docstring"><p>The set of slot names Bundle accepts.</p>
 </div>
 
 

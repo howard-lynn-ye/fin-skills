@@ -89,20 +89,23 @@ roll and <code>pct_change()</code> books a fictitious gain 4-12 times a year. A 
 -14%/yr for a long holder reads as +26%/yr. The series is still the RIGHT one for
 anything level-dependent -- margin, tick value, limit moves, "is it above 100" -- because
 those are the prices that actually printed.</p></li>
-<li><p>DIFFERENCE (Panama / back-adjusted) subtracts the cumulative roll gap from history. Over
-enough rolls the cumulative gap exceeds the price level and HISTORICAL PRICES GO
-NEGATIVE. Not a bug -- an arithmetic certainty. A back-adjusted series is a P&amp;L path
+<li><p>DIFFERENCE (Panama / back-adjusted) shifts all history by the cumulative roll gap so the
+series is continuous at every roll and anchored at today's contract. Under sustained
+backwardation the shift is negative; over enough rolls it exceeds the price level and
+HISTORICAL PRICES GO NEGATIVE. Not a bug -- an arithmetic certainty. A back-adjusted series is a P&amp;L path
 wearing a price's clothes: <code>pct_change()</code> on it divides by a number that crosses zero and
 changes sign, producing infinities and returns whose SIGN IS FLIPPED. <code>log()</code> of it is
 NaN. Every vol estimate, every z-score, every stop-loss in percent is garbage.</p>
 
-<p>SIGN CONVENTION -- read this before comparing to a vendor. Here <code>gap = P_new - P_old</code> is
-subtracted from older prices, so a CONTANGO market drives history negative. Other vendors
-add it, which drives a BACKWARDATED market negative instead (this is why back-adjusted
-continuous crude goes negative in the 1980s at most data shops). Both conventions are in
-production somewhere, both produce a series that is not a price, and neither one's
-<code>pct_change()</code> means anything. Which is exactly why you check against <code><a href="#true_roll_return">true_roll_return</a></code>
-instead of trusting the label on the file.</p></li>
+<p>SIGN CONVENTION -- read this before comparing to a vendor. Back-adjusting anchors the
+NEWEST contract and shifts every older price by the cumulative gap (P_new - P_old, added);
+forward-adjusting anchors the OLDEST and shifts newer prices the other way. Both are
+continuous at every roll; which one goes negative depends on the term structure, not on
+the vendor. An earlier version of this file SUBTRACTED the gap on the back-adjusted side
+and called that a convention. It is not: it leaves a discontinuity of twice the gap at
+every roll, and the test suite caught it on a six-day toy. What remains true is that
+neither adjusted series is a price, and neither one's <code>pct_change()</code> means anything --
+which is why you check against <code><a href="#true_roll_return">true_roll_return</a></code> instead of trusting the label.</p></li>
 <li><p>RATIO (proportional) multiplies history by the cumulative price ratio at each roll. It
 cannot cross zero, so percentage returns survive -- and they are EXACTLY the returns of a
 rolled position (proof: the segment multipliers cancel across the roll). The levels are
@@ -187,9 +190,11 @@ is the day after. Getting this off by one manufactures or destroys one roll gap.
                and any level threshold. WRONG for returns -- it carries a fake jump at
                every roll.
 'difference' : back-adjusted. Walking backward from the newest contract, at each roll
-               gap = P_new(roll) - P_old(roll); the cumulative gap is SUBTRACTED from
-               all older prices. Historical prices can and do go NEGATIVE. Not a price,
-               not a return base -- see the module docstring on sign conventions.
+               gap = P_new(roll) - P_old(roll); the cumulative gap is ADDED to all older
+               prices, so the series is continuous at every roll and anchored at
+               today's contract. Under backwardation the gap is negative and history
+               can and does go NEGATIVE. Not a price, not a return base -- see the
+               module docstring.
 'ratio'      : proportional. Older prices are multiplied by the cumulative
                P_new(roll)/P_old(roll). Sign-preserving; <code>pct_change()</code> reproduces the
                true rolled-position return exactly. Levels are still not tradeable.</p>
