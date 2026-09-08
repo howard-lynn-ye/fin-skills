@@ -46,7 +46,8 @@ def module_source_path(qualname: str) -> Path:
     return PACKAGE_ROOT / ns / f"{mod}.py"
 
 
-def test_file_for(qualname: str) -> Path:
+def expected_test_file(qualname: str) -> Path:
+    """tests/test_<namespace>_<module>.py - the per-module test file each module must have."""
     ns, mod = qualname.split(".")[-2:]
     return TESTS_DIR / f"test_{ns}_{mod}.py"
 

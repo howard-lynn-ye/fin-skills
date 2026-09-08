@@ -15,8 +15,8 @@ import sys
 import pytest
 
 from _helpers import (GENERATED_HEADER, PACKAGE_ROOT, REPO_ROOT, TESTS_DIR,
-                      generated_modules, generated_namespaces, module_source_path,
-                      test_file_for)
+                      expected_test_file, generated_modules, generated_namespaces,
+                      module_source_path)
 
 MODULES = generated_modules()
 NAMESPACES = generated_namespaces()
@@ -46,7 +46,8 @@ def test_module_list_matches_the_skill_scripts():
 
 @pytest.mark.parametrize("qualname", MODULES)
 def test_every_generated_module_has_a_test_file(qualname):
-    assert test_file_for(qualname).is_file(), f"missing {test_file_for(qualname).name}"
+    path = expected_test_file(qualname)
+    assert path.is_file(), f"missing {path.name}"
 
 
 @pytest.mark.parametrize("ns", NAMESPACES)

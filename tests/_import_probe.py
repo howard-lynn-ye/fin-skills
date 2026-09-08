@@ -25,9 +25,21 @@ def _refuse(*_args, **_kwargs):
     raise RuntimeError("network access is disabled while importing fin_skills modules")
 
 
+# The hand-written api/ package (build_package.HAND_WRITTEN_DIRS) is not generated and may be
+# edited by a person while this probe runs; only the generated tree is watched for writes.
+_IGNORED_TOP_LEVEL = {"api", "__pycache__"}
+
+
 def _snapshot(root: Path) -> set[str]:
-    return {p.relative_to(root).as_posix() for p in root.rglob("*")
-            if p.is_file() and "__pycache__" not in p.parts}
+    out = set()
+    for p in root.rglob("*"):
+        if not p.is_file() or "__pycache__" in p.parts:
+            continue
+        rel = p.relative_to(root)
+        if rel.parts[0] in _IGNORED_TOP_LEVEL:
+            continue
+        out.add(rel.as_posix())
+    return out
 
 
 def main() -> int:

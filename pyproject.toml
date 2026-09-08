@@ -44,3 +44,17 @@ include = ["fin_skills*"]
 
 [tool.setuptools.package-data]
 fin_skills = ["_skills/**/*.md", "_skills/*.json"]
+
+[tool.pytest.ini_options]
+# The suite lives in tests/. Tests marked `slow` (the long demo paths) are deselected by
+# default; run them with:   python -m pytest -q -m slow
+# python_files is restricted to test_*.py so pytest's assertion-rewriting import hook does not
+# claim the generated module fin_skills/core/fold_leak_test.py (its name matches the default
+# *_test.py pattern), which would break running that module's __main__ demo through runpy.
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -m 'not slow'"
+markers = [
+    "slow: long-running demo paths - regime_lookahead (~40-75 s), purge_effect main (~30 s), microstructure_measures (~10-20 s), the event_study and spa_test replication demos and the leveraged_reset Monte Carlo. Deselected by default via addopts; run with -m slow",
+]
