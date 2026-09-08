@@ -24,12 +24,12 @@ rejected.
 ## Before you open a PR
 
 ```bash
-python scripts/validate.py      # spec compliance, cross-links, README count
-python scripts/build_index.py   # regenerates catalog/index.json and the README table
+python scripts/build_index.py   # 1. regenerates catalog/index.json and the README table
+python scripts/build_package.py # 2. regenerates fin_skills/ (it copies index.json, so run AFTER build_index)
+python scripts/validate.py      # 3. spec compliance, cross-links, README count, package in sync
 python scripts/eval_triggers.py # lexical smoke test for skill selection
 python scripts/check_drift.py   # re-checks version claims against PyPI (needs network)
 python scripts/check_scripts.py # runs every skill script on the DEFAULT console encoding
-python scripts/build_package.py # regenerates the importable fin_skills/ package (validate.py checks it)
 ```
 
 `validate.py` must print OK. `build_index.py` must leave the tree clean — if `git diff` shows

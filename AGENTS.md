@@ -20,8 +20,9 @@ Two tiers:
 ## Before you commit
 
 ```bash
-python scripts/validate.py      # must print OK
-python scripts/build_index.py   # must leave the tree clean
+python scripts/build_index.py   # 1. regenerate the catalog and README table
+python scripts/build_package.py # 2. regenerate fin_skills/ - AFTER build_index, it copies index.json
+python scripts/validate.py      # 3. must print OK (it runs build_package.py --check)
 ```
 
 `catalog/index.json`, the README skill table and everything under `fin_skills/` except `__init__.py` are
