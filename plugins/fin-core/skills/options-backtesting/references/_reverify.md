@@ -22,7 +22,7 @@ outage:
 
 | # | Fetch | Why it matters | Open conflict |
 |---|---|---|---|
-| 1 | `optopsy`'s `LICENSE` file on GitHub | AGPL's network clause reaches SaaS deployment — this decides whether the package is usable in a hosted product | 🚨 **Two sources disagree**: the package README says AGPL-3.0-or-later, one search result said GPL-3.0. The README is the stronger source but the file itself settles it |
+| ~~1~~ | ~~`optopsy`'s `LICENSE` file on GitHub~~ | **CLOSED 2026-09-05** — fetched `raw.githubusercontent.com/goldspanlabs/optopsy/main/LICENSE`: *GNU AFFERO GENERAL PUBLIC LICENSE Version 3*. AGPL confirmed; the GPL-3.0 search result was wrong | Also confirmed while here: `py-vollib` 1.0.12's wheel is 1,484 bytes, summary "Deprecated transition package for vollib" |
 | 2 | OCC Rules PDF, **Rule 805(d)** and By-Laws **Article VI §11 / §11A** | The exercise-by-exception threshold and the contract-adjustment rules are the two things a backtest hard-codes | 🚨 **Pin a hashed copy.** The OCC Rules PDF is live-updated and returned two different Last-Modified dates for one URL, so an unhashed citation cannot be reproduced |
 | 3 | `thetadata.net/pricing` | Cost decides whether it is an option at all | 🚨 **Irreconcilable**: $25/$60/$200 in one source against $80/$160 in another |
 | 4 | `massive.com/pricing?product=options` | Polygon renamed to Massive 2025-10-30; third-party pages describing its tiers contradict the vendor | Entry price, history depth, and whether options appear on the free tier are all disputed |

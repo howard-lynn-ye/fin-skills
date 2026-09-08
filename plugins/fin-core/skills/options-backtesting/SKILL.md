@@ -1,7 +1,7 @@
 ---
 name: options-backtesting
 description: >-
-  Options positions end in ways you do not control - live or in a backtest. assignment, expiry
+  Options positions end in ways you do not control - live or in a backtest: assignment, expiry
   settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that
   decides whether the position fits. TRIGGER - backtest a covered call, cash-secured put, wheel,
   credit spread, iron condor, butterfly, calendar, diagonal, straddle, strangle, PMCC; short
@@ -57,8 +57,10 @@ else is a pricer, a payoff plotter, or a live-broker SDK.
 
 🚨 **`optopsy` is AGPL-3.0-or-later, not MIT.** The widely-cited `michaelchu/optopsy` was MIT and has
 been dead since 2021-06-04; the live project is `goldspanlabs/optopsy` and its own README states
-AGPL-3.0. **AGPL's network clause reaches SaaS use** — this is load-bearing if you deploy. ⚠️ One
-search source said GPL-3.0 instead; re-read the `LICENSE` file before relying on either.
+AGPL-3.0. **AGPL's network clause reaches SaaS use** — this is load-bearing if you deploy. ✅ Settled
+by the `LICENSE` file on `main` itself (fetched 2026-09-05): *GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3*. A search result claiming GPL-3.0 was wrong. PyPI's `license` field is `None` with no
+classifier, so the package metadata will not tell you this — only the file does.
 
 ✅ A keyword scan of `optopsy`'s own README: `margin` **0 hits**, `exercise` **0**, `settle` **0**,
 `American`/`European` **0**, `multiplier` **0**. `assignment` appears once, in a disclaimer. Its data
@@ -71,9 +73,9 @@ legs otherwise**. ⚠️ Secondhand from QuantConnect's docs. Its `DefaultOption
 hourly, considering American exercise within 4 days of expiry.
 
 🔴 **`pip install py_vollib` is now wrong.** ✅ `py-vollib` 1.0.12 is an **empty shim** — its own
-description says it "intentionally contains no library code". Use **`vollib`**. And
-`py_vollib_vectorized` (last released **2021-02-28**) works by monkey-patching the now-deprecated
-namespace. See `../../fin-libraries/skills/lib-vollib/SKILL.md`.
+description says it "intentionally contains no library code" — ✅ the wheel is **1,484 bytes**. Use
+**`vollib`**. And `py_vollib_vectorized` (last released **2021-02-28**) works by monkey-patching
+the now-deprecated namespace. See `../../fin-libraries/skills/lib-vollib/SKILL.md`.
 
 🔴 **`quantconnect-lean` on PyPI is a squatted placeholder** (v0.1.0, 2020, "reserved for future
 use"). The real CLI is `lean`. **`optionsuite` is not on PyPI at all** (404) — it is GitHub-only.

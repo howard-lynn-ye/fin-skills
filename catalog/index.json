@@ -284,13 +284,13 @@
       "name": "options-backtesting",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/options-backtesting/SKILL.md",
-      "description": "Options positions end in ways you do not control - live or in a backtest. assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that decides whether the position fits. TRIGGER - backtest a covered call, cash-secured put, wheel, credit spread, iron condor, butterfly, calendar, diagonal, straddle, strangle, PMCC; short option assigned, early exercise, exercise by exception, expires in the money, pin risk, pinned at the strike; historical option chain, options history, chain panel, OSI symbol, adjusted option, non-standard deliverable; 0DTE, weeklies, third Friday, AM vs PM settlement, cash settled index options; option margin, naked margin requirement, portfolio margin, SPAN, buying power reduction; \"my options backtest returns look too good\"; optopsy, optionlab, an options backtesting library. SKIP for pricing a single option or fitting a vol surface (derivatives-pricing) and for futures rolls (futures-continuous-contracts).",
-      "summary": "Options positions end in ways you do not control - live or in a backtest.",
+      "description": "Options positions end in ways you do not control - live or in a backtest: assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin that decides whether the position fits. TRIGGER - backtest a covered call, cash-secured put, wheel, credit spread, iron condor, butterfly, calendar, diagonal, straddle, strangle, PMCC; short option assigned, early exercise, exercise by exception, expires in the money, pin risk, pinned at the strike; historical option chain, options history, chain panel, OSI symbol, adjusted option, non-standard deliverable; 0DTE, weeklies, third Friday, AM vs PM settlement, cash settled index options; option margin, naked margin requirement, portfolio margin, SPAN, buying power reduction; \"my options backtest returns look too good\"; optopsy, optionlab, an options backtesting library. SKIP for pricing a single option or fitting a vol surface (derivatives-pricing) and for futures rolls (futures-continuous-contracts).",
+      "summary": "Options positions end in ways you do not control - live or in a backtest: assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin th",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 19943,
-      "approx_body_tokens": 4985,
+      "body_chars": 20164,
+      "approx_body_tokens": 5041,
       "references": [
         "_reverify.md"
       ],
