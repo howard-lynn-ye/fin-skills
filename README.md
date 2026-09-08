@@ -62,6 +62,26 @@ from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 from fin_skills.core.option_lifecycle import crr                # a CRR tree, no QuantLib
 ```
 
+The same checks behind one interface — 28 guards that return a `GuardResult` instead of raising, and
+16 typed conventions, the way PyOD puts its detectors behind one API:
+
+```python
+from fin_skills.api import get, run_all, conventions as c
+
+r = get("assert_causal").run(fn=lambda d: d.close.shift(-1), df=bars, k=250)
+r.passed, r.summary()          # False, "FAIL: LOOK-AHEAD ... cells before index 250 changed"
+
+report = run_all(left=signals, right=quotes, on="time", by="symbol", tolerance="5min",
+                 returns=strategy_returns, turnover=1.5, pair=["EURUSD", "USDJPY"])
+print(report.summary())        # which guards ran, passed, failed, and which were skipped for missing inputs
+
+c.annualization_factor("crypto")            # 365
+c.liquidation_price(entry=100, leverage=10, mmr=0.004, side="long")
+c.pip_value("USDJPY", notional=100_000, price=150.25).value_usd
+```
+
+`python -m pytest -q` runs the suite (slow tests are marked and deselected by default).
+
 API reference, one page per module: **https://howard-lynn-ye.github.io/fin-skills/** (built by
 `scripts/build_docs.py` with pdoc and published to the `gh-pages` branch).
 
