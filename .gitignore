@@ -14,3 +14,6 @@ yf.json
 build/
 dist/
 site/
+
+# agent worktrees created by the Claude Code Agent tool (isolation: worktree)
+.claude/worktrees/
