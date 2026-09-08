@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 16.0.0"/>
-    <title>fin_skills API documentation</title>
+    <title>fin_skills.futures_fx.roll_schedule API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
     <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
@@ -16,7 +16,12 @@
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
         <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
-        <div>
+        <div>            <a class="pdoc-button module-list-button" href="../futures_fx.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.futures_fx</a>
+
 
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
@@ -26,22 +31,22 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="function" href="#catalog">catalog</a>
+                    <a class="variable" href="#RULES">RULES</a>
             </li>
             <li>
-                    <a class="function" href="#load">load</a>
+                    <a class="variable" href="#DEFAULT_OFFSET">DEFAULT_OFFSET</a>
             </li>
             <li>
-                    <a class="function" href="#references">references</a>
+                    <a class="function" href="#roll_dates">roll_dates</a>
             </li>
             <li>
-                    <a class="function" href="#find">find</a>
+                    <a class="function" href="#roll_costs">roll_costs</a>
             </li>
             <li>
-                    <a class="function" href="#names">names</a>
+                    <a class="function" href="#compare_rules">compare_rules</a>
             </li>
             <li>
-                    <a class="variable" href="#__version__">__version__</a>
+                    <a class="function" href="#render">render</a>
             </li>
     </ul>
 
@@ -57,120 +62,165 @@
     <main class="pdoc">
             <section class="module-info">
                     <h1 class="modulename">
-fin_skills    </h1>
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../futures_fx.html">futures_fx</a><wbr>.roll_schedule    </h1>
 
-                        <div class="docstring"><p>fin-skills - a source-verified knowledge base of the Python quant-finance ecosystem, importable.</p>
+                        <div class="docstring"><p>Generate futures roll dates by rule -- and expose roll-rule choice as an uncounted trial.</p>
 
-<h6 id="two-ways-in">Two ways in:</h6>
+<p>WHY this exists: "roll 5 days before expiry" looks like plumbing. It is a free parameter,
+and it is the one nobody logs. A futures backtest is not one backtest; it is one backtest
+PER ROLL RULE, and there are easily a dozen defensible rules (calendar N days out for
+N in 1..15, open-interest crossover, volume crossover, first-notice-day, last-trade-day,
+optimised roll yield). Each one produces a different price series, therefore a different
+equity curve, therefore a different Sharpe.</p>
+
+<p>The failure this catches: you run the backtest with the vendor's default roll, see Sharpe
+0.3, try the open-interest roll because "it's more realistic", see Sharpe 0.9, and ship the
+second one. You have just run a two-trial search and reported the maximum as if it were the
+only thing you tried. The Deflated Sharpe Ratio you did not compute would have told you 0.9
+out of 4 rule variants on 8 years of data is not significant. Nothing in the code path
+warns you, because switching rules feels like fixing a data problem rather than fitting.</p>
+
+<p>WHY roll timing moves the number at all -- it is not noise:</p>
+
+<ul>
+<li>Term structure slope is seasonal in most physical commodities (gas, power, grains,
+and anything with a storage cycle). Rolling at a fixed distance from expiry samples
+the SAME PHASE of that cycle every quarter, so the difference compounds instead of
+averaging out over 30 rolls.</li>
+<li>The front contract is pushed around in the days before expiry by everyone else rolling
+(the "index roll" window). Roll into that and you buy the deferred rich and sell the
+front cheap, every single time.</li>
+<li>Rolling early means trading the deferred contract while it is still thin, so the
+slippage per roll is higher even though the number of rolls is identical.</li>
+</ul>
+
+<p>So: pick the rule ON EX-ANTE GROUNDS (liquidity at the moment you trade, delivery risk,
+your fund's actual operational calendar), write it down BEFORE you look at the equity
+curve, and log every rule you evaluated to the trial ledger:
+    ../../../fin-core/skills/backtest-validation/scripts/trial_ledger.py</p>
+
+<h6 id="usage">Usage:</h6>
 
 <blockquote>
-  <p>import fin_skills
-  <a href="#catalog">fin_skills.catalog()</a>                          # every skill: name, plugin, description
-  <a href="#load">fin_skills.load</a>("backtest-validation")        # that skill's SKILL.md text
-  <a href="#references">fin_skills.references</a>("options-backtesting")  # {filename: text} for its references/
-  <a href="#find">fin_skills.find</a>("survivorship")               # skills whose description mentions it</p>
-  
-  <p>from <a href="fin_skills/core/safe_asof.html">fin_skills.core.safe_asof</a> import safe_asof             # the executable guards
-  from <a href="fin_skills/core/assert_causal.html">fin_skills.core.assert_causal</a> import assert_causal
-  from <a href="fin_skills/futures_fx/fx_conventions.html">fin_skills.futures_fx.fx_conventions</a> import pip_size, carry_return</p>
+  <p>from roll_schedule import roll_dates, compare_rules, render
+  rolls = roll_dates(px, "open_interest", expiries, open_interest=oi)
+  print(render(compare_rules(px, ("calendar", "open_interest", "volume", "first_notice"),
+                             expiries, open_interest=oi, volume=vol,
+                             first_notice=fnd)))</p>
 </blockquote>
-
-<p>The <code>fin_skills.&lt;namespace&gt;</code> modules are generated by scripts/build_package.py from the
-skill scripts under plugins/; the skills remain the source of truth. Namespaces follow the
-plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
-
-<p>Every claim in the skill texts carries a verification date and a marker - see the README.</p>
 </div>
 
                 
                 
                 
             </section>
-                <section id="catalog">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">catalog</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#catalog"></a>
-    
-            <div class="docstring"><p>One entry per skill: name, plugin, description, and what it ships (from catalog/index.json).</p>
-</div>
-
-
-                </section>
-                <section id="load">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">load</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#load"></a>
-    
-            <div class="docstring"><p>The SKILL.md text for one skill, e.g. <a href="#load">fin_skills.load</a>("backtest-validation").</p>
-</div>
-
-
-                </section>
-                <section id="references">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">references</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#references"></a>
-    
-            <div class="docstring"><p>{filename: text} for a skill's references/ directory (empty dict if it has none).</p>
-</div>
-
-
-                </section>
-                <section id="find">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">find</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">terms</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#find"></a>
-    
-            <div class="docstring"><p>Skill names whose SKILL.md mentions every term (case-insensitive).</p>
-</div>
-
-
-                </section>
-                <section id="names">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">names</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#names"></a>
-    
-            <div class="docstring"><p>All skill names, sorted.</p>
-</div>
-
-
-                </section>
-                <section id="__version__">
+                <section id="RULES">
                     <div class="attr variable">
-            <span class="name">__version__</span>        =
-<span class="default_value">&#39;0.1.0&#39;</span>
+            <span class="name">RULES</span>        =
+<span class="default_value">(&#39;calendar&#39;, &#39;open_interest&#39;, &#39;volume&#39;, &#39;first_notice&#39;)</span>
 
         
     </div>
-    <a class="headerlink" href="#__version__"></a>
+    <a class="headerlink" href="#RULES"></a>
     
     
+
+                </section>
+                <section id="DEFAULT_OFFSET">
+                    <div class="attr variable">
+            <span class="name">DEFAULT_OFFSET</span>        =
+<span class="default_value">{&#39;calendar&#39;: 5, &#39;open_interest&#39;: 0, &#39;volume&#39;: 0, &#39;first_notice&#39;: 2}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DEFAULT_OFFSET"></a>
+    
+    
+
+                </section>
+                <section id="roll_dates">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">roll_dates</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">contracts</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">rule</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">expiries</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>,</span><span class="param">	<span class="n">open_interest</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">volume</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">first_notice</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">search_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#roll_dates"></a>
+    
+            <div class="docstring"><p>One roll date per adjacent contract pair, by <code>rule</code>.</p>
+
+<p>'calendar'      : <code>offset</code> business days before the front contract's expiry. Simple,
+                  auditable, and blind to whether anyone is still trading that contract.
+'open_interest' : first day the DEFERRED contract's open interest sticks above the
+                  front's. Closest to where real money is; rolls late, into a front
+                  that other people are still leaving.
+'volume'        : same test on volume. Volume migrates BEFORE open interest, so this
+                  rolls earlier -- typically into a thinner deferred book.
+'first_notice'  : <code>offset</code> business days before first notice day. Mandatory for
+                  physically-delivered contracts unless you own a tank farm. Rolls
+                  earliest of all, which changes the sampled term structure the most.</p>
+
+<p><code>contracts</code> columns must be ordered near->far by expiry (same layout as
+<code>continuous_contract.stitch</code>). Returns exactly <code>n_contracts - 1</code> strictly increasing
+dates, each one a real trading day on which BOTH legs printed.</p>
+</div>
+
+
+                </section>
+                <section id="roll_costs">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">roll_costs</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">contracts</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">rolls</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span>,</span><span class="param">	<span class="n">open_interest</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">base_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span>,</span><span class="param">	<span class="n">illiquidity_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#roll_costs"></a>
+    
+            <div class="docstring"><p>Round-trip cost of each roll, in bps of notional, indexed by roll date.</p>
+
+<p>A roll is TWO trades (sell the front, buy the deferred), so the floor is 2 x base_bps.
+On top of that, rolling before the deferred contract has taken over open interest means
+lifting a thin book: the penalty scales with the front's remaining share of total OI.
+This is why "roll earlier to dodge the index-roll squeeze" is not free.</p>
+</div>
+
+
+                </section>
+                <section id="compare_rules">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">compare_rules</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">contracts</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">rules</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'calendar'</span><span class="p">,</span> <span class="s1">'open_interest'</span><span class="p">,</span> <span class="s1">'volume'</span><span class="p">,</span> <span class="s1">'first_notice'</span><span class="p">)</span>,</span><span class="param">	<span class="n">expiries</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">open_interest</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">volume</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">first_notice</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">base_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span>,</span><span class="param">	<span class="n">periods_per_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">252</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#compare_rules"></a>
+    
+            <div class="docstring"><p>One row per roll rule: annualised return, Sharpe and total roll cost.</p>
+
+<p>Returns come from <code>continuous_contract.true_roll_return</code>, so the comparison is of the
+RULES and nothing else -- no stitching method is involved and no adjustment artefact
+can leak in. Read the Sharpe column as a list of trials, because that is what it is.</p>
+</div>
+
+
+                </section>
+                <section id="render">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">render</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">table</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'ROLL RULE COMPARISON'</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#render"></a>
+    
+            <div class="docstring"><p>Fixed-width report. The spread in the Sharpe column IS the researcher degree of
+freedom -- print it next to the backtest, not instead of it.</p>
+</div>
+
 
                 </section>
     </main>
@@ -226,7 +276,7 @@ plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
                 script.async = true;
                 script.onload = () => resolve(window.pdocSearch);
                 script.onerror = (e) => reject(e);
-                script.src = "search.js";
+                script.src = "../../search.js";
                 document.getElementsByTagName("head")[0].appendChild(script);
             });
         } catch (e) {
@@ -268,7 +318,7 @@ plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
             }
             for (let result of results.slice(0, 10)) {
                 let doc = result.doc;
-                let url = `${doc.modulename.replaceAll(".", "/")}.html`;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
                 if (doc.qualname) {
                     url += `#${doc.qualname}`;
                 }

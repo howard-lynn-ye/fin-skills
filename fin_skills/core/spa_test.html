@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 16.0.0"/>
-    <title>fin_skills API documentation</title>
+    <title>fin_skills.core.spa_test API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
     <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
@@ -16,7 +16,12 @@
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
         <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
-        <div>
+        <div>            <a class="pdoc-button module-list-button" href="../core.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.core</a>
+
 
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
@@ -26,22 +31,118 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="function" href="#catalog">catalog</a>
+                    <a class="variable" href="#ARCH_HINT">ARCH_HINT</a>
             </li>
             <li>
-                    <a class="function" href="#load">load</a>
+                    <a class="class" href="#ArchMissing">ArchMissing</a>
+                            <ul class="memberlist">
+                </ul>
+
             </li>
             <li>
-                    <a class="function" href="#references">references</a>
+                    <a class="function" href="#choose_block_size">choose_block_size</a>
             </li>
             <li>
-                    <a class="function" href="#find">find</a>
+                    <a class="class" href="#SPAResult">SPAResult</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SPAResult.__init__">SPAResult</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.pvalue">pvalue</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.pvalues">pvalues</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.best_model">best_model</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.better_models">better_models</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.mean_excess">mean_excess</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.block_size">block_size</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.block_source">block_source</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.reps">reps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.n_obs">n_obs</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.model_names">model_names</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.source">source</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SPAResult.notes">notes</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SPAResult.report">report</a>
+                        </li>
+                </ul>
+
             </li>
             <li>
-                    <a class="function" href="#names">names</a>
+                    <a class="class" href="#MCSResult">MCSResult</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#MCSResult.__init__">MCSResult</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.included">included</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.excluded">excluded</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.pvalues">pvalues</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.size">size</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.block_size">block_size</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.block_source">block_source</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.reps">reps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.n_obs">n_obs</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MCSResult.source">source</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#MCSResult.report">report</a>
+                        </li>
+                </ul>
+
             </li>
             <li>
-                    <a class="variable" href="#__version__">__version__</a>
+                    <a class="function" href="#spa_test">spa_test</a>
+            </li>
+            <li>
+                    <a class="function" href="#stepm_test">stepm_test</a>
+            </li>
+            <li>
+                    <a class="function" href="#mcs_test">mcs_test</a>
+            </li>
+            <li>
+                    <a class="function" href="#spa_test_selfcontained">spa_test_selfcontained</a>
+            </li>
+            <li>
+                    <a class="function" href="#naive_best_of_n_pvalue">naive_best_of_n_pvalue</a>
             </li>
     </ul>
 
@@ -57,120 +158,523 @@
     <main class="pdoc">
             <section class="module-info">
                     <h1 class="modulename">
-fin_skills    </h1>
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../core.html">core</a><wbr>.spa_test    </h1>
 
-                        <div class="docstring"><p>fin-skills - a source-verified knowledge base of the Python quant-finance ecosystem, importable.</p>
+                        <div class="docstring"><p>Guarded wrappers for <code>arch.bootstrap</code>'s data-snooping tests -- SPA, StepM, MCS.</p>
 
-<h6 id="two-ways-in">Two ways in:</h6>
+<p>🚨 THE TRAP THIS FILE EXISTS TO CLOSE:
+    <code>arch.bootstrap</code>'s SPA, RealityCheck, StepM and MCS all take <strong>LOSSES</strong>, where LOWER
+    IS BETTER. Verified against <code>arch/bootstrap/multiple_comparison.py</code>.</p>
+
+<pre><code>Passing RETURNS does not raise. It does not warn. It INVERTS the test: your worst
+strategy is identified as the best, `better_models` names the ones you should throw
+away, and the p-value you quote answers the opposite hypothesis. `__main__` measures
+this below -- fed returns instead of losses, the procedure picks the single worst of
+ten strategies and reports it as the winner.
+
+losses = -returns          # for a return series, that is the entire conversion
+</code></pre>
+
+<p>So every function here takes RETURNS in the natural orientation -- higher is better -- and
+negates internally, exactly once, at a single line you can read. Anything already
+loss-shaped (squared forecast error, negative log-likelihood, absolute error) must NOT go
+through these wrappers; hand it to <code>arch</code> directly.</p>
+
+<p>Two smaller traps, also closed here:</p>
+
+<ul>
+<li><code>SPA.pvalues</code> returns THREE p-values -- <code>lower</code>, <code>consistent</code>, <code>upper</code>. <code>lower</code> is
+liberal and <code>upper</code> conservative; <strong><code>consistent</code> is the one to report</strong>. Indexing
+<code>.pvalues[0]</code> or reading whichever is smallest is silent p-hacking.</li>
+<li><code>block_size</code> defaults to <code>int(sqrt(T))</code>. Preserving serial dependence is the entire
+reason for a block bootstrap, so it is set from <code>optimal_block_length</code> here whenever
+the caller does not specify one.</li>
+</ul>
+
+<p><code>import arch</code> is LAZY -- inside the functions -- so this module imports, and its demo
+runs, on a machine without arch. If arch is missing you get a message naming the package
+rather than an ImportError from three frames down.</p>
+
+<h6 id="usage">Usage:</h6>
 
 <blockquote>
-  <p>import fin_skills
-  <a href="#catalog">fin_skills.catalog()</a>                          # every skill: name, plugin, description
-  <a href="#load">fin_skills.load</a>("backtest-validation")        # that skill's SKILL.md text
-  <a href="#references">fin_skills.references</a>("options-backtesting")  # {filename: text} for its references/
-  <a href="#find">fin_skills.find</a>("survivorship")               # skills whose description mentions it</p>
+  <p>from spa_test import spa_test, stepm_test, mcs_test</p>
   
-  <p>from <a href="fin_skills/core/safe_asof.html">fin_skills.core.safe_asof</a> import safe_asof             # the executable guards
-  from <a href="fin_skills/core/assert_causal.html">fin_skills.core.assert_causal</a> import assert_causal
-  from <a href="fin_skills/futures_fx/fx_conventions.html">fin_skills.futures_fx.fx_conventions</a> import pip_size, carry_return</p>
+  <p>res = spa_test(bench_returns, model_returns_df)   # RETURNS, not losses
+  print(res.report())
+  res.pvalue                       # the <code>consistent</code> p-value</p>
+  
+  <p>mcs = mcs_test(model_returns_df, size=0.10)
+  mcs.included                     # models indistinguishable from the best</p>
 </blockquote>
 
-<p>The <code>fin_skills.&lt;namespace&gt;</code> modules are generated by scripts/build_package.py from the
-skill scripts under plugins/; the skills remain the source of truth. Namespaces follow the
-plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
-
-<p>Every claim in the skill texts carries a verification date and a marker - see the README.</p>
+<p>WHICH TEST ANSWERS WHICH QUESTION (see ../references/significance-tests.md):
+    is the BEST of N better than a benchmark, correcting for the search?  -> SPA
+    WHICH ones beat the benchmark, under family-wise error control?       -> StepM
+    which models are indistinguishable from the best? (no benchmark)      -> MCS
+All three need the per-period series of every candidate you tried, including the ones you
+abandoned. If you kept only the winner's equity curve, none of them are available to you
+and DSR is the fallback.</p>
 </div>
 
                 
                 
                 
             </section>
-                <section id="catalog">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">catalog</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#catalog"></a>
-    
-            <div class="docstring"><p>One entry per skill: name, plugin, description, and what it ships (from catalog/index.json).</p>
-</div>
-
-
-                </section>
-                <section id="load">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">load</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#load"></a>
-    
-            <div class="docstring"><p>The SKILL.md text for one skill, e.g. <a href="#load">fin_skills.load</a>("backtest-validation").</p>
-</div>
-
-
-                </section>
-                <section id="references">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">references</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#references"></a>
-    
-            <div class="docstring"><p>{filename: text} for a skill's references/ directory (empty dict if it has none).</p>
-</div>
-
-
-                </section>
-                <section id="find">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">find</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">terms</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#find"></a>
-    
-            <div class="docstring"><p>Skill names whose SKILL.md mentions every term (case-insensitive).</p>
-</div>
-
-
-                </section>
-                <section id="names">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">names</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#names"></a>
-    
-            <div class="docstring"><p>All skill names, sorted.</p>
-</div>
-
-
-                </section>
-                <section id="__version__">
+                <section id="ARCH_HINT">
                     <div class="attr variable">
-            <span class="name">__version__</span>        =
-<span class="default_value">&#39;0.1.0&#39;</span>
+            <span class="name">ARCH_HINT</span>        =
+<input id="ARCH_HINT-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="ARCH_HINT-view-value"></label><span class="default_value">&#34;`arch` is not installed. SPA / StepM / MCS live in `arch.bootstrap`:\n    pip install arch\narch 8.0.0, by Kevin Sheppard (Oxford). Licence NCSA -- permissive and BSD-like, but\nnot one of the usual three, so flag it in a licence audit (GitHub reports\nNOASSERTION). Nothing else on PyPI implements Hansen&#39;s SPA correctly.&#34;</span>
 
         
     </div>
-    <a class="headerlink" href="#__version__"></a>
+    <a class="headerlink" href="#ARCH_HINT"></a>
     
     
+
+                </section>
+                <section id="ArchMissing">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">ArchMissing</span><wbr>(<span class="base">builtins.ImportError</span>):
+
+        
+    </div>
+    <a class="headerlink" href="#ArchMissing"></a>
+    
+            <div class="docstring"><p>Raised when a wrapper needs <code>arch</code> and it is not installed.</p>
+</div>
+
+
+                </section>
+                <section id="choose_block_size">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">choose_block_size</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">losses</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>, </span><span class="param"><span class="n">override</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#choose_block_size"></a>
+    
+            <div class="docstring"><p>Stationary-bootstrap block length, from <code>optimal_block_length</code> where available.</p>
+
+<p>Returns (block_size, provenance). Falls back to T**(1/3) -- the Politis-Romano rate --
+rather than arch's <code>sqrt(T)</code> default if <code>optimal_block_length</code> cannot be reached, and
+says so in the provenance string so the choice is never invisible.</p>
+</div>
+
+
+                </section>
+                <section id="SPAResult">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass</div>
+
+    <span class="def">class</span>
+    <span class="name">SPAResult</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult"></a>
+    
+    
+
+                            <div id="SPAResult.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SPAResult</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">pvalue</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">pvalues</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>,</span><span class="param">	<span class="n">best_model</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">better_models</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>,</span><span class="param">	<span class="n">mean_excess</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">block_size</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">block_source</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">reps</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">n_obs</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">model_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>,</span><span class="param">	<span class="n">source</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">notes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.pvalue" class="classattr">
+                                <div class="attr variable">
+            <span class="name">pvalue</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.pvalue"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.pvalues" class="classattr">
+                                <div class="attr variable">
+            <span class="name">pvalues</span><span class="annotation">: dict[str, float]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.pvalues"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.best_model" class="classattr">
+                                <div class="attr variable">
+            <span class="name">best_model</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.best_model"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.better_models" class="classattr">
+                                <div class="attr variable">
+            <span class="name">better_models</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.better_models"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.mean_excess" class="classattr">
+                                <div class="attr variable">
+            <span class="name">mean_excess</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.mean_excess"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.block_size" class="classattr">
+                                <div class="attr variable">
+            <span class="name">block_size</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.block_size"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.block_source" class="classattr">
+                                <div class="attr variable">
+            <span class="name">block_source</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.block_source"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.reps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">reps</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.reps"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.n_obs" class="classattr">
+                                <div class="attr variable">
+            <span class="name">n_obs</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.n_obs"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.model_names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">model_names</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.model_names"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.source" class="classattr">
+                                <div class="attr variable">
+            <span class="name">source</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.source"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.notes" class="classattr">
+                                <div class="attr variable">
+            <span class="name">notes</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.notes"></a>
+    
+    
+
+                            </div>
+                            <div id="SPAResult.report" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">report</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SPAResult.report"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="MCSResult">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass</div>
+
+    <span class="def">class</span>
+    <span class="name">MCSResult</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult"></a>
+    
+    
+
+                            <div id="MCSResult.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">MCSResult</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">included</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>,</span><span class="param">	<span class="n">excluded</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>,</span><span class="param">	<span class="n">pvalues</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">size</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">block_size</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">block_source</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">reps</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">n_obs</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">source</span><span class="p">:</span> <span class="nb">str</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.included" class="classattr">
+                                <div class="attr variable">
+            <span class="name">included</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.included"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.excluded" class="classattr">
+                                <div class="attr variable">
+            <span class="name">excluded</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.excluded"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.pvalues" class="classattr">
+                                <div class="attr variable">
+            <span class="name">pvalues</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.pvalues"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.size" class="classattr">
+                                <div class="attr variable">
+            <span class="name">size</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.size"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.block_size" class="classattr">
+                                <div class="attr variable">
+            <span class="name">block_size</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.block_size"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.block_source" class="classattr">
+                                <div class="attr variable">
+            <span class="name">block_source</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.block_source"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.reps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">reps</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.reps"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.n_obs" class="classattr">
+                                <div class="attr variable">
+            <span class="name">n_obs</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.n_obs"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.source" class="classattr">
+                                <div class="attr variable">
+            <span class="name">source</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.source"></a>
+    
+    
+
+                            </div>
+                            <div id="MCSResult.report" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">report</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#MCSResult.report"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="spa_test">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">spa_test</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">benchmark_returns</span>,</span><span class="param">	<span class="n">model_returns</span>,</span><span class="param">	<span class="n">reps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>,</span><span class="param">	<span class="n">block_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">studentize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">nested</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n"><a href="#SPAResult">SPAResult</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#spa_test"></a>
+    
+            <div class="docstring"><p>Hansen's SPA on RETURNS (higher is better). Negates to losses internally.</p>
+
+<p>benchmark_returns : (T,) per-period returns of the benchmark / incumbent strategy.
+model_returns     : (T, k) per-period returns of every candidate you tried -- including
+                    the ones you abandoned. Omitting them is what SPA corrects for, so
+                    omitting them defeats the test.
+reps              : bootstrap replications. Cost is O(reps x T x k).
+block_size        : stationary-bootstrap block length; from <code>optimal_block_length</code>
+                    when None.</p>
+
+<p>H0: no candidate is better than the benchmark. A small <code>consistent</code> p-value rejects it.</p>
+</div>
+
+
+                </section>
+                <section id="stepm_test">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">stepm_test</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">benchmark_returns</span>,</span><span class="param">	<span class="n">model_returns</span>,</span><span class="param">	<span class="n">size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span>,</span><span class="param">	<span class="n">reps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>,</span><span class="param">	<span class="n">block_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#stepm_test"></a>
+    
+            <div class="docstring"><p>Romano-Wolf StepM on RETURNS. Returns the names that beat the benchmark under FWER.</p>
+
+<p>SPA says whether ANY candidate is genuinely superior; StepM says WHICH, controlling
+the family-wise error rate across the whole set you tried.</p>
+</div>
+
+
+                </section>
+                <section id="mcs_test">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">mcs_test</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">model_returns</span>,</span><span class="param">	<span class="n">size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>,</span><span class="param">	<span class="n">reps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>,</span><span class="param">	<span class="n">block_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'R'</span></span><span class="return-annotation">) -> <span class="n"><a href="#MCSResult">MCSResult</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#mcs_test"></a>
+    
+            <div class="docstring"><p>Hansen-Lunde-Nason Model Confidence Set on RETURNS. NO benchmark argument.</p>
+
+<p>Returns the set of candidates not distinguishable from the best at <code>size</code>. Needs at
+least 2 candidates -- arch raises below that.</p>
+</div>
+
+
+                </section>
+                <section id="spa_test_selfcontained">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">spa_test_selfcontained</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">benchmark_returns</span>,</span><span class="param">	<span class="n">model_returns</span>,</span><span class="param">	<span class="n">reps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>,</span><span class="param">	<span class="n">block_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">already_losses</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n"><a href="#SPAResult">SPAResult</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#spa_test_selfcontained"></a>
+    
+            <div class="docstring"><p>Hansen's SPA_consistent, implemented here so <code>__main__</code> runs without arch.</p>
+
+<p>⚠️ <code>arch.bootstrap.SPA</code> is the reference implementation -- use it in real work. This
+exists so the demonstration below is runnable on a bare numpy/pandas install, and it
+covers only the consistent p-value: no StepM, no MCS, no nested-model handling.</p>
+
+<p><code>already_losses=True</code> skips the negation, and is used in the demo to show what the
+procedure does when it is fed returns as though they were losses.</p>
+</div>
+
+
+                </section>
+                <section id="naive_best_of_n_pvalue">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">naive_best_of_n_pvalue</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">benchmark_returns</span>, </span><span class="param"><span class="n">model_returns</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#naive_best_of_n_pvalue"></a>
+    
+            <div class="docstring"><p>What people actually do: t-test the winner, as if it had been the only candidate.</p>
+
+<p>Returns (best model name, one-sided p-value). This is the number SPA corrects.</p>
+</div>
+
 
                 </section>
     </main>
@@ -226,7 +730,7 @@ plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
                 script.async = true;
                 script.onload = () => resolve(window.pdocSearch);
                 script.onerror = (e) => reject(e);
-                script.src = "search.js";
+                script.src = "../../search.js";
                 document.getElementsByTagName("head")[0].appendChild(script);
             });
         } catch (e) {
@@ -268,7 +772,7 @@ plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
             }
             for (let result of results.slice(0, 10)) {
                 let doc = result.doc;
-                let url = `${doc.modulename.replaceAll(".", "/")}.html`;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
                 if (doc.qualname) {
                     url += `#${doc.qualname}`;
                 }

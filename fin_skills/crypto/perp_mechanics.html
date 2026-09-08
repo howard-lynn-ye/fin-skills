@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="pdoc 16.0.0"/>
+    <title>fin_skills.crypto.perp_mechanics API documentation</title>
+
+    <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
+    <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
+    <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;z-index:999;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent; z-index:1}nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{cursor:pointer;display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:.75rem center;margin-bottom:1rem;}.pdoc .alert > em{display:none;}.pdoc .alert > *:last-child{margin-bottom:0;}.pdoc .alert.note{color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .alert.tip{color:#0a3622;background-color:#d1e7dd;border-color:#a3cfbb;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%230a3622%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%206a6%206%200%201%201%2010.174%204.31c-.203.196-.359.4-.453.619l-.762%201.769A.5.5%200%200%201%2010.5%2013a.5.5%200%200%201%200%201%20.5.5%200%200%201%200%201l-.224.447a1%201%200%200%201-.894.553H6.618a1%201%200%200%201-.894-.553L5.5%2015a.5.5%200%200%201%200-1%20.5.5%200%200%201%200-1%20.5.5%200%200%201-.46-.302l-.761-1.77a2%202%200%200%200-.453-.618A5.98%205.98%200%200%201%202%206m6-5a5%205%200%200%200-3.479%208.592c.263.254.514.564.676.941L5.83%2012h4.342l.632-1.467c.162-.377.413-.687.676-.941A5%205%200%200%200%208%201%22/%3E%3C/svg%3E");}.pdoc .alert.important{color:#055160;background-color:#cff4fc;border-color:#9eeaf9;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23055160%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%200a2%202%200%200%200-2%202v12a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V2a2%202%200%200%200-2-2zm6%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .alert.caution{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M11.46.146A.5.5%200%200%200%2011.107%200H4.893a.5.5%200%200%200-.353.146L.146%204.54A.5.5%200%200%200%200%204.893v6.214a.5.5%200%200%200%20.146.353l4.394%204.394a.5.5%200%200%200%20.353.146h6.214a.5.5%200%200%200%20.353-.146l4.394-4.394a.5.5%200%200%200%20.146-.353V4.893a.5.5%200%200%200-.146-.353zM8%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--accent);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .decorator-deprecated{color:#842029;}.pdoc .decorator-deprecated ~ span{filter:grayscale(1) opacity(0.8);}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .view-value-toggle-state,.pdoc .view-value-toggle-state ~ .default_value{display:none;}.pdoc .view-value-toggle-state:checked ~ .default_value{display:inherit;}.pdoc .view-value-button{font-size:.5rem;vertical-align:middle;border-style:dashed;margin-top:-0.1rem;}.pdoc .view-value-button:hover{background:white;}.pdoc .view-value-button::before{content:"show";text-align:center;width:2.2em;display:inline-block;}.pdoc .view-value-toggle-state:checked ~ .view-value-button::before{content:"hide";}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:27px;vertical-align:bottom;width:50px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! custom.css */</style></head>
+<body>
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
+        <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
+        <div>            <a class="pdoc-button module-list-button" href="../crypto.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.crypto</a>
+
+
+            <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
+                   pattern=".+" required>
+
+
+
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="variable" href="#SEED">SEED</a>
+            </li>
+            <li>
+                    <a class="variable" href="#CRYPTO_DAYS">CRYPTO_DAYS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#EQUITY_DAYS">EQUITY_DAYS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#AS_OF">AS_OF</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_PERP">DERIBIT_PERP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_BTC_OPTIONS">DERIBIT_BTC_OPTIONS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_USDC_OPTIONS">DERIBIT_USDC_OPTIONS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_INDEX">DERIBIT_INDEX</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_FUTURES">DERIBIT_FUTURES</a>
+            </li>
+            <li>
+                    <a class="variable" href="#OKX_TIER1">OKX_TIER1</a>
+            </li>
+            <li>
+                    <a class="variable" href="#OKX_USDT_INDEX">OKX_USDT_INDEX</a>
+            </li>
+            <li>
+                    <a class="variable" href="#OKX_FUNDING_CAP">OKX_FUNDING_CAP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#OKX_FUNDING_INTEREST">OKX_FUNDING_INTEREST</a>
+            </li>
+            <li>
+                    <a class="variable" href="#OKX_INTERVALS">OKX_INTERVALS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#CCXT_FUNDING_HISTORY">CCXT_FUNDING_HISTORY</a>
+            </li>
+            <li>
+                    <a class="variable" href="#VENUE_HTTP">VENUE_HTTP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_DAYS">DERIBIT_DAYS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_INDEX_PREV">DERIBIT_INDEX_PREV</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_FUND_BPS">DERIBIT_FUND_BPS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DERIBIT_INDEX_DAILY">DERIBIT_INDEX_DAILY</a>
+            </li>
+            <li>
+                    <a class="variable" href="#OKX_FUND_BPS">OKX_FUND_BPS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#CLOSE_DAYS">CLOSE_DAYS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#COINBASE60">COINBASE60</a>
+            </li>
+            <li>
+                    <a class="variable" href="#KRAKEN60">KRAKEN60</a>
+            </li>
+            <li>
+                    <a class="variable" href="#GEMINI60">GEMINI60</a>
+            </li>
+            <li>
+                    <a class="variable" href="#CLOSE_0907">CLOSE_0907</a>
+            </li>
+            <li>
+                    <a class="function" href="#sharpe">sharpe</a>
+            </li>
+            <li>
+                    <a class="function" href="#vol">vol</a>
+            </li>
+            <li>
+                    <a class="function" href="#cagr_calendar">cagr_calendar</a>
+            </li>
+            <li>
+                    <a class="function" href="#liq_ratio">liq_ratio</a>
+            </li>
+            <li>
+                    <a class="function" href="#hr">hr</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_annualisation">section_annualisation</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_funding">section_funding</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_basis">section_basis</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_liquidation">section_liquidation</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_inverse">section_inverse</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_venue">section_venue</a>
+            </li>
+            <li>
+                    <a class="function" href="#section_data">section_data</a>
+            </li>
+    </ul>
+
+
+
+        <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
+            built with <span class="visually-hidden">pdoc</span><img
+                alt="pdoc logo"
+                src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22160%22%20viewBox%3D%220%200%20150%2080%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M132.316%2048.886c.276-4.679%202.342-6.698%204.409-7.982s4.27-1.165%206.751-1.055c1.586.07%203.044.156%204.222-.482%201.142-.619%202.026-1.932%202.162-3.739.268-3.576-1.929-5.368-5.006-5.551s-7.599.524-10.517%201.606c-4.455%201.652-8.588%206.606-9.552%208.992s-2.342%206.193-1.745%2010.873%202.664%209.221%205.878%2011.79%205.878%203.808%2010.103%204.312%203.444.229%206.062.229%205.006-2.202%204.914-4.909-2.296-5.001-4.501-4.863-3.077.505-5.281.229-7.715-2.064-7.899-9.451z%22%20fill%3D%22%23198754%22/%3E%3Ccircle%20cx%3D%22101.504%22%20cy%3D%2248.943%22%20r%3D%2214.208%22%20fill%3D%22none%22%20stroke%3D%22%23198754%22%20stroke-width%3D%229.354%22/%3E%3Cpath%20d%3D%22M87.81.002c-3.637.065-5.001.454-7.014%201.232s-3.443%201.363-6.3%204.282c-1.723%201.76-3.148%205.019-3.776%207.329-.413%201.521-.316%202.63-.316%202.63l-.195%2034.612c.065%205.774-6.755%208.305-9.612%208.37s-9.678-1.038-9.743-9.408%207.128-9.521%208.362-9.521c1.413-.13%202.526-.021%203.718-.016%202.071.009%204.157-.778%204.092-4.671s-4.157-4.736-4.157-4.736c-6.3-.843-11.43%202.206-11.43%202.206S40.917%2038.15%2041.372%2049.634%2051.568%2068.19%2061.311%2068.125s18.316-7.007%2018.445-17.193l.13-22.772c.046-2.291%202.683-3.644%204.476-4.203.745-.232%201.694-.274%201.694-.274l10.457-.13s4.871-.324%207.729-3.114%204.352-6.294%204.352-6.294.974-3.049.13-4.606-.195-1.233-2.792-3.309-8.573-4.477-8.573-4.477S91.447-.063%2087.81.002zM0%2047.169l.065%2028.417S0%2080.127%204.481%2079.997s5.072-3.866%205.049-4.152l-.113-28.482s1.624-7.656%209.937-7.721%2010.002%206.942%2010.002%208.499-.909%2010.51-9.093%2010.51c-.948%200-2.99-.567-4.145-.272-3.919%201-3.194%204.554-3.194%204.554s.065%205.061%207.404%204.996%2018.575-6.034%2018.575-19.074S26.953%2030.04%2019.549%2029.91%201.234%2035.296%200%2047.169z%22%20fill%3D%22%23198754%22/%3E%3Cg%20transform%3D%22matrix%28.325601%200%200%20.325256%20-10.32669%20-45.802786%29%22%3E%3Ccircle%20cx%3D%22297.554%22%20cy%3D%22172.286%22%20r%3D%2216.5%22%20fill%3D%22%23fff%22/%3E%3Cellipse%20cx%3D%22297.709%22%20cy%3D%22172.642%22%20rx%3D%2211.071%22%20ry%3D%2210.871%22%20fill%3D%22%23105a48%22/%3E%3Ccircle%20cx%3D%22304.104%22%20cy%3D%22167.667%22%20r%3D%224.5%22%20fill%3D%22%23fff%22/%3E%3C/g%3E%3Cpath%20d%3D%22M94.661%2017.032l.893-1.476s.99.714%201.916.925%201.575.114%202.955.114l14.565-.162c1.283-.032%203.085-.762%203.02-3.293s-.373-3.503-.373-3.503l1.283-.487s.52.503.877%201.573.309%201.995.292%202.66-.227%201.541-.227%201.541%201.564-.308%202.359-1.038.823-.779%201.489-1.508.812-.86.812-.86.552-.13.877.26.341.957.065%201.46-1.672%202.206-3.247%203.066-2.76%201.427-3.929%201.768-3.848.73-7.063.714l-10.944-.114s-2.143-.081-3.02-.373-2.241-.973-2.598-1.265z%22%20fill%3D%22%23d36d49%22/%3E%3Cg%20fill%3D%22%23105a48%22%3E%3Cellipse%20cx%3D%2293.052%22%20cy%3D%2243.567%22%20rx%3D%22.869%22%20ry%3D%221.014%22%20transform%3D%22rotate%28341.022%29%22/%3E%3Cellipse%20cx%3D%22104.3%22%20cy%3D%22-16.184%22%20rx%3D%22.865%22%20ry%3D%221.009%22%20transform%3D%22rotate%2814.786%29%22/%3E%3C/g%3E%3C/svg%3E"/>
+        </a>
+</div>
+    </nav>
+    <main class="pdoc">
+            <section class="module-info">
+                    <h1 class="modulename">
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../crypto.html">crypto</a><wbr>.perp_mechanics    </h1>
+
+                        <div class="docstring"><p>Crypto perpetual-swap mechanics that a spot-price backtest omits, and the 365-day trap.</p>
+
+<p>Seven demonstrations, each printing the numbers quoted in ../SKILL.md:</p>
+
+<ol>
+<li>annualisation  - sqrt(252) on a 365-row crypto series, and the mistake in the other direction</li>
+<li>funding        - notional x rate x periods, the sign convention, and a REAL year of it</li>
+<li>basis          - annualised basis on live dated-future marks, and the cash-and-carry margin trap</li>
+<li>liquidation    - liquidation price at 3x / 5x / 10x, why it is not a stop-loss, funding drift</li>
+<li>inverse        - coin-margined P&amp;L vs linear P&amp;L for the same move; the BTC-settled call</li>
+<li>venue access   - which venue APIs answered from this location, and with what HTTP code</li>
+<li>data           - three different "daily closes" for one date, and cross-venue dispersion</li>
+</ol>
+
+<p>Everything is arithmetic on constants pulled from the venues' own public APIs on 2026-09-08
+(endpoints named next to each constant). No network access at run time, numpy/pandas only,
+fixed seed. quantstats and empyrical are optional: when they are importable the section-1
+reference arithmetic is checked against them and the comparison is printed, not asserted.</p>
+
+<p>Run:  python perp_mechanics.py</p>
+</div>
+
+                
+                
+                
+            </section>
+                <section id="SEED">
+                    <div class="attr variable">
+            <span class="name">SEED</span>        =
+<span class="default_value">0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SEED"></a>
+    
+    
+
+                </section>
+                <section id="CRYPTO_DAYS">
+                    <div class="attr variable">
+            <span class="name">CRYPTO_DAYS</span>        =
+<span class="default_value">365</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CRYPTO_DAYS"></a>
+    
+    
+
+                </section>
+                <section id="EQUITY_DAYS">
+                    <div class="attr variable">
+            <span class="name">EQUITY_DAYS</span>        =
+<span class="default_value">252</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EQUITY_DAYS"></a>
+    
+    
+
+                </section>
+                <section id="AS_OF">
+                    <div class="attr variable">
+            <span class="name">AS_OF</span>        =
+<span class="default_value">Timestamp(&#39;2026-09-08 13:25:00+0000&#39;, tz=&#39;UTC&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#AS_OF"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_PERP">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_PERP</span>        =
+<input id="DERIBIT_PERP-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_PERP-view-value"></label><span class="default_value">{&#39;contract_size_usd&#39;: 10.0, &#39;settlement_currency&#39;: &#39;BTC&#39;, &#39;instrument_type&#39;: &#39;reversed&#39;, &#39;max_leverage&#39;: 50, &#39;maker_commission&#39;: 0.00015, &#39;taker_commission&#39;: 0.00035, &#39;max_liquidation_commission&#39;: 0.01, &#39;funding_8h&#39;: 2.95e-05}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_PERP"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_BTC_OPTIONS">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_BTC_OPTIONS</span>        =
+<input id="DERIBIT_BTC_OPTIONS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_BTC_OPTIONS-view-value"></label><span class="default_value">{&#39;count&#39;: 908, &#39;settlement_currency&#39;: &#39;BTC&#39;, &#39;contract_size_btc&#39;: 1.0, &#39;tick_size_btc&#39;: 0.0001, &#39;expiries&#39;: 11, &#39;expiry_utc_hour&#39;: 8}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_BTC_OPTIONS"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_USDC_OPTIONS">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_USDC_OPTIONS</span>        =
+<input id="DERIBIT_USDC_OPTIONS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_USDC_OPTIONS-view-value"></label><span class="default_value">{&#39;total&#39;: 3538, &#39;SOL&#39;: 724, &#39;BTC&#39;: 616, &#39;ETH&#39;: 568, &#39;HYPE&#39;: 496, &#39;XRP&#39;: 470, &#39;AVAX&#39;: 334, &#39;TRX&#39;: 330}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_USDC_OPTIONS"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_INDEX">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_INDEX</span>        =
+<span class="default_value">78449.67</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_INDEX"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_FUTURES">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_FUTURES</span>        =
+<input id="DERIBIT_FUTURES-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_FUTURES-view-value"></label><span class="default_value">{&#39;BTC-25SEP26&#39;: (78561.31, &#39;2026-09-25&#39;), &#39;BTC-30OCT26&#39;: (78888.05, &#39;2026-10-30&#39;), &#39;BTC-27NOV26&#39;: (79192.98, &#39;2026-11-27&#39;), &#39;BTC-25DEC26&#39;: (79513.65, &#39;2026-12-25&#39;), &#39;BTC-26MAR27&#39;: (80458.36, &#39;2027-03-26&#39;), &#39;BTC-25JUN27&#39;: (81460.24, &#39;2027-06-25&#39;)}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_FUTURES"></a>
+    
+    
+
+                </section>
+                <section id="OKX_TIER1">
+                    <div class="attr variable">
+            <span class="name">OKX_TIER1</span>        =
+<span class="default_value">{&#39;mmr&#39;: 0.004, &#39;imr&#39;: 0.01, &#39;max_lever&#39;: 100, &#39;max_contracts&#39;: 1000, &#39;contract_btc&#39;: 0.01}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#OKX_TIER1"></a>
+    
+    
+
+                </section>
+                <section id="OKX_USDT_INDEX">
+                    <div class="attr variable">
+            <span class="name">OKX_USDT_INDEX</span>        =
+<span class="default_value">78462.2</span>
+
+        
+    </div>
+    <a class="headerlink" href="#OKX_USDT_INDEX"></a>
+    
+    
+
+                </section>
+                <section id="OKX_FUNDING_CAP">
+                    <div class="attr variable">
+            <span class="name">OKX_FUNDING_CAP</span>        =
+<span class="default_value">0.00375</span>
+
+        
+    </div>
+    <a class="headerlink" href="#OKX_FUNDING_CAP"></a>
+    
+    
+
+                </section>
+                <section id="OKX_FUNDING_INTEREST">
+                    <div class="attr variable">
+            <span class="name">OKX_FUNDING_INTEREST</span>        =
+<span class="default_value">0.0001</span>
+
+        
+    </div>
+    <a class="headerlink" href="#OKX_FUNDING_INTEREST"></a>
+    
+    
+
+                </section>
+                <section id="OKX_INTERVALS">
+                    <div class="attr variable">
+            <span class="name">OKX_INTERVALS</span>        =
+<span class="default_value">{&#39;8h&#39;: 357, &#39;4h&#39;: 286, &#39;1h&#39;: 1}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#OKX_INTERVALS"></a>
+    
+    
+
+                </section>
+                <section id="CCXT_FUNDING_HISTORY">
+                    <div class="attr variable">
+            <span class="name">CCXT_FUNDING_HISTORY</span>        =
+<span class="default_value">{&#39;binance&#39;: True, &#39;bybit&#39;: True, &#39;okx&#39;: True, &#39;deribit&#39;: True, &#39;coinbase&#39;: False, &#39;kraken&#39;: False}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CCXT_FUNDING_HISTORY"></a>
+    
+    
+
+                </section>
+                <section id="VENUE_HTTP">
+                    <div class="attr variable">
+            <span class="name">VENUE_HTTP</span>        =
+<input id="VENUE_HTTP-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="VENUE_HTTP-view-value"></label><span class="default_value">{&#39;fapi.binance.com / dapi / api.binance.com&#39;: 451, &#39;api.bybit.com&#39;: 403, &#39;www.okx.com&#39;: 200, &#39;www.deribit.com&#39;: 200, &#39;api.exchange.coinbase.com&#39;: 200, &#39;api.kraken.com&#39;: 200, &#39;www.bitstamp.net&#39;: 200, &#39;api.gemini.com&#39;: 200}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#VENUE_HTTP"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_DAYS">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_DAYS</span>        =
+<input id="DERIBIT_DAYS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_DAYS-view-value"></label><span class="default_value">DatetimeIndex([&#39;2025-09-08 00:00:00+00:00&#39;, &#39;2025-09-09 00:00:00+00:00&#39;,
+               &#39;2025-09-10 00:00:00+00:00&#39;, &#39;2025-09-11 00:00:00+00:00&#39;,
+               &#39;2025-09-12 00:00:00+00:00&#39;, &#39;2025-09-13 00:00:00+00:00&#39;,
+               &#39;2025-09-14 00:00:00+00:00&#39;, &#39;2025-09-15 00:00:00+00:00&#39;,
+               &#39;2025-09-16 00:00:00+00:00&#39;, &#39;2025-09-17 00:00:00+00:00&#39;,
+               ...
+               &#39;2026-08-29 00:00:00+00:00&#39;, &#39;2026-08-30 00:00:00+00:00&#39;,
+               &#39;2026-08-31 00:00:00+00:00&#39;, &#39;2026-09-01 00:00:00+00:00&#39;,
+               &#39;2026-09-02 00:00:00+00:00&#39;, &#39;2026-09-03 00:00:00+00:00&#39;,
+               &#39;2026-09-04 00:00:00+00:00&#39;, &#39;2026-09-05 00:00:00+00:00&#39;,
+               &#39;2026-09-06 00:00:00+00:00&#39;, &#39;2026-09-07 00:00:00+00:00&#39;],
+              dtype=&#39;datetime64[ns, UTC]&#39;, length=365, freq=&#39;D&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_DAYS"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_INDEX_PREV">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_INDEX_PREV</span>        =
+<span class="default_value">111245.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_INDEX_PREV"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_FUND_BPS">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_FUND_BPS</span>        =
+<input id="DERIBIT_FUND_BPS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_FUND_BPS-view-value"></label><span class="default_value">[1.807, 2.992, 2.538, 2.147, 2.869, 3.028, 3.72, 2.505, 0.415, 1.119, 2.867, 1.152, 0.03, 0.125, 1.233, 0.726, 2.127, 4.142, 0.932, 0.159, 0.59, 2.449, 4.639, 2.789, 6.941, 4.885, 6.237, 7.359, 5.494, 2.072, 1.028, 0.897, 5.993, 3.34, 2.165, 0.201, 0.504, 0.683, 2.947, 1.756, 2.015, 2.478, 1.649, 1.17, 0.029, 1.51, 0.938, 0.198, 4.037, 3.004, 3.074, 2.15, 0.542, 2.179, 0.781, 3.155, 0.162, -0.466, -0.008, -1.504, 0.035, -0.212, 0.081, 1.055, 0.155, 0.171, 0.116, -0.435, -0.669, -1.244, 0.141, 0.034, -0.459, 0.465, -1.093, -0.124, -0.417, -0.366, -0.003, 0.159, 0.143, 0.829, 0.027, 0.354, 0.059, 0.098, 0.654, 0.19, 0.059, -0.138, 0.344, 0.609, 0.36, 0.177, 0.427, 0.449, 0.004, 0.242, 0.74, 0.202, 0.74, 1.526, 2.118, 0.907, 0.14, 1.239, 0.356, 0.811, 0.483, 3.09, 1.738, 1.498, 3.928, 1.611, 3.608, 3.149, 3.18, 1.505, 3.245, 3.212, 2.092, 1.391, 0.458, 0.903, 2.328, 1.776, 2.502, 1.912, 1.051, 0.067, 0.688, 0.068, 0.008, 0.539, 0.358, 2.734, 2.237, 2.094, 1.786, 1.049, 1.72, 0.994, 2.405, 0.777, 0.338, 1.071, -0.025, -0.145, -0.076, 0.686, 0.061, -3.394, -0.12, -0.001, 0.001, -0.027, -0.479, 0.194, -0.54, -0.0, -0.045, -0.071, -0.023, -0.23, -0.115, 0.127, 0.319, -0.187, -0.606, -2.033, -0.353, -0.765, -1.263, -1.958, -1.197, -0.04, -0.218, -0.318, 0.313, -0.18, -0.19, -0.076, 0.152, 0.038, -0.025, 0.016, 0.197, 0.012, 0.019, 0.116, 0.099, 0.139, 0.025, 0.218, 1.011, -0.131, 0.926, 0.226, 0.629, 0.158, 0.311, -0.052, 0.425, 0.686, 0.895, 1.01, -0.868, 0.835, 0.562, 0.105, 0.752, 0.045, 1.216, 0.002, 0.236, 0.021, 0.182, -0.208, -0.307, -0.02, 0.175, -0.378, -0.229, 0.103, -0.095, 0.056, -1.056, -0.818, -0.401, -0.773, 0.002, -0.045, -0.402, -0.131, -0.017, 0.702, 0.019, 0.129, 0.006, -0.435, -0.15, 0.524, 0.133, 0.784, 0.685, 1.166, 0.13, 0.507, -0.118, -0.003, -0.005, -0.361, -0.086, 0.0, 0.56, 0.665, 0.305, -0.262, -0.155, 0.007, 0.036, 0.42, 0.934, 1.688, 0.409, 0.284, 0.031, -0.266, -0.259, -3.132, -1.654, -0.05, -0.019, -0.029, 0.184, 0.064, 0.162, 0.223, 0.002, 0.017, 0.002, 0.238, 0.106, 0.072, -0.172, -0.038, 0.147, 0.056, -0.044, 0.035, -0.677, 0.696, 0.654, 0.138, 1.677, 0.232, 0.58, 0.416, 1.012, 0.03, 0.834, 2.362, 1.465, 1.174, 1.449, 2.428, 1.837, 1.025, 2.077, 0.351, 2.093, 1.098, 0.316, 0.558, 2.309, 1.268, 1.805, 1.968, 0.3, 0.556, 0.242, 0.214, 2.036, 0.929, 2.196, 2.986, 0.966, 0.624, 0.662, 1.39, 1.037, 0.544, 0.349, 0.143, 0.004, 0.002, 0.359, 0.717, 1.865, 2.476, 1.758, 0.152, 0.027, 1.113, 0.315, 1.138, 2.847, 1.765, 3.103, 2.055, 1.318, 0.651, 1.031, 1.784, 0.111, 0.488, 0.932, 2.464, 1.844, 1.645, 1.576, -0.189, -0.638, -0.003, 0.056]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_FUND_BPS"></a>
+    
+    
+
+                </section>
+                <section id="DERIBIT_INDEX_DAILY">
+                    <div class="attr variable">
+            <span class="name">DERIBIT_INDEX_DAILY</span>        =
+<input id="DERIBIT_INDEX_DAILY-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="DERIBIT_INDEX_DAILY-view-value"></label><span class="default_value">[112261, 111561, 113908, 115138, 116102, 115929, 116055, 115320, 116893, 116597, 117125, 115670, 115839, 115583, 112725, 112191, 113372, 109467, 109612, 109648, 111954, 114233, 113953, 117814, 120336, 122556, 122352, 123261, 125094, 122067, 123249, 121756, 114042, 111169, 115337, 115610, 113273, 110720, 107825, 107026, 107158, 109187, 110836, 109113, 107204, 109991, 111038, 111645, 114690, 114114, 113245, 111040, 107899, 109541, 110034, 109879, 106454, 101247, 103701, 101379, 103602, 102361, 104701, 106030, 102962, 101966, 99787, 95110, 95557, 94120, 92146, 93111, 90384, 87963, 84236, 85021, 87984, 88617, 87609, 90383, 91319, 91122, 90783, 91233, 86600, 92015, 93808, 92365, 89273, 89311, 89618, 90846, 92886, 92537, 92382, 90350, 90157, 88428, 86244, 87776, 86315, 85534, 88294, 88253, 88455, 88619, 87347, 87951, 87604, 87479, 87508, 87837, 87243, 88338, 87599, 88535, 90162, 90552, 91187, 94178, 93326, 91100, 91163, 90511, 90315, 90408, 91158, 95723, 96898, 95550, 95474, 95138, 95462, 92506, 88386, 89697, 89266, 89526, 89305, 86436, 88049, 89142, 89254, 84428, 84093, 78072, 77174, 78742, 75619, 72399, 63790, 71305, 69356, 71019, 70341, 68668, 67377, 66233, 68956, 69938, 68948, 68562, 67509, 66376, 66895, 68058, 67967, 67645, 64706, 64120, 68467, 67579, 65636, 67119, 65257, 69446, 68328, 72722, 71217, 68320, 67255, 66240, 68645, 69716, 70383, 70185, 70819, 70729, 72754, 74762, 74330, 71156, 70187, 70765, 70268, 68321, 70761, 70289, 71350, 68846, 65987, 66705, 65811, 66735, 68118, 68117, 66982, 66886, 67392, 68318, 68813, 71501, 71072, 71959, 72903, 73405, 70921, 74662, 74064, 74987, 74887, 77334, 75850, 74076, 76003, 75666, 78636, 78264, 77357, 77580, 78342, 77066, 76236, 75902, 76208, 78147, 78831, 79169, 80059, 81111, 81342, 79910, 80277, 80761, 82034, 81815, 80644, 79405, 81454, 79072, 78159, 77962, 77029, 76652, 77435, 77560, 75656, 76494, 76718, 77051, 75644, 74315, 73374, 73393, 73781, 73848, 71318, 66298, 64821, 63680, 61574, 60529, 62846, 63426, 61685, 61329, 63444, 63476, 64433, 65386, 66169, 65723, 64248, 62825, 63262, 64210, 63731, 63906, 62519, 60786, 59759, 59963, 60143, 58988, 60273, 58523, 60417, 61405, 62517, 63137, 63684, 64206, 63507, 62285, 63179, 64074, 64163, 63851, 61851, 64823, 64829, 63920, 63942, 64768, 64630, 65104, 66265, 66011, 65145, 64107, 64353, 65348, 63739, 63708, 63860, 64791, 62893, 62776, 63353, 63554, 64221, 64588, 64298, 64853, 64895, 65027, 63963, 63610, 63367, 63466, 62818, 63069, 62851, 64237, 64595, 69221, 72660, 78445, 76987, 77600, 78733, 78874, 78696, 80319, 77754, 78220, 78419, 78571, 77234, 77003, 81150, 79658, 79795, 80050, 78936]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DERIBIT_INDEX_DAILY"></a>
+    
+    
+
+                </section>
+                <section id="OKX_FUND_BPS">
+                    <div class="attr variable">
+            <span class="name">OKX_FUND_BPS</span>        =
+<input id="OKX_FUND_BPS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="OKX_FUND_BPS-view-value"></label><span class="default_value">[0.4246, -0.7555, -0.1252, -0.077, 0.3635, 0.4761, -0.1593, -0.0878, -0.4346, -0.6032, -0.2396, -0.0495, 0.1338, -0.2236, 0.0911, 0.0869, -0.6396, -0.3129, -0.339, -0.7591, -0.5835, -0.6892, -0.739, -0.131, -0.5923, -0.1086, 0.3599, -0.249, -0.3424, 0.05, 0.2712, 0.3565, 0.0134, 0.3245, -0.0499, 0.2059, -0.1883, 0.0208, -0.0883, -0.1492, -0.1192, -0.2885, 0.2875, 0.4146, 0.4866, 0.1063, 0.2752, 0.2599, 0.8328, 0.4325, -0.4593, -0.7799, -0.3443, 0.0134, 0.0966, 0.8207, 0.4063, 0.5055, 0.3227, 0.4023, 0.32, 0.3954, 0.0466, 0.5036, 0.718, 0.8458, 0.5219, 0.6412, 0.4771, 0.1304, 0.377, 0.9034, 1.0, 0.3115, 1.0, 1.0, 0.5383, 0.4078, 0.609, 0.6444, 1.0, 0.7361, 0.2115, 0.6177, 0.9825, 0.4357, 1.0, 0.6781, 0.5896, 0.5688, 0.4446, 0.8516, 0.7234, 0.0131, 0.3518, 0.7324, 0.8409, 0.755, 0.8225, -0.2152, 0.3403, 0.6652, 0.6277, 0.5646, 0.671, 0.0702, 0.8855, 0.666, 0.157, 0.7995, 1.0, 1.0, 0.2957, 0.8113, 0.3781, 0.1499, 0.5377, 0.2956, 0.5463, 0.3802, 0.508, 0.8637, 0.1668, 0.5948, 0.4221, 0.1491, -0.0106, 0.1511, 0.0786, 0.1707, -0.3865, 0.646, -0.0461, 0.0723, 0.3453, -0.3331, 0.3094, 0.0015, -0.0835, 0.4636, 0.2972, 0.2855, -0.0195, 0.4045, 0.2911, 0.1071, 0.7564, 0.5251, 0.2283, 0.2424, -0.1916, 0.2178, 0.6305, 0.2967, 0.8325, 0.4043, 0.9621, 0.6542, 0.8372, 0.6146, 0.853, 0.5398, 0.2589, -0.1676, 0.0393, 0.3866, 0.1458, 0.466, 0.559, 0.0939, 0.2074, 0.7656, 0.8616, 0.2472, 0.5835, -0.1264, 0.6788, 0.6415, 0.595, 0.517, 0.7328, 0.1187, 0.3778, 0.356, 0.2511, 0.4653, 0.074, 0.1043, 0.9221, 0.5744, 0.9672, 1.0, 1.0, 1.0, 0.4953, 0.6652, 0.8871, 1.0, 0.6912, 0.5591, 1.0, 0.826, 1.0, 0.8859, 0.7659, 0.6474, 0.5094, 0.4589, 0.6569, 1.0, 0.3251, 0.234, -0.172, 0.5213, 0.1969, 0.5914, 0.9584, 0.4676, 1.0, 1.0, 0.589, 0.1157, 0.8071, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.7216, 1.0, 0.561, 0.8395, 0.6636, 0.566, 0.4421, 0.4185, -0.0409, 0.2998, 0.9998, 1.0, 1.0, 0.6781, 0.4383, 0.3053, 0.6429, 0.3489, 0.6465, 0.8305, 0.7446, 0.3006, 0.7529, 0.5322, 0.8803, 0.7402, 0.7646, 0.5832, 0.4579, 0.3832, 0.4187, 0.4825, 0.3455, 0.007, -0.1354, -0.2716, 0.0387, 0.6152, 0.1656, -0.0159, 0.3229, 0.3057, 0.2953, 0.5701]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#OKX_FUND_BPS"></a>
+    
+    
+
+                </section>
+                <section id="CLOSE_DAYS">
+                    <div class="attr variable">
+            <span class="name">CLOSE_DAYS</span>        =
+<input id="CLOSE_DAYS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="CLOSE_DAYS-view-value"></label><span class="default_value">DatetimeIndex([&#39;2026-07-10 00:00:00+00:00&#39;, &#39;2026-07-11 00:00:00+00:00&#39;,
+               &#39;2026-07-12 00:00:00+00:00&#39;, &#39;2026-07-13 00:00:00+00:00&#39;,
+               &#39;2026-07-14 00:00:00+00:00&#39;, &#39;2026-07-15 00:00:00+00:00&#39;,
+               &#39;2026-07-16 00:00:00+00:00&#39;, &#39;2026-07-17 00:00:00+00:00&#39;,
+               &#39;2026-07-18 00:00:00+00:00&#39;, &#39;2026-07-19 00:00:00+00:00&#39;,
+               &#39;2026-07-20 00:00:00+00:00&#39;, &#39;2026-07-21 00:00:00+00:00&#39;,
+               &#39;2026-07-22 00:00:00+00:00&#39;, &#39;2026-07-23 00:00:00+00:00&#39;,
+               &#39;2026-07-24 00:00:00+00:00&#39;, &#39;2026-07-25 00:00:00+00:00&#39;,
+               &#39;2026-07-26 00:00:00+00:00&#39;, &#39;2026-07-27 00:00:00+00:00&#39;,
+               &#39;2026-07-28 00:00:00+00:00&#39;, &#39;2026-07-29 00:00:00+00:00&#39;,
+               &#39;2026-07-30 00:00:00+00:00&#39;, &#39;2026-07-31 00:00:00+00:00&#39;,
+               &#39;2026-08-01 00:00:00+00:00&#39;, &#39;2026-08-02 00:00:00+00:00&#39;,
+               &#39;2026-08-03 00:00:00+00:00&#39;, &#39;2026-08-04 00:00:00+00:00&#39;,
+               &#39;2026-08-05 00:00:00+00:00&#39;, &#39;2026-08-06 00:00:00+00:00&#39;,
+               &#39;2026-08-07 00:00:00+00:00&#39;, &#39;2026-08-08 00:00:00+00:00&#39;,
+               &#39;2026-08-09 00:00:00+00:00&#39;, &#39;2026-08-10 00:00:00+00:00&#39;,
+               &#39;2026-08-11 00:00:00+00:00&#39;, &#39;2026-08-12 00:00:00+00:00&#39;,
+               &#39;2026-08-13 00:00:00+00:00&#39;, &#39;2026-08-14 00:00:00+00:00&#39;,
+               &#39;2026-08-15 00:00:00+00:00&#39;, &#39;2026-08-16 00:00:00+00:00&#39;,
+               &#39;2026-08-17 00:00:00+00:00&#39;, &#39;2026-08-18 00:00:00+00:00&#39;,
+               &#39;2026-08-19 00:00:00+00:00&#39;, &#39;2026-08-20 00:00:00+00:00&#39;,
+               &#39;2026-08-21 00:00:00+00:00&#39;, &#39;2026-08-22 00:00:00+00:00&#39;,
+               &#39;2026-08-23 00:00:00+00:00&#39;, &#39;2026-08-24 00:00:00+00:00&#39;,
+               &#39;2026-08-25 00:00:00+00:00&#39;, &#39;2026-08-26 00:00:00+00:00&#39;,
+               &#39;2026-08-27 00:00:00+00:00&#39;, &#39;2026-08-28 00:00:00+00:00&#39;,
+               &#39;2026-08-29 00:00:00+00:00&#39;, &#39;2026-08-30 00:00:00+00:00&#39;,
+               &#39;2026-08-31 00:00:00+00:00&#39;, &#39;2026-09-01 00:00:00+00:00&#39;,
+               &#39;2026-09-02 00:00:00+00:00&#39;, &#39;2026-09-03 00:00:00+00:00&#39;,
+               &#39;2026-09-04 00:00:00+00:00&#39;, &#39;2026-09-05 00:00:00+00:00&#39;,
+               &#39;2026-09-06 00:00:00+00:00&#39;, &#39;2026-09-07 00:00:00+00:00&#39;],
+              dtype=&#39;datetime64[ns, UTC]&#39;, freq=&#39;D&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CLOSE_DAYS"></a>
+    
+    
+
+                </section>
+                <section id="COINBASE60">
+                    <div class="attr variable">
+            <span class="name">COINBASE60</span>        =
+<input id="COINBASE60-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="COINBASE60-view-value"></label><span class="default_value">[64128.49, 63773.04, 63740.32, 62264.94, 64988.64, 64716.63, 63770.6, 63894.0, 64796.36, 64681.78, 65213.05, 66516.18, 66086.61, 65051.23, 64083.32, 64295.61, 65341.07, 63694.43, 63847.12, 63896.14, 64721.9, 62825.9, 62764.2, 63499.49, 63466.51, 64050.51, 64603.03, 64267.3, 64891.61, 64908.72, 64848.69, 63911.88, 63531.75, 63411.72, 63425.35, 62975.19, 63018.75, 62836.66, 64484.18, 64681.33, 69300.01, 73011.87, 78325.54, 77054.44, 77729.36, 78981.59, 78526.8, 79026.18, 80275.34, 77839.19, 78233.93, 77665.14, 78562.74, 77398.69, 77307.36, 81263.99, 79675.12, 79831.57, 80339.13, 79091.97]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#COINBASE60"></a>
+    
+    
+
+                </section>
+                <section id="KRAKEN60">
+                    <div class="attr variable">
+            <span class="name">KRAKEN60</span>        =
+<input id="KRAKEN60-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="KRAKEN60-view-value"></label><span class="default_value">[64126.4, 63779.5, 63737.4, 62253.5, 64977.2, 64709.4, 63789.5, 63907.0, 64796.7, 64678.1, 65215.7, 66511.7, 66072.5, 65050.1, 64087.8, 64312.9, 65336.6, 63697.1, 63859.6, 63901.0, 64723.0, 62822.0, 62760.0, 63500.0, 63461.7, 64053.7, 64599.2, 64259.2, 64886.1, 64901.1, 64860.0, 63922.1, 63541.1, 63412.0, 63423.3, 62979.4, 63024.3, 62819.1, 64471.7, 64677.2, 69285.0, 73001.1, 78327.2, 77082.6, 77737.5, 78966.1, 78509.4, 79008.6, 80265.9, 77841.8, 78227.8, 77681.6, 78566.1, 77398.1, 77305.1, 81276.1, 79676.4, 79828.4, 80334.3, 79090.3]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#KRAKEN60"></a>
+    
+    
+
+                </section>
+                <section id="GEMINI60">
+                    <div class="attr variable">
+            <span class="name">GEMINI60</span>        =
+<input id="GEMINI60-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="GEMINI60-view-value"></label><span class="default_value">[64136.67, 63788.43, 63757.2, 62269.28, 64990.96, 64719.83, 63782.62, 63898.39, 64800.0, 64684.97, 65215.42, 66516.68, 66091.31, 65056.38, 64091.21, 64311.14, 65346.43, 63708.1, 63845.18, 63893.0, 64730.7, 62814.64, 62772.2, 63511.93, 63475.95, 64056.59, 64603.87, 64268.63, 64896.37, 64911.02, 64852.65, 63917.74, 63537.31, 63418.39, 63428.0, 62983.74, 63024.77, 62839.68, 64480.05, 64689.41, 69311.71, 73004.82, 78326.93, 77062.99, 77714.32, 78985.84, 78519.48, 79028.31, 80275.01, 77823.41, 78246.0, 77698.53, 78549.8, 77397.17, 77317.24, 81278.94, 79681.79, 79846.18, 80358.96, 79101.21]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#GEMINI60"></a>
+    
+    
+
+                </section>
+                <section id="CLOSE_0907">
+                    <div class="attr variable">
+            <span class="name">CLOSE_0907</span>        =
+<input id="CLOSE_0907-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="CLOSE_0907-view-value"></label><span class="default_value">{&#39;Coinbase BTC-USD  (bar 00:00-24:00 UTC)&#39;: 79091.97, &#39;Kraken   XBT/USD  (bar 00:00-24:00 UTC)&#39;: 79090.3, &#39;Bitstamp btcusd   (bar 00:00-24:00 UTC)&#39;: 79090.41, &#39;Gemini   btcusd   (bar 00:00-24:00 UTC)&#39;: 79101.21, &#39;OKX      BTC-USDT 1D (opens 00:00 UTC+8 = 16:00 UTC prev day)&#39;: 78834.1, &#39;Deribit  BTC-PERPETUAL 1D (opens 08:00 UTC)&#39;: 78453.5}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CLOSE_0907"></a>
+    
+    
+
+                </section>
+                <section id="sharpe">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">sharpe</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">r</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>, </span><span class="param"><span class="n">periods</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#sharpe"></a>
+    
+    
+
+                </section>
+                <section id="vol">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">vol</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">r</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>, </span><span class="param"><span class="n">periods</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#vol"></a>
+    
+    
+
+                </section>
+                <section id="cagr_calendar">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">cagr_calendar</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">r</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#cagr_calendar"></a>
+    
+    
+
+                </section>
+                <section id="liq_ratio">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">liq_ratio</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">lev</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">mmr</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">side</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">exact</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#liq_ratio"></a>
+    
+            <div class="docstring"><p>Liquidation price / entry price for an isolated linear position, fees ignored.</p>
+
+<p>exact:  maintenance margin charged on the position value AT the liquidation price.
+approx: the venue-manual form entry x (1 -/+ 1/L +/- mmr), which charges it on entry value.</p>
+</div>
+
+
+                </section>
+                <section id="hr">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">hr</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#hr"></a>
+    
+    
+
+                </section>
+                <section id="section_annualisation">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_annualisation</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_annualisation"></a>
+    
+    
+
+                </section>
+                <section id="section_funding">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_funding</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_funding"></a>
+    
+    
+
+                </section>
+                <section id="section_basis">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_basis</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_basis"></a>
+    
+    
+
+                </section>
+                <section id="section_liquidation">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_liquidation</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_liquidation"></a>
+    
+    
+
+                </section>
+                <section id="section_inverse">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_inverse</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_inverse"></a>
+    
+    
+
+                </section>
+                <section id="section_venue">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_venue</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_venue"></a>
+    
+    
+
+                </section>
+                <section id="section_data">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">section_data</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#section_data"></a>
+    
+    
+
+                </section>
+    </main>
+<script>
+    function escapeHTML(html) {
+        return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+    }
+
+    const originalContent = document.querySelector("main.pdoc");
+    let currentContent = originalContent;
+
+    function setContent(innerHTML) {
+        let elem;
+        if (innerHTML) {
+            elem = document.createElement("main");
+            elem.classList.add("pdoc");
+            elem.innerHTML = innerHTML;
+        } else {
+            elem = originalContent;
+        }
+        if (currentContent !== elem) {
+            currentContent.replaceWith(elem);
+            currentContent = elem;
+        }
+    }
+
+    function getSearchTerm() {
+        return (new URL(window.location)).searchParams.get("search");
+    }
+
+    const searchBox = document.querySelector(".pdoc input[type=search]");
+    searchBox.addEventListener("input", function () {
+        let url = new URL(window.location);
+        if (searchBox.value.trim()) {
+            url.hash = "";
+            url.searchParams.set("search", searchBox.value);
+        } else {
+            url.searchParams.delete("search");
+        }
+        history.replaceState("", "", url.toString());
+        onInput();
+    });
+    window.addEventListener("popstate", onInput);
+
+
+    let search, searchErr;
+
+    async function initialize() {
+        try {
+            search = await new Promise((resolve, reject) => {
+                const script = document.createElement("script");
+                script.type = "text/javascript";
+                script.async = true;
+                script.onload = () => resolve(window.pdocSearch);
+                script.onerror = (e) => reject(e);
+                script.src = "../../search.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+            });
+        } catch (e) {
+            console.error("Cannot fetch pdoc search index");
+            searchErr = "Cannot fetch search index.";
+        }
+        onInput();
+
+        document.querySelector("nav.pdoc").addEventListener("click", e => {
+            if (e.target.hash) {
+                searchBox.value = "";
+                searchBox.dispatchEvent(new Event("input"));
+            }
+        });
+    }
+
+    function onInput() {
+        setContent((() => {
+            const term = getSearchTerm();
+            if (!term) {
+                return null
+            }
+            if (searchErr) {
+                return `<h3>Error: ${searchErr}</h3>`
+            }
+            if (!search) {
+                return "<h3>Searching...</h3>"
+            }
+
+            window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+
+            const results = search(term);
+
+            let html;
+            if (results.length === 0) {
+                html = `No search results for '${escapeHTML(term)}'.`
+            } else {
+                html = `<h4>${results.length} search result${results.length > 1 ? "s" : ""} for '${escapeHTML(term)}'.</h4>`;
+            }
+            for (let result of results.slice(0, 10)) {
+                let doc = result.doc;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
+                if (doc.qualname) {
+                    url += `#${doc.qualname}`;
+                }
+
+                let heading;
+                switch (result.doc.kind) {
+                    case "function":
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
+                        break;
+                    case "class":
+                        heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
+                        if (doc.bases)
+                            heading += `<wbr>(<span class="base">${doc.bases}</span>)`;
+                        heading += `:`;
+                        break;
+                    case "variable":
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        if (doc.annotation)
+                            heading += `<span class="annotation">${doc.annotation}</span>`;
+                        if (doc.default_value)
+                            heading += `<span class="default_value"> = ${doc.default_value}</span>`;
+                        break;
+                    default:
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        break;
+                }
+                html += `
+                        <section class="search-result">
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
+                        <div class="docstring">${doc.doc}</div>
+                        </section>
+                    `;
+
+            }
+            return html;
+        })());
+    }
+
+    if (getSearchTerm()) {
+        initialize();
+        searchBox.value = getSearchTerm();
+        onInput();
+    } else {
+        searchBox.addEventListener("focus", initialize, {once: true});
+    }
+
+    searchBox.addEventListener("keydown", e => {
+        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+            let focused = currentContent.querySelector(".search-result.focused");
+            if (!focused) {
+                currentContent.querySelector(".search-result").classList.add("focused");
+            } else if (
+                e.key === "ArrowDown"
+                && focused.nextElementSibling
+                && focused.nextElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.nextElementSibling.classList.add("focused");
+                focused.nextElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "ArrowUp"
+                && focused.previousElementSibling
+                && focused.previousElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.previousElementSibling.classList.add("focused");
+                focused.previousElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "Enter"
+            ) {
+                focused.querySelector("a").click();
+            }
+        }
+    });
+</script></body>
+</html>

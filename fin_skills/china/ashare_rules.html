@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 16.0.0"/>
-    <title>fin_skills API documentation</title>
+    <title>fin_skills.china.ashare_rules API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
     <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
@@ -16,7 +16,12 @@
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
         <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
-        <div>
+        <div>            <a class="pdoc-button module-list-button" href="../china.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.china</a>
+
 
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
@@ -26,22 +31,61 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="function" href="#catalog">catalog</a>
+                    <a class="variable" href="#DateLike">DateLike</a>
             </li>
             <li>
-                    <a class="function" href="#load">load</a>
+                    <a class="variable" href="#CHINEXT_20PCT_FROM">CHINEXT_20PCT_FROM</a>
             </li>
             <li>
-                    <a class="function" href="#references">references</a>
+                    <a class="variable" href="#STAR_20PCT_FROM">STAR_20PCT_FROM</a>
             </li>
             <li>
-                    <a class="function" href="#find">find</a>
+                    <a class="variable" href="#BSE_30PCT_FROM">BSE_30PCT_FROM</a>
             </li>
             <li>
-                    <a class="function" href="#names">names</a>
+                    <a class="variable" href="#STAMP_DUTY_HALVED_FROM">STAMP_DUTY_HALVED_FROM</a>
             </li>
             <li>
-                    <a class="variable" href="#__version__">__version__</a>
+                    <a class="variable" href="#TRANSFER_FEE_HALVED_FROM">TRANSFER_FEE_HALVED_FROM</a>
+            </li>
+            <li>
+                    <a class="variable" href="#TICK">TICK</a>
+            </li>
+            <li>
+                    <a class="function" href="#normalise_code">normalise_code</a>
+            </li>
+            <li>
+                    <a class="function" href="#board_of">board_of</a>
+            </li>
+            <li>
+                    <a class="function" href="#is_st">is_st</a>
+            </li>
+            <li>
+                    <a class="function" href="#daily_limit_pct">daily_limit_pct</a>
+            </li>
+            <li>
+                    <a class="function" href="#limit_price">limit_price</a>
+            </li>
+            <li>
+                    <a class="function" href="#explain_buy">explain_buy</a>
+            </li>
+            <li>
+                    <a class="function" href="#can_buy">can_buy</a>
+            </li>
+            <li>
+                    <a class="function" href="#can_sell">can_sell</a>
+            </li>
+            <li>
+                    <a class="function" href="#sellable_qty">sellable_qty</a>
+            </li>
+            <li>
+                    <a class="function" href="#round_trip_cost">round_trip_cost</a>
+            </li>
+            <li>
+                    <a class="function" href="#session_bar_count">session_bar_count</a>
+            </li>
+            <li>
+                    <a class="function" href="#session_index">session_index</a>
             </li>
     </ul>
 
@@ -57,120 +101,379 @@
     <main class="pdoc">
             <section class="module-info">
                     <h1 class="modulename">
-fin_skills    </h1>
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../china.html">china</a><wbr>.ashare_rules    </h1>
 
-                        <div class="docstring"><p>fin-skills - a source-verified knowledge base of the Python quant-finance ecosystem, importable.</p>
+                        <div class="docstring"><p>A-share market rules a Western backtest engine silently gets wrong, as executable code.</p>
 
-<h6 id="two-ways-in">Two ways in:</h6>
+<p>WHY this exists — every one of these is a rule that has no analogue in US equities, so no
+US-built engine (backtrader, vectorbt, zipline, bt, most home-grown loops) models it. The
+backtest fills anyway, and the resulting equity curve is fiction:</p>
+
+<ol>
+<li><strong>Daily price limits (涨跌停)</strong>. Main board +/-10%, ST/*ST +/-5%, ChiNext (300/301) and
+STAR (688) +/-20%, BSE (8/43/87/92) +/-30%. A bar locked at the up limit
+(high == low == limit price) has a queue of buyers and no sellers: you CANNOT buy it.
+A naive engine fills you at the limit price and books the next day's gap as profit.</li>
+<li><strong>The ChiNext limit is date-dependent.</strong> ChiNext was +/-10% until the registration
+reform of <strong>2020-08-24</strong> and +/-20% from that day. A backtest spanning 2019-2021 with
+a hardcoded 20% is wrong for the first half of its own sample.</li>
+<li><strong>T+1 settlement.</strong> Shares bought today cannot be sold today. Intraday round trips on
+the same position are impossible for stocks (the market ticks all day; your inventory
+does not). Any engine that lets a signal buy at 10:00 and sell at 14:00 is trading a
+market that does not exist. (Note the asymmetry: cash from a sale IS reusable the same
+day, and ETFs/T+0 instruments differ.)</li>
+<li><strong>Stamp duty is SELL-SIDE ONLY</strong> (印花税), and its rate <strong>halved from 0.10% to 0.05%
+on 2023-08-28</strong>. Symmetric cost models overstate the buy leg, understate the change,
+and misprice every historical turnover study.</li>
+<li><strong>The lunch break.</strong> 09:30-11:30 and 13:00-15:00 = <strong>240 one-minute bars</strong>, not 390
+and not 330. Resampling with a US session assumption invents ~90 empty bars a day and
+every rolling window silently changes length.</li>
+</ol>
+
+<h6 id="usage">Usage:</h6>
 
 <blockquote>
-  <p>import fin_skills
-  <a href="#catalog">fin_skills.catalog()</a>                          # every skill: name, plugin, description
-  <a href="#load">fin_skills.load</a>("backtest-validation")        # that skill's SKILL.md text
-  <a href="#references">fin_skills.references</a>("options-backtesting")  # {filename: text} for its references/
-  <a href="#find">fin_skills.find</a>("survivorship")               # skills whose description mentions it</p>
+  <p>from ashare_rules import daily_limit_pct, can_buy, sellable_qty, round_trip_cost</p>
   
-  <p>from <a href="fin_skills/core/safe_asof.html">fin_skills.core.safe_asof</a> import safe_asof             # the executable guards
-  from <a href="fin_skills/core/assert_causal.html">fin_skills.core.assert_causal</a> import assert_causal
-  from <a href="fin_skills/futures_fx/fx_conventions.html">fin_skills.futures_fx.fx_conventions</a> import pip_size, carry_return</p>
+  <p>pct = daily_limit_pct("300750", "宁德时代", "2021-06-01")     # 0.20
+  ok  = can_buy({"prev_close": 10.0, "open": 11.0, "high": 11.0,
+                 "low": 11.0, "close": 11.0, "volume": 1_000}, pct)   # False, limit-up</p>
 </blockquote>
-
-<p>The <code>fin_skills.&lt;namespace&gt;</code> modules are generated by scripts/build_package.py from the
-skill scripts under plugins/; the skills remain the source of truth. Namespaces follow the
-plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
-
-<p>Every claim in the skill texts carries a verification date and a marker - see the README.</p>
 </div>
 
                 
                 
                 
             </section>
-                <section id="catalog">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">catalog</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#catalog"></a>
-    
-            <div class="docstring"><p>One entry per skill: name, plugin, description, and what it ships (from catalog/index.json).</p>
-</div>
-
-
-                </section>
-                <section id="load">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">load</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#load"></a>
-    
-            <div class="docstring"><p>The SKILL.md text for one skill, e.g. <a href="#load">fin_skills.load</a>("backtest-validation").</p>
-</div>
-
-
-                </section>
-                <section id="references">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">references</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#references"></a>
-    
-            <div class="docstring"><p>{filename: text} for a skill's references/ directory (empty dict if it has none).</p>
-</div>
-
-
-                </section>
-                <section id="find">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">find</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">terms</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#find"></a>
-    
-            <div class="docstring"><p>Skill names whose SKILL.md mentions every term (case-insensitive).</p>
-</div>
-
-
-                </section>
-                <section id="names">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">names</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#names"></a>
-    
-            <div class="docstring"><p>All skill names, sorted.</p>
-</div>
-
-
-                </section>
-                <section id="__version__">
+                <section id="DateLike">
                     <div class="attr variable">
-            <span class="name">__version__</span>        =
-<span class="default_value">&#39;0.1.0&#39;</span>
+            <span class="name">DateLike</span>        =
+<span class="default_value">str | datetime.date | datetime.datetime | pandas._libs.tslibs.timestamps.Timestamp</span>
 
         
     </div>
-    <a class="headerlink" href="#__version__"></a>
+    <a class="headerlink" href="#DateLike"></a>
     
     
+
+                </section>
+                <section id="CHINEXT_20PCT_FROM">
+                    <div class="attr variable">
+            <span class="name">CHINEXT_20PCT_FROM</span>        =
+<span class="default_value">datetime.date(2020, 8, 24)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CHINEXT_20PCT_FROM"></a>
+    
+    
+
+                </section>
+                <section id="STAR_20PCT_FROM">
+                    <div class="attr variable">
+            <span class="name">STAR_20PCT_FROM</span>        =
+<span class="default_value">datetime.date(2019, 7, 22)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#STAR_20PCT_FROM"></a>
+    
+    
+
+                </section>
+                <section id="BSE_30PCT_FROM">
+                    <div class="attr variable">
+            <span class="name">BSE_30PCT_FROM</span>        =
+<span class="default_value">datetime.date(2021, 11, 15)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BSE_30PCT_FROM"></a>
+    
+    
+
+                </section>
+                <section id="STAMP_DUTY_HALVED_FROM">
+                    <div class="attr variable">
+            <span class="name">STAMP_DUTY_HALVED_FROM</span>        =
+<span class="default_value">datetime.date(2023, 8, 28)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#STAMP_DUTY_HALVED_FROM"></a>
+    
+    
+
+                </section>
+                <section id="TRANSFER_FEE_HALVED_FROM">
+                    <div class="attr variable">
+            <span class="name">TRANSFER_FEE_HALVED_FROM</span>        =
+<span class="default_value">datetime.date(2022, 4, 29)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TRANSFER_FEE_HALVED_FROM"></a>
+    
+    
+
+                </section>
+                <section id="TICK">
+                    <div class="attr variable">
+            <span class="name">TICK</span>        =
+<span class="default_value">Decimal(&#39;0.01&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TICK"></a>
+    
+    
+
+                </section>
+                <section id="normalise_code">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">normalise_code</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">code</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#normalise_code"></a>
+    
+            <div class="docstring"><p>'sh600000', '600000.SH', ' 600000 ' -> '600000'. Raises on anything else.</p>
+</div>
+
+
+                </section>
+                <section id="board_of">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">board_of</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">code</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#board_of"></a>
+    
+            <div class="docstring"><p>Board name — the thing that actually determines the limit, tick and lot rules.</p>
+</div>
+
+
+                </section>
+                <section id="is_st">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_st</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#is_st"></a>
+    
+            <div class="docstring"><p>ST / <em>ST / SST / S</em>ST, matched as a PREFIX.</p>
+
+<p>Prefix-anchored on purpose: a substring search for 'ST' also matches names that merely
+contain those letters, and mislabelling a normal stock as ST halves its limit and
+quietly rejects legitimate fills.</p>
+</div>
+
+
+                </section>
+                <section id="daily_limit_pct">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">daily_limit_pct</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">code</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">days_since_ipo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#daily_limit_pct"></a>
+    
+            <div class="docstring"><p>Daily price-limit as a FRACTION of the previous close (0.10 == +/-10%).</p>
+
+<p>Date-aware because the rules moved:</p>
+
+<ul>
+<li>ChiNext 300/301: 10% before 2020-08-24, 20% from that date.</li>
+<li>STAR 688/689: 20% since launch.</li>
+<li>BSE 4/8/92: 30%.</li>
+<li>Main board &amp; B-shares: 10%, or 5% when the name carries an ST marker.</li>
+</ul>
+
+<p>ST only halves the limit on the MAIN BOARD. ChiNext and STAR keep their 20% band for
+ST-designated names — a detail that costs you every ST fill on those boards if you
+apply the 5% rule everywhere.</p>
+
+<p><code>days_since_ipo</code> (trading days, 0 = listing day) applies the no-price-limit window for
+the registration-based boards: the first 5 trading days have NO limit and return
+<code>math.inf</code>. The main board's own IPO-day band (+44%/-36% historically, and the 2023
+registration reform's own window) is deliberately NOT modelled here — verify it against
+the exchange rulebook for your sample rather than trusting a default.</p>
+</div>
+
+
+                </section>
+                <section id="limit_price">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">limit_price</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">prev_close</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">limit_pct</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">side</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'up'</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#limit_price"></a>
+    
+            <div class="docstring"><p>Limit price rounded to the 0.01 tick with ROUND_HALF_UP (the exchange's rule).</p>
+
+<p>Python's <code>round()</code> is banker's rounding: round(10.555, 2) == 10.55, while the exchange
+publishes 10.56. One tick sounds harmless until your <code>high == limit_price</code> test fails
+on exactly the bars you were trying to detect.</p>
+</div>
+
+
+                </section>
+                <section id="explain_buy">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">explain_buy</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">bar</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>, </span><span class="param"><span class="n">limit_pct</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#explain_buy"></a>
+    
+            <div class="docstring"><p>(can_buy, reason). The reason is what you log when a signal does not become a fill.</p>
+</div>
+
+
+                </section>
+                <section id="can_buy">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">can_buy</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">bar</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>, </span><span class="param"><span class="n">limit_pct</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#can_buy"></a>
+    
+            <div class="docstring"><p>False when volume is 0, the bar is suspended, or it is locked at the UP limit.</p>
+
+<p>Asymmetric on purpose: a bar locked at the DOWN limit is buyable (sellers are queued;
+you are the liquidity they want) — it is SELLING that is impossible there. <code><a href="#can_sell">can_sell</a></code>
+is the mirror image.</p>
+</div>
+
+
+                </section>
+                <section id="can_sell">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">can_sell</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">bar</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>, </span><span class="param"><span class="n">limit_pct</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#can_sell"></a>
+    
+            <div class="docstring"><p>Mirror of <code><a href="#can_buy">can_buy</a></code>: a bar locked at the DOWN limit cannot be sold into.</p>
+</div>
+
+
+                </section>
+                <section id="sellable_qty">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">sellable_qty</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">lots</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span>,</span><span class="param">	<span class="n">today</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#sellable_qty"></a>
+    
+            <div class="docstring"><p>T+1: only shares bought on a STRICTLY EARLIER trading day are sellable today.</p>
+
+<p><code>lots</code> are open buy lots — mappings with 'qty' and 'date', or (date, qty) pairs.</p>
+
+<p>This is the rule that deletes most intraday A-share "strategies": the signal that buys
+the morning dip and sells the afternoon pop cannot be executed at all, and a backtest
+that executes it is measuring a market that has never existed.</p>
+</div>
+
+
+                </section>
+                <section id="round_trip_cost">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">round_trip_cost</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">buy_price</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">sell_price</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">buy_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span>,</span><span class="param">	<span class="n">sell_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">commission_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.00025</span>,</span><span class="param">	<span class="n">min_commission</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#round_trip_cost"></a>
+    
+            <div class="docstring"><p>Full round-trip cost with SELL-SIDE-ONLY stamp duty and date-keyed rates.</p>
+
+<h6 id="line-items">Line items:</h6>
+
+<blockquote>
+  <ul>
+  <li>佣金 commission — both sides, broker-set (retail ~0.025%, exchange cap 0.3%), with
+  a <strong>RMB 5 minimum per side</strong> that dominates small tickets. The exchange handling
+  and regulatory fees (经手费, 证管费) are collected inside this and are not itemised
+  separately here to avoid double counting.</li>
+  <li>印花税 stamp duty — <strong>SELL SIDE ONLY</strong>. 0.10% until 2023-08-27, <strong>0.05% from
+  2023-08-28</strong>. Keyed on the SELL date, because that is when it is levied.</li>
+  <li>过户费 transfer fee — both sides, 0.002% until 2022-04-28, 0.001% from 2022-04-29.</li>
+  </ul>
+</blockquote>
+
+<p>The asymmetry is the point: a symmetric bps model prices the buy leg too high and the
+sell leg too low, so it cannot rank a high-turnover strategy correctly and it cannot
+see the 2023 stamp-duty cut at all.</p>
+</div>
+
+
+                </section>
+                <section id="session_bar_count">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">session_bar_count</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">freq_minutes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#session_bar_count"></a>
+    
+            <div class="docstring"><p>Intraday bars in one A-share session. 240 at 1-minute, lunch break EXCLUDED.</p>
+
+<p>09:30-11:30 (120 min) + 13:00-15:00 (120 min) = 240 minutes of continuous auction.
+The 09:15-09:25 opening call auction is outside this; the 14:57-15:00 closing call
+auction on Shenzhen falls inside the final bar.</p>
+
+<p>Raises for a frequency that does not divide 120: a 45-minute bar cannot exist here,
+because it would have to straddle the lunch break. Generic resamplers produce one
+anyway — that bar mixes 11:30 and 13:00 prices and its volume is nonsense.</p>
+</div>
+
+
+                </section>
+                <section id="session_index">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">session_index</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">day</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span>,</span><span class="param">	<span class="n">freq_minutes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#session_index"></a>
+    
+            <div class="docstring"><p>Bar-CLOSE timestamps for one session, with the lunch break absent.</p>
+
+<p>Labelled by bar close (09:31, ..., 11:30, 13:01, ..., 15:00) because that is what
+Chinese data vendors ship — the opposite of the US bar-open convention. Mixing the two
+shifts every signal by one bar in the direction of look-ahead.</p>
+</div>
+
 
                 </section>
     </main>
@@ -226,7 +529,7 @@ plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
                 script.async = true;
                 script.onload = () => resolve(window.pdocSearch);
                 script.onerror = (e) => reject(e);
-                script.src = "search.js";
+                script.src = "../../search.js";
                 document.getElementsByTagName("head")[0].appendChild(script);
             });
         } catch (e) {
@@ -268,7 +571,7 @@ plugins: core, libraries, china, asia, futures_fx, crypto, llm.</p>
             }
             for (let result of results.slice(0, 10)) {
                 let doc = result.doc;
-                let url = `${doc.modulename.replaceAll(".", "/")}.html`;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
                 if (doc.qualname) {
                     url += `#${doc.qualname}`;
                 }
