@@ -213,6 +213,7 @@ everything below is about which paid source to buy.
 | **CBOE DataShop** | 2012-01 | paid add-on, not default | 🚨 **Methodology break 2026-06-22** — quote sizes now captured at last price change; silently discontinuous against earlier data. Open-Close is **Cboe exchanges only, not consolidated OPRA** |
 | **OptionMetrics / IvyDB** | 1996-01 | ✅ + constant-maturity surface | ⚠️ Negotiated pricing; WRDS is the practical route |
 | **Databento** OPRA | 🚨 **two dates**: quotes 2023-03-28, trades 2013-04-01 | ❌ you compute both | ⚠️ Never quote it as one history depth |
+| **DoltHub** `post-no-preference/options` (free) | ⚠️ unverified | ✅ IV + delta, gamma, theta, vega, rho | ✅ **Schema fetched 2026-09-05** via the SQL API (default branch is `master`, not `main`): `date, act_symbol, expiration, strike, call_put, bid, ask, vol, delta, gamma, theta, vega, rho`. **No open interest. No volume.** `vol` is `decimal(5,4)` — four decimals, capped at 9.9999 — so it is implied volatility, not volume. Without OI or volume you cannot reject illiquid strikes, which §6 says you must. **Not usable for a backtest that filters on liquidity.** |
 
 🚨 **Polygon.io is now Massive** (renamed 2025-10-30). ⚠️ Most third-party pages describing its
 options tiers and history depth contradict the vendor's own pricing page — check the source, not a

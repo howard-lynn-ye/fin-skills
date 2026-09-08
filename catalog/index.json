@@ -289,8 +289,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 20164,
-      "approx_body_tokens": 5041,
+      "body_chars": 20733,
+      "approx_body_tokens": 5183,
       "references": [
         "_reverify.md"
       ],
