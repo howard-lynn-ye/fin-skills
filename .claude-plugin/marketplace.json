@@ -226,7 +226,13 @@
         "kelly",
         "position-sizing"
       ],
-      "skills": []
+      "skills": [
+        "./skills/alpha-combination-and-neutralization",
+        "./skills/execution-algorithms",
+        "./skills/market-making-models",
+        "./skills/position-sizing-kelly",
+        "./skills/trend-following-models"
+      ]
     },
     {
       "name": "trading-skills",
