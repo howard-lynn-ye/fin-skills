@@ -201,12 +201,14 @@ def json_type_of(guard: type[Guard] | Guard, keyword: str) -> tuple[dict[str, An
 _INPUT_LINE = re.compile(r"^(\s+)(\w+)\s*:\s*(.*)$")
 
 
-def input_docs(guard: type[Guard] | Guard) -> dict[str, str]:
+def input_docs(guard: type[Guard] | Guard | str) -> dict[str, str]:
     """{input: one-line description} parsed from the `Inputs` block of the class docstring.
 
     Every guard writes that block; it is the only per-argument prose in the library, and
     copying it into a schema by hand is exactly the duplicate this module exists to avoid.
     """
+    if isinstance(guard, str):
+        guard = {c.name: c for c in registry()}[guard]
     cls = guard if isinstance(guard, type) else type(guard)
     doc = cls.__doc__ or ""
     lines = doc.splitlines()
