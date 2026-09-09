@@ -67,7 +67,7 @@ the validator checks for that specifically.
 ## Testing
 
 `python -m pytest -q` runs the unit-test suite under `tests/` - one module per generated skill
-script plus the `fin_skills.api` layer (over 500 tests; slow demo paths are marked `slow` and
+script plus the `fin_skills.api` layer (over 1,600 tests; slow demo paths are marked `slow` and
 deselected by default, `-m slow` runs them). Tests import the GENERATED package, so after editing
 a plugin script run `build_package.py` before the tests can see the change. Library-specific
 tests skip when the library is absent. Beyond the unit tests, verification is:
