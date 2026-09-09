@@ -78,6 +78,14 @@ def import_report(tmp_path_factory):
     cwd.mkdir()
     report = base / "report.json"
     env = {k: v for k, v in os.environ.items() if k != "PYTHONIOENCODING"}
+    # The probe runs from an empty cwd, so nothing puts THIS checkout on its sys.path. Without
+    # the line below it imports whatever `fin_skills` the interpreter finds - and an editable
+    # install (pip install -e) points at the tree it was installed from, which in a git
+    # worktree is a DIFFERENT checkout. The probe then reports on modules that are not the
+    # ones these tests enumerated: a module added in a worktree shows up as ModuleNotFoundError
+    # and one deleted there still passes. Pin it to the package the rest of the file is about.
+    env["PYTHONPATH"] = os.pathsep.join(
+        [str(PACKAGE_ROOT.parent), *([env["PYTHONPATH"]] if env.get("PYTHONPATH") else [])])
     cmd = [sys.executable, str(TESTS_DIR / "_import_probe.py"), str(report),
            str(PACKAGE_ROOT), *MODULES]
     proc = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, text=True,
