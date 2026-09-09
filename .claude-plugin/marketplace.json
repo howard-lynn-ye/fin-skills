@@ -212,7 +212,11 @@
         "./skills/option-pricing-models",
         "./skills/portfolio-optimizers",
         "./skills/risk-measures-var-cvar",
-        "./skills/term-structure-models"
+        "./skills/stat-arb-cointegration",
+        "./skills/state-space-and-kalman",
+        "./skills/term-structure-models",
+        "./skills/time-series-forecasting-models",
+        "./skills/volatility-models"
       ]
     },
     {

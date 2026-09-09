@@ -1,0 +1,499 @@
+#!/usr/bin/env python3
+"""Engle-Granger, Johansen, the OU half-life and a z-score spread - and how many random walks pass.
+
+A pairs screen is a multiple-testing machine. Among N independent random walks there are
+N(N-1)/2 pairs, and at a 5 % test about one in twenty of them "cointegrates". The pair that
+passes then gets a hedge ratio estimated on the screening window, a z-score whose mean and
+standard deviation come from the same window, and a backtest on that window: a residual from a
+fitted regression oscillates around zero BY CONSTRUCTION, so the in-sample spread trade looks
+profitable whether or not the pair is real. This script measures both traps with seeds:
+
+  1. the Engle-Granger two-step test, implemented here without any ADF table: the second-stage
+     t-statistic is compared with critical values simulated under the null of two independent
+     random walks. The statistic matches statsmodels' `coint` exactly and the simulated 5 %
+     value is compared with MacKinnon's (which `coint` returns);
+  2. how many of the 190 pairs among 20 random walks pass at 5 % - under the right critical
+     value, and under the ordinary ADF critical value people apply to the residual by mistake;
+  3. the in-sample z-score Sharpe of those false pairs against the next 250 days;
+  4. on a genuinely cointegrated pair, the Sharpe with the hedge ratio and z-score estimated on
+     the window they are traded in, against a rolling out-of-sample version;
+  5. Johansen (statsmodels `coint_johansen`) on both kinds of pair, with the critical-value
+     table it returns, and the OU half-life from an AR(1) fit - including the finite half-life
+     a pure random walk reports.
+
+Run:  python cointegration.py     (numpy; statsmodels optional; fixed seeds; ~5 s)
+"""
+from __future__ import annotations
+
+import math
+import time
+import warnings
+
+import numpy as np
+
+SEED = 0
+PERIODS = 252
+N_SERIES = 20
+T_SCREEN = 500           # observations used for the screen
+T_OOS = 250              # observations after the screen, traded with the screen's estimates
+ALPHA_LEVEL = 0.05
+EG_LAGS = 1              # augmentation lags in the second stage (fixed, so the statistic is reproducible)
+MC_SIMS = 2000
+# The genuinely cointegrated pair: y = 10 + BETA_TRUE x + s, s an OU spread.
+BETA_TRUE = 0.8
+PHI_TRUE = 0.95          # AR(1) coefficient of the spread -> half-life ln 2 / -ln(0.95) = 13.5 days
+T_PAIR = 1000
+IN_SAMPLE = 500
+HEDGE_WINDOW = 250
+Z_WINDOW = 60
+ENTRY, EXIT = 2.0, 0.5
+
+
+# ----------------------------------------------------------------------------- data ---------
+def random_walks(n_obs: int, n_series: int, seed: int = SEED, start: float = 100.0) -> np.ndarray:
+    rng = np.random.default_rng(seed)
+    return start + np.cumsum(rng.standard_normal((n_obs, n_series)), axis=0)
+
+
+def cointegrated_pair(n_obs: int = T_PAIR, seed: int = SEED, beta: float = BETA_TRUE,
+                      phi: float = PHI_TRUE, sig_spread: float = 1.0) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """x a random walk, y = 10 + beta x + s with s_t = phi s_{t-1} + e_t. Returns (y, x, s)."""
+    rng = np.random.default_rng(seed)
+    x = 100.0 + np.cumsum(rng.standard_normal(n_obs))
+    s = np.empty(n_obs)
+    s[0] = rng.normal(0.0, sig_spread / math.sqrt(1.0 - phi ** 2))
+    e = rng.normal(0.0, sig_spread, n_obs)
+    for t in range(1, n_obs):
+        s[t] = phi * s[t - 1] + e[t]
+    return 10.0 + beta * x + s, x, s
+
+
+# ----------------------------------------------------------------------------- tests --------
+def ols_hedge(y: np.ndarray, x: np.ndarray) -> tuple[float, float, np.ndarray]:
+    """y = alpha + beta x + u by OLS. Returns (alpha, beta, u)."""
+    y, x = np.asarray(y, dtype=float), np.asarray(x, dtype=float)
+    X = np.column_stack([np.ones_like(x), x])
+    coef, *_ = np.linalg.lstsq(X, y, rcond=None)
+    return float(coef[0]), float(coef[1]), y - X @ coef
+
+
+def adf_tstat(u: np.ndarray, lags: int = EG_LAGS, trend: str = "n") -> float:
+    """t-statistic of rho in  du_t = [c +] rho u_{t-1} + sum_{j=1..lags} phi_j du_{t-j} + e_t.
+
+    trend="n" (no constant) is the regression statsmodels' `coint` runs on the first-stage
+    residual - ✅ source-verified: `adfuller(res_co.resid, maxlag=maxlag, autolag=autolag,
+    regression="n")` in statsmodels/tsa/stattools/_stattools.py::coint. trend="c" is what
+    `adfuller`'s own default does, and it is the wrong regression AND the wrong table for a
+    fitted residual; the demo measures how wrong.
+    """
+    u = np.asarray(u, dtype=float)
+    du = np.diff(u)
+    n = len(du) - lags
+    if n < 10:
+        raise ValueError("series too short for the requested lags")
+    if trend not in ("n", "c"):
+        raise ValueError("trend must be 'n' or 'c'")
+    y = du[lags:]
+    cols = [u[lags:-1]]
+    for j in range(1, lags + 1):
+        cols.append(du[lags - j: len(du) - j])
+    if trend == "c":
+        cols.append(np.ones(n))
+    X = np.column_stack(cols)
+    coef, rss, *_ = np.linalg.lstsq(X, y, rcond=None)
+    resid = y - X @ coef
+    s2 = float(resid @ resid) / (n - X.shape[1])
+    se = math.sqrt(s2 * np.linalg.inv(X.T @ X)[0, 0])
+    return float(coef[0] / se)
+
+
+def engle_granger_tstat(y: np.ndarray, x: np.ndarray, lags: int = EG_LAGS) -> tuple[float, float]:
+    """Two steps: OLS of y on x with a constant, then the ADF-type t-statistic on the residual.
+    Returns (t-statistic, hedge ratio)."""
+    _, beta, u = ols_hedge(y, x)
+    return adf_tstat(u, lags), beta
+
+
+def mc_critical_values(n_obs: int, lags: int = EG_LAGS, sims: int = MC_SIMS, seed: int = SEED,
+                       levels=(0.01, 0.05, 0.10)) -> dict:
+    """Critical values of the Engle-Granger t-statistic under the null of two INDEPENDENT random
+    walks of length n_obs, from `sims` simulated pairs. No ADF table involved; the only inputs
+    are the null hypothesis and the sample size."""
+    rng = np.random.default_rng(seed)
+    stats = np.empty(sims)
+    stats_c = np.empty(sims)
+    for i in range(sims):
+        w = 100.0 + np.cumsum(rng.standard_normal((n_obs, 2)), axis=0)
+        _, _, u = ols_hedge(w[:, 0], w[:, 1])
+        stats[i] = adf_tstat(u, lags, trend="n")     # what `coint` computes
+        stats_c[i] = adf_tstat(u, lags, trend="c")   # what `adfuller(resid)` computes by default
+    return {"levels": levels, "critical_values": np.quantile(stats, levels), "stats": stats,
+            "stats_with_constant": stats_c,
+            "critical_values_c": np.quantile(stats_c, levels)}
+
+
+def statsmodels_coint(y: np.ndarray, x: np.ndarray, lags: int = EG_LAGS) -> dict | None:
+    """statsmodels' `coint(y, x, trend="c", autolag=None, maxlag=lags)`; None if not installed."""
+    try:
+        from statsmodels.tsa.stattools import coint
+    except ImportError:
+        return None
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        t, p, crit = coint(y, x, trend="c", autolag=None, maxlag=lags)
+    return {"t": float(t), "p": float(p), "crit": np.asarray(crit, dtype=float)}
+
+
+def coint_defaults_probe(y: np.ndarray, x: np.ndarray, lags: int = EG_LAGS) -> dict | None:
+    """Two documented behaviours of `coint` that change the answer without changing the data.
+
+    * `autolag` defaults to "aic" (the docstring notes it was `None` in statsmodels 0.8), so the
+      default statistic depends on a lag search over the residual.
+    * ✅ source-verified: when `res_co.rsquared >= 1 - 100 * SQRTEPS` the function skips the ADF
+      entirely, emits `CollinearityWarning` and returns `(-inf, 0.0, ...)`. Two series that are
+      near-copies of each other therefore "cointegrate" with a p-value of exactly zero.
+    """
+    try:
+        from statsmodels.tsa.stattools import coint
+    except ImportError:
+        return None
+    out = {}
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        t_a, p_a, _ = coint(y, x, trend="c")                                # autolag="aic"
+        t_f, p_f, _ = coint(y, x, trend="c", autolag=None, maxlag=lags)
+        _, _, crit_c = coint(y, x, trend="c", autolag=None, maxlag=lags)
+        t_n, p_n, crit_n = coint(y, x, trend="n", autolag=None, maxlag=lags)
+    out["t_autolag"], out["p_autolag"] = float(t_a), float(p_a)
+    out["t_fixed"], out["p_fixed"] = float(t_f), float(p_f)
+    out["crit_c"] = np.asarray(crit_c, dtype=float)
+    out["trend_n_crit_all_nan"] = bool(np.all(np.isnan(np.asarray(crit_n, dtype=float))))
+    out["t_trend_n"], out["p_trend_n"] = float(t_n), float(p_n)
+
+    rng = np.random.default_rng(SEED)
+    twin = 1.0001 * np.asarray(y, dtype=float) + rng.normal(0.0, 1e-9, len(y))
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        t_c, p_c, _ = coint(np.asarray(y, dtype=float), twin, trend="c")
+    out["twin_t"], out["twin_p"] = float(t_c), float(p_c)
+    out["twin_warning"] = caught[0].category.__name__ if caught else ""
+    return out
+
+
+def adf_pvalue_on_residual(u: np.ndarray, lags: int = EG_LAGS) -> float | None:
+    """The common MISTAKE: `adfuller` on the residual with its own (single-series) critical
+    values, which do not account for the residual having been fitted."""
+    try:
+        from statsmodels.tsa.stattools import adfuller
+    except ImportError:
+        return None
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        return float(adfuller(u, maxlag=lags, autolag=None, regression="c")[1])
+
+
+def screen_pairs(P: np.ndarray, cv5: float, lags: int = EG_LAGS) -> list[dict]:
+    """Every pair (i < j): the Engle-Granger t-statistic, whether it passes at the simulated 5 %
+    value, statsmodels' p-value, and the (wrong) ADF-on-residual p-value."""
+    n_obs, n = P.shape
+    out = []
+    for i in range(n):
+        for j in range(i + 1, n):
+            t, beta = engle_granger_tstat(P[:, i], P[:, j], lags)
+            rec = {"i": i, "j": j, "t": t, "beta": beta, "pass_mc": bool(t < cv5)}
+            sm = statsmodels_coint(P[:, i], P[:, j], lags)
+            if sm is not None:
+                rec["t_sm"] = sm["t"]
+                rec["p_sm"] = sm["p"]
+                rec["pass_sm"] = bool(sm["p"] < ALPHA_LEVEL)
+                _, _, u = ols_hedge(P[:, i], P[:, j])
+                p_adf = adf_pvalue_on_residual(u, lags)
+                rec["pass_adf_wrong"] = bool(p_adf < ALPHA_LEVEL)
+            out.append(rec)
+    return out
+
+
+def half_life(s: np.ndarray) -> dict[str, float]:
+    """AR(1) on the spread: ds_t = a + b s_{t-1} + e. Half-life = -ln 2 / ln(1 + b) (exact for the
+    discrete AR(1)); -ln 2 / b is the continuous-time OU approximation."""
+    s = np.asarray(s, dtype=float)
+    ds, lag = np.diff(s), s[:-1]
+    X = np.column_stack([np.ones_like(lag), lag])
+    coef, *_ = np.linalg.lstsq(X, ds, rcond=None)
+    resid = ds - X @ coef
+    s2 = float(resid @ resid) / (len(ds) - 2)
+    se_b = math.sqrt(s2 * np.linalg.inv(X.T @ X)[1, 1])
+    b = float(coef[1])
+    hl = -math.log(2.0) / math.log(1.0 + b) if -1.0 < b < 0.0 else float("inf")
+    hl_ou = -math.log(2.0) / b if b < 0.0 else float("inf")
+    # se_b is exactly zero on a perfectly fitted (deterministic) series; report nan rather than
+    # raising, so a degenerate leg does not take the screen down.
+    t_stat = b / se_b if se_b > 0.0 else float("nan")
+    return {"b": b, "t_stat": t_stat, "phi": 1.0 + b, "half_life": hl, "half_life_ou": hl_ou}
+
+
+def johansen(y: np.ndarray, x: np.ndarray, det_order: int = 0, k_ar_diff: int = 1) -> dict | None:
+    """statsmodels `coint_johansen(endog, det_order, k_ar_diff)` on [y, x]; None if absent.
+    Returns the trace / max-eigenvalue statistics with their 90/95/99 % critical values and the
+    hedge ratio implied by the first cointegrating vector."""
+    try:
+        from statsmodels.tsa.vector_ar.vecm import coint_johansen
+    except ImportError:
+        return None
+    endog = np.column_stack([y, x])
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        res = coint_johansen(endog, det_order, k_ar_diff)
+    vec = res.evec[:, 0]
+    return {"trace": np.asarray(res.lr1), "trace_cv": np.asarray(res.cvt),
+            "max_eig": np.asarray(res.lr2), "max_eig_cv": np.asarray(res.cvm),
+            "eig": np.asarray(res.eig), "hedge_ratio": float(-vec[1] / vec[0]),
+            "rank_at_95": int(np.sum(np.asarray(res.lr1) > np.asarray(res.cvt)[:, 1]))}
+
+
+# ----------------------------------------------------------------------------- strategy -----
+def zscore_positions(z: np.ndarray, entry: float = ENTRY, exit_: float = EXIT) -> np.ndarray:
+    """Short the spread above +entry, long below -entry, flat inside +-exit. pos[t] is decided
+    with z[t] and held over t -> t+1. NaN z means flat."""
+    z = np.asarray(z, dtype=float)
+    pos = np.zeros(len(z))
+    p = 0.0
+    for t in range(len(z)):
+        zt = z[t]
+        if not np.isfinite(zt):
+            p = 0.0
+        elif p == 0.0:
+            if zt > entry:
+                p = -1.0
+            elif zt < -entry:
+                p = 1.0
+        elif p < 0.0 and zt < exit_:
+            p = 0.0
+        elif p > 0.0 and zt > -exit_:
+            p = 0.0
+        pos[t] = p
+    return pos
+
+
+def spread_pnl(y: np.ndarray, x: np.ndarray, beta: np.ndarray, pos: np.ndarray) -> np.ndarray:
+    """pnl[t+1] = pos[t] * ((y[t+1] - y[t]) - beta[t] (x[t+1] - x[t])): the hedge ratio and the
+    position in force at t earn the next day's move. pnl[0] = 0."""
+    y, x, beta, pos = (np.asarray(a, dtype=float) for a in (y, x, beta, pos))
+    pnl = np.zeros(len(y))
+    pnl[1:] = pos[:-1] * (np.diff(y) - beta[:-1] * np.diff(x))
+    return pnl
+
+
+def sharpe(pnl: np.ndarray, periods: int = PERIODS) -> float:
+    pnl = np.asarray(pnl, dtype=float)
+    sd = pnl.std(ddof=1)
+    return float(pnl.mean() / sd * math.sqrt(periods)) if sd > 0 else float("nan")
+
+
+def n_trades(pos: np.ndarray) -> int:
+    """Position changes, counting an entry on the first day (the book starts flat)."""
+    return int((np.diff(np.r_[0.0, np.asarray(pos, dtype=float)]) != 0).sum())
+
+
+def in_sample_strategy(y: np.ndarray, x: np.ndarray) -> dict:
+    """Hedge ratio, spread mean and sd all from the SAME window the strategy is scored on."""
+    _, beta, u = ols_hedge(y, x)
+    z = (u - u.mean()) / u.std(ddof=1)
+    pos = zscore_positions(z)
+    pnl = spread_pnl(y, x, np.full(len(y), beta), pos)
+    return {"beta": beta, "mu": float(u.mean()), "sd": float(u.std(ddof=1)), "pnl": pnl,
+            "sharpe": sharpe(pnl[1:]), "n_trades": n_trades(pos)}
+
+
+def frozen_strategy(y: np.ndarray, x: np.ndarray, beta: float, mu: float, sd: float) -> dict:
+    """The in-sample estimates applied unchanged to a NEW window."""
+    u = y - beta * x
+    z = (u - mu) / sd
+    pos = zscore_positions(z)
+    pnl = spread_pnl(y, x, np.full(len(y), beta), pos)
+    return {"pnl": pnl, "sharpe": sharpe(pnl[1:]), "n_trades": n_trades(pos),
+            "in_market": float(np.mean(pos != 0.0)), "z_first": float(z[0]),
+            "z_last": float(z[-1]), "z_abs_min": float(np.abs(z).min())}
+
+
+def rolling_strategy(y: np.ndarray, x: np.ndarray, hedge_window: int = HEDGE_WINDOW,
+                     z_window: int = Z_WINDOW, beta_fixed: float | None = None) -> dict:
+    """At each t: hedge ratio from OLS on the trailing `hedge_window` observations ending at t
+    (or `beta_fixed`), z from the trailing `z_window` spread values computed with that hedge
+    ratio. Position decided at t, earns t -> t+1. Nothing uses data after t."""
+    y, x = np.asarray(y, dtype=float), np.asarray(x, dtype=float)
+    n = len(y)
+    beta = np.full(n, np.nan)
+    z = np.full(n, np.nan)
+    start = max(hedge_window, z_window) - 1 if beta_fixed is None else z_window - 1
+    for t in range(start, n):
+        if beta_fixed is None:
+            _, b, _ = ols_hedge(y[t - hedge_window + 1: t + 1], x[t - hedge_window + 1: t + 1])
+        else:
+            b = beta_fixed
+        beta[t] = b
+        s = y[t - z_window + 1: t + 1] - b * x[t - z_window + 1: t + 1]
+        sd = s.std(ddof=1)
+        z[t] = (s[-1] - s.mean()) / sd if sd > 0 else np.nan
+    pos = zscore_positions(z)
+    beta_used = np.where(np.isfinite(beta), beta, 0.0)
+    pnl = spread_pnl(y, x, beta_used, pos)
+    return {"beta": beta, "z": z, "pos": pos, "pnl": pnl, "start": start}
+
+
+# ----------------------------------------------------------------------------- demo --------
+if __name__ == "__main__":
+    t_all = time.time()
+    try:
+        import statsmodels
+        sm_ver = statsmodels.__version__
+    except ImportError:
+        sm_ver = "NOT INSTALLED"
+    print(f"statsmodels {sm_ver}, numpy {np.__version__}; seed {SEED}")
+
+    # ---- 1. The test without a table ------------------------------------------------------
+    mc = mc_critical_values(T_SCREEN, EG_LAGS, MC_SIMS, SEED)
+    cv1, cv5, cv10 = mc["critical_values"]
+    print(f"\n=== 1. Engle-Granger critical values from {MC_SIMS} simulated pairs of independent random"
+          f" walks, T={T_SCREEN}, {EG_LAGS} augmentation lag ===")
+    print(f"  simulated 1 % / 5 % / 10 %: {cv1:.3f} / {cv5:.3f} / {cv10:.3f}")
+    y_c, x_c, s_c = cointegrated_pair(T_PAIR, SEED)
+    t_own, beta_own = engle_granger_tstat(y_c[:T_SCREEN], x_c[:T_SCREEN])
+    sm = statsmodels_coint(y_c[:T_SCREEN], x_c[:T_SCREEN])
+    if sm is not None:
+        print(f"  statsmodels coint(trend='c', autolag=None, maxlag={EG_LAGS}) on the cointegrated pair:"
+              f" t={sm['t']:.6f} p={sm['p']:.2e}; own t={t_own:.6f}; |diff| {abs(sm['t'] - t_own):.1e}")
+        print(f"  statsmodels' MacKinnon (2010) 1 % / 5 % / 10 %: {sm['crit'][0]:.3f} / {sm['crit'][1]:.3f}"
+              f" / {sm['crit'][2]:.3f}   (simulated minus MacKinnon at 5 %: {cv5 - sm['crit'][1]:+.3f})")
+        print(f"  size of MacKinnon's 5 % value on this T and lag: it rejects"
+              f" {np.mean(mc['stats'] < sm['crit'][1]):.1%} of the {MC_SIMS} simulated null pairs")
+        try:
+            from statsmodels.tsa.adfvalues import mackinnoncrit
+            adf_cv5 = float(mackinnoncrit(N=1, regression="c", nobs=T_SCREEN - 1)[1])
+            print(f"  the WRONG table: adfuller's own single-series 5 % value (N=1, constant) is"
+                  f" {adf_cv5:.3f}, and the adfuller-style statistic (with a constant) on the same"
+                  f" fitted residuals falls below it in {np.mean(mc['stats_with_constant'] < adf_cv5):.1%}"
+                  f" of null pairs instead of 5 %")
+            print(f"     (that statistic's own simulated 5 % value is {mc['critical_values_c'][1]:.3f}:"
+                  f" fitting the hedge ratio first moves the null distribution by"
+                  f" {mc['critical_values_c'][1] - adf_cv5:+.3f})")
+        except ImportError:
+            pass
+        probe = coint_defaults_probe(y_c[:T_SCREEN], x_c[:T_SCREEN])
+        print(f"  coint defaults: autolag='aic' gives t={probe['t_autolag']:.4f} p={probe['p_autolag']:.2e};"
+              f" autolag=None, maxlag={EG_LAGS} gives t={probe['t_fixed']:.4f} p={probe['p_fixed']:.2e}"
+              f" - same data, different answer")
+        print(f"  trend='n' returns critical values that are all NaN: {probe['trend_n_crit_all_nan']}"
+              f" (the source says the 2010 values are not available for it), while the p-value"
+              f" {probe['p_trend_n']:.2e} is still returned")
+        print(f"  a series against a near-copy of itself: t={probe['twin_t']}, p={probe['twin_p']}"
+              f", warning {probe['twin_warning'] or 'none'} - coint short-circuits on"
+              f" rsquared >= 1 - 100*sqrt(eps) and never runs the ADF")
+    else:
+        print(f"  own Engle-Granger t on the cointegrated pair: {t_own:.4f} (statsmodels not installed)")
+
+    # ---- 2. The screen -----------------------------------------------------------------------
+    P = random_walks(T_SCREEN + T_OOS, N_SERIES, SEED)
+    recs = screen_pairs(P[:T_SCREEN], cv5)
+    n_pairs = len(recs)
+    n_mc = sum(r["pass_mc"] for r in recs)
+    print(f"\n=== 2. {N_SERIES} independent random walks, {n_pairs} pairs, T={T_SCREEN} ===")
+    print(f"  pass at the simulated 5 % value ({cv5:.3f}): {n_mc} pairs ({n_mc / n_pairs:.1%};"
+          f" expected {ALPHA_LEVEL * n_pairs:.1f})")
+    if "pass_sm" in recs[0]:
+        n_sm = sum(r["pass_sm"] for r in recs)
+        n_adf = sum(r["pass_adf_wrong"] for r in recs)
+        print(f"  pass statsmodels coint p < 0.05: {n_sm} pairs; pass adfuller-on-the-residual p < 0.05"
+              f" (the wrong table): {n_adf} pairs")
+        print(f"  max |own t - statsmodels t| over all pairs: {max(abs(r['t'] - r['t_sm']) for r in recs):.1e}")
+    passing = [r for r in recs if r["pass_mc"]]
+    hls = [half_life(ols_hedge(P[:T_SCREEN, r["i"]], P[:T_SCREEN, r["j"]])[2])["half_life"] for r in recs]
+    hls = np.array(hls)
+    print(f"  AR(1) half-life of the residual, ALL {n_pairs} random-walk pairs: median {np.median(hls):.0f} d,"
+          f" finite in {np.isfinite(hls).mean():.0%} of pairs; among the {len(passing)} passing pairs:"
+          f" median {np.median([hls[k] for k, r in enumerate(recs) if r['pass_mc']]):.0f} d")
+
+    # ---- 3. The false pairs, traded ---------------------------------------------------------
+    print(f"\n=== 3. The {len(passing)} passing pairs, traded: z-score entry {ENTRY} / exit {EXIT} ===")
+    ins, oos = [], []
+    for r in passing:
+        yi, xj = P[:, r["i"]], P[:, r["j"]]
+        a = in_sample_strategy(yi[:T_SCREEN], xj[:T_SCREEN])
+        b = frozen_strategy(yi[T_SCREEN:], xj[T_SCREEN:], a["beta"], a["mu"], a["sd"])
+        ins.append(a["sharpe"])
+        oos.append(b["sharpe"])
+        print(f"  pair ({r['i']:2d},{r['j']:2d}) t={r['t']:.2f}  in-sample Sharpe {a['sharpe']:6.2f}"
+              f" ({a['n_trades']:2d} trades)   next {T_OOS} days, same beta/mean/sd: {b['sharpe']:6.2f}"
+              f" ({b['n_trades']:2d} trades, {b['in_market']:.0%} in market,"
+              f" |z| never below {b['z_abs_min']:.2f})")
+    ins, oos = np.array(ins), np.array(oos)
+    mkt = np.array([frozen_strategy(P[T_SCREEN:, r["i"]], P[T_SCREEN:, r["j"]],
+                                    *(in_sample_strategy(P[:T_SCREEN, r["i"]],
+                                                         P[:T_SCREEN, r["j"]])[k]
+                                      for k in ("beta", "mu", "sd")))["in_market"]
+                    for r in passing])
+    print(f"  mean in-sample Sharpe {np.nanmean(ins):.2f} (median {np.nanmedian(ins):.2f});"
+          f" mean out-of-sample {np.nanmean(oos):.2f} (median {np.nanmedian(oos):.2f});"
+          f" {np.mean(oos > 0):.0%} of them positive out of sample")
+    print(f"  and the frozen z-score does not mean-revert: {np.mean(mkt):.0%} of out-of-sample days"
+          f" are spent in a position that was entered once and never exited. The spread of two"
+          f" random walks has no level to come back to.")
+
+    # ---- 4. A real pair, in-sample vs rolling ---------------------------------------------
+    print(f"\n=== 4. A genuinely cointegrated pair (beta {BETA_TRUE}, spread AR(1) phi {PHI_TRUE},"
+          f" T={T_PAIR}): estimates from the traded window vs rolling ===")
+    A = slice(0, IN_SAMPLE)
+    B = slice(IN_SAMPLE, T_PAIR)
+    ins_a = in_sample_strategy(y_c[A], x_c[A])
+    ins_b = in_sample_strategy(y_c[B], x_c[B])
+    frozen_b = frozen_strategy(y_c[B], x_c[B], ins_a["beta"], ins_a["mu"], ins_a["sd"])
+    roll = rolling_strategy(y_c, x_c)
+    roll_fixed = rolling_strategy(y_c, x_c, beta_fixed=ins_a["beta"])
+    oracle = rolling_strategy(y_c, x_c, beta_fixed=BETA_TRUE)
+    sh_roll = sharpe(roll["pnl"][IN_SAMPLE:])
+    sh_roll_fixed = sharpe(roll_fixed["pnl"][IN_SAMPLE:])
+    sh_oracle = sharpe(oracle["pnl"][IN_SAMPLE:])
+    print(f"  in-sample on days 0-{IN_SAMPLE - 1} (beta {ins_a['beta']:.3f}, z from the same window):"
+          f" Sharpe {ins_a['sharpe']:.2f}")
+    print(f"  in-sample on days {IN_SAMPLE}-{T_PAIR - 1} (beta {ins_b['beta']:.3f}, z from the same window):"
+          f" Sharpe {ins_b['sharpe']:.2f}")
+    print(f"  days {IN_SAMPLE}-{T_PAIR - 1} with the FIRST window's beta / mean / sd frozen:  Sharpe {frozen_b['sharpe']:.2f}")
+    print(f"  days {IN_SAMPLE}-{T_PAIR - 1}, first window's beta, rolling {Z_WINDOW}-day z:      Sharpe {sh_roll_fixed:.2f}")
+    print(f"  days {IN_SAMPLE}-{T_PAIR - 1}, rolling {HEDGE_WINDOW}-day beta, rolling {Z_WINDOW}-day z: Sharpe {sh_roll:.2f}"
+          f"  (beta ranged {np.nanmin(roll['beta'][IN_SAMPLE:]):.3f}..{np.nanmax(roll['beta'][IN_SAMPLE:]):.3f})")
+    print(f"  days {IN_SAMPLE}-{T_PAIR - 1}, TRUE beta, rolling {Z_WINDOW}-day z:               Sharpe {sh_oracle:.2f}")
+    print(f"  in-sample minus rolling (same days): {ins_b['sharpe'] - sh_roll:+.2f}")
+
+    # ---- 5. Johansen and the half-life -----------------------------------------------------
+    print("\n=== 5. Johansen and the OU half-life ===")
+    hl_c = half_life(s_c)
+    hl_est = half_life(y_c - beta_own * x_c)
+    print(f"  true spread: phi {PHI_TRUE} -> half-life {-math.log(2) / math.log(PHI_TRUE):.1f} d;"
+          f" AR(1) on the TRUE spread: phi {hl_c['phi']:.3f}, half-life {hl_c['half_life']:.1f} d"
+          f" (OU approximation {hl_c['half_life_ou']:.1f} d), t={hl_c['t_stat']:.2f}")
+    print(f"  AR(1) on the OLS spread (beta {beta_own:.3f}): phi {hl_est['phi']:.3f},"
+          f" half-life {hl_est['half_life']:.1f} d")
+    jo = johansen(y_c[:T_SCREEN], x_c[:T_SCREEN])
+    if jo is not None:
+        print(f"  coint_johansen(det_order=0, k_ar_diff=1), cointegrated pair: trace {jo['trace'][0]:.2f}"
+              f" / {jo['trace'][1]:.2f} vs 95 % {jo['trace_cv'][0, 1]:.2f} / {jo['trace_cv'][1, 1]:.2f}"
+              f" -> rank {jo['rank_at_95']}; hedge ratio from evec {jo['hedge_ratio']:.3f} (OLS {beta_own:.3f},"
+              f" true {BETA_TRUE})")
+        print(f"  the table it returns for 2 series, det_order=0 (MacKinnon-Haug-Michelis 1996, per its"
+              f" c_sjt / c_sja docstrings):"
+              f" trace 90/95/99 % r=0 {jo['trace_cv'][0]} r<=1 {jo['trace_cv'][1]};"
+              f" max-eig r=0 {jo['max_eig_cv'][0]} r<=1 {jo['max_eig_cv'][1]}")
+        worst = max(passing, key=lambda r: -r["t"]) if passing else recs[0]
+        jr = johansen(P[:T_SCREEN, worst["i"]], P[:T_SCREEN, worst["j"]])
+        print(f"  the random-walk pair with the best Engle-Granger t ({worst['t']:.2f}): Johansen trace"
+              f" {jr['trace'][0]:.2f} vs 95 % {jr['trace_cv'][0, 1]:.2f} -> rank {jr['rank_at_95']}")
+        n_jo = 0
+        for r in passing:
+            jr = johansen(P[:T_SCREEN, r["i"]], P[:T_SCREEN, r["j"]])
+            n_jo += int(jr["rank_at_95"] >= 1)
+        print(f"  Johansen also finds rank >= 1 at 95 % in {n_jo} of the {len(passing)} Engle-Granger"
+              f" passes (the tests are not independent evidence)")
+
+    print("\nRule: count the pairs you screened as trials, estimate the hedge ratio and the z-score"
+          " before the window you score, and treat a finite half-life on its own as no evidence.")
+    print(f"total runtime {time.time() - t_all:.1f}s")
