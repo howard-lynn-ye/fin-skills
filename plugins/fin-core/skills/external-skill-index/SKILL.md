@@ -126,28 +126,41 @@ its skills at `.claude/skills/<category>/<skill>/`; and it uses non-spec frontma
   acting on a licence claim.
 
 
-## Eight of these install through this marketplace already
+## 92 of these install through this marketplace already
 
-As of 2026-09-08 the fin-skills marketplace federates eight third-party packs by their own GitHub
-source, so the answer to "is there a skill for X" is sometimes an install command rather than a
-link. All of them install **disabled**, and their claims are **not verified by this repo** - only
-the licence, activity and the existence of real `SKILL.md` files were checked on that date.
+As of 2026-09-09 the fin-skills marketplace federates **92 third-party packs exposing 2389
+skills** by their own GitHub source, so the answer to "is there a skill for X" is often an install
+command rather than a link. Every one installs **disabled**, and their claims are **not verified by
+this repo** - what was checked is the licence, that the repository is live and not archived, that
+real `SKILL.md` files exist at the pinned commit, and the skill count. None was installed or read
+for correctness.
 
-| Marketplace name | Upstream | What it adds | Read first |
-|---|---|---|---|
-| `trading-skills` | agiprolabs/claude-trading-skills (68 skills) | Solana execution, DeFi analytics, MEV, tax lots | ~3x the default listing budget; overlaps ~20 fin-core topics |
-| `tradermonty-trading-skills` | tradermonty/claude-trading-skills (74) | breadth, screeners, journaling, JP dividend tax | 3.7x budget; several need a paid FMP key |
-| `eodhd-api` | EodHistoricalData/eodhd-claude-skills (13) | vendor-official EODHD workflows | registers a remote OAuth MCP; paid key |
-| `ib-options-income` | staskh/trading_skills (28) | IBKR PMCC, collars, rolls | needs TWS or IB Gateway |
-| `cre-agent-skills` | ahacker-1/cre-agent-skills (14) | commercial real estate | outside this repo's markets |
-| `okx-agent-skills` | okx/agent-skills (10) | OKX live execution and bots | LIVE ORDERS - `broker-execution-apis` first |
-| `qmt-trading-skill` | atorber/qmt-trading-skill (22, 中文) | A-share QMT bridge, live trading | needs a Windows QMT client and the author's bridge |
-| `banking-regulatory` | panaversity/agentfactory-business-plugins `banking` (17) | Basel, IFRS 9, AML | upstream idle since 2026-03-26 |
+They are vendor-official packs (Alpaca, Kraken, Longbridge, OKX, HTX, Pionex, BloFin, CoinStats,
+Upstox, J-Quants, Nansen), Anthropic's own financial-services marketplace and its A-share port, and
+community packs covering equity research, real estate, tax and accounting, macro, and market data
+for China, Japan and India.
 
-```
-/plugin install trading-skills@fin-skills      # then enable it explicitly
-```
+🚨 **Several can place live orders once API keys are set**, and their descriptions say so. Read
+`../broker-execution-apis/SKILL.md` before installing one of those.
 
-Why only eight, and why not the rest of the 139: federation is per plugin (a pack's skills cannot be
-cherry-picked), and the candidates left out - broken manifests, scrapers, unverified dependencies,
-non-spec frontmatter - are listed with reasons in `catalog/federation-notes.md` at the repo root.
+⚠️ **Sizes vary by two orders of magnitude.** The largest single pack is
+`algo-trading-skills` at 501 skills - about 25 times the default
+listing budget on its own. Federation is per plugin, so a pack's skills cannot be cherry-picked.
+Install deliberately and raise `skillListingBudgetFraction` first.
+
+The eight largest:
+
+| Marketplace name | Upstream | Skills |
+|---|---|---|
+| `algo-trading-skills` | https://github.com/HimanshuJ16/Algo-Trading-Skills | 501 |
+| `ftshare-skills` | https://github.com/FTShare-Lab/FTShare-skill | 215 |
+| `yuping322-finskills` | https://github.com/yuping322/finskills | 107 |
+| `vibe-trading-skills` | https://github.com/HKUDS/Vibe-Trading | 90 |
+| `doramagic-skills` | https://github.com/tangweigang-jpg/doramagic-skills | 82 |
+| `tradermonty-trading-skills` | https://github.com/tradermonty/claude-trading-skills | 74 |
+| `trading-skills` | https://github.com/agiprolabs/claude-trading-skills | 68 |
+| `octagon-skills` | https://github.com/OctagonAI/skills | 67 |
+
+The full list with what was verified for each, at which commit, and the candidates left out with
+reasons, is in `../../../../catalog/federation-notes.md` (wave 1) and
+`../../../../catalog/federation-notes-wave2.md` (wave 2).

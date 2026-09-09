@@ -107,19 +107,23 @@ skill script runs standalone too (`python plugins/<plugin>/skills/<skill>/script
 
 ### Federated third-party packs
 
-The marketplace also lists eight third-party skill packs by their own GitHub source, so they
-install through this marketplace without being copied here: `trading-skills` (Solana, DeFi, tax
-lots), `tradermonty-trading-skills` (breadth, screeners, journaling), `eodhd-api` (vendor-official),
-`ib-options-income` (IBKR PMCC and collars), `cre-agent-skills` (commercial real estate),
-`okx-agent-skills` (live OKX execution), `qmt-trading-skill` (A-share QMT bridge, 中文), and
-`banking-regulatory` (Basel, IFRS 9, AML).
+The marketplace also lists 92 third-party skill packs by their own GitHub source, so they
+install through this marketplace without being copied here. They come from vendor-official
+repositories (Alpaca, Kraken, Longbridge, OKX, HTX, Pionex, BloFin, CoinStats, Upstox, J-Quants,
+Nansen), from Anthropic's own financial-services marketplace and its A-share port, and from the
+community: equity research, real estate, tax and accounting, macro, market data for China, Japan
+and India, and trading systems. The five largest are `algo-trading-skills` (501 skills), `ftshare-skills` (215), `yuping322-finskills` (107), `vibe-trading-skills` (90) and `doramagic-skills` (82).
 
-Every one installs **disabled**; its description says what it needs, what it costs in listing
-budget, and where it overlaps. What this repo verified is the licence, activity, and that real
-`SKILL.md` files exist on the date in `metadata.verified_on`. **The claims inside them are not
-verified by this repo.** Federation is per plugin - a pack's skills cannot be cherry-picked - so
-the two big packs cost three to four times the default listing budget on their own. Candidates
-considered and left out, with reasons, are in `catalog/federation-notes.md`.
+Every one installs **disabled**; its description says what it covers, how it handles credentials,
+and whether it can place live orders once keys are set. What this repo verified, on the date in
+each entry's `metadata.verified_on`, is the licence, that the repository is live and not archived,
+that real `SKILL.md` files exist at the pinned commit, and the skill count. **The claims inside
+them are not verified by this repo, and none was installed.** Wave-2 entries pin a full commit
+sha, so what installs is the tree that was read; wave-1 entries pin only a branch. Federation is
+per plugin - a pack's skills cannot be cherry-picked - and several packs are far larger than the
+default listing budget, so install deliberately. What was verified and what was left out is in
+[`catalog/federation-notes.md`](catalog/federation-notes.md) and
+[`catalog/federation-notes-wave2.md`](catalog/federation-notes-wave2.md).
 
 ## What's here
 

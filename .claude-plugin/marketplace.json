@@ -335,6 +335,57 @@
       "skills": []
     },
     {
+      "name": "fin-fixed-income",
+      "source": "./plugins/fin-fixed-income",
+      "description": "Bonds, rates and the conventions every other fixed-income number sits on - day counts and accrued interest, yield measures and bill discount quotes, duration and DV01, SOFR compounded in arrears, LIBOR fallbacks, OIS and multi-curve discounting, swap conventions, curve interpolation, Treasury auctions, bond futures and the cheapest to deliver, repo, inflation-linked bonds, and mortgage prepayment. One skill per topic, each with an executable script and a measured trap.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "fixed-income",
+        "bonds",
+        "day-count",
+        "accrued-interest",
+        "duration",
+        "dv01",
+        "sofr",
+        "libor-fallback",
+        "ois",
+        "multi-curve",
+        "swap",
+        "curve-interpolation",
+        "treasury-auction",
+        "cheapest-to-deliver",
+        "repo",
+        "tips",
+        "mbs"
+      ],
+      "skills": []
+    },
+    {
+      "name": "fin-credit",
+      "source": "./plugins/fin-credit",
+      "description": "Credit spreads, CDS mechanics and portfolio loss - Z-spread against I-spread against OAS and when they diverge, the ISDA standard model and points upfront, what TRACE actually reports and what it censors, ratings migration matrices and the embedding problem, CDS indices and tranches, default and recovery data definitions, and one-factor portfolio loss models. One skill per topic, each with an executable script and a measured trap.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "credit",
+        "credit-spread",
+        "z-spread",
+        "oas",
+        "asset-swap",
+        "cds",
+        "isda",
+        "trace",
+        "corporate-bonds",
+        "ratings-migration",
+        "cdx",
+        "itraxx",
+        "recovery",
+        "portfolio-credit-risk"
+      ],
+      "skills": []
+    },
+    {
       "name": "trading-skills",
       "source": {
         "source": "github",
@@ -549,6 +600,2471 @@
         "stars_on_verified_on": 29,
         "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist on verified_on"
       }
+    },
+    {
+      "name": "a-share-skill",
+      "source": {
+        "source": "github",
+        "repo": "shouldnotappearcalm/a-share-skill",
+        "ref": "main",
+        "sha": "84946232ef36d2f1e04a0089ad64380c2de46698"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Five root-level A-share skills: a data skill (quotes, K-lines, indicators, 板块热力图), a paper-trading server with 涨跌停 fill logic and backtests, and three discretionary short-line playbooks (two MACD variants and a 突击 pattern). Paper only - it holds no broker credentials and places no real orders. The playbooks are trading folklore, not validated edges. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "paper-trading",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/shouldnotappearcalm/a-share-skill",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-24",
+        "skill_count": 5,
+        "stars_on_verified_on": 237,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./"
+      ]
+    },
+    {
+      "name": "ai-asset-pricing",
+      "source": {
+        "source": "github",
+        "repo": "alexander-m-dickerson/ai-asset-pricing",
+        "ref": "main",
+        "sha": "64aa61cb217f649bed5d83b1b62b96a3eec38d99"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. An academic empirical-asset-pricing pack from the author of the Dickerson corporate-bond dataset: look-ahead-safe portfolio formation, signal timing, CRSP/Compustat lag and lead gaps, PyBondLab, WRDS access, and a paper/referee workflow. Credentials are WRDS logins held in the user's own local config. The corporate-bond factor tooling has no equivalent elsewhere in this index. Read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "asset-pricing",
+        "factor-construction",
+        "corporate-bonds",
+        "wrds"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/Alexander-M-Dickerson/ai-asset-pricing",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-04-19",
+        "skill_count": 38,
+        "stars_on_verified_on": 59,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./.claude/skills"
+      ]
+    },
+    {
+      "name": "ai-berkshire",
+      "source": {
+        "source": "github",
+        "repo": "xbtlin/ai-berkshire",
+        "ref": "main",
+        "sha": "d9c124b73a0220d134741c9982a6e865c26931be"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The largest finance skill repository by stars outside Anthropic (16k), in Chinese: a value-investing research framework built on Buffett, Munger, 段永平 and 李录 lenses - industry funnel, quality screen, earnings review, management deep-dive, thesis-drift check, portfolio review and financial-data cross-validation. Discretionary judgement, not quantitative method. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "value-investing",
+        "research-framework",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/xbtlin/ai-berkshire",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 22,
+        "stars_on_verified_on": 16266,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./codex-skills"
+      ]
+    },
+    {
+      "name": "ai-realestate",
+      "source": {
+        "source": "github",
+        "repo": "zubair-trabzada/ai-realestate-claude",
+        "ref": "main",
+        "sha": "d435ddd36346e7e5108f2e8a4bb36d2149865313"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Residential and small-commercial property analysis: comparables, rental cash flow, BRRRR and flip models, mortgage affordability, neighbourhood analysis and PDF reports. Non-spec frontmatter keys (author, tags, triggers, output) load in Claude Code but hard-fail claude.ai upload. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "residential",
+        "cash-flow"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/zubair-trabzada/ai-realestate-claude",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-04-29",
+        "skill_count": 14,
+        "stars_on_verified_on": 158,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "aicoin-coinos-skills",
+      "source": {
+        "source": "github",
+        "repo": "aicoincom/coinos-skills",
+        "ref": "main",
+        "sha": "2a22bd53d710be69f8533b3a4ab80e28945c9d7d"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. AiCoin's Chinese-language pack: market data across 200+ exchanges (a built-in free key, no setup), Hyperliquid on-chain analytics, Freqtrade operations, a CEX order tool and DEX/wallet operations. LIVE ORDERS AND ON-CHAIN SWAPS - the trading and on-chain skills act once exchange keys and passphrases are placed in ~/.coinos/.env. Read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "aicoin",
+        "crypto",
+        "hyperliquid",
+        "live-execution",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/aicoincom/coinos-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-29",
+        "skill_count": 6,
+        "stars_on_verified_on": 52,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "algo-trading-skills",
+      "source": {
+        "source": "github",
+        "repo": "himanshuj16/algo-trading-skills",
+        "ref": "main",
+        "sha": "101ee444712e09ed1a8441a991766b93510f8ab3"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. 501 engineering-grade trading skills - point-in-time backtest schemas, universe look-ahead, alt-data availability lag, ML against transaction costs, adjusted-vs-unadjusted prices, backtest determinism and audit trails, broker idempotency and failover, exchange FIX specs (ASX, B3, Bursa, BIST, Cboe), regulatory gates and a key-scope audit skill. Its README claims 458 of 501 cite a primary source; it is clearly LLM-generated at scale and the depth is unverified. Upstream splits these into per-domain plugins, but its root manifest exposes all 501 at once - roughly 25x the discovery budget, which is yours to spend since it installs disabled. No credentials in the skills; nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "backtest-integrity",
+        "broker-engineering",
+        "fix",
+        "compliance"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/HimanshuJ16/Algo-Trading-Skills",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 501,
+        "stars_on_verified_on": 2,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "alpaca-skills",
+      "source": {
+        "source": "github",
+        "repo": "alpacahq/alpaca-skills",
+        "ref": "main",
+        "sha": "39111abee6b60af7c11d40b5fc892dfc4fd791a4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Alpaca's own skills for the broker this repo's lib-alpaca-py documents: paper trading through SDK, CLI and MCP, deterministic backtests, Broker API onboarding, funding, journals and SSE events, plus money-precision and reconciliation-idempotency skills that exist nowhere else in this index. Keys come from `alpaca profile login` or ALPACA_API_KEY/ALPACA_SECRET_KEY in the environment, with paper and live keys kept separate; the order skills can reach a live account once live keys are set, and default to paper. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "alpaca",
+        "broker",
+        "paper-trading"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/alpacahq/alpaca-skills",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-08",
+        "skill_count": 14,
+        "stars_on_verified_on": 146,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./skills/trading-api",
+        "./skills/broker-api"
+      ]
+    },
+    {
+      "name": "alpha-stack",
+      "source": {
+        "source": "github",
+        "repo": "tmcga/alpha-stack",
+        "ref": "main",
+        "sha": "eefe76525242e7484f966afe6147ddfeba9e4ffb"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A one-author finance skill system with 26 bundled computational tools: Avellaneda-Stoikov market making, Brinson attribution, risk analytics, options and vol-surface work, merger arb, REIT and real-estate debt, PE/VC, credit and restructuring, wealth and estate planning. Free yfinance data, an optional key for its wiki lookups; nothing executes. 47 skills is about 2.4x the discovery budget and the breadth is wider than the verification behind it. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "market-making",
+        "attribution",
+        "merger-arb"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/tmcga/alpha-stack",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-13",
+        "skill_count": 47,
+        "stars_on_verified_on": 2,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "alphaear-skills",
+      "source": {
+        "source": "github",
+        "repo": "RKiding/Awesome-finance-skills",
+        "ref": "main",
+        "sha": "853f09b4d0baae747759ed31e21ed5c5b2316a5f"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The AlphaEar suite: news retrieval, A/HK/US ticker resolution, FinBERT sentiment, Kronos forecasting, a signal tracker, a logic visualizer, a reporter and search. 3.0k stars but idle since March 2026; optional Jina and search keys via environment. Read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "sentiment",
+        "news",
+        "forecasting"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/RKiding/Awesome-finance-skills",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-29",
+        "skill_count": 10,
+        "stars_on_verified_on": 2996,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "alphagbm-skills",
+      "source": {
+        "source": "github",
+        "repo": "alphagbm/skills",
+        "ref": "main",
+        "sha": "6ecea742ed80b50c2b8789e1f4b709d8db8fef19"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Options-intelligence skills on the vendor's hosted AlphaGBM API: IV rank and percentile, vol smile and 3D surface, a Greeks dashboard, P&L simulator, earnings IV crush and iron-condor pricing, a bull-put-spread walk-forward backtest, a FearScore, unusual-activity scans and a Polymarket-versus-options mispricing screen. Vendor-hosted: ALPHAGBM_BASE_URL and an API key in the environment, so the numbers come from a service this repo has not audited and overlap derivatives-pricing and options-backtesting without their QuantLib-correctness angle. Analysis and alerts only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "options",
+        "implied-volatility",
+        "vendor"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/AlphaGBM/skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-07-09",
+        "skill_count": 30,
+        "stars_on_verified_on": 2261,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "blofin-skills-hub",
+      "source": {
+        "source": "github",
+        "repo": "blofin/blofin-skills-hub",
+        "ref": "main",
+        "sha": "64f4a0ba6b43b8e094a7b6d7eb28a56feb493311"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. BloFin's official futures pack: account, asset and position views, copy trading, a funding-rate monitor and a liquidation-focused risk manager. LIVE ORDERS - the blofin-trader skill executes once an API key and passphrase are configured through MCP; the setup docs mention a paper mode. Seven stars and idle since March 2026; read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "blofin",
+        "perpetuals",
+        "copy-trading",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/blofin/blofin-skills-hub",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-19",
+        "skill_count": 9,
+        "stars_on_verified_on": 7,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "china-stock-research-skills",
+      "source": {
+        "source": "github",
+        "repo": "spikehongg/china-stock-research-skills",
+        "ref": "main",
+        "sha": "d49f1f360deac57821d5d6b3aff664dff232acc6"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A seven-skill A-share fundamental-research orchestrator: business decomposition, moat assessment, financial health, strategy-transition analysis, risk and catalyst monitors, valuation scenarios. Idle since March 2026; no credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "fundamental-research",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/spikeHongg/china-stock-research-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-09",
+        "skill_count": 7,
+        "stars_on_verified_on": 17,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "coinmarketcap-skills",
+      "source": {
+        "source": "github",
+        "repo": "opencmc/skills-for-ai-agents-by-coinmarketcap",
+        "ref": "main",
+        "sha": "d4c95dbc9762124553a39ff5380df47dbc9a6b9f"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. CoinMarketCap's official eight skills: crypto, DEX and exchange API references, research and market-report workflows, and x402 pay-per-call. A CMC API key goes in the environment; idle since March 2026. Read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "coinmarketcap",
+        "crypto",
+        "vendor"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/OpenCMC/skills-for-ai-agents-by-CoinMarketCap",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-02",
+        "skill_count": 8,
+        "stars_on_verified_on": 66,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "coinstats-cli",
+      "source": {
+        "source": "github",
+        "repo": "coinstatshq/coinstats-cli",
+        "ref": "main",
+        "sha": "2231157bc3dd57696ea06f2f2bb39cac3710af70"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. CoinStats' CLI skills: coins, tickers, portfolio and wallet tracking, news and market insights (BTC dominance, fear/greed). An API key in the environment; idle since March 2026. Read-only - portfolio tracking, not custody or execution. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "coinstats",
+        "crypto",
+        "portfolio-tracking"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/CoinStatsHQ/coinstats-cli",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-10",
+        "skill_count": 12,
+        "stars_on_verified_on": 15,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "cpa-skills",
+      "source": {
+        "source": "github",
+        "repo": "adoptai/cpa-skills",
+        "ref": "dev",
+        "sha": "7a592d3a88003b9cccd5fb4993d3c82b8bd7b44e"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Twenty-three CPA audit and tax workpaper skills built to refuse unproven conclusions: PPS sampling, bank reconciliation, journal-entry anomaly scans, cutoff testing, K-1 extraction, 941/W-2 payroll tie-out and three-way match. Local-first with no credentials; nothing executes. Note the default branch is `dev`, which is what this entry pins. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "cpa",
+        "audit",
+        "workpapers"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/adoptai/cpa-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-09",
+        "skill_count": 23,
+        "stars_on_verified_on": 5,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "crypto-com-agent-trading",
+      "source": {
+        "source": "github",
+        "repo": "crypto-com/crypto-agent-trading",
+        "ref": "main",
+        "sha": "92e80c5527312d0acdf769f16511ba3c6db1f2fe"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Crypto.com's official two skills: App buy/sell/swap and Exchange spot and derivatives through the cdcx CLI. LIVE ORDERS - trades execute after a quote the user confirms within 15 seconds, once CDC_API_KEY and secret are in the environment; the README documents an emergency key revocation. Read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "crypto-com",
+        "crypto",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/crypto-com/crypto-agent-trading",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-29",
+        "skill_count": 2,
+        "stars_on_verified_on": 19,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "deneux-cre-skills",
+      "source": {
+        "source": "github",
+        "repo": "sasha-deneux/claude-skills-cre",
+        "ref": "main",
+        "sha": "0b10514d0ee14a6f47bc77b5cf5be76b1cca4570"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A small, clean commercial-real-estate deal-lifecycle pack: sourcing from parcel records, a deal screener, an underwriting pipeline, rent-roll and T-12 normalizers, developer feasibility, a zoning decoder and LP reporting. Three stars. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "underwriting",
+        "rent-roll"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/sasha-deneux/claude-skills-cre",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-07-15",
+        "skill_count": 10,
+        "stars_on_verified_on": 3,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "doramagic-skills",
+      "source": {
+        "source": "github",
+        "repo": "tangweigang-jpg/doramagic-skills",
+        "ref": "main",
+        "sha": "5df4e00b215dbc33099442f5c1acf2da4d94d461"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The closest structural peer to fin-libraries found in the wild - 82 one-library skills in Chinese - and the only pack anywhere in this sweep with actuarial and structured-credit content: MlFinLab information bars and fractional differencing, arch/GARCH, alphalens, bt/backtrader/nautilus/qlib/LEAN, QuantLib and FinancePy day counts and schedules, XVA (CVA/DVA/FVA, SIMM), chainladder loss reserving, IFRS 9 ECL, credit scorecards and transition matrices, ABS waterfalls, Smith-Wilson EIOPA curves. Depth is unverified and the author has one star; the easytrader and nautilus skills document live-broker paths but nothing executes by default. 82 skills is roughly 4x the discovery budget. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT-0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "per-library",
+        "xva",
+        "ifrs9",
+        "abs",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/tangweigang-jpg/doramagic-skills",
+        "license": "MIT-0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-04-25",
+        "skill_count": 82,
+        "stars_on_verified_on": 1,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "duan-yongping-skill",
+      "source": {
+        "source": "github",
+        "repo": "kangarooking/duan-yongping-skill",
+        "ref": "main",
+        "sha": "4498bed1e6e161a00de3c2adf37f42901d0da50c"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. 段永平's investing and business logic distilled into 15 Chinese-language skills - circle of competence, opportunity cost, DCF as a way of thinking, the stop-doing list. Overlaps ai-berkshire's 段永平 skill. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "value-investing",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/kangarooking/duan-yongping-skill",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-04-17",
+        "skill_count": 15,
+        "stars_on_verified_on": 48,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./business-logic",
+        "./investment-logic"
+      ]
+    },
+    {
+      "name": "eastmoney-miaoxiang",
+      "source": {
+        "source": "github",
+        "repo": "meission/eastmoney",
+        "ref": "master",
+        "sha": "0e2dfce23b561bb35ea2d4dc88d3e382ee62f551"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Three thin skills bridging 东方财富's 妙想 API - data, search and stock selection - with the key in an environment variable. Thin and idle since March 2026; FTShare-Lab is the larger official Eastmoney-family pack. Read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "eastmoney",
+        "vendor",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/meission/eastmoney",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-19",
+        "skill_count": 3,
+        "stars_on_verified_on": 17,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "foundational-research-skills",
+      "source": {
+        "source": "github",
+        "repo": "foundationalresearch/skills",
+        "ref": "main",
+        "sha": "6f70fa1ce8d8e5754f09f2f82f30f72e0bc052df"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Sell-side-style methodology in 14 skills: DCF, comps, credit analysis with rating scales and recovery tables, fixed income (curves, duration, spreads), options, SEC filings and thesis generation. Zero stars and idle since March 2026; no credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "credit-analysis",
+        "fixed-income",
+        "valuation"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/FoundationalResearch/skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-03",
+        "skill_count": 14,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-equity-research",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/equity-research",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's financial-services suite, equity-research plugin: initiating coverage, morning notes, earnings preview and analysis, model updates, catalyst calendar, thesis tracker. Optional paid MCP connectors (Daloopa, Morningstar, FactSet, S&P) supply data through env-set keys; the skills themselves are read-and-write-documents only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "equity-research",
+        "earnings",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 9,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-financial-analysis",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/financial-analysis",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's own financial-services marketplace, vertical plugin 1 of 9: DCF, LBO, comps, 3-statement models, competitive analysis and the xlsx/pptx authoring skills the rest of the suite calls. No credentials of its own; the modelling skills read whatever workbook you give them and stage every output for human sign-off. Nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "valuation",
+        "dcf",
+        "lbo",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 13,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-fund-admin",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/fund-admin",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's financial-services suite, fund-administration plugin: NAV tie-out, GL reconciliation, break tracing, accrual schedules, roll-forwards, variance commentary. Reads the ledgers you point it at; no credentials, no execution. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "fund-admin",
+        "nav",
+        "reconciliation",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 6,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-investment-banking",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/investment-banking",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's financial-services suite, investment-banking plugin: merger model, CIM and teaser builders, buyer lists, process letters, pitch decks, deal tracker. Document generation only - no market data credentials required and nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "investment-banking",
+        "m-and-a",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 9,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-lseg",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/partner-built/lseg",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. LSEG's partner-built plugin inside Anthropic's financial-services marketplace, and the only public skill set this sweep found for bond-futures basis, bond relative value, swap-curve strategy, FX carry and a macro-rates monitor. Every skill routes through LSEG's paid data MCP connector with the key supplied via environment; read-only, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "lseg",
+        "rates",
+        "fixed-income",
+        "fx-carry"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 8,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-operations",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/operations",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's financial-services suite, operations plugin: two KYC skills (document parsing and a rules engine). Small by design - take it alongside fs-fund-admin rather than on its own. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "kyc",
+        "operations",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 2,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-private-equity",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/private-equity",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's financial-services suite, private-equity plugin: deal sourcing and screening, due-diligence checklists, IC memos, unit economics, returns analysis, portfolio monitoring, value-creation plans. Document generation only; no keys, no execution. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "private-equity",
+        "due-diligence",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 10,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-spglobal",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/partner-built/spglobal",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. S&P Global's partner-built plugin inside Anthropic's financial-services marketplace: company tear sheets, earnings-preview beta, funding digest. Three skills, all requiring a paid S&P Global API key set in the environment; read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "spglobal",
+        "tear-sheet",
+        "vendor"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 3,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fs-wealth-management",
+      "source": {
+        "source": "git-subdir",
+        "url": "anthropics/financial-services",
+        "path": "plugins/vertical-plugins/wealth-management",
+        "ref": "main",
+        "sha": "69cbc81467a5dced793eee03dec4658aa24ef856"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Anthropic's financial-services suite, wealth-management plugin: financial plans, investment proposals, client reports and reviews, portfolio rebalancing and tax-loss harvesting. The rebalance and TLH skills produce a proposed trade list for a human to place - they hold no broker credentials and place no orders. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "wealth-management",
+        "rebalancing",
+        "tax-loss-harvesting",
+        "anthropic"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/anthropics/financial-services",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-25",
+        "skill_count": 6,
+        "stars_on_verified_on": 34762,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fscn-china-finance",
+      "source": {
+        "source": "git-subdir",
+        "url": "jwangkun/claude-for-financial-services-cn",
+        "path": "vertical-plugins/china-finance",
+        "ref": "main",
+        "sha": "59e97ee6683391a05ce6c69502a0fd16bbce4690"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The China port of Anthropic's financial-services suite (Apache-2.0, unaffiliated with Anthropic), core plugin: 31 A-share skills - china-dcf, comps, 3-statement, LBO, earnings analysis on 业绩快报, market data, tax-loss harvesting - on AkShare plus an optional paid iFinD key via environment. 31 skills is above the ~20-skill discovery budget; it installs disabled, so the budget is yours to spend. Nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "china",
+        "valuation",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/jwangkun/claude-for-financial-services-cn",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 31,
+        "stars_on_verified_on": 741,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fscn-fund-admin",
+      "source": {
+        "source": "git-subdir",
+        "url": "jwangkun/claude-for-financial-services-cn",
+        "path": "vertical-plugins/fund-admin",
+        "ref": "main",
+        "sha": "59e97ee6683391a05ce6c69502a0fd16bbce4690"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. China port of Anthropic's financial-services suite, fund-administration plugin: NAV tie-out, GL reconciliation, break trace, accruals, roll-forward, variance commentary against Chinese fund-accounting conventions. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "china",
+        "fund-admin",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/jwangkun/claude-for-financial-services-cn",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 6,
+        "stars_on_verified_on": 741,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fscn-investment-banking",
+      "source": {
+        "source": "git-subdir",
+        "url": "jwangkun/claude-for-financial-services-cn",
+        "path": "vertical-plugins/investment-banking",
+        "ref": "main",
+        "sha": "59e97ee6683391a05ce6c69502a0fd16bbce4690"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. China port of Anthropic's financial-services suite, investment-banking plugin: merger model, CIM, teaser, buyer list, process letter, deal tracker, all rewritten for onshore Chinese deal practice. Document generation; no credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "china",
+        "investment-banking",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/jwangkun/claude-for-financial-services-cn",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 10,
+        "stars_on_verified_on": 741,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fscn-operations",
+      "source": {
+        "source": "git-subdir",
+        "url": "jwangkun/claude-for-financial-services-cn",
+        "path": "vertical-plugins/operations",
+        "ref": "main",
+        "sha": "59e97ee6683391a05ce6c69502a0fd16bbce4690"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. China port of Anthropic's financial-services suite, operations plugin: two KYC skills (document parsing and rules) written to onshore requirements. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "china",
+        "kyc",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/jwangkun/claude-for-financial-services-cn",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 2,
+        "stars_on_verified_on": 741,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fscn-private-equity",
+      "source": {
+        "source": "git-subdir",
+        "url": "jwangkun/claude-for-financial-services-cn",
+        "path": "vertical-plugins/private-equity",
+        "ref": "main",
+        "sha": "59e97ee6683391a05ce6c69502a0fd16bbce4690"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. China port of Anthropic's financial-services suite, private-equity plugin: deal sourcing, DD checklists, IC memos, unit economics, returns analysis, portfolio monitoring for onshore funds. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "china",
+        "private-equity",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/jwangkun/claude-for-financial-services-cn",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 9,
+        "stars_on_verified_on": 741,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "fscn-wealth-management",
+      "source": {
+        "source": "git-subdir",
+        "url": "jwangkun/claude-for-financial-services-cn",
+        "path": "vertical-plugins/wealth-management",
+        "ref": "main",
+        "sha": "59e97ee6683391a05ce6c69502a0fd16bbce4690"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. China port of Anthropic's financial-services suite, wealth-management plugin: financial plans, investment proposals, client reports and reviews, portfolio rebalancing for onshore investors. Produces a proposed trade list only - no broker credentials, no orders. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "china",
+        "wealth-management",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/jwangkun/claude-for-financial-services-cn",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 5,
+        "stars_on_verified_on": 741,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "ftshare-skills",
+      "source": {
+        "source": "github",
+        "repo": "FTShare-Lab/FTShare-skills",
+        "ref": "main",
+        "sha": "7181b63f8f04b2ebf688526e539a67d056ff4d73"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. FTShare's official one-endpoint-per-skill data catalogue for the Chinese market: A/HK/US quotes and K-lines, 可转债 including SZSE declaration snapshots, ETF PCF and IOPV, 龙虎榜, block trades, margin balances, executive holdings, the ChinaBond yield curve, the CPI/PPI/PMI/LPR/M2/credit macro series and news-sentiment factors. FTSHARE_API_KEY in the environment (a free tier exists per the launch article); read-only. Be deliberate: 215 sub-skills is roughly 10x the ~20-skill discovery budget, so treat it as a catalogue to enable for a session, not a standing install - it arrives disabled and the budget is yours to spend. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "market-data",
+        "convertible-bonds",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/FTShare-Lab/FTShare-skill",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 215,
+        "stars_on_verified_on": 63,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./ftshare-market-data/sub-skills"
+      ]
+    },
+    {
+      "name": "fund-investment-guide",
+      "source": {
+        "source": "github",
+        "repo": "taxueseek/fund-investment-guide",
+        "ref": "main",
+        "sha": "7a0c994db23299c9b048d2e364d023434a546a1a"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A Chinese fund and asset-allocation suite: fund health check, three-gate reviews for bonds, 可转债, commodities and REITs, an allocation skill, macro context and a master-panel discussion format, on invest-cli data with keys in the environment. Read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "funds",
+        "asset-allocation",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/taxueseek/fund-investment-guide",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-03",
+        "skill_count": 9,
+        "stars_on_verified_on": 18,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "gajetoso-financeskills",
+      "source": {
+        "source": "github",
+        "repo": "GAJETOso/financeskills",
+        "ref": "main",
+        "sha": "862774c15d83f58536d84973b42dbbffda5af7ae"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The deepest IFRS/GAAP pack in this sweep that also validates cleanly: IFRS 9 expected credit loss, IFRS 16 leases, IAS 12 deferred tax, revenue recognition, consolidation, SOX, forensic accounting, insurance reserving, WACC, LBO, treasury and Basel banking compliance, with an eval harness in the repo. Outside this library's quant core and overlapping the banking-regulatory entry on Basel and IFRS 9. Optional Stripe/Plaid connectors; nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "ifrs",
+        "accounting",
+        "basel"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/GAJETOso/financeskills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-01",
+        "skill_count": 48,
+        "stars_on_verified_on": 19,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "geeksfino-finskills",
+      "source": {
+        "source": "github",
+        "repo": "geeksfino/finskills",
+        "ref": "main",
+        "sha": "8722415a68db3250516a8c6f9632da29c1554bf1"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Thirty A-share and US-market skills in two directories: factor screeners, sector rotation off the macro cycle, event-driven detectors, insider and 董监高 analysis, portfolio health checks and suitability reports, on free data toolkits (yfinance, EDGAR, A-share public sources). Idle since March 2026 - yuping322-finskills is the maintained superset, so take one or the other. Optional keys via environment; nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "factor-screener",
+        "sector-rotation"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/Geeksfino/finskills",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-05",
+        "skill_count": 30,
+        "stars_on_verified_on": 279,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./China-market",
+        "./US-market"
+      ]
+    },
+    {
+      "name": "himself65-data-providers",
+      "source": {
+        "source": "git-subdir",
+        "url": "himself65/finance-skills",
+        "path": "plugins/data-providers",
+        "ref": "main",
+        "sha": "0a5759bca1ea273790cd45c17fad6a9aff76a7f5"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The data-providers plugin of the same 3.3k-star pack: Fintel short-interest data, TradingView readers and MCP, a Hyperliquid reader and news sentiment. Provider keys (Adanos, Fintel) are read from the environment; the readers are read-only and place no orders. Check each provider's terms before scraping-adjacent use. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "data-providers",
+        "short-interest",
+        "tradingview"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/himself65/finance-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-27",
+        "skill_count": 6,
+        "stars_on_verified_on": 3305,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "himself65-market-analysis",
+      "source": {
+        "source": "git-subdir",
+        "url": "himself65/finance-skills",
+        "path": "plugins/market-analysis",
+        "ref": "main",
+        "sha": "0a5759bca1ea273790cd45c17fad6a9aff76a7f5"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The market-analysis plugin of a 3.3k-star community pack: company valuation (DCF plus multiples plus SOTP), earnings preview and recap, estimate revisions, ETF premium/NAV decomposition, options payoff, SEPA, stock correlation and liquidity, on free yfinance data. Read-only throughout; no credentials needed for this plugin. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "valuation",
+        "etf",
+        "options-payoff"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/himself65/finance-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-27",
+        "skill_count": 11,
+        "stars_on_verified_on": 3305,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "htx-skills-hub",
+      "source": {
+        "source": "github",
+        "repo": "htx-exchange/htx-skills-hub",
+        "ref": "main",
+        "sha": "3f0b3e34c491e782f087b2f094086bb56efd92bc"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. HTX's official pack: USDT-margined perpetuals (funding, open interest, elite long/short ratios, a liquidation stream, mark price), spot, a 51-indicator technical engine and sentiment/crowdedness measures. LIVE ORDERS - the trading skills execute with a mandatory manual confirmation once an API key and secret are in the environment. Read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "htx",
+        "perpetuals",
+        "crypto",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/htx-exchange/htx-skills-hub",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-08",
+        "skill_count": 17,
+        "stars_on_verified_on": 20,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./skills/htx"
+      ]
+    },
+    {
+      "name": "investorskills",
+      "source": {
+        "source": "github",
+        "repo": "questflowai/investorskills",
+        "ref": "main",
+        "sha": "2844d7809a73c01e769c8c1c7ae8189788db4d9e"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Sixty-three investor-lens skills - Buffett, Graham net-net, Klarman, Druckenmiller, Soros, Simons, Seykota, the Turtles, Minervini VCP, O'Neil CANSLIM, Gundlach on bonds, Watsa on float, 段永平 / 冯柳 / 邱国鹭 / 张磊, plus crypto lenses. These are framings to argue with, not methods to verify; 63 skills is about 3x the discovery budget. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "investor-lenses",
+        "value-investing"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/questflowai/investorskills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-23",
+        "skill_count": 63,
+        "stars_on_verified_on": 1845,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "jquants-cli",
+      "source": {
+        "source": "github",
+        "repo": "J-Quants/jquants-cli",
+        "ref": "main",
+        "sha": "6dfdf94303e9b3a2c3483ac43c6fe565d516ad17"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. JPX's own single skill for the J-Quants CLI - prices, minute and tick data, margin and short-sale ratios, futures and options, financials and TOPIX. fin-asia already recommends J-Quants as the Japanese data source; this is the vendor's usage guide. A J-Quants API key goes in the environment; read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "japan",
+        "jpx",
+        "market-data",
+        "vendor"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/J-Quants/jquants-cli",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-27",
+        "skill_count": 1,
+        "stars_on_verified_on": 48,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./.claude/skills"
+      ]
+    },
+    {
+      "name": "kraken-cli",
+      "source": {
+        "source": "github",
+        "repo": "krakenfx/kraken-cli",
+        "ref": "main",
+        "sha": "aa56e5976be5afa6d8267eb6741f3a8844678fe9"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Kraken's official CLI skill pack: paper spot and futures trading, autonomy levels, basis and funding carry, grid and DCA, TWAP, futures risk and a liquidation guard, tax export. LIVE ORDERS - the plugin ships paper-by-default and promotes to real Kraken execution as soon as API keys are set; read broker-execution-apis first. 59 skills is about three times the ~20-skill discovery budget, but it installs disabled, so that budget is yours to spend. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "kraken",
+        "crypto",
+        "live-execution",
+        "paper-trading"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/krakenfx/kraken-cli",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-07",
+        "skill_count": 59,
+        "stars_on_verified_on": 714,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "krzysu-market-skills",
+      "source": {
+        "source": "github",
+        "repo": "krzysu/market-skills",
+        "ref": "main",
+        "sha": "31e8ee1888aa4c37e34d950eec64ceecb280fb13"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A single author's layered crypto TA system: pure-math L1 indicators, L2 pattern detectors, L3 trade-idea strategies including funding carry, a walk-forward backtest engine with a nightly pipeline, an advisory risk gate and a cross-asset macro regime signal. LIVE ORDERS - the Kraken spot and perps skills submit real orders after a confirmation once a Kraken API key is set; the analysis skills do not. One star and idiosyncratic; read broker-execution-apis first. 45 skills is about 2.3x the discovery budget. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "crypto",
+        "technical-analysis",
+        "kraken",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/krzysu/market-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-03",
+        "skill_count": 45,
+        "stars_on_verified_on": 1,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "langalpha-research",
+      "source": {
+        "source": "git-subdir",
+        "url": "ginlix-ai/LangAlpha",
+        "path": "plugins/langalpha_research",
+        "ref": "main",
+        "sha": "2a1b537c5152627caadc7cdce06851488ee86683"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The equity-research plugin carved out of the LangAlpha agent (1.7k stars): three-statement models, DCF, comps, earnings work, initiations, a thesis tracker, catalyst calendar and market watch. It overlaps the Anthropic financial-services plugins heavily and assumes LangAlpha's own MCP servers and credential vault, so verify it works standalone before relying on it. Read-only, human-in-the-loop. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "equity-research",
+        "dcf",
+        "app-coupled"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/ginlix-ai/LangAlpha",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-08",
+        "skill_count": 16,
+        "stars_on_verified_on": 1730,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "llmquant-skills",
+      "source": {
+        "source": "github",
+        "repo": "LLMQuant/skills",
+        "ref": "master",
+        "sha": "1918237467c2dff4cc97a18ebc0892dfd46e8129"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. LLMQuant's router skills over its own hosted data API - the only pack in this sweep whose taxonomy spans rates and FX (curve, duration, central-bank divergence), credit (spreads, HY stress), equity derivatives, commodity curves, options IV rank, a portfolio lab and prediction markets. Thin routers, vendor-locked: every skill needs a paid LLMQuant API key in the environment. Read-only, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "llmquant",
+        "rates",
+        "credit",
+        "commodities",
+        "vendor"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/LLMQuant/skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-30",
+        "skill_count": 18,
+        "stars_on_verified_on": 212,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "longbridge-skills",
+      "source": {
+        "source": "github",
+        "repo": "longbridge/skills",
+        "ref": "main",
+        "sha": "03c5fde151fb5e16d1ddd5088a06d299d9971eb8"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Longbridge's official pack for its HK/US/CN brokerage - a third broker alongside the futu and tigeropen coverage in fin-asia: market data, options and warrant Greeks, fundamentals, research consensus, quant frameworks (pairs, regime, seasonality) and value-investing workflows. Credentials come from the Longbridge CLI login; everything is read-only except the portfolio skill, which places orders behind a confirmation once you are logged in. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "longbridge",
+        "hong-kong",
+        "broker",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/longbridge/skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-27",
+        "skill_count": 13,
+        "stars_on_verified_on": 59,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "macro-skills",
+      "source": {
+        "source": "github",
+        "repo": "fatfingererr/macro-skills",
+        "ref": "master",
+        "sha": "13e5388028293620391908b3ec266db06c7dafae"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Thirty-seven macro and commodity research recipes in Traditional Chinese, each a runnable study: copper inventory and supply concentration, JGB insurer flows, MOVE versus VIX lead-lag, Fed unamortized discounts, CASS freight inflation turns, CPI versus PCE, a WASDE ingestor, a business-cycle rotator and a cost-density risk/reward calculator. FRED and similar keys go in the environment; idle since February 2026. Read-only. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "macro",
+        "commodities",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/fatfingererr/macro-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-02-03",
+        "skill_count": 37,
+        "stars_on_verified_on": 3,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "marian2js-trading-skills",
+      "source": {
+        "source": "github",
+        "repo": "marian2js/trading-skills",
+        "ref": "main",
+        "sha": "f1ae7d481154b49192681187cb08d39d7e2d4524"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. An analysis-first discretionary trader workflow in 18 skills: thesis validation, evidence-gap checks, risk/reward sanity, position sizing, concentration limits, post-trade review and journal-pattern mining. This entry deliberately lists seven of the repository's eight skill directories and leaves out `skills/live-trade`, whose eToro skill would place real orders - so as configured here nothing executes and no broker credentials are needed. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "trade-journal",
+        "position-sizing",
+        "discretionary"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/marian2js/trading-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-03-16",
+        "skill_count": 18,
+        "stars_on_verified_on": 11,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./skills/idea-discovery",
+        "./skills/market-context",
+        "./skills/position-oversight",
+        "./skills/review-learning",
+        "./skills/thesis-validation",
+        "./skills/trade-construction",
+        "./skills/workflows"
+      ]
+    },
+    {
+      "name": "mt-metatrader-platform",
+      "source": {
+        "source": "git-subdir",
+        "url": "algotradingspace-dev/metatrader-skills",
+        "path": "plugins/metatrader-platform",
+        "ref": "main",
+        "sha": "44fd4c790ed230874674b74f24f73b5e85cb8954"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. MetaTrader platform operation, plugin 1 of 6 in a small MT4/MT5 marketplace: terminal and Python-bridge usage and a journal monitor. The platform skill documents how live trading works on MT5; nothing in the plugin executes and no credentials are held. Zero stars - structure is better than its adoption. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "metatrader",
+        "mt5",
+        "platform"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/algotradingspace-dev/metatrader-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-19",
+        "skill_count": 3,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "mt-metatrader-research",
+      "source": {
+        "source": "git-subdir",
+        "url": "algotradingspace-dev/metatrader-skills",
+        "path": "plugins/metatrader-research",
+        "ref": "main",
+        "sha": "44fd4c790ed230874674b74f24f73b5e85cb8954"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. MetaTrader research: Strategy Tester and walk-forward analytics, backtest analysis and parsing of imported backtest HTML reports. Complements fin-futures-fx on the retail-FX side. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "metatrader",
+        "walk-forward",
+        "backtest-analysis"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/algotradingspace-dev/metatrader-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-19",
+        "skill_count": 3,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "mt-mql-developer",
+      "source": {
+        "source": "git-subdir",
+        "url": "algotradingspace-dev/metatrader-skills",
+        "path": "plugins/mql-developer",
+        "ref": "main",
+        "sha": "44fd4c790ed230874674b74f24f73b5e85cb8954"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A single MQL developer skill - the entry point of the same MetaTrader marketplace, largely subsumed by mt-mql5-development. Take it only if you want the router without the ten-skill plugin. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "mql5",
+        "metatrader"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/algotradingspace-dev/metatrader-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-19",
+        "skill_count": 1,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "mt-mql5-development",
+      "source": {
+        "source": "git-subdir",
+        "url": "algotradingspace-dev/metatrader-skills",
+        "path": "plugins/mql5-development",
+        "ref": "main",
+        "sha": "44fd4c790ed230874674b74f24f73b5e85cb8954"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Ten MQL5 development skills: expert-advisor architecture split into risk, signal, regime and trade-manager layers, plus constants, stdlib utilities, networking, multi-asset handling and an economic calendar. Code-generation guidance for a language this index does not otherwise cover. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "mql5",
+        "expert-advisor",
+        "metatrader"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/algotradingspace-dev/metatrader-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-19",
+        "skill_count": 10,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "mt-trading-fundamentals",
+      "source": {
+        "source": "git-subdir",
+        "url": "algotradingspace-dev/metatrader-skills",
+        "path": "plugins/trading-fundamentals",
+        "ref": "main",
+        "sha": "44fd4c790ed230874674b74f24f73b5e85cb8954"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. One forex-fundamentals reference skill from the same MetaTrader marketplace - central-bank and macro-release framing for FX. Thin next to fin-futures-fx's fx-markets skill. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "forex",
+        "fundamentals"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/algotradingspace-dev/metatrader-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-19",
+        "skill_count": 1,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "mt-trading-web-systems",
+      "source": {
+        "source": "git-subdir",
+        "url": "algotradingspace-dev/metatrader-skills",
+        "path": "plugins/trading-web-systems",
+        "ref": "main",
+        "sha": "44fd4c790ed230874674b74f24f73b5e85cb8954"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. One fintech web-systems skill from the same MetaTrader marketplace - building the web layer around a trading system. Engineering guidance, not market method; API-key handling is discussed but no credentials are held and nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "fintech",
+        "web-systems"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/algotradingspace-dev/metatrader-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-19",
+        "skill_count": 1,
+        "stars_on_verified_on": 0,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "nansen-cli",
+      "source": {
+        "source": "github",
+        "repo": "nansen-ai/nansen-cli",
+        "ref": "main",
+        "sha": "782e33d30fbf1de6cde3bd3c22d7435a0f159f40"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Nansen's official CLI skills for smart-money and on-chain analytics: token screener, wallet profiler and clustering, perp-trader profiles, a Polymarket insider scan, DCA tracker and alerts. LIVE ORDERS AND CUSTODY - it also manages local or Privy-hosted wallets and can execute DEX swaps and perp trades on request. A paid NANSEN_API_KEY comes from the environment or the OS keychain. 34 skills; read broker-execution-apis before enabling the trading half. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "nansen",
+        "on-chain",
+        "wallet",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/nansen-ai/nansen-cli",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-09",
+        "skill_count": 34,
+        "stars_on_verified_on": 135,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "octagon-skills",
+      "source": {
+        "source": "github",
+        "repo": "OctagonAI/skills",
+        "ref": "main",
+        "sha": "51e938c4d086f658de8bdcf734e864d34637167e"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Octagon's pack for its filings-research MCP: 10-K/10-Q/8-K, S-1 and proxy analysis, footnotes and covenants, earnings-call decomposition, estimates, financial-health scores, ESG, commodities and forex lists, prediction markets. Vendor-locked - a paid Octagon MCP key in the environment gates almost everything - and 67 skills is roughly 3.4x the discovery budget. Analysis only; the Kalshi skill is dry-run and confirmation-gated. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "octagon",
+        "sec-filings",
+        "earnings-calls",
+        "vendor"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/OctagonAI/skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-05",
+        "skill_count": 67,
+        "stars_on_verified_on": 126,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "okx-agent-trade-kit",
+      "source": {
+        "source": "github",
+        "repo": "okx/agent-trade-kit",
+        "ref": "github-main",
+        "sha": "c4e54501e6f30e300b548cedcfa3843c58729be7"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. OKX's second official pack, alongside the okx-agent-skills entry already in this marketplace: spot, swap, futures and options through the OKX trade MCP, grid and DCA bots, Earn, a smart-money leaderboard and sentiment. LIVE ORDERS - the default module set includes trade, so it is live as soon as an OKX API key and passphrase are in the environment; a --read-only flag exists. Read broker-execution-apis first. Note the default branch is `github-main`. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "okx",
+        "crypto",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/okx/agent-trade-kit",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 10,
+        "stars_on_verified_on": 421,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "openalgo-execution-skills",
+      "source": {
+        "source": "github",
+        "repo": "marketcalls/openalgo-execution-skills",
+        "ref": "main",
+        "sha": "1b8eceeb404f909acd2419eb329541a4de504bdc"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. OpenAlgo dual-mode strategy skills for the Indian market: one signals() function serving both a VectorBT backtest and a live loop, options-only strategies, a portfolio supervisor with caps and risk tests run in sandbox. LIVE ORDERS - running with --mode live sends real orders through OpenAlgo once its API key is set; OpenAlgo itself has a sandbox toggle. Read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "openalgo",
+        "india",
+        "vectorbt",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/marketcalls/openalgo-execution-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-04-28",
+        "skill_count": 7,
+        "stars_on_verified_on": 8,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./.claude/skills"
+      ]
+    },
+    {
+      "name": "openclaw-data-china-stock",
+      "source": {
+        "source": "github",
+        "repo": "shaoxing-xie/openclaw-data-china-stock",
+        "ref": "main",
+        "sha": "6361207818a7ef3f07266de304211788325f5478"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. An A-share, ETF and options data base with analyst skills on top - macro, fund flow, fundamentals, a 58-indicator technical suite and a light backtester. Written for the OpenClaw runtime, so check it loads standalone; the frontmatter carries non-spec keys (author, tags, triggers) that Claude Code tolerates and claude.ai upload does not. No credentials stated; nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "etf",
+        "technical-indicators",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/shaoxing-xie/openclaw-data-china-stock",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-05",
+        "skill_count": 7,
+        "stars_on_verified_on": 51,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "pionex-skills",
+      "source": {
+        "source": "github",
+        "repo": "pionex-official/pionex-skills",
+        "ref": "main",
+        "sha": "60e42c95de2c36a01bdde1b7db07dcdbfbccfc8a"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Pionex's official pack: grid and DCA bots, dual investment, Earn arbitrage, read-only market and portfolio views, and - unusually for an exchange - five SEC EDGAR equity-analysis skills (DCF, comps, earnings, screening). LIVE ORDERS - the pionex-trade skill places orders after a confirmation once an API key is set, and offers a dry-run flag. Five stars; read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "pionex",
+        "crypto",
+        "grid-bots",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/pionex-official/pionex-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-07-24",
+        "skill_count": 12,
+        "stars_on_verified_on": 5,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "polymarket-paper-trader",
+      "source": {
+        "source": "github",
+        "repo": "agent-next/polymarket-paper-trader",
+        "ref": "main",
+        "sha": "e4263988a8a0775b61f41857184a3b693beea40f"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. One skill for paper-trading Polymarket against real order books, with a leaderboard. No wallet, no keys, no real money - a sandbox for prediction-market mechanics. Tiny. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "prediction-markets",
+        "polymarket",
+        "paper-trading"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/agent-next/polymarket-paper-trader",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-08-15",
+        "skill_count": 1,
+        "stars_on_verified_on": 389,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./.claude/skills"
+      ]
+    },
+    {
+      "name": "poorvith-skills-finance",
+      "source": {
+        "source": "github",
+        "repo": "poorvith-mp/skills-finance",
+        "ref": "main",
+        "sha": "54a310adb09e335557ae5ae1b45318712abe07bc"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A small FP&A and corporate-finance pack: budgeting, cap tables and waterfalls, runway, SaaS metrics, crypto tax lots (FIFO/LIFO/HIFO), treasury and tax strategy. Caveat worth knowing before you enable it - 24 skill directories load, but half are redirect stubs left behind by a reorganisation and its own manifest describes only 12 real skills. One star. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "fpa",
+        "cap-table",
+        "crypto-tax"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/poorvith-mp/skills-finance",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-06",
+        "skill_count": 24,
+        "stars_on_verified_on": 1,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "quant-review-skills",
+      "source": {
+        "source": "github",
+        "repo": "shakeebshaan/claude-code-quant-skills",
+        "ref": "main",
+        "sha": "6b39f8feb4a77f486eed509e40c02a0c69b7750f"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Six small research-integrity skills that rhyme with this repo's own guards: backtest review (look-ahead, overfitting, regime dependence), data scrubbing (timezone drift, stale ticks, survivorship), strategy critique, risk reporting, a hedge lab and indicator design. One star, idle since April 2026; no credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "backtest-review",
+        "research-integrity"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/shakeebshaan/claude-code-quant-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-04-17",
+        "skill_count": 6,
+        "stars_on_verified_on": 1,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "ruflo-neural-trader",
+      "source": {
+        "source": "git-subdir",
+        "url": "ruvnet/ruflo",
+        "path": "plugins/ruflo-neural-trader",
+        "ref": "main",
+        "sha": "498a2387998429d323c6495048fbb428b0d75f31"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Nine skills that wrap the `neural-trader` npm engine inside a 71k-star agent harness: walk-forward backtests, Monte-Carlo and parameter sweeps run on the vendor's cloud, LSTM/Transformer/N-BEATS training, PageRank feature attribution, mean-variance optimisation by conjugate gradient, regime detection and VaR/CVaR. These are CLI wrappers, not methodology - the engine is a separate install, cloud jobs need an API key and receipts are signed with an Ed25519 key. Nothing executes market orders. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "neural-forecasting",
+        "walk-forward",
+        "wrapper"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/ruvnet/ruflo",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-09",
+        "skill_count": 9,
+        "stars_on_verified_on": 71770,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "serenity-skill",
+      "source": {
+        "source": "github",
+        "repo": "haskaomni/serenity-skill",
+        "ref": "main",
+        "sha": "dedcf8f9ca8bd48f21239456ede50a9eb9f7ecb0"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Six idiosyncratic valuation skills: Bayesian intrinsic-growth valuation, TAM-adjusted PEG, a GF-DMA health index, a Juglar-cycle stage classifier, a bottleneck-alpha screen and a buy-side memo template. Method claims are the author's own and unreplicated. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "valuation",
+        "business-cycle"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/haskaomni/serenity-skill",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-07-15",
+        "skill_count": 6,
+        "stars_on_verified_on": 632,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "shinkoku",
+      "source": {
+        "source": "github",
+        "repo": "kazukinagata/shinkoku",
+        "ref": "main",
+        "sha": "607574d5e5ce63898b2560e083a555d074ef258d"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The only Japanese tax-filing (確定申告) pack this sweep found: income and consumption tax, the invoice system, e-Tax submission, bookkeeping, receipt and withholding-slip OCR, and a 法人成り simulation. Filing happens through the NTA portal with the user, not by the skills; no credentials are held. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "japan",
+        "tax",
+        "確定申告"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/kazukinagata/shinkoku",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-09",
+        "skill_count": 24,
+        "stars_on_verified_on": 359,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "skills-il-tax-and-finance",
+      "source": {
+        "source": "github",
+        "repo": "skills-il/tax-and-finance",
+        "ref": "master",
+        "sha": "0cc2c0498d5640ca95b5e2c9fa0046636094884e"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. An Israeli market pack this index otherwise has nothing for: tax returns, VAT and withholding, Section 102 option taxation, crypto tax, Bank of Israel data, TASE analysis, a dual-listed TASE-versus-US arbitrage skill, mortgage and pension comparators and local payment gateways. Keys for BOI/TASE endpoints go in the environment; nothing executes. Two mechanical caveats - the 42 skill directories sit at the repository root, so this is the one entry here relying on a bare './' skills path, and 42 skills is about 2x the discovery budget. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "israel",
+        "tax",
+        "tase"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/skills-il/tax-and-finance",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-09",
+        "skill_count": 42,
+        "stars_on_verified_on": 33,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./"
+      ]
+    },
+    {
+      "name": "stock-sdk-mcp",
+      "source": {
+        "source": "github",
+        "repo": "chengzuopeng/stock-sdk-mcp",
+        "ref": "main",
+        "sha": "6b57f40b3c426a5c8d0edaae5d7ea49708a5e54b"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. An A-share MCP server with five skills on free endpoints: market overview, screener, smart-money flows (北向, 龙虎榜, 大宗交易) and a realtime monitor. ISC licence; no credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "ISC",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "mcp",
+        "smart-money",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/chengzuopeng/stock-sdk-mcp",
+        "license": "ISC",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-24",
+        "skill_count": 5,
+        "stars_on_verified_on": 100,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "tradememory-plugin",
+      "source": {
+        "source": "git-subdir",
+        "url": "mnemox-ai/tradememory-protocol",
+        "path": "tradememory-plugin",
+        "ref": "master",
+        "sha": "e9ca736e40cab044ca28d640b91bcb47a0993b58"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. A decision audit trail and outcome-weighted memory for trading agents - three skills covering logging decisions, replaying them and an evolution engine. Local-first, with an API key only for the hosted mode. Worth knowing before you install: the interesting piece, a strategy-validator with deflated Sharpe, walk-forward, regime and CPCV checks, lives outside the plugin directory and so is not included here. Nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "trade-journal",
+        "audit-trail",
+        "memory"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/mnemox-ai/tradememory-protocol",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-08",
+        "skill_count": 3,
+        "stars_on_verified_on": 1416,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "trading212-api",
+      "source": {
+        "source": "git-subdir",
+        "url": "trading212-labs/agent-skills",
+        "path": "plugins/trading212-api",
+        "ref": "master",
+        "sha": "edd9dc870b16866d75e1778f9e5dfb89fcc74cb4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Trading 212's official skill for its API: portfolio, orders, positions and history. LIVE BY DEFAULT - T212_ENV defaults to \"live\" and must be set to \"demo\" for paper, making this the one pack in this wave that reaches a real account without an explicit opt-in. The API is itself in beta per its README. Read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "trading212",
+        "broker",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/trading212-labs/agent-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-08",
+        "skill_count": 1,
+        "stars_on_verified_on": 115,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "upstox-skills",
+      "source": {
+        "source": "github",
+        "repo": "upstox/upstox-skills",
+        "ref": "master",
+        "sha": "1ae72b1a59e80ae43c890ffec525de05ee0fa86c"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Upstox's official single skill for NSE/BSE/MCX: order execution, portfolio, market feeds and option strategies - a complement to the kiteconnect coverage in fin-asia. LIVE ORDERS - live is the default path, guarded by confirmation prompts, limit orders rather than market orders, and a 1-share default; a sandbox mode exists. The token comes from UPSTOX_ACCESS_TOKEN or a git-ignored config.json. Read broker-execution-apis first. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "upstox",
+        "india",
+        "broker",
+        "live-execution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/upstox/upstox-skills",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-06-09",
+        "skill_count": 1,
+        "stars_on_verified_on": 1,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "vibe-trading-skills",
+      "source": {
+        "source": "github",
+        "repo": "HKUDS/Vibe-Trading",
+        "ref": "main",
+        "sha": "a44ed6e807e6e7d0faeeff5b8f43df8c4694e2d1"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. HKUDS' 33k-star trading agent, taken for its skill tree alone - the richest algorithm content this sweep found: the Kakushadze 101, GTJA 191 and Qlib 158 alpha zoos, factor IC/IR research, execution models (square-root impact, VWAP/TWAP), microstructure (VPIN, Kyle's lambda, Amihud), SABR and local-vol options, convertible bonds, credit, Brinson attribution, GARCH/ADF and a Pine/vnpy exporter. The skills are coupled to the app's data router and Python toolkit, so test them standalone before trusting them; data keys go in a .env, and live orders are reachable only through a separate gated connector with a kill switch, not from these skills. 90 skills is about 4.5x the discovery budget. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "alpha-factors",
+        "microstructure",
+        "execution",
+        "attribution"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/HKUDS/Vibe-Trading",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-09",
+        "skill_count": 90,
+        "stars_on_verified_on": 33112,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./agent/src/skills"
+      ]
+    },
+    {
+      "name": "vp-re-appraisal-valuation",
+      "source": {
+        "source": "git-subdir",
+        "url": "reggiechan74/vp-real-estate",
+        "path": "plugins/appraisal-valuation",
+        "ref": "main",
+        "sha": "6199968b2837301a581832c34d3fe77eb428e0c4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Real-estate appraisal, plugin 1 of 6 from a Canadian VP of real estate: cost and income approaches, comparable-sales adjustment methodology, easement valuation, environmental due diligence and title. Complements the cre-agent-skills entry with method rather than deal workflow. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "appraisal",
+        "valuation"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/reggiechan74/vp-real-estate",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-15",
+        "skill_count": 6,
+        "stars_on_verified_on": 30,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "vp-re-common-utilities",
+      "source": {
+        "source": "git-subdir",
+        "url": "reggiechan74/vp-real-estate",
+        "path": "plugins/common-utilities",
+        "ref": "main",
+        "sha": "6199968b2837301a581832c34d3fe77eb428e0c4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The shared utility plugin the other five vp-re packs lean on: negotiation experts, board memo and briefing-note formats, and named analyst personas. Little use on its own - take it alongside one of the substantive vp-re plugins. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "utilities"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/reggiechan74/vp-real-estate",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-15",
+        "skill_count": 7,
+        "stars_on_verified_on": 30,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "vp-re-expropriation-law",
+      "source": {
+        "source": "git-subdir",
+        "url": "reggiechan74/vp-real-estate",
+        "path": "plugins/expropriation-law",
+        "ref": "main",
+        "sha": "6199968b2837301a581832c34d3fe77eb428e0c4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Ontario expropriation law in nine skills: compensation entitlement, procedural defects, statutory deadlines, Forms 1-12 completeness, injurious affection, severance damages and settlement analysis. Jurisdiction-specific legal content that goes stale - check the statute before relying on it. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "expropriation",
+        "ontario",
+        "legal"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/reggiechan74/vp-real-estate",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-15",
+        "skill_count": 9,
+        "stars_on_verified_on": 30,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "vp-re-infrastructure-corridor-ops",
+      "source": {
+        "source": "git-subdir",
+        "url": "reggiechan74/vp-real-estate",
+        "path": "plugins/infrastructure-corridor-ops",
+        "ref": "main",
+        "sha": "6199968b2837301a581832c34d3fe77eb428e0c4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Infrastructure corridor and land-assembly skills: agricultural easement negotiation, cropland out-of-production agreements, right-of-way, NIMBY objection analysis, public consultation design, residential displacement mitigation, transit-station site acquisition, transmission-line specs. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "infrastructure",
+        "right-of-way"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/reggiechan74/vp-real-estate",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-15",
+        "skill_count": 10,
+        "stars_on_verified_on": 30,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "vp-re-leasing-commercial",
+      "source": {
+        "source": "git-subdir",
+        "url": "reggiechan74/vp-real-estate",
+        "path": "plugins/leasing-commercial",
+        "ref": "main",
+        "sha": "6199968b2837301a581832c34d3fe77eb428e0c4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Commercial leasing, 24 skills: effective-rent (NER/NPV) analysis, real-options valuation of lease clauses, tenant credit analysis, lease abstraction and comparison, assignment and sublease consent frameworks, arbitration, default and remedies. Ontario-weighted legal content. 24 skills is just over the discovery budget. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "leasing",
+        "ontario"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/reggiechan74/vp-real-estate",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-15",
+        "skill_count": 24,
+        "stars_on_verified_on": 30,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "vp-re-tenancies-residential",
+      "source": {
+        "source": "git-subdir",
+        "url": "reggiechan74/vp-real-estate",
+        "path": "plugins/tenancies-residential",
+        "ref": "main",
+        "sha": "6199968b2837301a581832c34d3fe77eb428e0c4"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. Three Ontario residential-tenancy skills: Residential Tenancies Act eviction procedures, LTB application and hearing practice, and relief-from-eviction analysis. Jurisdiction-specific and date-sensitive. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "real-estate",
+        "tenancy",
+        "ontario",
+        "legal"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/reggiechan74/vp-real-estate",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-05-15",
+        "skill_count": 3,
+        "stars_on_verified_on": 30,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "wshobson-quantitative-trading",
+      "source": {
+        "source": "git-subdir",
+        "url": "wshobson/agents",
+        "path": "plugins/quantitative-trading",
+        "ref": "main",
+        "sha": "a30778f8c4e6b0a87567941b7cca4f534bf642b6"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The two finance skills inside a 39.5k-star general agent marketplace: backtesting frameworks (with look-ahead and survivorship handling) and risk-metrics calculation (VaR, CVaR, Sharpe, Sortino, drawdown). Widely installed - skills.sh showed ~14.8k installs of the backtesting one - and duplicated verbatim by other marketplaces. Both overlap backtest-validation and portfolio-and-risk here. No credentials, nothing executes. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "MIT",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "backtesting",
+        "risk-metrics"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/wshobson/agents",
+        "license": "MIT",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-09-07",
+        "skill_count": 2,
+        "stars_on_verified_on": 39524,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      }
+    },
+    {
+      "name": "yuping322-finskills",
+      "source": {
+        "source": "github",
+        "repo": "yuping322/finskills",
+        "ref": "main",
+        "sha": "dcce68f4bfae8f8f41af61383b7ea0fb2d63a2a5"
+      },
+      "description": "FEDERATED - the claims inside are not verified by this repo. The maintained superset of geeksfino-finskills, 107 skills across China, Hong Kong and US directories: A+H premium, block deals, 龙虎榜, pledge risk, goodwill, 解禁 unlocks, margin risk, factor crowding, event studies, valuation regimes, and HK southbound, currency and liquidity monitors. Free data sources; nothing executes. Two caveats - it has been idle since February 2026, and 107 skills is roughly 5x the discovery budget, which is yours to spend since it installs disabled. Installs disabled.",
+      "defaultEnabled": false,
+      "license": "Apache-2.0",
+      "category": "federated",
+      "tags": [
+        "federated",
+        "a-share",
+        "hong-kong",
+        "event-study",
+        "中文"
+      ],
+      "metadata": {
+        "upstream": "https://github.com/yuping322/finskills",
+        "license": "Apache-2.0",
+        "verified_on": "2026-09-09",
+        "upstream_pushed_at": "2026-02-21",
+        "skill_count": 107,
+        "stars_on_verified_on": 19,
+        "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
+      },
+      "skills": [
+        "./China-market",
+        "./HK-market",
+        "./US-market"
+      ]
     }
   ]
 }
