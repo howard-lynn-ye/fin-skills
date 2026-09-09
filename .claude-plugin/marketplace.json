@@ -363,7 +363,7 @@
     {
       "name": "fin-fixed-income",
       "source": "./plugins/fin-fixed-income",
-      "description": "Bonds, rates and the conventions every other fixed-income number sits on - day counts and accrued interest, yield measures and bill discount quotes, duration and DV01, SOFR compounded in arrears, LIBOR fallbacks, OIS and multi-curve discounting, swap conventions, curve interpolation, Treasury auctions, bond futures and the cheapest to deliver, repo, inflation-linked bonds, and mortgage prepayment. One skill per topic, each with an executable script and a measured trap.",
+      "description": "Bonds, rates and the conventions every other fixed-income number sits on - day counts and accrued interest, gilt ex-dividend windows and negative accrued, yield measures and bill discount quotes, duration convexity and DV01, SOFR compounded in arrears, LIBOR fallbacks under Regulation ZZ, and OIS multi-curve discounting. One skill per topic, each with an executable script and a measured trap.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
@@ -378,14 +378,21 @@
         "ois",
         "multi-curve",
         "swap",
-        "curve-interpolation",
-        "treasury-auction",
-        "cheapest-to-deliver",
-        "repo",
-        "tips",
-        "mbs"
+        "ex-dividend",
+        "yield-to-worst",
+        "convexity",
+        "regulation-zz",
+        "quantlib"
       ],
-      "skills": []
+      "skills": [
+        "./skills/bond-conventions-and-accrued",
+        "./skills/duration-convexity-and-dv01",
+        "./skills/ex-dividend-and-rebate-interest",
+        "./skills/libor-transition-and-fallbacks",
+        "./skills/ois-discounting-and-multi-curve",
+        "./skills/sofr-and-rfr-compounding",
+        "./skills/yield-measures-and-bill-quotes"
+      ]
     },
     {
       "name": "fin-credit",
