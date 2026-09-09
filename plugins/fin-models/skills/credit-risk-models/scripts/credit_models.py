@@ -1,0 +1,408 @@
+"""Merton structural model, constant-hazard reduced-form model, CDS pricing, and the measure trap.
+
+WHY this exists: credit models produce a "probability of default", and the two families
+produce two DIFFERENT numbers for the same firm that are both called that:
+
+  * Merton (1974): equity is a call on the firm's assets struck at the debt. Given the
+    equity value E, its volatility sigma_E, the face value D, r and T, two equations pin
+    the unobservable asset value V and asset volatility sigma_V. N(-d2) is then the
+    RISK-NEUTRAL probability of default -- the drift in d2 is r. The distance-to-default
+    that feeds a KMV-style PHYSICAL probability uses the asset drift mu instead; with
+    mu > r the physical PD is smaller. Hull's textbook example (E = 3, sigma_E = 80%,
+    D = 10, r = 5%, T = 1 -> V = 12.40, sigma_V = 0.2123, PD = 12.7%) is reproduced.
+
+  * Reduced form with a constant hazard lambda: survival exp(-lambda t), and a CDS par
+    spread s ~ lambda (1 - R). The approximation is what everybody quotes; the exact
+    quarterly-premium price is what a desk pays. The gap and the recovery sensitivity are
+    measured, and the exact price is checked against QuantLib's MidPointCdsEngine and
+    IsdaCdsEngine.
+
+  * THE TRAP: a historical (physical) default rate plugged into a pricing formula that
+    needs the risk-neutral one. Rating-agency default tables are physical; CDS spreads and
+    bond prices embed risk-neutral probabilities, which are larger. The demo prices a CDS
+    both ways on the same firm and prints the error in basis points.
+
+Usage:
+    from credit_models import merton_solve, distance_to_default, cds_par_spread, implied_hazard
+    m = merton_solve(E=3.0, sigma_E=0.80, D=10.0, r=0.05, T=1.0)
+    m.pd_risk_neutral                                    # 0.127
+"""
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+from typing import Sequence
+
+from scipy.optimize import brentq, fsolve
+from scipy.stats import norm
+
+
+# ------------------------------------------------------------------ Merton
+@dataclass(frozen=True)
+class MertonResult:
+    V: float
+    sigma_V: float
+    d1: float
+    d2: float
+    pd_risk_neutral: float
+    debt_value: float
+    pv_promised: float
+    expected_loss: float
+    credit_spread: float
+    residual: float
+
+    def as_dict(self) -> dict[str, float]:
+        return self.__dict__.copy()
+
+
+def merton_equity(V: float, sigma_V: float, D: float, r: float, T: float
+                  ) -> tuple[float, float]:
+    """Forward map of Merton (1974): E = V N(d1) - D e^{-rT} N(d2), sigma_E = N(d1) sigma_V V / E."""
+    if V <= 0.0 or sigma_V <= 0.0 or D <= 0.0 or T <= 0.0:
+        raise ValueError("V, sigma_V, D, T must be positive")
+    v = sigma_V * math.sqrt(T)
+    d1 = (math.log(V / D) + (r + 0.5 * sigma_V * sigma_V) * T) / v
+    d2 = d1 - v
+    E = V * norm.cdf(d1) - D * math.exp(-r * T) * norm.cdf(d2)
+    # For a deeply distressed firm E underflows to 0 and sigma_E is undefined there. Returning
+    # inf pushes a solver away from that corner instead of emitting a divide-by-zero warning
+    # and continuing with a nan.
+    return E, (norm.cdf(d1) * sigma_V * V / E if E > 0.0 else float("inf"))
+
+
+def merton_solve(E: float, sigma_E: float, D: float, r: float, T: float,
+                 tol: float = 1e-12) -> MertonResult:
+    """Solve the two Merton equations for (V, sigma_V) from observed (E, sigma_E).
+
+    Start from V = E + D e^{-rT} (debt at par) and sigma_V = sigma_E E / V (the delta-one
+    limit), which converges for every textbook case tried. The residual of both equations
+    is returned so a bad solve is visible rather than silent.
+    """
+    if E <= 0.0 or sigma_E <= 0.0 or D <= 0.0 or T <= 0.0:
+        raise ValueError("E, sigma_E, D, T must be positive")
+    x0 = [E + D * math.exp(-r * T), sigma_E * E / (E + D * math.exp(-r * T))]
+
+    def eqs(x):
+        V, sV = x
+        if V <= 0.0 or sV <= 0.0:
+            return [1e6, 1e6]
+        e, se = merton_equity(V, sV, D, r, T)
+        if not math.isfinite(se):
+            return [1e6, 1e6]
+        return [e - E, se - sigma_E]
+
+    sol, info, ier, msg = fsolve(eqs, x0, xtol=tol, full_output=True)
+    resid = max(abs(v) for v in info["fvec"])
+    if ier != 1 or resid > 1e-8:
+        raise RuntimeError(f"Merton solve did not converge: {msg} (residual {resid:.2e})")
+    V, sV = float(sol[0]), float(sol[1])
+    v = sV * math.sqrt(T)
+    d1 = (math.log(V / D) + (r + 0.5 * sV * sV) * T) / v
+    d2 = d1 - v
+    pv = D * math.exp(-r * T)
+    debt = V - E
+    return MertonResult(V=V, sigma_V=sV, d1=d1, d2=d2, pd_risk_neutral=norm.cdf(-d2),
+                        debt_value=debt, pv_promised=pv, expected_loss=(pv - debt) / pv,
+                        credit_spread=-math.log(debt / pv) / T, residual=resid)
+
+
+def merton_solver_scan(r: float = 0.05,
+                       equities: Sequence[float] = (0.1, 0.5, 1.0, 3.0, 10.0, 50.0),
+                       vols: Sequence[float] = (0.2, 0.5, 0.8, 1.5, 3.0),
+                       debts: Sequence[float] = (1.0, 10.0, 100.0),
+                       maturities: Sequence[float] = (0.25, 1.0, 5.0)) -> dict[str, object]:
+    """Solve the two equations over a grid and classify every outcome.
+
+    'wrong_root' counts solves that RETURNED without reproducing the inputs when pushed back
+    through merton_equity -- the only failure mode that would be dangerous. It should be zero;
+    the demo prints it so that stays checked rather than assumed.
+    """
+    solved, raised, wrong = 0, [], []
+    for E in equities:
+        for sE in vols:
+            for D in debts:
+                for T in maturities:
+                    try:
+                        m = merton_solve(E, sE, D, r, T)
+                    except (RuntimeError, ValueError) as exc:
+                        raised.append((E, sE, D, T, type(exc).__name__))
+                        continue
+                    e, se = merton_equity(m.V, m.sigma_V, D, r, T)
+                    if abs(e - E) > 1e-8 or abs(se - sE) > 1e-8:
+                        wrong.append((E, sE, D, T))
+                    else:
+                        solved += 1
+    return {"total": len(equities) * len(vols) * len(debts) * len(maturities),
+            "solved": solved, "raised": raised, "wrong_root": wrong}
+
+
+def distance_to_default(V: float, sigma_V: float, D: float, mu: float, T: float
+                        ) -> tuple[float, float]:
+    """KMV-style distance to default under the PHYSICAL drift mu, and N(-DD).
+    With mu = r this is exactly (d2, N(-d2)) of the risk-neutral Merton solution."""
+    v = sigma_V * math.sqrt(T)
+    dd = (math.log(V / D) + (mu - 0.5 * sigma_V * sigma_V) * T) / v
+    return dd, norm.cdf(-dd)
+
+
+# ------------------------------------------------------------------ constant hazard + CDS
+def survival_probability(t: float, hazard: float) -> float:
+    return math.exp(-hazard * t)
+
+
+def hazard_from_default_probability(pd: float, T: float) -> float:
+    """lambda = -ln(1 - PD) / T for a constant hazard."""
+    if not 0.0 <= pd < 1.0:
+        raise ValueError("PD must be in [0, 1)")
+    return -math.log(1.0 - pd) / T
+
+
+def cds_legs(hazard: float, recovery: float, r: float, T: float, freq: int = 4,
+             accrual_on_default: bool = True) -> dict[str, float]:
+    """Exact legs of a CDS under a flat continuously-compounded rate r and a flat hazard,
+    per unit notional, premium paid in arrears `freq` times a year with the accrued
+    premium paid on default (the market convention).
+
+        protection = (1 - R) * lambda / (r + lambda) * (1 - e^{-(r + lambda) T})
+        annuity    = sum_i Delta e^{-(r+lambda) t_i}
+                     + sum_i lambda * int_{t_{i-1}}^{t_i} (t - t_{i-1}) e^{-(r+lambda) t} dt
+        par spread = protection / annuity
+    Everything is closed form; nothing is discretised.
+    """
+    if hazard < 0.0 or not 0.0 <= recovery < 1.0 or T <= 0.0 or freq < 1:
+        raise ValueError("need hazard >= 0, 0 <= recovery < 1, T > 0, freq >= 1")
+    c = r + hazard
+    n = int(round(T * freq))
+    if abs(n - T * freq) > 1e-9:
+        raise ValueError("T must be a whole number of premium periods")
+    delta = 1.0 / freq
+    protection = (1.0 - recovery) * (hazard / c) * (1.0 - math.exp(-c * T)) if c > 0 else 0.0
+    annuity = 0.0
+    accrual = 0.0
+    for i in range(1, n + 1):
+        a, b = (i - 1) * delta, i * delta
+        annuity += delta * math.exp(-c * b)
+        if accrual_on_default and c > 0:
+            # int_a^b (t - a) e^{-c t} dt = -(b-a) e^{-cb}/c - e^{-cb}/c^2 + e^{-ca}/c^2
+            accrual += hazard * (-(b - a) * math.exp(-c * b) / c
+                                 - math.exp(-c * b) / c ** 2 + math.exp(-c * a) / c ** 2)
+    rpv01 = annuity + accrual
+    return {"protection": protection, "annuity": annuity, "accrual": accrual, "rpv01": rpv01,
+            "par_spread": protection / rpv01 if rpv01 > 0 else float("nan")}
+
+
+def cds_par_spread(hazard: float, recovery: float, r: float, T: float, freq: int = 4,
+                   accrual_on_default: bool = True) -> float:
+    return cds_legs(hazard, recovery, r, T, freq, accrual_on_default)["par_spread"]
+
+
+def implied_hazard(spread: float, recovery: float, r: float, T: float, freq: int = 4,
+                   accrual_on_default: bool = True) -> float:
+    """Flat hazard that reprices a par spread (per unit, e.g. 0.01 for 100 bp)."""
+    if spread <= 0.0:
+        raise ValueError("spread must be positive")
+    f = lambda h: cds_par_spread(h, recovery, r, T, freq, accrual_on_default) - spread
+    return brentq(f, 1e-12, 50.0, xtol=1e-14)
+
+
+def cds_mark_to_market(contract_spread: float, hazard: float, recovery: float, r: float,
+                       T: float, freq: int = 4) -> float:
+    """Value to the protection buyer of an existing CDS paying `contract_spread`, per unit
+    notional: protection PV minus the premium leg PV at the curve's hazard."""
+    legs = cds_legs(hazard, recovery, r, T, freq)
+    return legs["protection"] - contract_spread * legs["rpv01"]
+
+
+def approximation_error_table(hazards: Sequence[float], recovery: float, r: float, T: float
+                              ) -> list[dict[str, float]]:
+    rows = []
+    for h in hazards:
+        exact = cds_par_spread(h, recovery, r, T)
+        approx = h * (1.0 - recovery)
+        rows.append({"hazard": h, "exact_bp": exact * 1e4, "approx_bp": approx * 1e4,
+                     "error_bp": (approx - exact) * 1e4,
+                     "error_pct": (approx / exact - 1.0) * 100.0})
+    return rows
+
+
+def recovery_sensitivity(spread: float, recoveries: Sequence[float], r: float, T: float
+                         ) -> list[dict[str, float]]:
+    rows = []
+    for R in recoveries:
+        h = implied_hazard(spread, R, r, T)
+        rows.append({"recovery": R, "hazard": h, "pd_T": 1.0 - survival_probability(T, h),
+                     "approx_hazard": spread / (1.0 - R)})
+    return rows
+
+
+def measure_trap(E: float, sigma_E: float, D: float, r: float, T: float, mu: float,
+                 recovery: float, cds_T: float = 1.0) -> dict[str, float]:
+    """Price a CDS on a Merton firm with its risk-neutral PD and with its physical PD."""
+    m = merton_solve(E, sigma_E, D, r, T)
+    _, pd_phys = distance_to_default(m.V, m.sigma_V, D, mu, T)
+    h_rn = hazard_from_default_probability(m.pd_risk_neutral, T)
+    h_ph = hazard_from_default_probability(pd_phys, T)
+    s_rn = cds_par_spread(h_rn, recovery, r, cds_T)
+    s_ph = cds_par_spread(h_ph, recovery, r, cds_T)
+    mtm_error = cds_mark_to_market(s_rn, h_ph, recovery, r, cds_T)   # a fair contract, revalued
+    return {"pd_rn": m.pd_risk_neutral, "pd_phys": pd_phys, "hazard_rn": h_rn,
+            "hazard_phys": h_ph, "spread_rn_bp": s_rn * 1e4, "spread_phys_bp": s_ph * 1e4,
+            "spread_error_bp": (s_ph - s_rn) * 1e4, "mtm_error_pct_notional": mtm_error * 100}
+
+
+# ------------------------------------------------------------------ optional cross-check
+def quantlib_cds_cross_check(hazard: float, recovery: float, r: float, T: float
+                             ) -> dict[str, object] | None:
+    """The same flat-hazard, flat-rate, quarterly CDS in QuantLib's two engines."""
+    try:
+        import QuantLib as ql
+    except ImportError:
+        return None
+    today = ql.Date(8, 9, 2026)
+    ql.Settings.instance().evaluationDate = today
+    dc = ql.Actual365Fixed()
+    disc = ql.YieldTermStructureHandle(ql.FlatForward(today, r, dc))
+    haz = ql.DefaultProbabilityTermStructureHandle(
+        ql.FlatHazardRate(today, ql.QuoteHandle(ql.SimpleQuote(hazard)), dc))
+    sched = ql.Schedule(today, today + ql.Period(int(round(T)), ql.Years), ql.Period(3, ql.Months),
+                        ql.NullCalendar(), ql.Unadjusted, ql.Unadjusted,
+                        ql.DateGeneration.Forward, False)
+    out: dict[str, object] = {"version": ql.__version__,
+                              "survival_T": haz.survivalProbability(T)}
+    for name, engine in (("midpoint", ql.MidPointCdsEngine(haz, recovery, disc)),
+                         ("isda", ql.IsdaCdsEngine(haz, recovery, disc))):
+        cds = ql.CreditDefaultSwap(ql.Protection.Buyer, 1.0, 0.01, sched, ql.Unadjusted, dc)
+        cds.setPricingEngine(engine)
+        out[name] = cds.fairSpread()
+    cds = ql.CreditDefaultSwap(ql.Protection.Buyer, 1.0, 0.01, sched, ql.Unadjusted, dc, False)
+    cds.setPricingEngine(ql.MidPointCdsEngine(haz, recovery, disc))
+    out["midpoint_no_accrual"] = cds.fairSpread()
+    return out
+
+
+# ------------------------------------------------------------------ demo
+if __name__ == "__main__":
+    W = 96
+    print("=" * W)
+    print("CREDIT RISK MODELS -- Merton, constant hazard, CDS, and the measure trap")
+    print("=" * W)
+
+    # ------------------------------------------------------------- 1. Hull's example
+    E, sE, D, r, T = 3.0, 0.80, 10.0, 0.05, 1.0
+    m = merton_solve(E, sE, D, r, T)
+    print("\n1. MERTON (1974) -- Hull's textbook inputs: E = 3, sigma_E = 80%, D = 10 due in 1y, r = 5%")
+    print(f"   asset value V          {m.V:.6f}   (Hull: 12.40)")
+    print(f"   asset volatility       {m.sigma_V:.6f}   (Hull: 0.2123)")
+    print(f"   d2                     {m.d2:.6f}   (Hull: 1.1408)")
+    print(f"   risk-neutral PD N(-d2) {m.pd_risk_neutral:.4%}   (Hull: 12.7%)")
+    print(f"   market value of debt   {m.debt_value:.6f}   (Hull: 9.40)")
+    print(f"   PV of promised payment {m.pv_promised:.6f}   (Hull: 9.51)")
+    print(f"   expected loss          {m.expected_loss:.4%}   (Hull: about 1.2%)")
+    print(f"   implied credit spread  {m.credit_spread * 1e4:.1f} bp   solve residual {m.residual:.1e}")
+    e_back, se_back = merton_equity(m.V, m.sigma_V, D, r, T)
+    print(f"   round trip: equity {e_back:.10f}, equity vol {se_back:.10f}")
+    assert abs(e_back - E) < 1e-8 and abs(se_back - sE) < 1e-8
+    scan = merton_solver_scan()
+    worst = sorted({(sE_, T_) for _, sE_, _, T_, _ in scan["raised"]})
+    print(f"   solver over a {scan['total']}-point grid (E, sigma_E, D, T): {scan['solved']} "
+          f"solved and round-tripped, {len(scan['raised'])} RAISED, "
+          f"{len(scan['wrong_root'])} returned a wrong root")
+    print(f"   the failures are all at {worst}: an equity vol of 300% over 5 years is a firm "
+          f"the two-equation system")
+    print(f"   cannot separate. It refuses rather than returning a plausible V -- that is the "
+          f"behaviour to keep when you rewrite this.")
+
+    # ------------------------------------------------------------- 2. RN vs physical
+    print("\n2. RISK-NEUTRAL vs PHYSICAL PD ON THE SAME FIRM")
+    print(f"   {'asset drift mu':>15} {'DD':>8} {'PD physical':>12} {'PD risk-neutral':>16} {'ratio':>6}")
+    for mu in (0.05, 0.08, 0.10, 0.15):
+        dd, pd_p = distance_to_default(m.V, m.sigma_V, D, mu, T)
+        print(f"   {mu:>15.2%} {dd:>8.4f} {pd_p:>12.3%} {m.pd_risk_neutral:>16.3%} "
+              f"{m.pd_risk_neutral / pd_p:>6.2f}")
+    print("   mu = r reproduces N(-d2) exactly; every mu > r gives a SMALLER physical PD.")
+
+    # ------------------------------------------------------------- 3. CDS exact vs approx
+    h, R, rf, Tc = 0.02, 0.40, 0.03, 5.0
+    legs = cds_legs(h, R, rf, Tc)
+    print(f"\n3. CONSTANT HAZARD lambda = {h:.0%}, R = {R:.0%}, r = {rf:.0%}, 5y CDS, quarterly premium")
+    print(f"   survival 5y             {survival_probability(Tc, h):.6f}")
+    print(f"   protection leg          {legs['protection']:.8f} per unit notional")
+    print(f"   premium annuity         {legs['annuity']:.8f}  + accrual on default "
+          f"{legs['accrual']:.8f}  = risky PV01 {legs['rpv01']:.8f}")
+    print(f"   exact par spread        {legs['par_spread'] * 1e4:.4f} bp")
+    print(f"   lambda (1 - R)          {h * (1 - R) * 1e4:.4f} bp   "
+          f"(error {(h * (1 - R) - legs['par_spread']) * 1e4:+.4f} bp)")
+    no_acc = cds_par_spread(h, R, rf, Tc, accrual_on_default=False)
+    print(f"   without accrual on default the par spread is {no_acc * 1e4:.4f} bp "
+          f"({(no_acc - legs['par_spread']) * 1e4:+.4f} bp)")
+    print(f"   {'lambda':>8} {'exact bp':>10} {'lambda(1-R) bp':>15} {'error bp':>9} {'error %':>8}")
+    for row in approximation_error_table((0.005, 0.01, 0.02, 0.05, 0.10, 0.20), R, rf, Tc):
+        print(f"   {row['hazard']:>8.1%} {row['exact_bp']:>10.2f} {row['approx_bp']:>15.2f} "
+              f"{row['error_bp']:>+9.2f} {row['error_pct']:>+8.2f}")
+    print("   the error is a CONSTANT -0.37% of the spread: the approximation UNDERSTATES it at "
+          "every hazard.")
+    print("   WHY: lambda(1-R) is the CONTINUOUS-premium par spread exactly. protection = "
+          "(1-R) lambda/c (1-e^-cT) and")
+    print("   the continuous annuity = (1-e^-cT)/c, so the ratio is (1-R) lambda with no "
+          "approximation at all. The whole")
+    print("   gap is the premium FREQUENCY -- paying in arrears defers the annuity, which "
+          "raises the fair spread:")
+    print(f"   {'per year':>9} {'exact bp':>10} {'no accrual bp':>14} {'vs lambda(1-R)':>15}")
+    for f in (1, 2, 4, 12, 52, 365):
+        ex = cds_par_spread(h, R, rf, Tc, freq=f)
+        na = cds_par_spread(h, R, rf, Tc, freq=f, accrual_on_default=False)
+        print(f"   {f:>9} {ex * 1e4:>10.4f} {na * 1e4:>14.4f} "
+              f"{(ex - h * (1 - R)) * 1e4:>+15.4f}")
+    print("   -> it converges to 120.0000 bp as the premium goes continuous. Quarterly, the "
+          "market convention, sits 0.45 bp")
+    print("      above it; annual sits 1.81 bp above. Accrual on default gives part of that "
+          "annuity back (-0.30 bp at quarterly).")
+
+    # ------------------------------------------------------------- 4. recovery sensitivity
+    s_mkt = 0.0100
+    print(f"\n4. RECOVERY SENSITIVITY OF THE IMPLIED HAZARD, market 5y spread {s_mkt * 1e4:.0f} bp")
+    print(f"   {'recovery':>9} {'implied lambda':>15} {'s/(1-R)':>9} {'5y PD':>8}")
+    for row in recovery_sensitivity(s_mkt, (0.0, 0.2, 0.4, 0.6, 0.8), rf, Tc):
+        print(f"   {row['recovery']:>9.0%} {row['hazard']:>15.4%} {row['approx_hazard']:>9.4%} "
+              f"{row['pd_T']:>8.3%}")
+    lo = implied_hazard(s_mkt, 0.2, rf, Tc)
+    hi = implied_hazard(s_mkt, 0.6, rf, Tc)
+    print(f"   the same 100 bp quote implies a hazard {hi / lo:.2f}x higher at R = 60% than at "
+          f"R = 20%; recovery is an INPUT, and the standard 40% is a convention, not data.")
+
+    # ------------------------------------------------------------- 5. the measure trap
+    trap = measure_trap(E, sE, D, r, T, mu=0.10, recovery=0.40)
+    print("\n5. THE TRAP: pricing with a physical default probability")
+    print(f"   Merton firm above, asset drift mu = 10%: physical PD {trap['pd_phys']:.3%} "
+          f"(hazard {trap['hazard_phys']:.3%}) vs risk-neutral PD {trap['pd_rn']:.3%} "
+          f"(hazard {trap['hazard_rn']:.3%})")
+    print(f"   1y CDS, R = 40%: fair spread from the risk-neutral PD {trap['spread_rn_bp']:.1f} bp; "
+          f"from the physical PD {trap['spread_phys_bp']:.1f} bp -> {trap['spread_error_bp']:+.1f} bp")
+    print(f"   marking the fair contract with the physical hazard shows a 'value' of "
+          f"{trap['mtm_error_pct_notional']:+.2f}% of notional that does not exist.")
+    print("   Rating-agency default tables are physical. Anything that prices -- a CDS, a bond")
+    print("   spread, a CVA -- needs the risk-neutral one, which is larger by the risk premium.")
+
+    # ------------------------------------------------------------- 6. QuantLib
+    print("\n6. CROSS-CHECK AGAINST QUANTLIB (same lambda, R, r, 5y quarterly)")
+    live = quantlib_cds_cross_check(h, R, rf, Tc)
+    if live is None:
+        print("   QuantLib not installed - the closed-form CDS above stands on the reference "
+              "implementation")
+    else:
+        mine = legs["par_spread"]
+        print(f"   QuantLib {live['version']}: FlatHazardRate survival(5y) {live['survival_T']:.6f}")
+        print(f"   MidPointCdsEngine fair spread    {live['midpoint'] * 1e4:.4f} bp  "
+              f"(mine {mine * 1e4:.4f}, diff {(live['midpoint'] - mine) * 1e4:+.4f} bp)")
+        print(f"   IsdaCdsEngine fair spread        {live['isda'] * 1e4:.4f} bp  "
+              f"(diff {(live['isda'] - mine) * 1e4:+.4f} bp)")
+        print(f"   MidPoint, settlesAccrual=False   {live['midpoint_no_accrual'] * 1e4:.4f} bp  "
+              f"(mine without accrual {no_acc * 1e4:.4f}, diff "
+              f"{(live['midpoint_no_accrual'] - no_acc) * 1e4:+.4f} bp)")
+        print("   the residual is the engines' ACT/365 coupon accrual and the midpoint rule for")
+        print("   the default time inside each quarter, against the exact integral here.")
+
+    print("\n" + "=" * W)
+    print("RULE: N(-d2) is risk-neutral; a rating-table default rate is physical. Price with the")
+    print("      first, forecast with the second, and never quote a hazard without its recovery.")
+    print("=" * W)
