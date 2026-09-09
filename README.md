@@ -235,6 +235,7 @@ plugins/<plugin>/skills/<skill>/
     references/*.md   one file per library — versions, licence, traps, snippets
     scripts/*.py      runnable, tested tools
 catalog/index.json    generated from frontmatter; never hand-edited
+examples/*.py         three runnable worked examples - the front door
 scripts/validate.py   enforces the 6-field spec + discovery budget + reference integrity
 scripts/build_index.py
 ```
@@ -257,6 +258,23 @@ as plugins rather than loose skills.
 python plugins/fin-core/skills/backtest-validation/scripts/trial_ledger.py
 # 50 noise strategies, best Sharpe 0.88, expected max from noise 0.94
 # -> "NOT distinguishable from noise"
+```
+
+## Examples
+
+Three worked examples in [`examples/`](examples/README.md). Each runs offline on seeded
+synthetic data in a few seconds, prints ASCII, and ends with a `TAKEAWAY` saying what you were
+supposed to see. `tests/test_examples.py` asserts those conclusions, not just the exit codes.
+
+| Example | What it shows |
+|---|---|
+| [`audit_a_backtest.py`](examples/audit_a_backtest.py) | The whole API in one call — put a research run in a `Bundle`, read `coverage()` for which checks can run at all, `check()` to run them, then fix the two planted defects and watch them go green |
+| [`point_in_time_fundamentals.py`](examples/point_in_time_fundamentals.py) | The same fundamentals joined to the same prices two ways — latest vintage on an exact stamp versus filed-date vintage on a backward as-of — and what the difference is worth in Sharpe |
+| [`futures_roll.py`](examples/futures_roll.py) | One futures chain stitched three ways, which return operator reproduces true dollar P&L, and the back-adjusted series going negative under backwardation |
+
+```bash
+pip install -e .
+python examples/audit_a_backtest.py
 ```
 
 ## Trigger accuracy — measured, not asserted
