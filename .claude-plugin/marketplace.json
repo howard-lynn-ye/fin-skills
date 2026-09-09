@@ -297,7 +297,12 @@
         "longstaff-schwartz",
         "american-options"
       ],
-      "skills": []
+      "skills": [
+        "./skills/copulas-and-dependence",
+        "./skills/hawkes-processes",
+        "./skills/limit-order-book-models",
+        "./skills/monte-carlo-methods"
+      ]
     },
     {
       "name": "fin-macro",
