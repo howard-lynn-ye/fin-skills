@@ -321,17 +321,30 @@ class Bars:
         return replace(self, frame=out, provenance=self.provenance.with_content(out))
 
     def to_panel(self, sessions=None):
-        """Hand the panel to `fin_skills.engine`. Imported lazily: the data layer does
-        not depend on the engine, and importing one must not drag in the other."""
+        """Hand the panel to `fin_skills.engine`.
+
+        The engine is imported lazily - the data layer does not depend on it, and
+        importing one must not drag in the other - and only the arguments its Panel
+        actually names are passed. `adjustment` is the exception: a Panel that cannot
+        carry the convention is refused rather than handed data, because a convention
+        dropped at this boundary is a convention nobody downstream can check.
+        """
+        import inspect                                                   # noqa: PLC0415
         try:
             from fin_skills import engine                                # noqa: PLC0415
         except ImportError as exc:                                       # pragma: no cover
             raise ImportError("fin_skills.engine is not available in this install; "
                               "Bars.to_panel() needs it") from exc
         b = self.align(sessions) if sessions is not None else self
-        return engine.Panel(frame=b.frame, adjustment=b.adjustment.value,
-                            calendar=b.calendar, tz=b.tz, actions=b.actions,
-                            listings=b.listings)
+        candidates = {"frame": b.frame, "adjustment": b.adjustment.value,
+                      "calendar": b.calendar, "tz": b.tz, "interval": b.interval,
+                      "bar_label": b.bar_label, "currency": b.currency,
+                      "actions": b.actions, "listings": b.listings}
+        params = inspect.signature(engine.Panel).parameters
+        if "adjustment" not in params:                                   # pragma: no cover
+            raise TypeError("engine.Panel does not take an adjustment; this layer will "
+                            "not hand it a price panel whose convention it cannot carry")
+        return engine.Panel(**{k: v for k, v in candidates.items() if k in params})
 
     # -------------------------------------------------------------------- identity
     def validate(self) -> list[Finding]:
