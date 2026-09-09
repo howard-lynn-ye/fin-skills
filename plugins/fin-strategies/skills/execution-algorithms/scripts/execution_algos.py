@@ -347,9 +347,16 @@ def implementation_shortfall(decision_px: float, arrival_px: float, avg_fill_px:
     `identity_error` proves it on every call. `bps` are on the notional the decision
     intended, target_qty * decision_px, so the components are additive in bps too.
 
-    The paper-portfolio framing (buy the whole target at the decision price, costlessly)
-    is Perold (1988); this four-way split is the form the split is universally taught in,
-    and this library has NOT verified it against Perold's own text - see the SKILL.md.
+    ATTRIBUTION. The paper-portfolio framing, the decision-time bid-ask midpoint as the
+    paper price, and charging the unfilled shares are Perold (1988), "The Implementation
+    Shortfall: Paper Versus Reality", JPM 14(3), 4-9. His own decomposition has TWO terms,
+    execution and opportunity, with commissions folded into the net transaction price;
+    there is no arrival price and no separate delay term in his math. The FOUR-way split
+    above - commission, price impact, timing/delay, opportunity - is Wagner & Edwards
+    (1993), "Best Execution", Financial Analysts Journal 49(1), 65-71, p. 67. It is a
+    refinement of Perold's execution term, since delay + execution = filled * (avg_fill -
+    decision), not a contradiction of it. Calling it "Perold's four-way decomposition" is
+    the common miscitation.
     """
     if target_qty <= 0 or filled_qty < 0 or filled_qty > target_qty:
         raise ValueError("need 0 <= filled_qty <= target_qty and target_qty > 0")

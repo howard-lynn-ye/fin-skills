@@ -184,13 +184,32 @@ fees         = explicit
 total        = delay + execution + opportunity + fees
 ```
 
-⚠️ **Attribution.** The paper-portfolio-versus-real-portfolio framing is Perold (1988), *"The
-Implementation Shortfall: Paper Versus Reality"*, J. Portfolio Management 14(3), 4–9. **This
-library has not read Perold's own text**, so the four-way split above is marked ⚠️ secondhand —
-it is the form the decomposition is universally taught in, not a verified quotation. What *is*
-verified is that it is an exact identity: `implementation_shortfall()` returns
-`identity_error`, and ✅ Measured it is **0.000e+00** — the four components reconstruct
-`paper return − real return` with no residual.
+🚨 **Attribution — this four-way split is not Perold's, and calling it "Perold's decomposition"
+is wrong.** ⚠️ Read in the verbatim reprint of Perold (1988), *"The Implementation Shortfall:
+Paper Versus Reality"*, J. Portfolio Management 14(3), 4–9, reprinted in *Streetwise* (Princeton
+UP, 1998) pp. 106–109. What is actually his:
+
+| Perold (1988) | |
+|---|---|
+| `IS = paper portfolio performance − real portfolio performance` | ⚠️ his, verbatim |
+| the paper portfolio transacts at **the bid-ask midpoint at the moment of the decision** — not at arrival, not at the previous close | ⚠️ his |
+| **two** components: **execution cost** (transactions you did execute) and **opportunity cost** (transactions you failed to execute) | ⚠️ his |
+| commissions and transfer taxes are folded **into the net transaction price**, not a separate bucket | ⚠️ his |
+| a separate `delay = filled × (arrival − decision)` term | 🔴 **not in his math.** There is no arrival price in it; delay is inside his single execution-cost term |
+
+⚠️ **The four-component taxonomy — commission, price impact, timing (the delay term),
+opportunity — is Wagner & Edwards (1993), "Best Execution", *Financial Analysts Journal* 49(1),
+65–71, p. 67**, which cites Perold. The modern `decision → arrival → fill` algebra is Kissell &
+Glantz (2003). Cite the right one.
+
+🔑 Arithmetically it does not matter — `delay + execution = filled × (avg_fill − decision)`, so
+the four-way split is a refinement of Perold's execution term, not a contradiction of it. ✅
+Measured: `implementation_shortfall()` returns `identity_error`, and it is **0.000e+00** — the
+components reconstruct `paper − real` with no residual.
+
+⚠️ **Perold's own sentence for why the opportunity term is not optional**, and the reason this
+section exists: *"You could not begin to measure opportunity costs without the paper
+portfolio."*
 
 ✅ Measured — the POV 3% order from §1, which filled 60%:
 
