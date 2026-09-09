@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 61,
-  "n_reference_files": 73,
-  "n_scripts": 45,
+  "n_skills": 66,
+  "n_reference_files": 74,
+  "n_scripts": 50,
   "discovery_cost": {
-    "total_description_chars": 51868,
-    "approx_tokens": 12967,
+    "total_description_chars": 56626,
+    "approx_tokens": 14156,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -16,7 +16,8 @@
     "fin-futures-fx",
     "fin-libraries",
     "fin-llm",
-    "fin-models"
+    "fin-models",
+    "fin-strategies"
   ],
   "skills": [
     {
@@ -1043,6 +1044,88 @@
       "references": [],
       "scripts": [
         "term_structure.py"
+      ]
+    },
+    {
+      "name": "alpha-combination-and-neutralization",
+      "plugin": "fin-strategies",
+      "path": "plugins/fin-strategies/skills/alpha-combination-and-neutralization/SKILL.md",
+      "description": "Score several alphas, combine them, and strip the exposures you did not mean to take. TRIGGER - information coefficient, IC, rank IC, ICIR, IC decay, \"is my IC good\", IC t-stat, Newey-West on IC, overlapping forward returns; combining alphas, blending signals, alpha weighting, z-score or rank combination, multi-factor signal; sector neutral, beta neutral, market neutral signal, industry neutralization, residualize the alpha, cross-sectional regression residuals, orthogonalize signals; winsorize, clip outliers, cross-sectional standardization; turnover-aware combination, signal smoothing, \"my alpha dies after costs\". SKIP for one time-series trend signal (trend-following-models), for the factor library and the alphalens forward-return convention (factor-and-timeseries-research, lib-alphalens), for weights under constraints (portfolio-and-risk), and for whether the survivor is real (backtest-validation).",
+      "summary": "Score several alphas, combine them, and strip the exposures you did not mean to take.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14839,
+      "approx_body_tokens": 3709,
+      "references": [],
+      "scripts": [
+        "alpha_combine.py"
+      ]
+    },
+    {
+      "name": "execution-algorithms",
+      "plugin": "fin-strategies",
+      "path": "plugins/fin-strategies/skills/execution-algorithms/SKILL.md",
+      "description": "Build the schedule that works an order - VWAP, TWAP, POV, Almgren-Chriss - and know what each one is optimizing. TRIGGER - VWAP algo, TWAP algo, POV, percentage of volume, participation rate, child order slicing, execution schedule, order scheduling, \"how should I work this order\", intraday volume profile, U-shaped volume curve; Almgren-Chriss, optimal execution, optimal liquidation, trading trajectory, efficient frontier of execution, risk aversion lambda, trade half-life, kappa, market impact model, temporary vs permanent impact, square root law; implementation shortfall, Perold, arrival price, decision price, delay cost, opportunity cost, unfilled shares. SKIP for measuring fills you already have and choosing a benchmark after the fact (execution-cost-analysis), for spreads, trade classification and order-flow measures (intraday-microstructure), for quoting rather than taking (market-making-models), and for broker order types and routing (broker-execution-apis).",
+      "summary": "Build the schedule that works an order - VWAP, TWAP, POV, Almgren-Chriss - and know what each one is optimizing.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14819,
+      "approx_body_tokens": 3704,
+      "references": [],
+      "scripts": [
+        "execution_algos.py"
+      ]
+    },
+    {
+      "name": "market-making-models",
+      "plugin": "fin-strategies",
+      "path": "plugins/fin-strategies/skills/market-making-models/SKILL.md",
+      "description": "Quote a two-sided market and survive the inventory - Avellaneda-Stoikov reservation price and optimal spread, and the adverse selection the model does not price. TRIGGER - Avellaneda Stoikov, market making model, optimal market making, reservation price, indifference price, inventory skew, optimal bid ask spread, quoting strategy, \"how wide should I quote\", skew my quotes, inventory risk, gamma risk aversion market maker; order arrival intensity, A exp(-k delta), Poisson fill model, fill probability vs distance from mid; adverse selection, informed flow, toxic flow, getting picked off, Glosten-Milgrom, order flow toxicity, VPIN. SKIP for measuring realized and effective spreads from your own tape (intraday-microstructure), for working a parent order by taking liquidity (execution-algorithms), for what a fill cost you after the fact (execution-cost-analysis), and for exchange connectivity and order types (broker-execution-apis).",
+      "summary": "Quote a two-sided market and survive the inventory - Avellaneda-Stoikov reservation price and optimal spread, and the adverse selection the model does not price.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12144,
+      "approx_body_tokens": 3036,
+      "references": [],
+      "scripts": [
+        "market_making.py"
+      ]
+    },
+    {
+      "name": "position-sizing-kelly",
+      "plugin": "fin-strategies",
+      "path": "plugins/fin-strategies/skills/position-sizing-kelly/SKILL.md",
+      "description": "Decide how much to bet given an edge - Kelly, fractional Kelly, and volatility targeting - and the drawdown each implies. TRIGGER - Kelly criterion, Kelly fraction, f star, optimal bet size, \"how much should I bet\", \"how much capital per trade\", position sizing, bet sizing, fractional Kelly, half Kelly, quarter Kelly, over-betting, geometric growth rate, expected log wealth, log utility, growth-optimal portfolio; volatility targeting as a sizing rule, size to 10% vol, inverse-vol sizing, leverage from a Sharpe ratio, risk of ruin, probability of a 50% drawdown, drawdown under leverage, \"how much leverage can I take\". SKIP for the signal that produces the edge (trend-following-models, alpha-combination-and-neutralization), for optimizers and constrained portfolio weights (portfolio-and-risk), for whether the edge is real at all (backtest-validation), and for working the resulting order (execution-algorithms).",
+      "summary": "Decide how much to bet given an edge - Kelly, fractional Kelly, and volatility targeting - and the drawdown each implies.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 13291,
+      "approx_body_tokens": 3322,
+      "references": [],
+      "scripts": [
+        "position_sizing.py"
+      ]
+    },
+    {
+      "name": "trend-following-models",
+      "plugin": "fin-strategies",
+      "path": "plugins/fin-strategies/skills/trend-following-models/SKILL.md",
+      "description": "Build a trend-following or time-series-momentum strategy the way the paper defines it, and measure the two look-aheads that flatter its backtest. TRIGGER - time series momentum, TSMOM, Moskowitz Ooi Pedersen, 12-month momentum, trend following, managed futures, CTA replication; Donchian channel, turtle rules, breakout system, 20-day high, moving average crossover, golden cross, 50/200 MA; volatility targeting, vol scaling, ex-ante volatility, 40% vol target, risk parity across futures, inverse-vol sizing, ATR sizing; \"my trend backtest has a Sharpe of 3\", \"should I skip the most recent month\", \"do I trade the close or the next open\". SKIP for computing the indicator itself and whether it repaints (signal-construction), for cross-sectional ranking of many names (factor-and-timeseries-research), for combining several alphas into one (alpha-combination-and-neutralization), for how much to bet given an edge (position-sizing-kelly), and for the engine that runs the loop (backtesting-engines).",
+      "summary": "Build a trend-following or time-series-momentum strategy the way the paper defines it, and measure the two look-aheads that flatter its backtest.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14740,
+      "approx_body_tokens": 3685,
+      "references": [
+        "mop-2012.md"
+      ],
+      "scripts": [
+        "trend_models.py"
       ]
     }
   ]
