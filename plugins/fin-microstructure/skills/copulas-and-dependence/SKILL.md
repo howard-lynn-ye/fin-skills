@@ -21,9 +21,9 @@ metadata:
 # Copulas and dependence
 
 **Correlation pins down the middle of a joint distribution and says nothing at all about the
-corner.** Four copulas can agree on Kendall's tau, on Spearman's rho, on the linear correlation
-and on both marginals, and disagree by a factor of five about how often two assets break their
-1% quantile on the same day.
+corner.** Four copulas can agree on Kendall's tau, on the linear correlation and on both
+marginals, land within 3% of each other on Spearman's rho, and disagree by a factor of five
+about how often two assets break their 1% quantile on the same day.
 
 Every number marked ✅ Measured is printed by `scripts/copulas.py` (numpy 2.2.6 + scipy 1.13.0,
 seed 20260909, **32 s**). ✅ source-verified means read in the installed scipy source.
@@ -38,9 +38,9 @@ seed 20260909, **32 s**). ✅ source-verified means read in the installed scipy 
 | Gumbel(θ) | `1 − 1/θ` | 0 | `2 − 2^(1/θ)` |
 
 🔑 **The tau column is why this skill exists**: `tau` for the t copula does not contain `ν`, so
-a t copula and a Gaussian copula at the same `ρ` have *identical* Kendall's tau, *identical*
-Spearman's rho and *identical* linear correlation. Every dependence summary a spreadsheet
-computes is blind to the difference.
+a t copula and a Gaussian copula at the same `ρ` have *identical* Kendall's tau and *identical*
+linear correlation. ⚠️ Spearman's rho is the one rank measure that does see `ν` — and it barely
+does; the table below measures it.
 
 At **ρ = 0.5**, every family below is set to the same **τ = 1/3**: Gaussian ρ=0.5, t ρ=0.5 ν=4,
 Clayton θ=1, Gumbel θ=1.5.
@@ -49,12 +49,17 @@ Clayton θ=1, Gumbel θ=1.5.
 through a positive-stable variable and Clayton through a gamma; an error in either shows up
 here in the third decimal and nowhere else):
 
-| family | τ closed form | τ empirical | diff |
-|---|---|---|---|
-| gaussian | 0.333333 | 0.333465 | +0.00013 |
-| t | 0.333333 | 0.333796 | +0.00046 |
-| clayton | 0.333333 | 0.334431 | +0.00110 |
-| gumbel | 0.333333 | 0.332777 | −0.00056 |
+| family | τ closed form | τ empirical | diff | Spearman's rho | **tail dependence** |
+|---|---|---|---|---|---|
+| gaussian | 0.333333 | 0.333465 | +0.00013 | 0.4826 | **0.000** |
+| t (ν=4) | 0.333333 | 0.333796 | +0.00046 | 0.4696 | **0.253** |
+| clayton | 0.333333 | 0.334431 | +0.00110 | 0.4801 | **0.500** (lower) |
+| gumbel | 0.333333 | 0.332777 | −0.00056 | 0.4756 | **0.413** (upper) |
+
+🚨 **Every rank measure lands in the same place and the last column spans 0.000 to 0.500.**
+Spearman's rho ranges over **0.4696–0.4826** — a 2.7% spread — across four families whose
+joint tail behaviour could not be more different. It is not a diagnostic; it is a rounding
+difference.
 
 ✅ Measured — each analytic log-density against a central finite difference of its own CDF, at
 (0.3, 0.7) and (0.9, 0.85): worst relative difference **6.0e-08** across all four families.

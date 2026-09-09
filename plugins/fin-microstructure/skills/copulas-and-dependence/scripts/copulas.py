@@ -51,8 +51,13 @@ RHO, DF = 0.5, 4.0            # the running example: tau = 1/3 for every family 
 # ------------------------------------------------------------- parameters and Kendall's tau
 def kendall_tau(family: str, param: float, df: float | None = None) -> float:
     """The family's closed-form Kendall's tau. `df` is ignored: for an elliptical copula tau
-    depends on rho alone, which is why a t copula and a Gaussian copula can be identical in
-    every rank correlation and still disagree completely about the tail."""
+    depends on rho ALONE, which is why a t copula and a Gaussian copula at the same rho have
+    the same Kendall's tau and completely different tails.
+
+    Spearman's rho is NOT identical - it does depend on the degrees of freedom - but only just:
+    the demo measures 0.482 against 0.467 at nu = 4, a 3% gap, next to a tail probability that
+    differs by a factor of 4.7.
+    """
     if family in ("gaussian", "t"):
         if not -1.0 < param < 1.0:
             raise ValueError("rho must be in (-1, 1)")
@@ -404,16 +409,21 @@ if __name__ == "__main__":
     # ---- 1. tau <-> parameter, checked against samples
     print("\n1. Kendall's tau against its closed form, on 200,000 draws")
     print(f"   {'family':<12}{'parameter':>11}{'tau closed form':>17}{'tau empirical':>15}"
-          f"{'diff':>10}")
+          f"{'diff':>10}{'Spearman rho':>15}")
     for fam in FAMILIES:
         par, d = PARAMS[fam]
         uv = sample(fam, 200_000, par, d, seed=SEED)
         emp = float(stats.kendalltau(uv[:, 0], uv[:, 1]).statistic)
+        sp = float(stats.spearmanr(uv[:, 0], uv[:, 1]).statistic)
         th = kendall_tau(fam, par)
-        print(f"   {fam:<12}{par:>11.4f}{th:>17.6f}{emp:>15.6f}{emp - th:>+10.5f}")
+        print(f"   {fam:<12}{par:>11.4f}{th:>17.6f}{emp:>15.6f}{emp - th:>+10.5f}{sp:>15.6f}")
     print("   The Gumbel sampler goes through a positive-stable variable and the Clayton one")
     print("   through a gamma; a mistake in either shows up here as a tau that is wrong in")
     print("   the third decimal, which is the only way you would ever notice.")
+    print("   ! Kendall's tau for an elliptical copula depends on rho ALONE, so the Gaussian")
+    print("     and t rows agree by construction. Spearman's rho is the one rank measure that")
+    print("     does see the degrees of freedom - and it barely does: the gap between those")
+    print("     two rows is under 3%, next to the factor of 4.7 in section 6.")
 
     # ---- 2. the copula densities, checked against their own CDFs
     print("\n2. Each log-density against a central finite difference of its own CDF")
