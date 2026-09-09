@@ -105,8 +105,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 11698,
-      "approx_body_tokens": 2924,
+      "body_chars": 18769,
+      "approx_body_tokens": 4692,
       "references": [
         "_engine-matrix.md",
         "backtesting-py.md",

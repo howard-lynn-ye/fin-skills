@@ -163,7 +163,119 @@ last-row variance versus the base calculation. `-` = converged; large % = raise 
 Both ideas are worth reimplementing against whatever engine you actually use. See
 `plugins/fin-core/skills/signal-construction/scripts/assert_causal.py`.
 
-## 5. Reference files
+## 5. The reference engine in this repo — `fin_skills.engine`
+
+This library ships a twelfth engine. Not because the eleven above are missing a feature —
+they are not — but because none of them produces an object this repo's guards can read.
+`benchmarks/leak_bench.py` has to hand-write **twelve `_adapt_*` functions** to marshal one
+pipeline's artefacts into guard keywords. `fin_skills.engine` does that marshalling once:
+
+```python
+from fin_skills.api import check
+from fin_skills.engine import Sessions, Panel, Universe, Execution, Costs, run, rank_long_short
+
+res = run(panel, momentum, execution=Execution(fill_at="next_open", signal_lag=1),
+          costs=Costs(commission_bps=0.5, spread_bps=1.0, cash_rate=0.05),
+          universe=Universe(rebalance="ME", min_adv=1e6), benchmark=spy)
+print(check(res.to_bundle()).summary())
+```
+
+**Measured on a 40-name, 1,260-session synthetic panel with 6 splits and 7 delistings
+(2026-09-09):** 14,325 fills, 850 order slices deferred by the 5% participation cap, 58
+rebalances, and `check(res.to_bundle())` runs **six guards with no adapter written** —
+`adjustment_check`, `assert_causal`, `cost_curve`, `pit_universe`, `rf_convention`,
+`survivorship_audit`. Five passed; `cost_curve` failed, because the demo's 40-5 momentum
+rule scores Sharpe 0.63 gross, 0.13 net at 5 bps and **−0.37 at 10 bps round-trip**.
+Ending a run with a failing guard is the intended default, not a defect.
+
+`coverage().unlocks()` then names the next slot in the library's own vocabulary:
+`+ regime_labels` unlocks `regime_coverage`, `+ model_returns` unlocks `spa_test`,
+`+ card` unlocks `result_manifest`.
+
+### 5.1 What it is
+
+**726 lines of code in ten modules** (1,257 physical lines; `tests/test_engine_size.py`
+holds the budget at 900 / 1,400 and prints the per-module table). numpy and pandas only —
+no new dependency, asserted by a test. One bar loop, in the only causal order: fill what
+earlier bars ordered → close out what delisted → mark the book → *then* decide.
+
+| Module | What it owns |
+|---|---|
+| `spec.py` | `Sessions`, `Execution`, `Costs` — frozen, validated at construction |
+| `panel.py` | OHLCV whose **adjustment convention is a field**, plus `fingerprint()` |
+| `actions.py` | corporate actions → a factor series; back / forward / raw+factors |
+| `costs.py` | four slippage models: fixed, spread-share, zipline's quadratic, Almgren sqrt |
+| `sizing.py` | five sizers, incl. `from_weights()` for a PyPortfolioOpt/skfolio result |
+| `universe.py` | point-in-time membership → `{rebalance date: [tickers]}` |
+| `execute.py` | the bar loop |
+| `result.py` | `BacktestResult`, `to_bundle()`, `check()`, `card()` |
+| `invariants.py` | the twelve claims, each tagged with the test that proves it |
+
+### 5.2 🚨 What it refuses to do, and why
+
+Most of these raise at construction or at `run()`; the rest are arguments with no default
+at all. Every one of them is some other engine's silent default.
+
+| Refusal | The default it exists to refuse |
+|---|---|
+| `Execution(signal_lag=0)` raises | vectorbt's `Order.price=np.inf` → the signal's own bar close (§2.1) |
+| `Sessions` has no default calendar | `exchange_calendars` computes its bounds from `Timestamp.now()` at import, so a run anchored on them is not reproducible |
+| `Panel(adjustment=...)` has no default | every vendor's default differs; `readjust()` refuses without an `actions` table, because a convention with no event table cannot be checked |
+| a bar dated outside the calendar raises | dropping it silently is how a holiday bar becomes a return |
+| a delisting is a **booked closeout** | a NaN that vanishes is the survivorship bias, not a data gap; `on_delist="raise"` refuses to guess a recovery at all |
+| an over-cap order **carries**, in `result.unfilled` | filling 10× a bar's volume instantly is every vectorized engine's default |
+| `run(strict=True)` raises on a declared convention the action table contradicts | `adjustment_check`'s `expected=` argument, applied to the engine's own input |
+
+### 5.3 Twelve invariants, seven of them falsified by a guard this repo already ships
+
+`tests/test_engine.py` (28 tests) proves each. **Seven** run an existing guard on the
+engine's own output rather than a bespoke assertion — `assert_causal` is run on `run()`
+itself (`fn=lambda close: run(rebuild(panel, close), sig).weights`), and `fold_leak_test`
+takes `run` as its `run_fold`. Six is the number `check(to_bundle())` reaches unaided;
+`fold_leak_test` needs folds, which are not artefacts of one run.
+
+| | Invariant | Proven by |
+|---|---|---|
+| I1 | no output cell before bar *k* moves when rows ≥ *k* are perturbed | `assert_causal` |
+| I2 | `signal_lag=0` raises; a bar-*t* signal fills at *t+lag* | bespoke |
+| I3 | every fill is dated strictly after its decision bar | bespoke (sentinel open) |
+| I4 | the adjustment convention is declared **and** checked | `adjustment_check` |
+| I5 | a delisting is a booked closeout; the name never reappears | `survivorship_audit` |
+| I6 | `universe[d]` uses only rows ≤ *d* | `pit_universe` |
+| I7 | `turnover[t] == (w[t] - w[t-1]).abs().sum()`, to 1e-12 | bespoke |
+| I8 | `net(0)` **is** gross; `net(b)` non-increasing in *b* | `cost_curve` |
+| I9 | every index is a subset of the declared sessions; windows count **bars** | bespoke |
+| I10 | no fill exceeds `cap × volume`; the remainder carries | bespoke |
+| I11 | cash is a position: held weights + cash weight = 1 exactly | `rf_convention` |
+| I12 | two runs are identical; folds share no state | `fold_leak_test` |
+
+The point of I2's second half: a perfect oracle (`close.pct_change().shift(-1)`) passes
+**every engine invariant** and posts a gross Sharpe above 5 — and the same
+`res.check(guards=["assert_causal"])` reports `LOOK-AHEAD`. The engine does not stop you;
+it hands the guard enough to convict you.
+
+### 5.4 When to use a real engine instead
+
+**It is not fast, it is not event-driven, and it has no live path.** The demo above took
+29 s and 39 s on two runs — call it 30 ms per session for 40 names. A 10,000-combination
+vectorbt sweep is not this. Reach for the engines in §1 when you need:
+
+| You need | Use |
+|---|---|
+| A parameter sweep, or anything where wall-clock decides the design | **vectorbt** — then re-run the survivor here |
+| Intrabar stop/target semantics, gap-through handling | **backtesting.py** |
+| Minute or tick bars, an L2/L3 book, latency and fill probability | **nautilus_trader** |
+| Borrow availability, settlement, margin interest, option assignment | **LEAN** |
+| An adjustments database, Pipeline, a battle-tested blotter | **zipline-reloaded** |
+| To trade | none of the above from this engine — it has no broker path at all |
+
+Also absent by design: order types beyond market, an intrabar price path (`next_vwap` is
+the typical price (H+L+C)/3 and says so in its own docstring), a margin model, a
+short-locate, currency conversion, and any option or futures lifecycle. Its intended use
+is the arbiter role §1 already recommends — sweep elsewhere, re-run the survivor here, and
+let `check()` say what is wrong.
+
+## 6. Reference files
 
 `references/<engine>.md` — architecture, what it models, licence, maintenance verdict, ingestion
 story, and its specific footguns.
