@@ -25,7 +25,7 @@
 {"q": "ta library RSI doesn't match tradingview", "expect": "signal-construction"}
 {"q": "is my factor any good, compute the information coefficient", "expect": "factor-and-timeseries-research"}
 {"q": "run a Fama-MacBeth regression on this panel", "expect": "factor-and-timeseries-research"}
-{"q": "forecast realized volatility with a GARCH model", "expect": "factor-and-timeseries-research"}
+{"q": "forecast realized volatility with a GARCH model", "expect": "volatility-models", "note": "re-keyed 2026-09-09: a dedicated skill for this now exists and carries the term in its headline; the previous answer was the umbrella skill that mentions it once in a list (was factor-and-timeseries-research)"}
 {"q": "do an event study around earnings announcements", "expect": "factor-and-timeseries-research"}
 {"q": "optimize portfolio weights with mean variance", "expect": "portfolio-and-risk"}
 {"q": "compute the Sharpe ratio and max drawdown of this return series", "expect": "portfolio-and-risk"}
@@ -35,10 +35,10 @@
 {"q": "is this backtest result statistically real", "expect": "backtest-validation"}
 {"q": "how do I do cross validation on time series without leaking", "expect": "backtest-validation"}
 {"q": "compute the deflated sharpe ratio", "expect": "backtest-validation"}
-{"q": "price an american put option with dividends", "expect": "derivatives-pricing"}
-{"q": "fit an SVI volatility smile", "expect": "derivatives-pricing"}
+{"q": "price an american put option with dividends", "expect": "option-pricing-models", "note": "re-keyed 2026-09-09: a dedicated skill for this now exists and carries the term in its headline; the previous answer was the umbrella skill that mentions it once in a list (was derivatives-pricing)"}
+{"q": "fit an SVI volatility smile", "expect": "implied-vol-surface", "note": "re-keyed 2026-09-09: a dedicated skill for this now exists and carries the term in its headline; the previous answer was the umbrella skill that mentions it once in a list (was derivatives-pricing)"}
 {"q": "my vega is 100x off between two libraries", "expect": "derivatives-pricing"}
-{"q": "bootstrap a yield curve from swap rates", "expect": "derivatives-pricing"}
+{"q": "bootstrap a yield curve from swap rates", "expect": "term-structure-models", "note": "re-keyed 2026-09-09: a dedicated skill for this now exists and carries the term in its headline; the previous answer was the umbrella skill that mentions it once in a list (was derivatives-pricing)"}
 {"q": "review my research design for look-ahead bias", "expect": "research-integrity-guards"}
 {"q": "how do I avoid survivorship bias in my universe", "expect": "market-data-sourcing", "note": "re-keyed: query names the package / prospective task"}
 {"q": "my strategy has a Sharpe of 4, what should I check", "expect": "research-integrity-guards"}
@@ -70,7 +70,7 @@
 {"q": "freqtrade stoploss filled exactly at my stop price", "expect": "lib-freqtrade"}
 {"q": "can I short this stock, is it hard to borrow", "expect": "us-market-rules"}
 {"q": "does the pattern day trader rule still apply", "expect": "us-market-rules"}
-{"q": "wash sale rule and my high turnover strategy", "expect": "us-market-rules"}
+{"q": "wash sale rule and my high turnover strategy", "expect": "wash-sale-rules", "note": "re-keyed 2026-09-09: a dedicated skill for this now exists and carries the term in its headline; the previous answer was the umbrella skill that mentions it once in a list (was us-market-rules)"}
 {"q": "am I allowed to redistribute this price data", "expect": "us-market-rules"}
 {"q": "backtest a wheel strategy selling cash secured puts", "expect": "options-backtesting"}
 {"q": "my short call got assigned before ex-dividend", "expect": "options-backtesting"}

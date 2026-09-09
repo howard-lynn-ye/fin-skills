@@ -7,12 +7,11 @@ description: >-
   shrinkage, sklearn LedoitWolf, CovarianceShrinkage, shrinkage intensity or delta, RiskMetrics
   EWMA, lambda 0.94 or 0.97, exponentially weighted covariance, exp_cov span, PCA or statistical
   factor risk model, Marchenko-Pastur, Barra fundamental factor model, specific risk, predicted
-  vs realized volatility, risk model bias test; "my minimum-variance portfolio has 90x
-  leverage", "the optimizer says 0% risk". SKIP for turning a covariance into
-  weights and the optimizers themselves (portfolio-optimizers), for VaR, Expected Shortfall and
-  their backtests (risk-measures-var-cvar), for GARCH and univariate volatility forecasting
-  (factor-and-timeseries-research), and for Sharpe and drawdown conventions
-  (portfolio-and-risk).
+  vs realized volatility, risk model bias test; "my minimum-variance portfolio has 90x leverage",
+  "the optimizer says 0% risk". SKIP for turning a covariance into weights and the optimizers
+  themselves (portfolio-optimizers), for VaR, Expected Shortfall and their backtests
+  (risk-measures-var-cvar), for GARCH and univariate volatility forecasting (volatility-models),
+  and for Sharpe and drawdown conventions (portfolio-and-risk).
 license: MIT
 metadata:
   version: "0.1.0"

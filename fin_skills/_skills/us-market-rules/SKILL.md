@@ -2,16 +2,17 @@
 name: us-market-rules
 description: >-
   US trading rules that decide whether a strategy is executable at all - short-sale restrictions,
-  margin, settlement, day-trading limits, wash sales, and what a data licence lets you keep.
-  TRIGGER - can I short this, locate, hard to borrow, borrow fee, short interest, Reg SHO, uptick
-  rule, SSR, short sale restricted; PDT, pattern day trader, day trade limit; Reg T, initial or
-  maintenance margin, margin call, buying power, leverage limit; T+1, settlement, cash account;
-  wash sale, tax-loss harvesting, after-tax returns; "can I redistribute this data"; may_cache,
-  may_redistribute, market data licence; presenting or publishing backtested performance,
-  Marketing Rule. Two of the most-cited rules moved in 2024-2026, so a training-prior answer is
-  usually stale. US ONLY - SKIP for short-selling bans or calendars in Asia
-  (asia-pacific-markets), for A-share T+1 and price limits (china-trading-stack) and for the
-  order-safety mechanics of actually sending an order (broker-execution-apis).
+  margin, settlement, day-trading limits, and what a data licence lets you keep. TRIGGER - can I
+  short this, locate, hard to borrow, borrow fee, short interest, Reg SHO, uptick rule, SSR,
+  short sale restricted; PDT, pattern day trader, day trade limit; Reg T, initial or maintenance
+  margin, margin call, buying power, leverage limit; T+1, settlement, cash account; "can I
+  redistribute this data"; may_cache, may_redistribute, market data licence; presenting or
+  publishing backtested performance, Marketing Rule. Two of the most-cited rules moved in
+  2024-2026, so a training-prior answer is usually stale. US ONLY - SKIP for short-selling bans
+  or calendars in Asia (asia-pacific-markets), for A-share T+1 and price limits
+  (china-trading-stack) for the order-safety mechanics of sending an order
+  (broker-execution-apis), and for tax arithmetic - wash sales, lot matching, after-tax returns -
+  which the fin-tax-accounting skills own.
 license: MIT
 metadata:
   version: "0.1.0"

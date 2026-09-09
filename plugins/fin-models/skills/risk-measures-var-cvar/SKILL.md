@@ -8,10 +8,10 @@ description: >-
   Kupiec proportion of failures, Christoffersen independence, conditional coverage, VaR
   exceptions or breaches, traffic light test, square root of time scaling, 10-day VaR, Basel,
   filtered historical simulation, quantstats value_at_risk sign; "how many exceptions should I
-  see", "is my VaR model backtesting ok". SKIP for estimating the covariance matrix a
-  parametric VaR needs (covariance-and-risk-models), for minimising CVaR to choose weights
-  (portfolio-optimizers), for GARCH fitting itself (factor-and-timeseries-research), and for
-  Sharpe, drawdown and tearsheet conventions (portfolio-and-risk).
+  see", "is my VaR model backtesting ok". SKIP for estimating the covariance matrix a parametric
+  VaR needs (covariance-and-risk-models), for minimising CVaR to choose weights
+  (portfolio-optimizers), for GARCH fitting itself (volatility-models), and for Sharpe, drawdown
+  and tearsheet conventions (portfolio-and-risk).
 license: MIT
 metadata:
   version: "0.1.0"

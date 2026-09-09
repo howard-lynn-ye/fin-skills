@@ -3,16 +3,16 @@ name: real-time-macro-backtesting
 description: >-
   Run a macro strategy twice - once on today's revised series and once on the vintage that
   existed at each decision date - and report both Sharpes. TRIGGER - real-time data, vintage
-  data, data vintages, point-in-time macro, ALFRED, realtime_start, realtime_end,
-  vintage_dates, get_series_as_of_date, first release vs latest, initial estimate, "my macro
-  backtest uses revised data", "does this have look-ahead", payroll revisions, GDP revisions,
-  annual benchmark revision, QCEW benchmark, restated macro history, as-of join on a macro
-  series, "which number did I actually see on the day". SKIP for where to GET the series and
-  the fredapi bugs (fundamental-and-macro-data), for release times and embargo mechanics
+  data, data vintages, point-in-time macro, ALFRED, realtime_start, realtime_end, vintage_dates,
+  get_series_as_of_date, first release vs latest, initial estimate, "my macro backtest uses
+  revised data", "does this have look-ahead", payroll revisions, GDP revisions, annual benchmark
+  revision, QCEW benchmark, restated macro history, as-of join on a macro series, "which number
+  did I actually see on the day". SKIP for where to GET the series and the fredapi bugs
+  (fundamental-and-macro-data), for release times and embargo mechanics
   (macro-release-calendar-and-embargo), for seasonal-adjustment revisions specifically
   (seasonal-adjustment-and-x13), for recession labels assigned after the fact
   (macro-regime-and-recession-indicators), and for company fundamentals rather than macro
-  (research-integrity-guards).
+  (fundamental-and-macro-data).
 license: MIT
 metadata:
   version: "0.1.0"

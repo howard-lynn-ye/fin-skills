@@ -1,16 +1,17 @@
 ---
 name: regime-detection
 description: >-
-  Detect and label market regimes without letting the labels see the future, and state
-  regime coverage in the form the result gate demands. TRIGGER - detect market regimes, regime
-  detection, bull bear regime labels, volatility regime, high-vol low-vol state, risk-on risk-off;
-  hidden markov model on returns, HMM, hmmlearn, markov switching, MarkovRegression, smoothed vs
-  filtered probabilities; change point detection, ruptures, structural break; turbulence index,
-  Mahalanobis distance; "my strategy only works in one regime", "does it survive 2008 or 2020";
-  "result_manifest says no regime coverage", regimes_covered. SKIP for forecasting volatility
-  itself with GARCH or arch (factor-and-timeseries-research), for whether a regime-conditional
-  result survives the trials behind it (backtest-validation), for the full pre-report audit
-  (research-integrity-guards), and for RL or deep-learning state models (rl-and-ml-trading).
+  Detect and label market regimes without letting the labels see the future, and state regime
+  coverage in the form the result gate demands. TRIGGER - detect market regimes, regime
+  detection, bull bear regime labels, volatility regime, high-vol low-vol state, risk-on
+  risk-off; hidden markov model on returns, HMM, hmmlearn, markov switching, MarkovRegression,
+  smoothed vs filtered probabilities; change point detection, ruptures, structural break;
+  turbulence index, Mahalanobis distance; "my strategy only works in one regime", "does it
+  survive 2008 or 2020"; "result_manifest says no regime coverage", regimes_covered. SKIP for
+  forecasting volatility itself with GARCH or arch (volatility-models), for whether a
+  regime-conditional result survives the trials behind it (backtest-validation), for the full
+  pre-report audit (research-integrity-guards), and for RL or deep-learning state models
+  (rl-and-ml-trading).
 license: MIT
 metadata:
   version: "0.1.0"

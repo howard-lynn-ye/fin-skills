@@ -9,7 +9,9 @@ description: >-
   Greek scaling differs by 100x and 365x between the three common libraries, and one popular
   fixed-income package is not open source. SKIP for option lifecycle events - assignment, pin
   risk, expiry - live or backtested, and for historical option chains and vendors
-  (options-backtesting).
+  (options-backtesting). SKIP for implementing a pricing model yourself (option-pricing-models),
+  for fitting or arbitrage-checking a smile or surface (implied-vol-surface), and for building or
+  fitting a curve (term-structure-models).
 license: MIT
 metadata:
   version: "0.1.0"

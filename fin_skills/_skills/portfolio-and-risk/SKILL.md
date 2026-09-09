@@ -8,8 +8,9 @@ description: >-
   drawdown, VaR, CVaR, beta, alpha, a tearsheet, quantstats, pyfolio, empyrical, ffn, or
   performance attribution. Load before quoting any performance number: popular libraries disagree
   on identical input, one silently discards the risk-free rate you pass it, and an absurdly
-  negative Sharpe has one known cause. SKIP for whether the result survives multiple testing
-  (backtest-validation).
+  negative Sharpe has one known cause. SKIP for the optimizer's own mathematics and what it does
+  to estimation error (portfolio-optimizers), and for whether the result survives multiple
+  testing (backtest-validation).
 license: MIT
 metadata:
   version: "0.1.0"

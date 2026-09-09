@@ -2,16 +2,16 @@
 name: portfolio-optimizers
 description: >-
   Turn expected returns and a covariance matrix into weights, and measure what the optimizer did
-  to your estimation error on the way. TRIGGER - portfolio optimization, mean-variance, Markowitz,
-  efficient frontier, tangency or max-Sharpe portfolio, minimum-variance portfolio, long-only and
-  budget constraints, scipy SLSQP or linprog for weights, Black-Litterman, BlackLittermanModel,
-  tau, Omega, market-implied prior, views matrix P and Q, risk parity, equal risk contribution,
-  ERC, inverse volatility, minimum CVaR, Rockafellar-Uryasev linear program, 1/N benchmark,
-  DeMiguel Garlappi Uppal, weight turnover; "my optimizer puts 90% in one asset", "the weights
-  change completely every month". SKIP for estimating the covariance matrix itself and its
-  N > T failure (covariance-and-risk-models), for building the expected returns
-  (factor-models), for measuring or backtesting VaR and ES (risk-measures-var-cvar), and for
-  hierarchical risk parity and PyPortfolioOpt's own API traps (lib-pyportfolioopt).
+  to your estimation error on the way. TRIGGER - portfolio optimization, mean-variance,
+  Markowitz, efficient frontier, tangency or max-Sharpe portfolio, minimum-variance portfolio,
+  long-only and budget constraints, scipy SLSQP or linprog for weights, Black-Litterman,
+  BlackLittermanModel, tau, Omega, market-implied prior, views matrix P and Q, risk parity, equal
+  risk contribution, ERC, inverse volatility, minimum CVaR, Rockafellar-Uryasev linear program,
+  1/N benchmark, DeMiguel Garlappi Uppal, weight turnover; "my optimizer puts 90% in one asset",
+  "the weights change completely every month". SKIP for choosing between optimizer libraries and
+  reporting the result (portfolio-and-risk), for the covariance matrix and its N > T failure
+  (covariance-and-risk-models), for expected returns (factor-models), for VaR and ES
+  (risk-measures-var-cvar), and for HRP and PyPortfolioOpt's API traps (lib-pyportfolioopt).
 license: MIT
 metadata:
   version: "0.1.0"
