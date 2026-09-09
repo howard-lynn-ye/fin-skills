@@ -422,6 +422,8 @@ def test_cash_is_a_position_and_earns_the_declared_rate(full):
     assert report[0].evidence["rf"] == 0.05 and report[0].evidence["periods"] == PPY
     with pytest.raises(ValueError, match="ANNUAL decimal"):
         Costs(cash_rate=5.0)
+    with pytest.raises(ValueError, match="scalar annual rate"):
+        Costs(cash_rate=pd.Series(0.05, index=full.returns.index))
 
 
 # ================================================================== I12 determinism

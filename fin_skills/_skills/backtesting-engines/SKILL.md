@@ -194,7 +194,7 @@ Ending a run with a failing guard is the intended default, not a defect.
 
 ### 5.1 What it is
 
-**724 lines of code in ten modules** (1,252 physical lines; `tests/test_engine_size.py`
+**726 lines of code in ten modules** (1,257 physical lines; `tests/test_engine_size.py`
 holds the budget at 900 / 1,400 and prints the per-module table). numpy and pandas only —
 no new dependency, asserted by a test. One bar loop, in the only causal order: fill what
 earlier bars ordered → close out what delisted → mark the book → *then* decide.

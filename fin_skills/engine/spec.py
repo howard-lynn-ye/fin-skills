@@ -134,6 +134,11 @@ class Costs:
     def __post_init__(self) -> None:
         if not callable(self.slippage):
             raise ValueError("slippage must be a SlippageModel callable, e.g. fixed_bps(2.0)")
+        if isinstance(self.cash_rate, bool) or not isinstance(self.cash_rate, (int, float)):
+            raise ValueError("cash_rate must be a scalar annual rate. A time-varying cash "
+                             "series is deliberately not accepted: the Bundle's `rf` slot is "
+                             "a number, so rf_convention could not check a series, and an "
+                             "uncheckable rate is the thing this engine exists to refuse")
         if abs(float(self.cash_rate)) >= 0.5:
             raise ValueError(f"cash_rate={self.cash_rate!r} looks like a percentage; it is an "
                              f"ANNUAL decimal (0.05 = 5%), and rf_convention exists because "
