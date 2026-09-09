@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 83,
+  "n_skills": 88,
   "n_reference_files": 74,
-  "n_scripts": 67,
+  "n_scripts": 72,
   "discovery_cost": {
-    "total_description_chars": 72997,
-    "approx_tokens": 18249,
+    "total_description_chars": 77501,
+    "approx_tokens": 19375,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -16,6 +16,7 @@
     "fin-futures-fx",
     "fin-libraries",
     "fin-llm",
+    "fin-macro",
     "fin-ml",
     "fin-models",
     "fin-strategies",
@@ -932,6 +933,86 @@
       "approx_body_tokens": 1980,
       "references": [],
       "scripts": []
+    },
+    {
+      "name": "gdp-nowcasting-dynamic-factor",
+      "plugin": "fin-macro",
+      "path": "plugins/fin-macro/skills/gdp-nowcasting-dynamic-factor/SKILL.md",
+      "description": "Nowcast the quarter you are in from monthly data with a ragged edge, using statsmodels' DynamicFactorMQ - and score it against the benchmarks it has to beat. TRIGGER - nowcast, nowcasting, GDPNow, Atlanta Fed GDP tracker, New York Fed Staff Nowcast, DynamicFactorMQ, endog_quarterly, k_endog_monthly, fit_em, dynamic factor model, mixed frequency, monthly and quarterly in one model, ragged edge, jagged edge, unbalanced panel, Mariano-Murasawa, Banbura Modugno, bridge equation, MIDAS, \"how do I combine monthly indicators into a GDP forecast\", news decomposition of a data release. SKIP for the Kalman filter and smoother themselves (state-space-and-kalman), for univariate forecasting and its baselines (time-series-forecasting-models), for release timestamps (macro-release-calendar-and-embargo), and for vintages of the inputs (real-time-macro-backtesting).",
+      "summary": "Nowcast the quarter you are in from monthly data with a ragged edge, using statsmodels' DynamicFactorMQ - and score it against the benchmarks it has to beat.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14778,
+      "approx_body_tokens": 3694,
+      "references": [],
+      "scripts": [
+        "nowcast.py"
+      ]
+    },
+    {
+      "name": "macro-regime-and-recession-indicators",
+      "plugin": "fin-macro",
+      "path": "plugins/fin-macro/skills/macro-regime-and-recession-indicators/SKILL.md",
+      "description": "Recession probabilities, the Sahm rule and yield-curve inversion - and the fact that the NBER label they are all scored against was assigned years after the fact. TRIGGER - USREC, NBER recession dates, recession indicator, recession probability, recession dummy, \"recession-aware\" strategy, regime flag from FRED, RECPROUSM156N, Sahm rule, SAHMREALTIME, SAHMCURRENT, \"unemployment rose 0.5 points\", yield curve inversion, T10Y3M, T10Y2Y, 2s10s, inverted curve recession signal, \"how long after inversion\", business cycle dating, \"when did NBER announce\", labelling recessions for a classifier. SKIP for fitting HMMs and the smoothed-versus-filtered timing of estimated regimes (regime-detection), for the vintage A/B on a macro strategy (real-time-macro-backtesting), for nowcasting GDP itself (gdp-nowcasting-dynamic-factor), and for where the underlying series live (fundamental-and-macro-data).",
+      "summary": "Recession probabilities, the Sahm rule and yield-curve inversion - and the fact that the NBER label they are all scored against was assigned years after the fact.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14715,
+      "approx_body_tokens": 3678,
+      "references": [],
+      "scripts": [
+        "recession_indicators.py"
+      ]
+    },
+    {
+      "name": "macro-release-calendar-and-embargo",
+      "plugin": "fin-macro",
+      "path": "plugins/fin-macro/skills/macro-release-calendar-and-embargo/SKILL.md",
+      "description": "Build the timestamp at which a macro number becomes tradeable - release date, clock time, timezone - and know where the release mechanics changed under your sample. TRIGGER - release calendar, economic calendar, release date vs reference date, available_at, as-of join on a macro series, \"when was this number published\", 8:30 ET, embargo, press lock-up, media lockup, pre-release access, WASDE noon, EIA Wednesday 10:30, natural gas storage Thursday, holiday release schedule, \"why is my macro feature one day early\", forward-fill a monthly series onto daily bars, DST offset on a release timestamp, event-study window around a print. SKIP for vintages and revisions to the value itself (real-time-macro-backtesting), for where the series live (fundamental-and-macro-data), for exchange sessions and holidays (us-market-rules), and for measuring fills you already have (execution-cost-analysis).",
+      "summary": "Build the timestamp at which a macro number becomes tradeable - release date, clock time, timezone - and know where the release mechanics changed under your sample.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 13803,
+      "approx_body_tokens": 3450,
+      "references": [],
+      "scripts": [
+        "release_calendar.py"
+      ]
+    },
+    {
+      "name": "real-time-macro-backtesting",
+      "plugin": "fin-macro",
+      "path": "plugins/fin-macro/skills/real-time-macro-backtesting/SKILL.md",
+      "description": "Run a macro strategy twice - once on today's revised series and once on the vintage that existed at each decision date - and report both Sharpes. TRIGGER - real-time data, vintage data, data vintages, point-in-time macro, ALFRED, realtime_start, realtime_end, vintage_dates, get_series_as_of_date, first release vs latest, initial estimate, \"my macro backtest uses revised data\", \"does this have look-ahead\", payroll revisions, GDP revisions, annual benchmark revision, QCEW benchmark, restated macro history, as-of join on a macro series, \"which number did I actually see on the day\". SKIP for where to GET the series and the fredapi bugs (fundamental-and-macro-data), for release times and embargo mechanics (macro-release-calendar-and-embargo), for seasonal-adjustment revisions specifically (seasonal-adjustment-and-x13), for recession labels assigned after the fact (macro-regime-and-recession-indicators), and for company fundamentals rather than macro (research-integrity-guards).",
+      "summary": "Run a macro strategy twice - once on today's revised series and once on the vintage that existed at each decision date - and report both Sharpes.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 15190,
+      "approx_body_tokens": 3797,
+      "references": [],
+      "scripts": [
+        "vintage_backtest.py"
+      ]
+    },
+    {
+      "name": "seasonal-adjustment-and-x13",
+      "plugin": "fin-macro",
+      "path": "plugins/fin-macro/skills/seasonal-adjustment-and-x13/SKILL.md",
+      "description": "Seasonal adjustment is a second, silent vintage - the published seasonally adjusted history keeps changing with no new data. TRIGGER - seasonally adjusted, SA vs NSA, \"why did last year's number change\", concurrent seasonal adjustment, seasonal factors, X-13ARIMA-SEATS, X-13, X-12-ARIMA, x13_arima_analysis, X13NotFoundError, \"x12a and x13as not found on path\", X13PATH, statsmodels seasonal_decompose, STL, ratio to moving average, annual re-adjustment, benchmark revision, \"the seasonal factors were revised\", residual seasonality, seasonally adjusting a series myself. SKIP for revisions to the underlying unadjusted value (real-time-macro-backtesting), for release timing (macro-release-calendar-and-embargo), for where the series live (fundamental-and-macro-data), and for general time-series decomposition and forecasting (time-series-forecasting-models).",
+      "summary": "Seasonal adjustment is a second, silent vintage - the published seasonally adjusted history keeps changing with no new data.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 13652,
+      "approx_body_tokens": 3413,
+      "references": [],
+      "scripts": [
+        "seasonal_adjustment.py"
+      ]
     },
     {
       "name": "bet-sizing",
