@@ -38,7 +38,7 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = Path(__file__).resolve().parent.parent
 PKG = ROOT / "fin_skills"
 HAND_WRITTEN = {"__init__.py"}          # kept as-is; everything else under fin_skills/ is generated
-HAND_WRITTEN_DIRS = ("api/",)           # the unified API layer is hand-written on top of the generated modules
+HAND_WRITTEN_DIRS = ("api/", "bridges/")  # the unified API layer and the third-party bridges are hand-written
 
 
 def is_hand_written(rel: str) -> bool:
