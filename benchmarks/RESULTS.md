@@ -80,18 +80,18 @@ Notes on the small / negative deltas (all are real defects, all caught above):
 guard                 target defect                  runtime_s
 --------------------------------------------------------------
 assert_causal         lookahead_signal                   0.017
-safe_asof             wrong_side_asof                    0.058
-adjustment_check      unadjusted_split                   0.002
-survivorship_audit    survivor_only_universe             0.028
-pit_universe          survivor_only_universe             0.003
-warmup_probe          warmup_live_window                 0.112
-fold_leak_test        shared_scaler                      0.052
-purge_effect          unpurged_cv                        0.079
-pit_fundamentals      latest_vintage_fundamentals        0.078
+safe_asof             wrong_side_asof                    0.046
+adjustment_check      unadjusted_split                   0.012
+survivorship_audit    survivor_only_universe             0.027
+pit_universe          survivor_only_universe             0.002
+warmup_probe          warmup_live_window                 0.145
+fold_leak_test        shared_scaler                      0.036
+purge_effect          unpurged_cv                        0.056
+pit_fundamentals      latest_vintage_fundamentals        0.031
 contamination_probe   llm_cutoff_overlap                 0.000
-cost_curve            cost_too_low                       0.022
-cost_plausibility     cost_too_low                       0.003
-regime_coverage       single_calm_quarter                0.002
+cost_curve            cost_too_low                       0.014
+cost_plausibility     cost_too_low                       0.002
+regime_coverage       single_calm_quarter                0.001
 ```
 
 ## GAPS  (defects no guard flagged in this run)
@@ -116,4 +116,4 @@ was not crossed here - a limitation of the gate, not a missing script.
 
   world      : 1825 days, 60 names, 26 delisted, 26 splits, turbulent share 0.26  (seed 20260908)
   defects    : 12/12 caught by >=1 guard; 0 false alarm(s) on clean; 0 gap(s)
-  guard time : 6.08s over 169 guard runs; total benchmark 29.4s
+  guard time : 5.30s over 169 guard runs; total benchmark 28.4s

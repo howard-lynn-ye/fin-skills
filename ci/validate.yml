@@ -73,11 +73,16 @@ jobs:
       - name: The slow test set
         run: python -m pytest -q -m slow
 
+      # The benchmark's committed RESULTS.md records per-guard RUNTIMES, which differ on
+      # every machine, so `git diff --exit-code` on it can never pass here. Assert the two
+      # properties instead - they hold on any machine and do not need editing when a defect
+      # or a guard is added, which a hardcoded "12/12" would.
       - name: The leak benchmark still detects what it claims
-        run: python benchmarks/leak_bench.py --quick
-
-      - name: RESULTS.md is what the benchmark actually produces
-        run: git diff --exit-code benchmarks/RESULTS.md || (echo "::warning::benchmarks/RESULTS.md is stale - regenerate it with python benchmarks/leak_bench.py" && exit 1)
+        run: |
+          python benchmarks/leak_bench.py --quick | tee bench.out
+          grep -q "0 false alarm(s) on clean" bench.out || { echo "::error::a guard fired on clean data"; exit 1; }
+          grep -q "0 gap(s)" bench.out || { echo "::error::a planted defect is caught by no guard"; sed -n '/^GAPS/,/^$/p' benchmarks/RESULTS.md; exit 1; }
+          git checkout -- benchmarks/RESULTS.md
 
   # pyproject.toml claims numpy>=1.24, pandas>=2.0, scipy>=1.10. Untested floors are wishes,
   # so this job installs exactly them.
