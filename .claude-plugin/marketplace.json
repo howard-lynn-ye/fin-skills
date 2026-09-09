@@ -291,6 +291,50 @@
       "skills": []
     },
     {
+      "name": "fin-macro",
+      "source": "./plugins/fin-macro",
+      "description": "Macro data as a point-in-time object - real-time vintages versus today's revised series, release calendars and embargo times, seasonal adjustment as a second silent vintage, recession indicators that are assigned retrospectively, nowcasting with dynamic factor models, and the non-US central-bank APIs. One skill per topic, source-verified, each with an executable script and the measured size of the trap it prevents.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "macro",
+        "fred",
+        "alfred",
+        "vintage",
+        "revisions",
+        "nowcasting",
+        "gdpnow",
+        "recession",
+        "seasonal-adjustment",
+        "release-calendar",
+        "ecb",
+        "midas",
+        "china-macro"
+      ],
+      "skills": []
+    },
+    {
+      "name": "fin-tax-accounting",
+      "source": "./plugins/fin-tax-accounting",
+      "description": "The after-tax P&L a pre-tax backtest never shows - tax lot matching and cost basis, wash sales, Section 1256 sixty-forty treatment for futures and index options, crypto per-wallet basis after Rev. Proc. 2024-28, A-share stamp duty and holding-period dividend tax, and dividend withholding against gross index benchmarks. One skill per rule, each dated, each with an executable script. Modelling assumptions, not tax advice.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "tax",
+        "cost-basis",
+        "tax-lots",
+        "fifo",
+        "wash-sale",
+        "section-1256",
+        "after-tax",
+        "crypto-tax",
+        "stamp-duty",
+        "withholding",
+        "accounting"
+      ],
+      "skills": []
+    },
+    {
       "name": "trading-skills",
       "source": {
         "source": "github",
