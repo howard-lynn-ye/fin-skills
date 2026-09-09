@@ -409,7 +409,12 @@
         "recovery",
         "portfolio-credit-risk"
       ],
-      "skills": []
+      "skills": [
+        "./skills/cds-mechanics-and-upfront",
+        "./skills/corporate-bond-data-and-trace",
+        "./skills/credit-spread-measures",
+        "./skills/ratings-transitions-and-migration"
+      ]
     },
     {
       "name": "trading-skills",
