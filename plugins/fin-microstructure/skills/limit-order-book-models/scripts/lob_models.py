@@ -252,6 +252,29 @@ def cst_table_checks(**kw) -> dict:
             "table4": got4, "table4_paper": want4, "table4_maxabs": float(np.abs(got4 - want4).max())}
 
 
+def best_lambda_for_table4(lams=None, mu: float = CST_PARAMS["mu"],
+                           theta: float = CST_PARAMS["theta"]) -> tuple:
+    """Is Table 4 reproducible at SOME other limit-order rate? Sweep lambda and report the
+    best fit, so 'it does not reproduce' is a measurement rather than one failed attempt.
+
+    Table 3 pins lambda(1) at 1.85; if a different lambda fitted Table 4 the two panels would
+    be mutually inconsistent, which is worth knowing either way.
+    """
+    if lams is None:
+        lams = np.arange(0.0, 6.001, 0.25)
+    want = np.array(CST_TABLE4)
+    best = None
+    for lam in lams:
+        if lam <= 0:
+            continue
+        got = np.array([[fill_prob_before_move(b, a, lam=float(lam), mu=mu, theta=theta)
+                         for a in range(1, 6)] for b in range(1, 6)])
+        err = float(np.abs(got - want).max())
+        if best is None or err < best[1]:
+            best = (float(lam), err)
+    return best
+
+
 # --------------------------------------------------------- queue position, fills, toxicity
 def book_experiment(position: int, depth: int, ask_depth: int | None = None,
                     n_trials: int = 20_000, seed: int = SEED,
@@ -385,11 +408,14 @@ if __name__ == "__main__":
     print(f"   mine / the paper's Table 4.  Worst |difference|: {chk['table4_maxabs']:.3f}")
     print("   eq. (14) is unambiguous - epsilon_B is a sum of exponentials with rates")
     print("   mu + theta*(i-1), i = 1..b - and eq. (16) is unambiguous about the event,")
-    print("   P[epsilon_B < sigma_A]. Implementing both gives the top row above. An")
-    print("   independent Monte Carlo agrees with it to three decimals and no single value")
-    print("   of lambda reconciles Tables 3 and 4, so the gap is in the reading of the")
-    print("   event, not the arithmetic. Reported, not hidden: use Table 3, and measure")
-    print("   fill probability the way section 3 does.")
+    print("   P[epsilon_B < sigma_A]. Implementing both gives the top row above.")
+    lam_best, lam_err = best_lambda_for_table4()
+    print(f"   Sweeping lambda over (0, 6] to see whether some OTHER arrival rate fits Table 4:")
+    print(f"   the best is lambda = {lam_best:g}, still {lam_err:.3f} off - and Table 3 needs 1.85.")
+    print("   An independent Monte Carlo agrees with this implementation to three decimals")
+    print("   and no single lambda reconciles the two panels, so the gap is in the reading")
+    print("   of the event, not the arithmetic. Reported, not hidden: use Table 3, and")
+    print("   measure fill probability the way section 3 does.")
 
     # ---- 3. queue position is not depth
     depth = 20

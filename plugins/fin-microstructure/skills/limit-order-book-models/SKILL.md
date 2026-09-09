@@ -113,10 +113,10 @@ cancels), and eq. (16) makes the event `P[epsilon_B < sigma_A]`.
 | **b=5** | 0.2243 / .118 | 0.4716 / .287 | 0.6071 / .393 |
 
 **Worst |difference| 0.214.** ✅ An independent Monte Carlo agrees with the left column of each
-pair to three decimals, and ✅ a sweep of `lambda` over `[0, 6]` finds no value that reproduces
-Table 4 (best 1.00, still 0.074 off — and Table 3 needs 1.85). So the arithmetic is not the
-problem; the reading of the event is. **Use Proposition 3, which does reproduce, and measure
-fill probability directly** — §4.
+pair to three decimals, and ✅ `best_lambda_for_table4()` sweeps the limit-order rate over
+`(0, 6]` and finds no value that reproduces Table 4 — **the best is `lambda = 1`, still 0.074
+off, and Table 3 needs 1.85**. So the arithmetic is not the problem; the reading of the event
+is. **Use Proposition 3, which does reproduce, and measure fill probability directly** — §4.
 
 ⚠️ If you are checking your own implementation against this paper, check it against Table 3.
 
@@ -205,6 +205,7 @@ fill at that width is actually worth.
 | `prob_mid_up_sim(a, b, ...)` | seeded Monte Carlo cross-check, returns `(p, std err)` |
 | `fill_prob_before_move(b, a, ...)` | Proposition 5 as eqs. (14)/(16) state it — §3 |
 | `cst_table_checks()` | both panels against the paper, with the two gaps |
+| `best_lambda_for_table4()` | the λ sweep of §3 — no rate reconciles the two panels |
 | `book_experiment(position, depth, ...)` | §4 and §5: fill probability, the volume-only rule, the cancellation share, `P[up \| filled]` and the mark-to-mid |
 | `position_sweep(depth, positions)` | the sweep |
 

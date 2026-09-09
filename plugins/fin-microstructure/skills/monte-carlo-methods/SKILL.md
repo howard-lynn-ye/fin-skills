@@ -102,7 +102,7 @@ the **raw** state, not in moneyness; `lsm_price(..., scale=1.0)` is what reprodu
 CRR tree, and LSM.
 
 🚨 **The last column is the trap.** It is the *same tree* with exercise allowed at all 2,000
-steps — a continuously exercisable American, worth **0.005 to 0.009 more**. That is a different
+steps — a continuously exercisable American, worth **0.003 to 0.009 more**. That is a different
 *contract*, not an error, and it is **several times the paper's own standard error**. A tree
 that allows exercise at every node will always look like it beats an LSM Bermudan. Compare a
 Bermudan against a Bermudan (`bermudan_tree_put` restricts exercise to the same 50 dates a
