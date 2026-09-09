@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 70,
+  "n_skills": 76,
   "n_reference_files": 74,
-  "n_scripts": 55,
+  "n_scripts": 60,
   "discovery_cost": {
-    "total_description_chars": 60540,
-    "approx_tokens": 15135,
+    "total_description_chars": 66223,
+    "approx_tokens": 16555,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -17,7 +17,8 @@
     "fin-libraries",
     "fin-llm",
     "fin-models",
-    "fin-strategies"
+    "fin-strategies",
+    "fin-tax-accounting"
   ],
   "skills": [
     {
@@ -852,6 +853,20 @@
       "scripts": []
     },
     {
+      "name": "fin-skills-as-tools",
+      "plugin": "fin-llm",
+      "path": "plugins/fin-llm/skills/fin-skills-as-tools/SKILL.md",
+      "description": "How to hand this library to an agent as TOOLS rather than as reading - the MCP server, the exported Anthropic and OpenAI tool definitions, the JSON payload conventions, and the four guards that cannot cross a JSON boundary. TRIGGER - expose fin-skills to an LLM agent; run the fin-skills MCP server; \"python -m fin_skills.mcp\"; fin-skills-mcp; import the guards as function-calling tools; generate tool schemas for the Messages API or the OpenAI Responses API; send a pandas Series or DataFrame through a tool call; check_backtest, bundle_coverage, describe_guard, read_skill; why assert_causal or warmup_probe is missing from the tool list; payload size limits for a tool call; 把 guard 挂成 agent 工具. SKIP for how to design the agent pipeline itself (finance-agent-architectures), which third-party finance MCP servers exist and which can move money (finance-mcp-servers), and whether an LLM strategy makes money at all (llm-finance-agents).",
+      "summary": "How to hand this library to an agent as TOOLS rather than as reading - the MCP server, the exported Anthropic and OpenAI tool definitions, the JSON payload conventions, and the fou",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 17919,
+      "approx_body_tokens": 4479,
+      "references": [],
+      "scripts": []
+    },
+    {
       "name": "finance-agent-architectures",
       "plugin": "fin-llm",
       "path": "plugins/fin-llm/skills/finance-agent-architectures/SKILL.md",
@@ -1191,6 +1206,86 @@
       ],
       "scripts": [
         "trend_models.py"
+      ]
+    },
+    {
+      "name": "after-tax-backtesting",
+      "plugin": "fin-tax-accounting",
+      "path": "plugins/fin-tax-accounting/skills/after-tax-backtesting/SKILL.md",
+      "description": "Attach lot matching, wash sales and section 1256 to an existing backtest and report after-tax Sharpe beside pre-tax - and refuse to report one that does not state its rate, jurisdiction and lot method. TRIGGER - after-tax return, after tax Sharpe, tax drag, tax-aware backtest, tax alpha, tax-managed strategy, turnover penalty, \"what does this strategy return after tax\", tax cost of rebalancing, taxable account backtest, tax-efficient turnover, pre-tax vs post-tax performance, capital gains netting, loss carryforward, \"should I hold this in an IRA\". Modelling assumptions for backtests, not tax advice. SKIP for the lot rules themselves (tax-lot-matching-and-cost-basis), for the wash-sale mechanics (wash-sale-rules), for futures and index options (section-1256-and-derivatives-tax), for A-share taxes (china-ashare-trading-taxes), and for transaction costs, which are a different drag entirely (execution-cost-analysis).",
+      "summary": "Attach lot matching, wash sales and section 1256 to an existing backtest and report after-tax Sharpe beside pre-tax - and refuse to report one that does not state its rate, jurisdi",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11911,
+      "approx_body_tokens": 2977,
+      "references": [],
+      "scripts": [
+        "after_tax.py"
+      ]
+    },
+    {
+      "name": "china-ashare-trading-taxes",
+      "plugin": "fin-tax-accounting",
+      "path": "plugins/fin-tax-accounting/skills/china-ashare-trading-taxes/SKILL.md",
+      "description": "A-share stamp duty is charged to the seller only and halved on 2023-08-28, and dividend tax is a step function of holding period - a turnover penalty written into the tax code that a flat symmetric cost model cannot express. TRIGGER - A股印花税, 证券交易印花税, stamp duty, stamp tax, seller side only, 单边征收, 印花税减半, 0.05%, 2023-08-28, A股股息红利税, 股息红利差别化, dividend tax by holding period, 持股期限, 一个月, 一年, 财税〔2015〕101号, dividend capture China, A-share transaction cost model, \"what does an A-share round trip actually cost\", backtesting Chinese equities net of tax. Modelling assumptions for backtests, not tax advice, and for an individual resident investor only. SKIP for US wash sales and lot matching (wash-sale-rules, tax-lot-matching-and-cost-basis), for reporting an after-tax Sharpe (after-tax-backtesting), and for A-share data, T+1 and price limits (china-trading-stack).",
+      "summary": "A-share stamp duty is charged to the seller only and halved on 2023-08-28, and dividend tax is a step function of holding period - a turnover penalty written into the tax code that",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11517,
+      "approx_body_tokens": 2879,
+      "references": [],
+      "scripts": [
+        "ashare_taxes.py"
+      ]
+    },
+    {
+      "name": "section-1256-and-derivatives-tax",
+      "plugin": "fin-tax-accounting",
+      "path": "plugins/fin-tax-accounting/skills/section-1256-and-derivatives-tax/SKILL.md",
+      "description": "Futures and broad-based index options are marked to market on the last business day of the year and split 60/40 long/short regardless of holding period, so two options with the same payoff can have different after-tax P&L. TRIGGER - section 1256, 1256 contract, 60/40, sixty forty, mark to market at year end, marked to market December 31, regulated futures contract, nonequity option, broad-based index option, narrow-based security index, SPX vs SPY tax, XSP, VIX options, futures tax treatment, Form 6781, blended rate on futures, \"do I owe tax on an open position\", net section 1256 loss carryback, qualified board or exchange. Modelling assumptions for backtests, not tax advice. SKIP for stock lots and cost basis (tax-lot-matching-and-cost-basis), for the wash-sale rule that does not reach these contracts (wash-sale-rules), for reporting an after-tax Sharpe (after-tax-backtesting), and for option pricing and lifecycle mechanics (options-backtesting).",
+      "summary": "Futures and broad-based index options are marked to market on the last business day of the year and split 60/40 long/short regardless of holding period, so two options with the sam",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12878,
+      "approx_body_tokens": 3219,
+      "references": [],
+      "scripts": [
+        "section_1256.py"
+      ]
+    },
+    {
+      "name": "tax-lot-matching-and-cost-basis",
+      "plugin": "fin-tax-accounting",
+      "path": "plugins/fin-tax-accounting/skills/tax-lot-matching-and-cost-basis/SKILL.md",
+      "description": "The same trades produce four different reported P&Ls depending on which lot you sold, and only one of the four methods is a statutory default. TRIGGER - tax lot, tax lots, lot matching, cost basis, cost basis method, which shares did I sell, FIFO, LIFO, HIFO, LOFO, tax lot optimizer, specific identification, specific share identification, adequate identification, average cost basis, average basis, short-term vs long-term capital gain split, holding period more than one year, Publication 550, Form 8949, 1099-B basis mismatch, \"my broker says HIFO\", \"which lot method should the backtest use\", after-tax P&L of a blotter. Modelling assumptions for backtests, not tax advice. SKIP for the loss you are not allowed to book at all (wash-sale-rules), for futures and index options that never use lots at all (section-1256-and-derivatives-tax), for wiring all of it onto a backtest and reporting an after-tax Sharpe (after-tax-backtesting), and for A-share stamp duty and dividend tax (china-ashare-trading-taxes).",
+      "summary": "The same trades produce four different reported P&Ls depending on which lot you sold, and only one of the four methods is a statutory default.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11806,
+      "approx_body_tokens": 2951,
+      "references": [],
+      "scripts": [
+        "lot_matching.py"
+      ]
+    },
+    {
+      "name": "wash-sale-rules",
+      "plugin": "fin-tax-accounting",
+      "path": "plugins/fin-tax-accounting/skills/wash-sale-rules/SKILL.md",
+      "description": "A wash sale defers a loss into the replacement's basis rather than destroying it, and a monthly-rebalanced strategy triggers one on almost every trade. TRIGGER - wash sale, wash sales, IRC 1091, section 1091, 30 day rule, 61 day window, substantially identical, disallowed loss, loss disallowed, basis adjustment, replacement shares, tax loss harvesting, harvesting rules, buy back within 30 days, \"can I sell and rebuy\", Form 8949 code W, 1099-B box 1g, wash sale in an IRA, Rev. Rul. 2008-5, holding period carryover, \"my backtest books every loss\", after-tax turnover penalty. Modelling assumptions for backtests, not tax advice. SKIP for choosing which lot to sell in the first place (tax-lot-matching-and-cost-basis), for futures and broad-based index options where the rule does not apply (section-1256-and-derivatives-tax), for wiring it into a backtest and reporting an after-tax Sharpe (after-tax-backtesting), and for the A-share tax code (china-ashare-trading-taxes).",
+      "summary": "A wash sale defers a loss into the replacement's basis rather than destroying it, and a monthly-rebalanced strategy triggers one on almost every trade.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14425,
+      "approx_body_tokens": 3606,
+      "references": [],
+      "scripts": [
+        "wash_sales.py"
       ]
     }
   ]

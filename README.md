@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**71 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**76 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 47 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 52 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -224,6 +224,11 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-strategies` | [`market-making-models`](plugins/fin-strategies/skills/market-making-models/SKILL.md) | Quote a two-sided market and survive the inventory - Avellaneda-Stoikov reservation price and optimal spread, and the adverse selection the model does not price. | 0 | 1 |
 | `fin-strategies` | [`position-sizing-kelly`](plugins/fin-strategies/skills/position-sizing-kelly/SKILL.md) | Decide how much to bet given an edge - Kelly, fractional Kelly, and volatility targeting - and the drawdown each implies. | 0 | 1 |
 | `fin-strategies` | [`trend-following-models`](plugins/fin-strategies/skills/trend-following-models/SKILL.md) | Build a trend-following or time-series-momentum strategy the way the paper defines it, and measure the two look-aheads that flatter its backtest. | 1 | 1 |
+| `fin-tax-accounting` | [`after-tax-backtesting`](plugins/fin-tax-accounting/skills/after-tax-backtesting/SKILL.md) | Attach lot matching, wash sales and section 1256 to an existing backtest and report after-tax Sharpe beside pre-tax - and refuse to report one that does not state its rate, jurisdi | 0 | 1 |
+| `fin-tax-accounting` | [`china-ashare-trading-taxes`](plugins/fin-tax-accounting/skills/china-ashare-trading-taxes/SKILL.md) | A-share stamp duty is charged to the seller only and halved on 2023-08-28, and dividend tax is a step function of holding period - a turnover penalty written into the tax code that | 0 | 1 |
+| `fin-tax-accounting` | [`section-1256-and-derivatives-tax`](plugins/fin-tax-accounting/skills/section-1256-and-derivatives-tax/SKILL.md) | Futures and broad-based index options are marked to market on the last business day of the year and split 60/40 long/short regardless of holding period, so two options with the sam | 0 | 1 |
+| `fin-tax-accounting` | [`tax-lot-matching-and-cost-basis`](plugins/fin-tax-accounting/skills/tax-lot-matching-and-cost-basis/SKILL.md) | The same trades produce four different reported P&Ls depending on which lot you sold, and only one of the four methods is a statutory default. | 0 | 1 |
+| `fin-tax-accounting` | [`wash-sale-rules`](plugins/fin-tax-accounting/skills/wash-sale-rules/SKILL.md) | A wash sale defers a loss into the replacement's basis rather than destroying it, and a monthly-rebalanced strategy triggers one on almost every trade. | 0 | 1 |
 
 <!-- END GENERATED SKILL TABLE -->
 
