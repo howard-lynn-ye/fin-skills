@@ -1,0 +1,379 @@
+#!/usr/bin/env python3
+"""The CUSUM event filter and the SADF explosiveness test - sampling where something happened.
+
+Advances in Financial Machine Learning (Lopez de Prado 2018), chapter 2 section 2.5.2 (the
+symmetric CUSUM filter) and chapter 17 (structural breaks / the supremum ADF).
+
+Two different jobs:
+
+  * **CUSUM** decides WHEN to sample. Time bars sample the market on a clock the market does not
+    keep; the CUSUM filter fires only after a run of one-signed returns adds up to a threshold, so
+    events land where information arrived. Measured here: the sampling reduction at each
+    threshold, the lag between a planted drift shift and the first event after it, and the
+    clustering that a naive |return| > h filter produces and CUSUM does not.
+  * **SADF** decides WHETHER a segment is explosive. A single ADF over the whole sample has almost
+    no power against a bubble that occupies a fifth of it; SADF takes the supremum of the ADF
+    statistic over every backwards-expanding start point at each end date. Measured here: the
+    segment SADF flags against the planted one, the full-sample ADF that misses it, and the
+    false-positive rate on random walks under a simulated null.
+
+The SADF is exact and fast: the ADF regressions over every (start, end) window are solved from
+cumulative cross-product matrices rather than refitted, and the demo checks that against a naive
+least-squares refit.
+
+Run:  python structural_breaks.py     (numpy; statsmodels optional; seed 0; ~17 s)
+"""
+from __future__ import annotations
+
+import math
+import time
+
+import numpy as np
+
+SEED = 0
+# --- CUSUM
+T_CUSUM = 2000
+SIGMA = 0.01
+SHIFT_AT = 1200          # a drift shift is planted here ...
+SHIFT_LEN = 120          # ... and lasts this many bars
+SHIFT_SIZE = 0.5         # in units of SIGMA, per bar
+CUSUM_H = (0.5, 1.0, 2.0, 3.0, 5.0)      # thresholds in units of SIGMA
+# --- SADF
+T_SADF = 700
+BUBBLE_FROM, BUBBLE_TO = 350, 500        # the planted explosive segment
+BUBBLE_DELTA = 0.020                     # per-bar growth rate inside it
+SADF_LAGS = 1
+SADF_MIN_LENGTH = 60
+NULL_PATHS = 40
+NULL_T = 350
+
+
+# ------------------------------------------------------------------------ CUSUM ------------
+def cusum_filter(x: np.ndarray, threshold) -> np.ndarray:
+    """Symmetric CUSUM filter on a series of increments. Returns the indices that fired.
+
+    AFML Snippet 2.4 (page 39), as transcribed by mlfinpy 0.1.2 `mlfinpy/filters/filters.py`:
+
+        s_pos = max(0, s_pos + x[t]);  s_neg = min(0, s_neg + x[t])
+        if s_neg < -h:  s_neg = 0; fire
+        elif s_pos >  h:  s_pos = 0; fire
+
+    Two details that matter and are easy to miss:
+      * only the side that fired is reset, not both - the opposite accumulator keeps its state;
+      * the tests are `elif`, so at most one event per bar, and the negative side is checked
+        first, so a bar that would trip both is recorded as a downside event.
+    `threshold` may be a scalar or a per-bar array (mlfinpy accepts a float or a pd.Series).
+    """
+    x = np.asarray(x, dtype=float)
+    h = np.broadcast_to(np.asarray(threshold, dtype=float), x.shape)
+    out = []
+    s_pos = s_neg = 0.0
+    for t in range(x.shape[0]):
+        if not np.isfinite(x[t]):
+            continue
+        s_pos = max(0.0, s_pos + x[t])
+        s_neg = min(0.0, s_neg + x[t])
+        if s_neg < -h[t]:
+            s_neg = 0.0
+            out.append(t)
+        elif s_pos > h[t]:
+            s_pos = 0.0
+            out.append(t)
+    return np.array(out, dtype=int)
+
+
+def threshold_filter(x: np.ndarray, threshold: float) -> np.ndarray:
+    """The naive alternative: fire whenever |x[t]| exceeds the threshold. For contrast only."""
+    return np.flatnonzero(np.abs(np.asarray(x, dtype=float)) > threshold)
+
+
+def drift_shift_series(n: int = T_CUSUM, seed: int = SEED, sigma: float = SIGMA,
+                       at: int = SHIFT_AT, length: int = SHIFT_LEN, size: float = SHIFT_SIZE):
+    """i.i.d. returns with a drift of `size * sigma` per bar planted over [at, at+length)."""
+    rng = np.random.default_rng(seed)
+    r = sigma * rng.standard_normal(n)
+    r[at:at + length] += size * sigma
+    return r
+
+
+def clustering(events: np.ndarray, window: int = 3) -> float:
+    """Fraction of events that have another event within `window` bars. 0 = perfectly spread."""
+    if events.shape[0] < 2:
+        return 0.0
+    d = np.diff(np.sort(events))
+    near = np.zeros(events.shape[0], dtype=bool)
+    near[:-1] |= d <= window
+    near[1:] |= d <= window
+    return float(near.mean())
+
+
+def detection_lag(events: np.ndarray, at: int) -> int:
+    """Bars from the planted shift to the first event at or after it; -1 if there is none."""
+    after = events[events >= at]
+    return int(after[0] - at) if after.shape[0] else -1
+
+
+# ------------------------------------------------------------------------ SADF -------------
+def adf_design(p: np.ndarray, lags: int = SADF_LAGS, trend: str = "c"):
+    """Rows of  dy_t = b*y_{t-1} [+ a] [+ c*t] + sum_j phi_j dy_{t-j} + e, b's column FIRST.
+
+    trend "nc" / "c" / "ct". mlfinpy's `_get_y_x` calls the constant-plus-trend variant "linear",
+    builds the trend column ONCE over the whole sample (so it is the global row index, not a
+    window-local one) and defaults `add_const=False`, i.e. a trend with no intercept. This
+    function keeps the conventional specification and says which is which.
+    """
+    p = np.asarray(p, dtype=float)
+    dy = np.diff(p)
+    m = dy.shape[0] - lags
+    if m < 5:
+        raise ValueError("series too short for this lag order")
+    y = dy[lags:]
+    cols = [p[lags:-1]]                                    # y_{t-1}, the tested coefficient
+    if trend in ("c", "ct"):
+        cols.append(np.ones(m))
+    if trend == "ct":
+        cols.append(np.arange(m, dtype=float))
+    elif trend not in ("nc", "c"):
+        raise ValueError("trend must be 'nc', 'c' or 'ct'")
+    for j in range(1, lags + 1):
+        cols.append(dy[lags - j:-j])
+    return np.column_stack(cols), y
+
+
+def adf_t_window(X: np.ndarray, y: np.ndarray, s: int, e: int) -> float:
+    """ADF t-statistic of the first column's coefficient on rows [s, e], by direct least squares.
+
+    The slow, obvious version. `sadf` computes the same thing from cumulative cross-products;
+    the demo checks them against each other.
+    """
+    Xw, yw = X[s:e + 1], y[s:e + 1]
+    n, k = Xw.shape
+    if n <= k:
+        return float("-inf")
+    beta, *_ = np.linalg.lstsq(Xw, yw, rcond=None)
+    resid = yw - Xw @ beta
+    s2 = float(resid @ resid) / (n - k)
+    xtx_inv = np.linalg.pinv(Xw.T @ Xw)
+    v = s2 * xtx_inv[0, 0]
+    return float(beta[0] / math.sqrt(v)) if v > 0 else float("-inf")
+
+
+def sadf(p: np.ndarray, lags: int = SADF_LAGS, min_length: int = SADF_MIN_LENGTH,
+         trend: str = "c") -> np.ndarray:
+    """SADF(t) = sup over backwards-expanding start points of the ADF t-statistic ending at t.
+
+    AFML Snippets 17.1-17.4 (pages 258-259). Returned array is aligned with the design rows;
+    entries before `min_length` are NaN. Every window is solved exactly from cumulative
+    cross-products, so the whole curve costs one pass rather than O(T^2) refits.
+    """
+    X, y = adf_design(p, lags, trend)
+    n, k = X.shape
+    c2 = np.zeros((n + 1, k, k))
+    c1 = np.zeros((n + 1, k))
+    cy = np.zeros(n + 1)
+    c2[1:] = np.cumsum(X[:, :, None] * X[:, None, :], axis=0)
+    c1[1:] = np.cumsum(X * y[:, None], axis=0)
+    cy[1:] = np.cumsum(y * y)
+
+    out = np.full(n, np.nan)
+    for e in range(min_length - 1, n):
+        starts = np.arange(0, e - min_length + 2)
+        xtx = c2[e + 1] - c2[starts]                       # (m, k, k)
+        xty = c1[e + 1] - c1[starts]                       # (m, k)
+        yty = cy[e + 1] - cy[starts]
+        nobs = (e + 1 - starts).astype(float)
+        det = np.linalg.det(xtx)
+        ok = np.isfinite(det) & (np.abs(det) > 1e-12) & (nobs > k)
+        t = np.full(starts.shape[0], -np.inf)
+        if ok.any():
+            inv = np.linalg.inv(xtx[ok])                   # one batched inverse per end point
+            beta = np.einsum("ijk,ik->ij", inv, xty[ok])
+            inv00 = inv[:, 0, 0]
+            sse = yty[ok] - np.einsum("ij,ij->i", beta, xty[ok])
+            s2 = np.maximum(sse, 0.0) / (nobs[ok] - k)
+            v = s2 * inv00
+            good = v > 0
+            tt = np.full(int(ok.sum()), -np.inf)
+            tt[good] = beta[good, 0] / np.sqrt(v[good])
+            t[ok] = tt
+        out[e] = float(np.max(t))
+    return out
+
+
+def sadf_index(p_len: int, lags: int = SADF_LAGS) -> np.ndarray:
+    """Original-series index of each SADF row: row i is the window ending at bar lags + 1 + i."""
+    return np.arange(lags + 1, p_len)
+
+
+def bubble_series(n: int = T_SADF, seed: int = SEED, sigma: float = SIGMA,
+                  start: int = BUBBLE_FROM, end: int = BUBBLE_TO, delta: float = BUBBLE_DELTA):
+    """A log price that is a random walk except for an explosive segment in [start, end)."""
+    rng = np.random.default_rng(seed)
+    e = sigma * rng.standard_normal(n)
+    p = np.empty(n)
+    p[0] = 0.0
+    for t in range(1, n):
+        rho = 1.0 + delta if start <= t < end else 1.0
+        p[t] = rho * p[t - 1] + e[t] if start <= t < end else p[t - 1] + e[t]
+    return p
+
+
+def random_walk(n: int, seed: int, sigma: float = SIGMA) -> np.ndarray:
+    return np.cumsum(sigma * np.random.default_rng(seed).standard_normal(n))
+
+
+def sadf_null_critical(n: int = NULL_T, paths: int = NULL_PATHS, seed: int = SEED,
+                       lags: int = SADF_LAGS, min_length: int = SADF_MIN_LENGTH,
+                       trend: str = "c") -> dict:
+    """Simulate the null of a driftless random walk: the distribution of max_t SADF(t).
+
+    The SADF critical value depends on the sample length and on `min_length`, so it has to be
+    simulated for the configuration in use. Returns the 90/95/99 % points of the supremum.
+    """
+    maxima = np.empty(paths)
+    curves = []
+    for i in range(paths):
+        s = sadf(random_walk(n, seed + 10_000 + i), lags, min_length, trend)
+        maxima[i] = np.nanmax(s)
+        curves.append(s)
+    return {"maxima": maxima,
+            "crit": np.quantile(maxima, [0.90, 0.95, 0.99]),
+            "curves": np.array(curves)}
+
+
+def flagged_runs(values: np.ndarray, index: np.ndarray, crit: float) -> list[tuple[int, int]]:
+    """Contiguous [first, last] index ranges where `values` exceeds `crit`."""
+    above = np.nan_to_num(values, nan=-np.inf) > crit
+    runs = []
+    i = 0
+    while i < above.shape[0]:
+        if above[i]:
+            j = i
+            while j + 1 < above.shape[0] and above[j + 1]:
+                j += 1
+            runs.append((int(index[i]), int(index[j])))
+            i = j + 1
+        else:
+            i += 1
+    return runs
+
+
+def statsmodels_adf(p: np.ndarray, lags: int = SADF_LAGS):
+    """Full-sample ADF (t-stat, 5 % critical value) from statsmodels, or None."""
+    try:
+        from statsmodels.tsa.stattools import adfuller
+    except ImportError:
+        return None
+    import warnings
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        r = adfuller(np.asarray(p, dtype=float), maxlag=lags, autolag=None, regression="c")
+    return float(r[0]), float(r[4]["5%"])
+
+
+# ------------------------------------------------------------------------ demo --------------
+def _main() -> None:
+    t_all = time.time()
+
+    r = drift_shift_series()
+    print("=== 1. The CUSUM filter as an event sampler (AFML sec 2.5.2, Snippet 2.4 p.39) ===")
+    print(f"  {T_CUSUM} bars of i.i.d. returns, sigma {SIGMA}, with a {SHIFT_SIZE} sigma/bar "
+          f"drift planted over bars {SHIFT_AT}-{SHIFT_AT + SHIFT_LEN - 1}")
+    print("    threshold h   events   sampled   mean gap   max gap   clustered (<=3 bars apart)")
+    for hs in CUSUM_H:
+        ev = cusum_filter(r, hs * SIGMA)
+        gaps = np.diff(ev) if ev.shape[0] > 1 else np.array([np.nan])
+        print(f"    {hs:5.1f} sigma  {ev.shape[0]:7d}   {ev.shape[0] / T_CUSUM:6.1%}   "
+              f"{np.mean(gaps):8.1f}   {np.max(gaps):7.0f}   {clustering(ev):22.1%}")
+    naive = threshold_filter(r, 2.0 * SIGMA)
+    ev5 = cusum_filter(r, 5.0 * SIGMA)
+    print(f"  matched at about 5 % of bars sampled: the naive |return| > 2 sigma filter fires "
+          f"{naive.shape[0]} times ({naive.shape[0] / T_CUSUM:.1%}),")
+    print(f"  {clustering(naive):.1%} of them within 3 bars of another; CUSUM at 5 sigma fires "
+          f"{ev5.shape[0]} times ({ev5.shape[0] / T_CUSUM:.1%}) with {clustering(ev5):.1%} "
+          f"clustered.")
+    print("  CUSUM needs a RUN of one-signed returns, so it does not re-trigger while the series")
+    print("  hovers around the threshold - a low threshold samples often, not repeatedly.")
+
+    print("\n=== 2. Detection lag at the planted shift ===")
+    print("    threshold h   first event at or after the shift   lag (bars)   events inside the "
+          "shift window")
+    for hs in CUSUM_H:
+        ev = cusum_filter(r, hs * SIGMA)
+        lag = detection_lag(ev, SHIFT_AT)
+        inside = int(np.sum((ev >= SHIFT_AT) & (ev < SHIFT_AT + SHIFT_LEN)))
+        base = ev.shape[0] * SHIFT_LEN / T_CUSUM
+        print(f"    {hs:5.1f} sigma  {SHIFT_AT + lag if lag >= 0 else -1:31d}   {lag:10d}   "
+              f"{inside:4d}  (uniform sampling would give {base:.1f})")
+    print("  the lag is the price of the filter: a threshold large enough to be quiet is also")
+    print("  slow, and the events it does produce sit inside the shift more often than chance.")
+
+    p = bubble_series()
+    idx = sadf_index(p.shape[0])
+    print(f"\n=== 3. SADF on a planted bubble (AFML ch.17, Snippets 17.1-17.4 p.258-259) ===")
+    print(f"  {T_SADF} bars, explosive with rho = {1 + BUBBLE_DELTA} over bars "
+          f"{BUBBLE_FROM}-{BUBBLE_TO - 1}, a random walk elsewhere; lags {SADF_LAGS}, "
+          f"min_length {SADF_MIN_LENGTH}, trend 'c'")
+    s = sadf(p)
+    # exactness check against the naive refit
+    X, y = adf_design(p)
+    naive_t = [adf_t_window(X, y, st, 400) for st in range(0, 400 - SADF_MIN_LENGTH + 2)]
+    print(f"  cumulative-cross-product SADF vs a naive least-squares refit at one end point: "
+          f"max abs diff {abs(max(naive_t) - s[400]):.2e}")
+    null = sadf_null_critical()
+    c90, c95, c99 = null["crit"]
+    print(f"  null of a driftless random walk, {NULL_PATHS} paths of {NULL_T} bars: "
+          f"max SADF critical values 90/95/99 % = {c90:.3f} / {c95:.3f} / {c99:.3f}")
+    print(f"  observed max SADF {np.nanmax(s):.3f} at bar {int(idx[int(np.nanargmax(s))])}")
+    runs = flagged_runs(s, idx, c95)
+    print(f"  bars flagged at the 95 % value: {runs}")
+    if runs:
+        tot = sum(b - a + 1 for a, b in runs)
+        inside = sum(max(0, min(b, BUBBLE_TO - 1) - max(a, BUBBLE_FROM) + 1) for a, b in runs)
+        planted = BUBBLE_TO - BUBBLE_FROM
+        print(f"    {tot} bars flagged; {inside} of the {planted} planted bars are caught "
+              f"(recall {inside / planted:.0%}), and {inside / tot:.0%} of the flags are inside")
+        print(f"    first flag at bar {runs[0][0]}, {runs[0][0] - BUBBLE_FROM:+d} bars from the "
+              f"start of the bubble - the detection lag")
+        print(f"    last flag at bar {runs[-1][1]}, {runs[-1][1] - (BUBBLE_TO - 1):+d} bars past "
+              f"its END: SADF takes the sup over ALL start points, so once a bubble is inside")
+        print(f"    the sample every later end point can still find it. The overshoot is the "
+              f"reason Phillips-Shi-Yu's BACKWARD SADF bounds the window; this is plain SADF.")
+
+    print("\n=== 4. What a single full-sample ADF sees ===")
+    sm = statsmodels_adf(p)
+    if sm is not None:
+        print(f"  statsmodels adfuller(p, maxlag=1, autolag=None, regression='c') on the WHOLE "
+              f"series: t {sm[0]:+.3f} vs its 5 % value {sm[1]:.3f} -> "
+              f"{'rejects a unit root' if sm[0] < sm[1] else 'no rejection'}")
+    own_full = adf_t_window(X, y, 0, X.shape[0] - 1)
+    print(f"  the same statistic from this script's design: {own_full:+.3f}")
+    print(f"  SADF's maximum over sub-windows: {np.nanmax(s):+.3f} against a 95 % value of "
+          f"{c95:.3f}")
+    print("  the full-sample test is looking for one regime; the bubble is a fifth of the sample,")
+    print("  and averaging it against the rest is exactly what destroys the power.")
+
+    print(f"\n=== 5. False positives on a null series ===")
+    null_curve = sadf(random_walk(T_SADF, SEED + 999))
+    null_idx = sadf_index(T_SADF)
+    fp_bars = float(np.nanmean(np.nan_to_num(null_curve, nan=-np.inf) > c95))
+    print(f"  one driftless random walk of {T_SADF} bars: max SADF "
+          f"{np.nanmax(null_curve):.3f}, {fp_bars:.1%} of bars above the 95 % value")
+    print(f"    flagged runs: {flagged_runs(null_curve, null_idx, c95)}")
+    per_path = np.mean(null["maxima"] > c95)
+    frac_bars = float(np.mean(np.nan_to_num(null["curves"], nan=-np.inf) > c95))
+    print(f"  across the {NULL_PATHS} null paths the critical value was built from: "
+          f"{per_path:.1%} of PATHS exceed it (5 % by construction) but {frac_bars:.1%} of all "
+          f"BARS do")
+    print("  those are different numbers and the second one is the one you meet: a threshold")
+    print("  calibrated on the supremum does not control the rate at which single bars flag.")
+
+    print("\nRule: sample events with CUSUM and accept the detection lag it costs; test"
+          " explosiveness with SADF against a null you simulated for YOUR sample length, and never"
+          " read a per-bar flag as a 5 % test.")
+    print(f"total runtime {time.time() - t_all:.1f}s")
+
+
+if __name__ == "__main__":
+    _main()
