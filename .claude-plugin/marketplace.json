@@ -204,7 +204,12 @@
         "term-structure",
         "credit"
       ],
-      "skills": []
+      "skills": [
+        "./skills/stat-arb-cointegration",
+        "./skills/state-space-and-kalman",
+        "./skills/time-series-forecasting-models",
+        "./skills/volatility-models"
+      ]
     },
     {
       "name": "fin-strategies",

@@ -165,6 +165,10 @@ considered and left out, with reasons, are in `catalog/federation-notes.md`.
 | `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server, and know its licence and blast radius before connecting it. | 0 | 0 |
 | `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence says about LLM trading agents, and the real status of the frameworks. | 2 | 1 |
 | `fin-llm` | [`rl-and-ml-trading`](plugins/fin-llm/skills/rl-and-ml-trading/SKILL.md) | Reinforcement learning and deep learning for trading: what installs, and what the evidence says. | 0 | 0 |
+| `fin-models` | [`stat-arb-cointegration`](plugins/fin-models/skills/stat-arb-cointegration/SKILL.md) | Screen, test and trade a cointegrated pair without counting the trials wrong, applying the single-series ADF table to a fitted residual, or estimating the hedge ratio on the window | 0 | 1 |
+| `fin-models` | [`state-space-and-kalman`](plugins/fin-models/skills/state-space-and-kalman/SKILL.md) | Estimate a time-varying hedge ratio or beta with a Kalman filter, and know which of its three state series you are allowed to trade - the smoothed one has read the whole sample. | 0 | 1 |
+| `fin-models` | [`time-series-forecasting-models`](plugins/fin-models/skills/time-series-forecasting-models/SKILL.md) | Score a forecast against the baseline it has to beat - naive, seasonal-naive, drift, mean - with MASE, rolling-origin evaluation and a Diebold-Mariano test, instead of an R^2 on a  | 0 | 1 |
+| `fin-models` | [`volatility-models`](plugins/fin-models/skills/volatility-models/SKILL.md) | Fit and forecast volatility - GARCH, range-based realized variance, HAR-RV - without the two errors that silently move the answer: the units `arch` expects, and a range estimator u | 0 | 1 |
 
 <!-- END GENERATED SKILL TABLE -->
 
