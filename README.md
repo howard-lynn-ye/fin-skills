@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**70 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**71 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 46 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 47 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -105,6 +105,28 @@ ship scripts: `core`, `libraries`, `china`, `futures_fx`, `crypto`, `llm` (a plu
 scripts, such as `fin-asia`, has no namespace; its skill text is still in `fin_skills.load()`). Every
 skill script runs standalone too (`python plugins/<plugin>/skills/<skill>/scripts/<name>.py`).
 
+### For LLM agents
+
+Reading a skill changes what a model says; running a guard changes what its pipeline is allowed
+to report. `fin_skills.tools` is the second one — 31 tools an agent can call over JSON: seven
+catalogue tools that need no data (`list_skills`, `read_skill`, `search_skills`, `list_guards`,
+`describe_guard`, `bundle_coverage`, `check_backtest`) and one `check_<guard>` per guard. Every
+schema is derived from the guard itself, so it cannot go stale.
+
+```bash
+pip install "fin-skills[mcp]"     # the MCP SDK is an optional extra
+claude mcp add fin-skills -- python -m fin_skills.mcp
+```
+
+For any other framework, `python -m fin_skills.tools --json --format anthropic` (or `openai`,
+`openai-chat`, `mcp`) prints the tool definitions, and `fin_skills.tools.call_tool(name, args)`
+runs one. Four guards are excluded with a stated reason — `assert_causal`, `warmup_probe`,
+`fold_leak_test` and `result_manifest` need a live Python function or object, which no JSON can
+carry (`python -m fin_skills.tools --excluded`); call those through `fin_skills.api` instead.
+
+Payload conventions, the size caps, and a worked exchange:
+[`plugins/fin-llm/skills/fin-skills-as-tools/SKILL.md`](plugins/fin-llm/skills/fin-skills-as-tools/SKILL.md).
+
 ### Federated third-party packs
 
 The marketplace also lists eight third-party skill packs by their own GitHub source, so they
@@ -176,6 +198,7 @@ considered and left out, with reasons, are in `catalog/federation-notes.md`.
 | `fin-libraries` | [`lib-vectorbt`](plugins/fin-libraries/skills/lib-vectorbt/SKILL.md) | Vectorized Numba/Rust backtester built for parameter sweeps, whose from_signals fills at the signal's own bar close by default. | 0 | 0 |
 | `fin-libraries` | [`lib-vollib`](plugins/fin-libraries/skills/lib-vollib/SKILL.md) | Machine-precision implied volatility with no bracketing, behind a package name restructured in 2026 - py_vollib is now a DEAD SHIM with four files and zero library code, and every  | 0 | 1 |
 | `fin-libraries` | [`lib-yfinance`](plugins/fin-libraries/skills/lib-yfinance/SKILL.md) | The default free Yahoo Finance downloader, whose yf.download() now returns pre-adjusted OHLC with no Adj Close column at all. | 0 | 0 |
+| `fin-llm` | [`fin-skills-as-tools`](plugins/fin-llm/skills/fin-skills-as-tools/SKILL.md) | How to hand this library to an agent as TOOLS rather than as reading - the MCP server, the exported Anthropic and OpenAI tool definitions, the JSON payload conventions, and the fou | 0 | 0 |
 | `fin-llm` | [`finance-agent-architectures`](plugins/fin-llm/skills/finance-agent-architectures/SKILL.md) | How the mainstream finance agent systems are built, and how to stage a research-to-execution pipeline whose gates are code. | 2 | 1 |
 | `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server, and know its licence and blast radius before connecting it. | 0 | 0 |
 | `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence says about LLM trading agents, and the real status of the frameworks. | 2 | 1 |
