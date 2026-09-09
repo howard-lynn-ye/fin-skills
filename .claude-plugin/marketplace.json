@@ -390,7 +390,7 @@
     {
       "name": "fin-credit",
       "source": "./plugins/fin-credit",
-      "description": "Credit spreads, CDS mechanics and portfolio loss - Z-spread against I-spread against OAS and when they diverge, the ISDA standard model and points upfront, what TRACE actually reports and what it censors, ratings migration matrices and the embedding problem, CDS indices and tranches, default and recovery data definitions, and one-factor portfolio loss models. One skill per topic, each with an executable script and a measured trap.",
+      "description": "Credit spreads, CDS mechanics and ratings migration - Z-spread against I-spread against G-spread and OAS and when they diverge, the ISDA standard model and points upfront, what TRACE actually reports and what its dissemination caps censor, and ratings migration matrices and the embedding problem that puts negative probabilities in a six-month root. Four skills, each with an executable script and a measured trap. CDS indices and tranches, default and recovery data, and portfolio loss models are planned and not here yet.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
