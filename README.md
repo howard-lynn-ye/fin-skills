@@ -139,7 +139,7 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-core` | [`broker-execution-apis`](plugins/fin-core/skills/broker-execution-apis/SKILL.md) | Connect to a broker and place orders without accidentally trading live money. | 4 | 1 |
 | `fin-core` | [`derivatives-pricing`](plugins/fin-core/skills/derivatives-pricing/SKILL.md) | Price options and fixed income, and get the Greeks and conventions right. | 4 | 1 |
 | `fin-core` | [`etf-mechanics`](plugins/fin-core/skills/etf-mechanics/SKILL.md) | Why an ETF's price series does not behave like the index it tracks - daily-reset leverage, NAV vs price, distributions, holdings files and fees. | 0 | 1 |
-| `fin-core` | [`execution-cost-analysis`](plugins/fin-core/skills/execution-cost-analysis/SKILL.md) | Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and the gap between the cost you assumed and the | 0 | 1 |
+| `fin-core` | [`execution-cost-analysis`](plugins/fin-core/skills/execution-cost-analysis/SKILL.md) | Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and the gap between the cost you assumed and the | 0 | 2 |
 | `fin-core` | [`external-skill-index`](plugins/fin-core/skills/external-skill-index/SKILL.md) | A verified index of every public finance Agent Skill repository — 139 repos, 4,851 SKILL.md files — so you can find what already exists instead of rebuilding it, and avoid the thir | 0 | 0 |
 | `fin-core` | [`factor-and-timeseries-research`](plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md) | Judge whether a cross-sectional factor predicts returns, and forecast financial series. | 7 | 1 |
 | `fin-core` | [`fundamental-and-macro-data`](plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md) | Company fundamentals and macro series with correct point-in-time semantics. | 3 | 1 |
@@ -239,6 +239,7 @@ plugins/<plugin>/skills/<skill>/
     references/*.md   one file per library — versions, licence, traps, snippets
     scripts/*.py      runnable, tested tools
 catalog/index.json    generated from frontmatter; never hand-edited
+examples/*.py         three runnable worked examples - the front door
 scripts/validate.py   enforces the 6-field spec + discovery budget + reference integrity
 scripts/build_index.py
 ```
@@ -261,6 +262,23 @@ as plugins rather than loose skills.
 python plugins/fin-core/skills/backtest-validation/scripts/trial_ledger.py
 # 50 noise strategies, best Sharpe 0.88, expected max from noise 0.94
 # -> "NOT distinguishable from noise"
+```
+
+## Examples
+
+Three worked examples in [`examples/`](examples/README.md). Each runs offline on seeded
+synthetic data in a few seconds, prints ASCII, and ends with a `TAKEAWAY` saying what you were
+supposed to see. `tests/test_examples.py` asserts those conclusions, not just the exit codes.
+
+| Example | What it shows |
+|---|---|
+| [`audit_a_backtest.py`](examples/audit_a_backtest.py) | The whole API in one call — put a research run in a `Bundle`, read `coverage()` for which checks can run at all, `check()` to run them, then fix the two planted defects and watch them go green |
+| [`point_in_time_fundamentals.py`](examples/point_in_time_fundamentals.py) | The same fundamentals joined to the same prices two ways — latest vintage on an exact stamp versus filed-date vintage on a backward as-of — and what the difference is worth in Sharpe |
+| [`futures_roll.py`](examples/futures_roll.py) | One futures chain stitched three ways, which return operator reproduces true dollar P&L, and the back-adjusted series going negative under backwardation |
+
+```bash
+pip install -e .
+python examples/audit_a_backtest.py
 ```
 
 ## Trigger accuracy — measured, not asserted

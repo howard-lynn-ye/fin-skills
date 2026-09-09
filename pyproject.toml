@@ -56,5 +56,5 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-ra -m 'not slow'"
 markers = [
-    "slow: long-running demo paths - regime_lookahead (~40-75 s), purge_effect main (~30 s), microstructure_measures (~10-20 s), the event_study and spa_test replication demos and the leveraged_reset Monte Carlo. Deselected by default via addopts; run with -m slow",
+    "slow: long-running demo paths - regime_lookahead (~40-75 s), purge_effect main (~30 s), microstructure_measures (~10-20 s), test_examples (~10 s of subprocesses), the event_study and spa_test replication demos and the leveraged_reset Monte Carlo. Deselected by default via addopts; run with -m slow",
 ]

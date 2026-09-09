@@ -1,0 +1,330 @@
+"""Is the cost you ASSUMED consistent with the size of the orders it implies?
+
+WHY this exists: `../../backtest-validation/scripts/cost_curve.py` asks whether a strategy
+SURVIVES at the cost you stated. It cannot ask whether that cost was ever available to you.
+A strategy whose breakeven is 46 bps survives a 2 bps assumption comfortably -- the survival
+gate never binds -- and the 2 bps is still a fiction if the orders it implies are 8% of the
+day's volume in every name. Survival and plausibility are two different questions and the
+second one is almost never asked.
+
+The chain is short and entirely mechanical:
+
+    one-way dollars traded per period = turnover * book
+    order size per name               = turnover * book / n_names
+    participation                     = order size / ADV of that name        (X/V)
+    impact                            = a market-impact model of participation
+
+and then: is the cost you stated at least as large as that impact? Impact is a FLOOR -- it
+excludes spread, commission, borrow and taxes -- so a stated cost below it is not a
+conservative estimate, it is an arithmetic impossibility.
+
+THE MODEL -- Almgren, Thum, Hauptmann and Li, "Direct Estimation of Equity Market Impact",
+May 10 2005 (Citigroup US equity desks, Dec 2001 - Jun 2003, 29,509 orders in S&P 500 names
+after filtering). Section 4.3 and the summary equations on p.21:
+
+    I = gamma * sigma * (X/V) * (Theta/V)^(1/4)                 permanent
+    J = I/2 + sgn(X) * eta * sigma * |X/(V*T)|^(3/5)            realized cost of the order
+
+    gamma = 0.314 +- 0.041 (t=7.7)      eta = 0.142 +- 0.0062 (t=23)
+
+with sigma the daily volatility, V the average daily volume, Theta the shares outstanding
+(so Theta/V is the days it takes to turn the float), X the order, T the execution time as a
+fraction of a day. `table3()` reproduces their own worked example to the printed digit.
+
+The exponent is 3/5, NOT 1/2. The square-root law is the folklore version; this paper
+rejects beta = 1/2 at the 95% level and fits beta = 0.600 +- 0.038. Over the participations
+a backtest actually implies the two disagree by tens of percent, not by orders of magnitude,
+so the verdict rarely turns on it -- `impact_bps(..., beta=BETA_SQRT)` prints the other one.
+
+WHAT THIS IS NOT: a calibrated cost model for your market. The coefficients are one desk's
+US large-cap fit from 2002. Their own filters keep orders between 0.25% and a few percent of
+ADV and this code says so when you leave that band. Fit your own on your own fills; use this
+to reject a number that was never possible, which it can do even when badly calibrated.
+
+Usage:
+    from cost_plausibility import check_cost, render
+    v = check_cost(turnover=0.09, book=25e6, adv=1.7e7, n_names=6.5,
+                   cost_bps=2.0, daily_vol=0.022)
+    print(render(v))
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+# Almgren et al. (2005), section 4.3 / p.21. Dimensionless, fitted jointly on their sample.
+GAMMA = 0.314          # permanent impact coefficient
+ETA = 0.142            # temporary impact coefficient
+BETA = 0.6             # temporary exponent; they FIT 0.600 +- 0.038 and reject 1/2 at 95%
+BETA_SQRT = 0.5        # the folklore square-root exponent, for comparison only
+DELTA = 0.25           # liquidity-factor exponent; they fit 0.267 +- 0.22 and adopt 1/4
+# Theta/V, days to turn the whole float. Their Table 3: IBM 263, DRI 87. A large-cap default.
+INVERSE_TURNOVER = 250.0
+DEFAULT_DAILY_VOL = 0.02       # 2% a day (~32% annualised) - a stand-in, not a measurement
+# Their filters: orders below 0.25% of ADV are excluded, and they decline to model orders
+# "larger than a few percent of daily volume" (section 2.1). MAX is a desk rule of thumb.
+MODEL_MIN_PARTICIPATION = 0.0025
+MODEL_MAX_PARTICIPATION = 0.05
+MAX_PARTICIPATION = 0.10
+
+
+def impact_bps(participation: float, daily_vol: float = DEFAULT_DAILY_VOL,
+               inverse_turnover: float = INVERSE_TURNOVER, exec_horizon: float = 1.0,
+               beta: float = BETA) -> dict[str, float]:
+    """Almgren et al. (2005) permanent / temporary / realized impact of ONE order, in bps.
+
+    `participation` is X/V, the order as a fraction of that name's average daily volume;
+    `exec_horizon` is T in days (1.0 = worked over the whole session, the cheapest case).
+    Returns bps of the arrival price, all non-negative -- the sign is the trade's.
+    """
+    p, sig = float(participation), float(daily_vol)
+    T = float(exec_horizon)
+    if p < 0 or sig < 0:
+        raise ValueError("participation and daily_vol must be non-negative")
+    if T <= 0:
+        raise ValueError("exec_horizon must be positive (days; 1.0 = a full session)")
+    perm = GAMMA * sig * p * float(inverse_turnover) ** DELTA
+    temp = ETA * sig * (p / T) ** float(beta)
+    return {"permanent_bps": 1e4 * perm, "temporary_bps": 1e4 * temp,
+            "realized_bps": 1e4 * (0.5 * perm + temp)}
+
+
+def participation_rate(turnover: float, book: float, adv: float, n_names: float) -> float:
+    """Order size as a fraction of one name's ADV: (turnover * book / n_names) / adv."""
+    turnover, book, adv, n_names = (float(turnover), float(book), float(adv), float(n_names))
+    if turnover < 0 or book <= 0 or adv <= 0 or n_names <= 0:
+        raise ValueError("turnover must be >= 0 and book, adv, n_names must be > 0")
+    return turnover * book / n_names / adv
+
+
+def implied_cost_bps(turnover: float, book: float, adv: float, n_names: float,
+                     daily_vol: float = DEFAULT_DAILY_VOL,
+                     inverse_turnover: float = INVERSE_TURNOVER,
+                     exec_horizon: float = 1.0, beta: float = BETA) -> float:
+    """Impact, in bps per dollar traded one way, at the participation this book implies."""
+    p = participation_rate(turnover, book, adv, n_names)
+    return impact_bps(p, daily_vol, inverse_turnover, exec_horizon, beta)["realized_bps"]
+
+
+def plausible_book(cost_bps: float, turnover: float, adv: float, n_names: float,
+                   daily_vol: float = DEFAULT_DAILY_VOL,
+                   inverse_turnover: float = INVERSE_TURNOVER, exec_horizon: float = 1.0,
+                   beta: float = BETA, hi: float = 1e13, tol: float = 1e-6) -> float:
+    """Book size at which the impact alone equals `cost_bps` -- the capacity of the claim.
+
+    Impact is strictly increasing in the book (both terms are positive powers of it), so
+    bisection is exact. Returns 0.0 for a non-positive cost and `hi` if the search bound is
+    reached, which means the assumption is not the binding constraint at any sane size.
+    """
+    if cost_bps <= 0:
+        return 0.0
+
+    def f(b: float) -> float:
+        return implied_cost_bps(turnover, b, adv, n_names, daily_vol, inverse_turnover,
+                                exec_horizon, beta) - float(cost_bps)
+
+    if f(hi) < 0:
+        return hi
+    lo = 0.0
+    while hi - lo > max(tol, lo * 1e-9):
+        mid = 0.5 * (lo + hi)
+        if f(mid) < 0:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+@dataclass
+class Plausibility:
+    """The verdict plus every number that produced it. `ok` is False when the cost is a lie."""
+
+    cost_bps: float
+    implied_bps: float
+    participation: float
+    order_usd: float
+    book: float
+    plausible_book: float
+    n_names: float
+    adv: float
+    turnover: float
+    daily_vol: float
+    exec_horizon: float
+    permanent_bps: float
+    temporary_bps: float
+    max_participation: float
+    reasons: list[str]
+
+    @property
+    def ok(self) -> bool:
+        return not self.reasons
+
+    @property
+    def shortfall_bps(self) -> float:
+        return self.implied_bps - self.cost_bps
+
+    @property
+    def status(self) -> str:
+        """A compact verdict for a table row: 'ok', 'impact N bps', 'over M% of ADV'."""
+        if self.ok:
+            return "ok"
+        tags = []
+        if self.cost_bps < self.implied_bps:
+            tags.append(f"impact {self.implied_bps:.1f} bps")
+        if self.participation > self.max_participation:
+            tags.append(f"{self.participation:.0%} of ADV")
+        return " + ".join(tags)
+
+
+def check_cost(turnover: float, book: float, adv: float, n_names: float, cost_bps: float,
+               daily_vol: float = DEFAULT_DAILY_VOL,
+               inverse_turnover: float = INVERSE_TURNOVER, exec_horizon: float = 1.0,
+               beta: float = BETA,
+               max_participation: float = MAX_PARTICIPATION) -> Plausibility:
+    """Is `cost_bps` at least the impact the orders imply, and is the size tradeable at all?
+
+    `cost_bps` is the number a backtest multiplies by ONE-WAY turnover, i.e. the all-in cost
+    of moving one dollar in one direction (cost_curve.py's convention).
+    """
+    p = participation_rate(turnover, book, adv, n_names)
+    parts = impact_bps(p, daily_vol, inverse_turnover, exec_horizon, beta)
+    cost_bps = float(cost_bps)
+    if cost_bps < 0:
+        raise ValueError("cost_bps must be non-negative")
+    reasons = []
+    if cost_bps < parts["realized_bps"]:
+        reasons.append(f"stated {cost_bps:.2f} bps is below the {parts['realized_bps']:.2f} bps "
+                       f"of impact alone at {p:.2%} of ADV per name")
+    if p > max_participation:
+        reasons.append(f"participation {p:.2%} of ADV exceeds the {max_participation:.0%} "
+                       f"ceiling: these orders are not fillable at any modelled cost")
+    return Plausibility(
+        cost_bps=cost_bps, implied_bps=parts["realized_bps"], participation=p,
+        order_usd=float(turnover) * float(book) / float(n_names), book=float(book),
+        plausible_book=plausible_book(cost_bps, turnover, adv, n_names, daily_vol,
+                                      inverse_turnover, exec_horizon, beta),
+        n_names=float(n_names), adv=float(adv), turnover=float(turnover),
+        daily_vol=float(daily_vol), exec_horizon=float(exec_horizon),
+        permanent_bps=parts["permanent_bps"], temporary_bps=parts["temporary_bps"],
+        max_participation=float(max_participation), reasons=reasons)
+
+
+def render(v: Plausibility, title: str = "COST PLAUSIBILITY") -> str:
+    """Fixed-width text block. Everything a reader needs to check the arithmetic by hand."""
+    w = 74
+    lines = [title, "=" * w,
+             f"  book                 : {v.book:>15,.0f} USD",
+             f"  one-way turnover     : {v.turnover:>15.2%} of the book per period",
+             f"  names traded         : {v.n_names:>15.1f}",
+             f"  order per name       : {v.order_usd:>15,.0f} USD",
+             f"  ADV per name         : {v.adv:>15,.0f} USD",
+             f"  PARTICIPATION        : {v.participation:>15.2%} of ADV per name per period",
+             "-" * w,
+             f"  daily volatility     : {v.daily_vol:>15.2%}   execution horizon "
+             f"{v.exec_horizon:.2f} day(s)",
+             f"  permanent impact     : {v.permanent_bps:>15.2f} bps (half of it is paid)",
+             f"  temporary impact     : {v.temporary_bps:>15.2f} bps",
+             f"  IMPLIED cost (floor) : {v.implied_bps:>15.2f} bps  impact only - no spread, "
+             f"no fees",
+             f"  STATED cost          : {v.cost_bps:>15.2f} bps",
+             "-" * w]
+    if v.ok:
+        lines.append(f"  PLAUSIBLE. The stated cost covers the modelled impact with "
+                     f"{v.cost_bps - v.implied_bps:.2f} bps to spare.")
+    else:
+        for r in v.reasons:
+            lines.append(f"  NOT PLAUSIBLE: {r}")
+    lines.append(f"  {v.cost_bps:.2f} bps becomes plausible at a book of "
+                 f"{v.plausible_book:,.0f} USD "
+                 f"({v.plausible_book / v.book:.2f}x the stated book).")
+    lines.append("=" * w)
+    return "\n".join(lines)
+
+
+# --------------------------------------------------------------------------------- the source
+# Almgren et al. (2005) Table 3: a purchase of 10% of the day's average volume in two
+# large-cap names. Their printed numbers are the acceptance test for this implementation.
+TABLE_3 = pd.DataFrame(
+    {"sigma": [0.0157, 0.0226], "inverse_turnover": [263.0, 87.0], "participation": [0.1, 0.1],
+     "paper_I_bps": [20.0, 22.0], "paper_I_over_sigma": [0.126, 0.096],
+     "paper_J_T0.1": [32.0, 43.0], "paper_J_T0.2": [25.0, 32.0], "paper_J_T0.5": [18.0, 23.0]},
+    index=["IBM", "DRI"])
+
+
+def table3() -> pd.DataFrame:
+    """Recompute Almgren et al.'s Table 3 with this code. Every column must match theirs."""
+    rows = []
+    for name, r in TABLE_3.iterrows():
+        row: dict[str, Any] = {"name": name}
+        first = impact_bps(r.participation, r.sigma, r.inverse_turnover, exec_horizon=0.1)
+        row["I_bps"] = first["permanent_bps"]
+        row["I_over_sigma"] = first["permanent_bps"] / 1e4 / r.sigma
+        row["paper_I_bps"] = r.paper_I_bps
+        for T in (0.1, 0.2, 0.5):
+            got = impact_bps(r.participation, r.sigma, r.inverse_turnover, exec_horizon=T)
+            row[f"J_T{T}"] = got["realized_bps"]
+            row[f"paper_J_T{T}"] = r[f"paper_J_T{T}"]
+        rows.append(row)
+    return pd.DataFrame(rows).set_index("name")
+
+
+if __name__ == "__main__":
+    pd.set_option("display.width", 120)
+
+    print("VERIFICATION vs the primary source")
+    print("=" * 74)
+    print("Almgren, Thum, Hauptmann & Li (2005) Table 3 - buying 10% of a day's volume.")
+    t3 = table3()
+    print(t3[["I_bps", "paper_I_bps", "J_T0.1", "paper_J_T0.1", "J_T0.2", "paper_J_T0.2",
+              "J_T0.5", "paper_J_T0.5"]].round(2).to_string())
+    print("  I/sigma  " + "  ".join(f"{k} {v_:.3f} (paper {p:.3f})" for k, v_, p in
+                                    zip(t3.index, t3.I_over_sigma, TABLE_3.paper_I_over_sigma)))
+    err = max(abs(t3[f"J_T{T}"] - t3[f"paper_J_T{T}"]).max() for T in (0.1, 0.2, 0.5))
+    print(f"largest disagreement with the paper's printed table: {err:.2f} bps "
+          f"(they print whole bps)")
+
+    print("\n\nA STRATEGY THAT ASSUMED 2 bps")
+    print("=" * 74)
+    rng = np.random.default_rng(20260909)
+    n = 252 * 3
+    turn = pd.Series(np.clip(rng.lognormal(np.log(0.085), 0.35, n), 0.0, 2.0))
+    adv = float(np.median(rng.lognormal(np.log(1.7e7), 0.8, 60)))     # 60-name universe
+    v = check_cost(turnover=float(turn.mean()), book=2.5e7, adv=adv, n_names=6.5,
+                   cost_bps=2.0, daily_vol=0.022)
+    print(render(v, title="STATED 2 bps PER DOLLAR TRADED, 25m BOOK"))
+    print("\nThe backtest survives 2 bps easily - that is the point. cost_curve.py asks")
+    print("whether the edge outlives the cost; nothing there asks whether the cost was ever")
+    print(f"available. At {v.participation:.2%} of ADV per name it was not: the impact floor "
+          f"alone is")
+    print(f"{v.implied_bps:.2f} bps, {v.implied_bps / v.cost_bps:.1f}x the assumption, before "
+          f"one cent of spread or commission.")
+
+    print("\n\nCAPACITY - the same claim at every book size")
+    print("=" * 74)
+    print(f"{'book USD':>14} {'order/name':>12} {'participation':>14} {'impact bps':>11}"
+          f"  verdict at 2 bps")
+    print("-" * 74)
+    for book in (1e6, 5e6, 2.5e7, 1e8, 5e8, 2e9):
+        vv = check_cost(turnover=float(turn.mean()), book=book, adv=adv, n_names=6.5,
+                        cost_bps=2.0, daily_vol=0.022)
+        print(f"{book:>14,.0f} {vv.order_usd:>12,.0f} {vv.participation:>13.2%} "
+              f"{vv.implied_bps:>11.2f}  {vv.status}")
+    print("-" * 74)
+    print(f"2 bps stops being a lie below a book of {v.plausible_book:,.0f} USD. Above it the")
+    print("number is fiction, and the fiction grows as a power of size. Note the last two")
+    print("rows: past 10% of ADV the model is not being extrapolated, it is being abandoned.")
+
+    print("\n\nTHE EXPONENT IS 3/5, NOT 1/2")
+    print("=" * 74)
+    print(f"{'participation':>14} {'beta=3/5 (fitted)':>20} {'beta=1/2 (folklore)':>21}"
+          f" {'ratio':>8}")
+    for p in (0.001, 0.01, 0.05, 0.10):
+        a = impact_bps(p, 0.022)["realized_bps"]
+        b = impact_bps(p, 0.022, beta=BETA_SQRT)["realized_bps"]
+        print(f"{p:>13.2%} {a:>20.2f} {b:>21.2f} {b / a:>8.2f}")
+    print("\nAlmgren et al. reject beta = 1/2 at the 95% level (they fit 0.600 +- 0.038).")
+    print("The square root is the more expensive assumption for small orders and the")
+    print("cheaper one for large: it never rescues a cost assumption that is 10x out.")

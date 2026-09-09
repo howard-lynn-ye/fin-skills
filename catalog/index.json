@@ -2,10 +2,10 @@
   "generated_by": "scripts/build_index.py — do not edit by hand",
   "n_skills": 70,
   "n_reference_files": 74,
-  "n_scripts": 54,
+  "n_scripts": 55,
   "discovery_cost": {
-    "total_description_chars": 60464,
-    "approx_tokens": 15116,
+    "total_description_chars": 60540,
+    "approx_tokens": 15135,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -178,16 +178,17 @@
       "name": "execution-cost-analysis",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/execution-cost-analysis/SKILL.md",
-      "description": "Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and the gap between the cost you assumed and the cost you paid. TRIGGER - transaction cost analysis, TCA, implementation shortfall, arrival price, decision price, slippage analysis, execution quality, fill quality, did I get a good fill; VWAP or TWAP benchmark, beat VWAP, participation rate, POV, percentage of volume, child orders, order slicing; market impact, temporary vs permanent impact, square-root law, Almgren-Chriss, price reversion after my order; \"how much size can this strategy take\", capacity, alpha decay with size. SKIP for a slippage assumption inside a backtest and for \"works in backtest, loses live\" with no measured fills (backtesting-engines), for whether that assumption is credible (research-integrity-guards), and for broker order types (broker-execution-apis).",
+      "description": "Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and the gap between the cost you assumed and the cost you paid. TRIGGER - transaction cost analysis, TCA, implementation shortfall, arrival price, decision price, slippage analysis, execution quality, fill quality, did I get a good fill; VWAP or TWAP benchmark, beat VWAP, participation rate, POV, percentage of volume, child orders, order slicing; market impact, temporary vs permanent impact, square-root law, Almgren-Chriss, price reversion after my order; \"how much size can this strategy take\", capacity, alpha decay with size; is my cost assumption realistic, \"is 2 bps plausible\", what book a stated cost supports. SKIP for a slippage assumption inside a backtest and for \"works in backtest, loses live\" with no measured fills (backtesting-engines), for whether the edge survives it (backtest-validation), and for broker order types (broker-execution-apis).",
       "summary": "Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and the gap between the cost you assumed and the",
       "license": "MIT",
       "version": "0.1.0",
-      "verified_on": "2026-09-04",
-      "body_chars": 7798,
-      "approx_body_tokens": 1949,
+      "verified_on": "2026-09-09",
+      "body_chars": 13293,
+      "approx_body_tokens": 3323,
       "references": [],
       "scripts": [
-        "benchmark_choice.py"
+        "benchmark_choice.py",
+        "cost_plausibility.py"
       ]
     },
     {

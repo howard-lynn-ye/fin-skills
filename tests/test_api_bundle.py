@@ -97,6 +97,20 @@ def test_one_returns_slot_feeds_three_guards_through_aliases(run):
     assert b.missing_for("survivorship_audit") == ["prices"]
 
 
+def test_the_book_and_adv_slots_turn_one_turnover_into_two_cost_questions(run):
+    # `turnover` alone answers "does the edge survive the cost"; + book + adv it also
+    # answers "was that cost ever available".
+    b = Bundle(returns=run["returns"], turnover=run["turnover"], cost_bps=2.0)
+    assert b.coverage(["cost_curve", "cost_plausibility"]).unlocks() == {}
+    assert b.missing_for("cost_plausibility") == ["book", "adv"]
+    full = b.with_(book=2.5e7, adv=1.7e7, n_names=6.5, daily_vol=0.022)
+    cov = full.coverage(["cost_curve", "cost_plausibility"])
+    assert cov.ready == ["cost_curve", "cost_plausibility"] and cov.missing == {}
+    assert full.inputs_for("cost_plausibility")["book"] == 2.5e7   # slot name, no alias
+    with pytest.raises(TypeError, match="'book' expects a number"):
+        Bundle(book="25m")
+
+
 def test_close_and_bars_reach_the_signal_guards(run):
     b = Bundle(close=run["close"], bars=run["bars"],
                signal_fn=lambda d: d["close"].rolling(20).mean(),

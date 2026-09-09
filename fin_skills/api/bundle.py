@@ -82,6 +82,8 @@ class Slot:
 DATA_SLOTS: tuple[Slot, ...] = (
     Slot("returns", "series", "per-period GROSS strategy returns (Series, DatetimeIndex)"),
     Slot("turnover", "any", "one-way traded notional per period as a fraction of the book, or a scalar"),
+    Slot("book", "scalar", "book size in dollars - the capital the strategy actually deploys"),
+    Slot("adv", "any", "dollar volume per traded name: a scalar, a per-name Series, or a dates x tickers panel"),
     Slot("benchmark_returns", "any", "per-period benchmark returns (Series), or a scalar hurdle"),
     Slot("model_returns", "frame", "(T, k) per-period returns of EVERY candidate tried, abandoned ones included"),
     Slot("rf", "scalar", "annual risk-free rate as a decimal (0.05 = 5%)"),

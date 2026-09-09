@@ -47,11 +47,16 @@ staring at the final number.
 
 **Gaps are reported, not tuned away.** A guard that ran but whose pass/fail gate did not bind
 is listed under GAPS with the numbers, and anything unexpected (a guard firing outside its
-domain, a miss) is listed under SURPRISES. As of the current run, one defect is uncaught:
-`cost_curve` checks whether the strategy survives at the cost you stated, and a strategy whose
-breakeven cost is far above even a ten-times-understated assumption still survives - the gate
-is about survival, not about whether the assumption is plausible. A guard for the
-plausibility of a cost assumption against traded volume is the next script to write.
+domain, a miss) is listed under SURPRISES. As of the current run there is no gap, and the last
+one to close is worth keeping in view: `cost_curve` checks whether the strategy survives at the
+cost you stated, and a strategy whose breakeven is far above even a ten-times-understated
+assumption still survives - that gate is about survival, not about whether the assumption was
+ever available. It still reads MISS on `cost_too_low` and that is correct. What catches the
+defect is `cost_plausibility`, which asks the other question: at the stated book size, over the
+names actually traded, what participation of ADV does that turnover imply, and what does a
+published impact model (Almgren et al. 2005) say an order that size costs? The book the
+strategy claims to run (`BOOK_USD`) is part of the stated premise here, exactly like
+`COST_HONEST`; at 25m it trades about 1.9% of the median name's ADV per day.
 
 ## Running it
 
