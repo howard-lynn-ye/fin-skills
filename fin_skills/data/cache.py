@@ -118,11 +118,20 @@ def _dump_frame(df: pd.DataFrame, path: Path) -> dict[str, Any]:
 def _load_frame(path: Path, meta: dict[str, Any]) -> pd.DataFrame:
     nlev = int(meta.get("columns_nlevels", 1))
     header = list(range(nlev)) if nlev > 1 else 0
-    # float_precision="round_trip" is not decoration: the default C parser is a fast
-    # approximate one and loses about 1e-14 relative, which is enough to change a content
-    # hash and turn every verify() into a false alarm.
+    want = meta.get("dtypes", {})
+
+    # A zero-padded identifier is a number to a CSV reader: a CIK of "0000320193" comes
+    # back as 320193 and stops matching anything. The sidecar says which columns were
+    # text, so they are read as text - the file is never trusted to say so itself.
+    probe = pd.read_csv(path, header=header, index_col=0, nrows=0, encoding="utf-8")
+    as_text = {lbl: "object" for lbl in probe.columns
+               if want.get(_col_key(lbl)) == "object"}
+
+    # float_precision="round_trip" is not decoration either: the default C parser is a
+    # fast approximate one and loses about 1e-14 relative, which is enough to change a
+    # content hash and turn every verify() into a false alarm.
     df = pd.read_csv(path, header=header, index_col=0, encoding="utf-8",
-                     float_precision="round_trip")
+                     float_precision="round_trip", dtype=as_text or None)
     if nlev > 1:
         df.columns = pd.MultiIndex.from_tuples(list(df.columns),
                                                names=meta.get("column_names"))
@@ -259,7 +268,8 @@ class Cache:
     # ------------------------------------------------------------------------ write
     def put(self, obj: Any, prov: Provenance, *,
             acknowledge_paid_tier: bool = False,
-            decl: "declare.Declaration | None" = None) -> str:
+            decl: "declare.Declaration | None" = None,
+            key: str | None = None) -> str:
         """Store an artefact and return its key.
 
         Refuses when the source declares `cache_policy="no-persist"`. Passing
@@ -279,7 +289,9 @@ class Cache:
                 f"    cache.put(obj, prov, acknowledge_paid_tier=True)\n"
                 f"terms: {decl.terms_url}")
 
-        key = self.key(prov.request, decl.name if decl is not None else prov.source)
+        # `key` is passed only by refetch(), which must land the new vintage NEXT TO the
+        # old one even if the adapter's normalisation of the request has since changed
+        key = key or self.key(prov.request, decl.name if decl is not None else prov.source)
         folder = self._folder(key)
         existing = self.vintages(key)
         if existing and not self.keep_vintages:
@@ -391,7 +403,7 @@ class Cache:
             raise TypeError("refetch needs a Provenance: return (obj, prov) or an object "
                             "carrying .provenance")
 
-        self.put(new_obj, new_prov, acknowledge_paid_tier=acknowledge_paid_tier)
+        self.put(new_obj, new_prov, acknowledge_paid_tier=acknowledge_paid_tier, key=key)
         return diverge(key, old_obj, old_prov, new_obj, new_prov)
 
     def __repr__(self) -> str:
@@ -401,11 +413,16 @@ class Cache:
 
 # --------------------------------------------------------------------------- comparison
 def _comparable(obj: Any, ticker: str | None = None) -> tuple[pd.Series, str]:
-    """The one series a divergence is measured on, and the ticker it belongs to."""
+    """The one series a divergence is measured on, and the ticker it belongs to.
+
+    A Bars series is put on the same index `convert.to_bundle()` uses, so a Divergence's
+    `other` can be dropped into a bundle built from the same panel and still overlap it.
+    """
     if isinstance(obj, Bars):
+        from fin_skills.data.convert import _to_guard_index               # noqa: PLC0415
         wide = obj.field("close")
         name = ticker or (wide.columns[0] if wide.shape[1] else "")
-        return wide[name].astype(float), str(name)
+        return _to_guard_index(obj, wide[name].astype(float)), str(name)
     if isinstance(obj, Macro):
         return obj.latest(), obj.series_ids[0] if obj.series_ids else ""
     if isinstance(obj, Fundamentals):
@@ -435,9 +452,12 @@ def diverge(key: str, old_obj: Any, old_prov: Provenance, new_obj: Any,
     else:
         n_changed, first, max_bps = 0, None, 0.0
 
-    actions = getattr(old_obj, "actions", None)
-    if actions is None:
-        actions = getattr(new_obj, "actions", None)
+    actions = None
+    for src in (old_obj, new_obj):
+        if isinstance(src, Bars) and src.actions is not None:
+            from fin_skills.data.convert import actions_table               # noqa: PLC0415
+            actions = actions_table(src, ticker=name or None)
+            break
     return Divergence(key=key, old=old_prov, new=new_prov, n_changed=n_changed,
                       first_changed=first, max_abs_bps=max_bps,
                       old_values=old_s.rename("close"), new_values=new_s.rename("other"),

@@ -30,7 +30,8 @@ from __future__ import annotations
 
 from fin_skills.data import adapters as _adapters_pkg
 from fin_skills.data.cache import Cache, CachePolicyError, Divergence
-from fin_skills.data.convert import FILLS, fills, to_bundle, to_long
+from fin_skills.data.convert import (FILLS, fills, guard_convention, pit_used, to_bundle,
+                                     to_long)
 from fin_skills.data.declare import (Declaration, adapters, credential, declarations,
                                      describe, lookup, register)
 from fin_skills.data.provenance import Provenance, content_hash
@@ -60,6 +61,7 @@ __all__ = [
     "FILLS", "Fundamentals", "Macro", "PerAccount", "PerHourDayMonth", "PerIP",
     "PerInstanceDelay", "PerMinute", "PerSecond", "Provenance", "RateLimit",
     "Unpublished", "WeightedDaily", "adapters", "content_hash", "credential",
-    "declarations", "describe", "fills", "get", "lookup", "register", "stack_fields",
-    "to_bundle", "to_long", "validate_bars", "validate_fundamentals", "validate_macro",
+    "declarations", "describe", "fills", "get", "guard_convention", "lookup", "pit_used",
+    "register", "stack_fields", "to_bundle", "to_long", "validate_bars",
+    "validate_fundamentals", "validate_macro",
 ]

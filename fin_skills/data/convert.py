@@ -49,10 +49,108 @@ def periods_per_year(interval: str, calendar: str) -> int | None:
     return _PERIODS_PER_YEAR.get(str(calendar), _DEFAULT_DAILY)
 
 
+#: Adjustment -> the vocabulary `api.guards.adjustment_check` uses for `expected`.
+#:
+#: READ THIS BEFORE USING IT. The two vocabularies are INVERTED, and passing an
+#: Adjustment value straight through would silently invert every convention check:
+#:
+#:   Adjustment.BACK    is anchored at the START (A-share hfq, history never rewritten)
+#:                      and `detect_convention` calls that shape "forward-adjusted",
+#:                      because history was scaled FORWARD from the anchor;
+#:   Adjustment.FORWARD is anchored at the PRESENT (A-share qfq, Yahoo auto_adjust) and
+#:                      `detect_convention` calls that shape "back-adjusted", because
+#:                      history was rewritten BACKWARD from today's anchor.
+#:
+#: Both namings are in common use and neither is wrong; they name opposite ends of the
+#: same operation. The enum follows the A-share anchor convention the design specifies,
+#: the guard follows the US/Yahoo one, and this table is the only place the two meet.
+#: Verified empirically against `core.adjustment_check.detect_convention` and its own
+#: `_synthetic()` builder.
+_GUARD_CONVENTION: dict[str, str] = {
+    "raw": "raw",
+    "raw+factors": "raw",
+    "back": "forward-adjusted",
+    "forward": "back-adjusted",
+    "unknown": "unknown",
+}
+
+
+def guard_convention(adjustment) -> str:
+    """The `expected=` string `adjustment_check` wants for this Adjustment.
+
+    Use it, never `adjustment.value` - see `_GUARD_CONVENTION` above for why the two
+    vocabularies are inverted.
+    """
+    from fin_skills.data.schema import Adjustment as _A                # noqa: PLC0415
+    return _GUARD_CONVENTION[_A(adjustment).value]
+
+
+def pit_used(fundamentals: Fundamentals, ts: Any, *, tag: str | None = None,
+             entity: str | None = None, naive: bool = False) -> pd.Series:
+    """The per-period values a pipeline consumed, keyed the way `pit_fundamentals` keys them.
+
+    `naive=True` returns what `drop_duplicates(keep="last")` would have selected - the
+    latest vintage of every period regardless of when it was filed - so a test can show
+    the two differ instead of asserting that they should.
+    """
+    f = fundamentals.frame
+    if tag is not None:
+        f = f[f["tag"] == tag]
+    if entity is not None:
+        f = f[f["entity_id"] == entity]
+    if naive:
+        rows = (f.sort_values(["available_at", "accn"], kind="mergesort")
+                 .drop_duplicates(["entity_id", "tag", "period_start", "period_end"],
+                                  keep="last"))
+    else:
+        rows = fundamentals.as_of(ts, entities=[entity] if entity else None)
+        if tag is not None:
+            rows = rows[rows["tag"] == tag]
+    keys = [_period_key(r) for _, r in rows.iterrows()]
+    return pd.Series(rows["value"].astype(float).to_numpy(), index=keys)
+
+
+def _period_key(row) -> str:
+    """"2022-07-01..2022-09-30", or "instant..2022-09-30" for a balance-sheet fact.
+
+    The same key `core.pit_fundamentals.facts_to_frame` builds, so the guard can match.
+    """
+    start = row["period_start"]
+    head = "instant" if pd.isna(start) else pd.Timestamp(start).strftime("%Y-%m-%d")
+    return f"{head}..{pd.Timestamp(row['period_end']).strftime('%Y-%m-%d')}"
+
+
+#: intervals whose label is a SESSION DATE rather than an instant
+_SESSION_INTERVALS = frozenset({"1d", "d", "daily", "1day", "5d", "1wk", "1w", "1mo",
+                                "1month", "3mo", "1y"})
+
+
+def _to_guard_index(bars: Bars, obj):
+    """Put a bars-derived object on the index the guards compare against.
+
+    For a DAILY-or-coarser bar the label names a session, not an instant, so the zone is
+    metadata: it stays on `Bars.tz` and in the cache sidecar, and the guard input carries
+    the exchange-local session date. Intraday keeps its zone, because there the instant is
+    the datum.
+
+    This is a boundary conversion, not a repair - no value moves. It exists because
+    `core.survivorship_audit` compares the panel index against listing dates with
+    `pd.Timestamp(t) > start`, and `Series.values` on a tz-aware column yields naive
+    numpy datetimes, so a tz-aware panel raises "Cannot compare tz-naive and tz-aware
+    timestamps" before the audit can run.
+    """
+    idx = obj.index
+    if str(bars.interval).lower() in _SESSION_INTERVALS and getattr(idx, "tz", None):
+        out = obj.copy()
+        out.index = idx.tz_convert(bars.tz).tz_localize(None)
+        return out
+    return obj
+
+
 def prices_panel(bars: Bars) -> pd.DataFrame:
     """The wide close panel `survivorship_audit` reads: dates x tickers, NaN after a name
     stops trading. Never forward-filled - a filled hole hides the delisting."""
-    return bars.field("close").copy()
+    return _to_guard_index(bars, bars.field("close").copy())
 
 
 def liquidity_panel(bars: Bars) -> pd.DataFrame | None:
@@ -61,16 +159,57 @@ def liquidity_panel(bars: Bars) -> pd.DataFrame | None:
         return None
     close, vol = bars.field("close"), bars.field("volume")
     cols = [c for c in close.columns if c in vol.columns]
-    return (close[cols].astype(float) * vol[cols].astype(float)) if cols else None
+    if not cols:
+        return None
+    return _to_guard_index(bars, close[cols].astype(float) * vol[cols].astype(float))
+
+
+def actions_table(bars: Bars, ticker: str | None = None) -> pd.DataFrame | None:
+    """(date, ratio, kind) on the same index type as the price slots.
+
+    Dividend rows with no multiplicative ratio are dropped: `adjustment_check` reads the
+    ratio as the price factor of the event, and a NaN there is not information it can use.
+    """
+    if bars.actions is None or not len(bars.actions):
+        return None
+    a = bars.actions.copy()
+    if ticker is not None and "ticker" in a.columns and a["ticker"].notna().any():
+        a = a[(a["ticker"] == ticker) | a["ticker"].isna()]
+    a = a[pd.to_numeric(a["ratio"], errors="coerce").notna()]
+    if not len(a):
+        return None
+    tz = prices_panel(bars).index.tz
+    d = pd.to_datetime(a["date"])
+    if tz is None and d.dt.tz is not None:
+        d = d.dt.tz_convert(bars.tz).dt.tz_localize(None)
+    elif tz is not None and d.dt.tz is None:
+        d = d.dt.tz_localize(tz)
+    a = a.assign(date=d)
+    return a[["date", "ratio", "kind"]].reset_index(drop=True)
 
 
 def listings_table(bars: Bars) -> pd.DataFrame | None:
-    """The listings table under the column names `survivorship_audit` expects."""
+    """The listings table under the column names `survivorship_audit` expects.
+
+    The dates are put in the PANEL's timezone, because the guard compares them against
+    the panel's own index and pandas raises rather than guessing when one side is naive.
+    Aligning zones is normalisation, which is this layer's job; guessing a zone is not.
+    """
     if bars.listings is None or not len(bars.listings):
         return None
     lt = bars.listings.copy()
     rename = {"start_date": "listing_date", "end_date": "delisting_date"}
-    return lt.rename(columns={k: v for k, v in rename.items() if k in lt.columns})
+    lt = lt.rename(columns={k: v for k, v in rename.items() if k in lt.columns})
+    tz = prices_panel(bars).index.tz
+    for col in ("listing_date", "delisting_date"):
+        if col in lt.columns:
+            d = pd.to_datetime(lt[col], errors="coerce")
+            if tz is not None:
+                d = d.dt.tz_localize(tz) if d.dt.tz is None else d.dt.tz_convert(tz)
+            elif d.dt.tz is not None:
+                d = d.dt.tz_localize(None)
+            lt[col] = d
+    return lt
 
 
 def to_bundle(bars: Bars | None = None,
@@ -96,7 +235,7 @@ def to_bundle(bars: Bars | None = None,
             raise TypeError(f"bars must be a Bars, got {type(bars).__name__}")
         slots["prices"] = prices_panel(bars)
         if bars.actions is not None and len(bars.actions):
-            slots["actions"] = bars.actions[["date", "ratio", "kind"]].copy()
+            slots["actions"] = actions_table(bars)
         lt = listings_table(bars)
         if lt is not None:
             slots["listings"] = lt
@@ -111,8 +250,8 @@ def to_bundle(bars: Bars | None = None,
         if pick is not None:
             if pick not in names:
                 raise KeyError(f"no ticker {pick!r} in this panel; have {names}")
-            slots["close"] = bars.close(pick)
-            slots["bars"] = bars.ohlcv(pick)
+            slots["close"] = _to_guard_index(bars, bars.close(pick))
+            slots["bars"] = _to_guard_index(bars, bars.ohlcv(pick))
 
     if fundamentals is not None:
         if not isinstance(fundamentals, Fundamentals):
@@ -160,5 +299,6 @@ def fills(source: str | None = None) -> list[str]:
     return sorted(k for k, v in FILLS.items() if source is None or v == source)
 
 
-__all__ = ["FILLS", "fills", "from_long", "liquidity_panel", "listings_table",
-           "periods_per_year", "prices_panel", "to_bundle", "to_long"]
+__all__ = ["FILLS", "fills", "from_long", "guard_convention", "liquidity_panel",
+           "listings_table", "periods_per_year", "pit_used", "prices_panel", "to_bundle",
+           "to_long"]

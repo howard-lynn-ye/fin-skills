@@ -139,7 +139,8 @@ class YFinanceAdapter(Base):
     def bars(self, symbols, start, end, *, interval: str = "1d",
              adjustment: Adjustment | None = None, tz: str | None = None,
              max_attempts: int = 5, **kw) -> Bars:
-        yf = require("yfinance")
+        # arguments are checked BEFORE the vendor import, so a bad interval is a bad
+        # interval rather than "yfinance is not installed"
         syms = [symbols] if isinstance(symbols, str) else list(symbols)
         adj = adjustment or self.decl.adjustment_default
         if adj not in self.decl.adjustment_supported:
@@ -160,6 +161,7 @@ class YFinanceAdapter(Base):
                    "end_is_exclusive": True, "half_open": True,
                    "actions": True, "progress": False, "ignore_tz": True}
 
+        yf = require("yfinance")
         raw = None
         for attempt in range(1, int(max_attempts) + 1):
             self.limiter.acquire()

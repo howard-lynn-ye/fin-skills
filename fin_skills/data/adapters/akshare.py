@@ -130,7 +130,6 @@ class AkshareAdapter(Base):
     def bars(self, symbols, start, end, *, interval: str = "1d",
              adjustment: Adjustment | None = None, **kw) -> Bars:
         _notify_once()
-        ak = require("akshare")
         syms = [symbols] if isinstance(symbols, str) else list(symbols)
         adj = adjustment or self.decl.adjustment_default
         if adj not in ADJUST:
@@ -139,6 +138,7 @@ class AkshareAdapter(Base):
             raise ValueError("this adapter maps only the daily endpoint "
                              "(stock_zh_a_hist period='daily')")
 
+        ak = require("akshare")
         s, e = pd.Timestamp(start), pd.Timestamp(end)
         parts = []
         for sym in syms:

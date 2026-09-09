@@ -136,13 +136,13 @@ class FredAdapter(Base):
         return fredapi.Fred(api_key=declare.credential(self.decl))
 
     def macro(self, series_ids, *, vintages: bool = True, **kw) -> Macro:
-        fredapi = require("fredapi")
         ids = [series_ids] if isinstance(series_ids, str) else list(series_ids)
         if not vintages:
             raise ValueError(
                 "vintages=False would return the fully-revised line, which is DISPLAY "
                 "ONLY: FRED's own example is 2013Q4 GDP at 17102.5, then 17080.7, then "
                 "17089.6. Fetch the vintages and call Macro.latest() if you want it.")
+        fredapi = require("fredapi")
         client = self._client()
         parts, flagged = [], []
         for sid in ids:

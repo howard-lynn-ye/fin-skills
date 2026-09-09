@@ -129,7 +129,6 @@ class CcxtAdapter(Base):
 
     def bars(self, symbols, start, end, *, interval: str = "1d",
              adjustment: Adjustment | None = None, limit: int = 1000, **kw) -> Bars:
-        ex = self.exchange()
         syms = [symbols] if isinstance(symbols, str) else list(symbols)
         adj = adjustment or Adjustment.RAW
         if adj is not Adjustment.RAW:
@@ -137,6 +136,7 @@ class CcxtAdapter(Base):
         if interval not in TIMEFRAMES:
             raise ValueError(f"interval {interval!r} is not one of {sorted(TIMEFRAMES)}")
 
+        ex = self.exchange()
         s, e = pd.Timestamp(start, tz="UTC"), pd.Timestamp(end, tz="UTC")
         parts = []
         for sym in syms:

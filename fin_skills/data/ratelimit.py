@@ -189,6 +189,13 @@ class _Windowed(_Limiter):
 
     def _charge(self, names: list[str], cost: float) -> None:
         for name in names:
+            allowance, _ = self._buckets[name]
+            if cost > allowance:
+                # refuse BEFORE waiting: a bulk call costing 100 against a 20-call budget
+                # never succeeds, and sleeping out the day first only hides that
+                raise ValueError(f"a single call costs {cost:g} against a {allowance:g} "
+                                 f"{name} budget - it can never succeed")
+        for name in names:
             allowance, window = self._buckets[name]
             now = self._clock.now()
             self._prune(name, now)
@@ -199,9 +206,6 @@ class _Windowed(_Limiter):
                 now = self._clock.now()
                 self._prune(name, now)
                 used = sum(c for _, c in self._hits[name])
-            if cost > allowance:
-                raise ValueError(f"a single call costs {cost:g} against a {allowance:g} "
-                                 f"{name} budget - it can never succeed")
             self._hits[name].append((self._clock.now(), cost))
 
 
@@ -308,14 +312,18 @@ class PerIP(_Windowed):
 
     def __init__(self, *, clock: Clock | None = None, **buckets: float) -> None:
         parsed: dict[str, tuple[float, float]] = {}
+        self.windows: dict[str, float] = {}
         for name, n in buckets.items():
-            for suffix, window in self._WINDOWS.items():
-                if name.endswith(suffix):
-                    parsed[name] = (float(n), window)
+            # longest suffix first, so "_per_sec" is not read as "_per_s" + "ec"
+            for suffix in sorted(self._WINDOWS, key=len, reverse=True):
+                if name.endswith("_" + suffix):
+                    short = name[: -(len(suffix) + 1)]
+                    parsed[short] = (float(n), self._WINDOWS[suffix])
+                    self.windows[short] = self._WINDOWS[suffix]
                     break
             else:
                 raise ValueError(f"bucket {name!r} must end in one of "
-                                 f"{sorted(self._WINDOWS)}")
+                                 f"{sorted('_' + s for s in self._WINDOWS)}")
         if not parsed:
             raise ValueError("PerIP needs at least one bucket")
         super().__init__(parsed, clock=clock)
@@ -327,8 +335,11 @@ class PerIP(_Windowed):
                 raise KeyError(f"no bucket {n!r}; have {sorted(self._buckets)}")
         self._charge(names, float(cost))
 
+    _UNIT = {1.0: "/s", 60.0: "/min", 3600.0: "/hr", 86400.0: "/day"}
+
     def describe(self) -> str:
-        parts = ", ".join(f"{k}={n:g}" for k, (n, _) in sorted(self._buckets.items()))
+        parts = ", ".join(f"{k} {n:g}{self._UNIT.get(w, '')}"
+                          for k, (n, w) in sorted(self._buckets.items()))
         return f"PerIP({parts}) - shared by everyone behind the same address"
 
 
