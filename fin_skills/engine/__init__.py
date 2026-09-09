@@ -38,7 +38,7 @@ Seven of them - I1, I4, I5, I6, I8, I11, I12 - are proven by running `assert_cau
 and `fold_leak_test` on the engine's own output. Six is the number
 `check(result.to_bundle())` runs unaided: fold_leak_test needs `run_fold` and `folds`,
 which are not artefacts of a single run. What the engine refuses to do is documented in
-`backtesting-engines/SKILL.md` section 6; the short version is that it has no intrabar
+`backtesting-engines/SKILL.md` section 5; the short version is that it has no intrabar
 model, no order types beyond market, no margin or borrow availability, and no live path.
 """
 from __future__ import annotations
