@@ -32,7 +32,15 @@ dependencies = [
 [project.optional-dependencies]
 # scripts that verify themselves against a real library when it is importable
 stats = ["statsmodels>=0.14", "scikit-learn>=1.3"]
-all = ["statsmodels>=0.14", "scikit-learn>=1.3"]
+# the Model Context Protocol server (fin_skills.mcp). The official SDK, MIT licensed;
+# v2 is the current stable line and the one fin_skills.mcp targets - its low-level
+# Server takes constructor handlers and a hand-written inputSchema, which is what a
+# derived schema needs. Optional on purpose: fin_skills imports and works without it.
+mcp = ["mcp>=2.0"]
+all = ["statsmodels>=0.14", "scikit-learn>=1.3", "mcp>=2.0"]
+
+[project.scripts]
+fin-skills-mcp = "fin_skills.mcp:main"
 
 [project.urls]
 Homepage = "https://github.com/howard-lynn-ye/fin-skills"

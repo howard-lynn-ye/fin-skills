@@ -133,6 +133,7 @@
         "tradingagents"
       ],
       "skills": [
+        "./skills/fin-skills-as-tools",
         "./skills/finance-agent-architectures",
         "./skills/finance-mcp-servers",
         "./skills/llm-finance-agents",
