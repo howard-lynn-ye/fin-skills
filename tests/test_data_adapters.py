@@ -112,12 +112,12 @@ def test_replay_forwards_only_what_the_method_accepts():
             return "bars"
 
     request = {"method": "bars", "symbols": ["AAPL"], "start": "2024-01-01",
-               "end": "2024-02-01", "interval": "1d", "adjustment": "forward",
+               "end": "2024-02-01", "interval": "1d", "adjustment": "anchored_present",
                "auto_adjust": True, "end_is_exclusive": True, "half_open": True,
                "progress": False, "ignore_tz": True, "actions": True}
     assert Recorder().replay(request) == "bars"
     assert seen["symbols"] == ["AAPL"] and seen["end"] == "2024-02-01"
-    assert seen["adjustment"] is Adjustment.FORWARD
+    assert seen["adjustment"] is Adjustment.ANCHORED_PRESENT
     assert seen["extra"] == {}, seen["extra"]
 
     with pytest.raises(KeyError, match="no method"):
@@ -168,7 +168,7 @@ def test_akshare_declares_raw_because_that_is_what_akshare_returns():
 
 def test_yfinance_declares_the_convention_that_rewrites_history():
     d = declare.lookup("yfinance")
-    assert d.adjustment_default is D.Adjustment.FORWARD    # auto_adjust=True since 1.0
+    assert d.adjustment_default is D.Adjustment.ANCHORED_PRESENT    # auto_adjust=True since 1.0
     assert d.rewrites_history
     assert any("rewrites history" in w for w in d.warnings())
 
@@ -366,7 +366,7 @@ def test_yfinance_refuses_a_caching_session_and_an_unstated_intraday_zone():
     with pytest.raises(ValueError, match="not one of"):
         a.bars("AAPL", "2024-01-01", "2024-01-05", interval="7s")
     with pytest.raises(ValueError, match="readjust"):
-        a.bars("AAPL", "2024-01-01", "2024-01-05", adjustment=D.Adjustment.BACK)
+        a.bars("AAPL", "2024-01-01", "2024-01-05", adjustment=D.Adjustment.ANCHORED_START)
 
 
 def test_akshare_normalises_the_chinese_headers_and_refuses_what_it_cannot_do():
@@ -412,7 +412,7 @@ def test_ccxt_holds_one_instance_drops_the_unclosed_bar_and_uses_milliseconds():
     a = get("ccxt:kraken")
     assert a.venue == "kraken" and a._exchange is None
     with pytest.raises(ValueError, match="RAW is the only convention"):
-        a.bars("BTC/USDT", "2024-01-01", "2024-02-01", adjustment=D.Adjustment.BACK)
+        a.bars("BTC/USDT", "2024-01-01", "2024-02-01", adjustment=D.Adjustment.ANCHORED_START)
 
 
 def test_fred_flags_copyrighted_series_and_never_calls_the_broken_method():

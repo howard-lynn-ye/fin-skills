@@ -30,8 +30,8 @@ def no_persist_adapter():
     """A stub declaring what Tiingo's Starter plan declares: no durable storage."""
     decl = Declaration(
         name="stubvendor", library="stubvendor", library_license="MIT",
-        licence_source="pypi", adjustment_default=Adjustment.FORWARD,
-        adjustment_supported=(Adjustment.FORWARD,), calendar="XNYS",
+        licence_source="pypi", adjustment_default=Adjustment.ANCHORED_PRESENT,
+        adjustment_supported=(Adjustment.ANCHORED_PRESENT,), calendar="XNYS",
         tz="America/New_York", bar_label="close", interval_support=("1d",),
         includes_delisted=False, point_in_time=False, rate_limit=Unpublished(),
         free_tier="Starter $0", requires_key=True, key_env_var="STUBVENDOR_TOKEN",
@@ -148,7 +148,7 @@ def test_manifest_has_one_row_per_vintage(cache, bars):
     assert list(man["vintage"]) == [0, 1]
     assert set(man["key"]) == {key}
     assert man["source"].unique().tolist() == ["yfinance"]
-    assert man["adjustment"].unique().tolist() == ["back"]
+    assert man["adjustment"].unique().tolist() == ["anchored_start"]
     assert man["includes_delisted"].unique().tolist() == [False]
     assert man["span"].iloc[0].count("..") == 1
 

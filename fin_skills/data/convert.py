@@ -53,10 +53,10 @@ def periods_per_year(interval: str, calendar: str) -> int | None:
 #: READ THIS BEFORE USING IT. The two vocabularies are INVERTED, and passing an
 #: Adjustment value straight through would silently invert every convention check:
 #:
-#:   Adjustment.BACK    is anchored at the START (A-share hfq, history never rewritten)
+#:   Adjustment.ANCHORED_START    is anchored at the START (A-share hfq, history never rewritten)
 #:                      and `detect_convention` calls that shape "forward-adjusted",
-#:                      because history was scaled FORWARD from the anchor;
-#:   Adjustment.FORWARD is anchored at the PRESENT (A-share qfq, Yahoo auto_adjust) and
+#:                      because history was scaled ANCHORED_PRESENT from the anchor;
+#:   Adjustment.ANCHORED_PRESENT is anchored at the PRESENT (A-share qfq, Yahoo auto_adjust) and
 #:                      `detect_convention` calls that shape "back-adjusted", because
 #:                      history was rewritten BACKWARD from today's anchor.
 #:
@@ -68,8 +68,8 @@ def periods_per_year(interval: str, calendar: str) -> int | None:
 _GUARD_CONVENTION: dict[str, str] = {
     "raw": "raw",
     "raw+factors": "raw",
-    "back": "forward-adjusted",
-    "forward": "back-adjusted",
+    "anchored_start": "forward-adjusted",
+    "anchored_present": "back-adjusted",
     "unknown": "unknown",
 }
 

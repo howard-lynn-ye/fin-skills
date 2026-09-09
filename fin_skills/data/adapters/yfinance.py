@@ -3,7 +3,7 @@
 What this adapter pins, and why each pin exists (verified 2026-09-09):
 
   * `auto_adjust` is stated, never inherited. It has defaulted to True since 1.0, so the
-    series you get by asking for nothing is FORWARD-adjusted - anchored at the present, so
+    series you get by asking for nothing is ANCHORED_PRESENT-adjusted - anchored at the present, so
     every new dividend rewrites the whole history and the same query next month returns
     different numbers.
   * `progress=False`, `ignore_tz` and the frame shape are pinned, because the returned
@@ -43,8 +43,8 @@ DECL = declare.Declaration(
     library="yfinance",
     library_license="Apache-2.0",
     licence_source="pypi",                      # info.license == 'Apache-2.0' + classifier
-    adjustment_default=Adjustment.FORWARD,      # auto_adjust=True since 1.0
-    adjustment_supported=(Adjustment.RAW, Adjustment.FORWARD),
+    adjustment_default=Adjustment.ANCHORED_PRESENT,      # auto_adjust=True since 1.0
+    adjustment_supported=(Adjustment.RAW, Adjustment.ANCHORED_PRESENT),
     calendar="XNYS",
     tz="America/New_York",
     bar_label="close",
@@ -157,7 +157,7 @@ class YFinanceAdapter(Base):
 
         request = {"method": "bars", "symbols": syms, "start": _iso(start),
                    "end": _iso(end), "interval": interval,
-                   "adjustment": adj.value, "auto_adjust": adj is Adjustment.FORWARD,
+                   "adjustment": adj.value, "auto_adjust": adj is Adjustment.ANCHORED_PRESENT,
                    "end_is_exclusive": True, "half_open": True,
                    "actions": True, "progress": False, "ignore_tz": True}
 
@@ -167,7 +167,7 @@ class YFinanceAdapter(Base):
             self.limiter.acquire()
             try:
                 raw = yf.download(syms, start=start, end=end, interval=interval,
-                                  auto_adjust=adj is Adjustment.FORWARD, actions=True,
+                                  auto_adjust=adj is Adjustment.ANCHORED_PRESENT, actions=True,
                                   progress=False, ignore_tz=True, threads=False, **kw)
                 break
             except Exception as exc:                     # noqa: BLE001 - vendor-specific

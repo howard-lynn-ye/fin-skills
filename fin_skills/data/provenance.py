@@ -176,7 +176,7 @@ class Provenance:
     # ------------------------------------------------------------------ conversions
     def as_data_source(self, adjustment: str = "unknown") -> DataSource:
         """The row `result_manifest.ResultCard` wants. `adjustment` is the convention the
-        schema object declares - "back", "PIT, filed<=asof", "vintage as-of"."""
+        schema object declares - "anchored_start", "PIT, filed<=asof", "vintage as-of"."""
         return DataSource(name=self.source, retrieved_at=self.retrieved_at,
                           adjustment=str(adjustment))
 

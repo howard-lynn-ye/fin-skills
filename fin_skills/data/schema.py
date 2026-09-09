@@ -40,24 +40,42 @@ class Adjustment(str, Enum):
     behavioural question research-integrity-guards asks instead of the label.
     """
 
+    # The members are named after the ANCHOR, not after "back" and "forward", because those
+    # two words are inverted between vocabularies that are both in use and both defensible:
+    #
+    #   fin_skills.core.adjustment_check   "back-adjusted"    = anchored at the PRESENT
+    #                                      "forward-adjusted" = anchored at the START
+    #   A-share convention                 qfq (前复权)        = anchored at the PRESENT
+    #                                      hfq (后复权)        = anchored at the START
+    #   English futures usage              "back-adjusted"    = anchored at the newest contract
+    #
+    # A layer that said BACK would be read as one of those and mean another. `convert.
+    # guard_convention()` translates to the string `adjustment_check` wants; never pass
+    # `.value` to a guard.
     RAW = "raw"                      # as quoted; splits and dividends are visible jumps
-    BACK = "back"                    # anchored at the START (A-share hfq). History never
-                                     # rewritten, so a cached copy stays valid.
-    FORWARD = "forward"              # anchored at the PRESENT (A-share qfq, Yahoo
-                                     # auto_adjust=True). Every new action rewrites history.
+    ANCHORED_START = "anchored_start"     # history NEVER changes; new data is scaled up.
+                                          # A-share hfq. A cached copy stays valid forever.
+    ANCHORED_PRESENT = "anchored_present"  # today's price is the real one and every new
+                                          # action REWRITES all history. A-share qfq,
+                                          # yfinance auto_adjust=True. A cached copy rots.
     RAW_PLUS_FACTORS = "raw+factors"  # raw prices plus a separate cumulative factor series
     UNKNOWN = "unknown"              # legal, and it POISONS the run: downstream guards
                                      # downgrade to warnings rather than pretend to know
 
+    @classmethod
+    def _missing_(cls, value):
+        """Accept the older strings so a cache written before the rename still loads."""
+        return {"back": cls.ANCHORED_START, "forward": cls.ANCHORED_PRESENT}.get(value)
+
     @property
     def rewrites_history(self) -> bool:
-        """True for FORWARD.
+        """True for ANCHORED_PRESENT.
 
         The behavioural test, not the label: when a new split or dividend occurs, does
         yesterday's stored value change? If yes, the series is not reproducible and the
         same query run a month later returns different numbers.
         """
-        return self is Adjustment.FORWARD
+        return self is Adjustment.ANCHORED_PRESENT
 
     @property
     def is_declared(self) -> bool:
@@ -289,9 +307,9 @@ class Bars:
     @staticmethod
     def _factor_from_raw(to: Adjustment, index: pd.DatetimeIndex,
                          acts: pd.DataFrame) -> pd.Series:
-        if to is Adjustment.BACK:
+        if to is Adjustment.ANCHORED_START:
             return _cumfactor(index, acts, forward=False)
-        if to is Adjustment.FORWARD:
+        if to is Adjustment.ANCHORED_PRESENT:
             return _cumfactor(index, acts, forward=True)
         return pd.Series(1.0, index=index)          # RAW and RAW_PLUS_FACTORS store raw
 

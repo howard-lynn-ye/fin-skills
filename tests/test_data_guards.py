@@ -135,7 +135,7 @@ def test_reconcile_sources_is_red_on_a_step_with_no_corporate_action(good, tmp_p
 def test_the_red_dataset_fails_every_gate_it_touches(tmp_path):
     """One corrupted dataset, four failures - each attributable to a different break."""
     bad = survivor_only_bars(n_names=60, years=8, n_dead=20)  # the dead names are gone
-    raw_label = mislabelled_bars(n_names=4, years=8, n_dead=0)  # raw wearing a BACK label
+    raw_label = mislabelled_bars(n_names=4, years=8, n_dead=0)  # raw wearing a ANCHORED_START label
     t = split_ticker(raw_label)
     facts = clean_fundamentals()
 
@@ -159,7 +159,7 @@ def test_the_red_dataset_fails_every_gate_it_touches(tmp_path):
 def test_a_provenance_becomes_the_result_card_data_source(good):
     ds = good.as_data_source()
     assert ds.name == "yfinance"
-    assert ds.adjustment == "back"
+    assert ds.adjustment == "anchored_start"
     assert ds.retrieved_at.endswith("+00:00")
     assert clean_fundamentals().as_data_source().adjustment == "PIT, available_at<=as_of"
 

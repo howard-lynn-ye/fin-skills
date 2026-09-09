@@ -62,12 +62,12 @@ def test_unknown_adjustment_is_legal_and_poisons_the_run(bars):
     errors = [f for f in poisoned.validate() if f.severity == "error"]
     assert errors and "UNKNOWN" in errors[0].message
     with pytest.raises(ValueError, match="no basis to convert"):
-        poisoned.readjust(Adjustment.BACK)
+        poisoned.readjust(Adjustment.ANCHORED_START)
 
 
 def test_rewrites_history_is_the_behavioural_question_not_the_label():
-    assert Adjustment.FORWARD.rewrites_history          # anchored at the present (qfq)
-    assert not Adjustment.BACK.rewrites_history         # anchored at the start (hfq)
+    assert Adjustment.ANCHORED_PRESENT.rewrites_history          # anchored at the present (qfq)
+    assert not Adjustment.ANCHORED_START.rewrites_history         # anchored at the start (hfq)
     assert not Adjustment.RAW.rewrites_history
 
 
@@ -77,25 +77,25 @@ def test_readjust_raises_without_an_actions_table(bars):
                  tz=bars.tz, interval=bars.interval, bar_label=bars.bar_label,
                  currency=bars.currency, provenance=bars.provenance, actions=None)
     with pytest.raises(ValueError, match="actions table"):
-        naked.readjust(Adjustment.FORWARD)
+        naked.readjust(Adjustment.ANCHORED_PRESENT)
 
 
 def test_readjust_round_trips_and_differs_by_the_cumulative_factor(bars):
     t = split_ticker(bars)
     total = float(bars.actions["ratio"].prod())
-    fwd = bars.readjust(Adjustment.FORWARD)
+    fwd = bars.readjust(Adjustment.ANCHORED_PRESENT)
     ratio = (bars.close(t) / fwd.close(t)).dropna().round(9).unique()
     assert ratio.tolist() == [total], "back/forward differ by ONE constant, the cum factor"
-    back_again = fwd.readjust(Adjustment.BACK)
+    back_again = fwd.readjust(Adjustment.ANCHORED_START)
     assert np.allclose(back_again.close(t), bars.close(t), rtol=1e-12)
-    assert fwd.adjustment is Adjustment.FORWARD
+    assert fwd.adjustment is Adjustment.ANCHORED_PRESENT
     assert fwd.provenance.content_sha256 != bars.provenance.content_sha256
 
 
 def test_the_guard_vocabulary_is_inverted_and_the_table_says_so():
-    # BACK is anchored at the START, which detect_convention calls "forward-adjusted"
-    assert guard_convention(Adjustment.BACK) == "forward-adjusted"
-    assert guard_convention(Adjustment.FORWARD) == "back-adjusted"
+    # ANCHORED_START is anchored at the START, which detect_convention calls "forward-adjusted"
+    assert guard_convention(Adjustment.ANCHORED_START) == "forward-adjusted"
+    assert guard_convention(Adjustment.ANCHORED_PRESENT) == "back-adjusted"
     assert guard_convention(Adjustment.RAW) == "raw"
     assert guard_convention(Adjustment.UNKNOWN) == "unknown"
 
@@ -358,3 +358,39 @@ def test_liquidity_is_dollar_volume(bars):
     t = split_ticker(bars)
     expected = bars.close(t) * bars.frame[("volume", t)]
     assert np.allclose(b.liquidity[t].dropna(), expected.dropna())
+
+
+# ---------------------------------------------------- the two adjustment vocabularies
+# `Adjustment` names its members after the ANCHOR because "back" and "forward" are
+# inverted between vocabularies that are all in use: `core.adjustment_check` calls the
+# present-anchored series "back-adjusted", A-share qfq is present-anchored, and English
+# futures usage anchors "back-adjusted" at the newest contract. These tests pin the
+# translation to the guard, so a future rename cannot quietly invert it.
+def test_the_enum_is_named_after_the_anchor_not_after_back_or_forward():
+    from fin_skills.data.convert import guard_convention
+    assert {m.name for m in Adjustment} == {
+        "RAW", "ANCHORED_START", "ANCHORED_PRESENT", "RAW_PLUS_FACTORS", "UNKNOWN"}
+    # the words themselves must not reappear as member names
+    assert not {"BACK", "FORWARD"} & {m.name for m in Adjustment}
+    # only the present-anchored convention rewrites history - that is the behavioural test
+    assert Adjustment.ANCHORED_PRESENT.rewrites_history
+    assert not any(m.rewrites_history for m in Adjustment if m is not Adjustment.ANCHORED_PRESENT)
+    # and the translation to the guard's vocabulary is the INVERSE of the naive reading
+    assert guard_convention(Adjustment.ANCHORED_START) == "forward-adjusted"
+    assert guard_convention(Adjustment.ANCHORED_PRESENT) == "back-adjusted"
+
+
+def test_the_guards_own_definition_is_the_one_the_translation_targets():
+    # Not a restatement of the table: read the guard module's own docstring, so this test
+    # fails if adjustment_check ever changes what it means by the two words.
+    import fin_skills.core.adjustment_check as ac
+    doc = ac.__doc__ or ""
+    assert "back-adjusted    -- anchored at the PRESENT" in doc
+    assert "forward-adjusted -- anchored at the START" in doc
+
+
+def test_a_cache_written_before_the_rename_still_loads():
+    assert Adjustment("back") is Adjustment.ANCHORED_START
+    assert Adjustment("forward") is Adjustment.ANCHORED_PRESENT
+    with pytest.raises(ValueError):
+        Adjustment("sideways")

@@ -81,14 +81,14 @@ def raw_panel(n_names: int = 60, years: int = 8, n_dead: int = 20, seed: int = S
 
 
 def clean_bars(**kw) -> Bars:
-    """A BACK-adjusted panel (anchored at the start, history never rewritten) with its
+    """A ANCHORED_START-adjusted panel (anchored at the start, history never rewritten) with its
     actions and listings - the shape survivorship_audit and adjustment_check both pass on."""
     frame, acts, listings = raw_panel(**kw)
     raw = Bars(frame=frame, adjustment=Adjustment.RAW, calendar="XNYS", tz=TZ,
                interval="1d", bar_label="close", currency="USD",
                provenance=_prov(content=frame, symbols=list(frame.columns.levels[1])),
                actions=acts, listings=listings)
-    return raw.readjust(Adjustment.BACK)
+    return raw.readjust(Adjustment.ANCHORED_START)
 
 
 def survivor_only_bars(**kw) -> Bars:
@@ -105,17 +105,17 @@ def survivor_only_bars(**kw) -> Bars:
     fields = {f: frame[f][survivors] for f in ("open", "high", "low", "close")}
     fields["volume"] = frame["volume"][survivors].astype("int64")
     live = stack_fields(fields)
-    return Bars(frame=live, adjustment=Adjustment.BACK, calendar="XNYS", tz=TZ,
+    return Bars(frame=live, adjustment=Adjustment.ANCHORED_START, calendar="XNYS", tz=TZ,
                 interval="1d", bar_label="close", currency="USD",
                 provenance=_prov(content=live), actions=acts, listings=listings)
 
 
 def mislabelled_bars(**kw) -> Bars:
-    """RAW prices carrying the BACK label. The split is still a jump in the series and the
+    """RAW prices carrying the ANCHORED_START label. The split is still a jump in the series and the
     declaration says it has been adjusted away - the exact failure `adjustment_check`
     exists to catch."""
     frame, acts, listings = raw_panel(**kw)
-    return Bars(frame=frame, adjustment=Adjustment.BACK, calendar="XNYS", tz=TZ,
+    return Bars(frame=frame, adjustment=Adjustment.ANCHORED_START, calendar="XNYS", tz=TZ,
                 interval="1d", bar_label="close", currency="USD",
                 provenance=_prov(content=frame), actions=acts, listings=listings)
 
@@ -193,7 +193,7 @@ def clean_macro() -> Macro:
 
 # ----------------------------------------------------------------------- two vintages
 def rewritten_vintage(bars: Bars, ticker: str, factor: float = 1.0 / 1.004) -> Bars:
-    """The same series after a new dividend, as a FORWARD-adjusted vendor would return it:
+    """The same series after a new dividend, as a ANCHORED_PRESENT-adjusted vendor would return it:
     every historical value rescaled by one constant, which is what makes a cached copy
     disagree with a live pull."""
     frame = bars.frame.copy()

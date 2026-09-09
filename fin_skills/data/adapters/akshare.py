@@ -12,8 +12,8 @@ Four facts this adapter is built around, all re-verified on 2026-09-09:
     logic. The *ecosystem* default is qfq; akshare's own is not, and this adapter declares
     what akshare does.
   * **qfq rewrites history.** Its anchor is the present, so re-running the same query next
-    month returns different numbers. Any qfq series is stamped FORWARD, and
-    `Adjustment.FORWARD.rewrites_history` is True - do not persist it and expect it back.
+    month returns different numbers. Any qfq series is stamped ANCHORED_PRESENT, and
+    `Adjustment.ANCHORED_PRESENT.rewrites_history` is True - do not persist it and expect it back.
   * **The code is MIT; the data is not.** akshare's own documentation restricts the data to
     academic research, which is stronger than a plain reading of the repository's MIT
     licence. The adapter surfaces that once, the first time it is used.
@@ -38,7 +38,7 @@ from fin_skills.data.schema import Adjustment, Bars
 TERMS = "https://akshare.akfamily.xyz/introduction.html"
 
 #: akshare's adjust= argument, and what each value means in this layer's vocabulary
-ADJUST = {Adjustment.RAW: "", Adjustment.BACK: "hfq", Adjustment.FORWARD: "qfq"}
+ADJUST = {Adjustment.RAW: "", Adjustment.ANCHORED_START: "hfq", Adjustment.ANCHORED_PRESENT: "qfq"}
 
 DATA_USE_NOTICE = (
     "akshare's code is MIT; its documentation restricts the DATA to academic research "
@@ -51,7 +51,7 @@ DECL = declare.Declaration(
     library_license="MIT",
     licence_source="pypi",                    # info.license == 'MIT' + classifier, 2026-09-09
     adjustment_default=Adjustment.RAW,        # stock_zh_a_hist(adjust="") is unadjusted
-    adjustment_supported=(Adjustment.RAW, Adjustment.BACK, Adjustment.FORWARD),
+    adjustment_supported=(Adjustment.RAW, Adjustment.ANCHORED_START, Adjustment.ANCHORED_PRESENT),
     calendar="XSHG",
     tz="Asia/Shanghai",
     bar_label="close",
