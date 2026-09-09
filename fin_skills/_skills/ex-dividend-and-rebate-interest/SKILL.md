@@ -24,7 +24,7 @@ metadata:
 paid, so accrued interest is NEGATIVE.** Most fixed-income code has no branch for this. The code
 that does can have the sign backwards and never fail.
 
-Every figure below is printed by `scripts/ex_dividend.py` (runs in **0.6 s**; QuantLib optional).
+Every figure below is printed by `scripts/ex_dividend.py` (runs in **0.15 s**; QuantLib optional).
 ✅ Measured means this file produced it on 2026-09-09 with QuantLib 1.43, Python 3.11.3. The
 worked bond is a **4% gilt, coupons 7 Jun / 7 Dec, maturity 2035-06-07, y = 4.20%**, and the
 coupon in question is **2026-12-07 (a Monday)**, whose ex-dividend date is **2026-11-26**.

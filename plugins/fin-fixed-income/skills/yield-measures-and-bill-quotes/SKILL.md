@@ -25,7 +25,7 @@ metadata:
 comparable to anything else on the page.** Four numbers describe the same bill and they are all
 different.
 
-Every figure below is printed by `scripts/yield_measures.py` (runs in **0.5 s**; QuantLib
+Every figure below is printed by `scripts/yield_measures.py` (runs in **0.94 s**; QuantLib
 optional). ✅ Measured means this file produced it on 2026-09-09 with QuantLib 1.43, scipy 1.13.0,
 Python 3.11.3.
 

@@ -23,7 +23,7 @@ metadata:
 **Accrued interest is not a number. It is a number plus three things: a day-count convention, a
 coupon schedule, and a settlement date.** Drop any one and you still get a plausible answer.
 
-Every figure below is printed by `scripts/conventions.py` (runs in **0.6 s**; QuantLib optional,
+Every figure below is printed by `scripts/conventions.py` (runs in **0.15 s**; QuantLib optional,
 imported inside `quantlib_cross_checks`). ✅ Measured means this file produced it on 2026-09-09
 with QuantLib 1.43, Python 3.11.3. The worked bond is a **5% semiannual, coupon period
 2026-01-15 → 2026-07-15 (181 days), settled 2026-04-30 (105 days in), 1,000,000 face**.

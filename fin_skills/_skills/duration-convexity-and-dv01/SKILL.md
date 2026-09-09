@@ -24,7 +24,7 @@ metadata:
 for another gives a risk report that is a few percent wrong — too small to notice, too large to
 hedge with.
 
-Every figure below is printed by `scripts/duration.py` (runs in **0.7 s**; QuantLib optional).
+Every figure below is printed by `scripts/duration.py` (runs in **0.29 s**; QuantLib optional).
 ✅ Measured means this file produced it on 2026-09-09 with QuantLib 1.43, numpy 2.2.6,
 Python 3.11.3.
 
