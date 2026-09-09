@@ -39,10 +39,15 @@ ROOT = Path(__file__).resolve().parent.parent
 PKG = ROOT / "fin_skills"
 HAND_WRITTEN = {"__init__.py"}          # kept as-is; everything else under fin_skills/ is generated
 # Hand-written packages that sit ON TOP of the generated modules and survive regeneration:
-#   api/    the unified Guard interface and the Bundle
-#   tools/  the same guards as JSON-callable tools (schemas, payloads, runner, export)
-#   mcp/    the Model Context Protocol server over tools/
-HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/")
+#   api/      the unified Guard interface and the Bundle container
+#   tools/    the same guards as JSON-callable tools (schemas, payloads, runner, export)
+#   mcp/      the Model Context Protocol server over tools/
+#   engine/   the reference backtesting engine
+#   data/     the unified data-access layer
+#   bridges/  adapters to vectorbt, qlib, QuantLib, the optimizers, brokers and reporting
+# A new layer is added here in the SAME commit that creates it, or the next regeneration
+# deletes it. --check enforces this.
+HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/", "engine/", "data/", "bridges/")
 
 
 def is_hand_written(rel: str) -> bool:
