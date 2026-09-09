@@ -173,6 +173,27 @@ def test_vectorbt_shifts_by_default_and_the_two_sharpes_differ(bars):
     g = V.from_vectorbt(guarded, sessions=252).returns
     r = raw.returns()
     assert conventions.annualize_sharpe(g, 252) != conventions.annualize_sharpe(r, 252)
+    fills = pd.DataFrame(guarded.order_records.records)
+    close = bars["close"].to_numpy()
+    assert not any(np.isclose(float(row.price), close[int(row.idx)], atol=1e-12)
+                   for row in fills.itertuples(index=False)), \
+        "a guarded fill must never be priced at the close of its own bar"
+
+
+@requires("vectorbt")
+def test_vectorbt_roundtrip_reproduces_the_returns(bars):
+    """from_vectorbt(to_vectorbt(b)) reproduces `returns` on a fixture with no costs."""
+    b = Bundle(bars=bars, close=bars["close"])
+    entries = (bars[["close"]] > bars[["close"]].rolling(20).mean())
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        pf = V.to_vectorbt(b, entries=entries, exits=~entries, price="open",
+                           fees=0.0, slippage=0.0)
+        back = V.from_vectorbt(pf, sessions=252)
+    direct = pf.returns()
+    if isinstance(direct, pd.DataFrame):
+        direct = direct.iloc[:, 0]
+    pd.testing.assert_series_equal(back.returns, direct, check_names=False, atol=1e-10)
 
 
 # ============================================================== backtesting.py

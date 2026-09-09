@@ -226,13 +226,15 @@ def _render(backend: str, r: pd.Series, rf_used: float, ppy: int, kw: dict) -> A
         qs = _lazy.need("quantstats", why="to render a tear sheet")
         annual = (1.0 + rf_used) ** ppy - 1.0
         # rf goes to sharpe/sortino, which honour it. It is NEVER passed to cagr().
+        if kw:
+            raise TypeError(f"the quantstats path takes no extra keywords, got "
+                            f"{sorted(kw)}; **kw is forwarded to pyfolio's renderer only")
         return {"sharpe": float(qs.stats.sharpe(r, rf=annual, periods=ppy,
                                                 annualize=True)),
                 "sortino": float(qs.stats.sortino(r, rf=annual, periods=ppy,
                                                   annualize=True)),
                 "max_drawdown": float(qs.stats.max_drawdown(r)),
-                "volatility": float(qs.stats.volatility(r, periods=ppy)),
-                **kw}
+                "volatility": float(qs.stats.volatility(r, periods=ppy))}
     pf = _lazy.need("pyfolio-reloaded", why="to render a tear sheet")
     return pf.create_returns_tear_sheet(r, return_fig=True, **kw)
 

@@ -217,12 +217,25 @@ class Provenance:
                 "notes": self.notes}
 
 
+def _installed_version(pip_name: str) -> str:
+    """The distribution's version WITHOUT importing it - for a bridge handed a client."""
+    try:
+        import importlib.metadata as md
+        return str(md.version(pip_name))
+    except Exception:                                         # noqa: BLE001 - best effort
+        return ""
+
+
 def provenance(name: str, module: Any = None, *, source: str = "", request: Any = None,
                notes: str = "") -> Provenance:
-    """A Provenance row for a bridged library, with its version read live."""
+    """A Provenance row for a bridged library, with its version read live.
+
+    A pin is not evidence: akshare purges its PyPI history and vectorbt rewrote its API
+    at 1.0, so the version recorded here is the one that actually ran.
+    """
     lib = info(name)
-    return Provenance(source=source or lib.pip,
-                      library_version=version_of(module, lib.module) if module else "",
+    version = version_of(module, lib.module) if module else _installed_version(lib.pip)
+    return Provenance(source=source or lib.pip, library_version=version,
                       licence=lib.licence, licence_verified_on=lib.verified_on,
                       request=dict(request or {}), notes=notes or lib.note)
 
