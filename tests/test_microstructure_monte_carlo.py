@@ -26,8 +26,9 @@ from fin_skills.microstructure.monte_carlo import (BGK_BETA, LS_AMERICAN, LS_COE
                                                    down_and_out_call, gbm_paths,
                                                    geometric_asian_call, ls_paper_example,
                                                    lsm_american_put, lsm_price, mc_stats,
-                                                   qmc_vs_mc, sobol_first_point,
-                                                   sobol_normals, variance_reduction_table)
+                                                   option_models_cross_check, qmc_vs_mc,
+                                                   sobol_first_point, sobol_normals,
+                                                   variance_reduction_table)
 
 BASE = dict(S=100.0, K=100.0, T=1.0, r=0.05, q=0.0, sigma=0.25)
 
@@ -94,6 +95,14 @@ def test_lsm_and_a_bermudan_tree_land_on_the_papers_finite_difference_column():
         assert tree == pytest.approx(fd, abs=2e-3)
         mine = lsm_american_put(S0, 40.0, float(T0), 0.06, sg, 40_000, 50, basis="laguerre")
         assert mine == pytest.approx(fd, abs=0.03)
+
+
+def test_this_files_tree_matches_the_one_in_option_pricing_models():
+    xc = option_models_cross_check()
+    assert xc is not None, "fin_skills is importable inside the test suite by construction"
+    for steps in (400, 800):
+        assert xc[steps]["mine"] == pytest.approx(xc[steps]["theirs"], abs=1e-10)
+    assert xc[800]["mine"] == pytest.approx(xc["documented_american_800"], abs=1e-6)
 
 
 def test_a_continuously_exercisable_tree_is_worth_more_than_the_bermudan_one():
