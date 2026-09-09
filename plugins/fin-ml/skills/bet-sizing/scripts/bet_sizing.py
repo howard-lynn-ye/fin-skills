@@ -1,0 +1,305 @@
+#!/usr/bin/env python3
+"""From a predicted probability to a position - the size curve, averaging, and discretisation.
+
+Advances in Financial Machine Learning (Lopez de Prado 2018), chapter 10. A classifier hands you
+`p`, the probability that its call is right. Turning that into a position is three separate
+decisions, and each one has a measurable cost:
+
+  1. **the size curve**: `z = (p - 1/n_classes) / sqrt(p (1 - p))`, `m = 2 * Phi(z) - 1`, then
+     `signal = side * m`. It is not `2p - 1`, and the difference is not small at the extremes;
+  2. **averaging active bets**: several bets are open at once. Summing their sizes lets gross
+     exposure grow with concurrency; averaging caps it at 1 and changes the return series;
+  3. **discretisation**: rounding the size to a step kills the churn that a continuously moving
+     probability produces, at the cost of tracking error;
+  4. **the concurrency budget**: dividing by the maximum number of simultaneous bets bounds
+     leverage - and using the FULL-SAMPLE maximum to do it is a look-ahead.
+
+The Kelly fraction - how big the whole book should be - is a different question and belongs to
+the position-sizing-kelly skill. This script only turns a probability into a relative size.
+
+Run:  python bet_sizing.py     (numpy + scipy; no optional libraries; seed 0; ~2 s)
+"""
+from __future__ import annotations
+
+import math
+import time
+
+import numpy as np
+
+SEED = 0
+N_BARS = 5000
+SIGMA = 0.01
+BET_RATE = 0.06          # probability that a new bet starts on any given bar
+HOLD_MIN, HOLD_MAX = 5, 60
+CHURN = 0.8              # noise in the per-bar re-estimate of p, in logit units
+COST = 0.0005            # cost per unit of position turnover (5 bp)
+STEPS = (1.0, 0.5, 0.25, 0.10, 0.05, 0.0)     # 0.0 means no discretisation
+
+
+# ------------------------------------------------------------------------ the size curve ----
+def norm_cdf(z):
+    """Standard normal CDF, vectorised, via the error function."""
+    from scipy.special import erf
+
+    return 0.5 * (1.0 + erf(np.asarray(z, dtype=float) / math.sqrt(2.0)))
+
+
+def bet_size(prob, n_classes: int = 2):
+    """m = 2 * Phi(z) - 1 with z = (p - 1/n_classes) / sqrt(p (1 - p)). Range (-1, 1).
+
+    AFML Snippet 10.1 (page 142), `getSignal` / `getBetSize`. ⚠️ Secondhand: mlfinpy 0.1.2 ships
+    no bet-sizing module and mlfinlab is not installable, so this formula is transcribed from the
+    published snippet rather than checked against running library code. What IS verified here is
+    every property it should have - the demo measures them.
+
+    p is the probability of the PREDICTED class, so p >= 1/n_classes for a sensible prediction;
+    below that the size is negative, which is the model telling you to take the other side.
+    """
+    p = np.asarray(prob, dtype=float)
+    denom = np.sqrt(np.maximum(p * (1.0 - p), 0.0))
+    z = np.divide(p - 1.0 / n_classes, denom, out=np.full(p.shape, np.inf),
+                  where=denom > 0)
+    z = np.where((denom <= 0) & (p <= 1.0 / n_classes), -np.inf, z)
+    return 2.0 * norm_cdf(z) - 1.0
+
+
+def linear_size(prob):
+    """The obvious alternative, for contrast: 2p - 1."""
+    return 2.0 * np.asarray(prob, dtype=float) - 1.0
+
+
+def discretise(signal, step: float):
+    """round(signal / step) * step, clipped to [-1, 1]. AFML Snippet 10.3 (page 145).
+
+    ⚠️ The published snippet uses pandas' `.round()`, which is half-to-EVEN, as is numpy's; a
+    size of exactly 0.25 at step 0.5 therefore rounds to 0.0, not 0.5. `step <= 0` is a
+    pass-through.
+    """
+    s = np.asarray(signal, dtype=float)
+    if step <= 0:
+        return np.clip(s, -1.0, 1.0)
+    return np.clip(np.round(s / step) * step, -1.0, 1.0)
+
+
+def discretise_sticky(signal, step: float):
+    """Same grid, but only move when the raw signal has drifted a full step from the held level.
+
+    Not in the book. It is here because the demo measures that plain rounding barely reduces
+    turnover - a signal hovering at a boundary flips across it every bar - and this is the
+    smallest change that fixes that. The cost is a lag: the position is stale by up to one step.
+    """
+    s = np.asarray(signal, dtype=float)
+    if step <= 0:
+        return np.clip(s, -1.0, 1.0)
+    out = np.empty(s.shape[0])
+    cur = 0.0
+    for i, v in enumerate(s):
+        if abs(v - cur) > step:
+            cur = float(np.clip(round(v / step) * step, -1.0, 1.0))
+        out[i] = cur
+    return out
+
+
+# ------------------------------------------------------------------------ bets --------------
+def simulate_bets(n_bars: int = N_BARS, seed: int = SEED, rate: float = BET_RATE,
+                  hold=(HOLD_MIN, HOLD_MAX), churn: float = CHURN, sigma: float = SIGMA):
+    """Overlapping bets whose probability is re-estimated every bar, and is CALIBRATED.
+
+    Each bet gets a true quality `q` in (0.5, 0.9); its side is the profitable one with
+    probability exactly `q`, so `P(correct) = q` by construction. Within the bet the model
+    re-reports `p_t = sigmoid(logit(q) + churn * z_t)` every bar, which is what makes the
+    continuous position move between bars and gives discretisation something to remove.
+
+    Returns the bar returns, per-bet arrays (start, end, side, q, correct) and the flat
+    per-(bet, bar) arrays `bar`, `bet` and `prob`.
+    """
+    rng = np.random.default_rng(seed)
+    r = sigma * rng.standard_normal(n_bars)
+    starts = np.flatnonzero(rng.random(n_bars) < rate)
+    starts = starts[starts < n_bars - hold[1] - 1]
+    k = starts.shape[0]
+    lengths = rng.integers(hold[0], hold[1] + 1, k)
+    ends = starts + lengths
+    cum = np.concatenate([[0.0], np.cumsum(r)])
+    fwd = cum[ends + 1] - cum[starts + 1]
+    profitable = np.where(fwd >= 0, 1.0, -1.0)
+    q = 0.5 + 0.4 * rng.beta(2.0, 3.0, k)                # true probability of being right
+    correct = rng.random(k) < q
+    side = np.where(correct, profitable, -profitable)
+    bar_idx, bet_idx = [], []
+    for i in range(k):
+        b = np.arange(starts[i], min(ends[i], n_bars - 1) + 1)
+        bar_idx.append(b)
+        bet_idx.append(np.full(b.shape[0], i))
+    bar_idx = np.concatenate(bar_idx)
+    bet_idx = np.concatenate(bet_idx)
+    logit_q = np.log(q / (1.0 - q))[bet_idx]
+    prob = 1.0 / (1.0 + np.exp(-(logit_q + churn * rng.standard_normal(bar_idx.shape[0]))))
+    return {"ret": r, "start": starts, "end": ends, "side": side, "q": q, "correct": correct,
+            "fwd": fwd, "bar": bar_idx, "bet": bet_idx, "prob": prob}
+
+
+def active_signals(n_bars: int, bar_idx, values, mode: str = "avg") -> np.ndarray:
+    """Position per bar from the (bet, bar) contributions active there.
+
+    mode 'avg' averages over the bets active at that bar - AFML Snippet 10.2's
+    `avgActiveSignals` - and 'sum' adds them, which is what naively holding every bet does.
+    """
+    bar_idx = np.asarray(bar_idx, dtype=int)
+    values = np.asarray(values, dtype=float)
+    num = np.zeros(n_bars)
+    cnt = np.zeros(n_bars)
+    np.add.at(num, bar_idx, values)
+    np.add.at(cnt, bar_idx, 1.0)
+    if mode == "sum":
+        return num
+    if mode != "avg":
+        raise ValueError("mode must be 'avg' or 'sum'")
+    return np.divide(num, cnt, out=np.zeros_like(num), where=cnt > 0)
+
+
+def concurrency(n_bars: int, bar_idx) -> np.ndarray:
+    return active_signals(n_bars, bar_idx, np.ones(len(bar_idx)), mode="sum")
+
+
+def turnover(pos: np.ndarray) -> float:
+    """Total absolute position change, the quantity costs are charged on."""
+    p = np.asarray(pos, dtype=float)
+    return float(np.sum(np.abs(np.diff(np.concatenate([[0.0], p])))))
+
+
+def pnl_series(pos: np.ndarray, ret: np.ndarray, cost: float = COST) -> np.ndarray:
+    """pos[t] earns ret[t+1] and pays `cost` on every unit of position change. Strictly causal."""
+    pos = np.asarray(pos, dtype=float)
+    ret = np.asarray(ret, dtype=float)
+    fwd = np.concatenate([ret[1:], [0.0]])
+    trades = np.abs(np.diff(np.concatenate([[0.0], pos])))
+    return pos * fwd - cost * trades
+
+
+def sharpe(pnl: np.ndarray, per_year: float = 252.0) -> float:
+    sd = np.std(pnl, ddof=1)
+    return float(np.mean(pnl) / sd * math.sqrt(per_year)) if sd > 0 else float("nan")
+
+
+def corr(a: np.ndarray, b: np.ndarray) -> float:
+    """Pearson correlation, or NaN when either series is constant (no divide-by-zero warning)."""
+    a, b = np.asarray(a, dtype=float), np.asarray(b, dtype=float)
+    if a.std() == 0 or b.std() == 0:
+        return float("nan")
+    return float(np.corrcoef(a, b)[0, 1])
+
+
+def expanding_max(x: np.ndarray) -> np.ndarray:
+    """Causal running maximum: out[t] uses x[0..t] only."""
+    return np.maximum.accumulate(np.asarray(x, dtype=float))
+
+
+# ------------------------------------------------------------------------ demo --------------
+def _main() -> None:
+    t_all = time.time()
+
+    print("=== 1. The size curve, m = 2 Phi(z) - 1 with z = (p - 1/n) / sqrt(p(1-p)) "
+          "(AFML Snippet 10.1 p.142) ===")
+    grid = np.array([0.50, 0.52, 0.55, 0.60, 0.65, 0.70, 0.80, 0.90, 0.95, 0.99])
+    m = bet_size(grid)
+    lin = linear_size(grid)
+    print("      p      z        m = 2Phi(z)-1     2p - 1     ratio m/(2p-1)")
+    for p, mi, li in zip(grid, m, lin):
+        z = (p - 0.5) / math.sqrt(p * (1 - p))
+        print(f"    {p:.2f}  {z:7.3f}   {mi:14.4f}   {li:8.2f}   "
+              f"{(mi / li if li else float('nan')):14.3f}")
+    print(f"  m(0.5) = {bet_size(0.5):.1f} exactly; m(1) = {bet_size(1.0):.4f}; "
+          f"m(0) = {bet_size(0.0):.4f}")
+    cross = grid[np.argmax(m > lin)]
+    print(f"  the curve is BELOW the linear size for p up to about {cross:.2f} and above it "
+          f"after - it is sceptical")
+    print(f"  near the coin flip and saturating at the extremes. At p = 0.99 it asks for "
+          f"{m[-1]:.4f} against {lin[-1]:.2f}.")
+    print(f"  three classes instead of two moves the pivot: m(0.40, n=3) = "
+          f"{bet_size(0.40, 3):+.4f} while m(0.40, n=2) = {bet_size(0.40, 2):+.4f}")
+
+    d = simulate_bets()
+    n = d["ret"].shape[0]
+    sig = d["side"][d["bet"]] * bet_size(d["prob"])
+    conc = concurrency(n, d["bar"])
+    print(f"\n=== 2. Averaging active bets (AFML Snippet 10.2 p.144) ===")
+    print(f"  {d['start'].shape[0]} bets over {n} bars, holding {HOLD_MIN}-{HOLD_MAX} bars, the "
+          f"probability re-reported every bar")
+    print(f"  calibration: mean true q {d['q'].mean():.3f}, realised hit rate "
+          f"{d['correct'].mean():.3f}, mean reported p {d['prob'].mean():.3f}")
+    print(f"  concurrent bets: mean {conc.mean():.2f}, max {conc.max():.0f}, "
+          f"{np.mean(conc == 0):.1%} of bars flat")
+    pos_avg = active_signals(n, d["bar"], sig, "avg")
+    pos_sum = active_signals(n, d["bar"], sig, "sum")
+    for name, pos in (("summed  ", pos_sum), ("averaged", pos_avg)):
+        pnl = pnl_series(pos, d["ret"])
+        print(f"  {name}: gross exposure mean {np.mean(np.abs(pos)):.3f}, max "
+              f"{np.max(np.abs(pos)):.3f}, |pos| > 1 on {np.mean(np.abs(pos) > 1.0):5.1%} of "
+              f"bars; turnover {turnover(pos):7.1f}; Sharpe after cost "
+              f"{sharpe(pnl):6.2f}")
+    print(f"  averaging divides the realised leverage by {np.max(np.abs(pos_sum)) / max(np.max(np.abs(pos_avg)), 1e-12):.1f}x "
+          f"at the peak and {np.mean(np.abs(pos_sum)) / max(np.mean(np.abs(pos_avg)), 1e-12):.1f}x "
+          f"on average.")
+    print("  it is not a rescaling: the two position series correlate "
+          f"{corr(pos_sum, pos_avg):.4f}, because the divisor moves with time.")
+
+    print(f"\n=== 3. Discretisation (AFML Snippet 10.3 p.145), on the averaged signal ===")
+    base = pos_avg
+    base_pnl = pnl_series(base, d["ret"])
+    print("             |------ round(s/step)*step ------|  |--- only move a full step ---|")
+    print("     step   sizes  turnover   vs cont  corr  Sharpe   turnover  vs cont  corr  Sharpe")
+    for step in STEPS:
+        pr = discretise(base, step)
+        st = discretise_sticky(base, step)
+        lbl = "none" if step <= 0 else f"{step:.2f}"
+        print(f"    {lbl:>5}  {len(np.unique(np.round(pr, 10))):6d}  {turnover(pr):8.1f}  "
+              f"{turnover(pr) / turnover(base):7.0%}  {corr(pr, base):4.2f}  "
+              f"{sharpe(pnl_series(pr, d['ret'])):6.2f}   {turnover(st):8.1f}  "
+              f"{turnover(st) / turnover(base):6.0%}  {corr(st, base):4.2f}  "
+              f"{sharpe(pnl_series(st, d['ret'])):6.2f}")
+    print(f"  continuous: turnover {turnover(base):.1f}, Sharpe after cost {sharpe(base_pnl):.2f}"
+          f"; step 1.00 sticky never trades (the averaged signal never reaches 1), hence nan")
+    print("   cost/unit    continuous     round 0.50     step-move 0.50")
+    for c in (0.0, 0.0005, 0.0020, 0.0050):
+        print(f"   {c:9.2%}    {sharpe(pnl_series(base, d[chr(114)+chr(101)+chr(116)], c)):10.2f}"
+              f"    {sharpe(pnl_series(discretise(base, 0.5), d[chr(114)+chr(101)+chr(116)], c)):11.2f}"
+              f"    {sharpe(pnl_series(discretise_sticky(base, 0.5), d[chr(114)+chr(101)+chr(116)], c)):14.2f}")
+    print("  ROUNDING ALONE BARELY REDUCES TURNOVER. A signal hovering at a grid boundary flips")
+    print("  across it every bar, and each flip is a full step of trading - at step 0.05 the")
+    print("  rounded position trades MORE than the continuous one. Only the coarsest grid helps.")
+    print("  Requiring a full step of drift before moving is what actually buys the turnover, and")
+    print("  it costs tracking (a lower correlation with the continuous signal) rather than grid")
+    print("  resolution.")
+
+    print(f"\n=== 4. Budgeting concurrent bets, and the look-ahead inside it ===")
+    max_full = float(conc.max())
+    max_causal = expanding_max(conc)
+    pos_budget_full = pos_sum / max_full
+    pos_budget_causal = np.divide(pos_sum, np.maximum(max_causal, 1.0))
+    print(f"  full-sample max concurrency {max_full:.0f}; the causal expanding max reaches it "
+          f"only at bar {int(np.argmax(max_causal >= max_full))} of {n} "
+          f"({np.argmax(max_causal >= max_full) / n:.0%} of the way through)")
+    print(f"  dividing by the FULL-SAMPLE max: |pos| max {np.max(np.abs(pos_budget_full)):.3f}, "
+          f"mean {np.mean(np.abs(pos_budget_full)):.3f}, Sharpe "
+          f"{sharpe(pnl_series(pos_budget_full, d['ret'])):.2f}")
+    print(f"  dividing by the EXPANDING max:    |pos| max "
+          f"{np.max(np.abs(pos_budget_causal)):.3f}, mean "
+          f"{np.mean(np.abs(pos_budget_causal)):.3f}, Sharpe "
+          f"{sharpe(pnl_series(pos_budget_causal, d['ret'])):.2f}")
+    breach = float(np.mean(np.abs(pos_budget_causal) > np.max(np.abs(pos_budget_full))))
+    print(f"  the causal version exceeds the full-sample version's own peak on {breach:.1%} of "
+          f"bars - that is the leverage the look-ahead hid.")
+    early = slice(0, n // 4)
+    print(f"  over the first quarter of the sample the causal budget runs at "
+          f"{np.mean(np.abs(pos_budget_causal[early])) / np.mean(np.abs(pos_budget_full[early])):.2f}x "
+          f"the full-sample one, because the divisor has not yet seen the crowded stretch.")
+
+    print("\nRule: size with 2*Phi(z)-1 rather than 2p-1, average the concurrent bets instead of"
+          " adding them, discretise only to buy turnover, and never divide by a maximum"
+          " concurrency you have not lived through yet.")
+    print(f"total runtime {time.time() - t_all:.1f}s")
+
+
+if __name__ == "__main__":
+    _main()

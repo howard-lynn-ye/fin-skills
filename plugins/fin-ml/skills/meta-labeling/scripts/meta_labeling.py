@@ -1,0 +1,321 @@
+#!/usr/bin/env python3
+"""Meta-labeling - a primary model picks the side, a secondary model decides whether to act.
+
+Advances in Financial Machine Learning (Lopez de Prado 2018), chapter 3, section 3.6. The primary
+model answers "long or short"; the secondary is trained on the BINARY question "was the primary
+right", using features about the state of the market rather than about direction. Acting only when
+the secondary agrees raises precision and lowers recall - it converts false positives into missed
+trades, which is the right trade when every trade costs money.
+
+The trap this script measures: **the meta model must be trained on rows where the primary's
+prediction was out of sample.** Fit the primary on a window, predict on that same window, and its
+in-sample predictions are too good; the meta-labels are then almost all 1, the secondary learns
+"always act", and the whole apparatus does nothing while looking fine in training.
+
+All measured on one seeded series:
+
+  1. the data: a hidden two-state chain, momentum-continuing in one state and reverting in the
+     other, so a directional model CAN be right and a state model CAN tell when;
+  2. precision / recall / F1 of the primary alone against primary-plus-meta, out of sample;
+  3. the same under the trap - meta trained on the primary's own fitted rows;
+  4. Sharpe after costs, all three, at four cost levels;
+  5. the meta probability as a size rather than a switch (see the bet-sizing skill for the rest).
+
+Run:  python meta_labeling.py     (numpy; scikit-learn optional; seed 0; ~3 s)
+"""
+from __future__ import annotations
+
+import math
+import time
+
+import numpy as np
+
+SEED = 0
+N_BARS = 24_000
+HOLD = 5                 # bars held per bet; bets are spaced HOLD apart, so they never overlap
+MOM_WINDOW = 10          # momentum lookback for the primary's feature
+VOL_WINDOW = 50          # realized-volatility lookback for the meta's features
+WARMUP = 200
+# hidden regime: 0 = choppy (reverting, noisy), 1 = trending (momentum continues, quieter)
+P_STAY = 0.985
+BETA_TREND = 0.30        # next-bar drift per unit of standardised momentum, trending state
+BETA_CHOP = -0.30        # ... and reverting state
+SIG_TREND = 0.008
+SIG_CHOP = 0.016
+RIDGE = 1e-3             # ridge on the logistic fits, so they are defined even on separable data
+N_NOISE = 100            # pure-noise columns given to the PRIMARY, so it overfits like a real one
+COSTS = (0.0, 0.0005, 0.0020, 0.0050)      # one-way cost per bet, in return units
+
+
+# ------------------------------------------------------------------------ data --------------
+def regime_series(n_bars: int = N_BARS, seed: int = SEED, p_stay: float = P_STAY):
+    """Log returns whose drift depends on recent momentum with a state-dependent sign.
+
+    Returns (log_ret, state). In state 1 momentum continues, in state 0 it reverses, and state 0
+    is also the noisier one - so realized volatility is an imperfect but real signal about which
+    state you are in, which is exactly what a meta model can learn.
+    """
+    rng = np.random.default_rng(seed)
+    state = np.zeros(n_bars, dtype=int)
+    flips = rng.random(n_bars)
+    for t in range(1, n_bars):
+        state[t] = state[t - 1] if flips[t] < p_stay else 1 - state[t - 1]
+    r = np.zeros(n_bars)
+    z = rng.standard_normal(n_bars)
+    mom = 0.0
+    for t in range(1, n_bars):
+        beta = BETA_TREND if state[t] == 1 else BETA_CHOP
+        sig = SIG_TREND if state[t] == 1 else SIG_CHOP
+        r[t] = beta * mom * sig + sig * z[t]
+        lo = max(0, t - MOM_WINDOW + 1)
+        s = r[lo:t + 1]
+        sd = s.std()
+        mom = float(s.sum() / (sd * math.sqrt(len(s)))) if sd > 0 else 0.0
+    return r, state
+
+
+def rolling(x: np.ndarray, w: int, fn) -> np.ndarray:
+    """Causal rolling statistic: out[t] uses x[t-w+1 .. t] and nothing after t."""
+    x = np.asarray(x, dtype=float)
+    out = np.full(x.shape[0], np.nan)
+    for t in range(w - 1, x.shape[0]):
+        out[t] = fn(x[t - w + 1:t + 1])
+    return out
+
+
+def build_features(log_ret: np.ndarray) -> dict:
+    """Causal features. `mom` is the primary's; the rest describe the STATE, for the meta."""
+    vol = rolling(log_ret, VOL_WINDOW, np.std)
+    mom_sum = rolling(log_ret, MOM_WINDOW, np.sum)
+    mom = mom_sum / np.maximum(vol * math.sqrt(MOM_WINDOW), 1e-12)
+    absr = rolling(np.abs(log_ret), VOL_WINDOW, np.mean)
+    # efficiency ratio: |net move| / total travel over the momentum window - high when trending
+    net = np.abs(mom_sum)
+    travel = rolling(np.abs(log_ret), MOM_WINDOW, np.sum)
+    eff = net / np.maximum(travel, 1e-12)
+    return {"mom": mom, "vol": vol, "eff": eff, "absr": absr}
+
+
+def make_bets(feat: dict, log_ret: np.ndarray, hold: int = HOLD, warmup: int = WARMUP,
+              n_noise: int = N_NOISE, seed: int = SEED):
+    """Non-overlapping bets every `hold` bars. Returns (t0, y_fwd, X_primary, X_meta).
+
+    `y_fwd[i]` is the sum of the `hold` returns AFTER t0, so nothing in the feature block at t0
+    touches it. Non-overlapping on purpose: overlap is a separate problem with a separate fix
+    (see the sample-weights-and-uniqueness skill).
+
+    The primary gets `mom` plus `n_noise` pure-noise columns. That is not a straw man: it is what
+    every real primary model has - capacity beyond its signal - and it is the reason its in-sample
+    predictions are better than its honest ones.
+    """
+    n = log_ret.shape[0]
+    t0 = np.arange(warmup, n - hold, hold, dtype=int)
+    ok = np.isfinite(feat["mom"][t0]) & np.isfinite(feat["eff"][t0]) & np.isfinite(feat["vol"][t0])
+    t0 = t0[ok]
+    cum = np.concatenate([[0.0], np.cumsum(log_ret)])
+    y_fwd = cum[t0 + hold + 1] - cum[t0 + 1]
+    noise = np.random.default_rng(seed + 1).standard_normal((t0.shape[0], n_noise))
+    x_prim = np.column_stack([feat["mom"][t0], noise])
+    x_meta = np.column_stack([feat["vol"][t0], feat["eff"][t0], np.abs(feat["mom"][t0]),
+                              feat["absr"][t0]])
+    return t0, y_fwd, x_prim, x_meta
+
+
+# ------------------------------------------------------------------------ logistic ----------
+def fit_logistic(X: np.ndarray, y: np.ndarray, ridge: float = RIDGE, iters: int = 50):
+    """Binary logistic regression by Newton/IRLS, with an intercept and a ridge penalty.
+
+    Deterministic and dependency-free; the demo checks it against scikit-learn when available.
+    Features are standardised INSIDE the fit using training statistics only, and the returned
+    object carries them so `predict_proba` can apply the same transform to new rows.
+    """
+    X = np.asarray(X, dtype=float)
+    y = np.asarray(y, dtype=float)
+    mu, sd = X.mean(axis=0), X.std(axis=0)
+    sd = np.where(sd > 0, sd, 1.0)
+    Z = np.column_stack([np.ones(X.shape[0]), (X - mu) / sd])
+    beta = np.zeros(Z.shape[1])
+    pen = ridge * np.eye(Z.shape[1])
+    pen[0, 0] = 0.0                                   # never penalise the intercept
+    for _ in range(iters):
+        p = 1.0 / (1.0 + np.exp(-np.clip(Z @ beta, -30, 30)))
+        w = np.maximum(p * (1.0 - p), 1e-9)
+        grad = Z.T @ (y - p) - pen @ beta
+        hess = (Z * w[:, None]).T @ Z + pen
+        step = np.linalg.solve(hess, grad)
+        beta = beta + step
+        if np.max(np.abs(step)) < 1e-10:
+            break
+    return {"beta": beta, "mu": mu, "sd": sd}
+
+
+def predict_proba(model: dict, X: np.ndarray) -> np.ndarray:
+    Z = np.column_stack([np.ones(np.asarray(X).shape[0]),
+                         (np.asarray(X, dtype=float) - model["mu"]) / model["sd"]])
+    return 1.0 / (1.0 + np.exp(-np.clip(Z @ model["beta"], -30, 30)))
+
+
+def sklearn_logistic_check(X: np.ndarray, y: np.ndarray, ridge: float = RIDGE):
+    """Max abs probability difference against sklearn's LogisticRegression, or None."""
+    try:
+        from sklearn.linear_model import LogisticRegression
+    except ImportError:
+        return None
+    m = fit_logistic(X, y, ridge)
+    Z = (np.asarray(X, dtype=float) - m["mu"]) / m["sd"]
+    clf = LogisticRegression(C=1.0 / ridge, tol=1e-10, max_iter=10_000,
+                             solver="lbfgs").fit(Z, y)
+    return float(np.max(np.abs(clf.predict_proba(Z)[:, 1] - predict_proba(m, X))))
+
+
+# ------------------------------------------------------------------------ metrics -----------
+def prf(actual_good: np.ndarray, acted: np.ndarray) -> dict:
+    """Precision / recall / F1 for 'the bet was profitable', with acting as the prediction."""
+    tp = float(np.sum(acted & actual_good))
+    fp = float(np.sum(acted & ~actual_good))
+    fn = float(np.sum(~acted & actual_good))
+    prec = tp / (tp + fp) if tp + fp else float("nan")
+    rec = tp / (tp + fn) if tp + fn else float("nan")
+    f1 = 2 * prec * rec / (prec + rec) if prec + rec else float("nan")
+    return {"precision": prec, "recall": rec, "f1": f1, "n_acted": int(acted.sum()),
+            "coverage": float(np.mean(acted))}
+
+
+def sharpe_after_cost(side: np.ndarray, acted: np.ndarray, y_fwd: np.ndarray, cost: float,
+                      per_year: float = 252.0, hold: int = HOLD) -> float:
+    """Annualised Sharpe of the bet series; `cost` is charged on every bet actually taken."""
+    pnl = np.where(acted, side * y_fwd - cost, 0.0)
+    sd = pnl.std(ddof=1)
+    if sd == 0:
+        return float("nan")
+    return float(pnl.mean() / sd * math.sqrt(per_year / hold))
+
+
+def split_three(n: int) -> tuple[slice, slice, slice]:
+    a, b = n // 3, 2 * (n // 3)
+    return slice(0, a), slice(a, b), slice(b, n)
+
+
+def run_meta(x_prim: np.ndarray, x_meta: np.ndarray, y_fwd: np.ndarray, leak: bool = False,
+             threshold: float = 0.5) -> dict:
+    """Fit primary on A, meta on B (or on A when `leak`), score both on C.
+
+    `leak=True` is the trap: the meta model is trained on rows whose primary prediction was made
+    in sample, so the meta-labels it sees are far better than the primary can actually do.
+    """
+    A, B, C = split_three(y_fwd.shape[0])
+    up = (y_fwd > 0).astype(float)
+    prim = fit_logistic(x_prim[A], up[A])
+
+    def side_of(sl):
+        return np.where(predict_proba(prim, x_prim[sl]) > 0.5, 1.0, -1.0)
+
+    meta_slice = A if leak else B
+    side_meta = side_of(meta_slice)
+    meta_label = (side_meta * y_fwd[meta_slice] > 0).astype(float)
+    meta = fit_logistic(x_meta[meta_slice], meta_label)
+
+    side_c = side_of(C)
+    good_c = side_c * y_fwd[C] > 0
+    p_c = predict_proba(meta, x_meta[C])
+    acted = p_c > threshold
+    in_sample_rate = float(np.mean(side_of(A) * y_fwd[A] > 0))
+    honest_rate = float(np.mean(side_of(B) * y_fwd[B] > 0))
+    return {"primary": prf(good_c, np.ones_like(good_c, dtype=bool)),
+            "meta": prf(good_c, acted),
+            "side_c": side_c, "good_c": good_c, "p_c": p_c, "acted": acted,
+            "y_c": y_fwd[C],
+            "primary_in_sample_rate": in_sample_rate,
+            "primary_honest_rate": honest_rate,
+            "meta_train_base_rate": float(meta_label.mean()),
+            "meta_train_n": int(meta_label.shape[0])}
+
+
+# ------------------------------------------------------------------------ demo --------------
+def _main() -> None:
+    t_all = time.time()
+    log_ret, state = regime_series()
+    feat = build_features(log_ret)
+    t0, y_fwd, x_prim, x_meta = make_bets(feat, log_ret)
+    A, B, C = split_three(y_fwd.shape[0])
+
+    print("=== 1. The data: a hidden two-state chain, momentum in one, reversal in the other ===")
+    print(f"  {N_BARS} bars, P(stay) {P_STAY} -> mean regime length "
+          f"{1 / (1 - P_STAY):.0f} bars; state 1 (trending) is "
+          f"{np.mean(state == 1):.1%} of bars")
+    print(f"  realized volatility, state 0 vs state 1: {np.nanmean(feat['vol'][state == 0]):.5f} "
+          f"vs {np.nanmean(feat['vol'][state == 1]):.5f} - the meta model's only real edge")
+    print(f"  {y_fwd.shape[0]} non-overlapping {HOLD}-bar bets, split "
+          f"{A.stop}/{B.stop - B.start}/{C.stop - C.start} into primary-train / meta-train / test")
+    chk = sklearn_logistic_check(x_meta[:2000], (y_fwd[:2000] > 0).astype(float))
+    if chk is None:
+        print("  scikit-learn is not installed - the numpy IRLS logistic is used unchecked")
+    else:
+        print(f"  the numpy IRLS logistic vs sklearn LogisticRegression(lbfgs, C=1/ridge): "
+              f"max abs probability difference {chk:.2e}")
+
+    print("\n=== 2. Primary alone vs primary + meta, out of sample (test third) ===")
+    ok = run_meta(x_prim, x_meta, y_fwd, leak=False)
+    print(f"  meta trained on {ok['meta_train_n']} rows whose primary side was OUT of sample; "
+          f"base rate of 'primary was right' there: {ok['meta_train_base_rate']:.3f}")
+    print("                       precision   recall      F1     bets taken   coverage")
+    for name, m in (("primary alone     ", ok["primary"]), ("primary + meta    ", ok["meta"])):
+        print(f"  {name} {m['precision']:9.4f} {m['recall']:8.4f} {m['f1']:8.4f} "
+              f"{m['n_acted']:11d} {m['coverage']:10.1%}")
+    d = ok["meta"]["precision"] - ok["primary"]["precision"]
+    print(f"  precision {d:+.4f}, recall {ok['meta']['recall'] - ok['primary']['recall']:+.4f}: "
+          f"the meta model converts {1 - ok['meta']['coverage']:.0%} of the signals into "
+          f"no-trades,")
+    print(f"  buying {d / max(ok['primary']['precision'], 1e-12):+.1%} relative precision for "
+          f"{ok['meta']['recall'] - 1:.1%} of the recall.")
+
+    print("\n=== 3. The trap: meta trained on the primary's OWN fitted rows ===")
+    bad = run_meta(x_prim, x_meta, y_fwd, leak=True)
+    print(f"  the primary has 1 real feature and {N_NOISE} noise columns on {A.stop} rows, so it "
+          f"is right on {ok['primary_in_sample_rate']:.3f} of its OWN rows")
+    print(f"  and on {ok['primary_honest_rate']:.3f} of fresh ones - a gap of "
+          f"{ok['primary_in_sample_rate'] - ok['primary_honest_rate']:+.3f} that the meta model "
+          f"cannot see")
+    print(f"  base rate of 'primary was right' in the meta's training set: "
+          f"leaked {bad['meta_train_base_rate']:.3f} vs honest "
+          f"{ok['meta_train_base_rate']:.3f}")
+    print("                       precision   recall      F1     bets taken   coverage")
+    for name, m in (("primary alone     ", bad["primary"]), ("primary + LEAKED  ", bad["meta"])):
+        print(f"  {name} {m['precision']:9.4f} {m['recall']:8.4f} {m['f1']:8.4f} "
+              f"{m['n_acted']:11d} {m['coverage']:10.1%}")
+    print(f"  the leaked meta model acts on {bad['meta']['coverage']:.1%} of signals against "
+          f"{ok['meta']['coverage']:.1%} for the honest one, and its test precision is "
+          f"{bad['meta']['precision'] - ok['meta']['precision']:+.4f} versus it.")
+
+    print("\n=== 4. Sharpe after costs (annualised, non-overlapping "
+          f"{HOLD}-bar bets) ===")
+    print("   cost/bet    primary alone   primary + meta   primary + LEAKED meta")
+    for c in COSTS:
+        s_p = sharpe_after_cost(ok["side_c"], np.ones_like(ok["acted"]), ok["y_c"], c)
+        s_m = sharpe_after_cost(ok["side_c"], ok["acted"], ok["y_c"], c)
+        s_b = sharpe_after_cost(bad["side_c"], bad["acted"], bad["y_c"], c)
+        print(f"   {c:8.4%}   {s_p:13.3f}   {s_m:14.3f}   {s_b:21.3f}")
+
+    print("\n=== 5. The meta probability as a size, not a switch ===")
+    print("   threshold   coverage   precision    Sharpe @ 20bp")
+    for thr in (0.40, 0.50, 0.55, 0.60, 0.65):
+        acted = ok["p_c"] > thr
+        m = prf(ok["good_c"], acted)
+        s = sharpe_after_cost(ok["side_c"], acted, ok["y_c"], 0.0020)
+        print(f"   {thr:9.2f}   {m['coverage']:8.1%}   {m['precision']:9.4f}   {s:12.3f}")
+    sized = (ok["p_c"] - 0.5) * 2.0
+    sized = np.clip(sized, 0.0, 1.0)
+    pnl_sized = sized * ok["side_c"] * ok["y_c"] - np.abs(sized) * 0.0020
+    sh_sized = float(pnl_sized.mean() / pnl_sized.std(ddof=1) * math.sqrt(252.0 / HOLD))
+    print(f"   continuous size 2*(p - 0.5) clipped to [0, 1]: Sharpe @ 20bp {sh_sized:.3f}, "
+          f"mean gross exposure {sized.mean():.3f}")
+    print("   turning the probability into a size is a separate decision with its own traps -"
+          " see the bet-sizing skill.")
+
+    print("\nRule: fit the primary, predict OUT of sample, label those predictions right or wrong,"
+          " and train the secondary on that - never on the primary's own fitted rows.")
+    print(f"total runtime {time.time() - t_all:.1f}s")
+
+
+if __name__ == "__main__":
+    _main()
