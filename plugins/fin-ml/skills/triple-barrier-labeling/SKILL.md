@@ -32,6 +32,9 @@ test series is 6,000 bars of clustered volatility (log-vol AR(1), `phi = 0.99`) 
 drift**, so every asymmetry below is geometry, not alpha. Bars are integer indices; the book keys
 everything by `DatetimeIndex`, which changes none of the arithmetic.
 
+⚠️ Snippet and page numbers below are as cited in **mlfinpy 0.1.2's own docstrings**; what is
+verified here is the *code*, not the book.
+
 ## 1. The three barriers, and why two of them must be volatility-scaled
 
 Per event `t0`: a profit-taking barrier at `+pt * trgt`, a stop-loss barrier at `-sl * trgt`, and

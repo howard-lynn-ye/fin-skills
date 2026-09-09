@@ -31,6 +31,9 @@ Every number below is printed by `scripts/frac_diff.py` (numpy + scipy, seed 0, 
 entire edge and a single return contains almost none of it. That is the DGP on which "differencing
 destroys memory" is a measurable statement rather than a slogan.
 
+⚠️ Section and page numbers below are as cited in **mlfinpy 0.1.2's own docstrings**; what is
+verified here is the *code*, not the book.
+
 ## 1. The weight recursion, and why it is not a moving average
 
 `(1 - B)^d` expanded as a binomial series gives weights on the **levels**, newest first:
