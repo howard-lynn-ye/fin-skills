@@ -101,12 +101,15 @@ def to_vectorbt(bundle: Bundle, *, entries: pd.DataFrame | pd.Series,
     """
     ent = _as_frame(entries, "entries").astype(bool)
     exi = _as_frame(exits, "exits").astype(bool)
-    if "price" in portfolio_kw:
-        raise TypeError("pass the fill price as price=, not inside **portfolio_kw: this "
-                        "bridge owns it so that np.inf can never reach Order.price")
     if isinstance(price, str) and price not in ("open", "close"):
         raise TypeError(f"price must be 'open', 'close' or a frame of fill prices, "
                         f"got {price!r}")
+    if isinstance(price, (int, float, np.floating)) and not isinstance(price, bool):
+        raise SameBarFillError(
+            f"price={price!r} is a bare number, and a bare number is how np.inf reaches "
+            f"Order.price - which vectorbt's own portfolio/enums.py resolves to 'the "
+            f"current close'. This bridge takes 'open', 'close' or an explicit frame of "
+            f"fill prices, so the default can never be inherited by accident.")
 
     # ---- the refusal, first, before anything is imported or built --------------------
     if price == "close" and not already_lagged:
@@ -129,8 +132,8 @@ def to_vectorbt(bundle: Bundle, *, entries: pd.DataFrame | pd.Series,
         _lazy.prove_lagged(fn, bars, k=k, name="entries/exits")
         ent_f, exi_f = ent, exi
     else:
-        ent_f, exi_f = ent.shift(1).fillna(False).astype(bool), \
-            exi.shift(1).fillna(False).astype(bool)
+        ent_f = ent.shift(1, fill_value=False).astype(bool)
+        exi_f = exi.shift(1, fill_value=False).astype(bool)
 
     close = _close_of(bundle)
     if isinstance(price, str):
