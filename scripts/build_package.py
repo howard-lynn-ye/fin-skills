@@ -38,7 +38,11 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = Path(__file__).resolve().parent.parent
 PKG = ROOT / "fin_skills"
 HAND_WRITTEN = {"__init__.py"}          # kept as-is; everything else under fin_skills/ is generated
-HAND_WRITTEN_DIRS = ("api/",)           # the unified API layer is hand-written on top of the generated modules
+# Hand-written packages that sit ON TOP of the generated modules and survive regeneration:
+#   api/    the unified Guard interface and the Bundle
+#   tools/  the same guards as JSON-callable tools (schemas, payloads, runner, export)
+#   mcp/    the Model Context Protocol server over tools/
+HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/")
 
 
 def is_hand_written(rel: str) -> bool:
