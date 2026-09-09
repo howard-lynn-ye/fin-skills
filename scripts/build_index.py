@@ -27,6 +27,34 @@ ROOT = Path(__file__).resolve().parent.parent
 BEGIN = "<!-- BEGIN GENERATED SKILL TABLE -->"
 END = "<!-- END GENERATED SKILL TABLE -->"
 
+# The README's PROSE counts (outside the generated table) went stale twice - once when the
+# per-library skills were added, once when fin-models landed - so rewrite_counts() below
+# regenerates them from the catalog as well. A number nobody regenerates will be wrong.
+NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
+                8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen",
+                14: "fourteen", 15: "fifteen", 16: "sixteen", 17: "seventeen", 18: "eighteen",
+                19: "nineteen", 20: "twenty"}
+
+
+def rewrite_counts(txt: str, skills: list) -> str:
+    """Rewrite the README's prose counts from the catalog. Silent when a pattern is absent."""
+    n_total = len(skills)
+    n_library = sum(1 for s in skills if s["plugin"] == "fin-libraries")
+    n_domain = n_total - n_library
+    n_fed = 0
+    market = ROOT / ".claude-plugin" / "marketplace.json"
+    if market.exists():
+        plugins = json.loads(market.read_text(encoding="utf-8")).get("plugins", [])
+        n_fed = sum(1 for p in plugins if not isinstance(p.get("source"), str))
+    fed_word = NUMBER_WORDS.get(n_fed, str(n_fed))
+
+    txt = re.sub(r"^\*\*\d+ (\[Agent Skills\])", rf"**{n_total} \1", txt, count=1, flags=re.M)
+    txt = re.sub(r"(result is real\.\*\* )\d+( domain skills, plus )\d+( optional)",
+                 rf"\g<1>{n_domain}\g<2>{n_library}\g<3>", txt, count=1)
+    txt = re.sub(r"(The marketplace also lists )\w+( third-party skill packs)",
+                 rf"\g<1>{fed_word}\g<2>", txt, count=1)
+    return txt
+
 
 def first_sentence(desc: str) -> str:
     s = re.split(r"(?<=[.!?])\s+", desc.strip())[0]
@@ -102,11 +130,14 @@ def main() -> int:
     readme = ROOT / "README.md"
     if readme.exists():
         txt = readme.read_text(encoding="utf-8")
+        before = txt
         if BEGIN in txt and END in txt:
             new = f"{BEGIN}\n\n{render_table(skills)}\n\n{END}"
             txt = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END), new, txt, flags=re.S)
+        txt = rewrite_counts(txt, skills)
+        if txt != before:
             readme.write_text(txt, encoding="utf-8")
-            print("README skill table regenerated")
+            print("README skill table and counts regenerated")
 
     per_plugin = {}
     for s in skills:
