@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 88,
+  "n_skills": 92,
   "n_reference_files": 74,
-  "n_scripts": 72,
+  "n_scripts": 76,
   "discovery_cost": {
-    "total_description_chars": 77501,
-    "approx_tokens": 19375,
+    "total_description_chars": 81430,
+    "approx_tokens": 20357,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -17,6 +17,7 @@
     "fin-libraries",
     "fin-llm",
     "fin-macro",
+    "fin-microstructure",
     "fin-ml",
     "fin-models",
     "fin-strategies",
@@ -1012,6 +1013,70 @@
       "references": [],
       "scripts": [
         "seasonal_adjustment.py"
+      ]
+    },
+    {
+      "name": "copulas-and-dependence",
+      "plugin": "fin-microstructure",
+      "path": "plugins/fin-microstructure/skills/copulas-and-dependence/SKILL.md",
+      "description": "Separate the marginals from the dependence - Gaussian, Student t, Clayton and Gumbel copulas, Kendall's tau, tail dependence coefficients, and what fitting the wrong family costs in the joint tail. TRIGGER - copula, Gaussian copula, t copula, Student t copula, Clayton copula, Gumbel copula, Archimedean copula, Sklar's theorem; tail dependence, lower tail dependence, upper tail dependence, lambda_U, \"correlation is not dependence\", \"correlations go to one in a crisis\", joint tail probability, joint exceedance; Kendall's tau, Spearman rho, rank correlation, pseudo-observations, inversion of Kendall's tau, copula MLE, copulas python, copulae, statsmodels copula; diversification benefit, \"my VaR says the portfolio is safe\". SKIP for estimating a covariance matrix and shrinkage (covariance-and-risk-models), for VaR/CVaR methods and their backtests (risk-measures-var-cvar), and for GARCH marginals (volatility-models).",
+      "summary": "Separate the marginals from the dependence - Gaussian, Student t, Clayton and Gumbel copulas, Kendall's tau, tail dependence coefficients, and what fitting the wrong family costs i",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12530,
+      "approx_body_tokens": 3132,
+      "references": [],
+      "scripts": [
+        "copulas.py"
+      ]
+    },
+    {
+      "name": "hawkes-processes",
+      "plugin": "fin-microstructure",
+      "path": "plugins/fin-microstructure/skills/hawkes-processes/SKILL.md",
+      "description": "Fit and test a self-exciting point process for clustered order arrivals - exponential-kernel Hawkes intensity, Ogata thinning, maximum likelihood, the branching ratio, and the random time change that tests the fit. TRIGGER - Hawkes process, self-exciting point process, order arrival clustering, trade clustering, order flow clustering, mutually exciting, branching ratio, alpha over beta, criticality, endogeneity of market activity; Ogata thinning, simulate a point process, tick, hawkeslib, conditional intensity; Hawkes MLE, log-likelihood recursion, random time change, residual analysis, \"are my arrivals Poisson\", overdispersed counts, Fano factor, \"my Poisson confidence interval is too narrow\". SKIP for the birth-death queue model of a single price level (limit-order-book-models), for measuring realised activity from a tape (intraday-microstructure), for GARCH and volatility clustering in returns rather than arrivals (volatility-models), and for regime switching (regime-detection).",
+      "summary": "Fit and test a self-exciting point process for clustered order arrivals - exponential-kernel Hawkes intensity, Ogata thinning, maximum likelihood, the branching ratio, and the rand",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11882,
+      "approx_body_tokens": 2970,
+      "references": [],
+      "scripts": [
+        "hawkes.py"
+      ]
+    },
+    {
+      "name": "limit-order-book-models",
+      "plugin": "fin-microstructure",
+      "path": "plugins/fin-microstructure/skills/limit-order-book-models/SKILL.md",
+      "description": "Model the order book as a queueing system - Cont-Stoikov-Talreja birth-death queues, the probability the mid moves up before down given the two queue sizes, and the fill probability and adverse selection of a passive order at a given queue position. TRIGGER - Cont Stoikov Talreja, stochastic model for order book dynamics, birth-death queue model, limit order book model, probability of an up move given queue sizes, queue imbalance, order book imbalance; queue position, \"will my limit order get filled\", passive fill model, queue-position backtest, hftbacktest queue model, \"the level traded 3x my size so I was filled\", order arrival rate lambda mu theta. SKIP for measuring spreads, Kyle lambda, Amihud or OFI on your own tape and for reconstructing a book from MBO data (intraday-microstructure), for how wide to quote and inventory risk (market-making-models), for working a parent order by taking liquidity (execution-algorithms), and for what fills cost after the fact (execution-cost-analysis).",
+      "summary": "Model the order book as a queueing system - Cont-Stoikov-Talreja birth-death queues, the probability the mid moves up before down given the two queue sizes, and the fill probabilit",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14020,
+      "approx_body_tokens": 3505,
+      "references": [],
+      "scripts": [
+        "lob_models.py"
+      ]
+    },
+    {
+      "name": "monte-carlo-methods",
+      "plugin": "fin-microstructure",
+      "path": "plugins/fin-microstructure/skills/monte-carlo-methods/SKILL.md",
+      "description": "Make a Monte Carlo converge to the RIGHT number - variance reduction with measured factors, Longstaff-Schwartz for American options, scrambled-Sobol QMC, and the discretisation bias a standard error cannot see. TRIGGER - variance reduction, antithetic variates, control variate, stratified sampling, importance sampling, \"how many paths do I need\", standard error of a Monte Carlo price; Longstaff-Schwartz, LSM, least-squares Monte Carlo, American option by simulation, regression on in-the-money paths, continuation value; quasi-Monte Carlo, QMC, Sobol, scipy.stats.qmc, scrambling, low discrepancy, \"power of 2\" warning; discretely monitored barrier, continuity correction, \"my error bar is tiny but the price is wrong\", \"more paths did not help\". SKIP for the model itself - Heston, SABR, trees, Euler bias on a GBM (option-pricing-models), for VaR and expected shortfall from simulated portfolios (risk-measures-var-cvar), and for the dependence structure you simulate from (copulas-and-dependence).",
+      "summary": "Make a Monte Carlo converge to the RIGHT number - variance reduction with measured factors, Longstaff-Schwartz for American options, scrambled-Sobol QMC, and the discretisation bia",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 16691,
+      "approx_body_tokens": 4172,
+      "references": [],
+      "scripts": [
+        "monte_carlo.py"
       ]
     },
     {
