@@ -1,0 +1,426 @@
+#!/usr/bin/env python3
+"""MDI, MDA and single-feature importance - and the three ways they lie about financial features.
+
+Advances in Financial Machine Learning (Lopez de Prado 2018), chapter 8. Three importance methods,
+three different failure modes, measured on one seeded design whose true answer is known:
+
+  * MDI (mean decrease impurity) is in-sample, is biased toward features with many distinct
+    values, and splits credit between substitutable features;
+  * MDA (mean decrease accuracy, i.e. permutation importance) is out-of-sample and unbiased about
+    cardinality, but UNDER-states both members of a collinear pair - permuting one leaves the
+    other to carry the signal, so the two individually sum to about half the group's true value;
+  * SFI (single feature importance) is immune to substitution and blind to interaction;
+  * clustered MDA - permuting a whole correlated group at once - is the one that recovers the
+    truth on a collinear design.
+
+And the fourth failure, which is about the split rather than the metric: with serially correlated
+features and overlapping labels, a SHUFFLED k-fold gives a slowly-varying but irrelevant feature a
+large importance, because the fold's own neighbours are in the training set. A time-ordered split
+with an embargo does not. Purged and embargoed cross-validation is the real fix and it lives in
+the lib-purgedcv skill; the embargoed forward split here is the minimum version of it.
+
+The design (n samples, all features standardised):
+
+    x0 informative                       true coefficient 1.00
+    x1 = x0 + noise, corr ~0.995         NO independent information
+    x2 informative, independent          true coefficient 0.60
+    x3 continuous noise, n unique values IRRELEVANT (the high-cardinality trap)
+    x4 binary noise, 2 unique values     IRRELEVANT
+    x5 five-level noise                  IRRELEVANT
+    x6 random-walk noise, autocorrelated IRRELEVANT (the shuffled-CV trap)
+
+Run:  python feature_importance.py     (numpy; scikit-learn optional; seed 0; ~23 s)
+"""
+from __future__ import annotations
+
+import math
+import time
+
+import numpy as np
+
+SEED = 0
+N_SAMPLES = 1500
+N_TREES = 25
+MAX_DEPTH = 5
+MIN_LEAF = 20
+MAX_FEATURES = 3         # of 7: random subspace per split, which is what creates substitution
+LABEL_SPAN = 25          # the label overlaps its neighbours by this many rows
+EMBARGO = 30             # rows dropped either side of a time-ordered fold boundary
+N_FOLDS = 3
+N_REPEATS = 3            # permutations per feature per fold
+BETA = (1.00, 0.00, 0.60, 0.0, 0.0, 0.0, 0.0)
+NOISE_SD = 2.0
+FEATURES = ("x0 informative", "x1 collinear copy", "x2 informative", "x3 noise, high card",
+            "x4 noise, binary", "x5 noise, 5 levels", "x6 noise, autocorrelated")
+
+
+# ------------------------------------------------------------------------ data --------------
+def design(n: int = N_SAMPLES, seed: int = SEED, span: int = LABEL_SPAN):
+    """Seven features and a target whose NOISE overlaps across rows. Returns (X, y, names).
+
+    `y[i] = x0[i] + 0.6 * x2[i] + e[i]` with `e` a rolling mean of `span` consecutive shocks, so
+    each row's target is fully explained by its own features while neighbouring rows share most
+    of their residual - which is what an overlapping label horizon does to a financial dataset,
+    and what makes a shuffled k-fold leak.
+    """
+    rng = np.random.default_rng(seed)
+    x0 = rng.standard_normal(n)
+    x1 = x0 + 0.10 * rng.standard_normal(n)                  # corr ~0.995 with x0
+    x2 = rng.standard_normal(n)
+    x3 = rng.standard_normal(n)                              # continuous, n distinct values
+    x4 = rng.integers(0, 2, n).astype(float)                 # 2 distinct values
+    x5 = rng.integers(0, 5, n).astype(float)                 # 5 distinct values
+    x6 = np.cumsum(rng.standard_normal(n)) / math.sqrt(n)    # autocorrelated, irrelevant
+    X = np.column_stack([x0, x1, x2, x3, x4, x5, x6])
+    # a rolling mean of `span` shocks each with sd NOISE_SD * sqrt(span) has sd NOISE_SD
+    shock = NOISE_SD * math.sqrt(span) * rng.standard_normal(n + span)
+    cum = np.concatenate([[0.0], np.cumsum(shock)])
+    e = (cum[span:span + n] - cum[:n]) / span
+    y = BETA[0] * x0 + BETA[2] * x2 + e
+    return X, y, list(FEATURES)
+
+
+# ------------------------------------------------------------------------ CART --------------
+def _best_split(x: np.ndarray, y: np.ndarray, min_leaf: int):
+    """Exhaustive variance-reduction split on one feature. Returns (sse, threshold) or None."""
+    order = np.argsort(x, kind="stable")
+    xs, ys = x[order], y[order]
+    n = ys.shape[0]
+    s1 = np.cumsum(ys)
+    s2 = np.cumsum(ys * ys)
+    k = np.arange(1, n)
+    left_sse = s2[:-1] - s1[:-1] ** 2 / k
+    right_sse = (s2[-1] - s2[:-1]) - (s1[-1] - s1[:-1]) ** 2 / (n - k)
+    total = left_sse + right_sse
+    valid = (xs[1:] > xs[:-1]) & (k >= min_leaf) & (n - k >= min_leaf)
+    if not valid.any():
+        return None
+    total = np.where(valid, total, np.inf)
+    i = int(np.argmin(total))
+    return float(total[i]), float(0.5 * (xs[i] + xs[i + 1]))
+
+
+def grow_tree(X: np.ndarray, y: np.ndarray, rng, max_depth: int = MAX_DEPTH,
+              min_leaf: int = MIN_LEAF, max_features: int = MAX_FEATURES) -> dict:
+    """A CART regression tree. Nodes are dicts; `mdi` accumulates weighted impurity decrease.
+
+    The impurity is the mean squared error at the node and the decrease credited to a feature is
+    `n * imp - nL * impL - nR * impR`, matching what scikit-learn's `compute_feature_importances`
+    accumulates with unit sample weights (the demo checks that numerically against sklearn's own
+    `tree_` arrays).
+    """
+    n_feat = X.shape[1]
+    mdi = np.zeros(n_feat)
+
+    def build(idx, depth):
+        yy = y[idx]
+        node = {"value": float(yy.mean()), "n": int(idx.shape[0])}
+        imp = float(np.mean((yy - yy.mean()) ** 2))
+        node["impurity"] = imp
+        if depth >= max_depth or idx.shape[0] < 2 * min_leaf or imp <= 0.0:
+            return node
+        cols = rng.choice(n_feat, size=min(max_features, n_feat), replace=False)
+        best = None
+        for c in cols:
+            r = _best_split(X[idx, c], yy, min_leaf)
+            if r is not None and (best is None or r[0] < best[0]):
+                best = (r[0], r[1], int(c))
+        if best is None:
+            return node
+        sse, thr, col = best
+        left = idx[X[idx, col] <= thr]
+        right = idx[X[idx, col] > thr]
+        if left.shape[0] < min_leaf or right.shape[0] < min_leaf:
+            return node
+        nl, nr = left.shape[0], right.shape[0]
+        impl = float(np.mean((y[left] - y[left].mean()) ** 2))
+        impr = float(np.mean((y[right] - y[right].mean()) ** 2))
+        mdi[col] += idx.shape[0] * imp - nl * impl - nr * impr
+        node.update({"feature": col, "threshold": thr,
+                     "left": build(left, depth + 1), "right": build(right, depth + 1)})
+        return node
+
+    root = build(np.arange(X.shape[0]), 0)
+    return {"root": root, "mdi": mdi / max(X.shape[0], 1)}
+
+
+def predict_tree(node: dict, X: np.ndarray) -> np.ndarray:
+    out = np.empty(X.shape[0])
+    for i in range(X.shape[0]):
+        nd = node
+        while "feature" in nd:
+            nd = nd["left"] if X[i, nd["feature"]] <= nd["threshold"] else nd["right"]
+        out[i] = nd["value"]
+    return out
+
+
+def fit_forest(X: np.ndarray, y: np.ndarray, n_trees: int = N_TREES, seed: int = SEED,
+               max_depth: int = MAX_DEPTH, max_features: int = MAX_FEATURES,
+               bootstrap: bool = True) -> dict:
+    """Bagged CART. `mdi` is the mean of the per-tree importances, then normalised to sum to 1.
+
+    ✅ That is scikit-learn's own aggregation: `_forest.py` computes
+    `np.mean(all_importances, axis=0)` over trees with `node_count > 1` and then divides by the
+    sum.
+    """
+    rng = np.random.default_rng(seed)
+    trees, mdis = [], []
+    n = X.shape[0]
+    for _ in range(n_trees):
+        idx = rng.integers(0, n, n) if bootstrap else np.arange(n)
+        t = grow_tree(X[idx], y[idx], rng, max_depth=max_depth, max_features=max_features)
+        if "feature" in t["root"]:
+            trees.append(t["root"])
+            mdis.append(t["mdi"])
+    if not mdis:
+        return {"trees": [], "mdi": np.zeros(X.shape[1])}
+    m = np.mean(mdis, axis=0)
+    s = m.sum()
+    return {"trees": trees, "mdi": m / s if s > 0 else m}
+
+
+def predict_forest(forest: dict, X: np.ndarray) -> np.ndarray:
+    if not forest["trees"]:
+        return np.zeros(X.shape[0])
+    return np.mean([predict_tree(t, X) for t in forest["trees"]], axis=0)
+
+
+def r2(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    ss = float(np.sum((y_true - y_true.mean()) ** 2))
+    return 1.0 - float(np.sum((y_true - y_pred) ** 2)) / ss if ss > 0 else float("nan")
+
+
+# ------------------------------------------------------------------------ splits ------------
+def shuffled_folds(n: int, k: int = N_FOLDS, seed: int = SEED):
+    """Plain shuffled k-fold: the split almost everyone writes, and the one that leaks here."""
+    idx = np.random.default_rng(seed).permutation(n)
+    return [(np.setdiff1d(np.arange(n), part), np.sort(part))
+            for part in np.array_split(idx, k)]
+
+
+def embargoed_forward_folds(n: int, k: int = N_FOLDS, embargo: int = EMBARGO):
+    """Contiguous test blocks with `embargo` rows removed from training on each side.
+
+    This is the minimum honest split for serially dependent rows. It is NOT purged
+    cross-validation - that needs each label's actual resolution time, and it belongs to the
+    lib-purgedcv skill. Do not re-implement that here.
+    """
+    bounds = np.linspace(0, n, k + 1).astype(int)
+    out = []
+    for i in range(k):
+        lo, hi = bounds[i], bounds[i + 1]
+        test = np.arange(lo, hi)
+        train = np.concatenate([np.arange(0, max(lo - embargo, 0)),
+                                np.arange(min(hi + embargo, n), n)])
+        out.append((train, test))
+    return out
+
+
+# ------------------------------------------------------------------------ importances -------
+def mda(X: np.ndarray, y: np.ndarray, folds, seed: int = SEED, n_repeats: int = N_REPEATS,
+        groups: list[list[int]] | None = None) -> np.ndarray:
+    """Mean decrease in out-of-sample R^2 when a feature (or a whole group) is permuted.
+
+    `groups=None` permutes one column at a time; pass a list of column lists to permute each
+    group jointly, which is the clustered version (AFML chapter 8's answer to substitution).
+    """
+    n_feat = X.shape[1]
+    cols = [[j] for j in range(n_feat)] if groups is None else groups
+    drops = np.zeros((len(folds), len(cols)))
+    for fi, (tr, te) in enumerate(folds):
+        forest = fit_forest(X[tr], y[tr], seed=seed + fi)
+        base = r2(y[te], predict_forest(forest, X[te]))
+        rng = np.random.default_rng(seed + 1000 + fi)
+        for ci, group in enumerate(cols):
+            acc = 0.0
+            for _ in range(n_repeats):
+                Xp = X[te].copy()
+                perm = rng.permutation(te.shape[0])
+                for j in group:
+                    Xp[:, j] = Xp[perm, j]           # ONE permutation for the whole group
+                acc += base - r2(y[te], predict_forest(forest, Xp))
+            drops[fi, ci] = acc / n_repeats
+    return drops.mean(axis=0)
+
+
+def sfi(X: np.ndarray, y: np.ndarray, folds, seed: int = SEED, n_trees: int = 15) -> np.ndarray:
+    """Single feature importance: out-of-sample R^2 of a model fitted on that feature ALONE."""
+    out = np.zeros(X.shape[1])
+    for j in range(X.shape[1]):
+        scores = []
+        for fi, (tr, te) in enumerate(folds):
+            f = fit_forest(X[tr][:, [j]], y[tr], n_trees=n_trees, seed=seed + fi,
+                           max_features=1)
+            scores.append(r2(y[te], predict_forest(f, X[te][:, [j]])))
+        out[j] = float(np.mean(scores))
+    return out
+
+
+def correlation_clusters(X: np.ndarray, threshold: float = 0.8) -> list[list[int]]:
+    """Single-linkage clusters of |correlation| >= threshold. Deterministic, no scipy needed."""
+    c = np.abs(np.corrcoef(X, rowvar=False))
+    n = c.shape[0]
+    parent = list(range(n))
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if c[i, j] >= threshold:
+                parent[find(i)] = find(j)
+    groups: dict[int, list[int]] = {}
+    for i in range(n):
+        groups.setdefault(find(i), []).append(i)
+    return [sorted(g) for _, g in sorted(groups.items(), key=lambda kv: min(kv[1]))]
+
+
+# ------------------------------------------------------------------------ sklearn check -----
+def sklearn_mdi_check(X: np.ndarray, y: np.ndarray, seed: int = SEED):
+    """Rebuild sklearn's feature_importances_ from the public tree_ arrays. Returns a dict/None.
+
+    The per-node formula lives in the compiled `_tree.pyx`, which the wheel does not ship, so it
+    is verified NUMERICALLY here: accumulate `wn*imp - wnL*impL - wnR*impR` per splitting feature
+    from `tree_.children_left/right`, `tree_.impurity`, `tree_.weighted_n_node_samples` and
+    `tree_.feature`, divide by the root weight, normalise, and compare.
+    """
+    try:
+        from sklearn.ensemble import RandomForestRegressor
+        from sklearn.tree import DecisionTreeRegressor
+    except ImportError:
+        return None
+    t = DecisionTreeRegressor(max_depth=6, min_samples_leaf=MIN_LEAF,
+                              random_state=seed).fit(X, y)
+    tr = t.tree_
+    imp = np.zeros(X.shape[1])
+    for i in range(tr.node_count):
+        l, r = tr.children_left[i], tr.children_right[i]
+        if l == -1:
+            continue
+        imp[tr.feature[i]] += (tr.weighted_n_node_samples[i] * tr.impurity[i]
+                               - tr.weighted_n_node_samples[l] * tr.impurity[l]
+                               - tr.weighted_n_node_samples[r] * tr.impurity[r])
+    imp /= tr.weighted_n_node_samples[0]
+    own = imp / imp.sum()
+    rf = RandomForestRegressor(n_estimators=N_TREES, max_depth=MAX_DEPTH,
+                              min_samples_leaf=MIN_LEAF, max_features=MAX_FEATURES,
+                              random_state=seed, n_jobs=1).fit(X, y)
+    per_tree = np.array([e.feature_importances_ for e in rf.estimators_
+                         if e.tree_.node_count > 1])
+    agg = per_tree.mean(axis=0)
+    agg = agg / agg.sum()
+    return {"tree_diff": float(np.max(np.abs(own - t.feature_importances_))),
+            "forest_diff": float(np.max(np.abs(agg - rf.feature_importances_))),
+            "rf_mdi": rf.feature_importances_,
+            "doc_warns_high_cardinality":
+                "high cardinality" in (type(rf).feature_importances_.__doc__ or "")}
+
+
+# ------------------------------------------------------------------------ demo --------------
+def _rank(v: np.ndarray) -> np.ndarray:
+    """1 = largest."""
+    return np.argsort(np.argsort(-np.asarray(v, dtype=float))) + 1
+
+
+def _main() -> None:
+    t_all = time.time()
+    X, y, names = design()
+    n_feat = X.shape[1]
+    print("=== 1. The design: what the true answer is ===")
+    print(f"  n = {N_SAMPLES}, {n_feat} features, target = {BETA[0]} * x0 + {BETA[2]} * x2 "
+          f"+ noise averaged over {LABEL_SPAN} rows (overlapping residuals)")
+    print("    feature                distinct values   corr with x0   corr with y")
+    for j, nm in enumerate(names):
+        print(f"    {nm:<22} {len(np.unique(X[:, j])):15d}   "
+              f"{np.corrcoef(X[:, j], X[:, 0])[0, 1]:12.3f}   "
+              f"{np.corrcoef(X[:, j], y)[0, 1]:11.3f}")
+    print("  x1 carries no information x0 does not already have; x3, x4, x5 and x6 carry none "
+          "at all.")
+
+    chk = sklearn_mdi_check(X, y)
+    if chk is None:
+        print("\n  scikit-learn is not installed - the MDI definition below is the script's own")
+    else:
+        print(f"\n  sklearn's feature_importances_ rebuilt from the public tree_ arrays "
+              f"(wn*imp - wnL*impL - wnR*impR, / root weight, normalised):")
+        print(f"    single tree: max abs diff {chk['tree_diff']:.2e};  forest "
+              f"(mean over trees with node_count>1, then / sum): {chk['forest_diff']:.2e}")
+        print(f"    and its own docstring carries the high-cardinality warning: "
+              f"{chk['doc_warns_high_cardinality']}")
+
+    forest = fit_forest(X, y)
+    print(f"\n=== 2. MDI: in-sample, and biased (AFML ch.8) ===")
+    print(f"  forest: {len(forest['trees'])} trees, depth {MAX_DEPTH}, max_features "
+          f"{MAX_FEATURES}/{n_feat}, min_samples_leaf {MIN_LEAF}")
+    print("    feature                  MDI    rank")
+    for j, nm in enumerate(names):
+        print(f"    {nm:<22} {forest['mdi'][j]:7.4f}   {_rank(forest['mdi'])[j]:4d}")
+    if chk is not None:
+        print("    sklearn RandomForestRegressor on the same data, same hyper-parameters:")
+        print("      " + "  ".join(f"{v:.4f}" for v in chk["rf_mdi"]))
+    noise_mdi = forest["mdi"][3:].sum()
+    print(f"  the four IRRELEVANT features take {noise_mdi:.1%} of the total MDI, and "
+          f"{forest['mdi'][3] / max(noise_mdi, 1e-12):.0%} of that goes to x3 alone -")
+    print(f"  x3 (continuous, {len(np.unique(X[:, 3]))} distinct values) scores "
+          f"{forest['mdi'][3] / max(forest['mdi'][4], 1e-12):.1f}x x4 (binary), and neither "
+          f"carries any signal.")
+    print(f"  substitution: x0 {forest['mdi'][0]:.4f} and its copy x1 {forest['mdi'][1]:.4f} "
+          f"share {forest['mdi'][0] + forest['mdi'][1]:.1%} of the total between them.")
+
+    print(f"\n=== 3. MDA on an embargoed forward split, and SFI ===")
+    folds = embargoed_forward_folds(N_SAMPLES)
+    m = mda(X, y, folds)
+    s = sfi(X, y, folds)
+    print("    feature                  MDA    rank      SFI    rank")
+    for j, nm in enumerate(names):
+        print(f"    {nm:<22} {m[j]:7.4f}   {_rank(m)[j]:4d}  {s[j]:7.4f}   {_rank(s)[j]:4d}")
+    print(f"  MDA gets the noise right - x3 scores {m[3]:+.4f} against x2's {m[2]:+.4f}, and the")
+    print(f"  high-cardinality column is no longer favoured. But the collinear pair is "
+          f"UNDER-stated: x0 {m[0]:+.4f}")
+    print(f"  and x1 {m[1]:+.4f}, because permuting one leaves the other to carry the signal.")
+    print(f"  MDA ranks x2 above x0 ({m[2]:+.4f} vs {m[0]:+.4f}) and SFI ranks x0 above x2 "
+          f"({s[0]:.4f} vs {s[2]:.4f}):")
+    print("  MDA asks what a feature adds GIVEN the others, SFI asks what it is worth ALONE. "
+          "Both are")
+    print(f"  right about their own question; only SFI says x1 is worth anything ({s[1]:.4f}).")
+
+    print(f"\n=== 4. Clustered MDA: permute the group, not the column ===")
+    clusters = correlation_clusters(X, 0.8)
+    labels = ["+".join(names[j].split()[0] for j in g) for g in clusters]
+    cm = mda(X, y, folds, groups=clusters)
+    print(f"  single-linkage clusters at |corr| >= 0.8: {[[names[j].split()[0] for j in g] for g in clusters]}")
+    print("    cluster        clustered MDA   rank")
+    cr = _rank(cm)
+    for ci, (lab, v) in enumerate(zip(labels, cm)):
+        print(f"    {lab:<14} {v:13.4f}   {cr[ci]:4d}")
+    print(f"  the x0+x1 cluster scores {cm[0]:.4f} against {max(m[0], m[1]):.4f} for its best "
+          f"single member - a factor of {cm[0] / max(max(m[0], m[1]), 1e-12):.1f}.")
+
+    print(f"\n=== 5. The split matters more than the metric ===")
+    sh = shuffled_folds(N_SAMPLES)
+    m_sh = mda(X, y, sh)
+    print("    feature                MDA, shuffled k-fold   MDA, embargoed forward")
+    for j, nm in enumerate(names):
+        print(f"    {nm:<22} {m_sh[j]:20.4f}   {m[j]:21.4f}")
+    print(f"  x6 is a random walk with no relation to y. Shuffled k-fold gives it "
+          f"{m_sh[6]:+.4f};")
+    print(f"  the embargoed forward split gives it {m[6]:+.4f}. The label averages "
+          f"{LABEL_SPAN} rows, so a shuffled")
+    print("  fold's neighbours are in the training set and a slowly-varying feature identifies "
+          "them.")
+    print(f"  out-of-sample R2 of the same forest: shuffled "
+          f"{np.mean([r2(y[te], predict_forest(fit_forest(X[tr], y[tr], seed=SEED + i), X[te])) for i, (tr, te) in enumerate(sh)]):.4f}"
+          f", embargoed "
+          f"{np.mean([r2(y[te], predict_forest(fit_forest(X[tr], y[tr], seed=SEED + i), X[te])) for i, (tr, te) in enumerate(folds)]):.4f}")
+
+    print("\nRule: never rank features on MDI alone - it is in-sample, it favours high-cardinality"
+          " columns, and it splits credit; score MDA on a time-ordered embargoed split and cluster"
+          " correlated features before permuting them.")
+    print(f"total runtime {time.time() - t_all:.1f}s")
+
+
+if __name__ == "__main__":
+    _main()
