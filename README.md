@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**70 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**75 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 46 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 51 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -180,6 +180,11 @@ considered and left out, with reasons, are in `catalog/federation-notes.md`.
 | `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server, and know its licence and blast radius before connecting it. | 0 | 0 |
 | `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence says about LLM trading agents, and the real status of the frameworks. | 2 | 1 |
 | `fin-llm` | [`rl-and-ml-trading`](plugins/fin-llm/skills/rl-and-ml-trading/SKILL.md) | Reinforcement learning and deep learning for trading: what installs, and what the evidence says. | 0 | 0 |
+| `fin-macro` | [`gdp-nowcasting-dynamic-factor`](plugins/fin-macro/skills/gdp-nowcasting-dynamic-factor/SKILL.md) | Nowcast the quarter you are in from monthly data with a ragged edge, using statsmodels' DynamicFactorMQ - and score it against the benchmarks it has to beat. | 0 | 1 |
+| `fin-macro` | [`macro-regime-and-recession-indicators`](plugins/fin-macro/skills/macro-regime-and-recession-indicators/SKILL.md) | Recession probabilities, the Sahm rule and yield-curve inversion - and the fact that the NBER label they are all scored against was assigned years after the fact. | 0 | 1 |
+| `fin-macro` | [`macro-release-calendar-and-embargo`](plugins/fin-macro/skills/macro-release-calendar-and-embargo/SKILL.md) | Build the timestamp at which a macro number becomes tradeable - release date, clock time, timezone - and know where the release mechanics changed under your sample. | 0 | 1 |
+| `fin-macro` | [`real-time-macro-backtesting`](plugins/fin-macro/skills/real-time-macro-backtesting/SKILL.md) | Run a macro strategy twice - once on today's revised series and once on the vintage that existed at each decision date - and report both Sharpes. | 0 | 1 |
+| `fin-macro` | [`seasonal-adjustment-and-x13`](plugins/fin-macro/skills/seasonal-adjustment-and-x13/SKILL.md) | Seasonal adjustment is a second, silent vintage - the published seasonally adjusted history keeps changing with no new data. | 0 | 1 |
 | `fin-models` | [`covariance-and-risk-models`](plugins/fin-models/skills/covariance-and-risk-models/SKILL.md) | Estimate a covariance matrix an optimizer can actually invert, and report how much variance it hides. | 0 | 1 |
 | `fin-models` | [`credit-risk-models`](plugins/fin-models/skills/credit-risk-models/SKILL.md) | Estimate a default probability and price credit, and keep the two probabilities apart - the risk-neutral one that prices and the physical one that forecasts. | 0 | 1 |
 | `fin-models` | [`factor-models`](plugins/fin-models/skills/factor-models/SKILL.md) | Build long-short factor portfolios from a characteristic panel and test the alpha with standard errors that survive serial correlation. | 1 | 1 |
