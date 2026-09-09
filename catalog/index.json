@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 66,
+  "n_skills": 70,
   "n_reference_files": 74,
-  "n_scripts": 50,
+  "n_scripts": 54,
   "discovery_cost": {
-    "total_description_chars": 56626,
-    "approx_tokens": 14156,
+    "total_description_chars": 60464,
+    "approx_tokens": 15116,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -1031,6 +1031,38 @@
       ]
     },
     {
+      "name": "stat-arb-cointegration",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/stat-arb-cointegration/SKILL.md",
+      "description": "Screen, test and trade a cointegrated pair without counting the trials wrong, applying the single-series ADF table to a fitted residual, or estimating the hedge ratio on the window you score it in. TRIGGER - cointegration, Engle-Granger, statsmodels coint, coint_johansen, Johansen, trace statistic, max eigenvalue, VECM, cointegrating vector; pairs trading, statistical arbitrage, stat arb, spread, hedge ratio, spread z-score, entry and exit thresholds, half-life, Ornstein-Uhlenbeck, OU mean reversion; adfuller on the residual, CollinearityWarning, \"my screen found 30 cointegrated pairs\", \"the spread stopped mean reverting\", \"in-sample Sharpe 2 and it lost money live\". SKIP for a time-varying hedge ratio by Kalman filter (state-space-and-kalman), for the multiple-testing machinery itself and PSR/DSR (backtest-validation), for regime labels (regime-detection), and for the cost of trading two legs (execution-cost-analysis).",
+      "summary": "Screen, test and trade a cointegrated pair without counting the trials wrong, applying the single-series ADF table to a fitted residual, or estimating the hedge ratio on the window",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14346,
+      "approx_body_tokens": 3586,
+      "references": [],
+      "scripts": [
+        "cointegration.py"
+      ]
+    },
+    {
+      "name": "state-space-and-kalman",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/state-space-and-kalman/SKILL.md",
+      "description": "Estimate a time-varying hedge ratio or beta with a Kalman filter, and know which of its three state series you are allowed to trade - the smoothed one has read the whole sample. TRIGGER - Kalman filter, Kalman smoother, RTS smoother, state space model, local level, local linear trend, time-varying beta, dynamic hedge ratio, dynamic linear model, DLM, process noise Q, observation noise R, signal-to-noise ratio; statsmodels.tsa.statespace, KalmanSmoother, MLEModel, UnobservedComponents, RecursiveLS, recursive_coefficients, smoothed_state, filtered_state, predicted_state, states.smoothed, pykalman, filterpy, simdkalman; \"my Kalman beta is beautifully smooth\", \"how do I pick Q\", \"the beta path looks flat\". SKIP for discrete regime labels and Markov switching (regime-detection), for the cointegrating hedge ratio and spread z-scores (stat-arb-cointegration), for GARCH conditional variance (volatility-models), and for ARIMA/ETS point forecasts (time-series-forecasting-models).",
+      "summary": "Estimate a time-varying hedge ratio or beta with a Kalman filter, and know which of its three state series you are allowed to trade - the smoothed one has read the whole sample.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 15091,
+      "approx_body_tokens": 3772,
+      "references": [],
+      "scripts": [
+        "kalman_models.py"
+      ]
+    },
+    {
       "name": "term-structure-models",
       "plugin": "fin-models",
       "path": "plugins/fin-models/skills/term-structure-models/SKILL.md",
@@ -1044,6 +1076,38 @@
       "references": [],
       "scripts": [
         "term_structure.py"
+      ]
+    },
+    {
+      "name": "time-series-forecasting-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/time-series-forecasting-models/SKILL.md",
+      "description": "Score a forecast against the baseline it has to beat - naive, seasonal-naive, drift, mean - with MASE, rolling-origin evaluation and a Diebold-Mariano test, instead of an R^2 on a price level. TRIGGER - forecasting, ARIMA, SARIMA, SARIMAX, auto_arima, ETS, Holt-Winters, exponential smoothing, statsmodels ARIMA trend, walk-forward, rolling origin, expanding window; naive forecast, seasonal naive, drift method, MASE, sMAPE, MAPE, OWA, Diebold-Mariano, DM test; LSTM stock price prediction, N-BEATS, TFT, \"my model predicts prices with 99% R^2\", \"is my forecast better than the naive one\", M4 competition, M5 competition. SKIP for volatility forecasting and HAR-RV (volatility-models), for choosing a forecasting library (factor-and-timeseries-research), for cointegration and unit roots (stat-arb-cointegration), for correcting across many models (backtest-validation), and for turning a forecast into positions (signal-construction).",
+      "summary": "Score a forecast against the baseline it has to beat - naive, seasonal-naive, drift, mean - with MASE, rolling-origin evaluation and a Diebold-Mariano test, instead of an R^2 on a ",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 17481,
+      "approx_body_tokens": 4370,
+      "references": [],
+      "scripts": [
+        "forecast_baselines.py"
+      ]
+    },
+    {
+      "name": "volatility-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/volatility-models/SKILL.md",
+      "description": "Fit and forecast volatility - GARCH, range-based realized variance, HAR-RV - without the two errors that silently move the answer: the units `arch` expects, and a range estimator used on bars that gap. TRIGGER - GARCH, GARCH(1,1), EGARCH, GJR-GARCH, arch_model, conditional_volatility, DataScaleWarning, \"y is poorly scaled\", rescale=True, res.scale, alpha + beta near 1, IGARCH, persistence; realized volatility, realized variance, Parkinson, Garman-Klass, Rogers-Satchell, Yang-Zhang, close-to-close, high-low volatility estimator; HAR-RV, Corsi; \"my GARCH forecast says 1200% annualised vol\", \"which volatility estimator should I use\", vol targeting input. SKIP for the arch package's API and its SPA/StepM/MCS bootstrap (lib-arch), for choosing a forecasting library (factor-and-timeseries-research), for discrete high-vol/low-vol state labels (regime-detection), for implied volatility (derivatives-pricing), and for turning a vol forecast into position size (portfolio-and-risk).",
+      "summary": "Fit and forecast volatility - GARCH, range-based realized variance, HAR-RV - without the two errors that silently move the answer: the units `arch` expects, and a range estimator u",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 17267,
+      "approx_body_tokens": 4316,
+      "references": [],
+      "scripts": [
+        "vol_models.py"
       ]
     },
     {
