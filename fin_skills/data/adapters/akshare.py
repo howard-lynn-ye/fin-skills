@@ -25,9 +25,8 @@ this module contains no rate constant.
 from __future__ import annotations
 
 import warnings
-from typing import Any, Sequence
+from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from fin_skills.data import declare

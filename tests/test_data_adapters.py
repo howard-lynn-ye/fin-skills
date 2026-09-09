@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import ast
 import importlib
-import os
 import re
 import sys
 from pathlib import Path
@@ -23,7 +22,7 @@ import pytest
 
 import fin_skills.data as D
 from fin_skills.data import declare
-from fin_skills.data.adapters import MODULES, Base, get, library_version, require
+from fin_skills.data.adapters import MODULES, get, library_version, require
 from fin_skills.data.ratelimit import (PerInstanceDelay, PerSecond, RateLimit, SHAPES,
                                        Unpublished)
 from fin_skills.data.schema import MACRO_COLUMNS
@@ -93,6 +92,36 @@ def test_no_adapter_module_imports_its_vendor_at_module_scope(name):
 def test_require_names_the_pip_install():
     with pytest.raises(ImportError, match="pip install edgartools"):
         require("edgar_definitely_not_installed", pip_name="edgartools")
+
+
+def test_replay_forwards_only_what_the_method_accepts():
+    """A recorded request holds what the adapter DECIDED as well as what it was asked -
+    `end_is_exclusive`, `progress`, `dropped_unclosed_final_bar`. Those are there to be
+    read, not fed back in: forwarding them would be a TypeError against the vendor call."""
+    from fin_skills.data.adapters import Base
+    from fin_skills.data.schema import Adjustment
+
+    seen = {}
+
+    class Recorder(Base):
+        decl = declare.lookup("yfinance")
+
+        def bars(self, symbols, start, end, *, interval="1d", adjustment=None, **kw):
+            seen.update(symbols=symbols, start=start, end=end, interval=interval,
+                        adjustment=adjustment, extra=kw)
+            return "bars"
+
+    request = {"method": "bars", "symbols": ["AAPL"], "start": "2024-01-01",
+               "end": "2024-02-01", "interval": "1d", "adjustment": "forward",
+               "auto_adjust": True, "end_is_exclusive": True, "half_open": True,
+               "progress": False, "ignore_tz": True, "actions": True}
+    assert Recorder().replay(request) == "bars"
+    assert seen["symbols"] == ["AAPL"] and seen["end"] == "2024-02-01"
+    assert seen["adjustment"] is Adjustment.FORWARD
+    assert seen["extra"] == {}, seen["extra"]
+
+    with pytest.raises(KeyError, match="no method"):
+        Recorder().replay({"method": "nope"})
 
 
 def test_library_version_reads_the_object_it_is_given():

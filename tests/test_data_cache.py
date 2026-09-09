@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import json
 
-import numpy as np
-import pandas as pd
 import pytest
 
 from _data_fixtures import (StubAdapter, bad_tick_vintage, clean_bars, clean_fundamentals,

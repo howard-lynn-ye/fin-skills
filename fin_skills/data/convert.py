@@ -23,9 +23,8 @@ by a data layer is the quietest way to be wrong by sqrt(365/252) = 1.20x.
 """
 from __future__ import annotations
 
-from typing import Any, Iterable
+from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from fin_skills.data.schema import Bars, Fundamentals, Macro

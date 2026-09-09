@@ -16,6 +16,7 @@ API-key page is why: "All users of an application shall use their own API key."
 from __future__ import annotations
 
 import importlib
+import inspect
 import re
 from typing import Any, Protocol, runtime_checkable
 
@@ -138,26 +139,26 @@ class Base:
         """Re-issue a normalised request - what `Cache.refetch()` calls.
 
         The request records the method it came from, so a refetch reproduces the original
-        call exactly rather than approximating it.
+        call rather than approximating it. Keys the method does not accept are dropped:
+        a request also records what the adapter DECIDED (`end_is_exclusive`,
+        `dropped_unclosed_final_bar`, the pinned vendor flags), and those are there to be
+        read by a human, not fed back in as arguments.
         """
         req = dict(request)
         method = req.pop("method", "bars")
-        req.pop("adapter", None)
-        req.pop("library_version", None)
         fn = getattr(self, method, None)
         if fn is None:
             raise KeyError(f"{self.decl.name} has no method {method!r} to replay")
-        if method == "bars":
-            symbols = req.pop("symbols")
-            start, end = req.pop("start", None), req.pop("end", None)
-            adj = req.pop("adjustment", None)
-            return fn(symbols, start, end, adjustment=Adjustment(adj) if adj else None,
-                      **req)
-        if method == "macro":
-            return fn(req.pop("series_ids"), **req)
-        if method == "fundamentals":
-            return fn(req.pop("entities"), **req)
-        return fn(**req)
+
+        params = inspect.signature(fn).parameters
+        positional = {"bars": ("symbols", "start", "end"), "macro": ("series_ids",),
+                      "fundamentals": ("entities",), "universe": ("market", "as_of"),
+                      "actions": ("symbols", "start", "end")}.get(method, ())
+        args = [req.pop(name) for name in positional if name in req]
+        if "adjustment" in req:
+            adj = req.pop("adjustment")
+            req["adjustment"] = Adjustment(adj) if adj else None
+        return fn(*args, **{k: v for k, v in req.items() if k in params})
 
     def __repr__(self) -> str:
         return f"<{type(self).__name__} {self.decl.name} {self.decl.rate_limit.describe()}>"

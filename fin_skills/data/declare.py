@@ -32,7 +32,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, fields as dataclass_fields
 from datetime import date
-from typing import Any, Iterable
+from typing import Any
 
 import pandas as pd
 

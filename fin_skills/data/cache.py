@@ -29,7 +29,7 @@ import json
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any
 
 import numpy as np
 import pandas as pd

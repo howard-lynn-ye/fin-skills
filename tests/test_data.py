@@ -13,7 +13,7 @@ from _data_fixtures import (GDP_VINTAGES, ORIGINAL_VAL, RESTATED_VAL, RESTATEMEN
                             clean_bars, clean_fundamentals, clean_macro,
                             fundamentals_frame, macro_frame, raw_panel, split_ticker)
 from fin_skills.data import (Adjustment, Bars, Fundamentals, Macro, content_hash,
-                             guard_convention, pit_used, stack_fields, to_bundle)
+                             guard_convention, pit_used, to_bundle)
 from fin_skills.data.convert import FILLS, periods_per_year, to_long
 from fin_skills.data.provenance import Provenance, make as make_provenance, scrub
 from fin_skills.data.schema import FUNDAMENTAL_COLUMNS, MACRO_COLUMNS

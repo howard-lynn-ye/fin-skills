@@ -7,7 +7,6 @@ Sharpe has been computed and believed.
 """
 from __future__ import annotations
 
-import pandas as pd
 import pytest
 
 from _data_fixtures import (RESTATEMENT_AS_OF, StubAdapter, bad_tick_vintage, clean_bars,

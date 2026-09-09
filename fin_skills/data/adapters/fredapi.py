@@ -34,9 +34,8 @@ uses `get_series_all_releases` and applies the deduplication itself, inside `Mac
 """
 from __future__ import annotations
 
-from typing import Any, Sequence
+from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from fin_skills.data import declare

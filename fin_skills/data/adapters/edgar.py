@@ -30,9 +30,8 @@ Submissions API's `acceptanceDateTime` is UTC while the Financial Statement Data
 from __future__ import annotations
 
 import os
-from typing import Any, Iterable, Sequence
+from typing import Any, Sequence
 
-import numpy as np
 import pandas as pd
 
 from fin_skills.core.pit_fundamentals import available_at

@@ -25,7 +25,7 @@ for 429, limiter or throttl in the whole documentation index - so `rate_limit` i
 """
 from __future__ import annotations
 
-from typing import Any, Iterable, Sequence
+from typing import Any, Sequence
 
 import numpy as np
 import pandas as pd
@@ -34,7 +34,7 @@ from fin_skills.data import declare
 from fin_skills.data.adapters import Base, library_version, require
 from fin_skills.data.provenance import make as make_provenance
 from fin_skills.data.ratelimit import Unpublished
-from fin_skills.data.schema import Adjustment, Bars, stack_fields
+from fin_skills.data.schema import Adjustment, Bars
 
 TERMS = "https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.html"
 
