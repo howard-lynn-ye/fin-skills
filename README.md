@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**96 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**103 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 72 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 79 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -180,6 +180,13 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-credit` | [`credit-spread-measures`](plugins/fin-credit/skills/credit-spread-measures/SKILL.md) | Work out which spread a corporate bond quote actually is and what it was measured against, so two "spreads" on the same bond stop disagreeing. | 0 | 1 |
 | `fin-credit` | [`ratings-transitions-and-migration`](plugins/fin-credit/skills/ratings-transitions-and-migration/SKILL.md) | Estimate and use a credit rating transition matrix without producing negative probabilities or a five-year default rate that is five times the wrong number. | 0 | 1 |
 | `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Crypto market data and execution, and how a 24/7 market breaks equity tooling. | 3 | 1 |
+| `fin-fixed-income` | [`bond-conventions-and-accrued`](plugins/fin-fixed-income/skills/bond-conventions-and-accrued/SKILL.md) | Compute accrued interest, clean and dirty prices and day-count year fractions on a bond without silently picking the wrong convention. | 0 | 1 |
+| `fin-fixed-income` | [`duration-convexity-and-dv01`](plugins/fin-fixed-income/skills/duration-convexity-and-dv01/SKILL.md) | Get the right duration number and the right DV01, for a bond, a floater or a hedge ratio. | 0 | 1 |
+| `fin-fixed-income` | [`ex-dividend-and-rebate-interest`](plugins/fin-fixed-income/skills/ex-dividend-and-rebate-interest/SKILL.md) | Handle bonds that trade ex-dividend, where accrued interest goes negative and the buyer is paid rebate interest instead of paying it. | 0 | 1 |
+| `fin-fixed-income` | [`libor-transition-and-fallbacks`](plugins/fin-fixed-income/skills/libor-transition-and-fallbacks/SKILL.md) | Work out what a US dollar LIBOR contract actually falls back to under the LIBOR Act, and why the spread everyone quotes is the easy half. | 0 | 1 |
+| `fin-fixed-income` | [`ois-discounting-and-multi-curve`](plugins/fin-fixed-income/skills/ois-discounting-and-multi-curve/SKILL.md) | Price a swap with separate projection and discount curves, and catch the single-curve bug that the standard par-reprice check cannot see. | 0 | 1 |
+| `fin-fixed-income` | [`sofr-and-rfr-compounding`](plugins/fin-fixed-income/skills/sofr-and-rfr-compounding/SKILL.md) | Compute a compounded-in-arrears overnight rate correctly - SOFR, SONIA, ESTR, TONA, SARON - including the lookback, lockout and observation-shift conventions. | 0 | 1 |
+| `fin-fixed-income` | [`yield-measures-and-bill-quotes`](plugins/fin-fixed-income/skills/yield-measures-and-bill-quotes/SKILL.md) | Turn a bond or bill price into the right yield, and stop treating a discount rate as one. | 0 | 1 |
 | `fin-futures-fx` | [`futures-continuous-contracts`](plugins/fin-futures-fx/skills/futures-continuous-contracts/SKILL.md) | Build and use a futures price series correctly — a continuous contract does not exist in the market, it is stitched, and the stitching method changes your answer. | 0 | 2 |
 | `fin-futures-fx` | [`fx-markets`](plugins/fin-futures-fx/skills/fx-markets/SKILL.md) | Trade and backtest FX correctly — quote conventions, pip sizing, and the carry that a spot-only backtest silently omits. | 0 | 1 |
 | `fin-libraries` | [`lib-akshare`](plugins/fin-libraries/skills/lib-akshare/SKILL.md) | akshare is the widest free Chinese-market scraper (1,103 public interfaces) and it purges its own PyPI history, so you cannot pin it. | 0 | 0 |

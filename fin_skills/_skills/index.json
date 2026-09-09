@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 96,
+  "n_skills": 103,
   "n_reference_files": 74,
-  "n_scripts": 80,
+  "n_scripts": 87,
   "discovery_cost": {
-    "total_description_chars": 85600,
-    "approx_tokens": 21400,
+    "total_description_chars": 92018,
+    "approx_tokens": 23004,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -14,6 +14,7 @@
     "fin-core",
     "fin-credit",
     "fin-crypto",
+    "fin-fixed-income",
     "fin-futures-fx",
     "fin-libraries",
     "fin-llm",
@@ -535,6 +536,118 @@
       ],
       "scripts": [
         "perp_mechanics.py"
+      ]
+    },
+    {
+      "name": "bond-conventions-and-accrued",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/bond-conventions-and-accrued/SKILL.md",
+      "description": "Compute accrued interest, clean and dirty prices and day-count year fractions on a bond without silently picking the wrong convention. TRIGGER - accrued interest, day count, daycount, ACT/ACT ICMA vs ISMA vs ISDA, ACT/365F, ACT/360, 30/360, 30E/360, 30E/360 ISDA, Thirty360 BondBasis vs USA vs European vs NASD, year fraction, yearFraction, ActualActual(ISMA), \"my accrued interest is off by a few hundred dollars\", \"which 30/360 is this\", clean price vs dirty price vs invoice price, settlement amount, T+1 settlement, quasi-coupon date, first and last stub period. SKIP for negative accrued inside a gilt ex-dividend window (ex-dividend-and-rebate-interest), for turning a price into a yield (yield-measures-and-bill-quotes), for duration and DV01 (duration-convexity-and-dv01), for discount-curve conventions and compounding (../../../fin-models/skills/term-structure-models), and for QuantLib's evaluationDate global (../../../fin-libraries/skills/lib-quantlib).",
+      "summary": "Compute accrued interest, clean and dirty prices and day-count year fractions on a bond without silently picking the wrong convention.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11426,
+      "approx_body_tokens": 2856,
+      "references": [],
+      "scripts": [
+        "conventions.py"
+      ]
+    },
+    {
+      "name": "duration-convexity-and-dv01",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/duration-convexity-and-dv01/SKILL.md",
+      "description": "Get the right duration number and the right DV01, for a bond, a floater or a hedge ratio. TRIGGER - Macaulay vs modified duration, effective duration, spread duration, key rate duration, DV01, PV01, BPV, dollar duration, basis point value, convexity, \"my hedge ratio is off by a few percent\", \"duration says the price should be X but it is Y\", duration times spread, floating rate note duration, FRN duration, \"why is my floater duration almost zero\", BondFunctions.duration, Duration.Macaulay vs Duration.Modified vs Duration.Simple, basisPointValue sign. SKIP for turning a price into a yield in the first place (yield-measures-and-bill-quotes), for accrued interest and day counts (bond-conventions-and-accrued), for the swap annuity and PV01 under OIS discounting (ois-discounting-and-multi-curve), and for portfolio VaR and risk aggregation (../../../fin-core/skills/portfolio-and-risk).",
+      "summary": "Get the right duration number and the right DV01, for a bond, a floater or a hedge ratio.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 10733,
+      "approx_body_tokens": 2683,
+      "references": [],
+      "scripts": [
+        "duration.py"
+      ]
+    },
+    {
+      "name": "ex-dividend-and-rebate-interest",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/ex-dividend-and-rebate-interest/SKILL.md",
+      "description": "Handle bonds that trade ex-dividend, where accrued interest goes negative and the buyer is paid rebate interest instead of paying it. TRIGGER - gilt, UK gilt, ex-dividend, ex-div, ex-coupon, exCouponPeriod, rebate interest, negative accrued interest, \"my accrued interest is negative\", \"accrued should be negative but isn't\", seven business days before the coupon, quasi-coupon date, DMO formulae, \"Formulae for Calculating Gilt Prices from Yields\", ql.FixedRateBond exCouponPeriod, ql.Period(-7, ql.Days), record date vs ex-date on a bond, 3.5% War Loan, JGB and gilt settlement. SKIP for ordinary positive accrued and day-count choice (bond-conventions-and-accrued), for price-to-yield solving in general (yield-measures-and-bill-quotes), for index-linked gilt indexation lags (../../../fin-models/skills/term-structure-models), and for QuantLib's evaluationDate global (../../../fin-libraries/skills/lib-quantlib).",
+      "summary": "Handle bonds that trade ex-dividend, where accrued interest goes negative and the buyer is paid rebate interest instead of paying it.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 10450,
+      "approx_body_tokens": 2612,
+      "references": [],
+      "scripts": [
+        "ex_dividend.py"
+      ]
+    },
+    {
+      "name": "libor-transition-and-fallbacks",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/libor-transition-and-fallbacks/SKILL.md",
+      "description": "Work out what a US dollar LIBOR contract actually falls back to under the LIBOR Act, and why the spread everyone quotes is the easy half. TRIGGER - LIBOR fallback, LIBOR transition, Regulation ZZ, 12 CFR 253, LIBOR Act, Board-selected benchmark replacement, tenor spread adjustment, 26.161 bp, 0.26161, 11.448 bp, 71.513 bp, ISDA 2020 IBOR Fallbacks Protocol, Fallback Rate (SOFR), CME Term SOFR, 30-day Average SOFR, 90-day Average SOFR, FFELP ABS fallback, FHFA-regulated-entity contract, consumer loan LIBOR fallback, \"what does 3-month LIBOR become\", \"SOFR plus 26 bp\", legacy LIBOR swap repapering, synthetic LIBOR. SKIP for computing a compounded SOFR coupon and its lookback conventions (sofr-and-rfr-compounding), for building an OIS curve (ois-discounting-and-multi-curve), and for US settlement and calendar rules (../../../fin-core/skills/us-market-rules).",
+      "summary": "Work out what a US dollar LIBOR contract actually falls back to under the LIBOR Act, and why the spread everyone quotes is the easy half.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 10551,
+      "approx_body_tokens": 2637,
+      "references": [],
+      "scripts": [
+        "fallbacks.py"
+      ]
+    },
+    {
+      "name": "ois-discounting-and-multi-curve",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/ois-discounting-and-multi-curve/SKILL.md",
+      "description": "Price a swap with separate projection and discount curves, and catch the single-curve bug that the standard par-reprice check cannot see. TRIGGER - OIS discounting, CSA discounting, collateral discounting, multi-curve, dual curve, projection curve vs discount curve, tenor basis, \"my swap reprices at par but the PV01 is wrong\", swap annuity, fixedLegBPS, DiscountingSwapEngine, RelinkableYieldTermStructureHandle, linkTo, \"QuantLib NPV is exactly 0.0\", exogenous discounting rate helpers, bootstrapping a SOFR curve against an OIS discount curve, swaption numeraire, forward premium. SKIP for computing the compounded SOFR fixing itself (sofr-and-rfr-compounding), for what a legacy LIBOR trade falls back to (libor-transition-and-fallbacks), for bond duration and DV01 (duration-convexity-and-dv01), and for curve bootstrapping and interpolation in general (../../../fin-models/skills/term-structure-models).",
+      "summary": "Price a swap with separate projection and discount curves, and catch the single-curve bug that the standard par-reprice check cannot see.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 10201,
+      "approx_body_tokens": 2550,
+      "references": [],
+      "scripts": [
+        "multi_curve.py"
+      ]
+    },
+    {
+      "name": "sofr-and-rfr-compounding",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/sofr-and-rfr-compounding/SKILL.md",
+      "description": "Compute a compounded-in-arrears overnight rate correctly - SOFR, SONIA, ESTR, TONA, SARON - including the lookback, lockout and observation-shift conventions. TRIGGER - SOFR compounded in arrears, SOFR Index, SOFR Averages, 30-day 90-day 180-day SOFR average, compounded RFR, daily compounding of an overnight rate, lookback, rate shift, observation shift, lockout, payment delay, \"my SOFR coupon is a few basis points off\", \"compounded vs simple average SOFR\", ACT/360 vs ACT/365 on SONIA, SONIA Compounded Index, ESTR, TONA, SARON, OvernightIndexedCoupon, RateAveraging.Compound, applyObservationShift, SOFRINDEX, SOFR30DAYAVG. SKIP for what a LIBOR contract falls back TO and the statutory spreads (libor-transition-and-fallbacks), for building an OIS discount curve (ois-discounting-and-multi-curve), for a floater's duration (duration-convexity-and-dv01), and for bond accrued interest and day counts (bond-conventions-and-accrued).",
+      "summary": "Compute a compounded-in-arrears overnight rate correctly - SOFR, SONIA, ESTR, TONA, SARON - including the lookback, lockout and observation-shift conventions.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11353,
+      "approx_body_tokens": 2838,
+      "references": [],
+      "scripts": [
+        "sofr.py"
+      ]
+    },
+    {
+      "name": "yield-measures-and-bill-quotes",
+      "plugin": "fin-fixed-income",
+      "path": "plugins/fin-fixed-income/skills/yield-measures-and-bill-quotes/SKILL.md",
+      "description": "Turn a bond or bill price into the right yield, and stop treating a discount rate as one. TRIGGER - yield to maturity, YTM, current yield, yield to call, yield to worst, YTW, running yield, redemption yield; Treasury bill discount rate vs bond-equivalent yield, BEY, coupon-equivalent yield, investment rate, \"why is the 4-week bill rate different from the yield\", DTB3 vs DGS3MO, 360 vs 365 on a bill, money-market yield, add-on rate, CD equivalent; \"my yield does not match Bloomberg\", BondFunctions.bondYield, brentq on a bond price, callable bond yield. SKIP for accrued interest and day-count choice (bond-conventions-and-accrued), for negative accrued in a gilt ex-dividend window (ex-dividend-and-rebate-interest), for duration DV01 and convexity (duration-convexity-and-dv01), for zero rates and bootstrapping (../../../fin-models/skills/term-structure-models), and for compounded RFR averages (sofr-and-rfr-compounding).",
+      "summary": "Turn a bond or bill price into the right yield, and stop treating a discount rate as one.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 9393,
+      "approx_body_tokens": 2348,
+      "references": [],
+      "scripts": [
+        "yield_measures.py"
       ]
     },
     {
