@@ -6,7 +6,7 @@ description: >-
   ta-lib-python, talib.RSI, talib.MACD, talib.ATR, talib.ADX, talib.BBANDS, talib.OBV, from talib
   import abstract, talib.get_functions, unstable period, indicator warm-up, an indicator differing
   between two libraries or between backtest and live; "Exception: input array type is not double",
-  a failed ta-lib C build or missing ta_libc.h, and. Memory is stale here: the install pain is
+  a failed ta-lib C build or missing ta_libc.h. Memory is stale here: the install pain is
   solved - 0.7.1 (2026-07-16) ships 54 prebuilt wheels bundling the C library, including
   cp311-win_amd64 - while pandas-ta's repo, homepage and release history are all gone. SKIP for
   whether a signal actually predicts returns (factor-and-timeseries-research) and for leak-free

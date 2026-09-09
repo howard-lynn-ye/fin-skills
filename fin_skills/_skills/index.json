@@ -4,8 +4,8 @@
   "n_reference_files": 74,
   "n_scripts": 76,
   "discovery_cost": {
-    "total_description_chars": 81430,
-    "approx_tokens": 20357,
+    "total_description_chars": 81425,
+    "approx_tokens": 20356,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -787,13 +787,13 @@
       "name": "lib-talib",
       "plugin": "fin-libraries",
       "path": "plugins/fin-libraries/skills/lib-talib/SKILL.md",
-      "description": "The C reference implementation of technical indicators, where every pure-Python port disagrees during warm-up and none of them say so. TRIGGER - import talib, pip install TA-Lib, ta-lib-python, talib.RSI, talib.MACD, talib.ATR, talib.ADX, talib.BBANDS, talib.OBV, from talib import abstract, talib.get_functions, unstable period, indicator warm-up, an indicator differing between two libraries or between backtest and live; \"Exception: input array type is not double\", a failed ta-lib C build or missing ta_libc.h, and. Memory is stale here: the install pain is solved - 0.7.1 (2026-07-16) ships 54 prebuilt wheels bundling the C library, including cp311-win_amd64 - while pandas-ta's repo, homepage and release history are all gone. SKIP for whether a signal actually predicts returns (factor-and-timeseries-research) and for leak-free signal construction generally (signal-construction). SKIP for choosing between libraries, or when no library is named - the domain skill's job.",
+      "description": "The C reference implementation of technical indicators, where every pure-Python port disagrees during warm-up and none of them say so. TRIGGER - import talib, pip install TA-Lib, ta-lib-python, talib.RSI, talib.MACD, talib.ATR, talib.ADX, talib.BBANDS, talib.OBV, from talib import abstract, talib.get_functions, unstable period, indicator warm-up, an indicator differing between two libraries or between backtest and live; \"Exception: input array type is not double\", a failed ta-lib C build or missing ta_libc.h. Memory is stale here: the install pain is solved - 0.7.1 (2026-07-16) ships 54 prebuilt wheels bundling the C library, including cp311-win_amd64 - while pandas-ta's repo, homepage and release history are all gone. SKIP for whether a signal actually predicts returns (factor-and-timeseries-research) and for leak-free signal construction generally (signal-construction). SKIP for choosing between libraries, or when no library is named - the domain skill's job.",
       "summary": "The C reference implementation of technical indicators, where every pure-Python port disagrees during warm-up and none of them say so.",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 6959,
-      "approx_body_tokens": 1739,
+      "body_chars": 6954,
+      "approx_body_tokens": 1738,
       "references": [],
       "scripts": []
     },
