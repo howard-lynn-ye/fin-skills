@@ -25,8 +25,13 @@ python scripts/build_package.py # 2. regenerate fin_skills/ - AFTER build_index,
 python scripts/validate.py      # 3. must print OK (it runs build_package.py --check)
 ```
 
-`catalog/index.json`, the README skill table and everything under `fin_skills/` except `__init__.py` are
-**generated**. Never hand-edit them.
+`catalog/index.json`, the README skill table and its prose counts, and everything under `fin_skills/`
+are **generated** - with the exceptions listed in `scripts/build_package.py` as `HAND_WRITTEN` and
+`HAND_WRITTEN_DIRS`, currently `__init__.py` and the hand-written layers `api/`, `tools/`, `mcp/`,
+`engine/`, `data/` and `bridges/`. Read that tuple rather than this sentence; it is the mechanism,
+and `--check` enforces it. Never hand-edit anything else under `fin_skills/`: it is overwritten on
+the next regeneration. A new hand-written layer must be added to that tuple in the same commit that
+creates it.
 
 ## Rules that exist because they were broken
 
