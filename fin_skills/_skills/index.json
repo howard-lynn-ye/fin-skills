@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 53,
+  "n_skills": 57,
   "n_reference_files": 72,
-  "n_scripts": 37,
+  "n_scripts": 41,
   "discovery_cost": {
-    "total_description_chars": 44000,
-    "approx_tokens": 11000,
+    "total_description_chars": 47955,
+    "approx_tokens": 11988,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -15,7 +15,8 @@
     "fin-crypto",
     "fin-futures-fx",
     "fin-libraries",
-    "fin-llm"
+    "fin-llm",
+    "fin-models"
   ],
   "skills": [
     {
@@ -913,6 +914,70 @@
       "approx_body_tokens": 1980,
       "references": [],
       "scripts": []
+    },
+    {
+      "name": "credit-risk-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/credit-risk-models/SKILL.md",
+      "description": "Estimate a default probability and price credit, and keep the two probabilities apart - the risk-neutral one that prices and the physical one that forecasts. TRIGGER - Merton model, structural credit model, KMV, distance to default, asset value and asset volatility from equity, N(-d2), solve the two Merton equations; hazard rate, intensity, reduced form, survival probability, constant hazard, credit curve bootstrapping; CDS par spread, premium leg, protection leg, risky PV01, RPV01, accrual on default, \"spread = lambda times one minus recovery\", implied hazard from a CDS spread, recovery assumption, 40% recovery; risk-neutral vs physical default probability, rating agency default table, \"my CDS spread is too low\", credit spread from a bond price, expected loss, CVA default probability. SKIP for option pricing and Greeks (option-pricing-models, derivatives-pricing), for interest-rate curves and short-rate models (term-structure-models), and for portfolio risk and VaR (portfolio-and-risk).",
+      "summary": "Estimate a default probability and price credit, and keep the two probabilities apart - the risk-neutral one that prices and the physical one that forecasts.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 13376,
+      "approx_body_tokens": 3344,
+      "references": [],
+      "scripts": [
+        "credit_models.py"
+      ]
+    },
+    {
+      "name": "implied-vol-surface",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/implied-vol-surface/SKILL.md",
+      "description": "Build a volatility surface that is not silently arbitrageable - invert prices to implied vols, fit a smile, check butterfly and calendar arbitrage, and interpolate between maturities. TRIGGER - implied volatility solver, Newton diverges, bisection bracket, \"implied vol returns 0.001\", \"no implied volatility for this option\", price below intrinsic, BelowIntrinsicException; SVI, raw SVI, Gatheral, svi calibration, a b rho m sigma, SviSmileSection; volatility smile, skew, surface fitting, total variance, log-moneyness; butterfly arbitrage, negative implied density, Durrleman g(k), calendar spread arbitrage, static arbitrage check, Gatheral and Jacquier 2014; interpolating the vol surface, \"my interpolated surface has arbitrage\", \"vol interpolation between expiries\". SKIP for pricing one option and the models themselves - Heston, CRR, SABR, Monte Carlo (option-pricing-models), for library choice, Greek units and licences (derivatives-pricing), and for option chain data and historical chains (options-backtesting).",
+      "summary": "Build a volatility surface that is not silently arbitrageable - invert prices to implied vols, fit a smile, check butterfly and calendar arbitrage, and interpolate between maturiti",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14774,
+      "approx_body_tokens": 3693,
+      "references": [],
+      "scripts": [
+        "vol_surface.py"
+      ]
+    },
+    {
+      "name": "option-pricing-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/option-pricing-models/SKILL.md",
+      "description": "Implement an option pricing model correctly - closed form, tree, characteristic function, Monte Carlo - and the four places each silently returns a plausible wrong number. TRIGGER - Black-Scholes-Merton with dividend yield, binomial tree, CRR, Cox-Ross-Rubinstein, American early exercise, Richardson extrapolation; Heston, \"the little Heston trap\", branch cut, complex log, AnalyticHestonEngine, Gatheral vs BranchCorrection; SABR, Hagan 2002, sabrVolatility, ATM 0/0, z/x(z); antithetic variates, standard error, Euler discretisation bias; \"my Heston price is wrong at long maturity\", \"my Heston price is NaN\", \"my binomial tree will not converge\", \"my Monte Carlo error bar is tiny but the price is wrong\", \"my tree does not match QuantLib\". SKIP for choosing a pricing library, Greek units and licences (derivatives-pricing), for fitting a whole surface and its no-arbitrage checks (implied-vol-surface), and for assignment, expiry and option lifecycle (options-backtesting).",
+      "summary": "Implement an option pricing model correctly - closed form, tree, characteristic function, Monte Carlo - and the four places each silently returns a plausible wrong number.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 15791,
+      "approx_body_tokens": 3947,
+      "references": [],
+      "scripts": [
+        "option_models.py"
+      ]
+    },
+    {
+      "name": "term-structure-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/term-structure-models/SKILL.md",
+      "description": "Build and fit a yield curve, and price a zero-coupon bond in a short-rate model, without the convention and identification traps. TRIGGER - bootstrap a zero curve, par rates to zero rates, discount factors to zero rates, par bond reprice, curve stripping; day count ACT/365 ACT/360 30/360, annual vs semiannual vs continuous compounding, \"my zero rate is off by a few basis points\", \"which day count did this curve use\"; Nelson-Siegel, Svensson, Diebold-Li, lambda 0.0609, beta0 beta1 beta2 level slope curvature, \"my Nelson-Siegel lambda jumps around\"; Vasicek, CIR, Cox-Ingersoll-Ross, Hull-White one factor, A(t,T) B(t,T), affine bond price, Feller condition, \"sqrt of a negative rate\", NaN in my CIR simulation. SKIP for option pricing and implied vol (option-pricing-models, implied-vol-surface), for QuantLib's evaluationDate global (lib-quantlib), and for macro rate data sourcing such as FRED and Treasury series (fundamental-and-macro-data).",
+      "summary": "Build and fit a yield curve, and price a zero-coupon bond in a short-rate model, without the convention and identification traps.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14854,
+      "approx_body_tokens": 3713,
+      "references": [],
+      "scripts": [
+        "term_structure.py"
+      ]
     }
   ]
 }
