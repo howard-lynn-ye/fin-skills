@@ -480,6 +480,25 @@ def test_an_unserved_method_says_why_instead_of_returning_an_empty_frame():
         get("bloomberg")
 
 
+# ----------------------------------------------------- D12 the boundary is declared
+@pytest.mark.parametrize("name", ["yfinance.py", "akshare.py", "ccxt.py"])
+def test_every_price_adapter_records_its_end_boundary(name):
+    """The layer's contract is half-open [start, end). Vendors disagree - yfinance's
+    `end` is exclusive and matches it, akshare's `end_date` is inclusive and does not -
+    so each adapter normalises and writes down which it was, in the request that a
+    refetch and a manifest will later be read from."""
+    text = _source(name)
+    assert '"half_open": True' in text, f"{name} does not state the contract"
+    assert '"end_is_exclusive"' in text, f"{name} does not state the vendor's boundary"
+
+
+def test_the_declared_boundary_matches_the_vendor():
+    y, a = _source("yfinance.py"), _source("akshare.py")
+    assert '"end_is_exclusive": True' in y, "yfinance's end IS exclusive"
+    assert '"end_is_exclusive": False' in a, "akshare's end_date is inclusive"
+    assert "frame.index < e" in a, "so akshare must trim the last day itself"
+
+
 # ------------------------------------------------------------------- no data ships
 def test_the_package_contains_code_only():
     """Adapters ship code. No CSV in the wheel, no bundled parquet, no mirror this

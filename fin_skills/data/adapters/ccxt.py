@@ -164,6 +164,7 @@ class CcxtAdapter(Base):
                    "start": s.isoformat(), "end": e.isoformat(), "interval": interval,
                    "adjustment": adj.value, "venue": self.venue,
                    "since_units": "milliseconds", "half_open": True,
+                   "end_is_exclusive": True,       # the page filter is `< end_ms`
                    "dropped_unclosed_final_bar": True}
         prov = make_provenance(f"ccxt:{self.venue}",
                                library_version=library_version(require("ccxt")),
