@@ -267,7 +267,15 @@
         "sadf",
         "leakage"
       ],
-      "skills": []
+      "skills": [
+        "./skills/bet-sizing",
+        "./skills/feature-importance-financial",
+        "./skills/fractional-differentiation",
+        "./skills/meta-labeling",
+        "./skills/sample-weights-and-uniqueness",
+        "./skills/structural-breaks",
+        "./skills/triple-barrier-labeling"
+      ]
     },
     {
       "name": "fin-microstructure",

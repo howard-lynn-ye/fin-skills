@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**70 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**77 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 46 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 53 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -180,6 +180,13 @@ considered and left out, with reasons, are in `catalog/federation-notes.md`.
 | `fin-llm` | [`finance-mcp-servers`](plugins/fin-llm/skills/finance-mcp-servers/SKILL.md) | Pick a finance MCP server, and know its licence and blast radius before connecting it. | 0 | 0 |
 | `fin-llm` | [`llm-finance-agents`](plugins/fin-llm/skills/llm-finance-agents/SKILL.md) | What the published evidence says about LLM trading agents, and the real status of the frameworks. | 2 | 1 |
 | `fin-llm` | [`rl-and-ml-trading`](plugins/fin-llm/skills/rl-and-ml-trading/SKILL.md) | Reinforcement learning and deep learning for trading: what installs, and what the evidence says. | 0 | 0 |
+| `fin-ml` | [`bet-sizing`](plugins/fin-ml/skills/bet-sizing/SKILL.md) | Turn a predicted probability into a position - the 2*Phi(z)-1 size curve, averaging concurrent bets instead of adding them, discretising to buy turnover, and the concurrency budget | 0 | 1 |
+| `fin-ml` | [`feature-importance-financial`](plugins/fin-ml/skills/feature-importance-financial/SKILL.md) | Rank features without believing MDI - it is in-sample, it favours columns with many distinct values, and it splits credit between substitutable features; MDA under-states collinear | 0 | 1 |
+| `fin-ml` | [`fractional-differentiation`](plugins/fin-ml/skills/fractional-differentiation/SKILL.md) | Make a price series stationary without throwing away the memory a model needs - the weight recursion, the fixed-width window, and the scan for the smallest d that passes ADF. | 0 | 1 |
+| `fin-ml` | [`meta-labeling`](plugins/fin-ml/skills/meta-labeling/SKILL.md) | A primary model picks the side, a secondary model trained on "was the primary right" decides whether to act - raising precision, lowering recall, and paying for itself in costs. | 0 | 1 |
+| `fin-ml` | [`sample-weights-and-uniqueness`](plugins/fin-ml/skills/sample-weights-and-uniqueness/SKILL.md) | Overlapping labels are not independent observations - compute concurrency, average uniqueness and return-attributed weights, and divide your t-statistics by the overlap factor befo | 0 | 1 |
+| `fin-ml` | [`structural-breaks`](plugins/fin-ml/skills/structural-breaks/SKILL.md) | Sample events with the symmetric CUSUM filter instead of on a clock, and test for explosive behaviour with SADF instead of one full-sample ADF that has no power against a bubble in | 0 | 1 |
+| `fin-ml` | [`triple-barrier-labeling`](plugins/fin-ml/skills/triple-barrier-labeling/SKILL.md) | Label a trade by which of profit-taking, stop loss and the holding-period limit is hit FIRST, with barriers scaled to the volatility at the event - instead of by the sign of the re | 0 | 1 |
 | `fin-models` | [`covariance-and-risk-models`](plugins/fin-models/skills/covariance-and-risk-models/SKILL.md) | Estimate a covariance matrix an optimizer can actually invert, and report how much variance it hides. | 0 | 1 |
 | `fin-models` | [`credit-risk-models`](plugins/fin-models/skills/credit-risk-models/SKILL.md) | Estimate a default probability and price credit, and keep the two probabilities apart - the risk-neutral one that prices and the physical one that forecasts. | 0 | 1 |
 | `fin-models` | [`factor-models`](plugins/fin-models/skills/factor-models/SKILL.md) | Build long-short factor portfolios from a characteristic panel and test the alpha with standard errors that survive serial correlation. | 1 | 1 |

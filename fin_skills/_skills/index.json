@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 70,
+  "n_skills": 77,
   "n_reference_files": 74,
-  "n_scripts": 54,
+  "n_scripts": 61,
   "discovery_cost": {
-    "total_description_chars": 60464,
-    "approx_tokens": 15116,
+    "total_description_chars": 67238,
+    "approx_tokens": 16809,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -16,6 +16,7 @@
     "fin-futures-fx",
     "fin-libraries",
     "fin-llm",
+    "fin-ml",
     "fin-models",
     "fin-strategies"
   ],
@@ -915,6 +916,118 @@
       "approx_body_tokens": 1980,
       "references": [],
       "scripts": []
+    },
+    {
+      "name": "bet-sizing",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/bet-sizing/SKILL.md",
+      "description": "Turn a predicted probability into a position - the 2*Phi(z)-1 size curve, averaging concurrent bets instead of adding them, discretising to buy turnover, and the concurrency budget whose divisor is usually a look-ahead. TRIGGER - bet sizing, getSignal, get_signal, getBetSize, bet size from probability, avgActiveSignals, average active bets, discreteSignal, discrete signal, step size, position from predict_proba, \"how big should this trade be\", \"my positions flip every bar\", turnover from a probability, concurrent bets leverage, budgeting bets, Lopez de Prado chapter 10, AFML bet sizing. SKIP for the Kelly fraction and how large the book should be overall (position-sizing-kelly - it owns Kelly, do not repeat it), for the secondary model that produces the probability (meta-labeling), for volatility targeting and risk budgets (portfolio-and-risk), and for the execution schedule once the size is chosen (execution-algorithms).",
+      "summary": "Turn a predicted probability into a position - the 2*Phi(z)-1 size curve, averaging concurrent bets instead of adding them, discretising to buy turnover, and the concurrency budget",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11677,
+      "approx_body_tokens": 2919,
+      "references": [],
+      "scripts": [
+        "bet_sizing.py"
+      ]
+    },
+    {
+      "name": "feature-importance-financial",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/feature-importance-financial/SKILL.md",
+      "description": "Rank features without believing MDI - it is in-sample, it favours columns with many distinct values, and it splits credit between substitutable features; MDA under-states collinear pairs and leaks outright on a shuffled k-fold. TRIGGER - feature_importances_, feature importance, MDI, mean decrease impurity, Gini importance, MDA, mean decrease accuracy, permutation importance, permutation_importance, single feature importance, SFI, clustered feature importance, \"which features matter\", \"my random forest says this random column is important\", \"importance changes every run\", correlated features importance, substitution effect, Lopez de Prado chapter 8, AFML feature importance. SKIP for purged and embargoed cross-validation itself (lib-purgedcv), for the overlapping-label weights (sample-weights-and-uniqueness), for feature construction and causality (signal-construction), for factor-return attribution (factor-models), and for the trials a feature search spends (backtest-validation).",
+      "summary": "Rank features without believing MDI - it is in-sample, it favours columns with many distinct values, and it splits credit between substitutable features; MDA under-states collinear",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11956,
+      "approx_body_tokens": 2989,
+      "references": [],
+      "scripts": [
+        "feature_importance.py"
+      ]
+    },
+    {
+      "name": "fractional-differentiation",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/fractional-differentiation/SKILL.md",
+      "description": "Make a price series stationary without throwing away the memory a model needs - the weight recursion, the fixed-width window, and the scan for the smallest d that passes ADF. TRIGGER - fractional differentiation, fractional differencing, fracdiff, frac_diff, frac_diff_ffd, get_weights_ffd, plotMinFFD, plot_min_ffd, \"minimum d\", ARFIMA, long memory, (1-B)^d, binomial weights, fixed-width window fracdiff; \"my model only sees returns\", \"prices are non-stationary so I differenced them\", \"ADF says my feature is non-stationary\", \"should I feed prices or returns to the model\", Lopez de Prado chapter 5, AFML fracdiff. SKIP for the cointegration ADF table and the fitted-residual null (stat-arb-cointegration), for unit-root and ARIMA model selection generally (time-series-forecasting-models), for making a feature causal and its warm-up (signal-construction), and for labels rather than features (triple-barrier-labeling).",
+      "summary": "Make a price series stationary without throwing away the memory a model needs - the weight recursion, the fixed-width window, and the scan for the smallest d that passes ADF.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12788,
+      "approx_body_tokens": 3197,
+      "references": [],
+      "scripts": [
+        "frac_diff.py"
+      ]
+    },
+    {
+      "name": "meta-labeling",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/meta-labeling/SKILL.md",
+      "description": "A primary model picks the side, a secondary model trained on \"was the primary right\" decides whether to act - raising precision, lowering recall, and paying for itself in costs. The trap is training the secondary on rows the primary was fitted on. TRIGGER - meta-labeling, metalabeling, meta labels, secondary model, primary model side, get_events side_prediction, bin in {0,1}, \"should I take this signal\", precision vs recall trade-off in trading, F1 of a trading model, filter model, trade filter, \"my model has high recall but loses money\", \"how do I improve a strategy without changing its signal\", Lopez de Prado chapter 3 section 3.6, AFML meta-labeling. SKIP for producing the triple-barrier labels and the `side` argument itself (triple-barrier-labeling), for turning the secondary's probability into a position size (bet-sizing), for the Kelly fraction (position-sizing-kelly), for purged cross-validation of either model (lib-purgedcv), and for which features matter (feature-importance-financial).",
+      "summary": "A primary model picks the side, a secondary model trained on \"was the primary right\" decides whether to act - raising precision, lowering recall, and paying for itself in costs.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11169,
+      "approx_body_tokens": 2792,
+      "references": [],
+      "scripts": [
+        "meta_labeling.py"
+      ]
+    },
+    {
+      "name": "sample-weights-and-uniqueness",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/sample-weights-and-uniqueness/SKILL.md",
+      "description": "Overlapping labels are not independent observations - compute concurrency, average uniqueness and return-attributed weights, and divide your t-statistics by the overlap factor before believing any of them. TRIGGER - sample weights, average uniqueness, concurrency, overlapping labels, numCoEvents, num_concurrent_events, getAvgUniqueness, tW, sample_weight in fit(), getWeightsByReturn, get_weights_by_return, time decay weights, getTimeDecay, sequential bootstrap, seq_bootstrap, indicator matrix, effective sample size, \"my labels overlap\", \"my t-stat is 4 but it does not hold up\", \"overlapping forward returns\", Lopez de Prado chapter 4, AFML sample weights. SKIP for purged and embargoed cross-validation of the same labels (lib-purgedcv owns it, do not re-implement), for producing the labels and their t1 touch times (triple-barrier-labeling), for feature importance under overlap (feature-importance-financial), and for Sharpe deflation (backtest-validation).",
+      "summary": "Overlapping labels are not independent observations - compute concurrency, average uniqueness and return-attributed weights, and divide your t-statistics by the overlap factor befo",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12062,
+      "approx_body_tokens": 3015,
+      "references": [],
+      "scripts": [
+        "sample_weights.py"
+      ]
+    },
+    {
+      "name": "structural-breaks",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/structural-breaks/SKILL.md",
+      "description": "Sample events with the symmetric CUSUM filter instead of on a clock, and test for explosive behaviour with SADF instead of one full-sample ADF that has no power against a bubble in part of the sample. TRIGGER - CUSUM filter, cusum_filter, symmetric CUSUM, event-based sampling, t_events, event sampling for labels, SADF, supremum ADF, sup ADF, get_sadf, BSADF, backward SADF, Phillips-Shi-Yu, explosiveness test, bubble detection, structural break test, Chow test, \"how do I pick the bars to label\", \"my ADF says nothing but the chart is obviously a bubble\", \"when did the regime change\", Lopez de Prado chapter 17, AFML structural breaks. SKIP for labelling the events once they are sampled (triple-barrier-labeling), for making a feature stationary (fractional-differentiation), for the cointegration ADF table (stat-arb-cointegration), for hidden-state / volatility regime labels (regime-detection), and for unit-root and ARIMA selection generally (time-series-forecasting-models).",
+      "summary": "Sample events with the symmetric CUSUM filter instead of on a clock, and test for explosive behaviour with SADF instead of one full-sample ADF that has no power against a bubble in",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11955,
+      "approx_body_tokens": 2988,
+      "references": [],
+      "scripts": [
+        "structural_breaks.py"
+      ]
+    },
+    {
+      "name": "triple-barrier-labeling",
+      "plugin": "fin-ml",
+      "path": "plugins/fin-ml/skills/triple-barrier-labeling/SKILL.md",
+      "description": "Label a trade by which of profit-taking, stop loss and the holding-period limit is hit FIRST, with barriers scaled to the volatility at the event - instead of by the sign of the return N bars later, which describes a path you would have been stopped out of. TRIGGER - triple barrier, triple-barrier method, getEvents, get_events, getBins, get_bins, barrier_touched, add_vertical_barrier, pt_sl, vertical barrier, t1 touch time, getDailyVol, get_daily_vol, meta-label 0/1, fixed-time horizon labeling, fixed horizon labels, \"label = sign of the 5-day forward return\", \"my classifier is 90 % accurate but loses money\", \"how do I label financial data for ML\", Lopez de Prado chapter 3, AFML labeling. SKIP for weighting the overlapping labels (sample-weights-and-uniqueness), for cross-validating them (lib-purgedcv), for the secondary model (meta-labeling), for the CUSUM event sampler (structural-breaks), and for stationary features (fractional-differentiation).",
+      "summary": "Label a trade by which of profit-taking, stop loss and the holding-period limit is hit FIRST, with barriers scaled to the volatility at the event - instead of by the sign of the re",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12734,
+      "approx_body_tokens": 3183,
+      "references": [],
+      "scripts": [
+        "triple_barrier.py"
+      ]
     },
     {
       "name": "covariance-and-risk-models",
