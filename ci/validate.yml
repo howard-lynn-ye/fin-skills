@@ -1,0 +1,112 @@
+name: validate
+# NOT ACTIVE YET. This file cannot live at .github/workflows/validate.yml until the
+# maintainer grants the `workflow` OAuth scope - see ci/README.md for the one command
+# and the one `git mv`. It is version-controlled here so it is reviewable and cannot be
+# lost; move it, do not copy it.
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The full matrix: the package must build, validate, import and pass its tests on every
+  # Python version pyproject.toml claims, on Linux and on Windows (the repo is developed on
+  # Windows, and the console-encoding check only means something there).
+  test:
+    name: py${{ matrix.python }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install the package with its optional stats extras
+        run: pip install -e ".[stats]" pytest
+
+      - name: Skills validate against the Agent Skills spec
+        run: python scripts/validate.py
+
+      - name: The catalog, the README table and its counts are regenerated, not hand-edited
+        run: |
+          python scripts/build_index.py
+          git diff --exit-code catalog/index.json README.md
+
+      - name: The importable package is regenerated from the skills
+        run: python scripts/build_package.py --check
+
+      - name: Import smoke test
+        run: python -c "import fin_skills; from fin_skills.api import registry, Bundle, check; print(len(fin_skills.names()), 'skills,', len(registry()), 'guards'); fin_skills.load('backtest-validation')"
+
+      - name: Unit tests (the slow demo paths are marked and deselected)
+        run: python -m pytest -q
+
+  # Everything that only needs to run once. Kept off the matrix because these are slow and
+  # OS-independent: running every skill script, the slow test set, and the leak benchmark.
+  scripts-and-benchmark:
+    name: scripts, slow tests, benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install the package with its optional stats extras
+        run: pip install -e ".[stats]" pytest
+
+      - name: Every skill script runs clean on a default console encoding
+        run: python scripts/check_scripts.py --timeout 300
+
+      - name: The slow test set
+        run: python -m pytest -q -m slow
+
+      - name: The leak benchmark still detects what it claims
+        run: python benchmarks/leak_bench.py --quick
+
+      - name: RESULTS.md is what the benchmark actually produces
+        run: git diff --exit-code benchmarks/RESULTS.md || (echo "::warning::benchmarks/RESULTS.md is stale - regenerate it with python benchmarks/leak_bench.py" && exit 1)
+
+  # pyproject.toml claims numpy>=1.24, pandas>=2.0, scipy>=1.10. Untested floors are wishes,
+  # so this job installs exactly them.
+  minimum-dependencies:
+    name: dependency floors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install at the floors pyproject.toml declares
+        run: pip install -e . pytest "numpy==1.24.*" "pandas==2.0.*" "scipy==1.10.*"
+      - name: Import and run the tests that do not need the stats extras
+        run: |
+          python -c "import numpy, pandas, scipy, fin_skills; print(numpy.__version__, pandas.__version__, scipy.__version__)"
+          python -m pytest -q
+
+  lint:
+    name: ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install ruff
+      # check only - `ruff format` would rewrite the skill scripts and force a package
+      # regeneration, so formatting is deliberately not enforced here.
+      - run: ruff check .
