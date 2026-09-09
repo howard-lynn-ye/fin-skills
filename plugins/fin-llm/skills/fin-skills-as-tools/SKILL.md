@@ -48,9 +48,9 @@ hand-maintained schema goes stale the first time an argument is added; this one 
 | Bundle slot names `check_backtest` accepts | 129 | 61 curated data slots + 68 per-guard tuning knobs |
 
 The whole Anthropic-shaped tool array is **50,376 characters** of JSON
-(`len(json.dumps(anthropic_tools()))`). The 7 catalogue tools alone are **2,727**. If your
-context budget is tight, ship the catalogue tools plus `check_backtest` and let the agent reach
-the rest through `describe_guard`; the descriptions are written so that is enough.
+(`len(json.dumps(anthropic_tools()))`). The 7 catalogue tools alone are **3,809**. If your
+context budget is tight, ship only those seven and let the agent reach the rest through
+`describe_guard`; the descriptions are written so that is enough.
 
 ## 2. The MCP server
 
@@ -79,7 +79,7 @@ claude mcp add fin-skills -- python -m fin_skills.mcp
   `input_schema` dict. The high-level `MCPServer` derives its schema from Python type hints,
   which is exactly what a runtime-derived schema cannot use.
 
-🚨 **The extra is optional and stays optional.** `pyproject.toml` adds
+**The extra is optional and stays optional.** `pyproject.toml` adds
 `[project.optional-dependencies] mcp = ["mcp>=2.0"]` and nothing to the base dependencies, which
 remain numpy / pandas / scipy. `import fin_skills.mcp` works with the SDK absent — the import is
 deferred — and `python -m fin_skills.mcp` then prints the install line and **exits 1**:
@@ -91,6 +91,13 @@ fin-skills: cannot start - the Model Context Protocol SDK is not installed.
 
 `--help`, `--list-tools`, `--json` and `--check` all work without the SDK, so a CI job can
 verify the tool table without installing a transport.
+
+✅ run end to end against `mcp` 2.2.0 on 2026-09-09: a client launching
+`python -m fin_skills.mcp` as a stdio subprocess got 31 tools from `tools/list`, a passing
+verdict from `check_rf_convention`, a failing one from `check_cost_curve`, and `isError: true`
+with the field named for a mistyped payload. `tests/test_mcp.py` is that round trip, behind
+`requires("mcp")`; the tests that matter more — the module importing and exiting cleanly with
+the SDK absent — run everywhere.
 
 **The two error channels are respected, because the spec is explicit that they differ.** A
 protocol error (JSON-RPC) is for things the model cannot fix; a tool-execution error
@@ -104,9 +111,13 @@ protocol error (JSON-RPC) is for things the model cannot fix; a tool-execution e
 
 ## 3. The same tools for the Messages API and for OpenAI
 
-One table, three renames — `fin_skills.tools.export`. ✅ shapes verified 2026-09-09 at
-`platform.claude.com/docs/en/agents-and-tools/tool-use/overview` and
-`developers.openai.com/api/docs/guides/function-calling`.
+One table, three renames — `fin_skills.tools.export`. ✅ the Anthropic shape
+(`name` / `description` / `input_schema`) verified 2026-09-09 at
+`platform.claude.com/docs/en/agents-and-tools/tool-use/overview`, and the OpenAI **Responses**
+shape (`type: "function"` beside `name` / `description` / `parameters`) at
+`developers.openai.com/api/docs/guides/function-calling`. ⚠️ that page carries no Chat
+Completions example, so the `{"type": "function", "function": {...}}` nesting that `--format
+openai-chat` emits is secondhand — check it against the SDK you use.
 
 ```bash
 python -m fin_skills.tools --json                     # Anthropic: name, description, input_schema
@@ -132,11 +143,13 @@ for block in resp.content:                       # then, for each tool_use block
 `call_tool` is the whole contract. It raises `TypeError` naming the field for bad input, and
 returns a dict for everything else — send `json.dumps(result)` back as the `tool_result`.
 
-⚠️ The payload shapes use `$defs` and a local `$ref` (§5). That is standard JSON Schema 2020-12
-and MCP names it explicitly; both other APIs accept it. If you use OpenAI **strict** mode you
-must also mark every property required and set `additionalProperties: false` — these schemas
-already set the latter, but not the former, so pass `strict: false` (the default) or
-post-process.
+⚠️ The payload shapes use `$defs` and a local `$ref` (§5) — inlined instead, the Series
+definition repeats about thirty times. MCP's tools page names `$ref`/`$defs` as available
+2020-12 keywords; ⚠️ whether the Anthropic and OpenAI validators resolve a local `$ref` was
+NOT verified at a primary source, so test one call before shipping. ✅ the OpenAI **strict**
+mode requirement is on the page above: every property must be in `required` and
+`additionalProperties` must be `false`. These schemas set the second but not the first, so pass
+`strict: false` (the default) or post-process.
 
 ## 4. The four guards that cannot cross a JSON boundary
 
@@ -206,8 +219,9 @@ Size caps, as module constants so this section can quote the code
 | `MAX_EVIDENCE_CHARS` | 4,000 | characters of any one evidence string |
 
 For scale: 504 daily returns with an index is a 23,137-character payload, and the whole
-`check_backtest` result below is 6,977 characters. Evidence is *reduced*, not returned whole —
-a 504-row cost curve comes back as its 5 rows plus the rendered table.
+`check_backtest` result below is 6,977 characters. Evidence is *reduced* on the way out, never
+returned whole — a frame is truncated to 50 rows, a series to 500 points, and the truncation is
+declared in a `truncated` key rather than passed off as the whole thing.
 
 ## 6. A worked exchange
 
