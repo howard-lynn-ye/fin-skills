@@ -101,6 +101,7 @@ def apply_wash_sales(blotter: pd.DataFrame, rule: str = "fifo") -> dict:
         for i, t in enumerate(df.itertuples(index=False)) if t.side == "B"]
 
     lots: list[dict] = []       # open lots, in acquisition order
+    open_by_buy: dict[int, float] = {}     # shares of each purchase still held, for O(1) lookup
     pending: dict[int, list[tuple]] = {}   # basis bumps for lots that do not exist yet
     rows: list[dict] = []
     orphaned = 0.0
@@ -110,6 +111,7 @@ def apply_wash_sales(blotter: pd.DataFrame, rule: str = "fifo") -> dict:
             lots.append({"buy_id": buy_id, "date": t.date, "qty": float(t.qty),
                          "basis_ps": float(t.price), "account": t.account,
                          "hp_start": t.date, "n_adj": 0})
+            open_by_buy[buy_id] = float(t.qty)
             for shares, loss_ps, hp, depth in pending.pop(buy_id, []):
                 orphaned += loss_ps * (
                     shares - _rebase(buy_id, shares, loss_ps, hp, lots, depth))
@@ -128,6 +130,7 @@ def apply_wash_sales(blotter: pd.DataFrame, rule: str = "fifo") -> dict:
                    "gain": gain, "disallowed": 0.0, "replacements": "", "permanent": False,
                    "carried_in": int(lot["n_adj"])}
             lot["qty"] -= take
+            open_by_buy[lot["buy_id"]] = open_by_buy.get(lot["buy_id"], 0.0) - take
             left -= take
             if lot["qty"] <= 1e-9:
                 lots.pop(i)
@@ -136,7 +139,7 @@ def apply_wash_sales(blotter: pd.DataFrame, rule: str = "fifo") -> dict:
                 dis, tags, perm, orph = _disallow(gain, take, t.date, lot["buy_id"],
                                                   lot["hp_start"], purchases, lots,
                                                   buy_id, pending,
-                                                  int(lot["n_adj"]) + 1)
+                                                  int(lot["n_adj"]) + 1, open_by_buy)
                 row["disallowed"] = dis
                 row["replacements"] = ",".join(tags)
                 row["permanent"] = perm
@@ -158,13 +161,20 @@ def apply_wash_sales(blotter: pd.DataFrame, rule: str = "fifo") -> dict:
 
 def _disallow(gain: float, qty: float, sell_date, sold_buy_id: int, sold_hp_start,
               purchases: list[dict], lots: list[dict], now_id: int,
-              pending: dict[int, list[tuple]], depth: int):
+              pending: dict[int, list[tuple]], depth: int, open_by_buy: dict[int, float]):
     """Find replacements in the +/-30 day window, disallow pro rata, re-base the survivors.
 
     Pub 550 (2025) p. 87: "Match the shares bought in the same order that you bought them,
     beginning with the first shares bought." Purchases are already in acquisition order.
     A replacement bought AFTER this sale has no lot yet, so its bump is queued in `pending`
     and applied the moment the lot is created.
+
+    ONE DELIBERATE DEVIATION, and it matters at high turnover: shares that are themselves
+    already sold are tried LAST. The Publication's ordering rule is written for the normal
+    case, in which the replacement shares are still held; taking a long-gone purchase first
+    leaves the disallowed loss with no basis to attach to, which turns a deferral into a
+    permanent loss that no broker's 1099-B would ever report. `orphaned_disallowed` counts
+    whatever is left with nowhere to go, so the deviation is visible rather than silent.
     """
     need = qty
     disallowed = 0.0
@@ -172,7 +182,11 @@ def _disallow(gain: float, qty: float, sell_date, sold_buy_id: int, sold_hp_star
     tags: list[str] = []
     permanent = False
     loss_ps = -gain / qty                      # positive dollars of loss per share
-    for p in purchases:
+    held = [p for p in purchases
+            if p["buy_id"] > now_id or open_by_buy.get(p["buy_id"], 0.0) > 1e-9]
+    gone = [p for p in purchases
+            if not (p["buy_id"] > now_id or open_by_buy.get(p["buy_id"], 0.0) > 1e-9)]
+    for p in held + gone:
         if need <= 1e-9:
             break
         if p["buy_id"] == sold_buy_id or p["capacity"] <= 1e-9:

@@ -186,6 +186,18 @@ reproduce **both** of the Publication's worked examples exactly — the 75-of-10
 (basis 2,750 → 3,250 and 1,125 → 1,375) and the four-daily-purchase case (500 to the first lot,
 500 to the second, nothing to the third and fourth).
 
+⚠️ **One deliberate deviation from the Publication's literal ordering, and it only bites at high
+turnover.** Pub 550's rule is written for the normal case in which the replacement shares are
+still held. Taking the *earliest* in-window purchase when that purchase has itself already been
+sold leaves the disallowed loss with no basis to attach to — which converts a deferral into a
+permanent loss no broker's 1099-B would ever report. ✅ Measured: on a daily sell-and-rebuy book,
+following the literal order orphans **100%** of the disallowed loss and inflates the tax bill by
+an order of magnitude. So `apply_wash_sales` tries **still-held (or not-yet-bought) replacements
+first**, in acquisition order, and falls back to disposed ones only when nothing else is
+available — counting whatever is left in `orphaned_disallowed` so the deviation is visible. Both
+demo blotters here report `orphaned_disallowed == 0.0`, and all three of the Publication's worked
+examples are unaffected.
+
 | Not modelled | Why it matters |
 |---|---|
 | "Substantially identical" across **different tickers** | The module compares one symbol against itself. Every real harvesting decision is about two different symbols, and that judgment is not automatable |
