@@ -1,0 +1,84 @@
+name: New skill proposal
+description: A library, market, model family or strategy family this repo does not cover yet
+title: "[skill] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The bar for a skill here is not coverage, it is a wrong number prevented: a default, a
+        bug or a convention that silently produces a wrong result, with the evidence that it
+        does. Check `catalog/external-skills.json` first - if another repo already owns the
+        topic, the answer may be a pointer rather than a skill.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of skill
+      options:
+        - A library (one skill per library, fin-libraries)
+        - A market or domain (a task someone has)
+        - A model family (fin-models)
+        - A strategy or execution family (fin-strategies)
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: Proposed skill name
+      description: Lowercase letters, digits and single hyphens; it becomes the directory name.
+      placeholder: lib-xyz / xyz-markets
+    validations:
+      required: true
+
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Which plugin
+      options:
+        - fin-core
+        - fin-china
+        - fin-asia
+        - fin-crypto
+        - fin-futures-fx
+        - fin-llm
+        - fin-libraries
+        - fin-models
+        - fin-strategies
+        - A new plugin (say why below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: failure
+    attributes:
+      label: The wrong-number failure it prevents
+      description: The default, bug or convention that silently produces a wrong result, and the symptom a user sees (the error string, the Sharpe of -65, the missing column).
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What you verified and how
+      description: One line per claim with the command you ran or the primary source you read, and the date. Unverified claims are marked, not omitted.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Draft TRIGGER / SKIP description (optional)
+      description: The words a user actually types, pasted error strings, and the neighbouring skill it must not fight (the SKIP clause).
+
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing skills and `catalog/external-skills.json` for this topic
+          required: true
+        - label: I understand that every number in a skill must be printed by a script in that skill
+          required: true

@@ -1,0 +1,70 @@
+name: Bug in the package or a guard
+description: A fin_skills function, guard, convention, script or benchmark misbehaves
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is for code: `fin_skills.*`, `fin_skills.api`, `scripts/`, `benchmarks/`.
+        For a claim in a SKILL.md that is wrong or has gone stale, use the "Claim correction"
+        form instead - that is the more valuable report here.
+
+  - type: input
+    id: version
+    attributes:
+      label: fin-skills version
+      description: The value of fin_skills.__version__, plus the commit hash if you installed from git.
+      placeholder: 0.1.0 (git aa5b56d)
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python and dependency versions
+      placeholder: Python 3.12.4, numpy 2.2.6, pandas 2.2.3, scipy 1.13.0
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: Windows 11 / Ubuntu 24.04 / macOS 15
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: Module, guard or script
+      placeholder: fin_skills.core.safe_asof / get("assert_causal") / benchmarks/leak_bench.py
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Code plus the data shape. Synthetic data with a fixed seed is preferred over a vendor download.
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What the docstring, the SKILL.md or the API reference says should happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Paste the real output or traceback.
+      render: shell
+    validations:
+      required: true

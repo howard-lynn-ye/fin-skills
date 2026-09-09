@@ -1,0 +1,38 @@
+# Citation metadata for fin-skills, in the Citation File Format 1.2.0
+# (https://citation-file-format.github.io/). GitHub renders it as the
+# "Cite this repository" button on the repository page.
+#
+# MAINTAINER: the single author below is an entity entry carrying the GitHub
+# handle, because this file was written without a confirmed legal name or
+# ORCID. Replace it with a person entry, for example
+#   - family-names: <Family name>
+#     given-names: <Given name>
+#     orcid: "https://orcid.org/XXXX-XXXX-XXXX-XXXX"
+# and add a DOI identifier once a release has been archived on Zenodo:
+#   identifiers:
+#     - type: doi
+#       value: 10.5281/zenodo.XXXXXXX
+cff-version: 1.2.0
+message: "If you use fin-skills, please cite it using the metadata in this file."
+type: software
+title: "fin-skills"
+version: 0.1.0
+date-released: "2026-09-09"
+license: MIT
+repository-code: "https://github.com/howard-lynn-ye/fin-skills"
+url: "https://howard-lynn-ye.github.io/fin-skills/"
+authors:
+  - name: "howard-lynn-ye"
+abstract: >-
+  Agent Skills for Claude Code that tell an LLM which Python quant-finance
+  library to use, what each one silently gets wrong, and whether a backtest
+  result is real, with every claim dated and marked by how it was verified,
+  shipped with the same guards as an importable Python package.
+keywords:
+  - quantitative-finance
+  - agent-skills
+  - backtesting
+  - look-ahead-bias
+  - survivorship-bias
+  - point-in-time-data
+  - claude-code

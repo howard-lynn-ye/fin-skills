@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: API reference and documentation
+    url: https://howard-lynn-ye.github.io/fin-skills/
+    about: One page per fin_skills module, built by scripts/build_docs.py and published to GitHub Pages.
+  - name: Security report
+    url: https://github.com/howard-lynn-ye/fin-skills/blob/master/SECURITY.md
+    about: How to report a vulnerability in this repository's own code, and what is out of scope.
