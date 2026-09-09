@@ -4,8 +4,8 @@
   "n_reference_files": 74,
   "n_scripts": 87,
   "discovery_cost": {
-    "total_description_chars": 92018,
-    "approx_tokens": 23004,
+    "total_description_chars": 92142,
+    "approx_tokens": 23035,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -147,13 +147,13 @@
       "name": "derivatives-pricing",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/derivatives-pricing/SKILL.md",
-      "description": "Price options and fixed income, and get the Greeks and conventions right. TRIGGER - option pricing, implied volatility, IV, Greeks, delta, gamma, vega, theta, rho; Black-Scholes, binomial, Monte Carlo, American exercise, early exercise, exotics; volatility surface, smile, skew, SVI, SABR, ZABR; QuantLib, vollib, py_vollib, financepy, rateslib, optionlab; option chains; or yield curve, discount factor, curve bootstrapping, day count, swap and bond pricing. Greek scaling differs by 100x and 365x between the three common libraries, and one popular fixed-income package is not open source. SKIP for option lifecycle events - assignment, pin risk, expiry - live or backtested, and for historical option chains and vendors (options-backtesting). SKIP for implementing a pricing model yourself (option-pricing-models), for fitting or arbitrage-checking a smile or surface (implied-vol-surface), and for building or fitting a curve (term-structure-models).",
-      "summary": "Price options and fixed income, and get the Greeks and conventions right.",
+      "description": "Choose a derivatives pricing library and get its Greek units and conventions right. TRIGGER - option pricing, implied volatility, IV, Greeks, delta, gamma, vega, theta, rho; which pricing library, exotics coverage; QuantLib, vollib, py_vollib, financepy, rateslib, optionlab; option chains. Greek scaling differs by 100x and 365x between the three common libraries, and one popular fixed-income package is not open source. SKIP for option lifecycle events - assignment, pin risk, expiry - live or backtested, and for historical option chains and vendors (options-backtesting). SKIP for the models themselves - implementing one (option-pricing-models), fitting a smile (implied-vol-surface), building a curve (term-structure-models), bond accrued and the 30/360 family (bond-conventions-and-accrued), duration and DV01 (duration-convexity-and-dv01), and projection-versus-discount choice on a swap (ois-discounting-and-multi-curve).",
+      "summary": "Choose a derivatives pricing library and get its Greek units and conventions right.",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 13702,
-      "approx_body_tokens": 3425,
+      "body_chars": 13679,
+      "approx_body_tokens": 3419,
       "references": [
         "_library-matrix.md",
         "quantlib.md",
@@ -905,13 +905,13 @@
       "name": "lib-quantlib",
       "plugin": "fin-libraries",
       "path": "plugins/fin-libraries/skills/lib-quantlib/SKILL.md",
-      "description": "The only broadly-permissive, mature, full-coverage derivatives library in Python, whose global evaluationDate returns an NPV of exactly 0.0 with no warning once it is past expiry. TRIGGER - QuantLib, \"import QuantLib as ql\", QuantLib-SWIG, QuantLib-Python, Settings.instance(), evaluationDate, ql.Date, YieldTermStructureHandle, VanillaOption, AmericanExercise, QdFpAmericanEngine, FdBlackScholesVanillaEngine, BinomialVanillaEngine, BaroneAdesiWhaleyApproximationEngine, SABRInterpolation, SviSmileSection, thetaPerDay, \"NPV is zero\". Memory is stale on packaging and engine names - it is at 1.43 and ships 26 wheels but no sdist. SKIP for vanilla European IV and Greeks in pure Python (lib-vollib). SKIP for choosing between libraries, or when no library is named - the domain skill's job.",
+      "description": "The only broadly-permissive, mature, full-coverage derivatives library in Python, whose global evaluationDate returns an NPV of exactly 0.0 with no warning once it is past expiry. TRIGGER - QuantLib, \"import QuantLib as ql\", QuantLib-SWIG, QuantLib-Python, Settings.instance(), evaluationDate, ql.Date, YieldTermStructureHandle, VanillaOption, AmericanExercise, QdFpAmericanEngine, FdBlackScholesVanillaEngine, BinomialVanillaEngine, BaroneAdesiWhaleyApproximationEngine, SABRInterpolation, SviSmileSection, thetaPerDay, \"NPV is zero\". Memory is stale on packaging and engine names - it is at 1.43 and ships 26 wheels but no sdist. SKIP for vanilla European IV and Greeks in pure Python (lib-vollib). SKIP for bond accrued and the 30/360 family (bond-conventions-and-accrued), for OIS versus projection discounting (ois-discounting-and-multi-curve), and for choosing between libraries or when no library is named - the domain skill's job.",
       "summary": "The only broadly-permissive, mature, full-coverage derivatives library in Python, whose global evaluationDate returns an NPV of exactly 0.0 with no warning once it is past expiry.",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 9045,
-      "approx_body_tokens": 2261,
+      "body_chars": 9196,
+      "approx_body_tokens": 2299,
       "references": [],
       "scripts": [
         "npv_zero.py"

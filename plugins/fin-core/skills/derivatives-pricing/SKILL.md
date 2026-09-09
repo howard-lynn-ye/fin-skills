@@ -1,17 +1,17 @@
 ---
 name: derivatives-pricing
 description: >-
-  Price options and fixed income, and get the Greeks and conventions right. TRIGGER - option
-  pricing, implied volatility, IV, Greeks, delta, gamma, vega, theta, rho; Black-Scholes,
-  binomial, Monte Carlo, American exercise, early exercise, exotics; volatility surface, smile,
-  skew, SVI, SABR, ZABR; QuantLib, vollib, py_vollib, financepy, rateslib, optionlab; option
-  chains; or yield curve, discount factor, curve bootstrapping, day count, swap and bond pricing.
-  Greek scaling differs by 100x and 365x between the three common libraries, and one popular
-  fixed-income package is not open source. SKIP for option lifecycle events - assignment, pin
-  risk, expiry - live or backtested, and for historical option chains and vendors
-  (options-backtesting). SKIP for implementing a pricing model yourself (option-pricing-models),
-  for fitting or arbitrage-checking a smile or surface (implied-vol-surface), and for building or
-  fitting a curve (term-structure-models).
+  Choose a derivatives pricing library and get its Greek units and conventions right. TRIGGER -
+  option pricing, implied volatility, IV, Greeks, delta, gamma, vega, theta, rho; which pricing
+  library, exotics coverage; QuantLib, vollib, py_vollib, financepy, rateslib, optionlab; option
+  chains. Greek scaling differs by 100x and 365x between the three common libraries, and one
+  popular fixed-income package is not open source. SKIP for option lifecycle events - assignment,
+  pin risk, expiry - live or backtested, and for historical option chains and vendors
+  (options-backtesting). SKIP for the models themselves - implementing one
+  (option-pricing-models), fitting a smile (implied-vol-surface), building a curve
+  (term-structure-models), bond accrued and the 30/360 family (bond-conventions-and-accrued),
+  duration and DV01 (duration-convexity-and-dv01), and projection-versus-discount choice on a
+  swap (ois-discounting-and-multi-curve).
 license: MIT
 metadata:
   version: "0.1.0"

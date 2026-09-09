@@ -8,8 +8,10 @@ description: >-
   QdFpAmericanEngine, FdBlackScholesVanillaEngine, BinomialVanillaEngine,
   BaroneAdesiWhaleyApproximationEngine, SABRInterpolation, SviSmileSection, thetaPerDay, "NPV is
   zero". Memory is stale on packaging and engine names - it is at 1.43 and ships 26 wheels but no
-  sdist. SKIP for vanilla European IV and Greeks in pure Python (lib-vollib). SKIP for choosing
-  between libraries, or when no library is named - the domain skill's job.
+  sdist. SKIP for vanilla European IV and Greeks in pure Python (lib-vollib). SKIP for bond
+  accrued and the 30/360 family (bond-conventions-and-accrued), for OIS versus projection
+  discounting (ois-discounting-and-multi-curve), and for choosing between libraries or when no
+  library is named - the domain skill's job.
 license: MIT
 metadata:
   version: "0.1.0"
