@@ -1,0 +1,727 @@
+"""Implied volatility, SVI smiles, the two static no-arbitrage checks, and the interpolation trap.
+
+WHY this exists: a volatility surface is three separate problems and each has a way of being
+silently wrong.
+
+  1. INVERTING a price to an implied vol. Newton on vega diverges where vega ~ 0 (deep ITM,
+     deep OTM, short expiry); a bracket [1e-6, 5] fails silently when the true vol is outside
+     it. The solver here is a Newton step accepted only while it stays inside a shrinking
+     bracket, otherwise bisection, so it cannot leave the bracket and cannot stall. It refuses
+     a price below discounted intrinsic instead of returning a number. vollib (Jaeckel's
+     "Let's Be Rational") is the cross-check, and its behaviour at that boundary is recorded.
+
+  2. FITTING a smile. Gatheral's raw SVI, w(k) = a + b (rho (k - m) + sqrt((k - m)^2 +
+     sigma^2)), fits most slices in five parameters, and nothing in a least-squares fit stops
+     it from producing a negative implied density. Gatheral and Jacquier (2014) eq. (2.1) give
+     Durrleman's function g(k); Lemma 2.2: a slice is free of butterfly arbitrage iff g(k) >= 0
+     for all k (plus a wing limit). Lemma 2.1 / Definition 2.2: a surface is free of calendar
+     spread arbitrage iff total variance w(k, t) is non-decreasing in t at every fixed k.
+     Both checks are implemented and run on every fit.
+
+  3. INTERPOLATING between maturities. Linear interpolation in implied vol produces a total
+     variance that can DECREASE in t when the term structure is steep (an event, a short-dated
+     spike) -- that is calendar arbitrage manufactured by the interpolation, not by the market.
+     Linear interpolation in total variance at fixed log-moneyness is monotone by
+     construction. The demo builds the violation and measures it.
+
+The synthetic surface is Heston (Albrecher/Gatheral form of the characteristic function, the
+same one option-pricing-models measures against QuantLib), so the "true" vol at an
+interpolated maturity is known and each interpolation method's error can be measured.
+
+Usage:
+    from vol_surface import implied_vol, fit_svi, durrleman_g, butterfly_check, \
+        calendar_check, interpolate_maturity
+"""
+from __future__ import annotations
+
+import math
+from typing import Sequence
+
+import numpy as np
+from scipy.optimize import least_squares
+from scipy.stats import norm
+
+SVI_PARAM_ORDER = ("a", "b", "rho", "m", "sigma")     # QuantLib's SviSmileSection takes (a, b, sigma, rho, m)
+
+# Axel Vogt's raw-SVI parameters (a, b, rho, m, sigma) at t = 1, quoted in Gatheral and
+# Jacquier (2014) "Arbitrage-free SVI volatility surfaces" as an example of a slice that looks
+# reasonable and carries butterfly arbitrage. The parameter VALUES are secondhand (from the
+# paper); everything computed from them below is measured here.
+VOGT = (-0.0410, 0.1331, 0.3060, 0.3586, 0.4153)
+
+
+# ------------------------------------------------------------------ Black-Scholes pieces
+def _flag(flag: str) -> str:
+    f = flag.strip().lower()[:1]
+    if f not in ("c", "p"):
+        raise ValueError(f"flag must be 'c' or 'p', got {flag!r}")
+    return f
+
+
+def bsm_price(S: float, K: float, T: float, r: float, q: float, sigma: float,
+              flag: str = "c") -> float:
+    f = _flag(flag)
+    if T <= 0.0:
+        return max(S - K if f == "c" else K - S, 0.0)
+    v = sigma * math.sqrt(T)
+    d1 = (math.log(S / K) + (r - q + 0.5 * sigma * sigma) * T) / v
+    d2 = d1 - v
+    if f == "c":
+        return S * math.exp(-q * T) * norm.cdf(d1) - K * math.exp(-r * T) * norm.cdf(d2)
+    return K * math.exp(-r * T) * norm.cdf(-d2) - S * math.exp(-q * T) * norm.cdf(-d1)
+
+
+def bsm_vega(S: float, K: float, T: float, r: float, q: float, sigma: float) -> float:
+    v = sigma * math.sqrt(T)
+    d1 = (math.log(S / K) + (r - q + 0.5 * sigma * sigma) * T) / v
+    return S * math.exp(-q * T) * norm.pdf(d1) * math.sqrt(T)
+
+
+def black_normalised(k: float, w: float, flag: str = "c") -> float:
+    """Undiscounted Black price / forward for log-moneyness k = ln(K/F) and total variance w.
+    This is the price coordinate in which 'interpolate in price' is well defined across
+    maturities (fixed moneyness, no discounting, no forward)."""
+    if w <= 0.0:
+        return max(1.0 - math.exp(k), 0.0) if _flag(flag) == "c" else max(math.exp(k) - 1.0, 0.0)
+    s = math.sqrt(w)
+    d1 = -k / s + 0.5 * s
+    d2 = d1 - s
+    if _flag(flag) == "c":
+        return norm.cdf(d1) - math.exp(k) * norm.cdf(d2)
+    return math.exp(k) * norm.cdf(-d2) - norm.cdf(-d1)
+
+
+def total_variance_from_normalised(price: float, k: float, flag: str = "c") -> float:
+    """Invert black_normalised in w by bisection (monotone in w)."""
+    lo, hi = 1e-12, 25.0
+    for _ in range(200):
+        mid = 0.5 * (lo + hi)
+        if black_normalised(k, mid, flag) < price:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+# ------------------------------------------------------------------ implied vol
+def implied_vol(price: float, S: float, K: float, T: float, r: float, q: float,
+                flag: str = "c", tol: float = 1e-12, max_iter: int = 200,
+                sigma_hi: float = 10.0, xtol: float = 1e-14) -> float:
+    """Safeguarded Newton: a Newton step is taken only if it lands strictly inside the current
+    bracket, otherwise the step is a bisection; the bracket shrinks every iteration.
+
+    Raises ValueError when the price is below discounted intrinsic or above the no-arbitrage
+    maximum (S e^{-qT} for a call, K e^{-rT} for a put) -- there is no vol that reproduces
+    such a price and returning one would be a lie.
+
+    `tol` is RELATIVE to the price, and the bracket width `xtol` is the fallback stop. An
+    ABSOLUTE price tolerance is a silent bug: a deep-OTM option worth 7.9e-59 satisfies
+    |model - market| < 1e-12 at the very first guess, so the solver returns that guess. That
+    was this function's own behaviour before 2026-09-09; the demo measures what it cost.
+    """
+    f = _flag(flag)
+    if T <= 0.0:
+        raise ValueError("T must be positive")
+    df_r, df_q = math.exp(-r * T), math.exp(-q * T)
+    intrinsic = max(S * df_q - K * df_r, 0.0) if f == "c" else max(K * df_r - S * df_q, 0.0)
+    upper = S * df_q if f == "c" else K * df_r
+    if price <= intrinsic:
+        raise ValueError(f"price {price:.10g} is at or below discounted intrinsic "
+                         f"{intrinsic:.10g}: no implied vol exists")
+    if price >= upper:
+        raise ValueError(f"price {price:.10g} is at or above the maximum {upper:.10g}")
+    lo, hi = 1e-9, sigma_hi
+    # Brenner-Subrahmanyam style start, clipped into the bracket
+    sigma = min(max(math.sqrt(2.0 * math.pi / T) * price / S, 1e-3), hi * 0.5)
+    for _ in range(max_iter):
+        diff = bsm_price(S, K, T, r, q, sigma, f) - price
+        if abs(diff) <= tol * price:                 # RELATIVE, not tol * max(1.0, price)
+            return sigma
+        if diff > 0.0:
+            hi = sigma
+        else:
+            lo = sigma
+        if hi - lo <= xtol:
+            return 0.5 * (lo + hi)
+        vega = bsm_vega(S, K, T, r, q, sigma)
+        if vega > 1e-300:
+            step = sigma - diff / vega
+            if lo < step < hi:
+                sigma = step
+                continue
+        sigma = 0.5 * (lo + hi)
+    return sigma
+
+
+def vol_from_rounded_price(price: float, S: float, K: float, T: float, r: float, q: float,
+                           flag: str = "c", tick: float = 0.01) -> tuple[float, float] | None:
+    """Implied vol from the price rounded to `tick`, and the gap to the unrounded one.
+
+    A quote screen carries pennies, not float64. Returns None when the rounded price falls at
+    or below discounted intrinsic -- which is the honest answer for an option whose entire
+    time value is smaller than one tick, and the case a surface builder must drop rather than
+    interpolate through."""
+    exact = implied_vol(price, S, K, T, r, q, flag)
+    rounded = round(price / tick) * tick
+    try:
+        return implied_vol(rounded, S, K, T, r, q, flag), exact
+    except ValueError:
+        return None
+
+
+# ------------------------------------------------------------------ SVI
+def check_svi_params(a: float, b: float, rho: float, m: float, sigma: float) -> None:
+    """The five conditions QuantLib's checkSviParameters enforces (sviinterpolation.hpp)."""
+    if b < 0.0:
+        raise ValueError(f"b ({b}) must be non negative")
+    if not abs(rho) < 1.0:
+        raise ValueError(f"rho ({rho}) must be in (-1,1)")
+    if not sigma > 0.0:
+        raise ValueError(f"sigma ({sigma}) must be positive")
+    if a + b * sigma * math.sqrt(1.0 - rho * rho) < 0.0:
+        raise ValueError("a + b sigma sqrt(1 - rho^2) must be non negative (minimum variance)")
+    if b * (1.0 + abs(rho)) > 4.0:
+        raise ValueError("b (1 + |rho|) must be <= 4")
+
+
+def svi_total_variance(k, a: float, b: float, rho: float, m: float, sigma: float):
+    """Gatheral's raw SVI: w(k) = a + b (rho (k - m) + sqrt((k - m)^2 + sigma^2))."""
+    x = np.asarray(k, dtype=float) - m
+    return a + b * (rho * x + np.sqrt(x * x + sigma * sigma))
+
+
+def svi_derivatives(k, params: Sequence[float]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """w, w', w'' of raw SVI, analytically."""
+    a, b, rho, m, sigma = params
+    x = np.asarray(k, dtype=float) - m
+    R = np.sqrt(x * x + sigma * sigma)
+    w = a + b * (rho * x + R)
+    w1 = b * (rho + x / R)
+    w2 = b * sigma * sigma / R ** 3
+    return w, w1, w2
+
+
+def durrleman_g(k, params: Sequence[float]) -> np.ndarray:
+    """Gatheral & Jacquier (2014) eq. (2.1):
+        g(k) = (1 - k w'/(2w))^2 - (w'^2 / 4)(1/w + 1/4) + w''/2.
+    Lemma 2.2: the slice is free of butterfly arbitrage iff g(k) >= 0 for all k (and
+    d+(k) -> -inf as k -> +inf). g is proportional to the implied risk-neutral density."""
+    w, w1, w2 = svi_derivatives(k, params)
+    k = np.asarray(k, dtype=float)
+    return (1.0 - k * w1 / (2.0 * w)) ** 2 - 0.25 * w1 * w1 * (1.0 / w + 0.25) + 0.5 * w2
+
+
+def breeden_litzenberger_density(k, params: Sequence[float], h: float = 1e-4) -> np.ndarray:
+    """The risk-neutral density read straight off the slice: d2C/dK2 of the undiscounted
+    normalised Black price, by central difference, with F = 1 so K = exp(k).
+
+    This uses NOTHING from durrleman_g -- only Black's formula and the SVI total variance --
+    so where the two agree on the sign, g is verified rather than asserted.
+    """
+    k = np.atleast_1d(np.asarray(k, dtype=float))
+    out = np.empty_like(k)
+    for i, kk in enumerate(k):
+        K = math.exp(float(kk))
+        c = [black_normalised(math.log(KK), float(svi_total_variance(math.log(KK), *params)))
+             for KK in (K + h, K, K - h)]
+        out[i] = (c[0] - 2.0 * c[1] + c[2]) / (h * h)
+    return out
+
+
+def butterfly_check(params: Sequence[float], k_grid=None) -> tuple[bool, float, float]:
+    """(free of butterfly arbitrage on the grid, min g, k at the minimum)."""
+    if k_grid is None:
+        k_grid = np.linspace(-1.5, 1.5, 3001)
+    g = durrleman_g(k_grid, params)
+    i = int(np.argmin(g))
+    return bool(g[i] >= 0.0), float(g[i]), float(k_grid[i])
+
+
+def calendar_check(k_grid, slices: Sequence[tuple[float, Sequence[float]]]
+                   ) -> tuple[bool, float, float, tuple[float, float]]:
+    """Lemma 2.1 / Definition 2.2: w(k, t) non-decreasing in t at every k.
+    Returns (ok, most negative increment of total variance, k where it happens, (t1, t2))."""
+    ordered = sorted(slices, key=lambda s: s[0])
+    worst, worst_k, worst_pair = float("inf"), float("nan"), (float("nan"), float("nan"))
+    k_grid = np.asarray(k_grid, dtype=float)
+    for (t1, p1), (t2, p2) in zip(ordered, ordered[1:]):
+        if t2 <= t1:
+            raise ValueError("maturities must be distinct")
+        dw = svi_total_variance(k_grid, *p2) - svi_total_variance(k_grid, *p1)
+        i = int(np.argmin(dw))
+        if dw[i] < worst:
+            worst, worst_k, worst_pair = float(dw[i]), float(k_grid[i]), (t1, t2)
+    return bool(worst >= 0.0), worst, worst_k, worst_pair
+
+
+def fit_svi(k, w, starts: int = 6) -> dict[str, object]:
+    """Least-squares fit of raw SVI to total variances, in variance space, with QuantLib's
+    parameter box as bounds and a handful of deterministic starting points."""
+    k = np.asarray(k, dtype=float)
+    w = np.asarray(w, dtype=float)
+    if k.shape != w.shape or k.size < 5:
+        raise ValueError("need at least five (k, w) points of equal length")
+    lo = [-1.0, 1e-6, -0.999, k.min() - 1.0, 1e-4]
+    hi = [max(1.0, w.max() * 2), 4.0, 0.999, k.max() + 1.0, 2.0]
+
+    def resid(p):
+        return svi_total_variance(k, *p) - w
+
+    best = None
+    rhos = np.linspace(-0.8, 0.8, starts)
+    for rho0 in rhos:
+        x0 = [w.min() * 0.9, 0.5 * (w.max() - w.min()) / max(np.ptp(k), 1e-3) + 1e-3,
+              rho0, float(k[np.argmin(w)]), 0.1]
+        x0 = [min(max(v, l + 1e-9), h - 1e-9) for v, l, h in zip(x0, lo, hi)]
+        sol = least_squares(resid, x0, bounds=(lo, hi), xtol=1e-14, ftol=1e-14, gtol=1e-14,
+                            max_nfev=5000)
+        if best is None or sol.cost < best.cost:
+            best = sol
+    params = tuple(float(v) for v in best.x)
+    fitted = svi_total_variance(k, *params)
+    return {"params": params, "rmse_w": float(np.sqrt(np.mean((fitted - w) ** 2))),
+            "max_abs_w": float(np.max(np.abs(fitted - w))), "n": int(k.size)}
+
+
+def svi_rho_profile(k, w, rhos: Sequence[float] = (-0.999, -0.9, -0.7, -0.5, -0.3)
+                    ) -> list[tuple[float, float]]:
+    """Refit the other four parameters with rho HELD at each value; return (rho, rmse_w).
+
+    A flat profile means rho is not identified by the data even though the fit is excellent --
+    the reason an unconstrained raw-SVI fit runs to the |rho| < 1 bound and the reason fitted
+    SVI parameters must not be read as market quantities.
+    """
+    k = np.asarray(k, dtype=float)
+    w = np.asarray(w, dtype=float)
+    lo = [-1.0, 1e-6, k.min() - 1.0, 1e-4]
+    hi = [max(1.0, w.max() * 2), 4.0, k.max() + 1.0, 2.0]
+    out = []
+    for rho in rhos:
+        x0 = [w.min() * 0.9, 0.5 * (w.max() - w.min()) / max(np.ptp(k), 1e-3) + 1e-3,
+              float(k[np.argmin(w)]), 0.1]
+        x0 = [min(max(v, l + 1e-9), h - 1e-9) for v, l, h in zip(x0, lo, hi)]
+        sol = least_squares(lambda p: svi_total_variance(k, p[0], p[1], rho, p[2], p[3]) - w,
+                            x0, bounds=(lo, hi), xtol=1e-15, ftol=1e-15, max_nfev=8000)
+        out.append((float(rho), float(np.sqrt(np.mean(sol.fun ** 2)))))
+    return out
+
+
+# ------------------------------------------------------------------ interpolation
+INTERP_METHODS = ("total_variance", "vol", "price")
+
+
+def interpolate_maturity(t: float, t1: float, w1, t2: float, w2, k,
+                         method: str = "total_variance") -> np.ndarray:
+    """Total variance at maturity t from two pillar slices at fixed log-moneyness k.
+
+    'total_variance': linear in w                      -- monotone if the pillars are
+    'vol'           : linear in sqrt(w/t), then w = vol^2 t -- can decrease w in t
+    'price'         : linear in the normalised Black price, then invert to w
+    """
+    if method not in INTERP_METHODS:
+        raise ValueError(f"method must be one of {INTERP_METHODS}")
+    if not t1 < t < t2:
+        raise ValueError("t must lie strictly between the pillars")
+    k = np.asarray(k, dtype=float)
+    w1 = np.asarray(w1, dtype=float)
+    w2 = np.asarray(w2, dtype=float)
+    lam = (t - t1) / (t2 - t1)
+    if method == "total_variance":
+        return w1 + lam * (w2 - w1)
+    if method == "vol":
+        v = np.sqrt(w1 / t1) + lam * (np.sqrt(w2 / t2) - np.sqrt(w1 / t1))
+        return v * v * t
+    out = np.empty_like(k)
+    for i, kk in enumerate(k):
+        p = black_normalised(kk, w1[i]) + lam * (black_normalised(kk, w2[i])
+                                                  - black_normalised(kk, w1[i]))
+        out[i] = total_variance_from_normalised(p, kk)
+    return out
+
+
+# ------------------------------------------------------------------ Heston (synthetic truth)
+def _gauss_legendre_grid(phi_max: float, n_panels: int, order: int = 8):
+    x, wts = np.polynomial.legendre.leggauss(order)
+    edges = np.linspace(0.0, phi_max, n_panels + 1)
+    half = 0.5 * (edges[1:] - edges[:-1])
+    mid = 0.5 * (edges[1:] + edges[:-1])
+    return (mid[:, None] + half[:, None] * x[None, :]).ravel(), \
+        (half[:, None] * wts[None, :]).ravel()
+
+
+def heston_call(S: float, K: float, T: float, r: float, q: float, v0: float, kappa: float,
+                theta: float, sigma: float, rho: float) -> float:
+    """Heston European call, Albrecher et al. (2007) / Gatheral form of the characteristic
+    function (the branch-safe one; option-pricing-models measures the other one breaking)."""
+    phi_max = min(4000.0, 200.0 / math.sqrt(min(T, 1.0)))
+    phi, wts = _gauss_legendre_grid(phi_max, int(min(8000, max(400, phi_max * 2))))
+    lnS, lnK = math.log(S), math.log(K)
+    P = []
+    for j in (1, 2):
+        u = 0.5 if j == 1 else -0.5
+        b = kappa - rho * sigma if j == 1 else kappa
+        iphi = 1j * phi
+        xi = b - rho * sigma * iphi
+        d = np.sqrt(xi * xi - sigma * sigma * (2.0 * u * iphi - phi * phi))
+        g = (xi - d) / (xi + d)
+        edt = np.exp(-d * T)
+        C = (r - q) * iphi * T + (kappa * theta / sigma ** 2) * (
+            (xi - d) * T - 2.0 * np.log((1.0 - g * edt) / (1.0 - g)))
+        D = ((xi - d) / sigma ** 2) * (1.0 - edt) / (1.0 - g * edt)
+        cf = np.exp(C + D * v0 + 1j * phi * lnS)
+        P.append(0.5 + float(np.dot(wts, np.real(np.exp(-1j * phi * lnK) * cf / iphi)))
+                 / math.pi)
+    return S * math.exp(-q * T) * P[0] - K * math.exp(-r * T) * P[1]
+
+
+def heston_smile(S: float, T: float, r: float, q: float, strikes, params: dict[str, float]
+                 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """(log-moneyness k, implied vols, total variances) of a Heston slice, via the solver."""
+    F = S * math.exp((r - q) * T)
+    k = np.log(np.asarray(strikes, dtype=float) / F)
+    vols = np.array([implied_vol(heston_call(S, K, T, r, q, **params), S, K, T, r, q, "c")
+                     for K in strikes])
+    return k, vols, vols * vols * T
+
+
+# ------------------------------------------------------------------ optional cross-checks
+def vollib_cross_check(cases: Sequence[tuple[float, float, float, float, float, float, str]]
+                       ) -> dict[str, object] | None:
+    """vollib's implied vol on the same (price, S, K, T, r, q, flag) cases, plus what it does
+    at and below discounted intrinsic."""
+    try:
+        from vollib.black_scholes_merton.implied_volatility import implied_volatility
+    except ImportError:
+        return None
+    out: dict[str, object] = {}
+    diffs = []
+    for price, S, K, T, r, q, flag in cases:
+        mine = implied_vol(price, S, K, T, r, q, flag)
+        theirs = implied_volatility(price, S, K, T, r, q, flag)
+        diffs.append(abs(mine - theirs))
+    out["max_abs_diff"] = max(diffs)
+    S, K, T, r, q = 100.0, 100.0, 1.0, 0.05, 0.0
+    intrinsic = S - K * math.exp(-r * T)
+    boundary = {}
+    for label, price in (("below intrinsic", intrinsic - 1e-6), ("at intrinsic", intrinsic),
+                         ("intrinsic + 1e-6", intrinsic + 1e-6),
+                         ("intrinsic + 1e-3", intrinsic + 1e-3)):
+        try:
+            theirs = f"{implied_volatility(price, S, K, T, r, q, 'c'):.6f}"
+        except Exception as e:  # noqa: BLE001 - the exception class IS the finding
+            theirs = f"raises {type(e).__module__}.{type(e).__name__}"
+        try:
+            mine = f"{implied_vol(price, S, K, T, r, q, 'c'):.6f}"
+        except ValueError:
+            mine = "raises ValueError"
+        boundary[label] = (mine, theirs)
+    out["boundary"] = boundary
+    return out
+
+
+def quantlib_cross_check(S: float, r: float, q: float, maturities, strikes,
+                         heston: dict[str, float], svi_fits: dict[float, Sequence[float]]
+                         ) -> dict[str, object] | None:
+    try:
+        import QuantLib as ql
+    except ImportError:
+        return None
+    today = ql.Date(8, 9, 2026)
+    ql.Settings.instance().evaluationDate = today
+    dc = ql.Actual365Fixed()
+
+    def flat(rate):
+        return ql.YieldTermStructureHandle(ql.FlatForward(today, rate, dc))
+
+    model = ql.HestonModel(ql.HestonProcess(flat(r), flat(q), ql.QuoteHandle(ql.SimpleQuote(S)),
+                                            heston["v0"], heston["kappa"], heston["theta"],
+                                            heston["sigma"], heston["rho"]))
+    engine = ql.AnalyticHestonEngine(model, ql.AnalyticHestonEngine.Gatheral,
+                                     ql.AnalyticHestonEngine_Integration.gaussLaguerre(192))
+    worst = 0.0
+    for T in maturities:
+        expiry = today + ql.Period(int(round(T * 365)), ql.Days)
+        Tq = dc.yearFraction(today, expiry)
+        for K in strikes:
+            opt = ql.VanillaOption(ql.PlainVanillaPayoff(ql.Option.Call, K),
+                                   ql.EuropeanExercise(expiry))
+            opt.setPricingEngine(engine)
+            worst = max(worst, abs(opt.NPV() - heston_call(S, K, Tq, r, q, **heston)))
+    out: dict[str, object] = {"version": ql.__version__, "heston_max_abs_diff": worst}
+    svi_worst = 0.0
+    for T, (a, b, rho, m, sigma) in svi_fits.items():
+        F = S * math.exp((r - q) * T)
+        section = ql.SviSmileSection(T, F, [a, b, sigma, rho, m])      # QuantLib order
+        for K in strikes:
+            mine = math.sqrt(svi_total_variance(math.log(K / F), a, b, rho, m, sigma) / T)
+            svi_worst = max(svi_worst, abs(section.volatility(K) - mine))
+    out["svi_max_abs_diff"] = svi_worst
+
+    # What does the parameter-order swap actually cost? With rho < 0 the swap puts a negative
+    # number where sigma belongs and QuantLib raises. With rho > 0 nothing is out of range and
+    # it prices a different smile in silence.
+    swap = {}
+    for label, (a, b, rho, m, sigma) in (("rho<0", (0.02, 0.10, -0.30, 0.05, 0.20)),
+                                         ("rho>0", (0.02, 0.10, 0.30, 0.05, 0.20))):
+        F = S * math.exp((r - q) * 1.0)
+        right = ql.SviSmileSection(1.0, F, [a, b, sigma, rho, m]).volatility(S)
+        try:
+            wrong = ql.SviSmileSection(1.0, F, [a, b, rho, m, sigma]).volatility(S)
+            swap[label] = (right, wrong, "")
+        except Exception as e:  # noqa: BLE001 - whether it raises IS the finding
+            swap[label] = (right, float("nan"), f"{type(e).__name__}: {e}")
+    out["svi_order_swap"] = swap
+
+    # Does QuantLib's own SVI validation (checkSviParameters, called in the SviSmileSection
+    # constructor - it is not exposed to Python on its own) reject a slice that HAS butterfly
+    # arbitrage? Construct the Vogt slice and see.
+    a, b, rho, m, sigma = VOGT
+    try:
+        ql.SviSmileSection(1.0, 1.0, [a, b, sigma, rho, m])
+        out["vogt_accepted_by_quantlib"] = True
+        out["vogt_error"] = ""
+    except Exception as e:  # noqa: BLE001 - whether it raises IS the finding
+        out["vogt_accepted_by_quantlib"] = False
+        out["vogt_error"] = f"{type(e).__name__}: {e}"
+    return out
+
+
+# ------------------------------------------------------------------ demo
+if __name__ == "__main__":
+    W = 96
+    print("=" * W)
+    print("IMPLIED VOL SURFACE -- solver, SVI fit, arbitrage checks, interpolation trap")
+    print("=" * W)
+
+    # ------------------------------------------------------------- 1. solver
+    print("\n1. IMPLIED VOL SOLVER: round trip over 27 cases, then the intrinsic boundary")
+    cases = []
+    worst_rt = 0.0
+    for sig in (0.10, 0.30, 0.80):
+        for mny in (0.7, 1.0, 1.3):
+            for T in (0.05, 1.0, 3.0):
+                S, K, r, q = 100.0, 100.0 * mny, 0.03, 0.01
+                flag = "c" if mny >= 1.0 else "p"            # OTM side carries the vol
+                price = bsm_price(S, K, T, r, q, sig, flag)
+                cases.append((price, S, K, T, r, q, flag))
+                worst_rt = max(worst_rt, abs(implied_vol(price, S, K, T, r, q, flag) - sig))
+    print(f"   worst |recovered - true| over sigma in (0.1, 0.3, 0.8), K/S in (0.7, 1, 1.3), "
+          f"T in (0.05, 1, 3): {worst_rt:.1e}")
+    S, K, T, r, q = 100.0, 100.0, 1.0, 0.05, 0.0
+    intrinsic = S - K * math.exp(-r * T)
+    print(f"   S=K=100, T=1, r=5%: discounted intrinsic = {intrinsic:.6f}")
+    for eps in (1e-6, 1e-4, 1e-3, 1e-2):
+        iv = implied_vol(intrinsic + eps, S, K, T, r, q, "c")
+        print(f"   price = intrinsic + {eps:<6g} -> implied vol {iv:.4%}")
+    try:
+        implied_vol(intrinsic, S, K, T, r, q, "c")
+    except ValueError as e:
+        print(f"   price = intrinsic          -> ValueError: {e}")
+
+    # the failure mode this solver used to have, priced out
+    S9, K9, T9 = 100.0, 70.0, 0.05
+    px9 = bsm_price(S9, K9, T9, 0.03, 0.01, 0.10, "p")
+    first_guess = min(max(math.sqrt(2.0 * math.pi / T9) * px9 / S9, 1e-3), 5.0)
+    print(f"   AN ABSOLUTE PRICE TOLERANCE IS A SILENT BUG: a 5%-of-a-year OTM put at K=70 is "
+          f"worth {px9:.3e}.")
+    print(f"   |model(sigma={first_guess:g}) - market| = "
+          f"{abs(bsm_price(S9, K9, T9, 0.03, 0.01, first_guess, 'p') - px9):.2e} < 1e-12, so a "
+          f"solver that stops on an ABSOLUTE")
+    print(f"   1e-12 returns its first guess, {first_guess:g}, instead of "
+          f"{implied_vol(px9, S9, K9, T9, 0.03, 0.01, 'p'):.6f} -- "
+          f"{abs(first_guess - 0.10) * 100:.1f} vol points, no warning. Bisect on a RELATIVE "
+          f"tolerance.")
+
+    print("\n1b. THE PRICE YOU ACTUALLY HAVE IS QUOTED IN PENNIES")
+    header = "vol from price rounded to $0.01"
+    print(f"   {'K':>5} {'T':>6} {'true vol':>9} {'exact price':>13} {'vega':>10} "
+          f"{'vol per half-cent':>18} {header:>36}")
+    for Kp, Tp, sg in ((100.0, 0.05, 0.20), (110.0, 0.05, 0.20), (115.0, 0.05, 0.20),
+                       (120.0, 0.05, 0.20), (120.0, 1.00, 0.20)):
+        px = bsm_price(100.0, Kp, Tp, 0.03, 0.01, sg, "c")
+        vg = bsm_vega(100.0, Kp, Tp, 0.03, 0.01, sg)
+        got = vol_from_rounded_price(px, 100.0, Kp, Tp, 0.03, 0.01, "c")
+        shown = ("rounds to 0.00 -- NO implied vol" if got is None
+                 else f"{got[0]:.4f}  ({(got[0] - sg) * 100:+.2f} vol pts)")
+        print(f"   {Kp:>5.0f} {Tp:>6.2f} {sg:>9.2f} {px:>13.6f} {vg:>10.4f} "
+              f"{0.005 / vg * 100:>15.2f} pts {shown:>36}")
+    print("   -> the solver is exact; the DATA is not. Half a cent of quote noise is worth "
+          "0.06 vol points at the money with")
+    print("      18 days left and 6.45 at K=115; by K=120 the whole time value is under one "
+          "tick and there is no vol to")
+    print("      recover at all. Drop those strikes -- do not fit a smile through them.")
+    vl = vollib_cross_check(cases)
+    if vl is None:
+        print("   vollib not installed - install it to see the same 27 cases cross-checked")
+    else:
+        print(f"   vollib (Let's Be Rational) on the same 27 cases: worst |mine - vollib| = "
+              f"{vl['max_abs_diff']:.1e}")
+        for label, (mine, theirs) in vl["boundary"].items():
+            print(f"   {label:<18} mine: {mine:<22} vollib: {theirs}")
+
+    # ------------------------------------------------------------- 2. Heston surface + SVI
+    S, r, q = 100.0, 0.03, 0.01
+    heston = dict(v0=0.04, kappa=1.5, theta=0.04, sigma=0.3, rho=-0.7)
+    maturities = (0.25, 0.5, 1.0, 2.0)
+    strikes = np.array([70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130], dtype=float)
+    print(f"\n2. SVI FIT TO A HESTON SURFACE  {heston}  r={r} q={q}, {len(strikes)} strikes "
+          f"70..130, T = {maturities}")
+    print(f"   {'T':>5} {'ATM vol':>8} {'RMSE (vol pts)':>15} {'max |err| (vol pts)':>20} "
+          f"{'a':>8} {'b':>7} {'rho':>7} {'m':>7} {'sigma':>7}  butterfly min g")
+    fits: dict[float, tuple[float, ...]] = {}
+    slice_data = {}
+    for T in maturities:
+        k, vols, w = heston_smile(S, T, r, q, strikes, heston)
+        fit = fit_svi(k, w)
+        p = fit["params"]
+        check_svi_params(*p)
+        fitted_vol = np.sqrt(svi_total_variance(k, *p) / T)
+        rmse = float(np.sqrt(np.mean((fitted_vol - vols) ** 2)))
+        mx = float(np.max(np.abs(fitted_vol - vols)))
+        ok, gmin, kmin = butterfly_check(p)
+        fits[T] = p
+        slice_data[T] = (k, vols, w)
+        print(f"   {T:>5.2f} {vols[6]:>8.4f} {rmse * 100:>15.4f} {mx * 100:>20.4f} "
+              f"{p[0]:>8.4f} {p[1]:>7.4f} {p[2]:>7.4f} {p[3]:>7.4f} {p[4]:>7.4f}  "
+              f"{gmin:+.4f} at k={kmin:+.2f} {'OK' if ok else 'ARBITRAGE'}")
+    k_common = np.linspace(-0.4, 0.3, 141)
+    ok, worst_dw, worst_k, pair = calendar_check(k_common, list(fits.items()))
+    print(f"   calendar check on k in [-0.4, 0.3]: smallest increment of total variance "
+          f"between adjacent maturities = {worst_dw:+.6f} at k={worst_k:+.3f} "
+          f"(T {pair[0]} -> {pair[1]}): {'OK' if ok else 'ARBITRAGE'}")
+
+    # ------------------------------------------------------------- 2b. rho is not identified
+    print("\n2b. THE FIT IS EXCELLENT AND THE PARAMETERS ARE NOT IDENTIFIED")
+    for T in (0.25, 1.0):
+        k, vols, w = slice_data[T]
+        prof = svi_rho_profile(k, w)
+        pts = "  ".join(f"rho={rho:+.3f}: {rm / (2 * float(np.mean(vols)) * T) * 100:.4f}"
+                        for rho, rm in prof)
+        spread = max(rm for _, rm in prof) / min(rm for _, rm in prof)
+        print(f"   T={T:.2f} refit with rho HELD (RMSE in vol pts):  {pts}")
+        print(f"        best/worst RMSE ratio over rho in [-0.999, -0.3]: {spread:.2f}x, and "
+              f"the unconstrained fit ran to the bound rho={fits[T][2]:+.3f}")
+    print("   -> a flat objective in rho: the fit is good everywhere, so the fitted rho is a "
+          "solver artefact, not a market quantity. Report the SURFACE, never the parameters.")
+
+    # ------------------------------------------------------------- 3. Vogt example
+    p_vogt = VOGT                                            # (a, b, rho, m, sigma)
+    k_fine = np.linspace(-1.5, 1.5, 30001)
+    ok_v, gmin_v, kmin_v = butterfly_check(p_vogt, k_fine)
+    print(f"\n3. PUBLISHED CHECK: Gatheral and Jacquier (2014), Axel Vogt's parameters, t=1")
+    print(f"   (a, b, rho, m, sigma) = {p_vogt}  ->  min g(k) = {gmin_v:+.4f} at "
+          f"k = {kmin_v:+.3f}: {'butterfly arbitrage, as the paper reports' if not ok_v else '??'}")
+    k_bl = np.linspace(-1.2, 1.6, 2801)
+    dens = breeden_litzenberger_density(k_bl, p_vogt)
+    g_bl = durrleman_g(k_bl, p_vogt)
+    neg_d, neg_g = k_bl[dens < 0.0], k_bl[g_bl < 0.0]
+    print(f"   INDEPENDENT CHECK -- d2C/dK2 of the Black price on the same slice (no g(k) "
+          f"anywhere in it):")
+    print(f"     density < 0 on k in [{neg_d.min():+.3f}, {neg_d.max():+.3f}] "
+          f"({len(neg_d)} of {len(k_bl)} grid points), min {dens.min():.3e} at "
+          f"k={k_bl[int(np.argmin(dens))]:+.3f}")
+    print(f"     g(k)    < 0 on k in [{neg_g.min():+.3f}, {neg_g.max():+.3f}] "
+          f"({len(neg_g)} of {len(k_bl)} grid points)")
+    same = (len(neg_d) == len(neg_g) and neg_d.min() == neg_g.min()
+            and neg_d.max() == neg_g.max())
+    print(f"     the two intervals are {'IDENTICAL' if same else 'DIFFERENT'}: Durrleman's g "
+          f"is verified against Breeden-Litzenberger, not asserted.")
+    try:
+        check_svi_params(*p_vogt)
+        print("   the five box conditions (b >= 0, |rho| < 1, sigma > 0, minimum variance "
+              ">= 0, b(1+|rho|) <= 4) raise NOTHING on these parameters")
+    except ValueError as e:
+        print(f"   check_svi_params raised: {e}")
+
+    # ------------------------------------------------------------- 4. interpolation error
+    T1, T2, Tm = 0.5, 1.0, 0.75
+    k_true, vols_true, w_true = heston_smile(S, Tm, r, q, strikes, heston)
+    F1, F2 = S * math.exp((r - q) * T1), S * math.exp((r - q) * T2)
+    w1 = svi_total_variance(k_true, *fits[T1])
+    w2 = svi_total_variance(k_true, *fits[T2])
+    print(f"\n4. INTERPOLATING TO T={Tm} FROM THE FITTED T={T1} AND T={T2} SLICES, at fixed k")
+    print(f"   {'method':>15} {'max |err| vs Heston (vol pts)':>32} {'ATM err (vol pts)':>18}")
+    interp_err = {}
+    for method in INTERP_METHODS:
+        w_i = interpolate_maturity(Tm, T1, w1, T2, w2, k_true, method)
+        err = np.sqrt(w_i / Tm) - vols_true
+        interp_err[method] = (float(np.max(np.abs(err))) * 100, float(err[6]) * 100)
+        print(f"   {method:>15} {interp_err[method][0]:>32.4f} {interp_err[method][1]:>+18.4f}")
+    print("   NOTE: on a SMOOTH term structure all three are within a fifth of a vol point and "
+          "'vol' is even slightly the")
+    print("   most accurate. Accuracy is not the argument for total variance -- section 5 is. "
+          "A method that is 0.08 vol pts")
+    print("   better on a calm surface and manufactures arbitrage on a steep one is the worse "
+          "method.")
+
+    # ------------------------------------------------------------- 5. manufactured violation
+    event = dict(v0=0.36, kappa=8.0, theta=0.04, sigma=0.5, rho=-0.5)
+    Ta, Tb = 1.0 / 52.0, 0.5
+    print(f"\n5. THE TRAP: an event term structure {event} (60% spot vol decaying fast)")
+    grid = np.linspace(Ta, Tb, 60)
+    truth = np.array([implied_vol(heston_call(S, S, T, r, q, **event), S, S, T, r, q, "c")
+                      for T in grid])
+    w_truth = truth * truth * grid
+    va, vb = truth[0], truth[-1]
+    wa, wb = w_truth[0], w_truth[-1]
+    print(f"   ATM pillars: T={Ta:.4f} vol {va:.2%} (w={wa:.5f}), T={Tb} vol {vb:.2%} "
+          f"(w={wb:.5f}); true Heston w rises monotonically: min dw = "
+          f"{np.min(np.diff(w_truth)):+.2e}")
+    lam = (grid - Ta) / (Tb - Ta)
+    w_vol = (va + lam * (vb - va)) ** 2 * grid
+    w_tv = wa + lam * (wb - wa)
+    p_a, p_b = black_normalised(0.0, wa), black_normalised(0.0, wb)
+    w_px = np.array([total_variance_from_normalised(p_a + l * (p_b - p_a), 0.0) for l in lam])
+    for name, wi in (("linear in vol", w_vol), ("linear in total variance", w_tv),
+                     ("linear in price", w_px)):
+        d = np.diff(wi)
+        worst = float(np.min(d))
+        peak = float(np.max(wi))
+        i_peak = int(np.argmax(wi))
+        err = float(np.max(np.abs(np.sqrt(wi / grid) - truth))) * 100
+        verdict = "CALENDAR ARBITRAGE" if worst < 0 else "monotone"
+        extra = (f"; w peaks at {peak:.5f} at T={grid[i_peak]:.3f} then FALLS to {wb:.5f} at "
+                 f"T={Tb}" if worst < 0 else "")
+        print(f"   {name:<26} min dw/step {worst:+.2e}  max vol err vs Heston {err:6.2f} pts  "
+              f"{verdict}{extra}")
+    i = int(np.argmax(w_vol))
+    print(f"   -> a {Tb}y ATM option quoted off the vol-interpolated surface costs LESS than "
+          f"the {grid[i]:.2f}y one: normalised prices {black_normalised(0.0, wb):.5f} vs "
+          f"{black_normalised(0.0, w_vol[i]):.5f}, a free calendar spread of "
+          f"{(black_normalised(0.0, w_vol[i]) - black_normalised(0.0, wb)) * 1e4:.1f} bp of "
+          f"forward")
+
+    # ------------------------------------------------------------- 6. QuantLib
+    print("\n6. CROSS-CHECK AGAINST QUANTLIB")
+    ql_live = quantlib_cross_check(S, r, q, maturities, strikes, heston, fits)
+    if ql_live is None:
+        print("   QuantLib not installed - the Heston prices and SVI evaluation above stand "
+              "on the reference implementation")
+    else:
+        print(f"   QuantLib {ql_live['version']}: Heston surface, {len(maturities) * len(strikes)} "
+              f"calls, worst |mine - AnalyticHestonEngine(Gatheral)| = "
+              f"{ql_live['heston_max_abs_diff']:.1e}")
+        print(f"   SviSmileSection(T, F, [a, b, sigma, rho, m]) on the four fitted slices: "
+              f"worst |vol diff| = {ql_live['svi_max_abs_diff']:.1e} (parameter order "
+              f"a, b, SIGMA, RHO, m -- not Gatheral's a, b, rho, m, sigma)")
+        print("   what the swapped order costs, same slice (a=0.02, b=0.10, |rho|=0.30, "
+              "m=0.05, sigma=0.20, K=F-forward ATM):")
+        for label, (right, wrong, err) in ql_live["svi_order_swap"].items():
+            got = err if err else (f"{wrong:.6f}  ({abs(wrong - right) * 100:.2f} vol points "
+                                   f"away, NO ERROR)")
+            print(f"     {label}: correct order {right:.6f}   swapped -> {got}")
+        if ql_live["vogt_accepted_by_quantlib"]:
+            print("   SviSmileSection(1.0, 1.0, Vogt) CONSTRUCTS WITHOUT COMPLAINT: QuantLib's "
+                  "own SVI validation (checkSviParameters,")
+            print("   called in the constructor and not exposed to Python separately) passes a "
+                  "slice whose density is negative on")
+            print(f"   k in [{neg_g.min():+.3f}, {neg_g.max():+.3f}]. No library will run the "
+                  f"butterfly check for you -- run g(k) yourself.")
+        else:
+            print(f"   SviSmileSection rejected the Vogt parameters: {ql_live['vogt_error']}")
+
+    print("\n" + "=" * W)
+    print("RULE: invert prices with a bracketed solver that refuses sub-intrinsic prices, fit SVI")
+    print("      in total variance, run g(k) >= 0 and dw/dt >= 0 on EVERY fit, and interpolate")
+    print("      maturities in total variance at fixed log-moneyness -- never in vol.")
+    print("=" * W)
