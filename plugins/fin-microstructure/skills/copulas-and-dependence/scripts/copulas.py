@@ -1,0 +1,528 @@
+#!/usr/bin/env python3
+"""Copulas: same correlation, same Kendall's tau, four different answers in the tail.
+
+Four bivariate families - Gaussian, Student t, Clayton, Gumbel - with the closed forms that
+matter, each verified rather than asserted:
+
+  Kendall's tau           Gaussian and t   tau = (2/pi)*arcsin(rho)
+                          Clayton          tau = theta/(theta + 2)
+                          Gumbel           tau = 1 - 1/theta
+
+  tail dependence         Gaussian         lambda_L = lambda_U = 0 for every rho < 1
+                          t                lambda_L = lambda_U
+                                           = 2*T_{nu+1}(-sqrt((nu+1)*(1-rho)/(1+rho)))
+                          Clayton          lambda_L = 2^(-1/theta),  lambda_U = 0
+                          Gumbel           lambda_U = 2 - 2^(1/theta),  lambda_L = 0
+
+Tail dependence is a LIMIT, lambda_L = lim_{u->0} C(u,u)/u, so the honest check is to evaluate
+C(u,u) exactly and watch the ratio converge - not to estimate it from a sample, where the
+whole difficulty is that there is no data at u = 1e-6. This file therefore carries a
+deterministic bivariate normal CDF (Plackett's identity, one 1-D quadrature) and builds the
+bivariate t CDF on top of it as a chi-square mixture.
+
+  !! scipy.stats.multivariate_t.cdf is a RANDOMISED quadrature - source-verified: its
+     signature is cdf(x, loc, shape, df, allow_singular, *, maxpts=None, lower_limit=None,
+     random_state=None) with "maxpts: Maximum number of points to use for integration. The
+     default is 1000 times the number of dimensions". Called four times on one argument deep
+     in the tail it returns four different numbers, and the spread is different every run -
+     6.7x and 11.0x on two runs of this demo. The bivariate multivariate_normal.cdf, by
+     contrast, returns the identical value every time and agrees with the Plackett quadrature
+     to 1.5e-15 relative. The demo measures both.
+
+The measured headline: a sample from a t copula, and a Gaussian copula fitted to it with the
+SAME correlation and the SAME Kendall's tau, disagree about the probability that both assets
+break their 1% quantile together by a factor you can read off the table - and the portfolio
+VaR and the "diversification benefit" inherit it.
+
+Run:  python copulas.py       (numpy + scipy, fixed seed, about 32 s)
+"""
+from __future__ import annotations
+
+import math
+
+import numpy as np
+from scipy import integrate, optimize, stats
+
+SEED = 20260909
+FAMILIES = ("gaussian", "t", "clayton", "gumbel")
+RHO, DF = 0.5, 4.0            # the running example: tau = 1/3 for every family below
+
+
+# ------------------------------------------------------------- parameters and Kendall's tau
+def kendall_tau(family: str, param: float, df: float | None = None) -> float:
+    """The family's closed-form Kendall's tau. `df` is ignored: for an elliptical copula tau
+    depends on rho alone, which is why a t copula and a Gaussian copula can be identical in
+    every rank correlation and still disagree completely about the tail."""
+    if family in ("gaussian", "t"):
+        if not -1.0 < param < 1.0:
+            raise ValueError("rho must be in (-1, 1)")
+        return 2.0 / math.pi * math.asin(param)
+    if family == "clayton":
+        if param <= 0.0:
+            raise ValueError("Clayton theta must be positive")
+        return param / (param + 2.0)
+    if family == "gumbel":
+        if param < 1.0:
+            raise ValueError("Gumbel theta must be at least 1")
+        return 1.0 - 1.0 / param
+    raise ValueError(f"family must be one of {FAMILIES}")
+
+
+def tau_to_param(family: str, tau: float) -> float:
+    """Inversion of Kendall's tau - the standard rank-based estimator. Closed form for all
+    four families, which is why it costs nothing and never fails to converge."""
+    if family in ("gaussian", "t"):
+        if not -1.0 < tau < 1.0:
+            raise ValueError("tau must be in (-1, 1)")
+        return math.sin(math.pi * tau / 2.0)
+    if family == "clayton":
+        if not 0.0 < tau < 1.0:
+            raise ValueError("Clayton needs 0 < tau < 1")
+        return 2.0 * tau / (1.0 - tau)
+    if family == "gumbel":
+        if not 0.0 <= tau < 1.0:
+            raise ValueError("Gumbel needs 0 <= tau < 1")
+        return 1.0 / (1.0 - tau)
+    raise ValueError(f"family must be one of {FAMILIES}")
+
+
+def tail_dependence(family: str, param: float, df: float | None = None) -> tuple:
+    """(lambda_lower, lambda_upper), the closed forms above. Returns exact zeros where the
+    family has none - a zero here is a modelling assumption, not a small number."""
+    if family == "gaussian":
+        kendall_tau(family, param)
+        return (0.0, 0.0)                        # for any rho < 1
+    if family == "t":
+        kendall_tau(family, param)
+        if df is None or df <= 0:
+            raise ValueError("the t copula needs df > 0")
+        lam = 2.0 * stats.t.cdf(-math.sqrt((df + 1.0) * (1.0 - param) / (1.0 + param)), df + 1.0)
+        return (float(lam), float(lam))          # radially symmetric
+    if family == "clayton":
+        kendall_tau(family, param)
+        return (2.0 ** (-1.0 / param), 0.0)
+    if family == "gumbel":
+        kendall_tau(family, param)
+        return (0.0, 2.0 - 2.0 ** (1.0 / param))
+    raise ValueError(f"family must be one of {FAMILIES}")
+
+
+# ------------------------------------------------------- deterministic bivariate normal / t
+def bvn_cdf(a: float, b: float, rho: float) -> float:
+    """P[Z1 <= a, Z2 <= b] for a standard bivariate normal, by Plackett's identity
+
+        d/d(rho) Phi_2(a,b;rho) = (1/(2*pi*sqrt(1-rho^2))) * exp(-(a^2 - 2*rho*a*b + b^2)
+                                                                 / (2*(1-rho^2)))
+
+    integrated from 0 (where the answer is Phi(a)*Phi(b)) to rho. One 1-D quadrature, fully
+    deterministic - which is the point: see the note about multivariate_t.cdf above.
+    """
+    if not -1.0 < rho < 1.0:
+        raise ValueError("rho must be in (-1, 1)")
+
+    def dens(r: float) -> float:
+        return math.exp(-(a * a - 2.0 * r * a * b + b * b) / (2.0 * (1.0 - r * r))) / \
+            (2.0 * math.pi * math.sqrt(1.0 - r * r))
+
+    lo, hi = (0.0, rho) if rho >= 0 else (rho, 0.0)
+    val, _ = integrate.quad(dens, lo, hi, limit=200, epsabs=1e-30, epsrel=1e-12)
+    return float(stats.norm.cdf(a) * stats.norm.cdf(b) + (val if rho >= 0 else -val))
+
+
+def bvt_cdf(a: float, b: float, rho: float, df: float) -> float:
+    """P[T1 <= a, T2 <= b] for a standard bivariate t, as the chi-square mixture
+
+        T = Z / sqrt(W/df),   so   P[T1<=a, T2<=b] = E_W[ Phi_2(a*sqrt(W/df), b*sqrt(W/df)) ]
+
+    over a finite range of W, so the quadrature converges cleanly and the result is the same
+    every time it is called.
+    """
+    if df <= 0:
+        raise ValueError("df must be positive")
+    lo = float(stats.chi2.ppf(1e-13, df))
+    hi = float(stats.chi2.ppf(1.0 - 1e-13, df))
+
+    def g(w: float) -> float:
+        s = math.sqrt(w / df)
+        return float(stats.chi2.pdf(w, df)) * bvn_cdf(a * s, b * s, rho)
+
+    # epsabs has to be far below the default 1.49e-8: deep in the tail the answer itself is
+    # around 1e-7, and the default tolerance simply returns 0.0 for it without complaint.
+    val, _ = integrate.quad(g, lo, hi, limit=200, epsabs=1e-25, epsrel=1e-10)
+    return float(val)
+
+
+def copula_cdf(family: str, u, v, param: float, df: float | None = None):
+    """C(u, v). Exact and deterministic for all four families."""
+    u = np.asarray(u, dtype=float)
+    v = np.asarray(v, dtype=float)
+    if np.any((u < 0) | (u > 1) | (v < 0) | (v > 1)):
+        raise ValueError("u and v must be in [0, 1]")
+    if family == "gaussian":
+        kendall_tau(family, param)
+        f = np.vectorize(lambda x, y: bvn_cdf(stats.norm.ppf(x), stats.norm.ppf(y), param))
+    elif family == "t":
+        kendall_tau(family, param)
+        if df is None:
+            raise ValueError("the t copula needs df")
+        f = np.vectorize(lambda x, y: bvt_cdf(stats.t.ppf(x, df), stats.t.ppf(y, df), param, df))
+    elif family == "clayton":
+        kendall_tau(family, param)
+        f = np.vectorize(lambda x, y: (x ** -param + y ** -param - 1.0) ** (-1.0 / param))
+    elif family == "gumbel":
+        kendall_tau(family, param)
+        f = np.vectorize(lambda x, y: math.exp(
+            -(((-math.log(x)) ** param + (-math.log(y)) ** param) ** (1.0 / param))))
+    else:
+        raise ValueError(f"family must be one of {FAMILIES}")
+    out = f(np.clip(u, 1e-300, 1.0), np.clip(v, 1e-300, 1.0))
+    return float(out) if out.ndim == 0 else out
+
+
+def tail_ratio(family: str, u: float, param: float, df: float | None = None) -> tuple:
+    """The finite-u ratios whose limits ARE the tail dependence coefficients:
+
+        lower:  C(u, u) / u
+        upper:  (1 - 2*(1-u) + C(1-u, 1-u)) / u
+
+    Watching these converge is the verification; a sample can never do it, because the whole
+    problem is that there are no observations at u = 1e-6.
+    """
+    if not 0.0 < u < 0.5:
+        raise ValueError("u must be in (0, 0.5)")
+    lower = copula_cdf(family, u, u, param, df) / u
+    up = 1.0 - u
+    upper = (1.0 - 2.0 * up + copula_cdf(family, up, up, param, df)) / u
+    return float(lower), float(upper)
+
+
+# ------------------------------------------------------------------------------- sampling
+def _positive_stable(alpha: float, size: int, rng) -> np.ndarray:
+    """Chambers-Mallows-Stuck for a positive stable law with E[exp(-t*S)] = exp(-t^alpha).
+
+    Needed for the Gumbel copula's Marshall-Olkin construction. alpha = 1 gives S = 1
+    identically, which is the independence case - a free check on the algebra.
+    """
+    if not 0.0 < alpha <= 1.0:
+        raise ValueError("alpha must be in (0, 1]")
+    if alpha == 1.0:
+        return np.ones(size)
+    u = rng.uniform(0.0, math.pi, size)
+    w = rng.exponential(1.0, size)
+    return (np.sin(alpha * u) / np.sin(u) ** (1.0 / alpha)) * \
+        (np.sin((1.0 - alpha) * u) / w) ** ((1.0 - alpha) / alpha)
+
+
+def sample(family: str, n: int, param: float, df: float | None = None,
+           seed: int = SEED) -> np.ndarray:
+    """n draws from the copula, returned as uniforms in [0,1]^2."""
+    if n < 1:
+        raise ValueError("n must be at least 1")
+    rng = np.random.default_rng(seed)
+    if family in ("gaussian", "t"):
+        kendall_tau(family, param)
+        z = rng.standard_normal((n, 2))
+        z[:, 1] = param * z[:, 0] + math.sqrt(1.0 - param ** 2) * z[:, 1]
+        if family == "gaussian":
+            return stats.norm.cdf(z)
+        if df is None or df <= 0:
+            raise ValueError("the t copula needs df > 0")
+        w = rng.chisquare(df, n)[:, None]
+        return stats.t.cdf(z * np.sqrt(df / w), df)
+    if family == "clayton":
+        kendall_tau(family, param)                       # Marshall-Olkin, psi = (1+t)^(-1/th)
+        v = rng.gamma(1.0 / param, 1.0, n)[:, None]
+        e = rng.exponential(1.0, (n, 2))
+        return (1.0 + e / v) ** (-1.0 / param)
+    if family == "gumbel":
+        kendall_tau(family, param)                       # psi = exp(-t^(1/theta))
+        v = _positive_stable(1.0 / param, n, rng)[:, None]
+        e = rng.exponential(1.0, (n, 2))
+        return np.exp(-((e / v) ** (1.0 / param)))
+    raise ValueError(f"family must be one of {FAMILIES}")
+
+
+# ----------------------------------------------------------------------- densities and MLE
+def copula_logpdf(family: str, u, v, param: float, df: float | None = None) -> np.ndarray:
+    """log c(u, v). Verified in the demo against a central finite difference of C(u, v)."""
+    u = np.clip(np.asarray(u, dtype=float), 1e-12, 1.0 - 1e-12)
+    v = np.clip(np.asarray(v, dtype=float), 1e-12, 1.0 - 1e-12)
+    if family == "gaussian":
+        kendall_tau(family, param)
+        x, y = stats.norm.ppf(u), stats.norm.ppf(v)
+        r2 = param ** 2
+        return -0.5 * math.log(1.0 - r2) - (r2 * (x ** 2 + y ** 2) - 2.0 * param * x * y) / \
+            (2.0 * (1.0 - r2))
+    if family == "t":
+        kendall_tau(family, param)
+        if df is None or df <= 0:
+            raise ValueError("the t copula needs df > 0")
+        x, y = stats.t.ppf(u, df), stats.t.ppf(v, df)
+        q = (x ** 2 - 2.0 * param * x * y + y ** 2) / (1.0 - param ** 2)
+        log_joint = (math.lgamma((df + 2.0) / 2.0) - math.lgamma(df / 2.0)
+                     - math.log(df * math.pi) - 0.5 * math.log(1.0 - param ** 2)
+                     - (df + 2.0) / 2.0 * np.log1p(q / df))
+        return log_joint - stats.t.logpdf(x, df) - stats.t.logpdf(y, df)
+    if family == "clayton":
+        kendall_tau(family, param)
+        th = param
+        return (math.log1p(th) - (th + 1.0) * (np.log(u) + np.log(v))
+                - (2.0 + 1.0 / th) * np.log(u ** -th + v ** -th - 1.0))
+    if family == "gumbel":
+        kendall_tau(family, param)
+        th = param
+        x, y = -np.log(u), -np.log(v)
+        s = x ** th + y ** th
+        a = s ** (1.0 / th)
+        return (-a + (th - 1.0) * (np.log(x) + np.log(y)) + (1.0 / th - 2.0) * np.log(s)
+                + np.log(a + th - 1.0) - np.log(u) - np.log(v))
+    raise ValueError(f"family must be one of {FAMILIES}")
+
+
+def fit_mle(family: str, u, v, df: float | None = None) -> float:
+    """Maximum likelihood for the dependence parameter on pseudo-observations."""
+    bounds = {"gaussian": (-0.995, 0.995), "t": (-0.995, 0.995),
+              "clayton": (1e-4, 40.0), "gumbel": (1.0 + 1e-6, 30.0)}[family]
+
+    def nll(p):
+        return -float(np.sum(copula_logpdf(family, u, v, float(p), df)))
+
+    res = optimize.minimize_scalar(nll, bounds=bounds, method="bounded",
+                                   options={"xatol": 1e-7})
+    return float(res.x)
+
+
+def fit_by_tau(family: str, u, v) -> float:
+    """The rank-based estimator: Kendall's tau of the sample, inverted through the family."""
+    tau = float(stats.kendalltau(np.asarray(u), np.asarray(v)).statistic)
+    return tau_to_param(family, tau)
+
+
+# ------------------------------------------- the measurement: same correlation, wrong tail
+def joint_tail_study(quantiles=(0.05, 0.01, 0.005, 0.001), n: int = 400_000,
+                     rho: float = RHO, df: float = DF, seed: int = SEED) -> list:
+    """Sample a t copula; fit a Gaussian copula by Kendall's tau (so the two agree on EVERY
+    rank correlation and on rho); compare the joint lower-tail probability."""
+    uv = sample("t", n, rho, df, seed=seed)
+    rho_hat = fit_by_tau("gaussian", uv[:, 0], uv[:, 1])
+    rows = []
+    for q in quantiles:
+        emp = float(np.mean((uv[:, 0] < q) & (uv[:, 1] < q)))
+        gauss = copula_cdf("gaussian", q, q, rho_hat)
+        t_model = copula_cdf("t", q, q, rho, df)
+        rows.append({"q": q, "empirical": emp, "t_model": t_model, "gaussian": gauss,
+                     "ratio": emp / gauss if gauss else float("inf"),
+                     "indep": q * q, "rho_hat": rho_hat,
+                     "se": float(math.sqrt(max(emp, 1e-12) * (1 - emp) / n))})
+    return rows
+
+
+def sample_elliptical(d: int, n: int, rho: float, df: float | None = None,
+                      seed: int = SEED) -> np.ndarray:
+    """n draws from a d-dimensional Gaussian (df=None) or t copula with equicorrelation rho.
+
+    Built one-factor, Z_i = sqrt(rho)*F + sqrt(1-rho)*e_i, which gives exactly equicorrelation
+    rho for rho >= 0 with no Cholesky and no chance of a mis-ordered factor loading.
+    """
+    if d < 2 or n < 1:
+        raise ValueError("need d >= 2 and n >= 1")
+    if not 0.0 <= rho < 1.0:
+        raise ValueError("this construction needs 0 <= rho < 1")
+    rng = np.random.default_rng(seed)
+    f = rng.standard_normal((n, 1))
+    z = math.sqrt(rho) * f + math.sqrt(1.0 - rho) * rng.standard_normal((n, d))
+    if df is None:
+        return stats.norm.cdf(z)
+    if df <= 0:
+        raise ValueError("df must be positive")
+    w = rng.chisquare(df, n)[:, None]
+    return stats.t.cdf(z * np.sqrt(df / w), df)
+
+
+def portfolio_tail(levels=(0.99, 0.995, 0.999), n: int = 250_000, rho: float = RHO,
+                   df: float = DF, seed: int = SEED, d: int = 2) -> dict:
+    """VaR and expected shortfall of an equally weighted d-asset portfolio whose MARGINALS
+    are standard normal under both copulas and whose correlation matrix is identical.
+
+    Under the Gaussian copula the portfolio is exactly normal with variance
+    (1 + (d-1)*rho)/d, so its VaR is a closed form and the comparison has an exact leg. Only
+    the copula differs between the two columns - not one marginal, not one correlation.
+    """
+    sd = math.sqrt((1.0 + (d - 1) * rho) / d)
+    out = {"rho": rho, "df": df, "d": d, "sd_exact": sd, "levels": list(levels), "rows": []}
+    losses = {}
+    for fam, dof in (("gaussian", None), ("t", df)):
+        u = sample_elliptical(d, n, rho, dof, seed=seed)
+        x = stats.norm.ppf(np.clip(u, 1e-12, 1 - 1e-12))
+        losses[fam] = -x.mean(axis=1)             # loss = -return, equal weights
+    for lv in levels:
+        row = {"level": lv, "gaussian_exact": float(stats.norm.ppf(lv) * sd)}
+        for fam in ("gaussian", "t"):
+            v = float(np.quantile(losses[fam], lv))
+            row[fam] = v
+            row[fam + "_es"] = float(losses[fam][losses[fam] >= v].mean())
+        row["ratio"] = row["t"] / row["gaussian"]
+        row["es_ratio"] = row["t_es"] / row["gaussian_es"]
+        # "diversification benefit": 1 - portfolio VaR / the weighted sum of standalone VaRs,
+        # which for identical standard-normal marginals and equal weights is just z_lv
+        standalone = float(stats.norm.ppf(lv))
+        row["div_gaussian"] = 1.0 - row["gaussian"] / standalone
+        row["div_t"] = 1.0 - row["t"] / standalone
+        out["rows"].append(row)
+    return out
+
+
+def scipy_mvt_reproducibility(u: float = 1e-4, rho: float = RHO, df: float = DF,
+                              n_calls: int = 4) -> dict:
+    """Call scipy's randomised multivariate CDFs repeatedly on one point and report the
+    spread. The deterministic quadrature in this file is the reference."""
+    x = float(stats.t.ppf(u, df))
+    z = float(stats.norm.ppf(u))
+    shape = [[1.0, rho], [rho, 1.0]]
+    mvt = stats.multivariate_t(loc=[0.0, 0.0], shape=shape, df=df)
+    t_calls = [float(mvt.cdf([x, x])) for _ in range(n_calls)]
+    n_calls_mvn = [float(stats.multivariate_normal.cdf([z, z], mean=[0.0, 0.0], cov=shape))
+                   for _ in range(n_calls)]
+    return {"u": u, "mvt_calls": t_calls, "mvt_spread": max(t_calls) / min(t_calls),
+            "mvt_exact": bvt_cdf(x, x, rho, df),
+            "mvn_calls": n_calls_mvn, "mvn_exact": bvn_cdf(z, z, rho),
+            "mvn_maxabs": max(abs(c - bvn_cdf(z, z, rho)) for c in n_calls_mvn)}
+
+
+# ---------------------------------------------------------------------------------- demo
+if __name__ == "__main__":
+    TAU = kendall_tau("gaussian", RHO)
+    PARAMS = {"gaussian": (RHO, None), "t": (RHO, DF),
+              "clayton": (tau_to_param("clayton", TAU), None),
+              "gumbel": (tau_to_param("gumbel", TAU), None)}
+    print("=" * 92)
+    print("COPULAS AND DEPENDENCE  --  same correlation, four different tails")
+    print("=" * 92)
+    print(f"All four families are set to the SAME Kendall's tau = {TAU:.6f}, which for the two")
+    print(f"elliptical ones means the same linear correlation rho = {RHO}.")
+
+    # ---- 1. tau <-> parameter, checked against samples
+    print("\n1. Kendall's tau against its closed form, on 200,000 draws")
+    print(f"   {'family':<12}{'parameter':>11}{'tau closed form':>17}{'tau empirical':>15}"
+          f"{'diff':>10}")
+    for fam in FAMILIES:
+        par, d = PARAMS[fam]
+        uv = sample(fam, 200_000, par, d, seed=SEED)
+        emp = float(stats.kendalltau(uv[:, 0], uv[:, 1]).statistic)
+        th = kendall_tau(fam, par)
+        print(f"   {fam:<12}{par:>11.4f}{th:>17.6f}{emp:>15.6f}{emp - th:>+10.5f}")
+    print("   The Gumbel sampler goes through a positive-stable variable and the Clayton one")
+    print("   through a gamma; a mistake in either shows up here as a tau that is wrong in")
+    print("   the third decimal, which is the only way you would ever notice.")
+
+    # ---- 2. the copula densities, checked against their own CDFs
+    print("\n2. Each log-density against a central finite difference of its own CDF")
+    print(f"   {'family':<12}{'point (u,v)':>14}{'analytic c':>14}{'d2C/dudv':>14}"
+          f"{'rel. diff':>12}")
+    h = 1e-4
+    for fam in FAMILIES:
+        par, d = PARAMS[fam]
+        for (uu, vv) in ((0.3, 0.7), (0.9, 0.85)):
+            num = (copula_cdf(fam, uu + h, vv + h, par, d) - copula_cdf(fam, uu + h, vv - h, par, d)
+                   - copula_cdf(fam, uu - h, vv + h, par, d)
+                   + copula_cdf(fam, uu - h, vv - h, par, d)) / (4 * h * h)
+            ana = float(np.exp(copula_logpdf(fam, uu, vv, par, d)))
+            print(f"   {fam:<12}{f'({uu},{vv})':>14}{ana:>14.6f}{num:>14.6f}"
+                  f"{abs(ana / num - 1):>12.2e}")
+
+    # ---- 3. tail dependence: a limit, evaluated exactly
+    print("\n3. Tail dependence is a LIMIT. C(u,u)/u evaluated exactly, marching u down:")
+    us = (1e-2, 1e-3, 1e-4, 1e-5, 1e-6)
+    print(f"   {'family':<12}{'closed form':>13}" + "".join(f"{f'u={u:g}':>12}" for u in us))
+    for fam in FAMILIES:
+        par, d = PARAMS[fam]
+        lo, hi = tail_dependence(fam, par, d)
+        which = 0 if fam != "gumbel" else 1
+        vals = [tail_ratio(fam, u, par, d)[which] for u in us]
+        label = "lambda_L" if which == 0 else "lambda_U"
+        print(f"   {fam:<12}{(lo if which == 0 else hi):>13.6f}"
+              + "".join(f"{v:>12.6f}" for v in vals) + f"   ({label})")
+    print("   Gaussian: the ratio is still 0.13 at u = 1% and only reaches 0.001 at u = 1e-6.")
+    print("   THAT is what 'zero tail dependence' means - it is a statement about a limit no")
+    print("   sample ever reaches, and at any quantile you can actually estimate, the Gaussian")
+    print("   copula still has plenty of joint tail mass. It just has the wrong amount.")
+    print("   ! Same tau for all four rows. Tail dependence 0.000 / 0.253 / 0.500 / 0.413.")
+
+    # ---- 4. scipy's randomised CDF
+    print("\n4. scipy.stats.multivariate_t.cdf is randomised - four calls, one argument")
+    rep = scipy_mvt_reproducibility()
+    print(f"   at u = {rep['u']:g}, the exact value is {rep['mvt_exact']:.6e}")
+    print("   multivariate_t.cdf:      " + "  ".join(f"{c:.4e}" for c in rep["mvt_calls"])
+          + f"   spread {rep['mvt_spread']:.2f}x")
+    print("   multivariate_normal.cdf: " + "  ".join(f"{c:.4e}" for c in rep["mvn_calls"])
+          + f"   (exact {rep['mvn_exact']:.4e})")
+    print(f"   ... the normal one returns the identical value every time and matches this")
+    print(f"   file's Plackett quadrature to {rep['mvn_maxabs']:.1e} absolute, "
+          f"{rep['mvn_maxabs'] / rep['mvn_exact']:.1e} relative.")
+    print("   multivariate_t.cdf takes maxpts (default 1000*dim) and random_state: it is a")
+    print("   randomised quadrature. Pass random_state, raise maxpts, or use a deterministic")
+    print("   rule - but do not put its output in a table and call it reproducible.")
+
+    # ---- 5. fitting
+    print("\n5. Fitting: inversion of Kendall's tau against maximum likelihood, 15 samples")
+    print(f"   {'family':<12}{'true':>9}{'tau-inv mean':>14}{'sd':>9}{'MLE mean':>11}{'sd':>9}")
+    for fam in FAMILIES:
+        par, d = PARAMS[fam]
+        tv, mv = [], []
+        for i in range(15):
+            uv = sample(fam, 4000, par, d, seed=SEED + 97 * i)
+            tv.append(fit_by_tau(fam, uv[:, 0], uv[:, 1]))
+            mv.append(fit_mle(fam, uv[:, 0], uv[:, 1], d))
+        tv, mv = np.array(tv), np.array(mv)
+        print(f"   {fam:<12}{par:>9.4f}{tv.mean():>14.4f}{tv.std(ddof=1):>9.4f}"
+              f"{mv.mean():>11.4f}{mv.std(ddof=1):>9.4f}")
+    print("   Both are consistent. Inversion of tau is closed form, robust to the marginals")
+    print("   and cannot fail to converge; MLE is a little sharper and needs the family to be")
+    print("   right. Neither can tell you WHICH family - and section 6 is the cost of that.")
+
+    # ---- 6. the trap
+    print("\n6. TRAP - a Gaussian copula fitted to tail-dependent data")
+    rows = joint_tail_study()
+    print(f"   400,000 draws from a t copula (rho = {RHO}, df = {DF:g}); a Gaussian copula fitted")
+    print(f"   by Kendall's tau gives rho_hat = {rows[0]['rho_hat']:.4f}. Identical correlation,")
+    print("   identical rank correlation, identical marginals. P[both below the q quantile]:")
+    print(f"   {'q':>8}{'empirical':>12}{'+/-':>10}{'t copula':>11}{'Gaussian':>11}"
+          f"{'emp/Gauss':>12}{'independent':>13}")
+    for r in rows:
+        print(f"   {r['q']:>8.3%}{r['empirical']:>12.6f}{r['se']:>10.6f}{r['t_model']:>11.6f}"
+              f"{r['gaussian']:>11.6f}{r['ratio']:>12.2f}x{r['indep']:>12.6f}")
+    r1 = next(r for r in rows if r["q"] == 0.01)
+    days = 2520
+    print(f"   In {days} trading days (ten years), 'both assets below their 1% quantile'")
+    print(f"   happens {r1['empirical'] * days:.1f} times under the truth and "
+          f"{r1['gaussian'] * days:.1f} times under the fitted")
+    print(f"   Gaussian copula. Both models agree the correlation is {RHO}.")
+
+    # ---- 7. what it does to the risk number
+    print("\n7. ... and to the portfolio VaR and the diversification story")
+    print("   Equally weighted, standard normal MARGINALS under both copulas, equicorrelation")
+    print(f"   rho = {RHO}. Under the Gaussian copula the portfolio is exactly normal, so the")
+    print("   comparison has an exact leg. ONLY the copula differs between the two columns.")
+    print(f"   {'d':>4}{'level':>8}{'VaR Gauss':>11}{'exact':>9}{'VaR t-cop':>11}{'ratio':>8}"
+          f"{'ES Gauss':>10}{'ES t-cop':>10}{'ratio':>8}{'div. benefit G / t':>21}")
+    tails = {}
+    for d_n in (2, 10, 50):
+        tails[d_n] = portfolio_tail(d=d_n)
+        for r in tails[d_n]["rows"]:
+            print(f"   {d_n:>4}{r['level']:>8.1%}{r['gaussian']:>11.4f}{r['gaussian_exact']:>9.4f}"
+                  f"{r['t']:>11.4f}{r['ratio']:>8.3f}{r['gaussian_es']:>10.4f}"
+                  f"{r['t_es']:>10.4f}{r['es_ratio']:>8.3f}"
+                  f"{r['div_gaussian']:>13.1%} /{r['div_t']:>6.1%}")
+    two, fifty = tails[2]["rows"][-1], tails[50]["rows"][-1]
+    print("   ! Read down the 'ratio' column, not across. At d = 2 the copula moves the 99.9%")
+    print(f"     VaR by {two['ratio'] - 1:+.1%} - a two-asset portfolio's tail is mostly its marginals'")
+    print(f"     tails. At d = 50 it moves it by {fifty['ratio'] - 1:+.1%}, because diversification is")
+    print("     exactly the thing tail dependence destroys: the Gaussian copula lets 50 assets")
+    print("     average their bad days away, and the t copula makes them share one.")
+    print("   The 'diversification benefit' column is what goes in the memo. The Gaussian")
+    print(f"     copula claims {fifty['div_gaussian']:.0%} at d = 50 and 99.9%; the t copula, same correlation,")
+    print(f"     same marginals, delivers {fifty['div_t']:.0%}.")
+
+    print("\nRule: correlation fixes the middle of the joint distribution and says nothing"
+          " about the corner - choose the copula family by its tail dependence, which is a"
+          " limit you must decide on, not a number you can estimate from the sample.")
