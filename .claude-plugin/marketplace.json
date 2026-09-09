@@ -333,7 +333,13 @@
         "withholding",
         "accounting"
       ],
-      "skills": []
+      "skills": [
+        "./skills/after-tax-backtesting",
+        "./skills/china-ashare-trading-taxes",
+        "./skills/section-1256-and-derivatives-tax",
+        "./skills/tax-lot-matching-and-cost-basis",
+        "./skills/wash-sale-rules"
+      ]
     },
     {
       "name": "fin-fixed-income",
