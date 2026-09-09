@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**92 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**96 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 68 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 72 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -175,6 +175,10 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-core` | [`research-integrity-guards`](plugins/fin-core/skills/research-integrity-guards/SKILL.md) | Second-pass audit that decides whether a finance result is real, applied after the work exists. | 2 | 3 |
 | `fin-core` | [`signal-construction`](plugins/fin-core/skills/signal-construction/SKILL.md) | Compute technical indicators and engineered features without leaking the future. | 2 | 2 |
 | `fin-core` | [`us-market-rules`](plugins/fin-core/skills/us-market-rules/SKILL.md) | US trading rules that decide whether a strategy is executable at all - short-sale restrictions, margin, settlement, day-trading limits, wash sales, and what a data licence lets you | 0 | 0 |
+| `fin-credit` | [`cds-mechanics-and-upfront`](plugins/fin-credit/skills/cds-mechanics-and-upfront/SKILL.md) | Turn a CDS quote into the cash that actually changes hands - standard coupons, points upfront, the risky annuity, the IMM roll and the accrual rebate. | 0 | 1 |
+| `fin-credit` | [`corporate-bond-data-and-trace`](plugins/fin-credit/skills/corporate-bond-data-and-trace/SKILL.md) | Use FINRA TRACE corporate bond data without inheriting the two things it does not tell you - the 15-minute reporting window and the size caps that censor volume. | 0 | 1 |
+| `fin-credit` | [`credit-spread-measures`](plugins/fin-credit/skills/credit-spread-measures/SKILL.md) | Work out which spread a corporate bond quote actually is and what it was measured against, so two "spreads" on the same bond stop disagreeing. | 0 | 1 |
+| `fin-credit` | [`ratings-transitions-and-migration`](plugins/fin-credit/skills/ratings-transitions-and-migration/SKILL.md) | Estimate and use a credit rating transition matrix without producing negative probabilities or a five-year default rate that is five times the wrong number. | 0 | 1 |
 | `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Crypto market data and execution, and how a 24/7 market breaks equity tooling. | 3 | 1 |
 | `fin-futures-fx` | [`futures-continuous-contracts`](plugins/fin-futures-fx/skills/futures-continuous-contracts/SKILL.md) | Build and use a futures price series correctly — a continuous contract does not exist in the market, it is stitched, and the stitching method changes your answer. | 0 | 2 |
 | `fin-futures-fx` | [`fx-markets`](plugins/fin-futures-fx/skills/fx-markets/SKILL.md) | Trade and backtest FX correctly — quote conventions, pip sizing, and the carry that a spot-only backtest silently omits. | 0 | 1 |

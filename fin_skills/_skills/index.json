@@ -1,17 +1,18 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 92,
+  "n_skills": 96,
   "n_reference_files": 74,
-  "n_scripts": 76,
+  "n_scripts": 80,
   "discovery_cost": {
-    "total_description_chars": 81430,
-    "approx_tokens": 20357,
+    "total_description_chars": 85290,
+    "approx_tokens": 21322,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
     "fin-asia",
     "fin-china",
     "fin-core",
+    "fin-credit",
     "fin-crypto",
     "fin-futures-fx",
     "fin-libraries",
@@ -451,6 +452,70 @@
       "approx_body_tokens": 1968,
       "references": [],
       "scripts": []
+    },
+    {
+      "name": "cds-mechanics-and-upfront",
+      "plugin": "fin-credit",
+      "path": "plugins/fin-credit/skills/cds-mechanics-and-upfront/SKILL.md",
+      "description": "Turn a CDS quote into the cash that actually changes hands - standard coupons, points upfront, the risky annuity, the IMM roll and the accrual rebate. TRIGGER - points upfront, upfront payment on a CDS, convert spread to upfront, conventional spread, quoted spread vs par spread, ISDA CDS Standard Model, cdsmodel.com, CDS converter, flat hazard quoting convention, RPV01, risky PV01, risky annuity, \"upfront = spread difference times duration\", 100bp or 500bp coupon, SNAC, IMM dates, CDS roll, 20 Mar/Jun/Sep/Dec, \"why is my 5y CDS maturing in June\", accrual on default, accrual rebate, accrued coupon on a CDS, cdsMaturity, IsdaCdsEngine, MidPointCdsEngine, ISDA standard rate curve, rfr.spglobal.com. SKIP for hazard-rate and default-probability modelling, Merton and recovery sensitivity (credit-risk-models), for bond Z-spreads, G-spreads and OAS (credit-spread-measures), for the bond tape and TRACE (corporate-bond-data-and-trace), and for building the discount curve itself (term-structure-models).",
+      "summary": "Turn a CDS quote into the cash that actually changes hands - standard coupons, points upfront, the risky annuity, the IMM roll and the accrual rebate.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14490,
+      "approx_body_tokens": 3622,
+      "references": [],
+      "scripts": [
+        "cds.py"
+      ]
+    },
+    {
+      "name": "corporate-bond-data-and-trace",
+      "plugin": "fin-credit",
+      "path": "plugins/fin-credit/skills/corporate-bond-data-and-trace/SKILL.md",
+      "description": "Use FINRA TRACE corporate bond data without inheriting the two things it does not tell you - the 15-minute reporting window and the size caps that censor volume. TRIGGER - TRACE, FINRA trade reporting, corporate bond tape, bond transaction data, \"how fast are bond trades reported\", one-minute TRACE reporting, Rule 6730, 15-minute reporting, dissemination cap, \"5MM+\", \"1MM+\", capped trade size, bond volume, TRACE academic or historic files, bond turnover, Amihud illiquidity on bonds, bond VWAP, \"why is my bond volume so low\", corporate bond liquidity screen, WRDS bond data, PyBondLab. SKIP for turning a bond price into a spread (credit-spread-measures), for CDS quotes and upfronts (cds-mechanics-and-upfront), for the rating that put the bond in an index (ratings-transitions-and-migration), for equity tick data and TAQ (intraday-microstructure), and for choosing a market data vendor or API in general (market-data-sourcing).",
+      "summary": "Use FINRA TRACE corporate bond data without inheriting the two things it does not tell you - the 15-minute reporting window and the size caps that censor volume.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 11888,
+      "approx_body_tokens": 2972,
+      "references": [],
+      "scripts": [
+        "trace.py"
+      ]
+    },
+    {
+      "name": "credit-spread-measures",
+      "plugin": "fin-credit",
+      "path": "plugins/fin-credit/skills/credit-spread-measures/SKILL.md",
+      "description": "Work out which spread a corporate bond quote actually is and what it was measured against, so two \"spreads\" on the same bond stop disagreeing. TRIGGER - Z-spread, I-spread, G-spread, benchmark spread, spread to Treasuries, asset swap spread, ASW, par/par asset swap, discount margin, DM on a floater, quoted margin, OAS, option-adjusted spread, option cost, static spread, zero-volatility spread, \"my Z-spread and my G-spread disagree\", \"is this spread over Treasuries or over swaps\", \"YTM minus the 5-year Treasury\", BondFunctions.zSpread, \"why is my OAS lower than my Z-spread\", spread on a callable bond. SKIP for CDS spreads, points upfront and the ISDA model (cds-mechanics-and-upfront), for hazard rates, Merton and default probability (credit-risk-models), for building, bootstrapping or interpolating the underlying curve (term-structure-models), and for where the price and the trade came from (corporate-bond-data-and-trace).",
+      "summary": "Work out which spread a corporate bond quote actually is and what it was measured against, so two \"spreads\" on the same bond stop disagreeing.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 12633,
+      "approx_body_tokens": 3158,
+      "references": [],
+      "scripts": [
+        "spreads.py"
+      ]
+    },
+    {
+      "name": "ratings-transitions-and-migration",
+      "plugin": "fin-credit",
+      "path": "plugins/fin-credit/skills/ratings-transitions-and-migration/SKILL.md",
+      "description": "Estimate and use a credit rating transition matrix without producing negative probabilities or a five-year default rate that is five times the wrong number. TRIGGER - rating transition matrix, migration matrix, credit migration, cohort estimator, duration estimator, Aalen-Johansen, Nelson-Aalen generator, matrix power P^5, matrix root, square root of a transition matrix, six-month transition matrix, scipy.linalg.logm, expm, embedding problem, generator of a Markov chain, \"negative probability in my transition matrix\", \"logm gave me a negative off-diagonal\", structural zero, AAA never defaults, withdrawn rating, NR, rating withdrawal, notching, cumulative default rate, \"5 times the one-year PD\", transitionMatrix, pyratings. SKIP for pricing a default probability or a hazard rate (credit-risk-models), for CDS quotes and upfronts (cds-mechanics-and-upfront), for bond spreads (credit-spread-measures), and for regulatory PD floors and Basel calibration (banking-regulatory).",
+      "summary": "Estimate and use a credit rating transition matrix without producing negative probabilities or a five-year default rate that is five times the wrong number.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 13608,
+      "approx_body_tokens": 3402,
+      "references": [],
+      "scripts": [
+        "migration.py"
+      ]
     },
     {
       "name": "crypto-data-and-execution",
