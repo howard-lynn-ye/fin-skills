@@ -451,6 +451,29 @@ def test_an_unserved_method_says_why_instead_of_returning_an_empty_frame():
         get("bloomberg")
 
 
+# ------------------------------------------------------------------- no data ships
+def test_the_package_contains_code_only():
+    """Adapters ship code. No CSV in the wheel, no bundled parquet, no mirror this
+    project controls, and no "sample data" that is really a redistribution."""
+    shipped = [p for p in PKG.rglob("*") if p.is_file() and "__pycache__" not in p.parts]
+    assert shipped, "the package directory must exist"
+    assert all(p.suffix == ".py" for p in shipped), \
+        [str(p.relative_to(PKG)) for p in shipped if p.suffix != ".py"]
+
+    pyproject = (PKG.parent.parent / "pyproject.toml")
+    if pyproject.is_file():
+        text = pyproject.read_text(encoding="utf-8")
+        assert "data/**" not in text and "fin_skills/data" not in text, \
+            "nothing under data/ may be declared as package-data"
+
+
+def test_no_module_reads_from_a_mirror_this_project_controls():
+    for path in PKG.rglob("*.py"):
+        text = path.read_text(encoding="utf-8")
+        for host in ("raw.githubusercontent.com", "huggingface.co", "s3.amazonaws.com"):
+            assert host not in text, f"{path.name} reaches for {host}"
+
+
 # --------------------------------------------------------------------------- the CLI
 def test_the_adapters_command_prints_the_table_and_the_warnings(capsys):
     from fin_skills.data.__main__ import main
