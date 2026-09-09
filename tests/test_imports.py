@@ -78,6 +78,14 @@ def import_report(tmp_path_factory):
     cwd.mkdir()
     report = base / "report.json"
     env = {k: v for k, v in os.environ.items() if k != "PYTHONIOENCODING"}
+    # The probe runs from a temporary directory, so without this it imports whatever
+    # `fin_skills` is on the default path - which, with an editable install pointing at the
+    # main checkout, is a DIFFERENT tree from the one this session imported. Then the probe
+    # silently verifies the wrong package, and a module added in a git worktree fails with
+    # ModuleNotFoundError. Put this checkout's root first so the probe and the test session
+    # agree on which fin_skills they are talking about.
+    env["PYTHONPATH"] = os.pathsep.join(
+        [str(REPO_ROOT)] + ([env["PYTHONPATH"]] if env.get("PYTHONPATH") else []))
     cmd = [sys.executable, str(TESTS_DIR / "_import_probe.py"), str(report),
            str(PACKAGE_ROOT), *MODULES]
     proc = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, text=True,

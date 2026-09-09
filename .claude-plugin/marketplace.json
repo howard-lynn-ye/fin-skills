@@ -204,7 +204,12 @@
         "term-structure",
         "credit"
       ],
-      "skills": []
+      "skills": [
+        "./skills/covariance-and-risk-models",
+        "./skills/factor-models",
+        "./skills/portfolio-optimizers",
+        "./skills/risk-measures-var-cvar"
+      ]
     },
     {
       "name": "fin-strategies",
