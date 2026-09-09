@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 57,
-  "n_reference_files": 72,
-  "n_scripts": 41,
+  "n_skills": 61,
+  "n_reference_files": 73,
+  "n_scripts": 45,
   "discovery_cost": {
-    "total_description_chars": 47955,
-    "approx_tokens": 11988,
+    "total_description_chars": 51868,
+    "approx_tokens": 12967,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -916,6 +916,22 @@
       "scripts": []
     },
     {
+      "name": "covariance-and-risk-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/covariance-and-risk-models/SKILL.md",
+      "description": "Estimate a covariance matrix an optimizer can actually invert, and report how much variance it hides. TRIGGER - covariance matrix estimation, sample covariance singular, \"matrix is not positive definite\", np.cov more assets than observations, N > T, condition number, Ledoit-Wolf shrinkage, sklearn LedoitWolf, CovarianceShrinkage, shrinkage intensity or delta, RiskMetrics EWMA, lambda 0.94 or 0.97, exponentially weighted covariance, exp_cov span, PCA or statistical factor risk model, Marchenko-Pastur, Barra fundamental factor model, specific risk, predicted vs realized volatility, risk model bias test; \"my minimum-variance portfolio has 90x leverage\", \"the optimizer says 0% risk\". SKIP for turning a covariance into weights and the optimizers themselves (portfolio-optimizers), for VaR, Expected Shortfall and their backtests (risk-measures-var-cvar), for GARCH and univariate volatility forecasting (factor-and-timeseries-research), and for Sharpe and drawdown conventions (portfolio-and-risk).",
+      "summary": "Estimate a covariance matrix an optimizer can actually invert, and report how much variance it hides.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 15092,
+      "approx_body_tokens": 3773,
+      "references": [],
+      "scripts": [
+        "risk_model.py"
+      ]
+    },
+    {
       "name": "credit-risk-models",
       "plugin": "fin-models",
       "path": "plugins/fin-models/skills/credit-risk-models/SKILL.md",
@@ -929,6 +945,24 @@
       "references": [],
       "scripts": [
         "credit_models.py"
+      ]
+    },
+    {
+      "name": "factor-models",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/factor-models/SKILL.md",
+      "description": "Build long-short factor portfolios from a characteristic panel and test the alpha with standard errors that survive serial correlation. TRIGGER - factor model, Fama-French, Fama-MacBeth, cross-sectional regression, decile or quintile long-short sort, 2x3 sort, SMB and HML, value- weight vs equal-weight portfolio, characteristic panel, alpha t-stat, Newey-West, HAC standard errors, cov_type=\"HAC\" maxlags, Ken French Data Library, F-F_Research_Data_Factors, book-to- market, 11-1 momentum; \"my factor has a t-stat of 15\", \"should I lag the signal\", \"my HML does not match Ken French\", \"joining monthly factors to daily returns\". SKIP for scoring one alpha signal with alphalens, IC decay or GARCH (factor-and-timeseries-research), for the covariance matrix a factor model implies (covariance-and-risk-models), for turning expected returns into weights (portfolio-optimizers), and for counting the specifications you tried (backtest-validation).",
+      "summary": "Build long-short factor portfolios from a characteristic panel and test the alpha with standard errors that survive serial correlation.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 15932,
+      "approx_body_tokens": 3983,
+      "references": [
+        "ken_french_data_library.md"
+      ],
+      "scripts": [
+        "factor_regression.py"
       ]
     },
     {
@@ -961,6 +995,38 @@
       "references": [],
       "scripts": [
         "option_models.py"
+      ]
+    },
+    {
+      "name": "portfolio-optimizers",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/portfolio-optimizers/SKILL.md",
+      "description": "Turn expected returns and a covariance matrix into weights, and measure what the optimizer did to your estimation error on the way. TRIGGER - portfolio optimization, mean-variance, Markowitz, efficient frontier, tangency or max-Sharpe portfolio, minimum-variance portfolio, long-only and budget constraints, scipy SLSQP or linprog for weights, Black-Litterman, BlackLittermanModel, tau, Omega, market-implied prior, views matrix P and Q, risk parity, equal risk contribution, ERC, inverse volatility, minimum CVaR, Rockafellar-Uryasev linear program, 1/N benchmark, DeMiguel Garlappi Uppal, weight turnover; \"my optimizer puts 90% in one asset\", \"the weights change completely every month\". SKIP for estimating the covariance matrix itself and its N > T failure (covariance-and-risk-models), for building the expected returns (factor-models), for measuring or backtesting VaR and ES (risk-measures-var-cvar), and for hierarchical risk parity and PyPortfolioOpt's own API traps (lib-pyportfolioopt).",
+      "summary": "Turn expected returns and a covariance matrix into weights, and measure what the optimizer did to your estimation error on the way.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14514,
+      "approx_body_tokens": 3628,
+      "references": [],
+      "scripts": [
+        "optimizers.py"
+      ]
+    },
+    {
+      "name": "risk-measures-var-cvar",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/risk-measures-var-cvar/SKILL.md",
+      "description": "Compute Value-at-Risk and Expected Shortfall by the four estimators that disagree in the tail, and backtest them properly. TRIGGER - VaR, value at risk, CVaR, expected shortfall, ES, tail risk, 99% VaR, 95% VaR, historical simulation VaR, parametric normal VaR, Cornish-Fisher expansion, EVT, peaks over threshold, generalized Pareto, scipy genpareto, tail index xi, Kupiec proportion of failures, Christoffersen independence, conditional coverage, VaR exceptions or breaches, traffic light test, square root of time scaling, 10-day VaR, Basel, filtered historical simulation, quantstats value_at_risk sign; \"how many exceptions should I see\", \"is my VaR model backtesting ok\". SKIP for estimating the covariance matrix a parametric VaR needs (covariance-and-risk-models), for minimising CVaR to choose weights (portfolio-optimizers), for GARCH fitting itself (factor-and-timeseries-research), and for Sharpe, drawdown and tearsheet conventions (portfolio-and-risk).",
+      "summary": "Compute Value-at-Risk and Expected Shortfall by the four estimators that disagree in the tail, and backtest them properly.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 14458,
+      "approx_body_tokens": 3614,
+      "references": [],
+      "scripts": [
+        "var_cvar.py"
       ]
     },
     {

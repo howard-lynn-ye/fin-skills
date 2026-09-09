@@ -3,14 +3,22 @@
 Module -> owning skill:
 
     credit_models                credit-risk-models
+    factor_regression            factor-models
+    optimizers                   portfolio-optimizers
     option_models                option-pricing-models
+    risk_model                   covariance-and-risk-models
     term_structure               term-structure-models
+    var_cvar                     risk-measures-var-cvar
     vol_surface                  implied-vol-surface
 """
 
 __all__ = [
     'credit_models',
+    'factor_regression',
+    'optimizers',
     'option_models',
+    'risk_model',
     'term_structure',
+    'var_cvar',
     'vol_surface',
 ]
