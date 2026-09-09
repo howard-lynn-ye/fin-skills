@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 70,
+  "n_skills": 71,
   "n_reference_files": 74,
   "n_scripts": 54,
   "discovery_cost": {
-    "total_description_chars": 60464,
-    "approx_tokens": 15116,
+    "total_description_chars": 61404,
+    "approx_tokens": 15351,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -847,6 +847,20 @@
       "verified_on": "2026-09-04",
       "body_chars": 7076,
       "approx_body_tokens": 1769,
+      "references": [],
+      "scripts": []
+    },
+    {
+      "name": "fin-skills-as-tools",
+      "plugin": "fin-llm",
+      "path": "plugins/fin-llm/skills/fin-skills-as-tools/SKILL.md",
+      "description": "How to hand this library to an agent as TOOLS rather than as reading - the MCP server, the exported Anthropic and OpenAI tool definitions, the JSON payload conventions, and the four guards that cannot cross a JSON boundary. TRIGGER - expose fin-skills to an LLM agent; run the fin-skills MCP server; \"python -m fin_skills.mcp\"; fin-skills-mcp; import the guards as function-calling tools; generate tool schemas for the Messages API or the OpenAI Responses API; send a pandas Series or DataFrame through a tool call; check_backtest, bundle_coverage, describe_guard, read_skill; why assert_causal or warmup_probe is missing from the tool list; payload size limits for a tool call; 把 guard 挂成 agent 工具. SKIP for how to design the agent pipeline itself (finance-agent-architectures), which third-party finance MCP servers exist and which can move money (finance-mcp-servers), and whether an LLM strategy makes money at all (llm-finance-agents).",
+      "summary": "How to hand this library to an agent as TOOLS rather than as reading - the MCP server, the exported Anthropic and OpenAI tool definitions, the JSON payload conventions, and the fou",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-09",
+      "body_chars": 16821,
+      "approx_body_tokens": 4205,
       "references": [],
       "scripts": []
     },
