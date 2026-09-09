@@ -179,6 +179,14 @@ def build_cost_curve() -> dict:
             "defect": dict(returns=gross, turnover=1.5, cost_bps=10.0)}
 
 
+def build_cost_plausibility() -> dict:
+    # Same 25m book and 6.5-name flow both ways; only the stated cost and the ADV move.
+    base = dict(turnover=0.085, book=2.5e7, adv=1.7e7, n_names=6.5, daily_vol=0.022)
+    return {"clean": dict(base, cost_bps=20.0),
+            "defect": dict(base, cost_bps=2.0),                  # below the impact floor
+            "defect_participation": dict(base, adv=2.0e5, cost_bps=500.0)}  # 100%+ of ADV
+
+
 def build_trial_ledger() -> dict:
     rng = np.random.default_rng(0)
     noise = rng.normal(0, 0.45, 50).tolist()

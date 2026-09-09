@@ -69,6 +69,10 @@ LIVE_WINDOW = 126                         # candles the "live" bot fetches in th
 ADV_MIN = 8.0e6                           # dollars of trailing ADV to be tradeable
 COST_HONEST = 20.0                        # bps round-trip, the cost the clean pipeline assumes
 COST_LOW = 2.0                            # the defective assumption (10x too low)
+# The book the strategy claims to run. Part of the stated premise, like COST_HONEST: at this
+# size it trades ~1.9% of the median name's ADV per day, inside the band Almgren et al. (2005)
+# fitted (they drop orders under 0.25% of ADV and decline to model beyond a few percent).
+BOOK_USD = 2.5e7
 SPLIT_TRIGGER = 150.0                     # a name splits 2:1 once its raw price exceeds this
 DELIST_DRAWDOWN = 0.70                    # a name leaves the tape 70% below its running peak
 TOL = 1e-9
@@ -746,6 +750,7 @@ GUARDS: list[tuple[str, str, str]] = [
     ("pit_fundamentals",    "fund", "fund"),
     ("contamination_probe", "cont", "llm"),
     ("cost_curve",          "cost", "cost"),
+    ("cost_plausibility",   "plau", "cost"),
     ("regime_coverage",     "regm", "regime"),
 ]
 
@@ -853,6 +858,20 @@ def _adapt_cost(ds, res, w, ctx):
                 cost_bps=float(ds.cfg.cost_bps))
 
 
+def _adapt_cost_plaus(ds, res, w, ctx):
+    """Same cost assumption as _adapt_cost, but priced against the tape instead of the edge.
+    Everything here is measured off the pipeline's own output: how much it trades, over how
+    many names, how liquid those names are, and how volatile they are."""
+    win = res.window()
+    traded = (res.weights - res.weights.shift(1)).abs().loc[win] > 1e-12
+    names = [c for c in traded.columns if bool(traded[c].any())]
+    n_names = max(float(traded.sum(axis=1).mean()), 1.0)
+    daily_vol = float(res.px.loc[win, names].pct_change(fill_method=None).std().median())
+    return dict(turnover=res.turnover.loc[win], book=BOOK_USD,
+                adv=res.liquidity.loc[win, names], n_names=n_names,
+                cost_bps=float(ds.cfg.cost_bps), daily_vol=daily_vol)
+
+
 def _adapt_regime(ds, res, w, ctx):
     win = res.window()
     reg = pd.Series(w.regime, index=w.dates).reindex(win).fillna(0).astype(int).to_numpy()
@@ -869,7 +888,8 @@ ADAPTERS: dict[str, Callable] = {
     "survivorship_audit": _adapt_survivorship, "pit_universe": _adapt_pit_universe,
     "warmup_probe": _adapt_warmup, "fold_leak_test": _adapt_fold_leak, "purge_effect": _adapt_purge,
     "pit_fundamentals": _adapt_pit_fund, "contamination_probe": _adapt_contamination,
-    "cost_curve": _adapt_cost, "regime_coverage": _adapt_regime,
+    "cost_curve": _adapt_cost, "cost_plausibility": _adapt_cost_plaus,
+    "regime_coverage": _adapt_regime,
 }
 
 
@@ -1045,8 +1065,9 @@ def main(quick: bool) -> int:
     rep.line("         hit* = fired OUTSIDE its domain (cross-catch; see SURPRISES)")
     rep.line("         FP!  = FALSE ALARM on clean data           ok = clean, correctly silent")
     rep.line()
-    rep.line("guard codes:  " + " | ".join(f"{c.strip()}={n}" for n, c, _ in GUARDS[:6]))
-    rep.line("              " + " | ".join(f"{c.strip()}={n}" for n, c, _ in GUARDS[6:]))
+    for i in range(0, len(GUARDS), 5):
+        rep.line(("guard codes:  " if i == 0 else "              ")
+                 + " | ".join(f"{c.strip()}={n}" for n, c, _ in GUARDS[i:i + 5]))
 
     # ---------------------------------------------------------------- effect sizes
     rep.head("EFFECT SIZES  (change in reported net Sharpe, clean -> corrupted)",

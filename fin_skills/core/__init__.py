@@ -7,6 +7,7 @@ Module -> owning skill:
     benchmark_choice             execution-cost-analysis
     brinson_attribution          portfolio-and-risk
     cost_curve                   backtest-validation
+    cost_plausibility            execution-cost-analysis
     event_study                  factor-and-timeseries-research
     fold_leak_test               market-data-engineering
     greeks_convention            derivatives-pricing
@@ -33,6 +34,7 @@ __all__ = [
     'benchmark_choice',
     'brinson_attribution',
     'cost_curve',
+    'cost_plausibility',
     'event_study',
     'fold_leak_test',
     'greeks_convention',
