@@ -33,9 +33,11 @@ this list with the test names):
     I11 cash             cash is a position; held weights plus cash weight are exactly 1
     I12 determinism      two runs are identical; folds share no state
 
-Six of them - I1, I4, I5, I6, I8, I11 - are proven by running `assert_causal`,
-`adjustment_check`, `survivorship_audit`, `pit_universe`, `cost_curve` and `rf_convention`
-on the engine's own output. What the engine refuses to do is documented in
+Seven of them - I1, I4, I5, I6, I8, I11, I12 - are proven by running `assert_causal`,
+`adjustment_check`, `survivorship_audit`, `pit_universe`, `cost_curve`, `rf_convention`
+and `fold_leak_test` on the engine's own output. Six is the number
+`check(result.to_bundle())` runs unaided: fold_leak_test needs `run_fold` and `folds`,
+which are not artefacts of a single run. What the engine refuses to do is documented in
 `backtesting-engines/SKILL.md` section 6; the short version is that it has no intrabar
 model, no order types beyond market, no margin or borrow availability, and no live path.
 """

@@ -22,16 +22,16 @@ from fin_skills.engine.universe import Universe
 EPS = 1e-12
 
 
-def _fill_price(fill_at: str, panel: Panel, d: pd.Timestamp) -> pd.Series:
-    """The fill bar's own price. next_vwap is the typical price (H+L+C)/3, a PROXY - a
-    bar panel does not carry VWAP, and pretending otherwise is where realism gets faked."""
+def _fill_prices(fill_at: str, panel: Panel) -> pd.DataFrame:
+    """The fill bar's own price, for every bar. next_vwap is the typical price (H+L+C)/3,
+    a PROXY - a bar panel does not carry VWAP, and pretending it does is faked realism."""
     if fill_at == "next_open":
-        return panel.open.loc[d]
+        return panel.open
     if fill_at == "next_close":
-        return panel.close.loc[d]
+        return panel.close
     if fill_at == "next_twap":
-        return (panel.open.loc[d] + panel.high.loc[d] + panel.low.loc[d] + panel.close.loc[d]) / 4.0
-    return (panel.high.loc[d] + panel.low.loc[d] + panel.close.loc[d]) / 3.0
+        return (panel.open + panel.high + panel.low + panel.close) / 4.0
+    return (panel.high + panel.low + panel.close) / 3.0
 
 
 def run(panel: Panel,
@@ -73,18 +73,20 @@ def run(panel: Panel,
             closeouts.setdefault(live[-1], []).append(t)
 
     zero = pd.Series(0.0, index=cols)
+    fill_px = _fill_prices(execution.fill_at, panel)
     shares, pending = zero.copy(), zero.copy()
     since: dict[str, pd.Timestamp] = {}
     queue: dict[pd.Timestamp, tuple[pd.Series, pd.Timestamp]] = {}
-    W = pd.DataFrame(0.0, index=idx, columns=cols)
-    P = pd.DataFrame(0.0, index=idx, columns=cols)
+    Wv = np.zeros((len(idx), len(cols)))     # written by position; framed after the loop
+    Pv = np.zeros((len(idx), len(cols)))
     eq, csh = pd.Series(0.0, index=idx), pd.Series(0.0, index=idx)
     net, gross = pd.Series(0.0, index=idx), pd.Series(0.0, index=idx)
     fills, unfilled = [], []
     cash = equity = prev_eq = float(capital)
+    prev_w = zero
 
     for i, d in enumerate(idx):
-        paid = 0.0
+        paid, mark = 0.0, close_ff.iloc[i]
         # ---------------------------------------------------------- 1. fills due this bar
         due, decided = pending.copy(), dict(since)
         order = queue.pop(d, None)
@@ -95,9 +97,9 @@ def run(panel: Panel,
         pending, since = zero.copy(), {}
         want = due[due.abs() > EPS]
         if len(want):
-            px = _fill_price(execution.fill_at, panel, d).reindex(want.index)
-            vol = panel.volume.loc[d].reindex(want.index).fillna(0.0)
-            halted = ~(px.notna() & (px > 0) & alive.loc[d].reindex(want.index)) | (vol <= 0)
+            px = fill_px.iloc[i].reindex(want.index)
+            vol = panel.volume.iloc[i].reindex(want.index).fillna(0.0)
+            halted = ~(px.notna() & (px > 0) & alive.iloc[i].reindex(want.index)) | (vol <= 0)
             cap = (pd.Series(np.inf, index=want.index) if execution.participation_cap is None
                    else float(execution.participation_cap) * vol)
             qty = want.abs().clip(upper=cap).where(~halted, 0.0)
@@ -138,7 +140,7 @@ def run(panel: Panel,
             if execution.on_delist == "raise":
                 raise RuntimeError(f"{t} stops trading on {d.date()} holding {n:g} shares; "
                                    f"Execution(on_delist='raise') refuses to guess a recovery")
-            price = 0.0 if execution.on_delist == "zero_recovery" else float(close_ff.loc[d, t])
+            price = 0.0 if execution.on_delist == "zero_recovery" else float(mark[t])
             cash += n * price
             shares[t] = 0.0
             fills.append({"date": d, "decided_on": d, "ticker": t, "side": -float(np.sign(n)),
@@ -146,38 +148,39 @@ def run(panel: Panel,
                           "commission": 0.0, "kind": "closeout"})
 
         # ------------------------------------------------------------- 3. mark the book
-        value = shares * close_ff.loc[d]
+        value = shares * mark
         carry = carry_charge(float(-value[value < 0].sum()), float(value.abs().sum()),
                              cash + float(value.sum()), costs, ppy)
         cash += cash * float(costs.cash_rate) / ppy - carry
         paid += carry
         equity = cash + float(value.sum())
-        eq[d], csh[d], P.loc[d] = equity, cash, shares
-        net[d] = equity / prev_eq - 1.0 if i else 0.0
-        gross[d] = net[d] + (paid / prev_eq if i else 0.0)
+        eq.iloc[i], csh.iloc[i], Pv[i] = equity, cash, shares.to_numpy()
+        net.iloc[i] = equity / prev_eq - 1.0 if i else 0.0
+        gross.iloc[i] = net.iloc[i] + (paid / prev_eq if i else 0.0)
 
         # ----------------------------------------------------------------- 4. and decide
         j = np.searchsorted(rebals, d, "right") - 1
         names = uni[rebals[j]] if j >= 0 else []
-        ctx = SizingContext(d, sig.loc[d].reindex(names), list(names),
-                            panel.restrict(end=d), W.iloc[i - 1] if i else zero, equity,
-                            panel.sessions)
+        ctx = SizingContext(d, sig.iloc[i].reindex(names), list(names),
+                            panel.head(i + 1), prev_w, equity, panel.sessions)
         w = pd.Series(sizing(ctx), dtype=float).reindex(cols).fillna(0.0)
         g = float(w.abs().sum())
         if g > execution.max_gross:
             w *= execution.max_gross / g
-        W.loc[d] = w
+        Wv[i], prev_w = w.to_numpy(), w
         if i + execution.signal_lag < len(idx):
             booked = pending.copy()
             for q, _ in queue.values():
                 booked = booked.add(q, fill_value=0.0)
-            target = (w * equity / close_ff.loc[d].replace(0.0, np.nan)).fillna(0.0)
+            target = (w * equity / mark.replace(0.0, np.nan)).fillna(0.0)
             when = idx[i + execution.signal_lag]
             prior = queue.get(when)
             new = (target - shares - booked.reindex(cols).fillna(0.0))
             queue[when] = ((new if prior is None else new.add(prior[0], fill_value=0.0)), d)
         prev_eq = equity
 
+    W = pd.DataFrame(Wv, index=idx, columns=cols)
+    P = pd.DataFrame(Pv, index=idx, columns=cols)
     turnover = W.diff().abs().sum(axis=1)
     turnover.iloc[0] = float(W.iloc[0].abs().sum())
     result = BacktestResult(

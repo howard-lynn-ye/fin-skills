@@ -68,7 +68,7 @@ def square_root_impact(coef: float = 0.6, sigma_lookback: int = 21) -> SlippageM
     """Almgren-style: bps = 1e4 * coef * sigma_daily * sqrt(participation)."""
     def slip(ctx: SlippageContext) -> pd.Series:
         hist = ctx.history.close.loc[:ctx.date].reindex(columns=ctx.tickers)
-        sigma = hist.pct_change(fill_method=None).tail(int(sigma_lookback)).std(ddof=1)
+        sigma = hist.tail(int(sigma_lookback) + 1).pct_change(fill_method=None).std(ddof=1)
         return (1e4 * float(coef) * sigma.fillna(0.0)
                 * np.sqrt(_participation(ctx))).fillna(0.0)
     return _named(slip, f"square_root_impact({coef:g})")

@@ -131,6 +131,16 @@ class Panel:
         cut = {f: bars[[f]].rename(columns={f: ticker}).astype(float) for f in self.FIELDS}
         return self._new(sessions=self.sessions.restrict(pd.DatetimeIndex(bars.index)), **cut)
 
+    def head(self, n: int) -> "Panel":
+        """This panel's first n sessions, sharing every table. The bar loop hands one of
+        these to the sizer as `history`, so it skips checks the frames already passed."""
+        p = object.__new__(Panel)
+        p.__dict__.update(self.__dict__)
+        for f in self.FIELDS:
+            setattr(p, f, getattr(self, f).iloc[:n])
+        p.sessions = self.sessions.head(n)
+        return p
+
     def restrict(self, start=None, end=None, tickers=None) -> "Panel":
         idx = self.close.index
         lo = 0 if start is None else int(idx.searchsorted(pd.Timestamp(start), "left"))

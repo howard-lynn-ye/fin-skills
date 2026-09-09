@@ -37,7 +37,9 @@ def _live(ctx: SizingContext) -> pd.Series:
 
 
 def _returns(ctx: SizingContext, names, lookback: int) -> pd.DataFrame:
-    return ctx.history.close[list(names)].pct_change(fill_method=None).tail(int(lookback))
+    """Trailing returns. tail() BEFORE pct_change: the history grows every bar, and a
+    diff over the whole of it turns the loop quadratic."""
+    return ctx.history.close[list(names)].tail(int(lookback) + 1).pct_change(fill_method=None)
 
 
 def equal_weight(long_only: bool = True, max_names: int | None = None) -> Sizer:

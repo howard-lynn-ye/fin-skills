@@ -76,6 +76,15 @@ class Sessions:
         return Sessions(pd.DatetimeIndex(index), self.tz, self.periods_per_year, self.name,
                         self.half_days)
 
+    def head(self, n: int) -> "Sessions":
+        """The first n sessions, skipping the checks an already-valid index has passed.
+        The bar loop calls this once per session, so it must not be O(len(index))."""
+        s = object.__new__(Sessions)
+        for k, v in (("index", self.index[:n]), ("tz", self.tz), ("name", self.name),
+                     ("periods_per_year", self.periods_per_year), ("half_days", self.half_days)):
+            object.__setattr__(s, k, v)
+        return s
+
     def __repr__(self) -> str:
         return (f"Sessions({self.name or 'unnamed'}, {len(self.index)} sessions "
                 f"{self.index[0].date()}..{self.index[-1].date()}, tz={self.tz}, "
