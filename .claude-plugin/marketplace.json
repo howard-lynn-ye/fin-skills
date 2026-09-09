@@ -248,6 +248,49 @@
       ]
     },
     {
+      "name": "fin-ml",
+      "source": "./plugins/fin-ml",
+      "description": "Machine learning on financial data without the leaks that make it look like it works - fractional differentiation, triple-barrier labels, meta-labeling, sample weights for overlapping outcomes, feature importance that survives correlated features, bet sizing, and structural-break tests. One skill per technique, source-verified, each with an executable script and the measured size of the trap it prevents.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "machine-learning",
+        "financial-ml",
+        "fractional-differentiation",
+        "triple-barrier",
+        "meta-labeling",
+        "sample-weights",
+        "feature-importance",
+        "bet-sizing",
+        "structural-breaks",
+        "cusum",
+        "sadf",
+        "leakage"
+      ],
+      "skills": []
+    },
+    {
+      "name": "fin-microstructure",
+      "source": "./plugins/fin-microstructure",
+      "description": "Order-book and high-frequency models, dependence, and simulation - limit-order-book queue models, Hawkes processes for order arrivals, copulas and tail dependence, and Monte Carlo methods including variance reduction and Longstaff-Schwartz for American options. One skill per family, source-verified, each with an executable script and the trap that produces a wrong number.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "order-book",
+        "limit-order-book",
+        "queue-model",
+        "hawkes",
+        "high-frequency",
+        "copula",
+        "tail-dependence",
+        "monte-carlo",
+        "variance-reduction",
+        "longstaff-schwartz",
+        "american-options"
+      ],
+      "skills": []
+    },
+    {
       "name": "trading-skills",
       "source": {
         "source": "github",
