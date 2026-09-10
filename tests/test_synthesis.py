@@ -4,6 +4,10 @@ Run:  python -m pytest tests/test_synthesis.py -q
 """
 from __future__ import annotations
 
+import importlib
+import pathlib
+import sys
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -378,6 +382,52 @@ def test_the_guard_rejects_the_wrong_kind_of_input():
         api.get("synthesis_integrity").run(timeline=d, dossier=d)
     with pytest.raises(TypeError, match="must be a fin_skills.synthesis.Dossier"):
         api.get("synthesis_integrity").run(timeline=d.timeline, dossier="a dossier")
+
+
+# =================================================================== import hygiene
+VENDORS = ("yfinance", "akshare", "ccxt", "fredapi", "edgar", "edgartools", "requests",
+           "urllib3", "httpx", "aiohttp")
+
+
+class _Blocker:
+    """A meta-path finder that makes the vendor and HTTP libraries un-importable."""
+
+    def __init__(self, names) -> None:
+        self.names = set(names)
+
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname.split(".")[0] in self.names:
+            raise ImportError(f"blocked in this test: {fullname}")
+        return None
+
+
+def test_importing_the_layer_reaches_no_vendor_library():
+    blocker = _Blocker(VENDORS)
+    saved = [k for k in sys.modules
+             if k.split(".")[0] in VENDORS or k.startswith("fin_skills.synthesis")]
+    keep = {k: sys.modules[k] for k in saved}
+    for k in saved:
+        del sys.modules[k]
+    sys.meta_path.insert(0, blocker)
+    try:
+        mod = importlib.import_module("fin_skills.synthesis")
+        assert not [m for m in sys.modules if m.split(".")[0] in VENDORS]
+        assert mod.Timeline is not None and mod.Dossier is not None
+    finally:
+        sys.meta_path.remove(blocker)
+        for k in [m for m in sys.modules if m.startswith("fin_skills.synthesis")]:
+            del sys.modules[k]
+        sys.modules.update(keep)
+
+
+def test_the_guard_module_does_not_import_the_layer_at_module_scope():
+    """The cycle this would create: synthesis -> data -> api.base -> api -> guards -> here."""
+    src = (pathlib.Path(api.__file__).resolve().parent
+           / "guards" / "synthesis_integrity.py").read_text(encoding="utf-8")
+    top = [ln for ln in src.splitlines()
+           if ln.startswith(("import ", "from ")) and "fin_skills.synthesis" in ln]
+    assert top == [], f"module-scope import of the layer would cycle: {top}"
+    assert "fin_skills.synthesis" in src                    # it does reach it, lazily
 
 
 # ============================================================================ determinism
