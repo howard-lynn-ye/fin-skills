@@ -28,7 +28,7 @@ for missing that is a $200 fee. Keying a backtest on the transaction date is the
 end, in a domain where it is easier to make because the filing prints both dates side by side.
 
 Everything marked ✅ Measured is printed by `scripts/congress.py` (numpy + pandas, seed
-20260910, about 18 s, no network). Its filings are **synthetic and seeded** - the lag
+20260910, about 15 s, no network). Its filings are **synthetic and seeded** - the lag
 distribution is one this repo chose and then measured back, not a tally of real filings.
 Everything marked ✅ source-verified was read at the URL given, on 2026-09-10.
 
@@ -241,7 +241,7 @@ estimator with a bias, not a neutral default**, and each of these five is a tria
 `lag_summary()`; `bracket_of()` / `impute_size()` with the five imputations and the
 open-ended-bracket parameter; `make_panel()`; `portfolio()` / `run_ab()` / `ab_over_seeds()`;
 `lag_grid()`; `ordering_loss()`, `aggregate_bias()`, `weighting_table()`. numpy + pandas,
-seed 20260910, about 18 s, no network, no file writes, no scraper.
+seed 20260910, about 15 s, no network, no file writes, no scraper.
 
 - `../insider-form-4/SKILL.md` - the same argument with a **two-business-day** deadline instead
   of 45, and the transaction-code filter that decides whether there is a signal at all.
@@ -252,7 +252,7 @@ seed 20260910, about 18 s, no network, no file writes, no scraper.
 - `../../../fin-core/skills/research-integrity-guards/SKILL.md` §2 - the availability rule this
   skill is one instance of, and the `(identifier, date)` join that ticker resolution needs.
 - `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` - the period / filed /
-  acceptance distinction, and `scripts/pit_fundamentals.py`, the same as-of read in code.
+  acceptance distinction, and its `pit_fundamentals.py`, the same as-of read in code.
 - `../../../fin-macro/skills/real-time-macro-backtesting/SKILL.md` - the identical A/B on macro
   vintages, and the finding that the *timing* leg usually dominates the *value* leg.
 - `../../../fin-core/skills/backtest-validation/SKILL.md` - a Sharpe of 0.449 with sd 0.275 is

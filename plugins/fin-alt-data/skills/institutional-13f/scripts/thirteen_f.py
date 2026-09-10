@@ -499,10 +499,13 @@ def main() -> None:
           f"is the long sleeve")
     print("   alone at 100%, which is all the table contains. 40 managers.")
     print(f"   {'':<22}{'mean':>9}{'sd':>8}{'p05':>8}{'p95':>8}")
-    for k in ("corr", "tracking_error", "vol_true", "vol_reconstructed",
-              "beta_true", "beta_reconstructed"):
+    for k in ("corr", "beta_true", "beta_reconstructed"):
         r = re_.loc[k]
         print(f"   {k:<22}{r['mean']:>9.3f}{r['sd']:>8.3f}{r['p05']:>8.3f}{r['p95']:>8.3f}")
+    for k in ("tracking_error", "vol_true", "vol_reconstructed"):
+        r = re_.loc[k]                      # annualised, so print them as percentages
+        print(f"   {k + ' (ann)':<22}{r['mean']:>9.1%}{r['sd']:>8.1%}"
+              f"{r['p05']:>8.1%}{r['p95']:>8.1%}")
     print("   A correlation of 0.9 makes the clone look like a noisy copy. It is not: the")
     print("   market beta is wrong by a third and the tracking error is in whole percent")
     print("   per year. Reporting a 'manager's returns' off a 13F clone is reporting")

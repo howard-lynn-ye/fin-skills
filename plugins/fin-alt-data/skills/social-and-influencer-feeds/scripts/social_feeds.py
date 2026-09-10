@@ -106,8 +106,9 @@ ACCESS: list[tuple[str, str, str, str]] = [
      "public, researcher or developer path exists."),
     ("StockTwits", "developer program", "OK",
      "stocktwits.com/developers returns HTTP 200 and renders a page titled 'Stocktwits "
-     "Subscriptions' - consumer plans, no endpoint docs, no self-serve key. The only API "
-     "route is an Enterprise plan whose button reads 'Get In Touch'."),
+     "Subscriptions' - consumer plans (Ad Free $85.00/year, Edge $229.50/year), no "
+     "endpoint docs, no self-serve key. The only API route is an Enterprise plan, "
+     "labelled 'API Access', whose button reads 'Get In Touch'."),
     ("StockTwits", "API host and docs", "OK",
      "api.stocktwits.com returns HTTP 302 to stocktwits.com; the historical docs path "
      "api.stocktwits.com/developers/docs returns HTTP 404."),
@@ -467,8 +468,12 @@ def main() -> None:
     print("\n" + "=" * 78)
     print("2. What reading costs - arithmetic on X's own published prices")
     print("=" * 78)
+    print(f"   Every price below was read on X's own pricing page on {VERIFIED_ON}.")
+    print(f"   {'resource':<24}{'USD':>10}")
+    for k, v in X_PRICES_USD.items():
+        print(f"   {k:<24}{v:>10.3f}")
     ct = cost_table()
-    print(f"   ${X_PRICES_USD['post_read']:.3f} per post read, cap "
+    print(f"\n   ${X_PRICES_USD['post_read']:.3f} per post read, cap "
           f"{X_MONTHLY_POST_READ_CAP:,} post reads per monthly billing cycle.")
     print(f"   {'budget':<14}{'posts/year':>14}{'usd/year':>13}{'usd/month':>12}"
           f"{'% of cap':>10}")

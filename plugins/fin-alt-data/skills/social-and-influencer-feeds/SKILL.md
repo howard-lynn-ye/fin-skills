@@ -28,7 +28,7 @@ attention, and both filters point the same way - toward a backtest that looks be
 the live signal.
 
 Everything marked ✅ Measured is printed by `scripts/social_feeds.py` (numpy + pandas, seed
-20260910, about 1.5 s, no network, **no scraper, no API client, no credential path**). Its
+20260910, under 2 s, no network, **no scraper, no API client, no credential path**). Its
 posts are **synthetic and seeded**. Everything marked ✅ source-verified was read at the URL
 given, on **2026-09-10**; 🔴 marks a page that could not be reached from here at all.
 
@@ -260,7 +260,7 @@ a social signal has the shortest horizon in this plugin.
 rows marked; `X_PRICES_USD`, `read_cost()` and `cost_table()`; `HIQ`; `make_panel()` with
 three timestamps, `attention_weights()` / `effective_names()`, `index_lag_summary()`;
 `survivorship()` and `survivorship_grid()`; `panel_selection()`; `timestamp_ab()`.
-numpy + pandas, seed 20260910, about 1.5 s, no network, no file writes, **no scraper**.
+numpy + pandas, seed 20260910, under 2 s, no network, no file writes, **no scraper**.
 
 - `../congressional-trading-disclosures/SKILL.md` - the same lag argument at 45 days, and
   the same in-sample selection trap applied to members rather than accounts.
