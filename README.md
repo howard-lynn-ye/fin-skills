@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**108 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**112 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 84 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 88 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -153,6 +153,10 @@ default listing budget, so install deliberately. What was verified and what was 
 
 | Plugin | Skill | Covers | Refs | Scripts |
 |---|---|---|---:|---:|
+| `fin-alt-data` | [`congressional-trading-disclosures`](plugins/fin-alt-data/skills/congressional-trading-disclosures/SKILL.md) | Build a congressional-trading signal on the disclosure date instead of the transaction date, and price what the amount brackets cost you. | 0 | 1 |
+| `fin-alt-data` | [`insider-form-4`](plugins/fin-alt-data/skills/insider-form-4/SKILL.md) | Filter Form 4 to open-market purchases by transaction code, then key the signal to the first session that can trade the acceptance timestamp. | 0 | 1 |
+| `fin-alt-data` | [`institutional-13f`](plugins/fin-alt-data/skills/institutional-13f/SKILL.md) | Clone or study 13F holdings without the quarter-end look-ahead, and report the full age distribution of the positions instead of the 45-day deadline. | 0 | 1 |
+| `fin-alt-data` | [`social-and-influencer-feeds`](plugins/fin-alt-data/skills/social-and-influencer-feeds/SKILL.md) | What social data you can legally and practically get in 2026, and what the part you can get does to a backtest. | 0 | 1 |
 | `fin-asia` | [`asia-pacific-markets`](plugins/fin-asia/skills/asia-pacific-markets/SKILL.md) | Data and trading for Asia-Pacific outside mainland China. | 0 | 0 |
 | `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Get China A-share and Greater China market data without the ecosystem's silent traps. | 4 | 0 |
 | `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies under the rules a Western engine gets wrong. | 3 | 1 |

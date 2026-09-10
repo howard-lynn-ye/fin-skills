@@ -1,14 +1,15 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 108,
+  "n_skills": 112,
   "n_reference_files": 74,
-  "n_scripts": 93,
+  "n_scripts": 97,
   "discovery_cost": {
-    "total_description_chars": 97576,
-    "approx_tokens": 24394,
+    "total_description_chars": 101390,
+    "approx_tokens": 25347,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
+    "fin-alt-data",
     "fin-asia",
     "fin-china",
     "fin-core",
@@ -27,6 +28,70 @@
     "fin-tax-accounting"
   ],
   "skills": [
+    {
+      "name": "congressional-trading-disclosures",
+      "plugin": "fin-alt-data",
+      "path": "plugins/fin-alt-data/skills/congressional-trading-disclosures/SKILL.md",
+      "description": "Build a congressional-trading signal on the disclosure date instead of the transaction date, and price what the amount brackets cost you. TRIGGER - congressional trading, congress stock trades, STOCK Act, Periodic Transaction Report, PTR, House Clerk financial disclosure, disclosures-clerk.house.gov, efdsearch.senate.gov, Senate eFD, senator trade trackers, \"copy the trades Congress makes\", \"backtest congressional trades\", \"what did Congress buy\", amount ranges, \"$1,001 - $15,000\", \"how do I weight a trade disclosed as a bracket\", the 45-day filing deadline, late PTR filings, scraping the House or Senate disclosure sites. SKIP for corporate insiders and Form 4 transaction codes (insider-form-4), for fund holdings and 13F staleness (institutional-13f), for social posts and influencer panels (social-and-influencer-feeds), for EDGAR endpoints and XBRL point-in-time fundamentals (fundamental-and-macro-data), and for the general availability rule and the five-gate audit (research-integrity-guards).",
+      "summary": "Build a congressional-trading signal on the disclosure date instead of the transaction date, and price what the amount brackets cost you.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 15887,
+      "approx_body_tokens": 3971,
+      "references": [],
+      "scripts": [
+        "congress.py"
+      ]
+    },
+    {
+      "name": "insider-form-4",
+      "plugin": "fin-alt-data",
+      "path": "plugins/fin-alt-data/skills/insider-form-4/SKILL.md",
+      "description": "Filter Form 4 to open-market purchases by transaction code, then key the signal to the first session that can trade the acceptance timestamp. TRIGGER - Form 4, Forms 3/4/5, Section 16, insider buying, insider selling, corporate insider trades, \"officer bought shares\", transaction codes P S A M F G X C, code P vs code A, 10b5-1 plan, EDGAR ownership XML, ownershipDocument, transactionCode, two business days, \"insider trading signal\", \"should I follow insider buys\", openinsider-style screens, \"why does my insider backtest look amazing\", stripping option exercises and tax withholding out of insider data. SKIP for congressional trades and the STOCK Act (congressional-trading-disclosures), for fund holdings and 13F staleness (institutional-13f), for social posts and influencer panels (social-and-influencer-feeds), for EDGAR endpoints, edgartools and XBRL fundamentals (fundamental-and-macro-data), and for the general availability rule (research-integrity-guards).",
+      "summary": "Filter Form 4 to open-market purchases by transaction code, then key the signal to the first session that can trade the acceptance timestamp.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 15446,
+      "approx_body_tokens": 3861,
+      "references": [],
+      "scripts": [
+        "form4.py"
+      ]
+    },
+    {
+      "name": "institutional-13f",
+      "plugin": "fin-alt-data",
+      "path": "plugins/fin-alt-data/skills/institutional-13f/SKILL.md",
+      "description": "Clone or study 13F holdings without the quarter-end look-ahead, and report the full age distribution of the positions instead of the 45-day deadline. TRIGGER - 13F, Form 13F, 13F-HR, institutional holdings, \"what does Berkshire own\", hedge fund holdings, whale watching, cloning a manager's portfolio, guru portfolios, 13F information table XML, infoTable, $100 million threshold, 45 days after quarter end, confidential treatment request, \"positions omitted from the 13F\", \"backtest a 13F clone\", quarterly holdings turnover, WhaleWisdom-style data, reconstructing a fund's book from filings. SKIP for corporate insiders and Form 4 codes (insider-form-4), for congressional trades and the STOCK Act (congressional-trading-disclosures), for social posts and influencer panels (social-and-influencer-feeds), for EDGAR endpoints and XBRL fundamentals (fundamental-and-macro-data), and for the general availability rule (research-integrity-guards).",
+      "summary": "Clone or study 13F holdings without the quarter-end look-ahead, and report the full age distribution of the positions instead of the 45-day deadline.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 13628,
+      "approx_body_tokens": 3407,
+      "references": [],
+      "scripts": [
+        "thirteen_f.py"
+      ]
+    },
+    {
+      "name": "social-and-influencer-feeds",
+      "plugin": "fin-alt-data",
+      "path": "plugins/fin-alt-data/skills/social-and-influencer-feeds/SKILL.md",
+      "description": "What social data you can legally and practically get in 2026, and what the part you can get does to a backtest. TRIGGER - Twitter or X API, tweet sentiment, cashtag, StockTwits, Reddit API, PRAW, r/wallstreetbets, Pushshift, scraping social media for a trading signal, \"which accounts should I follow\", influencer or finfluencer track records, \"backtest a sentiment signal\", social sentiment score, deleted tweets, \"is scraping legal\", hiQ v LinkedIn, robots.txt and terms of service for a data pipeline, \"the free tier of the X API\". Ships NO scraper and no credential path, on purpose. SKIP for congressional trades (congressional-trading-disclosures), for corporate insiders and Form 4 (insider-form-4), for fund holdings and 13F (institutional-13f), for LLM agents that read news (llm-finance-agents), and for the general survivorship and availability gates (research-integrity-guards).",
+      "summary": "What social data you can legally and practically get in 2026, and what the part you can get does to a backtest.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 16891,
+      "approx_body_tokens": 4222,
+      "references": [],
+      "scripts": [
+        "social_feeds.py"
+      ]
+    },
     {
       "name": "asia-pacific-markets",
       "plugin": "fin-asia",
