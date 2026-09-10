@@ -425,6 +425,27 @@
       ]
     },
     {
+      "name": "fin-alt-data",
+      "source": "./plugins/fin-alt-data",
+      "description": "Disclosure feeds and social data as point-in-time objects - congressional and Senate periodic transaction reports, SEC Form 4 insider filings, 13F holdings, and social or influencer feeds. Every one of them is disclosed on a lag, so the transaction date is not the knowable date, and a signal built on it is a look-ahead. One skill per feed, each with an executable script, the measured size of the lag, and the licensing position.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "alternative-data",
+        "congressional-trading",
+        "stock-act",
+        "periodic-transaction-report",
+        "form-4",
+        "insider-trading",
+        "13f",
+        "disclosure-lag",
+        "social-sentiment",
+        "twitter",
+        "point-in-time"
+      ],
+      "skills": []
+    },
+    {
       "name": "trading-skills",
       "source": {
         "source": "github",
