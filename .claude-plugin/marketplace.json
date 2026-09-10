@@ -33,6 +33,7 @@
         "./skills/etf-mechanics",
         "./skills/execution-cost-analysis",
         "./skills/external-skill-index",
+        "./skills/finding-and-searching-data",
         "./skills/multiple-testing-ledger",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
@@ -40,6 +41,7 @@
         "./skills/quant-stack-router",
         "./skills/regime-detection",
         "./skills/research-integrity-guards",
+        "./skills/security-master-and-symbology",
         "./skills/signal-construction",
         "./skills/us-market-rules"
       ]
