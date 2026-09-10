@@ -3,9 +3,9 @@ name: finding-and-searching-data
 description: >-
   Find the identifier before you fetch it, and know which free sources can actually search.
   TRIGGER - "what is the FRED series id for X", "which ticker is this company", "find the CIK
-  for", searching for a series, ticker, symbol, contract or filing by name or phrase;
-  fred/series/search, company_tickers.json, EDGAR full-text search, efts.sec.gov, ccxt
-  load_markets; a guessed identifier returning an empty frame; retrieving filings by form and
+  for", searching for a series, ticker, symbol, contract, crypto pair or filing by name or phrase;
+  fred/series/search, company_tickers.json, EDGAR full-text search, efts.sec.gov; a guessed
+  identifier returning an empty frame; retrieving filings by form and
   date range; when a document became PUBLIC versus when it was filed; earnings-call transcript
   timestamps. Load BEFORE guessing an identifier - three of the four free searches are current
   snapshots and cannot answer as of a past date. SKIP for resolving or dating an identifier you

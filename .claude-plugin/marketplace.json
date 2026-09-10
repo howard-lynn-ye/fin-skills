@@ -12,7 +12,7 @@
     {
       "name": "fin-core",
       "source": "./plugins/fin-core",
-      "description": "US/global quant stack: finding and resolving identifiers, market data sourcing and engineering, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest. 21 skills, measured at ~4,557 tokens of skill-listing budget: one past the ~20 at which Claude Code starts silently dropping descriptions to name-only, so that last increment of breadth is a deliberate, OPT-IN cost. Set skillListingBudgetFraction to 0.03 before installing anything alongside it.",
+      "description": "US/global quant stack: finding and resolving identifiers, market data sourcing and engineering, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest. 21 skills, measured at ~4,556 tokens of skill-listing budget: one past the ~20 at which Claude Code starts silently dropping descriptions to name-only, so that last increment of breadth is a deliberate, OPT-IN cost. Set skillListingBudgetFraction to 0.03 before installing anything alongside it.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
