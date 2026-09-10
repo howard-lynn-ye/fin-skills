@@ -17,6 +17,7 @@ Module -> owning skill:
     paper_account_guard          broker-execution-apis
     pit_fundamentals             fundamental-and-macro-data
     pit_universe                 research-integrity-guards
+    pre_trade                    pre-trade-checks
     regime_coverage              regime-detection
     regime_lookahead             regime-detection
     regime_methods               regime-detection
@@ -44,6 +45,7 @@ __all__ = [
     'paper_account_guard',
     'pit_fundamentals',
     'pit_universe',
+    'pre_trade',
     'regime_coverage',
     'regime_lookahead',
     'regime_methods',
