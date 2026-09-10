@@ -8,7 +8,10 @@ description: >-
   Covers five gates: universe survivorship, availability timestamps, label leakage, cost realism,
   trial count. SKIP when the task is to BUILD something rather than judge it - go to the domain
   skill first (market-data-sourcing, backtesting-engines, factor-and-timeseries-research) and
-  return here before reporting a number.
+  return here before reporting a number. SKIP too for the arithmetic that runs AFTER these gates
+  pass and asks whether the surviving edge beats the best of N tries: PBO, CSCV and minimum
+  backtest length (backtest-overfitting), Bonferroni/Holm/BH/BY over a ledger of trials
+  (multiple-testing-ledger), and the deflated Sharpe (backtest-validation).
 license: MIT
 metadata:
   version: "0.1.0"

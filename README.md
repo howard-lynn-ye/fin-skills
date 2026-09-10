@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**103 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**105 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 79 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 81 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -62,7 +62,7 @@ from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 from fin_skills.core.option_lifecycle import crr                # a CRR tree, no QuantLib
 ```
 
-The same checks behind one interface — 29 guards that return a `GuardResult` instead of raising, and
+The same checks behind one interface — 30 guards that return a `GuardResult` instead of raising, and
 a typed `conventions` module (annualisation, risk-free, pip and liquidation arithmetic), the way
 PyOD puts its detectors behind one API. PyOD's uniformity comes from a
 uniform data container (every detector is `fit(X)`); here the container is a `Bundle` — the artefacts
@@ -108,7 +108,7 @@ skill script runs standalone too (`python plugins/<plugin>/skills/<skill>/script
 ### For LLM agents
 
 Reading a skill changes what a model says; running a guard changes what its pipeline is allowed
-to report. `fin_skills.tools` is the second one — 32 tools an agent can call over JSON: seven
+to report. `fin_skills.tools` is the second one — 33 tools an agent can call over JSON: seven
 catalogue tools that need no data (`list_skills`, `read_skill`, `search_skills`, `list_guards`,
 `describe_guard`, `bundle_coverage`, `check_backtest`) and one `check_<guard>` per guard. Every
 schema is derived from the guard itself, so it cannot go stale.
@@ -156,6 +156,7 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-asia` | [`asia-pacific-markets`](plugins/fin-asia/skills/asia-pacific-markets/SKILL.md) | Data and trading for Asia-Pacific outside mainland China. | 0 | 0 |
 | `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Get China A-share and Greater China market data without the ecosystem's silent traps. | 4 | 0 |
 | `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies under the rules a Western engine gets wrong. | 3 | 1 |
+| `fin-core` | [`backtest-overfitting`](plugins/fin-core/skills/backtest-overfitting/SKILL.md) | Decide whether an edge that passed every mechanical check is still just the best of N tries. | 0 | 1 |
 | `fin-core` | [`backtest-validation`](plugins/fin-core/skills/backtest-validation/SKILL.md) | Decide whether a result survives the number of things you tried. | 3 | 3 |
 | `fin-core` | [`backtesting-engines`](plugins/fin-core/skills/backtesting-engines/SKILL.md) | Choose a backtesting engine and know what it silently models wrong. | 6 | 0 |
 | `fin-core` | [`broker-execution-apis`](plugins/fin-core/skills/broker-execution-apis/SKILL.md) | Connect to a broker and place orders without accidentally trading live money. | 4 | 1 |
@@ -168,6 +169,7 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-core` | [`intraday-microstructure`](plugins/fin-core/skills/intraday-microstructure/SKILL.md) | Measure the market at the tick level and know when the measure is lying. | 0 | 1 |
 | `fin-core` | [`market-data-engineering`](plugins/fin-core/skills/market-data-engineering/SKILL.md) | Store, join and parallelize market data you already hold, without corrupting it. | 4 | 2 |
 | `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose a market price or reference data vendor and use it without silently corrupting the numbers. | 11 | 1 |
+| `fin-core` | [`multiple-testing-ledger`](plugins/fin-core/skills/multiple-testing-ledger/SKILL.md) | Apply family-wise error and false-discovery control to a whole research programme, using the trial ledger's own registered count as m. | 0 | 1 |
 | `fin-core` | [`options-backtesting`](plugins/fin-core/skills/options-backtesting/SKILL.md) | Options positions end in ways you do not control - live or in a backtest: assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin th | 3 | 1 |
 | `fin-core` | [`portfolio-and-risk`](plugins/fin-core/skills/portfolio-and-risk/SKILL.md) | Turn signals into weights, and compute performance metrics that are actually correct. | 9 | 1 |
 | `fin-core` | [`quant-stack-router`](plugins/fin-core/skills/quant-stack-router/SKILL.md) | Entry router for Python quantitative finance: names the right library and flags where the model's training prior is stale. | 0 | 0 |

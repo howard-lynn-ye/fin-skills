@@ -14,12 +14,14 @@ Module -> owning skill:
     leveraged_reset              etf-mechanics
     microstructure_measures      intraday-microstructure
     option_lifecycle             options-backtesting
+    overfitting                  backtest-overfitting
     paper_account_guard          broker-execution-apis
     pit_fundamentals             fundamental-and-macro-data
     pit_universe                 research-integrity-guards
     regime_coverage              regime-detection
     regime_lookahead             regime-detection
     regime_methods               regime-detection
+    research_history             multiple-testing-ledger
     result_manifest              research-integrity-guards
     safe_asof                    market-data-engineering
     spa_test                     backtest-validation
@@ -41,12 +43,14 @@ __all__ = [
     'leveraged_reset',
     'microstructure_measures',
     'option_lifecycle',
+    'overfitting',
     'paper_account_guard',
     'pit_fundamentals',
     'pit_universe',
     'regime_coverage',
     'regime_lookahead',
     'regime_methods',
+    'research_history',
     'result_manifest',
     'safe_asof',
     'spa_test',

@@ -2,14 +2,17 @@
 name: backtest-validation
 description: >-
   Decide whether a result survives the number of things you tried. TRIGGER - "I tried N strategies
-  or parameters and the best one..."; overfitting, p-hacking, data snooping, multiple testing, "is
-  this result real", "is this statistically significant"; deflated Sharpe, DSR, PSR, probability
-  of backtest overfitting, PBO; purged or combinatorial cross-validation, embargo, walk-forward,
-  "cross validation on time series without leaking"; a grid search, hyperopt or AutoML picked a
-  winner; triple-barrier labeling, meta-labeling, fractional differentiation, mlfinlab. Load
-  whenever a Sharpe ratio is about to be offered as evidence for trading. SKIP only for plain
-  performance metrics - Sharpe, Sortino, CAGR, drawdown (portfolio-and-risk); the deflated and
-  probabilistic Sharpe ratios are computed HERE.
+  or parameters and the best one..."; overfitting, p-hacking, data snooping, "is this result
+  real", "is this statistically significant"; deflated Sharpe, DSR, PSR, the trial ledger;
+  White's Reality Check, Hansen SPA, StepM, model confidence set, arch.bootstrap; purged or
+  combinatorial cross-validation, embargo, walk-forward, "cross validation on time series without
+  leaking"; a grid search, hyperopt or AutoML picked a winner; triple-barrier labeling,
+  meta-labeling, fractional differentiation, mlfinlab. Load whenever a Sharpe ratio is about to
+  be offered as evidence for trading. SKIP for plain performance metrics - Sharpe, Sortino, CAGR,
+  drawdown (portfolio-and-risk); for PBO, CSCV and the minimum backtest length
+  (backtest-overfitting); and for Bonferroni, Holm, Benjamini-Hochberg or Benjamini-Yekutieli
+  over a ledger of trials (multiple-testing-ledger). The deflated and probabilistic Sharpe
+  ratios are computed HERE.
 license: MIT
 metadata:
   version: "0.1.0"
@@ -161,6 +164,14 @@ results. `scripts/trial_ledger.py` provides a minimal append-only implementation
 
 Also check whether a given DSR implementation actually applies the skew/kurtosis adjustment or
 silently assumes IID normal — the expected-max term should use the Euler–Mascheroni constant.
+
+**DSR's two companions live in their own skills.** `../backtest-overfitting/SKILL.md` owns the
+Probability of Backtest Overfitting via CSCV and the Minimum Backtest Length — the same
+expected-max term, inverted for the sample length a claimed Sharpe needs at a given trial count.
+`../multiple-testing-ledger/SKILL.md` owns family-wise error and false-discovery control over the
+whole ledger, and the haircut a Sharpe takes. `fin_skills.api.guards.research_audit.reality_check`
+runs the integrity, cost, deflation, PBO and regime stages in that order and stops at the first
+failure.
 
 ## 5. The AFML labeling stack — where each method actually lives
 
