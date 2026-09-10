@@ -9,8 +9,10 @@ Module -> owning skill:
     cost_curve                   backtest-validation
     cost_plausibility            execution-cost-analysis
     event_study                  factor-and-timeseries-research
+    find_data_source             finding-and-searching-data
     fold_leak_test               market-data-engineering
     greeks_convention            derivatives-pricing
+    identifier_checks            security-master-and-symbology
     leveraged_reset              etf-mechanics
     microstructure_measures      intraday-microstructure
     option_lifecycle             options-backtesting
@@ -36,8 +38,10 @@ __all__ = [
     'cost_curve',
     'cost_plausibility',
     'event_study',
+    'find_data_source',
     'fold_leak_test',
     'greeks_convention',
+    'identifier_checks',
     'leveraged_reset',
     'microstructure_measures',
     'option_lifecycle',

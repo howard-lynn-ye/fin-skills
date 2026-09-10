@@ -44,10 +44,12 @@ HAND_WRITTEN = {"__init__.py"}          # kept as-is; everything else under fin_
 #   mcp/      the Model Context Protocol server over tools/
 #   engine/   the reference backtesting engine
 #   data/     the unified data-access layer
+#   discovery/ search and identifier resolution - the half data/ cannot do
 #   bridges/  adapters to vectorbt, qlib, QuantLib, the optimizers, brokers and reporting
 # A new layer is added here in the SAME commit that creates it, or the next regeneration
 # deletes it. --check enforces this.
-HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/", "engine/", "data/", "bridges/")
+HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/", "engine/", "data/", "discovery/",
+                     "bridges/")
 
 
 def is_hand_written(rel: str) -> bool:
