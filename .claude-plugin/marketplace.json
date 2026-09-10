@@ -38,6 +38,7 @@
         "./skills/market-data-sourcing",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
+        "./skills/pre-trade-checks",
         "./skills/quant-stack-router",
         "./skills/regime-detection",
         "./skills/research-integrity-guards",

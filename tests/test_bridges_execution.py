@@ -10,6 +10,12 @@ Two independent tests carry the claim:
     every callable is a reader or a converter.
 
 Then the gate: `paper_account_guard` must pass before any client is built or read.
+
+The same grep runs over the PRE-TRADE modules, from one list, because it is one claim:
+`bridges.execution` ingests what already happened, `core.pre_trade` inspects what has
+only been proposed, and `api.guards.pre_trade` wraps the second. None of the three may
+name a call that sends, changes or withdraws an instruction to trade, and each one is
+poisoned in turn to prove the grep can still fail.
 """
 from __future__ import annotations
 
@@ -24,10 +30,25 @@ import pytest
 
 from conftest import has_module
 
+from fin_skills.api.guards import pre_trade as PRE_TRADE_GUARD
 from fin_skills.bridges import _lazy
 from fin_skills.bridges import execution as X
+from fin_skills.core import pre_trade as PRE_TRADE
 
 MODULE_SOURCE = Path(inspect.getsourcefile(X)).read_text(encoding="utf-8")
+
+
+def _source_of(module) -> str:
+    return Path(inspect.getsourcefile(module)).read_text(encoding="utf-8")
+
+
+#: every module in this library that claims to be read-only BY CONSTRUCTION.
+#: A new one is added here in the same commit that creates it, or the claim is untested.
+READ_ONLY_SOURCES: dict[str, str] = {
+    "bridges/execution.py": MODULE_SOURCE,
+    "core/pre_trade.py": _source_of(PRE_TRADE),
+    "api/guards/pre_trade.py": _source_of(PRE_TRADE_GUARD),
+}
 
 #: every way the three bridged clients send, change or withdraw an instruction to trade.
 FORBIDDEN_METHOD_NAMES: tuple[str, ...] = (
@@ -78,6 +99,51 @@ def test_the_grep_would_actually_catch_an_order_call():
     poisoned2 = MODULE_SOURCE + "\nib.placeOrder(contract, order)\n"
     assert "placeOrder" in _folded_hits(poisoned2)
     assert len(FORBIDDEN_METHOD_NAMES) >= 40
+
+
+@pytest.mark.parametrize("label", sorted(READ_ONLY_SOURCES))
+def test_no_read_only_module_names_a_trading_method(label):
+    """The same three normalisations, over every module that makes the claim."""
+    src = READ_ONLY_SOURCES[label]
+    hits = [name for name in FORBIDDEN_METHOD_NAMES if name in src]
+    assert hits == [], f"{label} names order-sending calls: {hits}"
+    lowered = src.lower()
+    for name in FORBIDDEN_METHOD_NAMES:
+        assert name.lower() not in lowered, f"{label} names {name} (case-insensitive)"
+    assert _folded_hits(src) == [], f"{label} names one case-folded: {_folded_hits(src)}"
+
+
+@pytest.mark.parametrize("label", sorted(READ_ONLY_SOURCES))
+def test_the_grep_would_catch_an_order_call_in_every_scanned_module(label):
+    """Poison each source the way the bridge's own source is poisoned above."""
+    src = READ_ONLY_SOURCES[label]
+    assert "create_order" in _folded_hits(src + '\nclient.create_order(s, "market", 1)\n')
+    assert "placeOrder" in _folded_hits(src + "\nib.placeOrder(contract, order)\n")
+    assert "submit_order" in _folded_hits(src + "\nclient.submit_order(request)\n")
+    assert "cancel_order" in _folded_hits(src + "\nclient.cancel_order(oid)\n")
+
+
+def test_the_pre_trade_modules_expose_no_way_to_send_anything():
+    """Every public callable defined in them is a check, a builder or a renderer."""
+    for module in (PRE_TRADE, PRE_TRADE_GUARD):
+        for name in dir(module):
+            if name.startswith("_"):
+                continue
+            obj = getattr(module, name)
+            if getattr(obj, "__module__", "") != module.__name__:
+                continue                           # imported, and scanned in its own file
+            assert not name.lower().startswith(
+                ("send", "submit", "place", "transmit", "route", "buy", "sell", "cancel",
+                 "amend", "execute", "fire")), f"{module.__name__}.{name}"
+    # and the one entry point returns a verdict rather than doing anything
+    verdict = PRE_TRADE.check_order(*_a_proposal_and_no_facts())
+    assert verdict.allowed is False and verdict.missing
+
+
+def _a_proposal_and_no_facts():
+    return (PRE_TRADE.ProposedOrder("AA00", "buy", 100.0, 10.0, "cid-1",
+                                    pd.Timestamp("2026-09-10 14:00", tz="UTC")),
+            PRE_TRADE.TradingState())
 
 
 def test_execution_exposes_only_readers():
