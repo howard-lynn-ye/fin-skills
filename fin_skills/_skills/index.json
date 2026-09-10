@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 103,
+  "n_skills": 104,
   "n_reference_files": 74,
-  "n_scripts": 87,
+  "n_scripts": 88,
   "discovery_cost": {
-    "total_description_chars": 92142,
-    "approx_tokens": 23035,
+    "total_description_chars": 93117,
+    "approx_tokens": 23279,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -141,6 +141,22 @@
       ],
       "scripts": [
         "paper_account_guard.py"
+      ]
+    },
+    {
+      "name": "choosing-a-data-vendor",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/choosing-a-data-vendor/SKILL.md",
+      "description": "Decide whether a data source may legally and factually serve a research question, before any fetch code is written. TRIGGER - need delisted, survivorship-free or point-in-time data and are choosing where to get it; may I store, cache, redistribute or publish what I fetched; is the free tier enough and what does a key cost; comparing vendor terms, licences, rate limits or paid tiers; \"there are no delisted names on the free tier\"; picking between yfinance, Tiingo, Alpha Vantage, stooq, EODHD, Norgate, CRSP or Polygon. Automated by `python -m fin_skills.data advise`. SKIP once the source is chosen and the question is how to CALL it - adjustment, timezone, calendar and off-by-one traps (market-data-sourcing); storing, partitioning or as-of joining data you already hold (market-data-engineering); EDGAR, XBRL and macro vintages (fundamental-and-macro-data); A-share sources and 退市 lists (china-ashare-data); exchange OHLCV and venue limits (crypto-data-and-execution).",
+      "summary": "Decide whether a data source may legally and factually serve a research question, before any fetch code is written.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 12756,
+      "approx_body_tokens": 3189,
+      "references": [],
+      "scripts": [
+        "vendor_decision.py"
       ]
     },
     {

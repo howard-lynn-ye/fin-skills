@@ -25,6 +25,7 @@ Module -> owning skill:
     spa_test                     backtest-validation
     survivorship_audit           research-integrity-guards
     trial_ledger                 backtest-validation
+    vendor_decision              choosing-a-data-vendor
     warmup_probe                 signal-construction
 """
 
@@ -52,5 +53,6 @@ __all__ = [
     'spa_test',
     'survivorship_audit',
     'trial_ledger',
+    'vendor_decision',
     'warmup_probe',
 ]
