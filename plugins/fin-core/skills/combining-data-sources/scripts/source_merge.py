@@ -1,0 +1,377 @@
+#!/usr/bin/env python3
+"""What `combine_first` decides for you, measured - and the two merges that cannot be right.
+
+Three sections, three measured failures.
+
+1. THE SILENT PICK. `a.combine_first(b)` resolves by NULLITY: it takes `a` wherever `a` is
+   not NaN and `b` elsewhere. That is not a precedence rule. A vendor printing a STALE
+   repeat of yesterday's close, a vendor printing a decimal in the wrong place and a vendor
+   printing the correct quote are all "not NaN", so whichever frame you happened to type
+   first wins every overlapping disagreement - and the disagreements are never reported.
+   Measured here: how often the answer changes with the typing order, and what the
+   resulting return series does to a one-day reversal rule.
+
+2. THE MISMATCHED ADJUSTMENT. A raw series and a split-adjusted series are not two
+   measurements of one quantity. Splice them and the whole corporate-action factor lands
+   in a single day's return. Measured: the size of that day, and the annualised vol it
+   creates out of nothing.
+
+3. THE IDENTIFIER THAT CHANGED ENTITY. A ticker is a slot in an exchange's namespace. It
+   is reassigned after a delisting. Join two vendors on it and you join whatever each of
+   them meant by it on each date. Measured: what gluing two issuers' histories does to
+   the vol, the tails and a momentum rule.
+
+Run:  python source_merge.py
+"""
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+
+SEED = 20260910
+N_SESSIONS = 2520                 # about ten years of business days
+START = "2020-01-02"
+DAILY_VOL = 0.012
+GAP_SHARE = 0.08                  # vendor A's missing sessions - honestly absent
+STALE_SHARE = 0.06                # vendor B's repeats of the previous close - present, WRONG
+BAD_PRINT_SHARE = 0.02            # vendor B's auction / odd-lot / unadjusted print
+BAD_PRINT_SD = 0.025              # about two daily sigmas: too small to grep for
+TOL_BPS = 10.0
+ANNUAL = 252
+
+
+# --------------------------------------------------------------- 1. the silent pick
+def two_vendors(seed: int = SEED) -> dict:
+    """One true price series and two vendors' versions of it, each wrong in its own way."""
+    rng = np.random.default_rng(seed)
+    idx = pd.bdate_range(START, periods=N_SESSIONS)
+    truth = pd.Series(100.0 * np.exp(np.cumsum(rng.normal(0.0002, DAILY_VOL, N_SESSIONS))),
+                      index=idx, name="close")
+
+    a = truth.copy()
+    gaps = rng.random(N_SESSIONS) < GAP_SHARE
+    gaps[0] = False
+    a[gaps] = np.nan                                   # a hole is information, not an error
+
+    b = truth.copy()
+    roll = rng.random(N_SESSIONS)
+    stale = roll < STALE_SHARE
+    stale[0] = False
+    b[stale] = truth.shift(1)[stale]                   # yesterday's close, repeated
+    bad = (roll >= STALE_SHARE) & (roll < STALE_SHARE + BAD_PRINT_SHARE)
+    # an auction print, an odd lot, a dividend the vendor forgot to adjust: about two
+    # daily sigmas, which is the size that survives every eyeball check anyone runs
+    b[bad] = truth[bad] * (1.0 + rng.normal(0.0, BAD_PRINT_SD, int(bad.sum())))
+    return {"index": idx, "truth": truth, "A": a, "B": b,
+            "n_gaps": int(gaps.sum()), "n_stale": int(stale.sum()),
+            "n_bad_print": int(bad.sum())}
+
+
+def precedence_merge(sources: dict, precedence, tol_bps: float = TOL_BPS) -> dict:
+    """Take the highest-RANKED source present at each timestamp; record every disagreement.
+
+    `sources` is {name: Series}; `precedence` is the declared ranking, best first. The
+    return carries `values`, `chosen` (which source supplied each timestamp) and
+    `disagreements` (one row per timestamp beyond the threshold, with the number that was
+    NOT taken).
+    """
+    order = list(precedence)
+    missing = [n for n in sources if n not in order]
+    if missing:
+        raise ValueError(f"source(s) {missing} are not in the declared precedence {order}; "
+                         f"a vendor that enters a result without anyone ranking it is a "
+                         f"vendor nobody chose")
+    wide = pd.DataFrame({n: sources[n] for n in order})
+    values = wide[order[0]].copy()
+    chosen = pd.Series(np.where(wide[order[0]].notna(), order[0], None),
+                       index=wide.index, dtype=object)
+    for name in order[1:]:
+        take = values.isna() & wide[name].notna()
+        values[take] = wide[name][take]
+        chosen[take] = name
+
+    rows = []
+    present = wide.notna()
+    both = present.sum(axis=1) >= 2
+    tol = tol_bps / 1e4
+    for ts in wide.index[both]:
+        row = wide.loc[ts].dropna()
+        take = float(values.loc[ts])
+        denom = abs(take) if abs(take) > 0 else 1.0
+        spread = float((row - take).abs().max() / denom)
+        if spread <= tol:
+            continue
+        rejected = {k: float(v) for k, v in row.items() if k != chosen.loc[ts]}
+        rows.append({"at": ts, "chosen": chosen.loc[ts], "chosen_value": take,
+                     "rejected": rejected, "spread_bps": spread * 1e4})
+    return {"values": values, "chosen": chosen,
+            "disagreements": pd.DataFrame(rows),
+            "n_overlap": int(both.sum())}
+
+
+def return_stats(prices: pd.Series, label: str) -> dict:
+    """Vol, the tail, the lag-1 autocorrelation, and what a reversal rule makes of it.
+
+    Lag-1 autocorrelation is the number to watch: an isolated bad print is a move and its
+    snap-back, which is negative autocorrelation - and negative autocorrelation is exactly
+    what every mean-reversion signal is built to find.
+    """
+    r = prices.pct_change().dropna()
+    sd = float(r.std(ddof=1))
+    z = (r / sd).abs() if sd > 0 else r * 0.0
+    pos = -np.sign(r)
+    pnl = (pos.shift(1) * r).dropna()
+    psd = float(pnl.std(ddof=1))
+    return {"label": label, "ann_vol": sd * np.sqrt(ANNUAL),
+            "max_abs_ret_bps": float(r.abs().max() * 1e4),
+            "n_beyond_10_sigma": int((z > 10).sum()),
+            "autocorr_1": float(r.autocorr(1)),
+            "reversal_sharpe": float(pnl.mean() / psd * np.sqrt(ANNUAL)) if psd else 0.0}
+
+
+def measure_merge(seed: int = SEED) -> dict:
+    v = two_vendors(seed)
+    merged = precedence_merge({"A": v["A"], "B": v["B"]}, ("A", "B"))
+    dis = merged["disagreements"]
+
+    b_first = v["B"].combine_first(v["A"])       # what you type when B has better coverage
+    a_first = v["A"].combine_first(v["B"])       # what you type when A is the primary
+
+    tol = TOL_BPS / 1e4
+    differ = (b_first - merged["values"]).abs() / merged["values"].abs() > tol
+    wrong_vs_truth = (b_first - v["truth"]).abs() / v["truth"] > tol
+    gapfill_wrong = int((((a_first - v["truth"]).abs() / v["truth"]) > tol).sum())
+    same_numbers = bool(np.allclose(a_first.to_numpy(), merged["values"].to_numpy(),
+                                    rtol=1e-12, atol=0.0))
+
+    stats = {name: return_stats(s, name) for name, s in
+             (("truth", v["truth"]),
+              ("A>B merged == a.combine_first", merged["values"]),
+              ("naive b.combine_first(a)", b_first))}
+    return {
+        "n_sessions": N_SESSIONS, "n_gaps": v["n_gaps"], "n_stale": v["n_stale"],
+        "n_bad_print": v["n_bad_print"], "n_overlap": merged["n_overlap"],
+        "n_disagreements": int(len(dis)),
+        "disagreement_pct": 100.0 * len(dis) / merged["n_overlap"],
+        "n_naive_differs": int(differ.sum()),
+        "n_naive_wrong": int(wrong_vs_truth.sum()),
+        "naive_wrong_pct": 100.0 * int(wrong_vs_truth.sum()) / N_SESSIONS,
+        "n_gapfill_wrong": gapfill_wrong,
+        "n_records_kept_by_combine_first": 0,
+        "same_numbers_as_a_first": same_numbers,
+        "median_spread_bps": float(dis["spread_bps"].median()) if len(dis) else 0.0,
+        "max_spread_bps": float(dis["spread_bps"].max()) if len(dis) else 0.0,
+        "stats": stats, "first_disagreement": dis.iloc[0].to_dict() if len(dis) else {},
+    }
+
+
+# ------------------------------------------------------- 2. the mismatched adjustment
+SPLIT_AT = 500                    # session index of a 2-for-1 split
+B_STARTS = 260                    # vendor B's history begins here
+
+
+def adjustment_pair(seed: int = SEED) -> dict:
+    """The same instrument from two vendors on two conventions, around a 2-for-1 split."""
+    rng = np.random.default_rng(seed + 1)
+    idx = pd.bdate_range(START, periods=N_SESSIONS)
+    clean = pd.Series(100.0 * np.exp(np.cumsum(rng.normal(0.0002, DAILY_VOL, N_SESSIONS))),
+                      index=idx)
+    raw = clean.copy()
+    raw.iloc[SPLIT_AT:] = raw.iloc[SPLIT_AT:] / 2.0      # the quote halves on the ex-date
+    adjusted = raw.copy()
+    adjusted.iloc[:SPLIT_AT] = adjusted.iloc[:SPLIT_AT] / 2.0   # history rewritten
+    return {"index": idx, "raw": raw, "adjusted_full": adjusted,
+            "adjusted": adjusted.iloc[B_STARTS:],
+            "split_date": idx[SPLIT_AT], "switch_date": idx[B_STARTS]}
+
+
+def measure_adjustment(seed: int = SEED) -> dict:
+    p = adjustment_pair(seed)
+    spliced = p["adjusted"].combine_first(p["raw"])      # B where it exists, A before it
+    r = spliced.pct_change()
+    one = p["adjusted_full"].pct_change()                # ONE convention, whole history
+    step = float(r.loc[p["switch_date"]])
+    one_vol = float(one.std(ddof=1) * np.sqrt(ANNUAL))
+    spliced_vol = float(r.std(ddof=1) * np.sqrt(ANNUAL))
+    return {"switch_date": p["switch_date"], "split_date": p["split_date"],
+            "step_pct": 100.0 * step,
+            "split_day_ret_pct": 100.0 * float(r.loc[p["split_date"]]),
+            "one_convention_ann_vol": one_vol, "spliced_ann_vol": spliced_vol,
+            "vol_inflation": spliced_vol / one_vol,
+            "n_beyond_10_sigma": int((r.abs() / r.std(ddof=1) > 10).sum())}
+
+
+def refuse_adjustment_mismatch(left_convention: str, right_convention: str) -> None:
+    """The refusal: two conventions is not a disagreement to resolve."""
+    if left_convention != right_convention:
+        raise ValueError(
+            f"declared adjustment differs ({left_convention} vs {right_convention}); these "
+            f"are not two measurements of one quantity. Re-adjust to ONE convention first "
+            f"(the actions table is what makes that checkable) and merge afterwards.")
+
+
+# ----------------------------------------------------- 3. the identifier that moved
+HANDOVER = 1260                   # session index where the ticker is reassigned
+
+
+def recycled_ticker(seed: int = SEED) -> dict:
+    """Ticker 'XYZ' is issuer E1 until it delists, then a different issuer entirely."""
+    rng = np.random.default_rng(seed + 2)
+    idx = pd.bdate_range(START, periods=N_SESSIONS)
+    e1 = pd.Series(40.0 * np.exp(np.cumsum(rng.normal(0.0, DAILY_VOL, HANDOVER))),
+                   index=idx[:HANDOVER])
+    e2 = pd.Series(6.0 * np.exp(np.cumsum(rng.normal(0.0004, DAILY_VOL,
+                                                     N_SESSIONS - HANDOVER))),
+                   index=idx[HANDOVER:])
+    glued = pd.concat([e1, e2])                # what a join on the TICKER produces
+    return {"E1": e1, "E2": e2, "glued": glued, "handover": idx[HANDOVER]}
+
+
+def momentum_sharpe(prices: pd.Series, lookback: int = 60) -> float:
+    r = prices.pct_change()
+    pos = np.sign(prices.pct_change(lookback))
+    pnl = (pos.shift(1) * r).dropna()
+    sd = float(pnl.std(ddof=1))
+    return float(pnl.mean() / sd * np.sqrt(ANNUAL)) if sd else 0.0
+
+
+def measure_symbology(seed: int = SEED) -> dict:
+    s = recycled_ticker(seed)
+    r = s["glued"].pct_change()
+    step = float(r.loc[s["handover"]])
+    e1_vol = float(s["E1"].pct_change().std(ddof=1) * np.sqrt(ANNUAL))
+    glued_vol = float(r.std(ddof=1) * np.sqrt(ANNUAL))
+    return {"handover": s["handover"], "n_e1": len(s["E1"]), "n_e2": len(s["E2"]),
+            "step_pct": 100.0 * step, "e1_ann_vol": e1_vol, "glued_ann_vol": glued_vol,
+            "vol_inflation": glued_vol / e1_vol,
+            "n_beyond_10_sigma": int((r.abs() / r.std(ddof=1) > 10).sum()),
+            "momentum_sharpe_glued": momentum_sharpe(s["glued"]),
+            "momentum_sharpe_e1": momentum_sharpe(s["E1"]),
+            "momentum_sharpe_e2": momentum_sharpe(s["E2"])}
+
+
+def refuse_unresolved_symbology(scheme: str) -> None:
+    """The refusal: a ticker is not an entity."""
+    if scheme == "ticker":
+        raise ValueError(
+            "symbology is unresolved: a ticker is a slot in an exchange's namespace, not "
+            "an entity. It is reassigned after a delisting and it changes on a rename, so "
+            "merging on it merges whatever each vendor meant by it on each date. Resolve "
+            "to a permanent id (cik, figi, permno, isin) first.")
+
+
+# ---------------------------------------------------------------------------- report
+def measure(seed: int = SEED) -> dict:
+    return {"merge": measure_merge(seed), "adjustment": measure_adjustment(seed),
+            "symbology": measure_symbology(seed)}
+
+
+def _print_report(m: dict) -> None:
+    g = m["merge"]
+    print("=" * 78)
+    print("1. THE SILENT PICK - what combine_first decides for you")
+    print("=" * 78)
+    print(f"seed {SEED}; {g['n_sessions']} sessions, one true price series, two vendors:")
+    print(f"  A (declared primary) : {g['n_gaps']} missing sessions - a hole is honest")
+    print(f"  B (fallback)         : {g['n_stale']} stale repeats + "
+          f"{g['n_bad_print']} bad prints - present and WRONG")
+    print()
+    print(f"  both vendors printed : {g['n_overlap']} sessions")
+    print(f"  they disagree >{TOL_BPS:.0f} bps: {g['n_disagreements']} sessions "
+          f"({g['disagreement_pct']:.1f}% of the overlap), median "
+          f"{g['median_spread_bps']:,.0f} bps, max {g['max_spread_bps']:,.0f} bps")
+    print(f"  records combine_first keeps: {g['n_records_kept_by_combine_first']}")
+    print()
+    print(f"MEASURED: b.combine_first(a) - the order you type when B has the better "
+          f"coverage -")
+    print(f"          silently takes B's number on all {g['n_naive_differs']} of those "
+          f"sessions, overriding the")
+    print(f"          declared ranking, and lands more than {TOL_BPS:.0f} bps from the "
+          f"truth on {g['n_naive_wrong']} of {g['n_sessions']}")
+    print(f"          sessions ({g['naive_wrong_pct']:.1f}%). Nothing raises, and there "
+          f"is no record to read afterwards.")
+    print(f"MEASURED: a.combine_first(b) - the RIGHT order - returns the same numbers as "
+          f"the precedence")
+    print(f"          merge ({g['same_numbers_as_a_first']}), and is still wrong on "
+          f"{g['n_gapfill_wrong']} sessions where A had a hole and B")
+    print(f"          filled it badly. The difference between the two is not the numbers: "
+          f"it is that one")
+    print(f"          of them can tell you it made {g['n_disagreements']} choices and the "
+          f"other cannot.")
+    print()
+    print(f"  {'series':<32} {'ann vol':>8} {'max |ret|':>11} {'>10 sig':>8} "
+          f"{'autocorr(1)':>12} {'reversal SR':>12}")
+    print("  " + "-" * 88)
+    for key in ("truth", "A>B merged == a.combine_first", "naive b.combine_first(a)"):
+        s = g["stats"][key]
+        print(f"  {s['label']:<32} {s['ann_vol']:>7.1%} {s['max_abs_ret_bps']:>10,.0f}b "
+              f"{s['n_beyond_10_sigma']:>8} {s['autocorr_1']:>12.3f} "
+              f"{s['reversal_sharpe']:>12.2f}")
+    naive, truth = g["stats"]["naive b.combine_first(a)"], g["stats"]["truth"]
+    print()
+    print(f"MEASURED: the naive series' lag-1 autocorrelation is "
+          f"{naive['autocorr_1']:+.3f} against {truth['autocorr_1']:+.3f} on the truth - "
+          f"a bad print")
+    print(f"          and its snap-back IS negative autocorrelation, which is exactly what "
+          f"a mean-reversion")
+    print(f"          signal is built to find. The same series hands a one-day reversal "
+          f"rule a Sharpe of")
+    print(f"          {naive['reversal_sharpe']:.2f} against "
+          f"{truth['reversal_sharpe']:.2f}, on {naive['n_beyond_10_sigma']} returns beyond "
+          f"10 sigma and {naive['ann_vol']:.1%} annualised vol against "
+          f"{truth['ann_vol']:.1%}:")
+    print(f"          nothing an outlier filter or a vol check would ever flag.")
+
+    a = m["adjustment"]
+    print()
+    print("=" * 78)
+    print("2. THE MISMATCHED ADJUSTMENT - a convention is not a disagreement")
+    print("=" * 78)
+    print(f"vendor A: raw quotes, full history. vendor B: split-adjusted, history begins "
+          f"{a['switch_date'].date()}.")
+    print(f"A real 2-for-1 split falls on {a['split_date'].date()}; combine_first splices "
+          f"the two at the switch.")
+    print(f"MEASURED: one day's return of {a['step_pct']:+.1f}% on "
+          f"{a['switch_date'].date()} - the entire split factor, on a day nothing "
+          f"happened,")
+    print(f"          and {a['split_day_ret_pct']:+.1f}% on {a['split_date'].date()}, "
+          f"the day the split actually did. The jump is in the wrong place.")
+    print(f"MEASURED: annualised vol {a['one_convention_ann_vol']:.1%} on either vendor's "
+          f"own convention -> {a['spliced_ann_vol']:.1%} spliced "
+          f"({a['vol_inflation']:.2f}x),")
+    print(f"          with {a['n_beyond_10_sigma']} session(s) beyond 10 sigma.")
+    try:
+        refuse_adjustment_mismatch("raw", "anchored_present")
+    except ValueError as exc:
+        print(f"REFUSED : {exc}")
+
+    s = m["symbology"]
+    print()
+    print("=" * 78)
+    print("3. THE IDENTIFIER THAT CHANGED ENTITY - a ticker is not a company")
+    print("=" * 78)
+    print(f"ticker XYZ is issuer E1 for {s['n_e1']} sessions (about $40), delists, and is "
+          f"reassigned")
+    print(f"to issuer E2 (about $6) on {s['handover'].date()} for {s['n_e2']} more.")
+    print(f"MEASURED: joining on the ticker puts a {s['step_pct']:+.1f}% one-day return on "
+          f"{s['handover'].date()}.")
+    print(f"MEASURED: annualised vol {s['e1_ann_vol']:.1%} (E1 alone) -> "
+          f"{s['glued_ann_vol']:.1%} glued ({s['vol_inflation']:.2f}x), "
+          f"{s['n_beyond_10_sigma']} session beyond 10 sigma.")
+    print(f"MEASURED: a 60-day momentum rule scores "
+          f"{s['momentum_sharpe_glued']:.2f} on the glued series against "
+          f"{s['momentum_sharpe_e1']:.2f} on E1 and "
+          f"{s['momentum_sharpe_e2']:.2f} on E2.")
+    try:
+        refuse_unresolved_symbology("ticker")
+    except ValueError as exc:
+        print(f"REFUSED : {exc}")
+    print()
+    print("=" * 78)
+    print("RULE: merge by a DECLARED ranking and record every pick - refuse outright when "
+          "the conventions differ or the identifier has not been resolved to an entity.")
+    print("=" * 78)
+
+
+if __name__ == "__main__":
+    _print_report(measure())
