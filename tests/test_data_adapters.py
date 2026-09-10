@@ -261,6 +261,46 @@ def test_those_four_declare_the_unpublished_shape(adapter):
     assert "no vendor number" in lim.describe()
 
 
+def _shape_literals(tree: ast.Module) -> list[float]:
+    """Every number passed to a rate-shape constructor at any depth."""
+    out: list[float] = []
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call) and getattr(node.func, "id", "")
+                in _SHAPE_NAMES):
+            continue
+        args = list(node.args) + [k.value for k in node.keywords]
+        out += [a.value for a in args
+                if isinstance(a, ast.Constant) and isinstance(a.value, (int, float))]
+    return out
+
+
+@pytest.mark.parametrize("adapter,module", [("tiingo", "tiingo.py"),
+                                            ("alphavantage", "alphavantage.py"),
+                                            ("stooq", "stooq.py")])
+def test_none_of_the_three_new_adapters_invents_a_rate_number(adapter, module):
+    """The rule the older three are held to, applied to the newer three.
+
+    stooq's vendor publishes nothing, so it declares Unpublished() with no argument and
+    carries no rate constant at all. Tiingo and Alpha Vantage DO publish numbers, so the
+    test is the other half of the same rule: every literal the limiter is built from must
+    also appear in the Declaration's `free_tier`, which is the dated quote from the page
+    it was read off. A number that is in the code and not in the prose is invented."""
+    tree = _tree(module)
+    assert _rate_constants(tree) == [], f"{module} binds a rate number to a module name"
+    d = declare.lookup(adapter)
+    shapes = _shape_calls(tree)
+    if not shapes:
+        assert isinstance(d.rate_limit, Unpublished)
+        assert d.rate_limit.courtesy_per_s is None, "the pace is the caller's"
+        assert "no rate limit is published" in d.free_tier.lower()
+        return
+    prose = d.free_tier.replace(",", "").replace("_", "")
+    for value in _shape_literals(tree):
+        quoted = (f"{value:g}" in prose                       # 50, 1000, 500, 25
+                  or f"{value / 1e9:g} GB" in prose)          # 1 GB/month
+        assert quoted, f"{module}: {value:g} is in the limiter and not in the free_tier"
+
+
 def test_the_detector_finds_a_real_rate_constant_where_one_belongs():
     """A positive control: edgar.py DOES carry a number, so the scan above can fail."""
     tree = _tree("edgar.py")
@@ -332,11 +372,35 @@ def test_a_credential_can_only_come_from_the_declared_environment_variable(monke
     assert "0123456789abcdef0123456789abcdef" not in repr(vars(adapter))
 
 
-def test_an_adapter_refuses_a_credential_passed_as_an_argument():
+@pytest.mark.parametrize("adapter", ["fred", "tiingo", "alphavantage"])
+def test_an_adapter_refuses_a_credential_passed_as_an_argument(adapter):
     for kw in ({"api_key": "x"}, {"token": "x"}, {"password": "x"}, {"secret": "x"}):
         with pytest.raises(TypeError, match="cannot be passed"):
-            get("fred", **kw)
-    assert declare.credential(declare.lookup("yfinance")) is None
+            get(adapter, **kw)
+    for keyless in ("yfinance", "stooq", "ccxt"):
+        assert declare.credential(declare.lookup(keyless)) is None
+
+
+@pytest.mark.parametrize("adapter", ["tiingo", "alphavantage"])
+def test_the_new_keyed_adapters_read_the_environment_and_keep_nothing(adapter, monkeypatch):
+    """The same property the FRED adapter is held to: the key comes from the environment
+    variable the Declaration names, at the moment it is used, and does not end up on the
+    adapter object, in a repr, or in a request. Both vendors' own clients read the same
+    variable themselves, so these adapters call credential() only to produce THIS
+    library's error message when it is unset."""
+    d = declare.lookup(adapter)
+    assert d.requires_key and d.key_sharing == "byok-required"
+    monkeypatch.delenv(d.key_env_var, raising=False)
+    with pytest.raises(RuntimeError, match=d.key_env_var):
+        declare.credential(d)
+
+    secret = "ABCDEFGH12345678"
+    monkeypatch.setenv(d.key_env_var, secret)
+    assert declare.credential(d) == secret
+    a = get(adapter)
+    assert secret not in repr(vars(a)) and secret not in repr(a)
+    # and the client the adapter constructs is never held on it either
+    assert not any("key" in str(k).lower() for k in vars(a))
 
 
 def test_a_declaration_cannot_hold_a_key():
