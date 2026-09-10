@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**103 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**104 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 79 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 80 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -170,6 +170,7 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-core` | [`market-data-sourcing`](plugins/fin-core/skills/market-data-sourcing/SKILL.md) | Choose a market price or reference data vendor and use it without silently corrupting the numbers. | 11 | 1 |
 | `fin-core` | [`options-backtesting`](plugins/fin-core/skills/options-backtesting/SKILL.md) | Options positions end in ways you do not control - live or in a backtest: assignment, expiry settlement, pin risk, multi-leg lifecycle, historical chain assembly, and the margin th | 3 | 1 |
 | `fin-core` | [`portfolio-and-risk`](plugins/fin-core/skills/portfolio-and-risk/SKILL.md) | Turn signals into weights, and compute performance metrics that are actually correct. | 9 | 1 |
+| `fin-core` | [`pre-trade-checks`](plugins/fin-core/skills/pre-trade-checks/SKILL.md) | Check a proposed order before a human sends it - this skill checks orders and never sends one. | 0 | 1 |
 | `fin-core` | [`quant-stack-router`](plugins/fin-core/skills/quant-stack-router/SKILL.md) | Entry router for Python quantitative finance: names the right library and flags where the model's training prior is stale. | 0 | 0 |
 | `fin-core` | [`regime-detection`](plugins/fin-core/skills/regime-detection/SKILL.md) | Detect and label market regimes without letting the labels see the future, and state regime coverage in the form the result gate demands. | 0 | 3 |
 | `fin-core` | [`research-integrity-guards`](plugins/fin-core/skills/research-integrity-guards/SKILL.md) | Second-pass audit that decides whether a finance result is real, applied after the work exists. | 2 | 3 |

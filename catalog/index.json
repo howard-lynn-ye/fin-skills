@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 103,
+  "n_skills": 104,
   "n_reference_files": 74,
-  "n_scripts": 87,
+  "n_scripts": 88,
   "discovery_cost": {
-    "total_description_chars": 92142,
-    "approx_tokens": 23035,
+    "total_description_chars": 93160,
+    "approx_tokens": 23290,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -365,6 +365,22 @@
       ],
       "scripts": [
         "brinson_attribution.py"
+      ]
+    },
+    {
+      "name": "pre-trade-checks",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/pre-trade-checks/SKILL.md",
+      "description": "Check a proposed order before a human sends it - this skill checks orders and never sends one. Fat finger, participation, session and auction windows, duplicate and replay, exposure limits, and a kill switch that fails everything closed. TRIGGER - pre-trade risk checks, fat finger, sanity-check an order before sending, \"did I type an extra zero\", notional cap, max order size, size against ADV, participation cap, price through the market, limit far from the last trade, duplicate client order id, idempotency, retry loop resending orders, kill switch, is the venue open, opening or closing auction, half day early close, gross net per-name or sector exposure limit, reconciling a position with the broker, SEC Rule 15c3-5, erroneous order controls. SKIP for connecting to a broker and proving the session is paper (broker-execution-apis), for measuring fills you already have (execution-cost-analysis), for the schedule that works an order (execution-algorithms), and for A-share price limits (china-trading-stack).",
+      "summary": "Check a proposed order before a human sends it - this skill checks orders and never sends one.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 17802,
+      "approx_body_tokens": 4450,
+      "references": [],
+      "scripts": [
+        "pre_trade.py"
       ]
     },
     {
