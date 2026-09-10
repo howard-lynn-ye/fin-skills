@@ -12,7 +12,7 @@
     {
       "name": "fin-core",
       "source": "./plugins/fin-core",
-      "description": "US/global quant stack: market data sourcing and engineering, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest.",
+      "description": "US/global quant stack: market backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest. Data sourcing, vendor licensing and point-in-time joins moved to fin-market-data; install it alongside for anything that touches data.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
@@ -24,6 +24,7 @@
         "python"
       ],
       "skills": [
+        "./skills/backtest-overfitting",
         "./skills/backtest-validation",
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
@@ -31,6 +32,7 @@
         "./skills/etf-mechanics",
         "./skills/execution-cost-analysis",
         "./skills/external-skill-index",
+        "./skills/multiple-testing-ledger",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
         "./skills/pre-trade-checks",
@@ -896,8 +898,8 @@
         "what_this_repo_verified": "licence, activity, and that real SKILL.md files with name/description frontmatter exist at the pinned sha on verified_on"
       },
       "skills": [
-        "./skills/trading-api",
-        "./skills/broker-api"
+        "./skills/broker-api",
+        "./skills/trading-api"
       ]
     },
     {

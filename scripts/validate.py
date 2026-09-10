@@ -253,7 +253,14 @@ def main() -> int:
             declared = False
             if mp_path.exists():
                 for p in json.loads(mp_path.read_text(encoding="utf-8")).get("plugins", []):
-                    if p["name"] == plugin_dir.name and "OPT-IN" in (p.get("description") or ""):
+                    # "Declared" means the entry STATES the cost. An opt-in plugin says so;
+                    # a default-installed one like fin-core cannot honestly claim to be
+                    # opt-in, so quoting its measured listing budget counts too. Either way
+                    # an accidental extra skill still fails until someone writes the cost
+                    # down and re-runs build_index.py for the figure.
+                    desc = p.get("description") or ""
+                    if p["name"] == plugin_dir.name and ("OPT-IN" in desc
+                                                         or "skill-listing budget" in desc):
                         declared = True
             msg = (f"{plugin_dir.name}: {n} skills exceeds the ~{SKILL_BUDGET_WARN}-skill discovery "
                    f"budget; descriptions will be silently dropped to name-only")

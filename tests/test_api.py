@@ -353,6 +353,27 @@ def build_regime_lookahead() -> dict:
             "defect": dict(regime=s, p_calm=probs["smoothed"], lo=TEST_START)}
 
 
+def build_research_audit() -> dict:
+    """Clean: 19 noise configurations and one real edge, over 4 years. Defect: all 20 noise.
+
+    S = 10 keeps CSCV to C(10,5) = 252 splits so the fixture stays fast; the guard's own
+    default is the source paper's S = 16.
+    """
+    t, n = 1008, 20
+    rng = np.random.default_rng(11)
+    noise = rng.normal(0.0, 0.01, (t, n))
+    real = noise.copy()
+    real[:, 0] += 3.0 * 0.01 / np.sqrt(252)             # true annualised Sharpe 3.0
+    common = dict(n_obs=t, periods_per_year=252, n_blocks=10)
+
+    def kw(panel: np.ndarray) -> dict:
+        sr = panel.mean(axis=0) / panel.std(axis=0, ddof=1)
+        return dict(best_sharpe=float(sr.max()), sharpes=list(map(float, sr)),
+                    model_returns=pd.DataFrame(panel), **common)
+
+    return {"clean": kw(real), "defect": kw(noise)}
+
+
 _BUILDERS: dict[str, Callable[[], dict]] = {
     k[len("build_"):]: v for k, v in dict(globals()).items() if k.startswith("build_")}
 

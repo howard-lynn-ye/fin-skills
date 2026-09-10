@@ -10,12 +10,14 @@ Module -> owning skill:
     greeks_convention            derivatives-pricing
     leveraged_reset              etf-mechanics
     option_lifecycle             options-backtesting
+    overfitting                  backtest-overfitting
     paper_account_guard          broker-execution-apis
     pit_universe                 research-integrity-guards
     pre_trade                    pre-trade-checks
     regime_coverage              regime-detection
     regime_lookahead             regime-detection
     regime_methods               regime-detection
+    research_history             multiple-testing-ledger
     result_manifest              research-integrity-guards
     spa_test                     backtest-validation
     survivorship_audit           research-integrity-guards
@@ -32,12 +34,14 @@ __all__ = [
     'greeks_convention',
     'leveraged_reset',
     'option_lifecycle',
+    'overfitting',
     'paper_account_guard',
     'pit_universe',
     'pre_trade',
     'regime_coverage',
     'regime_lookahead',
     'regime_methods',
+    'research_history',
     'result_manifest',
     'spa_test',
     'survivorship_audit',
