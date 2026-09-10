@@ -86,6 +86,33 @@ tests skip when the library is absent. Beyond the unit tests, verification is:
 `eval_triggers.py` is a bag-of-words proxy and degrades once two skills cover the same package.
 `eval_blind.py` is the ground truth. Do not tune descriptions to the proxy.
 
+## Verifying a claim at a primary source
+
+**A 403 is not evidence that the source is unreachable.** Several exchange and regulator sites
+refuse programmatic requests while serving a browser normally. Measured on 2026-09-10:
+`idx.co.id` returns 403 to WebFetch on every URL and full page text through the browser tools
+(`navigate` then `get_page_text`, in a tab you created yourself); `jpx.co.jp` returns 403 to both
+and its material had to be sourced from another exchange's equivalent notice, labelled
+secondhand; `cmegroup.com` returns 403 to all programmatic access. Try the browser before
+recording a fact as unverifiable, and say which route worked.
+
+**An official English translation can be years stale.** Japan's `japaneselawtranslation.go.jp`
+serves the 2011 text of the FIEA Enforcement Order and the 2008 text of the trading-restriction
+ordinance - both predate the November 2013 short-selling reform, so neither contains the rule
+that is actually in force. The current text is on `laws.e-gov.go.jp`. Prefer the national
+in-force database in its own language over a translation with an older version stamp.
+
+**Client-rendered pages need a wait.** Press-release pages on several exchange sites return an
+empty shell to an immediate read; wait a few seconds after navigating before extracting text.
+
+**"Everyone knows" is where the errors are.** Three market verifications on 2026-09-10 each
+overturned facts that circulate widely: Indonesia restored symmetric auto-rejection in September
+2023 and reverted to an asymmetric 15% floor in April 2025, so the commonly-cited "symmetry was
+restored" is 17 months out of date; the Philippines' static threshold is +50%/-30%, not
+symmetric, and its dynamic threshold is tiered 20/15/10 by trade frequency rather than a flat
+figure; Japan's 10% short-sale trigger is measured against an exchange base price derived from
+the previous close, not the close itself. Date every rule and name the decree.
+
 ## Conventions
 
 - Lines wrap at about 98 columns
