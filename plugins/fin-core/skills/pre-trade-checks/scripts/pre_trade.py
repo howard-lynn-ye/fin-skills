@@ -1,0 +1,1155 @@
+#!/usr/bin/env python3
+"""Checks that run BEFORE a human transmits an instruction to trade. It never transmits one.
+
+READ-ONLY BY CONSTRUCTION, the same way `fin_skills.bridges.execution` is. That module
+ingests what already happened; this one inspects what has only been PROPOSED. Neither can
+build, sign, transmit, change or withdraw an instruction, and neither names a callable that
+could: `tests/test_bridges_execution.py` greps BOTH files for the trading method names of
+ccxt, ib_async and alpaca-py in three normalisations, and poisons each source in turn to
+prove the grep can still fail. Every function here takes a proposal and returns a verdict.
+
+WHY a verdict object and not an exception: a check that raises tells you about the first
+thing wrong and hides the rest. Before a human presses send they want the whole list, and
+they want the facts that produced it, so `check_order` returns an `OrderVerdict` carrying
+every `Finding` plus one `allowed` boolean.
+
+THE POSTURE, and it is the only interesting design decision in this file:
+
+    `allowed` is False when a required fact is ABSENT, not only when a check fails.
+
+An unknown ADV is not a pass. A calendar that was never declared is not a pass. A broker
+position nobody read back is not a pass. Absence is the state a pre-trade system is in
+right before it lets through the thing everyone later agrees should have been stopped, so
+absence gets the same verdict as a breach and says which fact was missing.
+
+WHAT THE LAW ASKS FOR (17 CFR 240.15c3-5(c)(1)(ii), the Market Access Rule, source credit
+[75 FR 69825, Nov. 15, 2010]): controls reasonably designed to
+
+    "Prevent the entry of erroneous orders, by rejecting orders that exceed appropriate
+     price or size parameters, on an order-by-order basis or over a short period of time,
+     or that indicate duplicative orders."
+
+Four requirements in one sentence - price parameters, size parameters, a short-period
+burst, and duplicates - and they are `check_fat_finger`, `check_participation` and
+`check_duplicate` below. Paragraph (c)(1)(i) adds thresholds "more finely-tuned by sector,
+security, or otherwise", which is `check_exposure`.
+
+WHAT IT DOES NOT DO: connect to anything, prove an account is paper (that is
+`paper_account_guard` in broker-execution-apis, and it must pass first), price impact from
+scratch (that is `cost_plausibility` in execution-cost-analysis, imported below and never
+reimplemented), or decide the schedule (execution-algorithms).
+
+Usage:
+    from pre_trade import ProposedOrder, TradingState, Caps, check_order
+    v = check_order(ProposedOrder("AAPL", "buy", 10_000, 190.0, "cid-1", ts), state)
+    print(v.render())
+    if v.allowed: ...   # a human still presses send; this file has no way to
+"""
+from __future__ import annotations
+
+import datetime as dt
+import sys
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Iterable, Mapping, Sequence
+
+import numpy as np
+import pandas as pd
+
+# The cost consequence of a participation rate belongs to execution-cost-analysis and is
+# imported, never re-derived: two implementations of Almgren et al. (2005) in one repo is
+# two numbers that disagree by a coefficient nobody re-reads.
+try:                                                  # inside fin_skills.core
+    from .cost_plausibility import MAX_PARTICIPATION, impact_bps
+except ImportError:                                   # run as a script from this scripts/
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]
+                           / "execution-cost-analysis" / "scripts"))
+    from cost_plausibility import MAX_PARTICIPATION, impact_bps
+
+CHECKS: tuple[str, ...] = ("kill_switch", "session", "fat_finger", "participation",
+                           "duplicate", "exposure")
+SEVERITIES: tuple[str, ...] = ("block", "warn", "info")
+SIDES: tuple[str, ...] = ("buy", "sell")
+
+
+# ------------------------------------------------------------------ the declared clock
+@dataclass(frozen=True)
+class VenueHours:
+    """One venue's intraday clock, DECLARED. There is no default and none is computed.
+
+    The reason is the one `market-data-sourcing` documents for the calendar itself:
+    `exchange_calendars` derives GLOBAL_DEFAULT_START / GLOBAL_DEFAULT_END from
+    `pd.Timestamp.now()` at IMPORT, so anything built from its defaults answers a
+    different question tomorrow. A pre-trade check that silently re-dates itself
+    overnight is worse than no check. Nothing in this file reads a wall clock.
+    """
+
+    name: str
+    tz: str
+    continuous_open: dt.time
+    continuous_close: dt.time
+    opening_auction: tuple[dt.time, dt.time]
+    closing_auction: tuple[dt.time, dt.time]
+    half_day_close: dt.time | None = None
+    lunch: tuple[dt.time, dt.time] | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.tz, str) or not self.tz:
+            raise ValueError("VenueHours.tz has no default: declare the venue-local zone")
+        if self.continuous_open >= self.continuous_close:
+            raise ValueError("continuous_open must be before continuous_close")
+
+
+#: NYSE. Verified 2026-09-10 at nyse.com "Holidays & Trading Hours": core trading session
+#: 9:30 a.m. - 4:00 p.m. ET; Core Open Auction at 9:30 a.m. ET; Closing Auction at 4:00
+#: p.m. ET with a Closing Imbalance Period 3:50 - 4:00 p.m. ET; early closes at 1:00 p.m.
+#: ET (2026: Jul 3, Nov 27, Dec 24). The 9:30-9:31 opening window is THIS FILE'S
+#: representation of "the opening print", not a venue-published range - NYSE publishes the
+#: auction time, not a window - and it is stated here so it can be argued with.
+NYSE_HOURS = VenueHours(
+    name="NYSE", tz="America/New_York",
+    continuous_open=dt.time(9, 30), continuous_close=dt.time(16, 0),
+    opening_auction=(dt.time(9, 30), dt.time(9, 31)),
+    closing_auction=(dt.time(15, 50), dt.time(16, 0)),
+    half_day_close=dt.time(13, 0))
+
+#: SSE / SZSE. Secondhand: taken from this repo's own china-trading-stack reference
+#: (`../../../fin-china/skills/china-trading-stack/references/_ashare-rules.md`), not
+#: re-read at the exchange on 2026-09-10. Opening call auction 09:15-09:25, continuous
+#: 09:30-11:30 and 13:00-14:57, closing call auction 14:57-15:00, no DST.
+SSE_HOURS = VenueHours(
+    name="SSE", tz="Asia/Shanghai",
+    continuous_open=dt.time(9, 30), continuous_close=dt.time(15, 0),
+    opening_auction=(dt.time(9, 15), dt.time(9, 25)),
+    closing_auction=(dt.time(14, 57), dt.time(15, 0)),
+    lunch=(dt.time(11, 30), dt.time(13, 0)))
+
+VENUE_HOURS: dict[str, VenueHours] = {"NYSE": NYSE_HOURS, "SSE": SSE_HOURS}
+
+#: Limit Up-Limit Down Plan percentage parameters, read 2026-09-10 at luldplan.com: Tier 1
+#: above $3.00 is 5%, $0.75-$3.00 is 20%, below $0.75 is the lesser of $0.15 or 75%; Tier 2
+#: above $3.00 is 10%; the bands double in the last 25 minutes of the session for all Tier
+#: 1 names and for Tier 2 names below $3.00. The band is why a 10% price-through threshold
+#: is not arbitrary: in a Tier 1 name during the middle of the day a ticket 10% through the
+#: last trade is outside a band that is 5% wide, so it could not print even if it were
+#: meant. Secondhand and NOT applied here: LULD Amendment 18 is reported to remove the
+#: 9:30-9:45 doubling; this file does not model the opening doubling at all.
+LULD_TIER1_BAND = {"above_3": 0.05, "0.75_to_3": 0.20}
+LULD_TIER2_BAND = {"above_3": 0.10}
+
+
+# --------------------------------------------------------------------------- the switch
+@dataclass(frozen=True)
+class KillSwitch:
+    """One boolean and a reason string. Deliberately nothing else.
+
+    Cleverness here is a liability: whoever reads this at 09:31 with money on the line
+    needs to know in one glance whether it is on and why. No timers, no auto-reset, no
+    severity ladder, no partial trip. `tripped` is the whole interface.
+    """
+
+    tripped: bool = False
+    reason: str = ""
+
+    def __post_init__(self) -> None:
+        if self.tripped and not str(self.reason).strip():
+            raise ValueError("a tripped kill switch must carry a reason string: the point "
+                             "of it is that a person can read why in one line")
+
+    def __str__(self) -> str:
+        return f"TRIPPED: {self.reason}" if self.tripped else "not tripped"
+
+
+def trip_if(*, cum_loss: float | None = None, max_loss: float | None = None,
+            error_rate: float | None = None, max_error_rate: float | None = None,
+            connected: bool | None = None) -> KillSwitch:
+    """Evaluate the STATED conditions once and return the switch. Pure; reads no clock.
+
+    Conditions are checked in the order a desk would want them read back: money first,
+    then the error rate that says the stack is confused, then the link. A condition whose
+    threshold was not stated is not evaluated, and not-evaluated is reported by the caller
+    as an absent fact rather than silently treated as fine.
+    """
+    if cum_loss is not None and max_loss is not None and float(cum_loss) <= -abs(float(max_loss)):
+        return KillSwitch(True, f"cumulative loss {float(cum_loss):,.2f} breached the stated "
+                                f"limit of {-abs(float(max_loss)):,.2f}")
+    if (error_rate is not None and max_error_rate is not None
+            and float(error_rate) > float(max_error_rate)):
+        return KillSwitch(True, f"error rate {float(error_rate):.1%} is above the stated "
+                                f"ceiling of {float(max_error_rate):.1%}")
+    if connected is False:
+        return KillSwitch(True, "the venue link is down; nothing can be reconciled while it is")
+    return KillSwitch(False, "")
+
+
+# ---------------------------------------------------------------------- the proposal
+@dataclass(frozen=True)
+class ProposedOrder:
+    """An instruction that has NOT been transmitted and that this library cannot transmit.
+
+    `limit_price=None` means no price on the ticket. That is a fact, not a default: an
+    unpriced instruction is how a fat finger reaches a fill, so the price checks say
+    plainly that they could not run rather than passing.
+    """
+
+    symbol: str
+    side: str
+    qty: float
+    limit_price: float | None
+    client_order_id: str
+    ts: pd.Timestamp
+    sector: str = ""
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.symbol, str) or not self.symbol.strip():
+            raise ValueError("symbol must be a non-empty str")
+        if self.side not in SIDES:
+            raise ValueError(f"side must be one of {SIDES}, got {self.side!r}")
+        if not np.isfinite(float(self.qty)) or float(self.qty) <= 0:
+            raise ValueError("qty must be finite and positive; direction lives in `side`")
+        if self.limit_price is not None:
+            px = float(self.limit_price)
+            if not np.isfinite(px) or px <= 0:
+                raise ValueError("limit_price must be finite and positive, or None")
+        if not isinstance(self.client_order_id, str) or not self.client_order_id.strip():
+            raise ValueError("client_order_id must be a non-empty str: the duplicate check "
+                             "has nothing to compare without one")
+        ts = pd.Timestamp(self.ts)
+        if ts.tzinfo is None:
+            raise ValueError("ts must be tz-aware. A naive timestamp is the bug this check "
+                             "exists to catch, not an input it accepts")
+        object.__setattr__(self, "ts", ts)
+        object.__setattr__(self, "qty", float(self.qty))
+
+    @property
+    def signed_qty(self) -> float:
+        return self.qty if self.side == "buy" else -self.qty
+
+
+@dataclass(frozen=True)
+class Caps:
+    """The thresholds, all STATED. `None` means not stated, and not stated is not a pass.
+
+    There is no defensible default for any of these - they are a function of the book, the
+    venue and the desk's tolerance - so this class refuses to invent one. `EXAMPLE_CAPS`
+    below is one filled-in set with the provenance of every number, for the demo and for
+    something to copy and argue with.
+    """
+
+    max_notional: float | None = None            # per instruction, account currency
+    max_book_fraction: float | None = None       # notional / equity
+    max_adv_multiple: float | None = None        # qty / ADV in shares
+    max_price_through: float | None = None       # |price/last - 1|
+    max_participation: float | None = None       # notional / ADV in currency
+    gross_cap: float | None = None               # sum |position| / equity
+    net_cap: float | None = None                 # |sum position| / equity
+    name_cap: float | None = None                # per-name |exposure| / equity
+    sector_caps: Mapping[str, float] | None = None
+    burst_window_s: float | None = None
+    burst_max: int | None = None
+    burst_qty_tol: float = 0.01                  # "near-identical" quantity tolerance
+    reconcile_tol: float = 0.0                   # shares of disagreement tolerated
+    pov_cap: float | None = None                 # participation of volume the schedule uses
+
+
+#: One filled-in set. Every number has a stated provenance and none of them is a default:
+#:   max_price_through 0.10  - twice the 5% LULD Tier 1 band (luldplan.com, 2026-09-10),
+#:                             so a ticket that trips it could not have printed anyway
+#:   max_participation 0.10  - MAX_PARTICIPATION from cost_plausibility, the ADV fraction
+#:                             above which that module says no cost is credible
+#:   max_adv_multiple  0.25  - a desk rule of thumb, NOT a source; argue with it
+#:   the rest               - illustrative for a 10,000,000 book
+EXAMPLE_CAPS = Caps(
+    max_notional=750_000.0, max_book_fraction=0.075, max_adv_multiple=0.25,
+    max_price_through=0.10, max_participation=MAX_PARTICIPATION,
+    gross_cap=1.50, net_cap=0.60, name_cap=0.12,
+    sector_caps={"tech": 0.35, "energy": 0.25, "health": 0.25, "financials": 0.30},
+    burst_window_s=30.0, burst_max=3, burst_qty_tol=0.01, reconcile_tol=0.0,
+    pov_cap=0.10)
+
+
+@dataclass(frozen=True)
+class TradingState:
+    """Every fact the checks need, ASSEMBLED by the caller. `None` is ABSENT, not benign.
+
+    The shape is the argument: an agent cannot reach a green light by calling one function
+    with one number. It has to have read a calendar, an ADV, a last trade, its own book,
+    the broker's book, and the caps somebody signed off on - and if it has not, the verdict
+    names the fact it is missing instead of passing.
+
+    `broker_positions` is the read-only reconciliation link: it is exactly the `symbol` /
+    `qty` content of `fin_skills.bridges.execution.read_execution(...).positions`, and
+    `broker_positions_from()` below converts that frame. Nothing here calls that bridge -
+    the caller reads, then hands the result over.
+    """
+
+    now: pd.Timestamp | None = None              # the DECLARED evaluation time
+    sessions: Any = None                         # fin_skills.engine.spec.Sessions, declared
+    venue: VenueHours | None = None
+    last_trade: Mapping[str, float] | None = None
+    day_low: Mapping[str, float] | None = None
+    day_high: Mapping[str, float] | None = None
+    adv_shares: Mapping[str, float] | None = None
+    marks: Mapping[str, float] | None = None
+    positions: Mapping[str, float] | None = None
+    broker_positions: Mapping[str, float] | None = None
+    sectors: Mapping[str, str] | None = None
+    equity: float | None = None
+    already_sent: pd.DataFrame | None = None     # what has ALREADY gone out, read back
+    daily_vol: Mapping[str, float] | None = None
+    caps: Caps = Caps()
+    kill: KillSwitch = KillSwitch()
+
+    def fact(self, name: str, symbol: str | None = None) -> Any:
+        """One fact, or None when it is absent. Never raises; absence is the answer."""
+        got = getattr(self, name, None)
+        if got is None or symbol is None:
+            return got
+        try:
+            v = got[symbol]
+        except (KeyError, IndexError, TypeError):
+            return None
+        return None if v is None or (isinstance(v, float) and not np.isfinite(v)) else v
+
+
+SENT_COLUMNS: tuple[str, ...] = ("ts", "client_order_id", "symbol", "side", "qty",
+                                 "limit_price")
+
+
+def empty_blotter() -> pd.DataFrame:
+    """An EMPTY blotter, which is a fact ("nothing has gone out yet"). `None` is not."""
+    return pd.DataFrame({c: pd.Series(dtype="object") for c in SENT_COLUMNS})
+
+
+def broker_positions_from(frame: pd.DataFrame) -> dict[str, float]:
+    """`ExecutionRecord.positions` -> {symbol: qty}. A read of a read; sends nothing."""
+    if not isinstance(frame, pd.DataFrame):
+        raise TypeError("frame must be the positions DataFrame the execution bridge returns")
+    for col in ("symbol", "qty"):
+        if col not in frame.columns:
+            raise TypeError(f"positions frame is missing column {col!r}; has "
+                            f"{list(frame.columns)[:8]}")
+    out: dict[str, float] = {}
+    for sym, qty in zip(frame["symbol"], frame["qty"]):
+        out[str(sym)] = out.get(str(sym), 0.0) + float(qty)
+    return out
+
+
+# ------------------------------------------------------------------------- the verdict
+@dataclass(frozen=True)
+class Finding:
+    """One thing a check noticed. `block` clears `allowed`; `warn` and `info` do not."""
+
+    check: str
+    severity: str
+    code: str
+    message: str
+    evidence: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.severity not in SEVERITIES:
+            raise ValueError(f"severity must be one of {SEVERITIES}, got {self.severity!r}")
+
+    def __str__(self) -> str:
+        return f"{self.severity.upper():<5} {self.check}/{self.code}: {self.message}"
+
+
+@dataclass(frozen=True)
+class OrderVerdict:
+    """Findings plus one boolean. `allowed` is False if anything blocked OR was missing."""
+
+    allowed: bool
+    findings: tuple[Finding, ...]
+    missing: tuple[str, ...]
+    checks: tuple[str, ...]
+
+    @property
+    def blocks(self) -> tuple[Finding, ...]:
+        return tuple(f for f in self.findings if f.severity == "block")
+
+    @property
+    def warns(self) -> tuple[Finding, ...]:
+        return tuple(f for f in self.findings if f.severity == "warn")
+
+    @property
+    def codes(self) -> tuple[str, ...]:
+        return tuple(f.code for f in self.findings)
+
+    def render(self, title: str = "PRE-TRADE VERDICT") -> str:
+        w = 78
+        head = "ALLOWED" if self.allowed else "BLOCKED"
+        lines = [title, "=" * w, f"  {head}   checks run: {', '.join(self.checks)}"]
+        if self.missing:
+            lines.append(f"  facts ABSENT: {', '.join(self.missing)}")
+        lines.append("-" * w)
+        for f in self.findings:
+            lines.append("  " + str(f))
+        if not self.findings:
+            lines.append("  (no findings)")
+        lines.append("=" * w)
+        return "\n".join(lines)
+
+    def __str__(self) -> str:
+        return self.render()
+
+
+def _absent(check: str, fact: str, why: str) -> Finding:
+    """The finding that makes absence fail. Same weight as a breach, by design."""
+    return Finding(check, "block", "missing_fact",
+                   f"{fact} is ABSENT - {why}. An unknown fact is not a pass.",
+                   {"fact": fact})
+
+
+def _killed(check: str, state: TradingState) -> list[Finding]:
+    """Every check starts here. Once the switch is on, nothing else can produce a pass."""
+    k = state.kill
+    if k is not None and getattr(k, "tripped", False):
+        return [Finding(check, "block", "kill_switch",
+                        f"kill switch is TRIPPED ({k.reason}); every check fails closed "
+                        f"until a person clears it", {"reason": k.reason})]
+    return []
+
+
+# ------------------------------------------------------------------------- kill switch
+def check_kill_switch(proposal: ProposedOrder, state: TradingState) -> list[Finding]:
+    """Is the switch on. One boolean, one reason, no inputs from the proposal at all."""
+    hit = _killed("kill_switch", state)
+    if hit:
+        return hit
+    return [Finding("kill_switch", "info", "armed", "kill switch is not tripped",
+                    {"tripped": False})]
+
+
+# ----------------------------------------------------------------------------- session
+def _in_window(t: dt.time, window: tuple[dt.time, dt.time]) -> bool:
+    return window[0] <= t < window[1]
+
+
+def check_session(proposal: ProposedOrder, state: TradingState) -> list[Finding]:
+    """Is the venue open, is this an auction window, is it a half day.
+
+    Reads `state.now` and `state.sessions` and NOTHING ELSE about time. There is no call
+    to `datetime.now()`, `Timestamp.now()`, `date.today()` or `time.time()` anywhere in
+    this module, and `tests/test_core_pre_trade.py` proves it two ways: it greps the
+    source, and it replaces the module's `datetime` import with an object that raises on
+    any attribute access and asserts the verdict is byte-identical.
+    """
+    out = _killed("session", state)
+    if out:
+        return out
+    now, sessions, venue = state.now, state.sessions, state.venue
+    if now is None:
+        return [_absent("session", "now", "the evaluation time must be DECLARED, because "
+                                          "a check that reads the wall clock answers a "
+                                          "different question every minute")]
+    now = pd.Timestamp(now)
+    if now.tzinfo is None:
+        return [Finding("session", "block", "naive_now",
+                        "state.now is tz-naive; declare the zone so the venue conversion "
+                        "cannot drift", {"now": str(now)})]
+    if sessions is None:
+        return [_absent("session", "sessions", "the trading calendar must be DECLARED "
+                                               "(fin_skills.engine.spec.Sessions); "
+                                               "exchange_calendars derives its own bounds "
+                                               "from the clock at import")]
+    if venue is None:
+        return [_absent("session", "venue", "the venue's intraday hours must be DECLARED "
+                                            "(VenueHours), auctions included")]
+
+    local = now.tz_convert(venue.tz)
+    day = pd.Timestamp(local.date())
+    index = pd.DatetimeIndex(getattr(sessions, "index"))
+    if day not in index:
+        return [Finding("session", "block", "not_a_session",
+                        f"{day.date()} is not in the declared calendar for {venue.name}; "
+                        f"the venue is closed", {"day": str(day.date()),
+                                                 "venue": venue.name})]
+    half_days = {pd.Timestamp(d).date() for d in (getattr(sessions, "half_days", None) or ())}
+    is_half = local.date() in half_days
+    close_t = venue.half_day_close if (is_half and venue.half_day_close) else venue.continuous_close
+    t = local.time()
+
+    if is_half:
+        out.append(Finding("session", "warn", "half_day",
+                           f"{local.date()} is a declared half day: {venue.name} closes at "
+                           f"{close_t}, not {venue.continuous_close}. Any schedule sized "
+                           f"for a full session is wrong by the missing hours",
+                           {"close": str(close_t)}))
+    if _in_window(t, venue.opening_auction):
+        out.append(Finding("session", "warn", "opening_auction",
+                           f"{local.time()} is inside {venue.name}'s opening auction "
+                           f"{venue.opening_auction[0]}-{venue.opening_auction[1]}: the "
+                           f"reference price is the auction's, not the last trade, and the "
+                           f"price checks below are anchored on a stale last trade",
+                           {"window": "opening"}))
+    if _in_window(t, venue.closing_auction):
+        out.append(Finding("session", "warn", "closing_auction",
+                           f"{local.time()} is inside {venue.name}'s closing auction "
+                           f"{venue.closing_auction[0]}-{venue.closing_auction[1]}: what "
+                           f"goes out now prices in the auction and cannot be worked",
+                           {"window": "closing"}))
+    if venue.opening_auction[0] <= t < venue.continuous_open:
+        out.append(Finding("session", "warn", "auction_only",
+                           f"{local.time()} is in {venue.name}'s pre-open call auction; the "
+                           f"continuous market does not open until {venue.continuous_open}, "
+                           f"so nothing here can be worked or withdrawn the usual way",
+                           {"window": "auction_only"}))
+    if venue.lunch and _in_window(t, venue.lunch):
+        out.append(Finding("session", "block", "lunch_break",
+                           f"{local.time()} is inside {venue.name}'s {venue.lunch[0]}-"
+                           f"{venue.lunch[1]} break; nothing trades",
+                           {"window": "lunch"}))
+    elif t < min(venue.continuous_open, venue.opening_auction[0]) or t >= close_t:
+        out.append(Finding("session", "block", "outside_hours",
+                           f"{local.time()} {venue.tz} is outside {venue.name}'s session "
+                           f"(auction from {venue.opening_auction[0]}, continuous "
+                           f"{venue.continuous_open}-{close_t})",
+                           {"local_time": str(local.time()), "close": str(close_t)}))
+    if not any(f.severity == "block" for f in out):
+        out.append(Finding("session", "info", "open",
+                           f"{venue.name} is open at {local.time()} {venue.tz} on a "
+                           f"declared session", {"day": str(day.date())}))
+    return out
+
+
+# -------------------------------------------------------------------------- fat finger
+def check_fat_finger(proposal: ProposedOrder, state: TradingState) -> list[Finding]:
+    """Notional against a stated cap and against the book, quantity against ADV, price
+    against the last trade and against the day's range.
+
+    The four are deliberately not one number. A decimal slip in quantity and a transposed
+    digit in price produce the same word ("fat finger") and trip completely different
+    thresholds: the size tests catch the first at any price, the price tests catch the
+    second at any size, and only the notional test catches the two together.
+    """
+    out = _killed("fat_finger", state)
+    if out:
+        return out
+    sym = proposal.symbol
+    caps = state.caps
+    last = state.fact("last_trade", sym)
+    adv = state.fact("adv_shares", sym)
+    equity = state.equity
+    lo, hi = state.fact("day_low", sym), state.fact("day_high", sym)
+
+    if last is None:
+        out.append(_absent("fat_finger", f"last_trade[{sym}]",
+                           "there is nothing to price the ticket against"))
+    if adv is None:
+        out.append(_absent("fat_finger", f"adv_shares[{sym}]",
+                           "size is meaningless without the volume it is a fraction of"))
+    if equity is None:
+        out.append(_absent("fat_finger", "equity",
+                           "notional against the book needs the book"))
+    for cap_name in ("max_notional", "max_book_fraction", "max_adv_multiple",
+                     "max_price_through"):
+        if getattr(caps, cap_name) is None:
+            out.append(_absent("fat_finger", f"caps.{cap_name}",
+                               "a threshold nobody stated is a threshold nobody agreed"))
+    if any(f.severity == "block" for f in out):
+        return out
+
+    px = float(proposal.limit_price) if proposal.limit_price is not None else float(last)
+    notional = proposal.qty * px
+    if proposal.limit_price is None:
+        out.append(Finding("fat_finger", "warn", "no_price_on_ticket",
+                           "no price on the ticket, so the price tests cannot run; the "
+                           "notional below is struck at the last trade and an unpriced "
+                           "instruction is how a size error reaches a fill",
+                           {"last_trade": float(last)}))
+
+    if notional > float(caps.max_notional):
+        out.append(Finding("fat_finger", "block", "notional_cap",
+                           f"notional {notional:,.0f} is above the stated per-instruction "
+                           f"cap of {float(caps.max_notional):,.0f} "
+                           f"({notional / float(caps.max_notional):.1f}x)",
+                           {"notional": notional, "cap": float(caps.max_notional)}))
+    frac = notional / float(equity)
+    if frac > float(caps.max_book_fraction):
+        out.append(Finding("fat_finger", "block", "notional_vs_book",
+                           f"notional {notional:,.0f} is {frac:.2%} of a {float(equity):,.0f} "
+                           f"book, above the stated {float(caps.max_book_fraction):.2%}",
+                           {"fraction_of_book": frac}))
+    adv_mult = proposal.qty / float(adv)
+    if adv_mult > float(caps.max_adv_multiple):
+        out.append(Finding("fat_finger", "block", "qty_vs_adv",
+                           f"{proposal.qty:,.0f} shares is {adv_mult:.2f}x the {float(adv):,.0f}-"
+                           f"share ADV, above the stated {float(caps.max_adv_multiple):.2f}x",
+                           {"adv_multiple": adv_mult}))
+
+    if proposal.limit_price is not None:
+        through = (px - float(last)) / float(last)
+        aggressive = through if proposal.side == "buy" else -through
+        if abs(through) > float(caps.max_price_through):
+            out.append(Finding("fat_finger", "block", "price_through_last",
+                               f"{px:,.4f} is {through:+.2%} from the {float(last):,.4f} last "
+                               f"trade, past the stated {float(caps.max_price_through):.2%}"
+                               + (" and in the aggressive direction" if aggressive > 0 else
+                                  " (passive, so it is a typo that will simply not fill)"),
+                               {"through": through, "aggressive": aggressive > 0}))
+        if lo is None or hi is None:
+            out.append(_absent("fat_finger", f"day_low/day_high[{sym}]",
+                               "the day's range is the second, independent anchor and a "
+                               "stale last trade is exactly when you need it"))
+        else:
+            lo, hi = float(lo), float(hi)
+            if px > hi or px < lo:
+                span = max(hi - lo, 1e-12)
+                outside = (px - hi) / span if px > hi else (lo - px) / span
+                out.append(Finding("fat_finger", "warn", "price_outside_day_range",
+                                   f"{px:,.4f} is outside the day's {lo:,.4f}-{hi:,.4f} range "
+                                   f"by {outside:.2f}x the range itself",
+                                   {"low": lo, "high": hi, "ranges_outside": outside}))
+    if not any(f.severity == "block" for f in out):
+        out.append(Finding("fat_finger", "info", "within_caps",
+                           f"notional {notional:,.0f} ({frac:.2%} of book), {adv_mult:.3f}x ADV",
+                           {"notional": notional, "adv_multiple": adv_mult}))
+    return out
+
+
+# ----------------------------------------------------------------------- participation
+def check_participation(proposal: ProposedOrder, state: TradingState) -> list[Finding]:
+    """Size against ADV, the schedule that implies, and what execution-cost-analysis says
+    that schedule costs.
+
+    The impact number is `cost_plausibility.impact_bps` - Almgren, Thum, Hauptmann and Li
+    (2005) - called, not reimplemented. Its own caveats travel with it: the fit covers
+    0.25% to a few percent of ADV, so a pre-trade check that quotes it at 40% of ADV is
+    quoting an extrapolation, and this says so.
+    """
+    out = _killed("participation", state)
+    if out:
+        return out
+    sym, caps = proposal.symbol, state.caps
+    adv = state.fact("adv_shares", sym)
+    last = state.fact("last_trade", sym)
+    if adv is None:
+        out.append(_absent("participation", f"adv_shares[{sym}]",
+                           "participation is a ratio and this is its denominator"))
+    if last is None:
+        out.append(_absent("participation", f"last_trade[{sym}]",
+                           "ADV in shares becomes ADV in currency only with a price"))
+    if caps.max_participation is None:
+        out.append(_absent("participation", "caps.max_participation",
+                           "the ADV fraction you are willing to be is a decision, not a "
+                           "default"))
+    if caps.pov_cap is None:
+        out.append(_absent("participation", "caps.pov_cap",
+                           "the schedule's participation of volume decides how many "
+                           "sessions this takes"))
+    if any(f.severity == "block" for f in out):
+        return out
+
+    part = proposal.qty / float(adv)
+    sessions_needed = part / float(caps.pov_cap)
+    if part > float(caps.max_participation):
+        out.append(Finding("participation", "block", "over_adv_cap",
+                           f"{part:.2%} of ADV is above the stated "
+                           f"{float(caps.max_participation):.2%}; at a "
+                           f"{float(caps.pov_cap):.0%} participation of volume this needs "
+                           f"{sessions_needed:.1f} sessions, so it is not one instruction, "
+                           f"it is a programme",
+                           {"participation": part, "sessions": sessions_needed}))
+    elif sessions_needed > 1.0:
+        out.append(Finding("participation", "warn", "multi_session_schedule",
+                           f"{part:.2%} of ADV needs {sessions_needed:.1f} sessions at a "
+                           f"{float(caps.pov_cap):.0%} participation of volume; a single "
+                           f"ticket implies a schedule nobody has built",
+                           {"participation": part, "sessions": sessions_needed}))
+
+    vol = state.fact("daily_vol", sym)
+    if vol is None:
+        out.append(Finding("participation", "warn", "cost_not_priced",
+                           "daily_vol is absent, so the cost consequence could not be "
+                           "priced. This does not block: the participation verdict above "
+                           "stands on ADV alone, and impact is linear in a volatility you "
+                           "have not supplied", {"fact": f"daily_vol[{sym}]"}))
+    else:
+        horizon = max(min(sessions_needed, 1.0), 1e-3)
+        bps = impact_bps(part, daily_vol=float(vol), exec_horizon=horizon)["realized_bps"]
+        cost = bps / 1e4 * proposal.qty * float(last)
+        band = "" if 0.0025 <= part <= 0.05 else (
+            " - and that number is an EXTRAPOLATION: the fit covers 0.25% to a few percent "
+            "of ADV, which this is not")
+        out.append(Finding("participation", "info", "impact_cost",
+                           f"{part:.2%} of ADV worked over {horizon:.2f} session(s) costs "
+                           f"{bps:.1f} bps of modelled impact, about {cost:,.0f} on this "
+                           f"ticket (execution-cost-analysis / Almgren et al. 2005){band}",
+                           {"impact_bps": bps, "impact_cost": cost,
+                            "participation": part}))
+    return out
+
+
+# ----------------------------------------------------------------- duplicate and replay
+def check_duplicate(proposal: ProposedOrder, state: TradingState) -> list[Finding]:
+    """The same client_order_id twice, and a burst of near-identical tickets in a window.
+
+    The second one is the shape of a retry loop that lost its idempotency: nothing is
+    literally duplicated because each attempt minted a fresh id, and the venue happily
+    accepts all four. The id test cannot see it; only the window can.
+    """
+    out = _killed("duplicate", state)
+    if out:
+        return out
+    caps = state.caps
+    sent = state.already_sent
+    if sent is None:
+        out.append(_absent("duplicate", "already_sent",
+                           "what has already gone out is the only thing a duplicate can be "
+                           "a duplicate OF; an EMPTY blotter is a fact, None is not"))
+    if caps.burst_window_s is None or caps.burst_max is None:
+        out.append(_absent("duplicate", "caps.burst_window_s / caps.burst_max",
+                           "how many near-identical tickets in how long counts as a retry "
+                           "loop is a decision"))
+    if any(f.severity == "block" for f in out):
+        return out
+    if not isinstance(sent, pd.DataFrame):
+        raise TypeError("already_sent must be a DataFrame with columns "
+                        f"{list(SENT_COLUMNS)}, got {type(sent).__name__}")
+    for col in SENT_COLUMNS:
+        if col not in sent.columns:
+            raise TypeError(f"already_sent is missing column {col!r}; has "
+                            f"{list(sent.columns)[:8]}")
+
+    ids = [str(x) for x in sent["client_order_id"]]
+    if proposal.client_order_id in ids:
+        prior = sent[sent["client_order_id"].astype(str) == proposal.client_order_id]
+        out.append(Finding("duplicate", "block", "duplicate_id",
+                           f"client_order_id {proposal.client_order_id!r} has already gone "
+                           f"out {len(prior)} time(s); the venue will treat this as a new "
+                           f"instruction, your book will treat it as the same one",
+                           {"client_order_id": proposal.client_order_id,
+                            "prior": int(len(prior))}))
+
+    if len(sent):
+        ts = pd.to_datetime(sent["ts"], utc=True, errors="coerce")
+        age = (proposal.ts.tz_convert("UTC") - ts).dt.total_seconds()
+        qty = pd.to_numeric(sent["qty"], errors="coerce").astype(float)
+        near = ((sent["symbol"].astype(str) == proposal.symbol)
+                & (sent["side"].astype(str) == proposal.side)
+                & (age >= 0) & (age <= float(caps.burst_window_s))
+                & ((qty - proposal.qty).abs() <= float(caps.burst_qty_tol) * proposal.qty))
+        n = int(near.sum())
+        if n + 1 > int(caps.burst_max):
+            out.append(Finding("duplicate", "block", "replay_burst",
+                               f"{n} near-identical {proposal.side} ticket(s) in "
+                               f"{proposal.symbol} inside the last "
+                               f"{float(caps.burst_window_s):.0f}s; this one makes {n + 1}, "
+                               f"above the stated {int(caps.burst_max)}. Distinct ids, one "
+                               f"intention - a retry loop that lost its idempotency looks "
+                               f"exactly like this",
+                               {"in_window": n, "window_s": float(caps.burst_window_s)}))
+        elif n:
+            out.append(Finding("duplicate", "warn", "near_identical",
+                               f"{n} near-identical {proposal.side} ticket(s) in "
+                               f"{proposal.symbol} inside {float(caps.burst_window_s):.0f}s",
+                               {"in_window": n}))
+    if not any(f.severity == "block" for f in out):
+        out.append(Finding("duplicate", "info", "unique",
+                           f"client_order_id {proposal.client_order_id!r} is new and no "
+                           f"burst in the window", {"blotter_rows": int(len(sent))}))
+    return out
+
+
+# ------------------------------------------------------------------ position and exposure
+def _exposure(positions: Mapping[str, float], marks: Mapping[str, float],
+              equity: float) -> tuple[float, float, dict[str, float]]:
+    """(gross, net, per-name) as fractions of equity. Missing marks are the caller's problem."""
+    per: dict[str, float] = {}
+    for sym, qty in positions.items():
+        mark = marks.get(sym)
+        if mark is None or not np.isfinite(float(mark)):
+            continue
+        per[sym] = float(qty) * float(mark) / float(equity)
+    gross = float(sum(abs(v) for v in per.values()))
+    net = float(sum(per.values()))
+    return gross, net, per
+
+
+def check_exposure(proposal: ProposedOrder, state: TradingState) -> list[Finding]:
+    """Would this breach a stated gross, net, per-name or sector cap - and does the book
+    it is computed from agree with the broker's?
+
+    The reconciliation runs FIRST and blocks on its own. Every number below it is the
+    resulting position, and a resulting position computed from a book the broker does not
+    share is arithmetic on a fiction. `fin_skills.bridges.execution.read_execution()`
+    returns the broker's side read-only; this check consumes it and sends nothing.
+    """
+    out = _killed("exposure", state)
+    if out:
+        return out
+    sym, caps = proposal.symbol, state.caps
+    positions, marks, equity = state.positions, state.marks, state.equity
+    broker = state.broker_positions
+    if positions is None:
+        out.append(_absent("exposure", "positions", "your own book is the starting point"))
+    if marks is None:
+        out.append(_absent("exposure", "marks", "shares become exposure only at a price"))
+    if equity is None:
+        out.append(_absent("exposure", "equity", "a cap is a fraction OF something"))
+    if broker is None:
+        out.append(_absent("exposure", "broker_positions",
+                           "the broker's reported position is what makes yours checkable; "
+                           "read it with fin_skills.bridges.execution.read_execution()"))
+    for cap_name in ("gross_cap", "net_cap", "name_cap"):
+        if getattr(caps, cap_name) is None:
+            out.append(_absent("exposure", f"caps.{cap_name}", "not stated is not a pass"))
+    if caps.sector_caps is None:
+        out.append(_absent("exposure", "caps.sector_caps",
+                           "15c3-5(c)(1)(i) asks for thresholds finely-tuned by sector"))
+    if state.sectors is None:
+        out.append(_absent("exposure", "sectors",
+                           "a sector cap needs a sector map for every name in the book"))
+    if any(f.severity == "block" for f in out):
+        return out
+
+    mine = float(positions.get(sym, 0.0))
+    theirs = broker.get(sym)
+    if theirs is None:
+        out.append(Finding("exposure", "block", "unreconciled",
+                           f"the broker reports no position in {sym} while your book has "
+                           f"{mine:,.0f}; reconcile before sizing anything on top of it",
+                           {"mine": mine, "theirs": None}))
+    elif abs(mine - float(theirs)) > float(caps.reconcile_tol):
+        out.append(Finding("exposure", "block", "unreconciled",
+                           f"your book says {mine:,.0f} {sym} and the broker says "
+                           f"{float(theirs):,.0f} - a {mine - float(theirs):+,.0f} share "
+                           f"disagreement, above the stated tolerance of "
+                           f"{float(caps.reconcile_tol):g}. Every number below this line "
+                           f"would be computed on a book the venue does not share",
+                           {"mine": mine, "theirs": float(theirs)}))
+    if any(f.severity == "block" for f in out):
+        return out
+
+    after = dict(positions)
+    after[sym] = mine + proposal.signed_qty
+    g0, n0, _ = _exposure(positions, marks, float(equity))
+    g1, n1, per1 = _exposure(after, marks, float(equity))
+    if g1 > float(caps.gross_cap):
+        out.append(Finding("exposure", "block", "gross_cap",
+                           f"gross goes {g0:.2%} -> {g1:.2%} of equity, above the stated "
+                           f"{float(caps.gross_cap):.2%}", {"gross_before": g0, "gross_after": g1}))
+    if abs(n1) > float(caps.net_cap):
+        out.append(Finding("exposure", "block", "net_cap",
+                           f"net goes {n0:+.2%} -> {n1:+.2%} of equity, past the stated "
+                           f"+/-{float(caps.net_cap):.2%}", {"net_before": n0, "net_after": n1}))
+    name_after = abs(per1.get(sym, 0.0))
+    if name_after > float(caps.name_cap):
+        out.append(Finding("exposure", "block", "name_cap",
+                           f"{sym} goes to {name_after:.2%} of equity, above the stated "
+                           f"{float(caps.name_cap):.2%}", {"name_after": name_after}))
+
+    sec = proposal.sector or str(state.sectors.get(sym, ""))
+    cap = caps.sector_caps.get(sec) if sec else None
+    if sec and cap is None:
+        out.append(Finding("exposure", "block", "no_sector_cap",
+                           f"{sym} is in sector {sec!r} and no cap was stated for it; an "
+                           f"unstated sector cap is an unlimited one",
+                           {"sector": sec}))
+    elif sec:
+        members = [s for s in after if str(state.sectors.get(s, "")) == sec]
+        exposure = float(sum(abs(per1.get(s, 0.0)) for s in members))
+        if exposure > float(cap):
+            out.append(Finding("exposure", "block", "sector_cap",
+                               f"sector {sec!r} goes to {exposure:.2%} of equity across "
+                               f"{len(members)} name(s), above the stated {float(cap):.2%}",
+                               {"sector": sec, "sector_after": exposure}))
+    if not any(f.severity == "block" for f in out):
+        out.append(Finding("exposure", "info", "within_caps",
+                           f"gross {g1:.2%}, net {n1:+.2%}, {sym} {name_after:.2%}, "
+                           f"reconciled to the broker",
+                           {"gross_after": g1, "net_after": n1}))
+    return out
+
+
+CHECK_FUNCTIONS = {"kill_switch": check_kill_switch, "session": check_session,
+                   "fat_finger": check_fat_finger, "participation": check_participation,
+                   "duplicate": check_duplicate, "exposure": check_exposure}
+
+
+def check_order(proposal: ProposedOrder, state: TradingState,
+                checks: Sequence[str] = CHECKS) -> OrderVerdict:
+    """Run every check and return one verdict. Nothing here can transmit anything.
+
+    `allowed` is True only when no check blocked AND no required fact was absent. The two
+    are the same severity on purpose: a system that cannot tell you your ADV is not in a
+    position to tell you your size is fine.
+    """
+    if not isinstance(proposal, ProposedOrder):
+        raise TypeError("proposal must be a ProposedOrder")
+    if not isinstance(state, TradingState):
+        raise TypeError("state must be a TradingState: assemble the facts first")
+    unknown = [c for c in checks if c not in CHECK_FUNCTIONS]
+    if unknown:
+        raise ValueError(f"unknown check(s) {unknown}; known: {list(CHECK_FUNCTIONS)}")
+    findings: list[Finding] = []
+    for name in checks:
+        findings.extend(CHECK_FUNCTIONS[name](proposal, state))
+    missing = tuple(dict.fromkeys(str(f.evidence.get("fact", "")) for f in findings
+                                  if f.code == "missing_fact"))
+    allowed = not any(f.severity == "block" for f in findings)
+    return OrderVerdict(allowed=allowed, findings=tuple(findings), missing=missing,
+                        checks=tuple(checks))
+
+
+# ------------------------------------------------------------------- the seeded blotter
+#: What is deliberately wrong with three of the tickets in `seeded_blotter()`.
+PLANTED = {
+    "slip-qty": "quantity slipped a decimal place: 10x the intended size",
+    "slip-px": "price typed with two digits transposed: far through the market",
+    "replay": "a retry loop resent the same client_order_id and then three more like it",
+}
+
+
+def seeded_blotter(seed: int = 20260910, n: int = 40) -> tuple[list[ProposedOrder],
+                                                               TradingState]:
+    """40 proposals over 12 names, three of them deliberately wrong. Seeded and offline.
+
+    The clean 37 are drawn to sit inside every cap in `EXAMPLE_CAPS`, so a threshold that
+    flags one has produced a measured false positive rather than an artefact of careless
+    seeding. That is the only way "what would this threshold have caught" means anything.
+    """
+    rng = np.random.default_rng(seed)
+    names = [f"AA{i:02d}" for i in range(12)]
+    sector_of = {s: ["tech", "energy", "health", "financials"][i % 4]
+                 for i, s in enumerate(names)}
+    last = {s: float(np.round(rng.uniform(18.0, 240.0), 2)) for s in names}
+    adv = {s: float(np.round(rng.uniform(4.0e5, 3.0e6), -3)) for s in names}
+    day_low = {s: last[s] * float(1 - rng.uniform(0.005, 0.02)) for s in names}
+    day_high = {s: last[s] * float(1 + rng.uniform(0.005, 0.02)) for s in names}
+    vol = {s: float(np.round(rng.uniform(0.014, 0.032), 4)) for s in names}
+    equity = 1.0e7
+    # positions stated as a fraction of equity, so the book sits well inside every cap and
+    # a clean ticket on top of it still does
+    positions = {s: float(np.round(rng.uniform(-0.03, 0.05) * equity / last[s], -2))
+                 for s in names}
+    broker = dict(positions)                       # reconciled, which is the normal case
+
+    start = pd.Timestamp("2026-09-10 14:05:00", tz="UTC")   # 10:05 New York, mid-session
+    out: list[ProposedOrder] = []
+    for i in range(n - 3):
+        s = names[int(rng.integers(0, len(names)))]
+        side = "buy" if rng.random() < 0.55 else "sell"
+        qty = float(np.round(rng.uniform(5.0e4, 4.0e5) / last[s], -2))   # 50k-400k notional
+        px = float(np.round(last[s] * (1 + rng.uniform(-0.004, 0.004)), 2))
+        out.append(ProposedOrder(s, side, max(qty, 100.0), px, f"cid-{i:04d}",
+                                 start + pd.Timedelta(seconds=int(60 * i)), sector_of[s]))
+
+    tail = start + pd.Timedelta(seconds=60 * (n - 3))
+    # 1. the decimal slip lands in the THINNEST name, which is what turns a routine 2.8%
+    #    of ADV into 28% of it. Same keystroke in the most liquid name is invisible.
+    fat = min(names, key=lambda s: adv[s] * last[s])
+    out.append(ProposedOrder(fat, "buy", float(np.round(adv[fat] * 0.28, -2)),
+                             float(np.round(last[fat], 2)), "slip-qty", tail,
+                             sector_of[fat]))
+    # 2. the transposed digit is 13% through the last trade on a SMALL ticket, so no size
+    #    threshold can see it
+    typo = names[7]
+    out.append(ProposedOrder(typo, "buy", float(np.round(1.5e5 / last[typo], -2)),
+                             float(np.round(last[typo] * 1.13, 2)), "slip-px",
+                             tail + pd.Timedelta(seconds=30), sector_of[typo]))
+    # 3. the retry loop is correctly sized and correctly priced. Nothing about the ticket
+    #    is wrong; only its multiplicity is.
+    rep = names[5]
+    rq = float(np.round(1.2e5 / last[rep], -2))
+    rpx = float(np.round(last[rep], 2))
+    out.append(ProposedOrder(rep, "buy", rq, rpx, "replay",
+                             tail + pd.Timedelta(seconds=60), sector_of[rep]))
+
+    # the blotter of what has ALREADY gone out - a DIFFERENT population from the 40 under
+    # review, which is the whole point: 25 earlier tickets, plus 'replay' once before (the
+    # id the retry loop reused) and three near-identical retries inside 30 seconds.
+    rows = []
+    for j in range(25):
+        s = names[int(rng.integers(0, len(names)))]
+        rows.append({"ts": start - pd.Timedelta(seconds=int(120 * (25 - j))),
+                     "client_order_id": f"hist-{j:04d}", "symbol": s,
+                     "side": "buy" if rng.random() < 0.5 else "sell",
+                     "qty": float(np.round(rng.uniform(5.0e4, 4.0e5) / last[s], -2)),
+                     "limit_price": float(np.round(last[s], 2))})
+    t0 = tail + pd.Timedelta(seconds=60)
+    rows.append({"ts": t0 - pd.Timedelta(seconds=25), "client_order_id": "replay",
+                 "symbol": rep, "side": "buy", "qty": rq, "limit_price": rpx})
+    for k in range(1, 4):
+        rows.append({"ts": t0 - pd.Timedelta(seconds=25 - 5 * k),
+                     "client_order_id": f"replay-retry{k}", "symbol": rep, "side": "buy",
+                     "qty": rq, "limit_price": rpx})
+    sent = pd.DataFrame(rows, columns=list(SENT_COLUMNS))
+
+    sessions = _declared_calendar()
+    state = TradingState(
+        now=start, sessions=sessions, venue=NYSE_HOURS, last_trade=last, day_low=day_low,
+        day_high=day_high, adv_shares=adv, marks=last, positions=positions,
+        broker_positions=broker, sectors=sector_of, equity=equity, already_sent=sent,
+        daily_vol=vol, caps=EXAMPLE_CAPS, kill=KillSwitch())
+    return out, state
+
+
+def _declared_calendar():
+    """The declared calendar. Uses the library's own `Sessions` where it is importable.
+
+    `fin_skills.engine.spec.Sessions` is the repo's single declaration of a calendar and
+    refuses to have a default. Run as a loose script outside the package there is nothing
+    to import, so a private stand-in with the same three attributes stands in - it is not
+    a second public calendar type, and no check ever constructs one.
+    """
+    index = pd.bdate_range("2026-09-01", "2026-12-31")
+    half = frozenset({dt.date(2026, 11, 27), dt.date(2026, 12, 24)})   # NYSE 2026, 1pm ET
+    try:
+        from fin_skills.engine.spec import Sessions
+    except ImportError:
+        return _StandaloneSessions(index=index, tz="America/New_York", half_days=half)
+    return Sessions(index=index, tz="America/New_York", periods_per_year=252,
+                    name="nyse-2026-Q4", half_days=half)
+
+
+@dataclass(frozen=True)
+class _StandaloneSessions:
+    """The three attributes `check_session` reads. Private; see `_declared_calendar`."""
+
+    index: pd.DatetimeIndex
+    tz: str
+    half_days: frozenset = frozenset()
+
+
+#: the size/price thresholds `threshold_sweep` widens so that ONE of them is measured at a
+#: time. A sweep with the others still binding measures the others.
+SWEEPABLE = ("max_notional", "max_book_fraction", "max_adv_multiple", "max_price_through",
+             "max_participation")
+
+
+def threshold_sweep(proposals: Iterable[ProposedOrder], state: TradingState, cap: str,
+                    values: Sequence[float]) -> pd.DataFrame:
+    """What ONE threshold, on its own, would have caught, at each stated value.
+
+    Every other size and price cap is widened to infinity for the sweep, so `flagged` is
+    the power of the named threshold and not of whatever else happened to be binding.
+    Columns: `flagged` (tickets it blocks), `planted` (of the three deliberate mistakes),
+    `clean` (of the other 37 - the false positives you would be living with).
+    """
+    from dataclasses import replace as _replace
+    if cap not in SWEEPABLE:
+        raise ValueError(f"cap must be one of {SWEEPABLE}, got {cap!r}")
+    proposals = list(proposals)
+    wide = {c: float(np.inf) for c in SWEEPABLE}
+    rows = []
+    for v in values:
+        caps = _replace(state.caps, **{**wide, cap: float(v)})
+        st = _replace(state, caps=caps)
+        flagged = []
+        for p in proposals:
+            fs = check_fat_finger(p, st) + check_participation(p, st)
+            if any(f.severity == "block" for f in fs):
+                flagged.append(p.client_order_id)
+        planted = [c for c in flagged if c in PLANTED]
+        rows.append({cap: v, "flagged": len(flagged), "planted": len(planted),
+                     "clean": len(flagged) - len(planted)})
+    return pd.DataFrame(rows)
+
+
+THE_RULE = ("THE RULE: a pre-trade check is a function of a PROPOSAL and ASSEMBLED facts "
+            "that returns a verdict, and an absent fact is a block, not a pass - this "
+            "library checks instructions and never transmits one.")
+
+
+if __name__ == "__main__":
+    pd.set_option("display.width", 120)
+    proposals, state = seeded_blotter()
+    print("SEEDED BLOTTER")
+    print("=" * 78)
+    print(f"  {len(proposals)} proposals over 12 names, seed 20260910, "
+          f"{len(state.already_sent)} tickets already out, book "
+          f"{float(state.equity):,.0f}")
+    print("  three are deliberately wrong:")
+    for cid, what in PLANTED.items():
+        print(f"    {cid:<9} {what}")
+
+    print("\n\nWHAT THE CHECKS CAUGHT, at EXAMPLE_CAPS")
+    print("=" * 78)
+    verdicts = {p.client_order_id: check_order(p, state) for p in proposals}
+    blocked = {c: v for c, v in verdicts.items() if not v.allowed}
+    print(f"  {len(blocked)} of {len(proposals)} blocked; planted caught: "
+          f"{sorted(c for c in blocked if c in PLANTED)}")
+    print(f"  clean tickets blocked (false positives): "
+          f"{sorted(c for c in blocked if c not in PLANTED)}")
+    for cid in PLANTED:
+        codes = [f.code for f in verdicts[cid].findings if f.severity == "block"]
+        print(f"    {cid} -> {codes}")
+
+    print("\n\nTHE THREE, IN FULL")
+    print("=" * 78)
+    for cid in PLANTED:
+        p = next(x for x in proposals if x.client_order_id == cid)
+        print(verdicts[cid].render(title=f"{cid}  {p.side} {p.qty:,.0f} {p.symbol} "
+                                         f"@ {p.limit_price}"))
+        print()
+
+    print("\nWHAT EACH THRESHOLD WOULD HAVE CAUGHT")
+    print("=" * 78)
+    for cap, values in (("max_adv_multiple", (0.02, 0.05, 0.10, 0.25, 0.30, 0.50)),
+                        ("max_price_through", (0.005, 0.01, 0.02, 0.05, 0.10, 0.20)),
+                        ("max_notional", (2.5e5, 5.0e5, 7.5e5, 1.5e6, 5.0e6, 1.0e7)),
+                        ("max_book_fraction", (0.01, 0.025, 0.05, 0.075, 0.25, 1.0)),
+                        ("max_participation", (0.02, 0.05, 0.10, 0.25, 0.30, 0.50))):
+        print(f"\n  {cap}  (every OTHER size/price cap widened to infinity)")
+        print(threshold_sweep(proposals, state, cap, values).to_string(index=False))
+    print("\n  `flagged` = tickets this threshold alone blocks, `planted` = of the three,")
+    print("  `clean` = of the other 37. A threshold that never reaches planted=1 cannot")
+    print("  see that mistake at all: no price threshold catches the size slip and no")
+    print("  size threshold catches the price typo. They are different failures, and the")
+    print("  replay is caught by neither - only the duplicate window sees it.")
+
+    print("\n\nAN ABSENT FACT IS NOT A PASS")
+    print("=" * 78)
+    from dataclasses import replace
+    clean = proposals[0]
+    ok = check_order(clean, state)
+    print(f"  {clean.client_order_id} with every fact assembled: allowed={ok.allowed}")
+    for drop in ("adv_shares", "broker_positions", "sessions", "already_sent"):
+        blind = replace(state, **{drop: None})
+        v = check_order(clean, blind)
+        print(f"  drop {drop:<18} -> allowed={str(v.allowed):<5} missing={list(v.missing)}")
+
+    print("\n\nRECONCILIATION - THE BROKER'S BOOK IS THE ONE THAT COUNTS")
+    print("=" * 78)
+    sym = clean.symbol
+    drifted = dict(state.broker_positions)
+    drifted[sym] = drifted[sym] - 300.0
+    v = check_order(clean, replace(state, broker_positions=drifted))
+    print(f"  the broker reports 300 fewer {sym} than your book: allowed={v.allowed}")
+    print(f"  {[f.code for f in v.blocks]}")
+    print(f"  {v.blocks[0].message}")
+    print("  every exposure number would otherwise have been arithmetic on a book the")
+    print("  venue does not share, which is why this one blocks before the caps run.")
+
+    print("\n\nTHE KILL SWITCH")
+    print("=" * 78)
+    k = trip_if(cum_loss=-142_500.0, max_loss=100_000.0)
+    print(f"  trip_if(cum_loss=-142,500, max_loss=100,000) -> {k}")
+    dead = replace(state, kill=k)
+    v = check_order(clean, dead)
+    print(f"  the SAME clean ticket, switch on: allowed={v.allowed}, "
+          f"{len(v.blocks)} block(s) from {len(set(f.check for f in v.blocks))} check(s)")
+    print(f"  every check reports the same one line: {v.blocks[0].message[:64]}...")
+    print(f"  and it stays on for a ticket with no facts at all: "
+          f"{check_order(clean, TradingState(kill=k)).allowed}")
+
+    print("\n\nSESSION, FROM THE DECLARED CALENDAR ONLY")
+    print("=" * 78)
+    cal = state.sessions
+    for label, when in (("mid-session Thu", "2026-09-10 14:05:00"),
+                        ("before the open", "2026-09-10 13:15:00"),
+                        ("opening auction", "2026-09-10 13:30:30"),
+                        ("closing auction", "2026-09-10 19:55:00"),
+                        ("after the close", "2026-09-10 20:05:00"),
+                        ("a Saturday", "2026-09-12 14:05:00"),
+                        ("half day 1pm+", "2026-11-27 18:05:00")):
+        st = replace(state, now=pd.Timestamp(when, tz="UTC"))
+        fs = check_session(clean, st)
+        print(f"  {label:<17} {when} UTC -> "
+              f"{[f.code for f in fs]}")
+    print(f"  calendar: {type(cal).__name__}, {len(pd.DatetimeIndex(cal.index))} sessions, "
+          f"{len(cal.half_days)} half days, tz {cal.tz}")
+    print("  no wall clock is read anywhere in this module; the test suite greps for it")
+
+    print("\n" + THE_RULE)
