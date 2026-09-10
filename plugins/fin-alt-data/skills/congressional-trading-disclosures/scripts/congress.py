@@ -1,0 +1,612 @@
+#!/usr/bin/env python3
+"""What a 45-day disclosure lag does to a congressional-trading signal.
+
+No network, no file writes, no scraper, no credential path. Every filing here is SYNTHETIC
+and seeded. The only real numbers are the statutory constants transcribed below, each read
+at its own primary source on 2026-09-10; everything the script prints about the filings is
+arithmetic on a generator whose parameters this file sets and then MEASURES back.
+
+Five parts:
+
+  1. The disclosure regime as constants - the deadline, the reporting threshold, the amount
+     brackets and the late-filing fee. Transcribed, not estimated.
+  2. A seeded filing panel. The lag from transaction to public disclosure is DRAWN from a
+     distribution this file chooses (filings cluster near the deadline, with a late tail,
+     because the only routine penalty for missing it is a fee); the panel is then measured
+     to report what that distribution actually produced.
+  3. The A/B. One long/flat rule on the traded name, market-neutralised, fed twice:
+       transaction-date key - enter the day the member traded        (LOOK-AHEAD)
+       disclosure-date key  - enter the day the filing became public (honest)
+  4. How the gap scales: a grid over the lag multiplier and the half-life of the
+     information, because the gap is a function of the RATIO, not of the lag alone.
+  5. Amount ranges. Positions are disclosed in brackets, so a size-weighted signal has to
+     impute a number that was never published. Three measurements, in increasing order of
+     how much they depend on the generator: what the bucketing does to the ORDERING of
+     trades (a pure property of the brackets), what it does to a summed dollar AGGREGATE
+     (a property of the brackets and the size distribution), and what it costs a
+     dollar-weighted portfolio's Sharpe (which also needs the alpha model).
+
+TRANSCRIBED CONSTANTS (each read 2026-09-10 at the URL in the comment beside it). They are
+inputs to the generator, not outputs of it.
+
+Run:  python congress.py    (numpy + pandas, seed 20260910)
+"""
+from __future__ import annotations
+
+import time
+
+import numpy as np
+import pandas as pd
+
+SEED = 20260910
+TRADING_DAYS_PER_YEAR = 252
+CAL_TO_TRADING = TRADING_DAYS_PER_YEAR / 365.0
+
+# --------------------------------------------------------------------------------------
+# 1. The regime, transcribed
+# --------------------------------------------------------------------------------------
+
+# 5 U.S.C. 13105(l) - NOT 13104, which is "Contents of reports" and has no subsection (l).
+# Ethics in Government Act as recodified by Pub. L. 117-286 (Dec. 27, 2022); the STOCK Act
+# is Pub. L. 112-105 sec. 6(a). A Periodic Transaction Report is due "Not later than 30
+# days after receiving notification of any transaction required to be reported", and "in no
+# case later than 45 days after such transaction".
+PTR_NOTIFICATION_DAYS = 30
+PTR_DEADLINE_DAYS = 45
+
+# 5 U.S.C. 13104(a)(5)(B) via the House PTR form: the duty attaches when "the gross amount
+# of a single purchase or sale transaction exceeds $1,000" - gross, so a losing trade counts.
+PTR_THRESHOLD_USD = 1_000
+
+# 5 U.S.C. 13106(d) "Late Fees" and the House PTR form: "$200 penalty shall be assessed
+# against anyone who files more than 30 days late." A flat fee, not a penalty scaled to the
+# position - which is why the tail in draw_lags() below is fat rather than absent. The
+# separate civil penalty for a knowing and willful falsification is 13106(a)(1), base
+# $50,000, inflation-adjusted to $75,540 for 2025 (90 FR, 2025-01-15).
+LATE_FILING_FEE_USD = 200
+LATE_FEE_GRACE_DAYS = 30
+CIVIL_PENALTY_BASE_USD = 50_000
+CIVIL_PENALTY_2025_USD = 75_540
+
+# House PTR form (CY2025) columns A-J, in dollars; `None` is open-ended. The two facts that
+# matter to a signal are at the ends: the LOWEST bracket spans 15x, and the TOP one has no
+# upper edge, so no midpoint exists for it at all.
+NUMERIC_BRACKETS: list[tuple[int, int | None]] = [
+    (1_001, 15_000),
+    (15_001, 50_000),
+    (50_001, 100_000),
+    (100_001, 250_000),
+    (250_001, 500_000),
+    (500_001, 1_000_000),
+    (1_000_001, 5_000_000),
+    (5_000_001, 25_000_000),
+    (25_000_001, 50_000_000),
+    (50_000_001, None),
+]
+
+# Column K on the same form: "Transaction in a Spouse or Dependent Child Asset over
+# $1,000,000". One catch-all that REPLACES G, H, I and J for an asset the filer has no
+# interest in. Statutory basis 5 U.S.C. 13104(e)(1)(F). It is the widest bucket in the
+# scheme by a distance and nothing in the filing tells you where inside it the trade sat.
+SPOUSE_OVER_1M: tuple[int, int | None] = (1_000_001, None)
+AMOUNT_BRACKETS: list[tuple[int, int | None]] = NUMERIC_BRACKETS + [SPOUSE_OVER_1M]
+K_INDEX = len(NUMERIC_BRACKETS)
+
+BRACKET_LABELS = [
+    f"${lo:,}-${hi:,}" if hi is not None else f"over ${lo - 1:,}"
+    for lo, hi in NUMERIC_BRACKETS
+] + ["K: spouse/child over $1,000,000"]
+
+
+def bracket_of(amount: np.ndarray, spouse: np.ndarray | None = None) -> np.ndarray:
+    """Index of the disclosed bracket. Below $1,001 -> -1 (never reported at all).
+
+    `spouse` marks transactions in a spouse or dependent-child asset the filer has no
+    interest in; above $1,000,000 those collapse into column K.
+    """
+    amount = np.asarray(amount, dtype=float)
+    edges = np.array([lo for lo, _ in NUMERIC_BRACKETS], dtype=float)
+    idx = np.searchsorted(edges, amount, side="right") - 1
+    idx = np.where(amount < NUMERIC_BRACKETS[0][0], -1, idx)
+    if spouse is not None:
+        idx = np.where(np.asarray(spouse) & (amount > 1_000_000), K_INDEX, idx)
+    return idx
+
+
+# How wide is each bracket, as a multiple? The number a size-weighted signal is fighting.
+def bracket_widths() -> pd.DataFrame:
+    rows = []
+    for (lo, hi), label in zip(AMOUNT_BRACKETS, BRACKET_LABELS):
+        rows.append({"bracket": label, "low": lo, "high": np.nan if hi is None else hi,
+                     "width_x": np.nan if hi is None else hi / lo})
+    return pd.DataFrame(rows)
+
+
+LATE_FEE_GRACE_NOTE = (
+    f"the ${LATE_FILING_FEE_USD} fee attaches only past {LATE_FEE_GRACE_DAYS} days LATE, "
+    f"i.e. past day {PTR_DEADLINE_DAYS + LATE_FEE_GRACE_DAYS}"
+)
+
+
+IMPUTATIONS = ("true", "midpoint", "geometric", "low", "equal")
+
+
+def impute_size(bracket_idx: np.ndarray, method: str,
+                true_size: np.ndarray | None = None,
+                open_top_multiple: float = 1.0) -> np.ndarray:
+    """Turn a bracket index into the dollar number a size-weighted signal needs.
+
+    `true` is the unknowable baseline and needs the actual amounts. `open_top_multiple`
+    is the choice you are forced to make for the open-ended top bracket, where no
+    midpoint exists; 1.0 means "use the lower edge".
+    """
+    if method == "true":
+        if true_size is None:
+            raise ValueError("method='true' needs the actual amounts")
+        return np.asarray(true_size, dtype=float)
+    if method == "equal":
+        return np.ones(len(bracket_idx), dtype=float)
+    lo = np.array([b[0] for b in AMOUNT_BRACKETS], dtype=float)
+    hi = np.array([b[1] if b[1] is not None else np.nan for b in AMOUNT_BRACKETS],
+                  dtype=float)
+    l, h = lo[bracket_idx], hi[bracket_idx]
+    open_top = ~np.isfinite(h)
+    if method == "midpoint":
+        out = np.where(open_top, l * open_top_multiple, 0.5 * (l + h))
+    elif method == "geometric":
+        out = np.where(open_top, l * open_top_multiple, np.sqrt(l * np.where(open_top, l, h)))
+    elif method == "low":
+        out = l
+    else:
+        raise ValueError(f"unknown imputation {method!r}")
+    return out.astype(float)
+
+
+# --------------------------------------------------------------------------------------
+# 2. The seeded panel
+# --------------------------------------------------------------------------------------
+
+LATE_SHARE = 0.12          # share of filings that miss the 45-day deadline entirely
+
+
+def draw_lags(n: int, rng: np.random.Generator, lag_scale: float = 1.0) -> np.ndarray:
+    """Calendar days from transaction to public disclosure. SET here, not observed.
+
+    Two components, both chosen to match the incentive rather than any published tally:
+      * on time - Beta(2.4, 1.5) squeezed onto [2, 45]. Filings cluster near the deadline
+        because a deadline is a target, not a mean;
+      * late    - a Gamma tail past 45 days, LATE_SHARE of filings, because the routine
+        consequence of missing the deadline is a $200 fee.
+    `lag_scale` multiplies the whole draw; it is the x-axis of the grid in part 4.
+    """
+    on_time = 2.0 + 43.0 * rng.beta(2.4, 1.5, n)
+    late = 46.0 + rng.gamma(1.7, 70.0, n)
+    lag = np.where(rng.random(n) < LATE_SHARE, late, on_time) * float(lag_scale)
+    return np.maximum(1.0, lag)
+
+
+def lag_summary(lag_cal: np.ndarray) -> dict:
+    """Everything this file is allowed to say about the lag: measured off the draw."""
+    q = np.percentile(lag_cal, [5, 25, 50, 75, 95, 99])
+    return {
+        "n": int(len(lag_cal)),
+        "mean": float(lag_cal.mean()),
+        "p05": float(q[0]), "p25": float(q[1]), "median": float(q[2]),
+        "p75": float(q[3]), "p95": float(q[4]), "p99": float(q[5]),
+        "max": float(lag_cal.max()),
+        "share_late": float((lag_cal > PTR_DEADLINE_DAYS).mean()),
+        "share_over_90": float((lag_cal > 90).mean()),
+        "share_over_365": float((lag_cal > 365).mean()),
+    }
+
+
+def make_returns(n_days: int, n_names: int, rng: np.random.Generator) -> np.ndarray:
+    mkt = rng.normal(0.0002, 0.0100, n_days)
+    beta = rng.uniform(0.7, 1.3, n_names)
+    idio = rng.normal(0.0, 0.0180, (n_days, n_names))
+    return mkt[:, None] * beta[None, :] + idio
+
+
+def decay_weights(hold: int, half_life: float) -> np.ndarray:
+    """How the information bleeds into price over `hold` trading days after the trade."""
+    w = np.exp(-np.arange(1, hold + 1) / float(half_life) * np.log(2.0))
+    return w / w.sum()
+
+
+def draw_sizes(n: int, rng: np.random.Generator) -> np.ndarray:
+    """Dollar amounts. A lognormal body plus a 5% large-trade tail, so the OPEN-ENDED top
+    bracket is actually populated - which is where the bucketing does its real damage.
+    Everything below the lowest bracket's floor is dropped: those trades are never
+    reported at all, so the panel you can see is already a filtered sample."""
+    floor = float(AMOUNT_BRACKETS[0][0])
+    out: list[np.ndarray] = []
+    have = 0
+    while have < n:
+        m = int((n - have) * 1.5) + 64
+        core = np.exp(rng.normal(np.log(32_000.0), 1.35, m))
+        tail = np.exp(rng.normal(np.log(2_500_000.0), 1.50, m))
+        s = np.where(rng.random(m) < 0.05, tail, core)
+        s = s[s >= floor]
+        out.append(s)
+        have += len(s)
+    return np.concatenate(out)[:n]
+
+
+def make_panel(n_events: int = 1_500, n_days: int = 2_520, n_names: int = 150,
+               seed: int = SEED, lag_scale: float = 1.0, half_life: float = 21.0,
+               hold: int = 63, base_alpha: float = 0.030,
+               informed_share: float = 0.45, dollar_exponent: float = 0.5,
+               spouse_share: float = 0.30) -> tuple[pd.DataFrame, np.ndarray]:
+    """A seeded panel of disclosed purchases plus the return matrix they live in.
+
+    Returns (filings, rets). `filings` carries the transaction day, the calendar lag, the
+    disclosure day, the true dollar amount, its disclosed bracket, and the total drift the
+    trade was informed about. `rets` already contains that drift.
+    """
+    rng = np.random.default_rng(seed)
+    rets = make_returns(n_days, n_names, rng)
+
+    size = draw_sizes(n_events, rng)
+    n = len(size)
+
+    lag_cal = draw_lags(n, rng, lag_scale)
+    lag_td = np.ceil(lag_cal * CAL_TO_TRADING).astype(int)
+
+    # Place each transaction so that BOTH keyings fit inside the sample.
+    room = n_days - hold - lag_td - 2
+    ok = room > 1
+    size, lag_cal, lag_td, room = size[ok], lag_cal[ok], lag_td[ok], room[ok]
+    n = len(size)
+    txn_day = (rng.random(n) * room).astype(int)
+    name = rng.integers(0, n_names, n)
+
+    # Conviction: bigger trades carry more information, but SUBLINEARLY - a $5,000,000
+    # purchase is not a hundred times better informed than a $50,000 one. `dollar_exponent`
+    # is that link and it is a modelling choice, stated here so it can be argued with.
+    tilt = (size / size.mean()) ** float(dollar_exponent) * np.exp(rng.normal(0.0, 0.45, n))
+    informed = rng.random(n) < informed_share
+    alpha = np.where(informed, base_alpha * tilt / tilt[informed].mean(), 0.0)
+
+    w = decay_weights(hold, half_life)
+    for i in range(n):
+        t = txn_day[i] + 1
+        rets[t:t + hold, name[i]] += alpha[i] * w
+
+    spouse = rng.random(n) < float(spouse_share)
+    filings = pd.DataFrame({
+        "name": name, "txn_day": txn_day, "lag_cal": lag_cal, "lag_td": lag_td,
+        "disc_day": txn_day + lag_td, "size": size, "spouse": spouse,
+        "bracket": bracket_of(size, spouse), "alpha": alpha, "informed": informed,
+    })
+    return filings, rets
+
+
+# --------------------------------------------------------------------------------------
+# 3. The A/B
+# --------------------------------------------------------------------------------------
+
+def portfolio(filings: pd.DataFrame, rets: np.ndarray, key: str, hold: int = 63,
+              weight: np.ndarray | None = None) -> np.ndarray:
+    """Daily market-neutral return of long-the-disclosed-names, short the equal-weight universe.
+
+    Entry is at the CLOSE of the key day, so the first return earned is the next day's -
+    the same rule research-integrity-guards applies to any signal computed off a close.
+    """
+    n_days, n_names = rets.shape
+    W = np.zeros((n_days, n_names))
+    entry = filings[key].to_numpy()
+    name = filings["name"].to_numpy()
+    w = np.ones(len(filings)) if weight is None else np.asarray(weight, dtype=float)
+    for i in range(len(filings)):
+        a = entry[i] + 1
+        b = min(a + hold, n_days)
+        if a < n_days:
+            W[a:b, name[i]] += w[i]
+    tot = W.sum(axis=1)
+    live = tot > 0
+    Wn = np.zeros_like(W)
+    Wn[live] = W[live] / tot[live, None]
+    long_leg = (Wn * rets).sum(axis=1)
+    bench = rets.mean(axis=1)
+    return np.where(live, long_leg - bench, 0.0)
+
+
+def sharpe(r: np.ndarray) -> float:
+    r = np.asarray(r, dtype=float)
+    s = r.std(ddof=1)
+    return float("nan") if not np.isfinite(s) or s == 0 else float(
+        r.mean() / s * np.sqrt(TRADING_DAYS_PER_YEAR))
+
+
+def run_ab(seed: int = SEED, hold: int = 63, **kw) -> pd.DataFrame:
+    """The whole point of the file: the same rule keyed two ways."""
+    filings, rets = make_panel(seed=seed, hold=hold, **kw)
+    rows = {}
+    for label, key in (("transaction-date", "txn_day"), ("disclosure-date", "disc_day")):
+        r = portfolio(filings, rets, key, hold)
+        rows[label] = {
+            "sharpe": sharpe(r),
+            "ann_return": float(r.mean() * TRADING_DAYS_PER_YEAR),
+            "ann_vol": float(r.std(ddof=1) * np.sqrt(TRADING_DAYS_PER_YEAR)),
+            "days_invested": float((r != 0).mean()),
+        }
+    tab = pd.DataFrame(rows).T
+    tab["sharpe_gap"] = tab["sharpe"] - tab.loc["disclosure-date", "sharpe"]
+    tab["retained"] = tab["sharpe"] / tab.loc["transaction-date", "sharpe"]
+    return tab
+
+
+def ab_over_seeds(n_seeds: int = 40, seed0: int = SEED, **kw) -> pd.DataFrame:
+    """One seed is one draw. The ordering is the claim; the level is not."""
+    recs = []
+    for k in range(n_seeds):
+        t = run_ab(seed=seed0 + k, **kw)
+        recs.append({"txn": t.loc["transaction-date", "sharpe"],
+                     "disc": t.loc["disclosure-date", "sharpe"]})
+    d = pd.DataFrame(recs)
+    d["gap"] = d["txn"] - d["disc"]
+    out = d.agg(["mean", "std"]).T
+    out.columns = ["mean", "sd"]
+    out["p05"] = d.quantile(0.05)
+    out["p95"] = d.quantile(0.95)
+    out.loc["disc", "beats_zero"] = float((d["disc"] > 0).mean())
+    out.loc["txn", "beats_zero"] = float((d["txn"] > 0).mean())
+    out.loc["gap", "beats_zero"] = float((d["gap"] > 0).mean())
+    return out
+
+
+# --------------------------------------------------------------------------------------
+# 4. How the gap scales
+# --------------------------------------------------------------------------------------
+
+def lag_grid(lag_scales=(0.1, 0.25, 0.5, 1.0, 2.0),
+             half_lives=(5.0, 21.0, 63.0), n_seeds: int = 12,
+             seed0: int = SEED) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Mean disclosure-date Sharpe as a FRACTION of the transaction-date Sharpe.
+
+    Rows are multiples of the base lag distribution, columns the half-life of the
+    information in trading days. Returns (retained_fraction, mean_lag_days).
+    """
+    ret = pd.DataFrame(index=[f"{s:g}x" for s in lag_scales],
+                       columns=[f"hl={h:g}d" for h in half_lives], dtype=float)
+    lags = pd.DataFrame(index=ret.index, columns=["mean_lag_cal_days"], dtype=float)
+    for s in lag_scales:
+        for h in half_lives:
+            keep, obs = [], []
+            for k in range(n_seeds):
+                f, rr = make_panel(seed=seed0 + k, lag_scale=s, half_life=h)
+                a = sharpe(portfolio(f, rr, "txn_day"))
+                b = sharpe(portfolio(f, rr, "disc_day"))
+                keep.append(b / a if a > 0 else np.nan)
+                obs.append(f["lag_cal"].mean())
+            ret.loc[f"{s:g}x", f"hl={h:g}d"] = float(np.nanmean(keep))
+            lags.loc[f"{s:g}x", "mean_lag_cal_days"] = float(np.mean(obs))
+    return ret, lags
+
+
+# --------------------------------------------------------------------------------------
+# 5. What the brackets do to a size-weighted signal
+# --------------------------------------------------------------------------------------
+
+def _pooled_sizes(seed: int = SEED, n_seeds: int = 12) -> pd.DataFrame:
+    frames = []
+    for k in range(n_seeds):
+        f, _ = make_panel(seed=seed + k)
+        frames.append(f[["size", "bracket", "spouse"]])
+    return pd.concat(frames, ignore_index=True)
+
+
+def bracket_occupancy(seed: int = SEED, n_seeds: int = 12) -> pd.DataFrame:
+    """Where the filings land, and how much true dollar spread each bucket hides."""
+    d = _pooled_sizes(seed, n_seeds)
+    g = d.groupby("bracket")["size"]
+    out = pd.DataFrame({
+        "share": g.size() / len(d),
+        "p10": g.quantile(0.10),
+        "median": g.median(),
+        "p90": g.quantile(0.90),
+    })
+    out["p90_over_p10"] = out["p90"] / out["p10"]
+    out.index = [BRACKET_LABELS[i] for i in out.index]
+    return out
+
+
+def ordering_loss(seed: int = SEED, n_seeds: int = 12) -> dict:
+    """DGP-free: what the bucketing does to the ORDER of trades by dollar size.
+
+    Two filings in the same bracket are indistinguishable in the disclosed data no matter
+    which imputation you pick, so every pair inside a bracket is a tie you cannot break.
+    """
+    d = _pooled_sizes(seed, n_seeds)
+    counts = d["bracket"].value_counts().to_numpy().astype(float)
+    n = counts.sum()
+    tied = float((counts * (counts - 1) / 2).sum() / (n * (n - 1) / 2))
+    ls = np.log(d["size"].to_numpy())
+    lm = np.log(impute_size(d["bracket"].to_numpy(), "midpoint", d["size"].to_numpy()))
+    return {
+        "n": int(n),
+        "tied_pair_share": tied,
+        "sd_log_true": float(ls.std(ddof=1)),
+        "sd_log_midpoint": float(lm.std(ddof=1)),
+        "r2": float(np.corrcoef(ls, lm)[0, 1] ** 2),
+        "resid_sd": float((ls - lm).std(ddof=1)),
+        "modal_bracket": BRACKET_LABELS[int(d["bracket"].value_counts().idxmax())],
+    }
+
+
+def aggregate_bias(seed: int = SEED, n_seeds: int = 12,
+                   open_top_multiples=(1.0, 2.0, 5.0)) -> pd.DataFrame:
+    """The 'how many dollars did Congress buy' aggregate, imputed / true.
+
+    This is the signal most aggregators actually publish, and it is the one the brackets
+    break hardest, because the top bucket has no upper edge and the tail is where the
+    dollars are.
+    """
+    d = _pooled_sizes(seed, n_seeds)
+    b, truth = d["bracket"].to_numpy(), d["size"].to_numpy()
+    total = truth.sum()
+    rows = {}
+    for m in ("midpoint", "geometric", "low"):
+        rows[m] = {f"top x{t:g}": float(impute_size(b, m, truth, t).sum() / total)
+                   for t in open_top_multiples}
+    out = pd.DataFrame(rows).T
+    open_top = np.isin(b, [len(NUMERIC_BRACKETS) - 1, K_INDEX])
+    out["dollars_in_open_brackets"] = float(truth[open_top].sum() / total)
+    out["filings_in_open_brackets"] = float(open_top.mean())
+    return out
+
+
+def weighting_table(seed: int = SEED, n_seeds: int = 12, hold: int = 63,
+                    open_top_multiple: float = 1.0) -> pd.DataFrame:
+    """Dollar-weight the disclosure-keyed portfolio five ways, only one of them knowable.
+
+    `effective_n` is (sum w)^2 / sum w^2 averaged over the days a position is open: the
+    number of independent bets the weighting actually leaves you with.
+    """
+    acc: dict[str, list[float]] = {m: [] for m in IMPUTATIONS}
+    eff: dict[str, list[float]] = {m: [] for m in IMPUTATIONS}
+    for k in range(n_seeds):
+        f, rr = make_panel(seed=seed + k, hold=hold)
+        b, truth = f["bracket"].to_numpy(), f["size"].to_numpy()
+        for m in IMPUTATIONS:
+            w = impute_size(b, m, truth, open_top_multiple)
+            acc[m].append(sharpe(portfolio(f, rr, "disc_day", hold, weight=w)))
+            eff[m].append(float(w.sum() ** 2 / (w ** 2).sum()))
+    tab = pd.DataFrame({
+        "sharpe": {m: float(np.mean(acc[m])) for m in IMPUTATIONS},
+        "sharpe_sd": {m: float(np.std(acc[m], ddof=1)) for m in IMPUTATIONS},
+        "effective_n": {m: float(np.mean(eff[m])) for m in IMPUTATIONS},
+    })
+    tab["cost_vs_true"] = tab["sharpe"] - tab.loc["true", "sharpe"]
+    return tab
+
+
+# --------------------------------------------------------------------------------------
+
+def main() -> None:
+    t0 = time.time()
+    print("=" * 78)
+    print("1. The regime, transcribed (read 2026-09-10 - see the module docstring)")
+    print("=" * 78)
+    print(f"   PTR due: not later than {PTR_NOTIFICATION_DAYS} days after NOTIFICATION of a")
+    print(f"            transaction, and in no case later than {PTR_DEADLINE_DAYS} days after")
+    print(f"            the transaction itself   [5 U.S.C. 13105(l), not 13104]")
+    print(f"   trigger: GROSS amount of a single purchase or sale over ${PTR_THRESHOLD_USD:,}")
+    print(f"   late fee: ${LATE_FILING_FEE_USD}  [5 U.S.C. 13106(d)], and it attaches only")
+    print(f"            past {LATE_FEE_GRACE_DAYS} days LATE - i.e. past day "
+          f"{PTR_DEADLINE_DAYS + LATE_FEE_GRACE_DAYS} after the transaction")
+    print(f"   knowing and willful falsification: base ${CIVIL_PENALTY_BASE_USD:,} civil")
+    print(f"            penalty, inflation-adjusted to ${CIVIL_PENALTY_2025_USD:,} for 2025")
+    bw = bracket_widths()
+    print(f"\n   {'amount bracket':<34}{'width':>10}")
+    for _, r in bw.iterrows():
+        w = "open" if not np.isfinite(r["width_x"]) else f"{r['width_x']:.1f}x"
+        print(f"   {r['bracket']:<34}{w:>10}")
+    print("   The amount is NEVER disclosed as a number. The lowest bracket spans 15x, the")
+    print("   top one has no upper edge, and column K collapses everything over $1,000,000")
+    print("   in a spouse or dependent-child asset into ONE bucket.")
+
+    print("\n" + "=" * 78)
+    print("2. The seeded panel and its MEASURED lag distribution")
+    print("=" * 78)
+    filings, rets = make_panel()
+    s = lag_summary(filings["lag_cal"].to_numpy())
+    print(f"   {s['n']:,} synthetic filings, 2,520 trading days, 150 names, seed {SEED}")
+    print("   calendar days from transaction to public disclosure, measured off the draw:")
+    print(f"   {'mean':>8}{'p05':>8}{'p25':>8}{'median':>9}{'p75':>8}{'p95':>8}"
+          f"{'p99':>8}{'max':>9}")
+    print(f"   {s['mean']:>8.1f}{s['p05']:>8.1f}{s['p25']:>8.1f}{s['median']:>9.1f}"
+          f"{s['p75']:>8.1f}{s['p95']:>8.1f}{s['p99']:>8.1f}{s['max']:>9.1f}")
+    print(f"   past the {PTR_DEADLINE_DAYS}-day deadline: {s['share_late']:.1%}   "
+          f"past 90 days: {s['share_over_90']:.1%}   past a year: {s['share_over_365']:.1%}")
+    print("   This distribution is SET by draw_lags(), not observed. What is not a choice")
+    print("   is the shape of the answer: the median filing is weeks old on arrival.")
+
+    print("\n" + "=" * 78)
+    print("3. The A/B - one rule, two keys")
+    print("=" * 78)
+    tab = run_ab()
+    print("   Long the disclosed name for 63 trading days, short the equal-weight universe,")
+    print("   entered at the CLOSE of the key day. Same trades, same names, same holding")
+    print("   period. Only the date you are allowed to act on differs.")
+    print(f"   {'key':<20}{'sharpe':>9}{'ann ret':>10}{'ann vol':>10}{'retained':>10}")
+    for k in ("transaction-date", "disclosure-date"):
+        r = tab.loc[k]
+        print(f"   {k:<20}{r['sharpe']:>9.3f}{r['ann_return']:>10.2%}"
+              f"{r['ann_vol']:>10.2%}{r['retained']:>10.1%}")
+    print(f"   Sharpe gap: {tab.loc['transaction-date', 'sharpe_gap']:.3f}")
+    sw = ab_over_seeds()
+    print(f"\n   Over 40 seeds:")
+    print(f"   {'':<8}{'mean':>9}{'sd':>8}{'p05':>8}{'p95':>8}{'> 0':>8}")
+    for k, lbl in (("txn", "txn"), ("disc", "disc"), ("gap", "gap")):
+        r = sw.loc[k]
+        print(f"   {lbl:<8}{r['mean']:>9.3f}{r['sd']:>8.3f}{r['p05']:>8.3f}"
+              f"{r['p95']:>8.3f}{r['beats_zero']:>8.0%}")
+
+    print("\n" + "=" * 78)
+    print("4. How the gap scales with the lag")
+    print("=" * 78)
+    ret, lags = lag_grid()
+    print("   disclosure-date Sharpe as a FRACTION of the transaction-date Sharpe.")
+    print("   rows = multiple of the base lag draw (mean calendar days in brackets)")
+    print("   cols = half-life of the information, trading days. 12 seeds per cell.\n")
+    print(f"   {'lag':<16}" + "".join(f"{c:>12}" for c in ret.columns))
+    for i in ret.index:
+        lbl = f"{i} ({lags.loc[i, 'mean_lag_cal_days']:.0f}d)"
+        print(f"   {lbl:<16}" + "".join(f"{ret.loc[i, c]:>12.1%}" for c in ret.columns))
+    print("\n   Read down a column, not across the table: the lag only matters relative to")
+    print("   how fast the information decays. At a 5-day half-life the statutory lag alone")
+    print("   destroys the signal; at a 63-day half-life a 45-day lag still leaves most of")
+    print("   it. Quoting '45 days' without saying what it is 45 days OF says nothing.")
+
+    print("\n" + "=" * 78)
+    print("5. Amount ranges - the size weight you cannot compute")
+    print("=" * 78)
+    occ = bracket_occupancy()
+    print("   (a) where the filings land, and the true spread each bucket hides")
+    print(f"   {'bracket':<34}{'share':>8}{'p10 $':>13}{'p90 $':>13}{'p90/p10':>9}")
+    for i, r in occ.iterrows():
+        print(f"   {i:<34}{r['share']:>8.1%}{r['p10']:>13,.0f}{r['p90']:>13,.0f}"
+              f"{r['p90_over_p10']:>9.1f}")
+    ol = ordering_loss()
+    print(f"\n   (b) ordering - a property of the brackets alone, no return model involved")
+    print(f"   modal bracket: {ol['modal_bracket']}")
+    print(f"   share of ALL PAIRS of filings that are exact ties in the disclosed data, so")
+    print(f"   no imputation can order them: {ol['tied_pair_share']:.1%}")
+    print(f"   sd of log(true amount) {ol['sd_log_true']:.3f} -> sd of log(midpoint) "
+          f"{ol['sd_log_midpoint']:.3f};  R^2 {ol['r2']:.3f}, residual sd "
+          f"{ol['resid_sd']:.3f}")
+    ag = aggregate_bias()
+    print(f"\n   (c) the summed-dollar aggregate ('Congress bought $X of NVDA'), as a")
+    print(f"   fraction of the true total. Columns are the value you assign the OPEN-ENDED")
+    print(f"   top brackets, as a multiple of their lower edge - a number nobody publishes.")
+    print(f"   {'imputation':<12}" + "".join(f"{c:>11}" for c in ag.columns[:3]))
+    for m in ag.index:
+        print(f"   {m:<12}" + "".join(f"{ag.loc[m, c]:>11.1%}" for c in ag.columns[:3]))
+    print(f"   {ag.loc['midpoint', 'filings_in_open_brackets']:.1%} of filings sit in an "
+          f"open-ended bracket and they carry "
+          f"{ag.loc['midpoint', 'dollars_in_open_brackets']:.1%} of the true dollars.")
+    print("   The aggregate moves by a multiple when you change one unpublished assumption.")
+    wt = weighting_table()
+    print(f"\n   (d) dollar-weighted disclosure-keyed portfolio, five weightings, 12 seeds")
+    print(f"   {'weight':<12}{'sharpe':>9}{'sd':>8}{'eff. N filings':>16}"
+          f"{'cost vs true':>14}")
+    for m in IMPUTATIONS:
+        r = wt.loc[m]
+        print(f"   {m:<12}{r['sharpe']:>9.3f}{r['sharpe_sd']:>8.3f}"
+              f"{r['effective_n']:>16.0f}{r['cost_vs_true']:>14.3f}")
+    hi = weighting_table(open_top_multiple=5.0)
+    print(f"   Same table with the open-ended brackets valued at 5x their lower edge:")
+    print(f"   midpoint Sharpe {wt.loc['midpoint', 'sharpe']:.3f} -> "
+          f"{hi.loc['midpoint', 'sharpe']:.3f}, true {wt.loc['true', 'sharpe']:.3f}.")
+    print("   The midpoint is not neutral - it is an estimator, its bias is measurable, and")
+    print("   every choice in this section is a researcher degree of freedom to log.")
+
+    print(f"\n   (total runtime {time.time() - t0:.1f}s)")
+    print("\nRule: key a congressional-trading signal on the PUBLIC DISCLOSURE date, never"
+          " on the transaction date, and never weight by an amount that was only disclosed"
+          " as a bracket without pricing the imputation you chose.")
+
+
+if __name__ == "__main__":
+    main()

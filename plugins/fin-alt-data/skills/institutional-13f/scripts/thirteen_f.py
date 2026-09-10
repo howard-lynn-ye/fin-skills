@@ -1,0 +1,543 @@
+#!/usr/bin/env python3
+"""13F: the clock starts at a QUARTER END, so the position is old before it is public.
+
+No network, no file writes, no scraper, no credential path. Every holding here is SYNTHETIC
+and seeded. The only real content is the rule text - the deadline, the threshold, the
+coverage and the confidential-treatment mechanism - transcribed below and read at its
+primary source on 2026-09-10. The filing-lag distribution and the holding-period model are
+chosen by this file and measured back; they are not a tally of EDGAR.
+
+Six parts:
+
+  1. The rule as constants: 45 days after quarter end, a $100,000,000 threshold that has
+     not moved since 1978, what is and is not a Section 13(f) security, and the
+     confidential-treatment route that lets a manager omit positions from the public table.
+  2. A seeded panel of positions and filings, and the measurement this skill exists for:
+     the FULL distribution of the age of a position at the moment you learn of it. It is
+     not "45 days". A position opened on the first day of a quarter is up to 45 days past a
+     quarter end that was already 91 days long.
+  3. What the table never contains: positions opened and closed inside one quarter are
+     invisible, and a share of what you do see has already been sold by the filing date.
+  4. The A/B: clone the holdings keyed on the quarter-end date vs the filing date.
+  5. 13F is long US equity only. A "manager's portfolio" reconstructed from it is a
+     different object, and this measures how different.
+  6. Confidential treatment, under the assumption that has to be the working one: the
+     positions a manager asks to omit are the ones it has most conviction in.
+
+Run:  python thirteen_f.py    (numpy + pandas, seed 20260910)
+"""
+from __future__ import annotations
+
+import time
+
+import numpy as np
+import pandas as pd
+
+SEED = 20260910
+TRADING_DAYS_PER_YEAR = 252
+TRADING_DAYS_PER_QUARTER = 63
+CALENDAR_DAYS_PER_QUARTER = 91.0
+TD_TO_CAL = 365.0 / 252.0
+
+# --------------------------------------------------------------------------------------
+# 1. The rule, transcribed (read 2026-09-10)
+# --------------------------------------------------------------------------------------
+
+# 17 CFR 240.13f-1(a)(1): a report is due "within 45 days after the last day of such
+# calendar year" and "within 45 days after the last day of each of the first three calendar
+# quarters". Form 13F General Instruction 1 says the same.
+DEADLINE_DAYS_AFTER_QUARTER_END = 45
+
+# 17 CFR 240.13f-1(a)(1): the manager must exercise investment discretion over accounts
+# holding section 13(f) securities "having an aggregate fair market value on the last
+# trading day of any month" of a calendar year "of at least $100,000,000".
+THRESHOLD_USD = 100_000_000
+
+# The rule's own source credit starts at 43 FR 26705, June 22, 1978, and the dollar figure
+# survives every amendment through 76 FR 71876 (2011). The SEC's 2020 proposal to raise it
+# said it would be doing so "for the first time in 45 years, raising the reporting threshold
+# from $100 million to $3.5 billion" (Rel. 34-89290, 85 FR).
+THRESHOLD_SET_YEAR = 1978
+PROPOSED_THRESHOLD_USD = 3_500_000_000
+PROPOSAL_WITHDRAWN = "2021-05-11"       # OMB/OIRA Unified Agenda, RIN 3235-AM65
+
+# 2013-05-20: "the text-based ASCII format for 13F filings was discontinued" (13F FAQ). The
+# information table has been XML since.
+XML_INFORMATION_TABLE_SINCE = "2013-05-20"
+
+# What a Section 13(f) security is, and is not. Rule 13f-1(c) limits it to equity securities
+# of a class described in section 13(d)(1) that are admitted to trading on a national
+# securities exchange or quoted on a registered association's automated system, and "Only
+# securities of a class on such list shall be counted". The rest is the SEC's 13F FAQ.
+COVERAGE: list[tuple[str, str, str]] = [
+    ("US exchange-traded stock", "reported", "FAQ Q7: the Official List 'primarily includes "
+                                             "U.S. exchange-traded stocks'"),
+    ("closed-end funds, ETFs", "reported", "FAQ Q7 names both explicitly"),
+    ("convertible debt, equity options, warrants", "reported",
+     "FAQ Q7: 'Certain convertible debt securities, equity options, and warrants are on the "
+     "Official List'"),
+    ("SHORT positions", "NOT reported", "FAQ Q41 verbatim: 'You should not include short "
+                                        "positions on Form 13F.'"),
+    ("long netted against short", "NOT permitted", "FAQ Q41: do not subtract shorts from "
+                                                   "longs; 'report only the long position'"),
+    ("open-end mutual fund shares", "NOT reported", "FAQ Q7: shares of open-end investment "
+                                                    "companies 'should not be reported'"),
+    ("securities on non-US exchanges", "NOT reported", "FAQ: shares that trade on non-United "
+                                                       "States exchanges are not reported"),
+    ("bonds, commodities, currencies, cash", "NOT reported",
+     "INFERRED from 13f-1(c) - equity securities on the Official List only. The SEC does "
+     "not state these exclusions in those words."),
+]
+
+# Confidential treatment: Form 13F "Instructions for Confidential Treatment Requests" -
+# requests are made "in accordance with rule 24b-2(i) under the Exchange Act", the public
+# filing must show "that confidential information has been omitted", and the FAQ describes
+# the commercial rationale as falling under FOIA Exemption 4, which protects "trade secrets
+# and commercial or financial information". The requested period "may not exceed one (1)
+# year". On denial or expiry, an amendment follows "within six business days of the denial
+# ... or the expiration", and it "must not be a restatement" - it "adds new holdings
+# entries".
+CT_MAX_PERIOD_DAYS = 365
+CT_AMENDMENT_BUSINESS_DAYS = 6
+
+
+def coverage_table() -> pd.DataFrame:
+    return pd.DataFrame(COVERAGE, columns=["instrument", "status", "source"])
+
+
+# --------------------------------------------------------------------------------------
+# 2. The seeded panel
+# --------------------------------------------------------------------------------------
+
+def draw_filing_lags(n: int, rng: np.random.Generator, lag_scale: float = 1.0
+                     ) -> np.ndarray:
+    """Calendar days from quarter end to the public filing. SET here, not observed.
+
+    A deadline that everybody files on: the mass piles up against day 45 and thins out
+    backwards, plus a small share of amendments and late filings past it.
+    """
+    on_time = DEADLINE_DAYS_AFTER_QUARTER_END - 37.0 * rng.beta(1.0, 9.0, n)
+    late = 46.0 + rng.gamma(1.4, 18.0, n)
+    lag = np.where(rng.random(n) < 0.04, late, on_time) * float(lag_scale)
+    return np.maximum(1.0, lag)
+
+
+def make_returns(n_days: int, n_names: int, rng: np.random.Generator
+                 ) -> tuple[np.ndarray, np.ndarray]:
+    mkt = rng.normal(0.0002, 0.0100, n_days)
+    beta = rng.uniform(0.7, 1.3, n_names)
+    idio = rng.normal(0.0, 0.0180, (n_days, n_names))
+    return mkt[:, None] * beta[None, :] + idio, mkt
+
+
+def decay_weights(hold: int, half_life: float) -> np.ndarray:
+    w = np.exp(-np.arange(1, hold + 1) / float(half_life) * np.log(2.0))
+    return w / w.sum()
+
+
+def make_panel(n_managers: int = 40, n_quarters: int = 40, n_names: int = 300,
+               per_quarter: int = 8, seed: int = SEED, lag_scale: float = 1.0,
+               half_life: float = 42.0, alpha_horizon: int = 189,
+               base_alpha: float = 0.015, mean_hold_td: float = 126.0
+               ) -> tuple[pd.DataFrame, np.ndarray, np.ndarray]:
+    """Positions, the quarter they are first disclosed in, and the return matrix.
+
+    Every position has an establishment day inside a quarter, a holding period, and an
+    alpha that decays from the establishment day - not from the quarter end and not from
+    the filing date. That is the whole reason the age distribution matters.
+    """
+    rng = np.random.default_rng(seed)
+    n_days = n_quarters * TRADING_DAYS_PER_QUARTER
+    rets, mkt = make_returns(n_days, n_names, rng)
+
+    n = n_managers * n_quarters * per_quarter
+    manager = np.repeat(np.arange(n_managers), n_quarters * per_quarter)
+    quarter = np.tile(np.repeat(np.arange(n_quarters), per_quarter), n_managers)
+    q_start = quarter * TRADING_DAYS_PER_QUARTER
+    q_end = q_start + TRADING_DAYS_PER_QUARTER - 1
+
+    est_day = q_start + rng.integers(0, TRADING_DAYS_PER_QUARTER, n)
+    hold_td = np.maximum(3, rng.exponential(mean_hold_td, n)).astype(int)
+    exit_day = est_day + hold_td
+    name = rng.integers(0, n_names, n)
+    weight = np.exp(rng.normal(0.0, 0.9, n))
+    alpha = base_alpha * np.exp(rng.normal(0.0, 0.5, n))
+
+    # The alpha is real and it starts when the manager acts.
+    w = decay_weights(alpha_horizon, half_life)
+    for i in range(n):
+        a = est_day[i] + 1
+        b = min(a + alpha_horizon, n_days)
+        if a < n_days:
+            rets[a:b, name[i]] += alpha[i] * w[:b - a]
+
+    # A position is in the quarter-q table only if it is still open at that quarter end.
+    disclosed = exit_day > q_end
+    first_q_end = q_end
+    lag_cal = draw_filing_lags(n, rng, lag_scale)
+    lag_td = np.ceil(lag_cal * TRADING_DAYS_PER_YEAR / 365.0).astype(int)
+    file_day = first_q_end + lag_td
+
+    # Age of the position, in calendar days, at the moment the table becomes public.
+    days_to_quarter_end = (first_q_end - est_day) * TD_TO_CAL
+    age_cal = days_to_quarter_end + lag_cal
+
+    pos = pd.DataFrame({
+        "manager": manager, "quarter": quarter, "name": name, "est_day": est_day,
+        "hold_td": hold_td, "exit_day": exit_day, "q_end": first_q_end,
+        "lag_cal": lag_cal, "lag_td": lag_td, "file_day": file_day,
+        "age_cal": age_cal, "weight": weight, "alpha": alpha, "disclosed": disclosed,
+    })
+    pos = pos[pos["file_day"] < n_days - 2].reset_index(drop=True)
+    return pos, rets, mkt
+
+
+def lag_summary(lag_cal: np.ndarray) -> dict:
+    q = np.percentile(lag_cal, [5, 25, 50, 75, 95])
+    return {"mean": float(lag_cal.mean()), "p05": float(q[0]), "p25": float(q[1]),
+            "median": float(q[2]), "p75": float(q[3]), "p95": float(q[4]),
+            "max": float(lag_cal.max()),
+            "share_at_or_past_44": float((lag_cal >= 44.0).mean()),
+            "share_past_deadline": float(
+                (lag_cal > DEADLINE_DAYS_AFTER_QUARTER_END).mean())}
+
+
+def age_summary(pos: pd.DataFrame) -> dict:
+    """The number this skill exists for, and it is a DISTRIBUTION, not 45."""
+    d = pos[pos["disclosed"]]
+    a = d["age_cal"].to_numpy()
+    q = np.percentile(a, [5, 25, 50, 75, 95, 99])
+    return {"n": int(len(a)), "mean": float(a.mean()), "p05": float(q[0]),
+            "p25": float(q[1]), "median": float(q[2]), "p75": float(q[3]),
+            "p95": float(q[4]), "p99": float(q[5]), "max": float(a.max()),
+            "min": float(a.min()),
+            "share_over_90": float((a > 90).mean()),
+            "share_over_120": float((a > 120).mean()),
+            "mean_quarter_leg": float(
+                (d["q_end"] - d["est_day"]).mean() * TD_TO_CAL),
+            "mean_filing_leg": float(d["lag_cal"].mean())}
+
+
+def invisibility(pos: pd.DataFrame) -> dict:
+    """What the table never shows, and what it shows too late."""
+    never = ~pos["disclosed"]
+    seen = pos[pos["disclosed"]]
+    gone = seen["exit_day"] <= seen["file_day"]
+    return {
+        "never_disclosed": float(never.mean()),
+        "mean_hold_never_td": float(pos.loc[never, "hold_td"].mean()),
+        "mean_hold_seen_td": float(seen["hold_td"].mean()),
+        "closed_by_filing_date": float(gone.mean()),
+        "closed_by_quarter_end_plus_90": float(
+            (seen["exit_day"] <= seen["file_day"] + 63).mean()),
+    }
+
+
+# --------------------------------------------------------------------------------------
+# 3-6. Portfolios
+# --------------------------------------------------------------------------------------
+
+def portfolio(pos: pd.DataFrame, rets: np.ndarray, key: str, hold: int = 63,
+              weight: np.ndarray | None = None, neutral: bool = True) -> np.ndarray:
+    """Clone the disclosed longs for `hold` trading days.
+
+    Entry at the CLOSE of the key day, so the first return earned is the next day's.
+    `neutral=True` shorts the equal-weight universe, which is how you test a signal;
+    `neutral=False` leaves the raw long book, which is what section 5 needs.
+    """
+    n_days, n_names = rets.shape
+    W = np.zeros((n_days, n_names))
+    entry = pos[key].to_numpy()
+    name = pos["name"].to_numpy()
+    w = np.ones(len(pos)) if weight is None else np.asarray(weight, dtype=float)
+    for i in range(len(pos)):
+        a = entry[i] + 1
+        b = min(a + hold, n_days)
+        if a < n_days and w[i] > 0:
+            W[a:b, name[i]] += w[i]
+    tot = W.sum(axis=1)
+    live = tot > 0
+    Wn = np.zeros_like(W)
+    Wn[live] = W[live] / tot[live, None]
+    long_leg = (Wn * rets).sum(axis=1)
+    if not neutral:
+        return np.where(live, long_leg, 0.0)
+    return np.where(live, long_leg - rets.mean(axis=1), 0.0)
+
+
+def sharpe(r: np.ndarray) -> float:
+    r = np.asarray(r, dtype=float)
+    s = r.std(ddof=1)
+    return float("nan") if not np.isfinite(s) or s == 0 else float(
+        r.mean() / s * np.sqrt(TRADING_DAYS_PER_YEAR))
+
+
+def run_ab(seed: int = SEED, hold: int = 63, **kw) -> pd.DataFrame:
+    pos, rets, _ = make_panel(seed=seed, **kw)
+    d = pos[pos["disclosed"]]
+    rows = {}
+    for label, key in (("quarter-end date", "q_end"), ("filing date", "file_day")):
+        r = portfolio(d, rets, key, hold, weight=d["weight"].to_numpy())
+        rows[label] = {"sharpe": sharpe(r),
+                       "ann_return": float(r.mean() * TRADING_DAYS_PER_YEAR),
+                       "ann_vol": float(r.std(ddof=1) * np.sqrt(TRADING_DAYS_PER_YEAR))}
+    tab = pd.DataFrame(rows).T
+    tab["sharpe_gap"] = tab["sharpe"] - tab.loc["filing date", "sharpe"]
+    tab["retained"] = tab.loc["filing date", "sharpe"] / tab["sharpe"]
+    return tab
+
+
+def ab_over_seeds(n_seeds: int = 12, seed0: int = SEED, **kw) -> pd.DataFrame:
+    recs = []
+    for k in range(n_seeds):
+        t = run_ab(seed=seed0 + k, **kw)
+        recs.append({"quarter_end": t.loc["quarter-end date", "sharpe"],
+                     "filing": t.loc["filing date", "sharpe"]})
+    d = pd.DataFrame(recs)
+    d["gap"] = d["quarter_end"] - d["filing"]
+    out = d.agg(["mean", "std"]).T
+    out.columns = ["mean", "sd"]
+    out["p05"], out["p95"] = d.quantile(0.05), d.quantile(0.95)
+    out["positive"] = (d > 0).mean()
+    # Pooled retention. A per-seed ratio is worse than useless here - it is a ratio of two
+    # noisy Sharpes and its own spread is larger than the thing it is meant to summarise.
+    out.attrs["pooled_retained"] = float(d["filing"].mean() / d["quarter_end"].mean())
+    return out
+
+
+# --- 5. what a 13F-reconstructed "portfolio" leaves out ---------------------------------
+
+SLEEVES = {"long_13f": 1.30, "short_equity": -0.60, "non_13f": 0.20}
+
+
+def reconstruction_error(seed: int = SEED, n_managers: int = 40) -> pd.DataFrame:
+    """Compare a manager's true book with the one you can rebuild from its 13F.
+
+    The true book is a long sleeve you can see, a short equity sleeve the SEC's own FAQ
+    says is not reported, and a non-13F sleeve (bonds, non-US listings, cash). The
+    reconstruction is the long sleeve alone, normalised to 100%.
+    """
+    pos, rets, mkt = make_panel(seed=seed, n_managers=n_managers)
+    rng = np.random.default_rng(seed + 7_777)
+    n_days, n_names = rets.shape
+    d = pos[pos["disclosed"]]
+    rows = []
+    for m in range(n_managers):
+        sub = d[d["manager"] == m]
+        if len(sub) < 20:
+            continue
+        long_leg = portfolio(sub, rets, "q_end", hold=TRADING_DAYS_PER_QUARTER,
+                             weight=sub["weight"].to_numpy(), neutral=False)
+        short_basket = (rng.uniform(0.7, 1.3) * mkt
+                        + rng.normal(0.0, 0.006, n_days))
+        non_13f = 0.30 * mkt + rng.normal(0.0, 0.0035, n_days)
+        true = (SLEEVES["long_13f"] * long_leg
+                + SLEEVES["short_equity"] * short_basket
+                + SLEEVES["non_13f"] * non_13f)
+        rec = long_leg                      # the table is 100% long, and that is all of it
+        ok = (long_leg != 0)
+        ann = np.sqrt(TRADING_DAYS_PER_YEAR)
+        rows.append({
+            "corr": float(np.corrcoef(true[ok], rec[ok])[0, 1]),
+            "tracking_error": float((true[ok] - rec[ok]).std(ddof=1) * ann),
+            "vol_true": float(true[ok].std(ddof=1) * ann),
+            "vol_reconstructed": float(rec[ok].std(ddof=1) * ann),
+            "beta_true": float(np.polyfit(mkt[ok], true[ok], 1)[0]),
+            "beta_reconstructed": float(np.polyfit(mkt[ok], rec[ok], 1)[0]),
+        })
+    t = pd.DataFrame(rows)
+    out = t.mean().to_frame("mean")
+    out["sd"] = t.std(ddof=1)
+    out["p05"] = t.quantile(0.05)
+    out["p95"] = t.quantile(0.95)
+    return out
+
+
+# --- 6. confidential treatment -----------------------------------------------------------
+
+def confidential_treatment(seed: int = SEED, n_seeds: int = 20,
+                           shares=(0.0, 0.05, 0.10, 0.20)) -> pd.DataFrame:
+    """Omit the highest-conviction positions from the public table and re-run the clone.
+
+    Dropping at random would understate it. A manager asks for confidential treatment on
+    the positions it is still building and least wants copied, so the working assumption
+    has to be that the omitted names are the good ones.
+    """
+    adv: dict[float, list[float]] = {s: [] for s in shares}
+    rnd: dict[float, list[float]] = {s: [] for s in shares}
+    for k in range(n_seeds):
+        # One panel per seed, every omission share run on it, so the comparison across
+        # rows carries no seed noise at all.
+        pos, rets, _ = make_panel(seed=seed + k)
+        d = pos[pos["disclosed"]].copy()
+        wgt = d["weight"].to_numpy()
+        by_alpha = np.argsort(-d["alpha"].to_numpy())
+        shuffled = np.random.default_rng(seed + k).permutation(len(d))
+        for s in shares:
+            n_drop = int(round(s * len(d)))
+            a, r = wgt.copy(), wgt.copy()
+            if n_drop:
+                a[by_alpha[:n_drop]] = 0.0
+                r[shuffled[:n_drop]] = 0.0
+            adv[s].append(sharpe(portfolio(d, rets, "file_day", weight=a)))
+            rnd[s].append(sharpe(portfolio(d, rets, "file_day", weight=r)))
+    tab = pd.DataFrame({
+        "top-conviction omitted": {f"{s:.0%}": float(np.mean(adv[s])) for s in shares},
+        "randomly omitted": {f"{s:.0%}": float(np.mean(rnd[s])) for s in shares},
+        "se": {f"{s:.0%}": float(np.std(adv[s], ddof=1) / np.sqrt(n_seeds))
+               for s in shares},
+    })
+    tab["cost_of_selection"] = tab["randomly omitted"] - tab["top-conviction omitted"]
+    return tab
+
+
+# --------------------------------------------------------------------------------------
+
+def main() -> None:
+    t0 = time.time()
+    print("=" * 78)
+    print("1. The rule, transcribed (read 2026-09-10 - see the module docstring)")
+    print("=" * 78)
+    print(f"   deadline:  within {DEADLINE_DAYS_AFTER_QUARTER_END} days after the last day of "
+          f"the calendar year, and")
+    print(f"              within {DEADLINE_DAYS_AFTER_QUARTER_END} days after the last day of "
+          f"each of the first")
+    print("              three calendar quarters   [17 CFR 240.13f-1(a)(1)]")
+    print(f"   threshold: aggregate fair market value of section 13(f) securities of at")
+    print(f"              least ${THRESHOLD_USD:,} on the last trading day of ANY month")
+    print(f"              of a calendar year   [same subsection]")
+    print(f"   the threshold has not moved since {THRESHOLD_SET_YEAR} (43 FR 26705). The 2020")
+    print(f"              proposal to take it to ${PROPOSED_THRESHOLD_USD:,} was withdrawn")
+    print(f"              on {PROPOSAL_WITHDRAWN} (RIN 3235-AM65), so ${THRESHOLD_USD:,} stands.")
+    print(f"   format:    the information table has been XML since "
+          f"{XML_INFORMATION_TABLE_SINCE}, when the")
+    print("              text-based ASCII format was discontinued")
+    print(f"\n   What a section 13(f) security is:")
+    print(f"   {'instrument':<48}status")
+    for _, r in coverage_table().iterrows():
+        print(f"   {r['instrument']:<48}{r['status']}")
+    print("   The last row is INFERRED from 13f-1(c), not quoted - the SEC does not state")
+    print("   those exclusions in those words. Every other row has a quotable source.")
+    print(f"\n   confidential treatment: requested under rule 24b-2(i); the public filing")
+    print(f"              must show that information has been omitted; the requested period")
+    print(f"              may not exceed {CT_MAX_PERIOD_DAYS} days; on denial or expiry an")
+    print(f"              amendment follows within {CT_AMENDMENT_BUSINESS_DAYS} business days")
+    print("              and ADDS holdings entries rather than restating the filing.")
+
+    print("\n" + "=" * 78)
+    print("2. The age of a position when you learn of it - the whole point")
+    print("=" * 78)
+    pos, rets, mkt = make_panel()
+    ls = lag_summary(pos["lag_cal"].to_numpy())
+    print(f"   filing lag, calendar days after quarter end (SET, then measured back):")
+    print(f"   {'mean':>8}{'p05':>8}{'p25':>8}{'median':>9}{'p75':>8}{'p95':>8}{'max':>8}")
+    print(f"   {ls['mean']:>8.1f}{ls['p05']:>8.1f}{ls['p25']:>8.1f}{ls['median']:>9.1f}"
+          f"{ls['p75']:>8.1f}{ls['p95']:>8.1f}{ls['max']:>8.1f}")
+    print(f"   filed in the last two days before the deadline: "
+          f"{ls['share_at_or_past_44']:.1%}")
+    ag = age_summary(pos)
+    print(f"\n   AGE of the position at the moment the table is public, calendar days.")
+    print(f"   {ag['n']:,} disclosed positions. This is the distribution nobody quotes.")
+    print(f"   {'min':>8}{'p05':>8}{'p25':>8}{'median':>9}{'mean':>8}{'p75':>8}"
+          f"{'p95':>8}{'p99':>8}{'max':>8}")
+    print(f"   {ag['min']:>8.0f}{ag['p05']:>8.0f}{ag['p25']:>8.0f}{ag['median']:>9.0f}"
+          f"{ag['mean']:>8.0f}{ag['p75']:>8.0f}{ag['p95']:>8.0f}{ag['p99']:>8.0f}"
+          f"{ag['max']:>8.0f}")
+    print(f"   older than 90 days: {ag['share_over_90']:.1%}    older than 120 days: "
+          f"{ag['share_over_120']:.1%}")
+    print(f"   it decomposes into establishment-to-quarter-end "
+          f"{ag['mean_quarter_leg']:.1f} days")
+    print(f"   plus quarter-end-to-filing {ag['mean_filing_leg']:.1f} days, on average.")
+    print("   '45 days' is one of the two legs and it is the SMALLER one.")
+
+    print("\n" + "=" * 78)
+    print("3. What the table never contains, and what it contains too late")
+    print("=" * 78)
+    inv = invisibility(pos)
+    print(f"   opened AND closed inside one quarter, so never disclosed at all: "
+          f"{inv['never_disclosed']:.1%}")
+    print(f"   mean holding period of those: {inv['mean_hold_never_td']:.0f} trading days;")
+    print(f"   of the ones you do see: {inv['mean_hold_seen_td']:.0f} trading days.")
+    print(f"   already closed by the filing date: {inv['closed_by_filing_date']:.1%}")
+    print(f"   closed within a quarter of the filing date: "
+          f"{inv['closed_by_quarter_end_plus_90']:.1%}")
+    print("   13F is a quarter-end SNAPSHOT, not a trade record. The fast book is invisible")
+    print("   by construction, so what you can copy is selected on being slow.")
+
+    print("\n" + "=" * 78)
+    print("4. The A/B - clone the holdings, keyed two ways")
+    print("=" * 78)
+    tab = run_ab()
+    print("   Weight-clone the disclosed longs for 63 trading days, short the equal-weight")
+    print("   universe, entered at the CLOSE of the key day.")
+    print(f"   {'key':<20}{'sharpe':>9}{'ann ret':>10}{'ann vol':>10}"
+          f"{'honest/this':>13}")
+    for k in ("quarter-end date", "filing date"):
+        r = tab.loc[k]
+        print(f"   {k:<20}{r['sharpe']:>9.3f}{r['ann_return']:>10.2%}"
+              f"{r['ann_vol']:>10.2%}{r['retained']:>13.1%}")
+    print(f"   Sharpe gap: {tab.loc['quarter-end date', 'sharpe_gap']:.3f}")
+    print("   The quarter-end key is a LOOK-AHEAD: nobody had that table on 31 December.")
+    sw = ab_over_seeds(n_seeds=24)
+    print(f"\n   Over 24 seeds:")
+    print(f"   {'':<14}{'mean':>9}{'sd':>8}{'p05':>8}{'p95':>8}{'> 0':>8}")
+    for k in ("quarter_end", "filing", "gap"):
+        r = sw.loc[k]
+        print(f"   {k:<14}{r['mean']:>9.3f}{r['sd']:>8.3f}{r['p05']:>8.3f}"
+              f"{r['p95']:>8.3f}{r['positive']:>8.0%}")
+    print(f"   pooled retention {sw.attrs['pooled_retained']:.1%} of the look-ahead Sharpe.")
+    print("   Note the sd on the gap: at this alpha the A/B on ONE manager-panel does not")
+    print("   settle anything. Run it over seeds, or over managers, and report the spread.")
+
+    print("\n" + "=" * 78)
+    print("5. A 13F is not the manager's portfolio")
+    print("=" * 78)
+    re_ = reconstruction_error()
+    print(f"   True book: {SLEEVES['long_13f']:.0%} long 13F-visible equity, "
+          f"{abs(SLEEVES['short_equity']):.0%} short equity (FAQ Q41:")
+    print(f"   not reported), {SLEEVES['non_13f']:.0%} non-13F sleeve. The reconstruction "
+          f"is the long sleeve")
+    print("   alone at 100%, which is all the table contains. 40 managers.")
+    print(f"   {'':<22}{'mean':>9}{'sd':>8}{'p05':>8}{'p95':>8}")
+    for k in ("corr", "beta_true", "beta_reconstructed"):
+        r = re_.loc[k]
+        print(f"   {k:<22}{r['mean']:>9.3f}{r['sd']:>8.3f}{r['p05']:>8.3f}{r['p95']:>8.3f}")
+    for k in ("tracking_error", "vol_true", "vol_reconstructed"):
+        r = re_.loc[k]                      # annualised, so print them as percentages
+        print(f"   {k + ' (ann)':<22}{r['mean']:>9.1%}{r['sd']:>8.1%}"
+              f"{r['p05']:>8.1%}{r['p95']:>8.1%}")
+    print("   A correlation of 0.9 makes the clone look like a noisy copy. It is not: the")
+    print("   market beta is wrong by a third and the tracking error is in whole percent")
+    print("   per year. Reporting a 'manager's returns' off a 13F clone is reporting")
+    print("   someone else's book, and the error is a systematic exposure, not noise.")
+
+    print("\n" + "=" * 78)
+    print("6. Confidential treatment")
+    print("=" * 78)
+    n_ct = 20
+    ct = confidential_treatment(n_seeds=n_ct)
+    print("   Omit a share of positions from the public table and re-run the filing-date")
+    print(f"   clone. Two ways of choosing which - {n_ct} seeds, one panel per seed.\n")
+    print(f"   {'omitted':<10}{'top-conviction':>16}{'random':>10}{'se':>8}"
+          f"{'cost of selection':>20}")
+    for i in ct.index:
+        r = ct.loc[i]
+        print(f"   {i:<10}{r['top-conviction omitted']:>16.3f}"
+              f"{r['randomly omitted']:>10.3f}{r['se']:>8.3f}"
+              f"{r['cost_of_selection']:>20.3f}")
+    print("   The random column barely moves at any level; the top-conviction column falls")
+    print("   monotonically. It is not HOW MANY positions are withheld, it is WHICH - and")
+    print("   the filing tells you that some are, never which. Read the 'cost of selection'")
+    print("   against the standard error: below about 10% it is inside the noise here.")
+    print("   The request can run up to a year, so the amendment that finally reveals the")
+    print("   position arrives after the information in it is spent.")
+
+    print(f"\n   (total runtime {time.time() - t0:.1f}s)")
+    print("\nRule: key a 13F clone on the FILING date, report the full age distribution of"
+          " the positions rather than the 45-day deadline, and never call a long-only"
+          " reconstruction the manager's portfolio - shorts, non-US listings and everything"
+          " that is not an equity are absent by rule.")
+
+
+if __name__ == "__main__":
+    main()

@@ -12,7 +12,7 @@
     {
       "name": "fin-core",
       "source": "./plugins/fin-core",
-      "description": "US/global quant stack: market backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest. Data sourcing, vendor licensing and point-in-time joins moved to fin-market-data; install it alongside for anything that touches data.",
+      "description": "US/global quant stack: backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest. Data sourcing, vendor licensing and point-in-time joins moved to fin-market-data; install it alongside for anything that touches data.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
@@ -472,7 +472,12 @@
         "twitter",
         "point-in-time"
       ],
-      "skills": []
+      "skills": [
+        "./skills/congressional-trading-disclosures",
+        "./skills/insider-form-4",
+        "./skills/institutional-13f",
+        "./skills/social-and-influencer-feeds"
+      ]
     },
     {
       "name": "trading-skills",
