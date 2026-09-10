@@ -3,6 +3,7 @@
 Module -> owning skill:
 
     assert_causal                signal-construction
+    availability_clock           combining-data-sources
     benchmark_choice             execution-cost-analysis
     brinson_attribution          portfolio-and-risk
     cost_curve                   backtest-validation
@@ -19,6 +20,7 @@ Module -> owning skill:
     regime_methods               regime-detection
     research_history             multiple-testing-ledger
     result_manifest              research-integrity-guards
+    source_merge                 combining-data-sources
     spa_test                     backtest-validation
     survivorship_audit           research-integrity-guards
     trial_ledger                 backtest-validation
@@ -27,6 +29,7 @@ Module -> owning skill:
 
 __all__ = [
     'assert_causal',
+    'availability_clock',
     'benchmark_choice',
     'brinson_attribution',
     'cost_curve',
@@ -43,6 +46,7 @@ __all__ = [
     'regime_methods',
     'research_history',
     'result_manifest',
+    'source_merge',
     'spa_test',
     'survivorship_audit',
     'trial_ledger',

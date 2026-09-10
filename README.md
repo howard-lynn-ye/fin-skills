@@ -1,8 +1,8 @@
 # fin-skills — Agent Skills for Python quantitative finance
 
-**107 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
+**108 [Agent Skills](https://agentskills.io/specification) for Claude Code that tell an LLM which
 Python quant-finance library to use, what each one silently gets wrong, and whether a backtest
-result is real.** 83 domain skills, plus 24 optional per-library deep dives you install only if
+result is real.** 84 domain skills, plus 24 optional per-library deep dives you install only if
 you want them. Covers market data, SEC point-in-time fundamentals, backtesting engines, broker
 APIs, technical indicators, factor research, portfolio optimization, risk analytics, derivatives
 pricing, China A-shares, crypto, and the evidence on LLM trading agents.
@@ -62,7 +62,7 @@ from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 from fin_skills.core.option_lifecycle import crr                # a CRR tree, no QuantLib
 ```
 
-The same checks behind one interface — 31 guards that return a `GuardResult` instead of raising, and
+The same checks behind one interface — 32 guards that return a `GuardResult` instead of raising, and
 a typed `conventions` module (annualisation, risk-free, pip and liquidation arithmetic), the way
 PyOD puts its detectors behind one API. PyOD's uniformity comes from a
 uniform data container (every detector is `fit(X)`); here the container is a `Bundle` — the artefacts
@@ -160,6 +160,7 @@ default listing budget, so install deliberately. What was verified and what was 
 | `fin-core` | [`backtest-validation`](plugins/fin-core/skills/backtest-validation/SKILL.md) | Decide whether a result survives the number of things you tried. | 3 | 3 |
 | `fin-core` | [`backtesting-engines`](plugins/fin-core/skills/backtesting-engines/SKILL.md) | Choose a backtesting engine and know what it silently models wrong. | 6 | 0 |
 | `fin-core` | [`broker-execution-apis`](plugins/fin-core/skills/broker-execution-apis/SKILL.md) | Connect to a broker and place orders without accidentally trading live money. | 4 | 1 |
+| `fin-core` | [`combining-data-sources`](plugins/fin-core/skills/combining-data-sources/SKILL.md) | Combine information of DIFFERENT kinds into one research view whose every number can be traced back to what was knowable when. | 0 | 2 |
 | `fin-core` | [`derivatives-pricing`](plugins/fin-core/skills/derivatives-pricing/SKILL.md) | Choose a derivatives pricing library and get its Greek units and conventions right. | 4 | 1 |
 | `fin-core` | [`etf-mechanics`](plugins/fin-core/skills/etf-mechanics/SKILL.md) | Why an ETF's price series does not behave like the index it tracks - daily-reset leverage, NAV vs price, distributions, holdings files and fees. | 0 | 1 |
 | `fin-core` | [`execution-cost-analysis`](plugins/fin-core/skills/execution-cost-analysis/SKILL.md) | Measure what your execution actually cost instead of assuming a number - implementation shortfall, benchmark choice, impact models, and the gap between the cost you assumed and the | 0 | 2 |
