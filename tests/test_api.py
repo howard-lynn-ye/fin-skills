@@ -69,7 +69,7 @@ def build_safe_asof() -> dict:
 
 
 def build_adjustment_check() -> dict:
-    from fin_skills.core.adjustment_check import _synthetic
+    from fin_skills.market_data.adjustment_check import _synthetic
     raw, back, fwd, splits = _synthetic()
     return {"clean": dict(close=back, actions=splits),
             "defect": dict(close=raw, actions=splits),                    # unadjusted split
@@ -77,7 +77,7 @@ def build_adjustment_check() -> dict:
 
 
 def build_reconcile_sources() -> dict:
-    from fin_skills.core.adjustment_check import _synthetic
+    from fin_skills.market_data.adjustment_check import _synthetic
     raw, back, fwd, splits = _synthetic()
     corrupt = back.copy()
     corrupt.iloc[400] *= 1.35
@@ -107,7 +107,7 @@ def build_pit_universe() -> dict:
 
 
 def build_pit_fundamentals() -> dict:
-    from fin_skills.core.pit_fundamentals import DEMO_FACTS, naive_latest, pit_facts
+    from fin_skills.market_data.pit_fundamentals import DEMO_FACTS, naive_latest, pit_facts
     as_of = "2023-01-15"
     return {"clean": dict(facts=DEMO_FACTS, as_of=as_of, used=pit_facts(DEMO_FACTS, as_of)),
             "defect": dict(facts=DEMO_FACTS, as_of=as_of, used=naive_latest(DEMO_FACTS))}

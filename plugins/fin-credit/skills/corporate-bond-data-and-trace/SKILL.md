@@ -200,10 +200,10 @@ their source, the tape is synthetic and seeded (`SEED = 20260909`).
   stale 15-minute bond print shows up as fake basis.
 - `../ratings-transitions-and-migration/SKILL.md` — the rating decides which dissemination cap
   applies, so §3's cross-sectional distortion is indexed by rating.
-- `../../../fin-core/skills/market-data-sourcing/SKILL.md` — vendor choice, keys and coverage.
+- `../../../fin-market-data/skills/market-data-sourcing/SKILL.md` — vendor choice, keys and coverage.
   FRED's ICE BofA series (`BAMLC0A0CM`, `BAMLH0A0HYM2`) are index-level and free; TRACE
   historic/academic files and WRDS are the trade-level routes.
-- `../../../fin-core/skills/intraday-microstructure/SKILL.md` — the equity-tape versions of the
+- `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` — the equity-tape versions of the
   same problems (bid-ask bounce, trade signing, timestamp alignment). Bonds differ mainly in
   that the tape is delayed and the size is censored.
 - `../../../fin-core/skills/execution-cost-analysis/SKILL.md` — benchmarking a fill against a

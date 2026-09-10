@@ -27,16 +27,10 @@
         "./skills/backtest-validation",
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
-        "./skills/choosing-a-data-vendor",
         "./skills/derivatives-pricing",
         "./skills/etf-mechanics",
         "./skills/execution-cost-analysis",
         "./skills/external-skill-index",
-        "./skills/factor-and-timeseries-research",
-        "./skills/fundamental-and-macro-data",
-        "./skills/intraday-microstructure",
-        "./skills/market-data-engineering",
-        "./skills/market-data-sourcing",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
         "./skills/pre-trade-checks",
@@ -45,6 +39,35 @@
         "./skills/research-integrity-guards",
         "./skills/signal-construction",
         "./skills/us-market-rules"
+      ]
+    },
+    {
+      "name": "fin-market-data",
+      "source": "./plugins/fin-market-data",
+      "description": "Getting market data and getting it right - which vendor can actually serve what you need and whether its licence lets you keep it, where prices, fundamentals and macro series come from and what each source silently gets wrong, and how to store, adjust and join them without manufacturing a look-ahead. Split out of fin-core so both stay inside the skill-listing budget; install it alongside fin-core for anything that touches data.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "market-data",
+        "data-vendor",
+        "yfinance",
+        "point-in-time",
+        "corporate-actions",
+        "adjustment",
+        "as-of-join",
+        "survivorship",
+        "fundamentals",
+        "macro",
+        "fred",
+        "edgar",
+        "sec",
+        "licensing"
+      ],
+      "skills": [
+        "./skills/choosing-a-data-vendor",
+        "./skills/fundamental-and-macro-data",
+        "./skills/market-data-engineering",
+        "./skills/market-data-sourcing"
       ]
     },
     {
@@ -210,6 +233,7 @@
       "skills": [
         "./skills/covariance-and-risk-models",
         "./skills/credit-risk-models",
+        "./skills/factor-and-timeseries-research",
         "./skills/factor-models",
         "./skills/implied-vol-surface",
         "./skills/option-pricing-models",
@@ -302,6 +326,7 @@
       "skills": [
         "./skills/copulas-and-dependence",
         "./skills/hawkes-processes",
+        "./skills/intraday-microstructure",
         "./skills/limit-order-book-models",
         "./skills/monte-carlo-methods"
       ]

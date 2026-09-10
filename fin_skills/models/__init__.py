@@ -4,6 +4,7 @@ Module -> owning skill:
 
     cointegration                stat-arb-cointegration
     credit_models                credit-risk-models
+    event_study                  factor-and-timeseries-research
     factor_regression            factor-models
     forecast_baselines           time-series-forecasting-models
     kalman_models                state-space-and-kalman
@@ -19,6 +20,7 @@ Module -> owning skill:
 __all__ = [
     'cointegration',
     'credit_models',
+    'event_study',
     'factor_regression',
     'forecast_baselines',
     'kalman_models',

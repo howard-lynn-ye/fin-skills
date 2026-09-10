@@ -187,7 +187,7 @@ apply it in both places.
 - 🚨 **The barrier is checked on the close, but you would have been stopped intrabar.** This
   script — and the book's snippet — scan closes. A real stop is a resting order against the low or
   the high, so the true touch is earlier and worse than what closes report.
-  `../../../fin-core/skills/intraday-microstructure/SKILL.md` owns the bar-versus-tick question.
+  `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` owns the bar-versus-tick question.
 - ⚠️ **Accuracy on triple-barrier labels is still not profit.** The classes are unbalanced by
   construction (section 5), and each event's return is a different size. Score with the
   return-weighted metrics and the barrier returns, not with `accuracy_score`.

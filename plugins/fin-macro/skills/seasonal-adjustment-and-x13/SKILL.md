@@ -239,4 +239,4 @@ degrades gracefully without it or without the Census binary.
 - Decomposition and forecasting tools in general —
   `../../../fin-models/skills/time-series-forecasting-models/SKILL.md`.
 - Where the SA and NSA series come from —
-  `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`.
+  `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`.

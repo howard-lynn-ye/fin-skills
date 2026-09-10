@@ -199,13 +199,13 @@ trading it.
 - 🚨 **Prices, not returns, and no adjustment mismatch.** Cointegration is a statement about
   *levels*, so the two price series must be on the same adjustment convention over the whole
   window. A dividend adjustment applied to one leg and not the other manufactures a trend in the
-  spread — see `../../../fin-core/skills/market-data-engineering/SKILL.md`.
+  spread — see `../../../fin-market-data/skills/market-data-engineering/SKILL.md`.
 - ⚠️ **Two legs, two spreads, two borrow costs.** Everything above is gross. A 13-day half-life
   with entry at 2 sigma trades often enough that costs decide the answer;
   `../../../fin-core/skills/execution-cost-analysis/SKILL.md` owns that, and the pair's short
   leg has a borrow rate that is not in any price file.
 - ⚠️ **Survivorship in the universe.** Screening today's listed names over five years of history
-  finds pairs among the companies that survived. `../../../fin-core/skills/market-data-sourcing/SKILL.md`
+  finds pairs among the companies that survived. `../../../fin-market-data/skills/market-data-sourcing/SKILL.md`
   and `../../../fin-core/skills/research-integrity-guards/SKILL.md` own that.
 - 🚨 **Causality of the signal itself.** `z[t]` must be computed from data through `t` and earn
   `t -> t+1`; the script's `spread_pnl` enforces exactly that. Check yours with

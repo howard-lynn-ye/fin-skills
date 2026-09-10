@@ -1,10 +1,10 @@
-"""fin_skills.core.pit_fundamentals - the value that was actually KNOWN on a past date."""
+"""fin_skills.market_data.pit_fundamentals - the value that was actually KNOWN on a past date."""
 from __future__ import annotations
 
 import pandas as pd
 import pytest
 
-from fin_skills.core.pit_fundamentals import (DEMO_FACTS, available_at, facts_to_frame,
+from fin_skills.market_data.pit_fundamentals import (DEMO_FACTS, available_at, facts_to_frame,
                                               naive_latest, pit_facts, restatement_report)
 
 Q3 = "2022-07-01..2022-09-30"
@@ -75,5 +75,5 @@ def test_explicit_session_calendar_skips_holidays():
 
 
 def test_demo_prints_the_gap(run_main):
-    out = run_main("fin_skills.core.pit_fundamentals")
+    out = run_main("fin_skills.market_data.pit_fundamentals")
     assert "days AFTER the as-of date" in out

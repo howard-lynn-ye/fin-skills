@@ -5,7 +5,7 @@ from typing import Any, Callable, Sequence
 
 from fin_skills.api.base import Guard, Outcome, register
 from fin_skills.api.guards._common import require_callable
-from fin_skills.core.fold_leak_test import assert_folds_independent, find_shared_state
+from fin_skills.market_data.fold_leak_test import assert_folds_independent, find_shared_state
 
 
 @register
@@ -30,8 +30,8 @@ class FoldLeakGuard(Guard):
     name = "fold_leak_test"
     skill = "market-data-engineering"
     summary = "Detects state shared across walk-forward folds: re-run equivalence plus a closure scan."
-    wraps = ("fin_skills.core.fold_leak_test.assert_folds_independent",
-             "fin_skills.core.fold_leak_test.find_shared_state")
+    wraps = ("fin_skills.market_data.fold_leak_test.assert_folds_independent",
+             "fin_skills.market_data.fold_leak_test.find_shared_state")
     required = ("run_fold", "folds")
     optional = ("config", "tol", "workers", "seed")
 

@@ -1,4 +1,4 @@
-"""fin_skills.core.event_study - market-model event study with BMP standardisation.
+"""fin_skills.models.event_study - market-model event study with BMP standardisation.
 
 The documented result: statistics whose denominator comes from the estimation window
 (Patell, classic Corrado) over-reject when the event itself moves volatility; the
@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from fin_skills.core.event_study import (_car_prediction_sd, _market_model, _run,
+from fin_skills.models.event_study import (_car_prediction_sd, _market_model, _run,
                                          _synthetic_events, bmp_test, corrado_rank_test,
                                          corrado_rank_test_classic, event_study,
                                          generalized_sign_test, naive_cross_sectional_test,
@@ -137,6 +137,6 @@ def test_events_with_missing_data_are_dropped_and_counted():
 
 @pytest.mark.slow
 def test_demo_runs_300_null_replications_and_reports_the_rates(run_main):
-    out = run_main("fin_skills.core.event_study")
+    out = run_main("fin_skills.models.event_study")
     assert "OVER-REJECTS - do not use" in out
     assert "the raw cross-sectional t-test is correctly sized" in out

@@ -171,7 +171,7 @@ propagates into anything built on counts:
 
 - **activity bars** — tick, volume and dollar bars all threshold a count, so bars per day
   fluctuates far more than a Poisson intuition suggests.
-  `../../../fin-core/skills/intraday-microstructure/SKILL.md` §1 measures 209–831 bars/day from
+  `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` §1 measures 209–831 bars/day from
   one fixed threshold; this is the mechanism.
 - **arrival-rate and trade-count volatility proxies** — the estimator is fine, the error bar is
   not.
@@ -207,7 +207,7 @@ likelihood; everything else costs a rewrite.
 
 - `../limit-order-book-models/SKILL.md` — the queueing model whose arrivals are Poisson. This
   skill is the measurement of how wrong that is, and the branching ratio is the size of it.
-- `../../../fin-core/skills/intraday-microstructure/SKILL.md` — measuring activity on a real
+- `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` — measuring activity on a real
   tape: bar construction, trade classification, order-flow imbalance, VPIN. §1's bars-per-day
   spread is §5's over-dispersion.
 - `../../../fin-models/skills/volatility-models/SKILL.md` — clustering in *returns* (GARCH and

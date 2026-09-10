@@ -25,7 +25,7 @@ metadata:
 the one on the numbers that were actually on the wire.** They are different objects. The first
 is a study of a series that did not exist; the second is a strategy.
 
-`../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` owns where the series come from
+`../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` owns where the series come from
 — FRED/ALFRED, the Philadelphia Fed RTDSM, the three verified `fredapi` 0.5.2 bugs, the SDMX
 licence table. This skill starts one step later: you have the vintages, now what does the A/B
 measure, and which of the two look-aheads is actually costing you.
@@ -105,7 +105,7 @@ the one nobody uses because the wrapper does not surface it.
 |---|---|---|
 | **BLS CES vintage data**, `bls.gov/web/empsit/cesvininfo.htm` | *"the CES published employment values for a given reference month across time"* — SA Excel per supersector, SA and NSA CSV for detailed industries. *"Total nonfarm has reference months available back to 1939"* | read 2026-09-09 |
 | BLS CES benchmark article | the annual benchmark, month by month (§1) | read 2026-09-09 |
-| Philadelphia Fed RTDSM | 244-vintage matrices back to 1965Q4 | ⚠️ taken from `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` §5, which owns it — not re-verified here |
+| Philadelphia Fed RTDSM | 244-vintage matrices back to 1965Q4 | ⚠️ taken from `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` §5, which owns it — not re-verified here |
 
 ✅ source-verified on the CES vintage page: *"CES estimates are subject to revisions for up to 2
 months from their original publication due to ongoing receipt of sample data."* That is the
@@ -220,7 +220,7 @@ and the scaling, not the decimals.
   by 39k on average and can flip its sign. First-to-final is 1.43x first-to-third here.
 - 🚨 **A vintage panel with no gaps is not a vintage panel.** Real ALFRED series have reference
   periods with one vintage and periods with twenty. Absence is data; do not forward-fill across
-  a release that never happened. `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`
+  a release that never happened. `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`
   §5 has the forward-fill-from-release rule.
 - ⚠️ **Not every FRED series has vintages.** ALFRED coverage is per-series. Check before you
   design a study around it; the fallback is the agency's own vintage files (§2).
@@ -236,10 +236,10 @@ synthetic nested-sample vintage panel and its calibration check, `as_of()` / `fi
 revision-size x window grid. numpy + pandas, seed 20260909, about 11 s, no network.
 
 - Where the series come from, the `fredapi` 0.5.2 bugs, the Philly Fed RTDSM, forward-fill from
-  the release date — `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`.
+  the release date — `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`.
 - The same discipline for company fundamentals, and the availability rule in general —
   `../../../fin-core/skills/research-integrity-guards/SKILL.md` §2 and its
-  `../../../fin-core/skills/fundamental-and-macro-data/scripts/pit_fundamentals.py`.
+  `../../../fin-market-data/skills/fundamental-and-macro-data/scripts/pit_fundamentals.py`.
 - **When** a number becomes tradeable, to the minute, and what changed in 2018 and 2020 —
   `../macro-release-calendar-and-embargo/SKILL.md`. The A/B needs a release timestamp; that
   skill builds it.

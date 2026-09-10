@@ -248,7 +248,7 @@ targeting, and every table above. numpy + pandas, seed 20260908, under 2 s.
   `../../../fin-core/skills/signal-construction/scripts/warmup_probe.py`, which §5 extends
   rather than repeats.
 - Cross-sectional ranking, IC, and factor tests —
-  `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md`.
+  `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md`.
 - Combining this signal with others, and neutralizing it —
   `../alpha-combination-and-neutralization/SKILL.md`.
 - How large the position should be given the edge — `../position-sizing-kelly/SKILL.md`.

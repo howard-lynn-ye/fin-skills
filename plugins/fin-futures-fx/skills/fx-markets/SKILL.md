@@ -114,10 +114,10 @@ those are different instruments with different prices.
 
 🔑 **Free tick-level FX exists**: DukasCopy via `findatapy` (`freq='tick'`, `fields=['bid','ask']`)
 is the only free tick source in this catalogue —
-see `../../../fin-core/skills/market-data-sourcing/references/findatapy.md`.
+see `../../../fin-market-data/skills/market-data-sourcing/references/findatapy.md`.
 
 For point-in-time interest rates to compute carry honestly, use FRED/ALFRED vintages
-(`../../../fin-core/skills/fundamental-and-macro-data/references/fredapi.md`) — policy rates are
+(`../../../fin-market-data/skills/fundamental-and-macro-data/references/fredapi.md`) — policy rates are
 revised and republished, and using today's rate history to compute yesterday's carry is the same
 look-ahead as any other macro series.
 

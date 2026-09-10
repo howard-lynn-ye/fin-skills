@@ -242,7 +242,7 @@ description.
   and `financepy` is GPL-3.0; QuantLib is the permissive route for CDS.
 - `../../../fin-core/skills/portfolio-and-risk/SKILL.md` — portfolio credit, correlation and
   capital. This skill is one name at a time.
-- `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` — where the equity value, the
+- `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` — where the equity value, the
   debt face value and the spread quotes come from, and their point-in-time behaviour. A Merton PD
   computed from a restated balance sheet is a backtest artefact.
 - `../option-pricing-models/SKILL.md` — Merton's equity call is a Black-Scholes option, so

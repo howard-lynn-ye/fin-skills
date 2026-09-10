@@ -178,7 +178,7 @@ is ten trials: use `arch.bootstrap`'s SPA, StepM or MCS instead — those take *
   (`error="add"` by default); the two are different implementations of overlapping models.
 - ⚠️ `sktime`, `statsforecast`, `pmdarima`, `darts`, `prophet` and `neuralforecast` are **not
   installed here** and nothing about them was checked.
-  `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` chooses between them and
+  `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` chooses between them and
   carries the verified leakage findings in their CV splitters.
 
 ## 6. What the M4 and M5 competitions actually say
@@ -265,7 +265,7 @@ about the difficulty of the target rather than about any architecture.
 `../volatility-models/SKILL.md` owns forecasting *variance* (and HAR-RV, which is the baseline
 there). `../stat-arb-cointegration/SKILL.md` owns unit roots and stationarity testing between
 two series. `../state-space-and-kalman/SKILL.md` owns latent-state models and their
-filtered-vs-smoothed rule. `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md`
+filtered-vs-smoothed rule. `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md`
 chooses the library and carries the foundation-model evidence.
 `../../../fin-core/skills/backtest-validation/SKILL.md` corrects across many models.
 `../../../fin-libraries/skills/lib-arch/SKILL.md` owns `arch.bootstrap`'s SPA / StepM / MCS.

@@ -1,11 +1,11 @@
-"""fin_skills.core.safe_asof - the as-of join with the defaults inverted and invariants asserted."""
+"""fin_skills.market_data.safe_asof - the as-of join with the defaults inverted and invariants asserted."""
 from __future__ import annotations
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from fin_skills.core.safe_asof import (RIGHT_TS_COL, assert_row_count_preserved,
+from fin_skills.market_data.safe_asof import (RIGHT_TS_COL, assert_row_count_preserved,
                                        assert_strictly_prior, check_key_dtypes,
                                        safe_merge_asof)
 
@@ -129,5 +129,5 @@ def test_assert_strictly_prior_catches_a_hand_built_lookahead():
 
 
 def test_demo_prints_its_closing_rule(run_main):
-    out = run_main("fin_skills.core.safe_asof")
+    out = run_main("fin_skills.market_data.safe_asof")
     assert "Four defaults, four leaks" in out

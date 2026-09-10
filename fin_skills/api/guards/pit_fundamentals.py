@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from fin_skills.api.base import Guard, Outcome, register
-from fin_skills.core.pit_fundamentals import naive_latest, pit_facts, restatement_report
+from fin_skills.market_data.pit_fundamentals import naive_latest, pit_facts, restatement_report
 
 
 def _as_period_values(used: Any) -> pd.Series:
@@ -44,9 +44,9 @@ class PitFundamentalsGuard(Guard):
     name = "pit_fundamentals"
     skill = "fundamental-and-macro-data"
     summary = "Catches fundamentals taken from a restatement filed after the as-of date."
-    wraps = ("fin_skills.core.pit_fundamentals.pit_facts",
-             "fin_skills.core.pit_fundamentals.naive_latest",
-             "fin_skills.core.pit_fundamentals.restatement_report")
+    wraps = ("fin_skills.market_data.pit_fundamentals.pit_facts",
+             "fin_skills.market_data.pit_fundamentals.naive_latest",
+             "fin_skills.market_data.pit_fundamentals.restatement_report")
     required = ("facts", "as_of")
     optional = ("used", "forms")
 

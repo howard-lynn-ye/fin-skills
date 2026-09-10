@@ -1,11 +1,11 @@
-"""fin_skills.core.adjustment_check - raw / back- / forward-adjusted detection and reconciliation."""
+"""fin_skills.market_data.adjustment_check - raw / back- / forward-adjusted detection and reconciliation."""
 from __future__ import annotations
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from fin_skills.core.adjustment_check import (_synthetic, detect_convention,
+from fin_skills.market_data.adjustment_check import (_synthetic, detect_convention,
                                               detect_convention_from_vintages, reconcile,
                                               reconcile_report)
 
@@ -108,5 +108,5 @@ def test_report_carries_the_verdict(variants):
 
 
 def test_demo_runs_and_states_the_conclusion(run_main):
-    out = run_main("fin_skills.core.adjustment_check")
+    out = run_main("fin_skills.market_data.adjustment_check")
     assert "Same tool, three answers" in out

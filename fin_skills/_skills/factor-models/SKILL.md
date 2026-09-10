@@ -236,7 +236,7 @@ themselves; read the first rows of your own download and confirm before you divi
 
 ## 8. Where this sits
 
-`../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` owns scoring a single alpha
+`../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` owns scoring a single alpha
 signal (alphalens, IC, decay, turnover) and volatility forecasting;
 `../../../fin-core/skills/backtest-validation/SKILL.md` counts the specifications;
 `../../../fin-core/skills/research-integrity-guards/SKILL.md` owns point-in-time universes and the

@@ -261,7 +261,7 @@ dominated by the few largest days, and a forecast can win it by being conservati
 ## 7. Where this sits
 
 `../../../fin-libraries/skills/lib-arch/SKILL.md` is the deep dive on the package (API, licence,
-the bootstrap half). `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` chooses
+the bootstrap half). `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` chooses
 between forecasting libraries and carries the foundation-model evidence.
 `../../../fin-core/skills/regime-detection/SKILL.md` owns discrete vol *states* and the
 smoothed-vs-filtered timing lesson. `../state-space-and-kalman/SKILL.md` is the other

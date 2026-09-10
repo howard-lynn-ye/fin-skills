@@ -20,7 +20,7 @@ class Panel:
 
     FIELDS = ("open", "high", "low", "close", "volume")
     ADJUSTMENTS = ("raw", "back", "forward", "raw+factors")
-    # this field -> the convention name fin_skills.core.adjustment_check reports
+    # this field -> the convention name fin_skills.market_data.adjustment_check reports
     DETECTED_AS = {"raw": "raw", "raw+factors": "raw",
                    "back": "back-adjusted", "forward": "forward-adjusted"}
 

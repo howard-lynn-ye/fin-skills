@@ -135,8 +135,8 @@ exactly, so the demonstration still runs on a machine without `arch`.
 ## See also
 
 - `../../../fin-core/skills/backtest-validation/SKILL.md` — the domain skill for the `arch.bootstrap` half
-- `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` — the domain skill for the GARCH half
-- `../../../fin-core/skills/factor-and-timeseries-research/references/arch.md` — the source card
+- `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` — the domain skill for the GARCH half
+- `../../../fin-models/skills/factor-and-timeseries-research/references/arch.md` — the source card
 - `../../../fin-core/skills/backtest-validation/references/significance-tests.md` — which test answers which question
 
 ## Where this sits

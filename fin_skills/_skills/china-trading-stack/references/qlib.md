@@ -117,4 +117,4 @@ df = handler.fetch()                      # plain DataFrame → sklearn / LightG
 - Live execution of what you research here: `vnpy.md`
 - Feeding it real Chinese data: `../../china-ashare-data/SKILL.md`
 - Alpha158 as one of several factor libraries:
-  `../../../../fin-core/skills/factor-and-timeseries-research/references/alpha-factor-libraries.md`
+  `../../../../fin-models/skills/factor-and-timeseries-research/references/alpha-factor-libraries.md`

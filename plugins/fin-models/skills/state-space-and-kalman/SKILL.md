@@ -231,5 +231,5 @@ where a time-varying hedge ratio usually ends up — as the spread of a pair —
 cointegration tests and the z-score rules. `../volatility-models/SKILL.md` is the other latent
 state in this plugin. `../../../fin-core/skills/signal-construction/SKILL.md` owns
 `assert_causal` and `warmup_probe`. `../../../fin-core/skills/backtest-validation/SKILL.md`
-counts `q` as a trial. `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` owns
+counts `q` as a trial. `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` owns
 factor betas estimated by regression rather than by filter.

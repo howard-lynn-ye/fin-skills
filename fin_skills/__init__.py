@@ -8,7 +8,7 @@ Two ways in:
     fin_skills.references("options-backtesting")  # {filename: text} for its references/
     fin_skills.find("survivorship")               # skills whose SKILL.md text mentions it
 
-    from fin_skills.core.safe_asof import safe_asof             # the executable guards
+    from fin_skills.market_data.safe_asof import safe_asof             # the executable guards
     from fin_skills.core.assert_causal import assert_causal
     from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 

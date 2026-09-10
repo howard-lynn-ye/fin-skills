@@ -255,6 +255,6 @@ threshold-tolerance sweep, and the inversion record. numpy + pandas + scipy, see
 - Nowcasting the quarter you are in — `../gdp-nowcasting-dynamic-factor/SKILL.md`.
 - When the underlying prints land — `../macro-release-calendar-and-embargo/SKILL.md`.
 - Where `USREC`, `SAHMREALTIME` and `T10Y3M` come from —
-  `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`.
+  `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`.
 - Whether a regime-conditional result survives its own sample —
   `../../../fin-core/skills/regime-detection/scripts/regime_coverage.py`.

@@ -116,13 +116,13 @@ print(fred.get_series_vintage_dates('GDP')[:5])
 
 ## See also
 
-- `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` §5 — macro vintages
-- `../../../fin-core/skills/fundamental-and-macro-data/references/fredapi.md` — the reference card
+- `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` §5 — macro vintages
+- `../../../fin-market-data/skills/fundamental-and-macro-data/references/fredapi.md` — the reference card
 - `../lib-edgartools/SKILL.md` — the point-in-time source for company fundamentals
 
 ## Where this sits
 
 This file is the deep dive on **one** library and assumes the choice is already made.
 For which library to pick, how it compares with the alternatives, and the traps that span
-several of them, the entry point is the domain skill **`fundamental-and-macro-data`** (`../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`).
+several of them, the entry point is the domain skill **`fundamental-and-macro-data`** (`../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`).
 

@@ -166,7 +166,7 @@ Also checked: `TheFinAI/FinBen` → 404 (the org is `The-FinAI`); `The-FinAI/Age
   inside their declared warm-up** (open). Treat the alpha library as unverified. Its own
   2026-09-08 fix (#1387): an announcement date carries no time of day, so on an intraday frame a
   filing was visible from the first bar of its own day — the same availability bug as
-  `../../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` §2.
+  `../../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` §2.
 
 ### RD-Agent — `microsoft/RD-Agent` (R&D-Agent-Quant, NeurIPS 2025, arXiv 2505.15155)
 

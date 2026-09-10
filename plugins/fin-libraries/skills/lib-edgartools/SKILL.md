@@ -109,10 +109,10 @@ c.get_facts().query().by_concept("Revenues").to_dataframe()
 
 ## See also
 
-- `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` — the point-in-time join rules
-- `../../../fin-core/skills/fundamental-and-macro-data/references/edgartools.md` — the verified
+- `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` — the point-in-time join rules
+- `../../../fin-market-data/skills/fundamental-and-macro-data/references/edgartools.md` — the verified
   reference card
-- `../../../fin-core/skills/fundamental-and-macro-data/references/sec-edgar.md` — raw endpoints, the
+- `../../../fin-market-data/skills/fundamental-and-macro-data/references/sec-edgar.md` — raw endpoints, the
   10 req/s limit, the frames `I`-suffix trap, and the DERA bulk ZIPs
 - `../lib-fredapi/SKILL.md` — macro series and their vintages
 
@@ -120,5 +120,5 @@ c.get_facts().query().by_concept("Revenues").to_dataframe()
 
 This file is the deep dive on **one** library and assumes the choice is already made.
 For which library to pick, how it compares with the alternatives, and the traps that span
-several of them, the entry point is the domain skill **`fundamental-and-macro-data`** (`../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`).
+several of them, the entry point is the domain skill **`fundamental-and-macro-data`** (`../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`).
 

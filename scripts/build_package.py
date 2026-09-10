@@ -5,7 +5,7 @@ The skills are the source of truth and stay self-contained under plugins/. This 
 copies each skill script to an importable module and each SKILL.md (plus references/) to
 package data, so the same knowledge can be reached two ways:
 
-    from fin_skills.core.safe_asof import safe_asof      # the executable guards
+    from fin_skills.market_data.safe_asof import safe_asof      # the executable guards
     fin_skills.load("backtest-validation")               # the SKILL.md text
 
 Layout produced:

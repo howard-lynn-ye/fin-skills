@@ -256,7 +256,7 @@ shortfall decomposition. numpy + pandas, seed 20260909, 2 s.
 - Measuring fills you already have, benchmark choice, the reversion test, what to log —
   `../../../fin-core/skills/execution-cost-analysis/SKILL.md`.
 - Spreads, trade classification, order-flow imbalance and the bar-timestamp leak —
-  `../../../fin-core/skills/intraday-microstructure/SKILL.md`.
+  `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md`.
 - Quoting instead of taking, and the inventory problem —
   `../market-making-models/SKILL.md`.
 - Order types, routing and not sending this to a live account —

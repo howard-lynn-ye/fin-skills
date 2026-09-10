@@ -214,6 +214,6 @@ function`, because the clean/dirty flag is part of the type: pass
 - `../../../fin-libraries/skills/lib-quantlib/SKILL.md` — 🚨
   `Settings.instance().evaluationDate` is a global and a stale one gives **NPV exactly 0.0**;
   §6 sets it before building any curve. Also `BondPrice`, `DiscountCurve` and `BondFunctions`.
-- `../../../fin-core/skills/market-data-sourcing/SKILL.md` — the FRED ICE BofA OAS series
+- `../../../fin-market-data/skills/market-data-sourcing/SKILL.md` — the FRED ICE BofA OAS series
   (`BAMLC0A0CM` and friends) are **index** OAS: option-adjusted, market-value weighted, and not
   comparable to a single bond's G-spread.

@@ -1,4 +1,4 @@
-"""fin_skills.core.vendor_decision - the three flags, and the snapshot that cannot drift.
+"""fin_skills.market_data.vendor_decision - the three flags, and the snapshot that cannot drift.
 
 The script carries a dated copy of each source's decisive flags so it runs offline on a
 bare install. A copy is a liability unless something checks it, so the test that matters
@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from fin_skills.core.vendor_decision import (REQUESTS, SNAPSHOT, answer, cross_check,
+from fin_skills.market_data.vendor_decision import (REQUESTS, SNAPSHOT, answer, cross_check,
                                              serves)
 from fin_skills.data import declare
 from fin_skills.data.advise import COVERAGE, Need, recommend
@@ -85,7 +85,7 @@ def test_every_snapshot_row_names_where_it_was_verified():
 
 
 def test_the_demo_runs_and_prints_its_takeaway(run_main):
-    out = run_main("fin_skills.core.vendor_decision")
+    out = run_main("fin_skills.market_data.vendor_decision")
     assert out.isascii(), "it must survive a stock Windows console"
     assert "TAKEAWAY" in out
     assert "refused on includes_delisted=False: 4" in out

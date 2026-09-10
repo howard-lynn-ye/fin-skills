@@ -236,5 +236,5 @@ past their last release; check them before depending on them.
 - **`banking-regulatory`** (federated pack in `.claude-plugin/marketplace.json`) — regulatory PD
   floors, through-the-cycle versus point-in-time calibration, and IRB risk weights. ⚠️ Not
   verified by this repo. This skill deliberately stops at the estimator.
-- `../../../fin-core/skills/market-data-sourcing/SKILL.md` — where the matrices come from: the
+- `../../../fin-market-data/skills/market-data-sourcing/SKILL.md` — where the matrices come from: the
   agencies' annual default studies are free PDFs, issuer-level rating histories are not.

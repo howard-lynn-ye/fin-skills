@@ -1,4 +1,4 @@
-"""fin_skills.core.microstructure_measures - estimators scored on streams with planted answers.
+"""fin_skills.microstructure.microstructure_measures - estimators scored on streams with planted answers.
 
 The full demo (four parts on a 10-session book and a 40-session trade stream) takes
 10-20 s and is marked slow; the invariants it relies on are checked on one session.
@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from fin_skills.core import microstructure_measures as mm
+from fin_skills.microstructure import microstructure_measures as mm
 
 
 def test_tick_rule_and_prevailing_quote_conventions():
@@ -100,7 +100,7 @@ def test_classification_rules_agree_with_the_truth_far_above_chance(book):
 
 @pytest.mark.slow
 def test_demo_runs_all_four_parts_and_states_the_rule(run_main):
-    out = run_main("fin_skills.core.microstructure_measures")
+    out = run_main("fin_skills.microstructure.microstructure_measures")
     for part in ("PART 1", "PART 2", "PART 3", "PART 4"):
         assert part in out
     assert "Rule: score every microstructure estimator on data where you planted the answer" in out

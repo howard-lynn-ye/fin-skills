@@ -7,7 +7,7 @@ import pandas as pd
 
 from fin_skills.api.base import Guard, Outcome, register
 from fin_skills.api.guards._common import require_series
-from fin_skills.core.adjustment_check import reconcile, reconcile_report
+from fin_skills.market_data.adjustment_check import reconcile, reconcile_report
 
 
 @register
@@ -30,8 +30,8 @@ class ReconcileSourcesGuard(Guard):
     name = "reconcile_sources"
     skill = "market-data-sourcing"
     summary = "Attributes every divergence between two price sources to a convention, an action, or a data error."
-    wraps = ("fin_skills.core.adjustment_check.reconcile",
-             "fin_skills.core.adjustment_check.reconcile_report")
+    wraps = ("fin_skills.market_data.adjustment_check.reconcile",
+             "fin_skills.market_data.adjustment_check.reconcile_report")
     required = ("close", "other")
     optional = ("actions", "tol_bps", "window_days")
 

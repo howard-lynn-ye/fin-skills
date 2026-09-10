@@ -9,7 +9,7 @@ arithmetic, and the adjustment convention becomes a choice of ANCHOR, not of for
     forward  anchored at the START - prices at and after each action are multiplied up,
              so stored history never changes (A-share qfq).
 
-Those are the behavioural definitions `fin_skills.core.adjustment_check` tests for, and
+Those are the behavioural definitions `fin_skills.market_data.adjustment_check` tests for, and
 what it names "back-adjusted" and "forward-adjusted". The two differ by a per-name
 constant, so RETURNS are identical and price LEVELS are not - which is why the convention
 has to be declared rather than inferred from a return series.

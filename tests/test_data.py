@@ -383,7 +383,7 @@ def test_the_enum_is_named_after_the_anchor_not_after_back_or_forward():
 def test_the_guards_own_definition_is_the_one_the_translation_targets():
     # Not a restatement of the table: read the guard module's own docstring, so this test
     # fails if adjustment_check ever changes what it means by the two words.
-    import fin_skills.core.adjustment_check as ac
+    import fin_skills.market_data.adjustment_check as ac
     doc = ac.__doc__ or ""
     assert "back-adjusted    -- anchored at the PRESENT" in doc
     assert "forward-adjusted -- anchored at the START" in doc

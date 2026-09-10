@@ -109,7 +109,7 @@ client.submit_order(LimitOrderRequest(
 - `../../../fin-core/skills/broker-execution-apis/SKILL.md` §3 — order-safety patterns to emit by default
 - `../../../fin-core/skills/broker-execution-apis/references/alpaca.md` — the source card
 - `../../../fin-core/skills/broker-execution-apis/references/_broker-matrix.md` — the full TIF matrix
-- `../../../fin-core/skills/market-data-sourcing/references/_decision-table.md` — when IEX is not enough
+- `../../../fin-market-data/skills/market-data-sourcing/references/_decision-table.md` — when IEX is not enough
 
 ## Where this sits
 

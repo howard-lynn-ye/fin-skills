@@ -183,7 +183,7 @@ lower** — which reads as a broken yield formula and is not one. Set the conven
 - `../../../fin-models/skills/term-structure-models/SKILL.md` — a YIELD is one number for one
   bond; a zero curve is a different object, and the same discount factor is six different zero
   rates there.
-- `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` — where `DTB3`, `DGS3MO` and the
+- `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` — where `DTB3`, `DGS3MO` and the
   Treasury par curve come from, and their revision behaviour.
 - `../../../fin-libraries/skills/lib-quantlib/SKILL.md` — `BondFunctions.bondYield` needs a
   `ql.BondPrice`, and `evaluationDate` is a global.

@@ -7,7 +7,7 @@ import pandas as pd
 
 from fin_skills.api.base import Guard, Outcome, register
 from fin_skills.api.guards._common import require_series
-from fin_skills.core.adjustment_check import detect_convention
+from fin_skills.market_data.adjustment_check import detect_convention
 
 _CONVENTIONS = ("raw", "back-adjusted", "forward-adjusted", "unknown")
 
@@ -33,7 +33,7 @@ class AdjustmentGuard(Guard):
     name = "adjustment_check"
     skill = "market-data-sourcing"
     summary = "Detects an unadjusted (raw) price series, or one whose convention is not the one you expect."
-    wraps = ("fin_skills.core.adjustment_check.detect_convention",)
+    wraps = ("fin_skills.market_data.adjustment_check.detect_convention",)
     required = ("close", "actions")
     optional = ("raw_reference", "expected", "jump_tol")
 

@@ -252,7 +252,7 @@ and is far more accurate, which is the point: the negativity is not the problem,
   QuantLib term structures are the permissive route for anything in this skill.
 - `../../../fin-core/skills/us-market-rules/SKILL.md` — settlement, business-day and holiday rules;
   §2 here is only the arithmetic once the dates are settled.
-- `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` — where the par rates and Treasury
+- `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` — where the par rates and Treasury
   series come from, and their revision behaviour.
 - `../option-pricing-models/SKILL.md` — the same affine-model machinery for equity options
   (Heston), including a characteristic function that breaks the same way CIR's `A` does: silently,

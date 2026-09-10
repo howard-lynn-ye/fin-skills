@@ -26,7 +26,7 @@ tape does not are the direction of the next mid move and the fill probability of
 passive order.** Both depend on the queue *sizes* and your *position*; neither depends on
 volume, and volume is what most fill models are built from.
 
-`../../../fin-core/skills/intraday-microstructure/SKILL.md` measures the book you have (spreads,
+`../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` measures the book you have (spreads,
 Kyle's lambda, Amihud, order-flow imbalance, MBO reconstruction). This skill is the *model* —
 what the arrival rates imply about events that have not happened yet.
 
@@ -94,7 +94,7 @@ can read off the top of the book. `b=5` against `a=1` is a **0.812** chance of a
 diagonal is exactly 0.500 — no drift, no price history, no signal beyond the queues. This is the
 model behind every "queue imbalance predicts the next tick" result; the measurement side of it
 (order-flow imbalance, and the Cont-Kukanov-Stoikov OFI regression) is
-`../../../fin-core/skills/intraday-microstructure/SKILL.md` §4.
+`../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` §4.
 
 ## 3. ⚠️ Proposition 5 did not reproduce — reported, not hidden
 
@@ -155,7 +155,7 @@ sweeping only its position (0 = front). Same level, same tape, same printed volu
 is exact, and in a book where the queue clears by trading rather than cancelling it would
 *overstate*. Measure your own ratio before trusting either sign. `hftbacktest` ships an
 L3/L2 queue-position model for exactly this reason —
-`../../../fin-core/skills/intraday-microstructure/SKILL.md` §6 has the data requirements (you
+`../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` §6 has the data requirements (you
 need order IDs; with L2 you assume the queue, you do not replay it).
 
 ## 5. 🚨 The fills you get are the ones you did not want — with no informed traders anywhere
@@ -217,7 +217,7 @@ extensions it leaves out.
 
 ## Where this sits
 
-- `../../../fin-core/skills/intraday-microstructure/SKILL.md` — measuring the book you have:
+- `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` — measuring the book you have:
   effective vs realized spread, Kyle's lambda, Amihud, OFI, trade classification, and what MBO
   data you need before queue position is even computable. **Read that first if you have data.**
 - `../../../fin-strategies/skills/market-making-models/SKILL.md` — Avellaneda-Stoikov: where to

@@ -1,4 +1,4 @@
-"""fin_skills.core.fold_leak_test - shared mutable state between walk-forward folds."""
+"""fin_skills.market_data.fold_leak_test - shared mutable state between walk-forward folds."""
 from __future__ import annotations
 
 import functools
@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from fin_skills.core.fold_leak_test import (_equal, assert_folds_independent,
+from fin_skills.market_data.fold_leak_test import (_equal, assert_folds_independent,
                                             find_shared_state, report)
 
 DATA = np.random.default_rng(42).normal(0, 1, 1200)
@@ -133,5 +133,5 @@ def test_report_and_minimum_fold_count():
 
 
 def test_demo_shows_both_detectors(run_main):
-    out = run_main("fin_skills.core.fold_leak_test")
+    out = run_main("fin_skills.market_data.fold_leak_test")
     assert "[reruns ] PASS" in out and "[reruns ] FAIL" in out and "[scan   ]" in out

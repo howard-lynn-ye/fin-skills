@@ -35,13 +35,13 @@ if str(ROOT) not in sys.path:
 
 # The guards under test. Imported, not copied.
 from fin_skills.core import assert_causal as ac_mod                     # noqa: E402
-from fin_skills.core import adjustment_check as adj_mod                 # noqa: E402
+from fin_skills.market_data import adjustment_check as adj_mod                 # noqa: E402
 from fin_skills.core import cost_curve as cc_mod                        # noqa: E402
-from fin_skills.core import fold_leak_test as flt_mod                   # noqa: E402
-from fin_skills.core import pit_fundamentals as pf_mod                  # noqa: E402
+from fin_skills.market_data import fold_leak_test as flt_mod                   # noqa: E402
+from fin_skills.market_data import pit_fundamentals as pf_mod                  # noqa: E402
 from fin_skills.core import pit_universe as pu_mod                      # noqa: E402
 from fin_skills.core import regime_coverage as rc_mod                   # noqa: E402
-from fin_skills.core import safe_asof as sa_mod                         # noqa: E402
+from fin_skills.market_data import safe_asof as sa_mod                         # noqa: E402
 from fin_skills.core import survivorship_audit as sv_mod                # noqa: E402
 from fin_skills.core import warmup_probe as wp_mod                      # noqa: E402
 from fin_skills.libraries import purge_effect as pe_mod                 # noqa: E402

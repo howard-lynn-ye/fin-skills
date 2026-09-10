@@ -121,7 +121,7 @@ The stages and who owns each gate:
 
 | Stage | Contract | Gate (code) | Owned by |
 |---|---|---|---|
-| Data | dated universe snapshot, `available_at` per datum, adjustment stated | survivorship audit; PIT universe; vintage-correct fundamentals and macro | `../../../fin-core/skills/market-data-sourcing/SKILL.md`; `../../../fin-core/skills/research-integrity-guards/scripts/survivorship_audit.py`, `pit_universe.py`; `../../../fin-core/skills/fundamental-and-macro-data/scripts/pit_fundamentals.py` |
+| Data | dated universe snapshot, `available_at` per datum, adjustment stated | survivorship audit; PIT universe; vintage-correct fundamentals and macro | `../../../fin-market-data/skills/market-data-sourcing/SKILL.md`; `../../../fin-core/skills/research-integrity-guards/scripts/survivorship_audit.py`, `pit_universe.py`; `../../../fin-market-data/skills/fundamental-and-macro-data/scripts/pit_fundamentals.py` |
 | Research | model id, prompt hash, temperature, seed, tool-result hashes, **every candidate registered before it is evaluated** | ledger count ≥ backtests the pipeline actually ran | `../../../fin-core/skills/backtest-validation/scripts/trial_ledger.py` |
 | Signal | a pure function of past data → bounded value | perturb-the-future causality test; warm-up length | `../../../fin-core/skills/signal-construction/scripts/assert_causal.py`, `warmup_probe.py` |
 | Backtest | next-bar fills, costs in the loop, benchmark alongside | engine choice and its defaults | `../../../fin-core/skills/backtesting-engines/SKILL.md` §2 |
@@ -213,7 +213,7 @@ backtests; TradingAgents #1251 is the reference bug.
 
 **Tool-result trust.** Vintage (today's revision for a historical date), availability
 (a filing visible from the first bar of its own day — Vibe-Trading #1387; the SEC
-`acceptanceDateTime` rule in `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`
+`acceptanceDateTime` rule in `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`
 §2), and identity (a symbol search returning the wrong instrument). Hash and log every result;
 apply `available_at = max(publication, retrieval, processing)` before the model sees it.
 

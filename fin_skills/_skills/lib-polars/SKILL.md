@@ -139,13 +139,13 @@ assert j.height == sig.height, "as-of join dropped rows"
 
 ## See also
 
-- `../../../fin-core/skills/market-data-engineering/SKILL.md` §1–2 — the engineering findings list
-- `../../../fin-core/skills/market-data-engineering/references/dataframe-engines.md` — reference card
-- `../../../fin-core/skills/market-data-engineering/references/asof-joins.md` — the exact-match trap
+- `../../../fin-market-data/skills/market-data-engineering/SKILL.md` §1–2 — the engineering findings list
+- `../../../fin-market-data/skills/market-data-engineering/references/dataframe-engines.md` — reference card
+- `../../../fin-market-data/skills/market-data-engineering/references/asof-joins.md` — the exact-match trap
 
 ## Where this sits
 
 This file is the deep dive on **one** library and assumes the choice is already made.
 For which library to pick, how it compares with the alternatives, and the traps that span
-several of them, the entry point is the domain skill **`market-data-engineering`** (`../../../fin-core/skills/market-data-engineering/SKILL.md`).
+several of them, the entry point is the domain skill **`market-data-engineering`** (`../../../fin-market-data/skills/market-data-engineering/SKILL.md`).
 

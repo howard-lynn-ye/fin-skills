@@ -45,7 +45,7 @@ value stored today is the latest vintage, restatements included.
 The world is seeded so that each quarter's true surprise drives a 60-day drift, which makes
 the leak measurable rather than rhetorical. The wrong join reports more than double the
 Sharpe of the right one, and the two signals agree on the sign of barely half the cells — it
-is not a better version of the same idea. `fin_skills.core.safe_asof.safe_merge_asof` does the
+is not a better version of the same idea. `fin_skills.market_data.safe_asof.safe_merge_asof` does the
 right join (mandatory tolerance, `allow_exact_matches=False`), and the `safe_asof` guard
 flags the wrong one without needing the backtest at all.
 

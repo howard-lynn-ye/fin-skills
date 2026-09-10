@@ -8,7 +8,7 @@ import pandas as pd
 
 from fin_skills.api.base import Guard, Outcome, register
 from fin_skills.api.guards._common import require_frame, require_str
-from fin_skills.core.safe_asof import (RIGHT_TS_COL, assert_row_count_preserved,
+from fin_skills.market_data.safe_asof import (RIGHT_TS_COL, assert_row_count_preserved,
                                        assert_strictly_prior, check_key_dtypes, safe_merge_asof)
 
 
@@ -34,10 +34,10 @@ class AsOfJoinGuard(Guard):
     name = "safe_asof"
     skill = "market-data-engineering"
     summary = "Audits an as-of join: strictly-prior matches, bounded staleness, row count, key dtypes."
-    wraps = ("fin_skills.core.safe_asof.safe_merge_asof",
-             "fin_skills.core.safe_asof.assert_strictly_prior",
-             "fin_skills.core.safe_asof.assert_row_count_preserved",
-             "fin_skills.core.safe_asof.check_key_dtypes")
+    wraps = ("fin_skills.market_data.safe_asof.safe_merge_asof",
+             "fin_skills.market_data.safe_asof.assert_strictly_prior",
+             "fin_skills.market_data.safe_asof.assert_row_count_preserved",
+             "fin_skills.market_data.safe_asof.check_key_dtypes")
     required = ("left", "right", "on")
     optional = ("by", "tolerance", "allow_exact_matches", "direction")
 

@@ -196,7 +196,7 @@ side, or start the sample after the change.**
   (`../seasonal-adjustment-and-x13/SKILL.md`).
 - 🚨 **`interpolate()` on a macro series.** Interpolation is bidirectional: it pulls a future
   release backwards into days before it existed. Forward-fill from `available_at`, and let the
-  gaps be gaps. `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` §5 states the
+  gaps be gaps. `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` §5 states the
   rule; this skill supplies the timestamp it needs.
 - 🚨 **Assuming the first print is the number.** It is the number *for that instant*. The value
   changes later without the timestamp changing — that is `../real-time-macro-backtesting/SKILL.md`.
@@ -226,7 +226,7 @@ study. numpy + pandas, seed 20260909, under 1 s, no network.
   the filing-date version of this bug —
   `../../../fin-core/skills/research-integrity-guards/SKILL.md` §2.
 - Where the series come from, and the forward-fill-from-release rule —
-  `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`.
+  `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`.
 - Exchange sessions, halts and holidays on the price side —
   `../../../fin-core/skills/us-market-rules/SKILL.md`.
 - What a fill actually costs once you have one —

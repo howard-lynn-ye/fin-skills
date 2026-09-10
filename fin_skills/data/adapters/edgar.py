@@ -34,7 +34,7 @@ from typing import Any, Sequence
 
 import pandas as pd
 
-from fin_skills.core.pit_fundamentals import available_at
+from fin_skills.market_data.pit_fundamentals import available_at
 from fin_skills.data import declare
 from fin_skills.data.adapters import Base, library_version, require
 from fin_skills.data.provenance import make as make_provenance

@@ -103,7 +103,7 @@ non-overlapping IC can still need a HAC correction**, and the standard recipe wi
 horizon. `max(h − 1, first lag where the IC autocorrelation is insignificant)` is a defensible
 floor. Report `AC(1)` next to every IC t-stat so a reader can see which regime you are in.
 
-⚠️ `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` §1.5 states the HAC rule for
+⚠️ `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` §1.5 states the HAC rule for
 Fama-MacBeth; this section is the measurement of when it bites and when it does not.
 
 ## 4. Neutralization: what it removes, and how to check it
@@ -241,7 +241,7 @@ curve: `../../../fin-core/skills/backtest-validation/scripts/cost_curve.py`.
 Do not re-implement quantile tear sheets, IC decay plots or turnover-by-quantile — `alphalens-
 reloaded` has them. 🚨 But its forward-return convention is a trap this library has already
 verified in source: see `../../../fin-libraries/skills/lib-alphalens/SKILL.md` and
-`../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` §1.1. **Lag your factor before
+`../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` §1.1. **Lag your factor before
 you pass it in.** The functions here are for the parts alphalens does not do — neutralization,
 combination weights, and the HAC-corrected t-stat.
 
@@ -257,7 +257,7 @@ weightings, and every table above. numpy + pandas + scipy, seed 20260909, 7 s.
 - One time-series signal per instrument, rather than a cross-section —
   `../trend-following-models/SKILL.md`.
 - Factor libraries, Fama-MacBeth, alpha mining and the trial count that implies —
-  `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md`.
+  `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md`.
 - Turning the combined signal into weights under real constraints, and risk decomposition —
   `../../../fin-core/skills/portfolio-and-risk/SKILL.md`.
 - How much of the book to hold — `../position-sizing-kelly/SKILL.md`.

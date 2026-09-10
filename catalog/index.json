@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 104,
+  "n_skills": 105,
   "n_reference_files": 74,
-  "n_scripts": 88,
+  "n_scripts": 89,
   "discovery_cost": {
-    "total_description_chars": 93160,
-    "approx_tokens": 23290,
+    "total_description_chars": 94135,
+    "approx_tokens": 23533,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -19,6 +19,7 @@
     "fin-libraries",
     "fin-llm",
     "fin-macro",
+    "fin-market-data",
     "fin-microstructure",
     "fin-ml",
     "fin-models",
@@ -212,116 +213,6 @@
       "scripts": []
     },
     {
-      "name": "factor-and-timeseries-research",
-      "plugin": "fin-core",
-      "path": "plugins/fin-core/skills/factor-and-timeseries-research/SKILL.md",
-      "description": "Judge whether a cross-sectional factor predicts returns, and forecast financial series. TRIGGER - information coefficient, IC, quantile returns, factor decay, turnover, alphalens; Fama-French, Fama-MacBeth, PanelOLS, linearmodels, cross-sectional asset pricing; event study, abnormal returns, CAR, BHAR; Alpha101, Alpha158, symbolic alpha mining, gplearn; or forecasting with ARIMA, GARCH, volatility models, arch, Nixtla, statsforecast, mlforecast, sktime, darts, Prophet or a time-series foundation model. SKIP for computing the indicator itself (signal-construction) and for portfolio weights or Sharpe (portfolio-and-risk).",
-      "summary": "Judge whether a cross-sectional factor predicts returns, and forecast financial series.",
-      "license": "MIT",
-      "version": "0.1.0",
-      "verified_on": "2026-09-03",
-      "body_chars": 9517,
-      "approx_body_tokens": 2379,
-      "references": [
-        "_event-study-method.md",
-        "alpha-factor-libraries.md",
-        "alphalens-reloaded.md",
-        "arch.md",
-        "forecasting-stack.md",
-        "linearmodels.md",
-        "sktime-darts.md"
-      ],
-      "scripts": [
-        "event_study.py"
-      ]
-    },
-    {
-      "name": "fundamental-and-macro-data",
-      "plugin": "fin-core",
-      "path": "plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md",
-      "description": "Company fundamentals and macro series with correct point-in-time semantics. TRIGGER - 10-K, 10-Q, 8-K, 13F, Forms 3/4/5, filings, EDGAR, XBRL, accession number, CIK, \"which CIK is this ticker\", ticker-to-CIK mapping, edgartools; parsing an income statement or balance sheet out of a filing; revenue, EPS or balance-sheet history as it was known on a past date; restatements; earnings dates; or CPI, GDP, payrolls, unemployment, interest rates, FRED, ALFRED, data vintages and revisions. Load before joining ANY fundamental or macro series to prices: the obvious join is a look-ahead bug, and the SEC frames API cannot be made point-in-time. SKIP for price and OHLCV vendors (market-data-sourcing) and Chinese filings (china-ashare-data).",
-      "summary": "Company fundamentals and macro series with correct point-in-time semantics.",
-      "license": "MIT",
-      "version": "0.1.0",
-      "verified_on": "2026-09-03",
-      "body_chars": 13323,
-      "approx_body_tokens": 3330,
-      "references": [
-        "edgartools.md",
-        "fredapi.md",
-        "sec-edgar.md"
-      ],
-      "scripts": [
-        "pit_fundamentals.py"
-      ]
-    },
-    {
-      "name": "intraday-microstructure",
-      "plugin": "fin-core",
-      "path": "plugins/fin-core/skills/intraday-microstructure/SKILL.md",
-      "description": "Measure the market at the tick level and know when the measure is lying. TRIGGER - build dollar bars, volume bars, tick bars, imbalance bars; classify trades as buyer or seller initiated, Lee-Ready, tick rule, bulk volume classification, BVC; quoted vs effective vs realized spread, price impact, Kyle's lambda, Amihud illiquidity, order flow imbalance, OFI, VPIN; reconstruct the order book from MBO, market by order, L2 vs L3, queue position, NBBO, odd lots, dark prints; \"my tick strategy works on bars but not on ticks\", exchange clock vs vendor clock, the 5-second rule. SKIP for downloading tick data or picking a vendor (market-data-sourcing), for as-of joins and tick storage (market-data-engineering), for the cost of your own fills (execution-cost-analysis), for indicator look-ahead on bars (signal-construction), for how an engine fills orders or what spread to assume in a bar backtest (backtesting-engines) and for short-sale or margin rules (us-market-rules).",
-      "summary": "Measure the market at the tick level and know when the measure is lying.",
-      "license": "MIT",
-      "version": "0.1.0",
-      "verified_on": "2026-09-08",
-      "body_chars": 20645,
-      "approx_body_tokens": 5161,
-      "references": [],
-      "scripts": [
-        "microstructure_measures.py"
-      ]
-    },
-    {
-      "name": "market-data-engineering",
-      "plugin": "fin-core",
-      "path": "plugins/fin-core/skills/market-data-engineering/SKILL.md",
-      "description": "Store, join and parallelize market data you already hold, without corrupting it. TRIGGER - as-of join, merge_asof, join_asof, ASOF JOIN, \"join quotes to trades\", aligning signals to prices; reading or writing Parquet, Feather, HDF5 or CSV of market data; choosing between pandas, polars, DuckDB, pyarrow, dask or ray; a time-series store such as ArcticDB, QuestDB, ClickHouse, TimescaleDB or kdb; storing years of minute bars for thousands of tickers; a dataset too big for memory; partitioning; timestamps or timezones coming back wrong; float precision on prices or volume; \"different numbers when I parallelise\". SKIP for choosing a data VENDOR (market-data-sourcing) - this skill starts once the bytes are yours.",
-      "summary": "Store, join and parallelize market data you already hold, without corrupting it.",
-      "license": "MIT",
-      "version": "0.1.0",
-      "verified_on": "2026-09-04",
-      "body_chars": 9907,
-      "approx_body_tokens": 2476,
-      "references": [
-        "asof-joins.md",
-        "dataframe-engines.md",
-        "storage-formats.md",
-        "timeseries-stores.md"
-      ],
-      "scripts": [
-        "fold_leak_test.py",
-        "safe_asof.py"
-      ]
-    },
-    {
-      "name": "market-data-sourcing",
-      "plugin": "fin-core",
-      "path": "plugins/fin-core/skills/market-data-sourcing/SKILL.md",
-      "description": "Choose a market price or reference data vendor and use it without silently corrupting the numbers. TRIGGER - download, fetch, pull or load OHLCV, prices, quotes, bars or a ticker universe; compare vendors on cost, coverage or free-tier limits; need delisted US or global tickers, or a survivorship-free universe; two sources disagree; hitting 429 or rate limits; \"KeyError: Adj Close\"; split and dividend adjustment; trading calendars and holidays. Covers yfinance, yahooquery, defeatbeta, EODHD, Tiingo, Twelve Data, Finnhub, Alpha Vantage, Polygon/Massive, Databento, openbb, findatapy, financetoolkit, exchange_calendars, and alternative data. Also covers 美股 and global 行情数据 requests. SKIP for historical option chains (options-backtesting), Asian calendars and lot sizes (asia-pacific-markets), storing, partitioning or as-of joining data you already hold (market-data-engineering); for EDGAR filings, XBRL, CIK and macro vintages (fundamental-and-macro-data); and for A-share, 沪深 or 退市 queries (china-ashare-data).",
-      "summary": "Choose a market price or reference data vendor and use it without silently corrupting the numbers.",
-      "license": "MIT",
-      "version": "0.1.0",
-      "verified_on": "2026-09-03",
-      "body_chars": 10464,
-      "approx_body_tokens": 2616,
-      "references": [
-        "_decision-table.md",
-        "alternative-data.md",
-        "databento.md",
-        "defeatbeta.md",
-        "eodhd.md",
-        "exchange-calendars.md",
-        "financetoolkit.md",
-        "findatapy.md",
-        "openbb.md",
-        "tiingo-twelvedata-finnhub.md",
-        "yfinance.md"
-      ],
-      "scripts": [
-        "adjustment_check.py"
-      ]
-    },
-    {
       "name": "options-backtesting",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/options-backtesting/SKILL.md",
@@ -479,8 +370,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14490,
-      "approx_body_tokens": 3622,
+      "body_chars": 14497,
+      "approx_body_tokens": 3624,
       "references": [],
       "scripts": [
         "cds.py"
@@ -495,8 +386,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 11888,
-      "approx_body_tokens": 2972,
+      "body_chars": 11905,
+      "approx_body_tokens": 2976,
       "references": [],
       "scripts": [
         "trace.py"
@@ -511,8 +402,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 12633,
-      "approx_body_tokens": 3158,
+      "body_chars": 12640,
+      "approx_body_tokens": 3160,
       "references": [],
       "scripts": [
         "spreads.py"
@@ -527,8 +418,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 13608,
-      "approx_body_tokens": 3402,
+      "body_chars": 13615,
+      "approx_body_tokens": 3403,
       "references": [],
       "scripts": [
         "migration.py"
@@ -643,8 +534,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 11353,
-      "approx_body_tokens": 2838,
+      "body_chars": 11360,
+      "approx_body_tokens": 2840,
       "references": [],
       "scripts": [
         "sofr.py"
@@ -659,8 +550,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 9393,
-      "approx_body_tokens": 2348,
+      "body_chars": 9400,
+      "approx_body_tokens": 2350,
       "references": [],
       "scripts": [
         "yield_measures.py"
@@ -692,8 +583,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 7247,
-      "approx_body_tokens": 1811,
+      "body_chars": 7261,
+      "approx_body_tokens": 1815,
       "references": [],
       "scripts": [
         "fx_conventions.py"
@@ -722,8 +613,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 7524,
-      "approx_body_tokens": 1881,
+      "body_chars": 7531,
+      "approx_body_tokens": 1882,
       "references": [],
       "scripts": []
     },
@@ -736,8 +627,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 6402,
-      "approx_body_tokens": 1600,
+      "body_chars": 6408,
+      "approx_body_tokens": 1602,
       "references": [],
       "scripts": []
     },
@@ -750,8 +641,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 8938,
-      "approx_body_tokens": 2234,
+      "body_chars": 8942,
+      "approx_body_tokens": 2235,
       "references": [],
       "scripts": [
         "spa_direction.py"
@@ -794,8 +685,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 6664,
-      "approx_body_tokens": 1666,
+      "body_chars": 6692,
+      "approx_body_tokens": 1673,
       "references": [],
       "scripts": []
     },
@@ -808,8 +699,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 6183,
-      "approx_body_tokens": 1545,
+      "body_chars": 6204,
+      "approx_body_tokens": 1551,
       "references": [],
       "scripts": []
     },
@@ -864,8 +755,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 8958,
-      "approx_body_tokens": 2239,
+      "body_chars": 8986,
+      "approx_body_tokens": 2246,
       "references": [],
       "scripts": [
         "join_asof_sortedness.py"
@@ -1044,8 +935,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-04",
-      "body_chars": 7076,
-      "approx_body_tokens": 1769,
+      "body_chars": 7097,
+      "approx_body_tokens": 1774,
       "references": [],
       "scripts": []
     },
@@ -1072,8 +963,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-08",
-      "body_chars": 19492,
-      "approx_body_tokens": 4873,
+      "body_chars": 19513,
+      "approx_body_tokens": 4878,
       "references": [
         "frameworks.md",
         "systems.md"
@@ -1138,8 +1029,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14778,
-      "approx_body_tokens": 3694,
+      "body_chars": 14785,
+      "approx_body_tokens": 3696,
       "references": [],
       "scripts": [
         "nowcast.py"
@@ -1154,8 +1045,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14715,
-      "approx_body_tokens": 3678,
+      "body_chars": 14722,
+      "approx_body_tokens": 3680,
       "references": [],
       "scripts": [
         "recession_indicators.py"
@@ -1170,8 +1061,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 13803,
-      "approx_body_tokens": 3450,
+      "body_chars": 13817,
+      "approx_body_tokens": 3454,
       "references": [],
       "scripts": [
         "release_calendar.py"
@@ -1186,8 +1077,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 15191,
-      "approx_body_tokens": 3797,
+      "body_chars": 15226,
+      "approx_body_tokens": 3806,
       "references": [],
       "scripts": [
         "vintage_backtest.py"
@@ -1202,11 +1093,97 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 13652,
-      "approx_body_tokens": 3413,
+      "body_chars": 13659,
+      "approx_body_tokens": 3414,
       "references": [],
       "scripts": [
         "seasonal_adjustment.py"
+      ]
+    },
+    {
+      "name": "choosing-a-data-vendor",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/choosing-a-data-vendor/SKILL.md",
+      "description": "Decide whether a data source may legally and factually serve a research question, before any fetch code is written. TRIGGER - need delisted, survivorship-free or point-in-time data and are choosing where to get it; may I store, cache, redistribute or publish what I fetched; is the free tier enough and what does a key cost; comparing vendor terms, licences, rate limits or paid tiers; \"there are no delisted names on the free tier\"; picking between yfinance, Tiingo, Alpha Vantage, stooq, EODHD, Norgate, CRSP or Polygon. Automated by `python -m fin_skills.data advise`. SKIP once the source is chosen and the question is how to CALL it - adjustment, timezone, calendar and off-by-one traps (market-data-sourcing); storing, partitioning or as-of joining data you already hold (market-data-engineering); EDGAR, XBRL and macro vintages (fundamental-and-macro-data); A-share sources and 退市 lists (china-ashare-data); exchange OHLCV and venue limits (crypto-data-and-execution).",
+      "summary": "Decide whether a data source may legally and factually serve a research question, before any fetch code is written.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 12756,
+      "approx_body_tokens": 3189,
+      "references": [],
+      "scripts": [
+        "vendor_decision.py"
+      ]
+    },
+    {
+      "name": "fundamental-and-macro-data",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/fundamental-and-macro-data/SKILL.md",
+      "description": "Company fundamentals and macro series with correct point-in-time semantics. TRIGGER - 10-K, 10-Q, 8-K, 13F, Forms 3/4/5, filings, EDGAR, XBRL, accession number, CIK, \"which CIK is this ticker\", ticker-to-CIK mapping, edgartools; parsing an income statement or balance sheet out of a filing; revenue, EPS or balance-sheet history as it was known on a past date; restatements; earnings dates; or CPI, GDP, payrolls, unemployment, interest rates, FRED, ALFRED, data vintages and revisions. Load before joining ANY fundamental or macro series to prices: the obvious join is a look-ahead bug, and the SEC frames API cannot be made point-in-time. SKIP for price and OHLCV vendors (market-data-sourcing) and Chinese filings (china-ashare-data).",
+      "summary": "Company fundamentals and macro series with correct point-in-time semantics.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 13323,
+      "approx_body_tokens": 3330,
+      "references": [
+        "edgartools.md",
+        "fredapi.md",
+        "sec-edgar.md"
+      ],
+      "scripts": [
+        "pit_fundamentals.py"
+      ]
+    },
+    {
+      "name": "market-data-engineering",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/market-data-engineering/SKILL.md",
+      "description": "Store, join and parallelize market data you already hold, without corrupting it. TRIGGER - as-of join, merge_asof, join_asof, ASOF JOIN, \"join quotes to trades\", aligning signals to prices; reading or writing Parquet, Feather, HDF5 or CSV of market data; choosing between pandas, polars, DuckDB, pyarrow, dask or ray; a time-series store such as ArcticDB, QuestDB, ClickHouse, TimescaleDB or kdb; storing years of minute bars for thousands of tickers; a dataset too big for memory; partitioning; timestamps or timezones coming back wrong; float precision on prices or volume; \"different numbers when I parallelise\". SKIP for choosing a data VENDOR (market-data-sourcing) - this skill starts once the bytes are yours.",
+      "summary": "Store, join and parallelize market data you already hold, without corrupting it.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-04",
+      "body_chars": 9907,
+      "approx_body_tokens": 2476,
+      "references": [
+        "asof-joins.md",
+        "dataframe-engines.md",
+        "storage-formats.md",
+        "timeseries-stores.md"
+      ],
+      "scripts": [
+        "fold_leak_test.py",
+        "safe_asof.py"
+      ]
+    },
+    {
+      "name": "market-data-sourcing",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/market-data-sourcing/SKILL.md",
+      "description": "Choose a market price or reference data vendor and use it without silently corrupting the numbers. TRIGGER - download, fetch, pull or load OHLCV, prices, quotes, bars or a ticker universe; compare vendors on cost, coverage or free-tier limits; need delisted US or global tickers, or a survivorship-free universe; two sources disagree; hitting 429 or rate limits; \"KeyError: Adj Close\"; split and dividend adjustment; trading calendars and holidays. Covers yfinance, yahooquery, defeatbeta, EODHD, Tiingo, Twelve Data, Finnhub, Alpha Vantage, Polygon/Massive, Databento, openbb, findatapy, financetoolkit, exchange_calendars, and alternative data. Also covers 美股 and global 行情数据 requests. SKIP for historical option chains (options-backtesting), Asian calendars and lot sizes (asia-pacific-markets), storing, partitioning or as-of joining data you already hold (market-data-engineering); for EDGAR filings, XBRL, CIK and macro vintages (fundamental-and-macro-data); and for A-share, 沪深 or 退市 queries (china-ashare-data).",
+      "summary": "Choose a market price or reference data vendor and use it without silently corrupting the numbers.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 10464,
+      "approx_body_tokens": 2616,
+      "references": [
+        "_decision-table.md",
+        "alternative-data.md",
+        "databento.md",
+        "defeatbeta.md",
+        "eodhd.md",
+        "exchange-calendars.md",
+        "financetoolkit.md",
+        "findatapy.md",
+        "openbb.md",
+        "tiingo-twelvedata-finnhub.md",
+        "yfinance.md"
+      ],
+      "scripts": [
+        "adjustment_check.py"
       ]
     },
     {
@@ -1234,11 +1211,27 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 11882,
-      "approx_body_tokens": 2970,
+      "body_chars": 11902,
+      "approx_body_tokens": 2975,
       "references": [],
       "scripts": [
         "hawkes.py"
+      ]
+    },
+    {
+      "name": "intraday-microstructure",
+      "plugin": "fin-microstructure",
+      "path": "plugins/fin-microstructure/skills/intraday-microstructure/SKILL.md",
+      "description": "Measure the market at the tick level and know when the measure is lying. TRIGGER - build dollar bars, volume bars, tick bars, imbalance bars; classify trades as buyer or seller initiated, Lee-Ready, tick rule, bulk volume classification, BVC; quoted vs effective vs realized spread, price impact, Kyle's lambda, Amihud illiquidity, order flow imbalance, OFI, VPIN; reconstruct the order book from MBO, market by order, L2 vs L3, queue position, NBBO, odd lots, dark prints; \"my tick strategy works on bars but not on ticks\", exchange clock vs vendor clock, the 5-second rule. SKIP for downloading tick data or picking a vendor (market-data-sourcing), for as-of joins and tick storage (market-data-engineering), for the cost of your own fills (execution-cost-analysis), for indicator look-ahead on bars (signal-construction), for how an engine fills orders or what spread to assume in a bar backtest (backtesting-engines) and for short-sale or margin rules (us-market-rules).",
+      "summary": "Measure the market at the tick level and know when the measure is lying.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-08",
+      "body_chars": 20645,
+      "approx_body_tokens": 5161,
+      "references": [],
+      "scripts": [
+        "microstructure_measures.py"
       ]
     },
     {
@@ -1250,8 +1243,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14020,
-      "approx_body_tokens": 3505,
+      "body_chars": 14060,
+      "approx_body_tokens": 3515,
       "references": [],
       "scripts": [
         "lob_models.py"
@@ -1378,8 +1371,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 12734,
-      "approx_body_tokens": 3183,
+      "body_chars": 12744,
+      "approx_body_tokens": 3186,
       "references": [],
       "scripts": [
         "triple_barrier.py"
@@ -1410,11 +1403,35 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 13376,
-      "approx_body_tokens": 3344,
+      "body_chars": 13383,
+      "approx_body_tokens": 3345,
       "references": [],
       "scripts": [
         "credit_models.py"
+      ]
+    },
+    {
+      "name": "factor-and-timeseries-research",
+      "plugin": "fin-models",
+      "path": "plugins/fin-models/skills/factor-and-timeseries-research/SKILL.md",
+      "description": "Judge whether a cross-sectional factor predicts returns, and forecast financial series. TRIGGER - information coefficient, IC, quantile returns, factor decay, turnover, alphalens; Fama-French, Fama-MacBeth, PanelOLS, linearmodels, cross-sectional asset pricing; event study, abnormal returns, CAR, BHAR; Alpha101, Alpha158, symbolic alpha mining, gplearn; or forecasting with ARIMA, GARCH, volatility models, arch, Nixtla, statsforecast, mlforecast, sktime, darts, Prophet or a time-series foundation model. SKIP for computing the indicator itself (signal-construction) and for portfolio weights or Sharpe (portfolio-and-risk).",
+      "summary": "Judge whether a cross-sectional factor predicts returns, and forecast financial series.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-03",
+      "body_chars": 9517,
+      "approx_body_tokens": 2379,
+      "references": [
+        "_event-study-method.md",
+        "alpha-factor-libraries.md",
+        "alphalens-reloaded.md",
+        "arch.md",
+        "forecasting-stack.md",
+        "linearmodels.md",
+        "sktime-darts.md"
+      ],
+      "scripts": [
+        "event_study.py"
       ]
     },
     {
@@ -1426,7 +1443,7 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 15932,
+      "body_chars": 15934,
       "approx_body_tokens": 3983,
       "references": [
         "ken_french_data_library.md"
@@ -1508,8 +1525,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14346,
-      "approx_body_tokens": 3586,
+      "body_chars": 14360,
+      "approx_body_tokens": 3590,
       "references": [],
       "scripts": [
         "cointegration.py"
@@ -1524,8 +1541,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 15091,
-      "approx_body_tokens": 3772,
+      "body_chars": 15093,
+      "approx_body_tokens": 3773,
       "references": [],
       "scripts": [
         "kalman_models.py"
@@ -1540,8 +1557,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14854,
-      "approx_body_tokens": 3713,
+      "body_chars": 14861,
+      "approx_body_tokens": 3715,
       "references": [],
       "scripts": [
         "term_structure.py"
@@ -1556,8 +1573,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 17481,
-      "approx_body_tokens": 4370,
+      "body_chars": 17485,
+      "approx_body_tokens": 4371,
       "references": [],
       "scripts": [
         "forecast_baselines.py"
@@ -1572,8 +1589,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 17267,
-      "approx_body_tokens": 4316,
+      "body_chars": 17269,
+      "approx_body_tokens": 4317,
       "references": [],
       "scripts": [
         "vol_models.py"
@@ -1588,8 +1605,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14839,
-      "approx_body_tokens": 3709,
+      "body_chars": 14845,
+      "approx_body_tokens": 3711,
       "references": [],
       "scripts": [
         "alpha_combine.py"
@@ -1604,8 +1621,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14819,
-      "approx_body_tokens": 3704,
+      "body_chars": 14829,
+      "approx_body_tokens": 3707,
       "references": [],
       "scripts": [
         "execution_algos.py"
@@ -1620,8 +1637,8 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 12144,
-      "approx_body_tokens": 3036,
+      "body_chars": 12164,
+      "approx_body_tokens": 3041,
       "references": [],
       "scripts": [
         "market_making.py"
@@ -1652,7 +1669,7 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-09",
-      "body_chars": 14740,
+      "body_chars": 14742,
       "approx_body_tokens": 3685,
       "references": [
         "mop-2012.md"

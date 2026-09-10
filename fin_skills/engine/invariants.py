@@ -10,7 +10,7 @@ from __future__ import annotations
 import pandas as pd
 
 from fin_skills.api.base import Finding
-from fin_skills.core.adjustment_check import detect_convention
+from fin_skills.market_data.adjustment_check import detect_convention
 
 # id -> (what holds, the test that proves it, the guard that proves it or "-")
 INVARIANTS: dict[str, tuple[str, str, str]] = {

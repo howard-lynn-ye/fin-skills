@@ -27,7 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import fin_skills.api as api                                                # noqa: E402
-from fin_skills.core.safe_asof import safe_merge_asof                       # noqa: E402
+from fin_skills.market_data.safe_asof import safe_merge_asof                       # noqa: E402
 
 SEED = 20260909
 N_NAMES = 24

@@ -259,6 +259,6 @@ Every QuantLib call above sets it before building a curve.
   Standard Rate Curve is a specific one, published daily at the site in §6.
 - `../../../fin-libraries/skills/lib-quantlib/SKILL.md` — `cdsMaturity`, `DateGeneration.CDS2015`,
   `FlatHazardRate`, the three CDS engines, and 🚨 the `evaluationDate` global.
-- `../../../fin-core/skills/market-data-sourcing/SKILL.md` — ⚠️ single-name CDS quotes and index
+- `../../../fin-market-data/skills/market-data-sourcing/SKILL.md` — ⚠️ single-name CDS quotes and index
   composition are licensed (S&P Global / Markit); there is no free constituent feed. The ISDA
   Standard **Rate** Curve in §6 is free; the credit quotes are not.

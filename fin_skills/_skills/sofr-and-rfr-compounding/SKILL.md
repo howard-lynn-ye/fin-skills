@@ -187,7 +187,7 @@ exactly, and QuantLib's `RateAveraging.Compound` vs `RateAveraging.Simple` repro
   and 🚨 ACT/ACT ICMA without its schedule.
 - `../../../fin-models/skills/term-structure-models/SKILL.md` — compounding conventions on a zero
   curve, where the same discount factor is six different rates.
-- `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md` — FRED `SOFR`, `SOFR30DAYAVG`
+- `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md` — FRED `SOFR`, `SOFR30DAYAVG`
   and `SOFRINDEX`, and their revision behaviour.
 - `../../../fin-libraries/skills/lib-quantlib/SKILL.md` — `addFixing`, `clearFixings` and the
   global fixing history that survives between objects.

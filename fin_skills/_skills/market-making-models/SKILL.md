@@ -177,7 +177,7 @@ flow.
 🔑 **The governing quantity is the ratio, not your risk aversion. eq. (30) prices `γ`. It does
 not price `φ`.** Measure your own ratio — the post-fill price move at a horizon, against your
 half-spread — before deciding whether to widen. The measurement tools are in
-`../../../fin-core/skills/intraday-microstructure/SKILL.md` (effective vs realized spread and
+`../../../fin-microstructure/skills/intraday-microstructure/SKILL.md` (effective vs realized spread and
 the price-impact decomposition are exactly this quantity).
 
 ⚠️ `A`, `k` and the size of an informed move are the three numbers this depends on, and **AS
@@ -208,7 +208,7 @@ with `informed_frac` / `informed_jump`, and `best_spread_multiplier`. numpy only
 20260909, 3 s.
 
 - Effective and realized spreads, price impact, trade classification, order-flow imbalance —
-  `../../../fin-core/skills/intraday-microstructure/SKILL.md`. That is where the `φ` of §5 is
+  `../../../fin-microstructure/skills/intraday-microstructure/SKILL.md`. That is where the `φ` of §5 is
   measured on real data.
 - Working a parent order by *taking* liquidity, and Almgren-Chriss —
   `../execution-algorithms/SKILL.md`.

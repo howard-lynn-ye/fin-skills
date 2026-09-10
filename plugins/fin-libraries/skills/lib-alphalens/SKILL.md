@@ -117,13 +117,13 @@ al.tears.create_full_tear_sheet(fd)
 
 ## See also
 
-- `../../../fin-core/skills/factor-and-timeseries-research/SKILL.md` §1.1 — factor evaluation
-- `../../../fin-core/skills/factor-and-timeseries-research/references/alphalens-reloaded.md` — card
+- `../../../fin-models/skills/factor-and-timeseries-research/SKILL.md` §1.1 — factor evaluation
+- `../../../fin-models/skills/factor-and-timeseries-research/references/alphalens-reloaded.md` — card
 - `../lib-qlib/SKILL.md` — Alpha158/Alpha360 features and the leakage-safe default label
 
 ## Where this sits
 
 This file is the deep dive on **one** library and assumes the choice is already made.
 For which library to pick, how it compares with the alternatives, and the traps that span
-several of them, the entry point is the domain skill **`factor-and-timeseries-research`** (`../../../fin-core/skills/factor-and-timeseries-research/SKILL.md`).
+several of them, the entry point is the domain skill **`factor-and-timeseries-research`** (`../../../fin-models/skills/factor-and-timeseries-research/SKILL.md`).
 

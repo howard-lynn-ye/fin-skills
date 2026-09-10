@@ -257,4 +257,4 @@ inside functions and §6 skipped cleanly without it. Seed 20260909, 6–25 s.
 - Recession probabilities as a different question about the same data —
   `../macro-regime-and-recession-indicators/SKILL.md`.
 - Where GDP, the monthly indicators and `GDPNOW` come from —
-  `../../../fin-core/skills/fundamental-and-macro-data/SKILL.md`.
+  `../../../fin-market-data/skills/fundamental-and-macro-data/SKILL.md`.

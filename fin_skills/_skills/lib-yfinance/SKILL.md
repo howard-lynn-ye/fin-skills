@@ -116,13 +116,13 @@ df = yf.download(
 
 ## See also
 
-- `../../../fin-core/skills/market-data-sourcing/SKILL.md` — vendor choice, survivorship-free universes
-- `../../../fin-core/skills/market-data-sourcing/references/yfinance.md` — the source card
+- `../../../fin-market-data/skills/market-data-sourcing/SKILL.md` — vendor choice, survivorship-free universes
+- `../../../fin-market-data/skills/market-data-sourcing/references/yfinance.md` — the source card
 - `../../../fin-core/skills/research-integrity-guards/references/adjustment-conventions.md` — split/dividend conventions
 
 ## Where this sits
 
 This file is the deep dive on **one** library and assumes the choice is already made.
 For which library to pick, how it compares with the alternatives, and the traps that span
-several of them, the entry point is the domain skill **`market-data-sourcing`** (`../../../fin-core/skills/market-data-sourcing/SKILL.md`).
+several of them, the entry point is the domain skill **`market-data-sourcing`** (`../../../fin-market-data/skills/market-data-sourcing/SKILL.md`).
 

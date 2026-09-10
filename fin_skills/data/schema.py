@@ -43,7 +43,7 @@ class Adjustment(str, Enum):
     # The members are named after the ANCHOR, not after "back" and "forward", because those
     # two words are inverted between vocabularies that are both in use and both defensible:
     #
-    #   fin_skills.core.adjustment_check   "back-adjusted"    = anchored at the PRESENT
+    #   fin_skills.market_data.adjustment_check   "back-adjusted"    = anchored at the PRESENT
     #                                      "forward-adjusted" = anchored at the START
     #   A-share convention                 qfq (前复权)        = anchored at the PRESENT
     #                                      hfq (后复权)        = anchored at the START
