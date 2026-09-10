@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 103,
+  "n_skills": 105,
   "n_reference_files": 74,
-  "n_scripts": 87,
+  "n_scripts": 89,
   "discovery_cost": {
-    "total_description_chars": 92142,
-    "approx_tokens": 23035,
+    "total_description_chars": 94163,
+    "approx_tokens": 23540,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -236,6 +236,22 @@
       ]
     },
     {
+      "name": "finding-and-searching-data",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/finding-and-searching-data/SKILL.md",
+      "description": "Find the identifier before you fetch it, and know which free sources can actually search. TRIGGER - \"what is the FRED series id for X\", \"which ticker is this company\", \"find the CIK for\", searching for a series, ticker, symbol, contract or filing by name or phrase; fred/series/search, company_tickers.json, EDGAR full-text search, efts.sec.gov, ccxt load_markets; a guessed identifier returning an empty frame; retrieving filings by form and date range; when a document became PUBLIC versus when it was filed; earnings-call transcript timestamps. Load BEFORE guessing an identifier - three of the four free searches are current snapshots and cannot answer as of a past date. SKIP for resolving or dating an identifier you already hold (security-master-and-symbology), for choosing a price vendor (market-data-sourcing), for the point-in-time join once the data is yours (fundamental-and-macro-data), for auditing a finished result (research-integrity-guards), and for crypto venue mechanics (crypto-data-and-execution).",
+      "summary": "Find the identifier before you fetch it, and know which free sources can actually search.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 12951,
+      "approx_body_tokens": 3237,
+      "references": [],
+      "scripts": [
+        "find_data_source.py"
+      ]
+    },
+    {
       "name": "fundamental-and-macro-data",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/fundamental-and-macro-data/SKILL.md",
@@ -418,6 +434,22 @@
         "pit_universe.py",
         "result_manifest.py",
         "survivorship_audit.py"
+      ]
+    },
+    {
+      "name": "security-master-and-symbology",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/security-master-and-symbology/SKILL.md",
+      "description": "Map ticker, CIK, ISIN, FIGI, SEDOL and CUSIP on (identifier, DATE) rather than on identifier, and detect when the entity behind one changed. TRIGGER - ticker to CIK, ISIN to CUSIP, FIGI, SEDOL, ISIN or CUSIP check digit, identifier validation; a reused ticker, a renamed company, a merger or ticker change breaking a join; security master, symbology, cross-reference table, PERMNO, entity resolution; \"the fundamentals attached to the wrong company\"; building a universe from company_tickers.json. Load before any join keyed on a symbol - an identifier is not an entity, neither is stable, and the SEC's own name windows both overlap and leave gaps. SKIP for FINDING an identifier you do not have yet (finding-and-searching-data), for split/dividend adjustment and delisted price history (market-data-sourcing), for the point-in-time vintage of the fundamentals (fundamental-and-macro-data), for auditing a finished result (research-integrity-guards), and for A-share code changes (china-ashare-data).",
+      "summary": "Map ticker, CIK, ISIN, FIGI, SEDOL and CUSIP on (identifier, DATE) rather than on identifier, and detect when the entity behind one changed.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 12589,
+      "approx_body_tokens": 3147,
+      "references": [],
+      "scripts": [
+        "identifier_checks.py"
       ]
     },
     {
