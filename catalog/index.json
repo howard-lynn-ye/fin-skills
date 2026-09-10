@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 103,
+  "n_skills": 104,
   "n_reference_files": 74,
-  "n_scripts": 87,
+  "n_scripts": 89,
   "discovery_cost": {
-    "total_description_chars": 92142,
-    "approx_tokens": 23035,
+    "total_description_chars": 93080,
+    "approx_tokens": 23270,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -141,6 +141,23 @@
       ],
       "scripts": [
         "paper_account_guard.py"
+      ]
+    },
+    {
+      "name": "combining-data-sources",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/combining-data-sources/SKILL.md",
+      "description": "Combine information of DIFFERENT kinds into one research view whose every number can be traced back to what was knowable when. TRIGGER - joining prices to fundamentals, earnings or a macro series; building a signal from a filing plus a price; merging two vendors into one series; \"which vendor do I trust\"; combine_first / fillna / bfill across sources; assembling a company dossier, profile or research view from several places; a field that must carry its provenance; \"when did this number become knowable\"; period_end vs filed vs available; a ticker that changed company mid-sample; filling a ResultCard's data block. SKIP for the mechanics of ONE as-of join (safe_asof, in market-data-engineering); for reconciling two price series from two vendors (reconcile_sources, in market-data-sourcing); for auditing a finished backtest (research-integrity-guards); and for resolving a ticker to a permanent id (security-master-and-symbology).",
+      "summary": "Combine information of DIFFERENT kinds into one research view whose every number can be traced back to what was knowable when.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 13195,
+      "approx_body_tokens": 3298,
+      "references": [],
+      "scripts": [
+        "availability_clock.py",
+        "source_merge.py"
       ]
     },
     {
