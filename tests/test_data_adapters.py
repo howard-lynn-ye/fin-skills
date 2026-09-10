@@ -1,11 +1,11 @@
-"""The five adapters: what they declare, what they refuse, and what they never import.
+"""The eight adapters: what they declare, what they refuse, and what they never import.
 
 Three properties are asserted mechanically rather than reviewed by eye, because all three
 have been got wrong in the wild:
 
-  * no vendor library is imported until it is used (proved by blocking all five on
-    sys.meta_path and importing the package anyway);
-  * the three sources with no usable published rate limit contain no rate constant;
+  * no vendor library is imported until it is used (proved by blocking every vendor name
+    on sys.meta_path and importing the package anyway);
+  * the four sources with no usable published rate limit contain no rate constant;
   * no credential can enter this library except through the declared environment variable.
 """
 from __future__ import annotations
@@ -23,16 +23,25 @@ import pytest
 import fin_skills.data as D
 from fin_skills.data import declare
 from fin_skills.data.adapters import MODULES, get, library_version, require
-from fin_skills.data.ratelimit import (PerInstanceDelay, PerSecond, RateLimit, SHAPES,
-                                       Unpublished)
-from fin_skills.data.schema import MACRO_COLUMNS
+from fin_skills.data.ratelimit import (PerDay, PerHourDayMonth, PerInstanceDelay,
+                                       PerSecond, RateLimit, SHAPES, Unpublished)
+from fin_skills.data.schema import Adjustment, MACRO_COLUMNS
 
-VENDORS = ("yfinance", "akshare", "ccxt", "fredapi", "edgar", "edgartools")
+#: the third-party CLIENTS. Blocked on sys.meta_path to prove none is imported at package
+#: import; `requests` is deliberately NOT here, because blocking it would break unrelated
+#: machinery that may legitimately already have imported it - see VENDOR_IMPORTS.
+VENDORS = ("yfinance", "akshare", "ccxt", "fredapi", "edgar", "edgartools", "tiingo",
+           "alpha_vantage")
+
+#: what no adapter module may import at MODULE scope. `requests` belongs here: stooq has
+#: no client library left, so its adapter owns the HTTP call and must still import lazily.
+VENDOR_IMPORTS = VENDORS + ("requests", "pandas_datareader")
+
 PKG = Path(D.__file__).resolve().parent
 ADAPTER_DIR = PKG / "adapters"
 
-#: the three whose vendors publish no usable number - see ratelimit.Unpublished
-UNPUBLISHED_MODULES = ("yfinance.py", "akshare.py", "fredapi.py")
+#: the four whose vendors publish no usable number - see ratelimit.Unpublished
+UNPUBLISHED_MODULES = ("yfinance.py", "akshare.py", "fredapi.py", "stooq.py")
 
 
 def _source(name: str) -> str:
@@ -66,7 +75,7 @@ def test_importing_the_package_imports_no_vendor_library():
     try:
         data = importlib.import_module("fin_skills.data")
         assert not [m for m in sys.modules if m.split(".")[0] in VENDORS]
-        assert len(data.declarations()) == 5, "the whole table is available regardless"
+        assert len(data.declarations()) == 8, "the whole table is available regardless"
         assert not data.adapters().empty
     finally:
         sys.meta_path.remove(blocker)
@@ -86,7 +95,7 @@ def test_no_adapter_module_imports_its_vendor_at_module_scope(name):
             roots = {(node.module or "").split(".")[0]}
         else:
             continue
-        assert not roots & set(VENDORS), f"{name} imports {roots} at module scope"
+        assert not roots & set(VENDOR_IMPORTS), f"{name} imports {roots} at module scope"
 
 
 def test_require_names_the_pip_install():
@@ -132,12 +141,17 @@ def test_library_version_reads_the_object_it_is_given():
 
 
 # ------------------------------------------------------------------ the declarations
-def test_five_adapters_are_registered_with_the_expected_shape():
+#: the three added on 2026-09-10; the original five were verified on 2026-09-09
+NEWER = {"tiingo", "alphavantage", "stooq"}
+
+
+def test_eight_adapters_are_registered_with_the_expected_shape():
     decls = {d.name: d for d in declare.declarations()}
-    assert set(decls) == {"yfinance", "akshare", "ccxt", "fred", "edgar"}
+    assert set(decls) == {"yfinance", "akshare", "ccxt", "fred", "edgar",
+                          "tiingo", "alphavantage", "stooq"}
     assert set(MODULES) == set(decls)
     for d in decls.values():
-        assert d.verified_on == "2026-09-09"
+        assert d.verified_on == ("2026-09-10" if d.name in NEWER else "2026-09-09")
         assert isinstance(d.rate_limit, RateLimit)
         assert type(d.rate_limit) in SHAPES
         assert d.terms_url.startswith("https://")
@@ -194,13 +208,13 @@ def test_redistribution_is_prohibited_unless_the_source_is_public():
     assert by_name["edgar"].redistribution == "public-domain"
     assert by_name["fred"].redistribution == "attribution"
     assert by_name["fred"].attribution.startswith("This product uses the FRED(R) API")
-    for name in ("yfinance", "akshare", "ccxt"):
+    for name in ("yfinance", "akshare", "ccxt", "tiingo", "alphavantage", "stooq"):
         assert by_name[name].redistribution == "prohibited", name
 
 
 # -------------------------------------------------- D9 no invented rate limits
-_SHAPE_NAMES = {"PerSecond", "PerMinute", "PerIP", "PerAccount", "PerInstanceDelay",
-                "WeightedDaily", "PerHourDayMonth"}
+_SHAPE_NAMES = {"PerSecond", "PerMinute", "PerDay", "PerIP", "PerAccount",
+                "PerInstanceDelay", "WeightedDaily", "PerHourDayMonth"}
 _RATE_ISH = re.compile(r"(?i)rate|limit|rpm|rps|per_second|per_minute|per_hour|per_day|"
                        r"throttl|qps|quota|budget|cooldown|interval|delay")
 
@@ -239,12 +253,52 @@ def test_an_unpublished_source_carries_no_hardcoded_rate_constant(name):
                 f"{name} passed a number to Unpublished(); the pace is the caller's"
 
 
-@pytest.mark.parametrize("adapter", ["yfinance", "akshare", "fred"])
-def test_those_three_declare_the_unpublished_shape(adapter):
+@pytest.mark.parametrize("adapter", ["yfinance", "akshare", "fred", "stooq"])
+def test_those_four_declare_the_unpublished_shape(adapter):
     lim = declare.lookup(adapter).rate_limit
     assert isinstance(lim, Unpublished)
     assert lim.courtesy_per_s is None
     assert "no vendor number" in lim.describe()
+
+
+def _shape_literals(tree: ast.Module) -> list[float]:
+    """Every number passed to a rate-shape constructor at any depth."""
+    out: list[float] = []
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call) and getattr(node.func, "id", "")
+                in _SHAPE_NAMES):
+            continue
+        args = list(node.args) + [k.value for k in node.keywords]
+        out += [a.value for a in args
+                if isinstance(a, ast.Constant) and isinstance(a.value, (int, float))]
+    return out
+
+
+@pytest.mark.parametrize("adapter,module", [("tiingo", "tiingo.py"),
+                                            ("alphavantage", "alphavantage.py"),
+                                            ("stooq", "stooq.py")])
+def test_none_of_the_three_new_adapters_invents_a_rate_number(adapter, module):
+    """The rule the older three are held to, applied to the newer three.
+
+    stooq's vendor publishes nothing, so it declares Unpublished() with no argument and
+    carries no rate constant at all. Tiingo and Alpha Vantage DO publish numbers, so the
+    test is the other half of the same rule: every literal the limiter is built from must
+    also appear in the Declaration's `free_tier`, which is the dated quote from the page
+    it was read off. A number that is in the code and not in the prose is invented."""
+    tree = _tree(module)
+    assert _rate_constants(tree) == [], f"{module} binds a rate number to a module name"
+    d = declare.lookup(adapter)
+    shapes = _shape_calls(tree)
+    if not shapes:
+        assert isinstance(d.rate_limit, Unpublished)
+        assert d.rate_limit.courtesy_per_s is None, "the pace is the caller's"
+        assert "no rate limit is published" in d.free_tier.lower()
+        return
+    prose = d.free_tier.replace(",", "").replace("_", "")
+    for value in _shape_literals(tree):
+        quoted = (f"{value:g}" in prose                       # 50, 1000, 500, 25
+                  or f"{value / 1e9:g} GB" in prose)          # 1 GB/month
+        assert quoted, f"{module}: {value:g} is in the limiter and not in the free_tier"
 
 
 def test_the_detector_finds_a_real_rate_constant_where_one_belongs():
@@ -318,11 +372,35 @@ def test_a_credential_can_only_come_from_the_declared_environment_variable(monke
     assert "0123456789abcdef0123456789abcdef" not in repr(vars(adapter))
 
 
-def test_an_adapter_refuses_a_credential_passed_as_an_argument():
+@pytest.mark.parametrize("adapter", ["fred", "tiingo", "alphavantage"])
+def test_an_adapter_refuses_a_credential_passed_as_an_argument(adapter):
     for kw in ({"api_key": "x"}, {"token": "x"}, {"password": "x"}, {"secret": "x"}):
         with pytest.raises(TypeError, match="cannot be passed"):
-            get("fred", **kw)
-    assert declare.credential(declare.lookup("yfinance")) is None
+            get(adapter, **kw)
+    for keyless in ("yfinance", "stooq", "ccxt"):
+        assert declare.credential(declare.lookup(keyless)) is None
+
+
+@pytest.mark.parametrize("adapter", ["tiingo", "alphavantage"])
+def test_the_new_keyed_adapters_read_the_environment_and_keep_nothing(adapter, monkeypatch):
+    """The same property the FRED adapter is held to: the key comes from the environment
+    variable the Declaration names, at the moment it is used, and does not end up on the
+    adapter object, in a repr, or in a request. Both vendors' own clients read the same
+    variable themselves, so these adapters call credential() only to produce THIS
+    library's error message when it is unset."""
+    d = declare.lookup(adapter)
+    assert d.requires_key and d.key_sharing == "byok-required"
+    monkeypatch.delenv(d.key_env_var, raising=False)
+    with pytest.raises(RuntimeError, match=d.key_env_var):
+        declare.credential(d)
+
+    secret = "ABCDEFGH12345678"
+    monkeypatch.setenv(d.key_env_var, secret)
+    assert declare.credential(d) == secret
+    a = get(adapter)
+    assert secret not in repr(vars(a)) and secret not in repr(a)
+    # and the client the adapter constructs is never held on it either
+    assert not any("key" in str(k).lower() for k in vars(a))
 
 
 def test_a_declaration_cannot_hold_a_key():
@@ -481,7 +559,8 @@ def test_an_unserved_method_says_why_instead_of_returning_an_empty_frame():
 
 
 # ----------------------------------------------------- D12 the boundary is declared
-@pytest.mark.parametrize("name", ["yfinance.py", "akshare.py", "ccxt.py"])
+@pytest.mark.parametrize("name", ["yfinance.py", "akshare.py", "ccxt.py", "tiingo.py",
+                                 "alphavantage.py", "stooq.py"])
 def test_every_price_adapter_records_its_end_boundary(name):
     """The layer's contract is half-open [start, end). Vendors disagree - yfinance's
     `end` is exclusive and matches it, akshare's `end_date` is inclusive and does not -
@@ -497,6 +576,191 @@ def test_the_declared_boundary_matches_the_vendor():
     assert '"end_is_exclusive": True' in y, "yfinance's end IS exclusive"
     assert '"end_is_exclusive": False' in a, "akshare's end_date is inclusive"
     assert "frame.index < e" in a, "so akshare must trim the last day itself"
+    for name in ("tiingo.py", "alphavantage.py", "stooq.py"):
+        text = _source(name)
+        assert '"end_is_exclusive": False' in text, f"{name}: the vendor's end is inclusive"
+        assert "frame.index < e" in text, f"{name} must trim the last day itself"
+
+
+# ------------------------------------------------------- tiingo: raw AND adjusted, no cache
+def test_tiingo_is_the_only_source_that_does_not_have_to_choose_a_convention():
+    """Its end-of-day payload carries open/high/low/close/volume, adjOpen..adjVolume,
+    divCash and splitFactor in one row, which is exactly RAW_PLUS_FACTORS - and it is the
+    reason the declared default is the one convention here that does NOT rewrite history.
+    """
+    d = declare.lookup("tiingo")
+    assert d.adjustment_default is Adjustment.RAW_PLUS_FACTORS
+    assert not d.rewrites_history
+    assert Adjustment.ANCHORED_PRESENT in d.adjustment_supported
+    assert isinstance(d.rate_limit, PerHourDayMonth)
+    assert d.rate_limit.symbols_per_month == 500 and d.rate_limit.per_hour == 50
+
+
+def test_tiingo_refuses_a_cache_because_its_terms_forbid_one(tmp_path):
+    """ToS 1.6(a) for Starter and Trial plans, verified 2026-09-10: "You may not write,
+    save, archive, back up, or otherwise retain Tiingo Data in any persistent or durable
+    storage." Cache.put() must refuse, and the refusal is an exception, not a warning."""
+    from _data_fixtures import clean_bars
+    from dataclasses import replace
+
+    d = declare.lookup("tiingo")
+    assert d.cache_policy == "no-persist" and not d.may_persist
+    assert any("no-persist" in w for w in d.warnings())
+
+    bars = clean_bars(n_names=2, years=1, n_dead=0)
+    prov = replace(bars.provenance, source="tiingo")
+    cache = D.Cache(tmp_path / "c")
+    with pytest.raises(D.CachePolicyError, match="no-persist"):
+        cache.put(bars, prov)
+    assert cache.put(bars, prov, acknowledge_paid_tier=True)   # stated, on the record
+
+
+def test_tiingo_normalises_raw_and_adjusted_from_the_same_payload():
+    from fin_skills.data.adapters.tiingo import actions_frame, normalise
+
+    raw = pd.DataFrame({
+        "date": ["2024-01-02", "2024-01-03", "2024-01-04"],
+        "open": [10.0, 11.0, 6.0], "high": [10.5, 11.5, 6.2],
+        "low": [9.5, 10.5, 5.8], "close": [10.0, 11.0, 6.0],
+        "volume": [100, 200, 400],
+        "adjOpen": [5.0, 5.5, 6.0], "adjHigh": [5.25, 5.75, 6.2],
+        "adjLow": [4.75, 5.25, 5.8], "adjClose": [5.0, 5.5, 6.0],
+        "adjVolume": [200, 400, 400],
+        "divCash": [0.0, 0.0, 0.0], "splitFactor": [1.0, 1.0, 2.0]})
+
+    plain = normalise(raw, "AAPL", Adjustment.RAW_PLUS_FACTORS)
+    assert plain[("close", "AAPL")].iloc[0] == 10.0, "the RAW quote, untouched"
+    adjusted = normalise(raw, "AAPL", Adjustment.ANCHORED_PRESENT)
+    assert adjusted[("close", "AAPL")].iloc[0] == 5.0, "the adjusted column instead"
+    assert list(plain.columns.names) == ["field", "ticker"]
+
+    acts = actions_frame(raw, "AAPL")
+    assert list(acts["kind"]) == ["split"]
+    assert acts["ratio"].iloc[0] == 2.0, "splitFactor passes through VERBATIM"
+    assert acts["date"].iloc[0] == pd.Timestamp("2024-01-04")
+
+    with pytest.raises(ValueError, match="no rows"):
+        normalise(pd.DataFrame(), "AAPL", Adjustment.RAW)
+
+
+def test_tiingo_implies_a_dividend_ratio_from_the_close_it_already_has():
+    from fin_skills.data.adapters.tiingo import actions_frame
+
+    raw = pd.DataFrame({"date": ["2024-01-02", "2024-01-03"], "close": [100.0, 99.0],
+                        "divCash": [0.0, 1.0], "splitFactor": [1.0, 1.0]})
+    acts = actions_frame(raw, "T")
+    assert list(acts["kind"]) == ["dividend"]
+    assert acts["ratio"].iloc[0] == pytest.approx(100.0 / 99.0), "prev/(prev-div)"
+
+
+def test_tiingo_refuses_the_ticker_file_instead_of_calling_it_a_universe():
+    with pytest.raises(NotImplementedError, match="symbol\\s+reservations"):
+        get("tiingo").universe("US", "2020-01-01")
+
+
+# ------------------------------- alphavantage: 100 bars free, and the only delisted list
+def test_alphavantage_free_tier_is_raw_and_one_hundred_points():
+    d = declare.lookup("alphavantage")
+    assert d.adjustment_supported == (Adjustment.RAW,), \
+        "TIME_SERIES_DAILY_ADJUSTED is premium, so a free key has no adjusted series"
+    assert isinstance(d.rate_limit, PerDay) and d.rate_limit.n == 25
+    assert "25 API requests/day" in d.free_tier
+    assert "outputsize=full" in d.free_tier
+
+
+def test_alphavantage_refuses_a_window_compact_cannot_cover():
+    from fin_skills.data.adapters.alphavantage import COMPACT_ROWS, covered_by_compact
+
+    assert COMPACT_ROWS == 100, "alphavantage.co/documentation, verified 2026-09-10"
+    assert covered_by_compact("2024-01-01", "2024-03-01")
+    assert not covered_by_compact("2014-01-01", "2024-01-01")
+
+    a = get("alphavantage")
+    with pytest.raises(ValueError, match="PREMIUM"):
+        a.bars("IBM", "2014-01-01", "2024-01-01")
+    with pytest.raises(ValueError, match="RAW only"):
+        a.bars("IBM", "2024-01-01", "2024-02-01",
+               adjustment=Adjustment.ANCHORED_PRESENT)
+
+
+def test_alphavantage_is_the_one_free_point_in_time_delisted_universe():
+    """Its LISTING_STATUS endpoint returns "a list of active or delisted US stocks and
+    ETFs ... as of the latest trading day or at a specific time in history", any date
+    after 2010-01-01 (verified 2026-09-10). That is the MEMBERSHIP half of survivorship;
+    includes_delisted stays False because the PRICE half is not served."""
+    from fin_skills.data.adapters.alphavantage import (LISTING_STATUS_FLOOR,
+                                                       listing_to_frame)
+
+    d = declare.lookup("alphavantage")
+    assert not d.includes_delisted, "it names the dead; it does not price them"
+
+    rows = pd.DataFrame({
+        "symbol": ["LEH", "AAPL"], "name": ["Lehman Brothers", "Apple Inc"],
+        "exchange": ["NYSE", "NASDAQ"], "assetType": ["Stock", "Stock"],
+        "ipoDate": ["1994-05-12", "1980-12-12"],
+        "delistingDate": ["2008-09-17", "null"],
+        "status": ["Delisted", "Active"]})
+    frame = listing_to_frame(rows, "2014-07-10", "delisted")
+    dead = frame.set_index("ticker")
+    assert dead.loc["LEH", "end_date"] == pd.Timestamp("2008-09-17")
+    assert pd.isna(dead.loc["AAPL", "end_date"]), "'null' is a string, not a date"
+    assert dead.loc["LEH", "reason"] == "delisted"
+    assert (frame["as_of"] == pd.Timestamp("2014-07-10")).all()
+
+    with pytest.raises(ValueError, match=LISTING_STATUS_FLOOR):
+        get("alphavantage").universe("US", "2009-01-01", include_delisted=True)
+    with pytest.raises(NotImplementedError, match="not a market it lists"):
+        get("alphavantage").universe("CN", "2020-01-01")
+
+
+# ------------------------------------------- stooq: keyless, and blocked to a script
+def test_stooq_is_the_only_keyless_source_and_the_url_comes_from_the_vendors_own_form():
+    from fin_skills.data.adapters.stooq import (CSV_URL, SKIP_ADJUSTMENTS, url_for)
+
+    d = declare.lookup("stooq")
+    assert not d.requires_key and d.key_env_var == ""
+    assert declare.credential(d) is None
+    assert d.adjustment_default is Adjustment.ANCHORED_PRESENT and d.rewrites_history
+
+    url, params = url_for("AAPL.US", "2024-01-01", "2024-02-01")
+    assert url == CSV_URL
+    assert params == {"s": "aapl.us", "i": "d", "f": "20240101", "t": "20240201"}
+    _, raw = url_for("aapl.us", "2024-01-01", "2024-02-01",
+                     adjustment=Adjustment.RAW)
+    assert all(raw[k] == 1 for k in SKIP_ADJUSTMENTS), \
+        "raw is the seven Skip toggles, all off by default on the vendor's own form"
+
+
+def test_stooq_refuses_the_bot_wall_instead_of_parsing_it_as_a_frame():
+    """The failure this adapter exists for: on 2026-09-10 stooq answered every URL with
+    HTTP 200 and a JavaScript proof-of-work page. A 200 with an HTML body is what makes
+    pd.read_csv(url) return a DataFrame of markup instead of raising."""
+    from fin_skills.data.adapters.stooq import StooqBlocked, looks_like_csv, parse_csv
+
+    challenge = ('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>'
+                 '<noscript>This site requires JavaScript to verify your browser. '
+                 'Please enable JavaScript and reload.</noscript></body></html>')
+    assert not looks_like_csv(challenge)
+    assert not looks_like_csv("Exceeded the daily hits limit")
+    assert not looks_like_csv("")
+    with pytest.raises(StooqBlocked, match="proof-of-work"):
+        parse_csv(challenge, "aapl.us")
+
+    good = ("Date,Open,High,Low,Close,Volume\n"
+            "2024-01-02,10.0,10.5,9.5,10.2,1000\n"
+            "2024-01-03,10.2,10.9,10.1,10.8,1200\n")
+    assert looks_like_csv(good)
+    frame = parse_csv(good, "aapl.us")
+    assert frame[("close", "aapl.us")].iloc[1] == 10.8
+    assert list(frame.columns.names) == ["field", "ticker"]
+
+
+def test_stooq_will_not_put_a_warsaw_name_on_a_new_york_calendar():
+    a = get("stooq")
+    with pytest.raises(ValueError, match="not .us symbols"):
+        a.bars("PKN.PL", "2024-01-01", "2024-02-01")
+    with pytest.raises(ValueError, match="not one of"):
+        a.bars("aapl.us", "2024-01-01", "2024-02-01", interval="1m")
 
 
 # ------------------------------------------------------------------- no data ships
@@ -529,7 +793,8 @@ def test_the_adapters_command_prints_the_table_and_the_warnings(capsys):
     assert main(["adapters"]) == 0
     out = capsys.readouterr().out
     assert out.isascii(), "the CLI must survive a stock Windows console"
-    for name in ("yfinance", "akshare", "ccxt", "fred", "edgar"):
+    for name in ("yfinance", "akshare", "ccxt", "fred", "edgar", "tiingo",
+                 "alphavantage", "stooq"):
         assert name in out
     assert "byok-required" in out and "UPPER BOUND" in out
     assert "FRED_API_KEY" in out

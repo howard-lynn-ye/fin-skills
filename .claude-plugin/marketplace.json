@@ -27,6 +27,7 @@
         "./skills/backtest-validation",
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
+        "./skills/choosing-a-data-vendor",
         "./skills/derivatives-pricing",
         "./skills/etf-mechanics",
         "./skills/execution-cost-analysis",

@@ -13,8 +13,9 @@ Three things hold everywhere in this package:
     parquet, no mirror this project controls, and nothing here ever reads from one. The
     cache writes to the user's own disk.
   * **No vendor library is imported until it is used.** `import fin_skills.data` works with
-    none of yfinance, akshare, ccxt, fredapi or edgartools installed; numpy and pandas are
-    the only hard dependencies. Every vendor import lives inside the method that needs it.
+    none of yfinance, akshare, ccxt, fredapi, edgartools, tiingo, alpha-vantage or requests
+    installed; numpy and pandas are the only hard dependencies. Every vendor import lives
+    inside the method that needs it.
   * **No credential can be shared.** A key is read from the environment variable its
     Declaration names, at the moment it is used, and is never stored, logged, printed or
     written into a Provenance. FRED's own terms say why: "All users of an application shall
@@ -35,22 +36,32 @@ from fin_skills.data.convert import (FILLS, fills, guard_convention, pit_used, t
 from fin_skills.data.declare import (Declaration, adapters, credential, declarations,
                                      describe, lookup, register)
 from fin_skills.data.provenance import Provenance, content_hash
-from fin_skills.data.ratelimit import (PerAccount, PerHourDayMonth, PerIP,
+from fin_skills.data.ratelimit import (PerAccount, PerDay, PerHourDayMonth, PerIP,
                                        PerInstanceDelay, PerMinute, PerSecond, RateLimit,
                                        Unpublished, WeightedDaily)
 from fin_skills.data.schema import (Adjustment, Bars, Fundamentals, Macro, stack_fields)
 from fin_skills.data.validate import (validate_bars, validate_fundamentals,
                                       validate_macro)
 
-# Importing the five adapter modules registers their Declarations so `adapters()` can
+# Importing the eight adapter modules registers their Declarations so `adapters()` can
 # print the whole table. None of them imports a vendor library at module scope - that is
-# the property `tests/test_data_adapters.py` blocks the five names on sys.meta_path to
+# the property `tests/test_data_adapters.py` blocks the vendor names on sys.meta_path to
 # prove.
-from fin_skills.data.adapters import akshare as _akshare        # noqa: F401,E402
-from fin_skills.data.adapters import ccxt as _ccxt              # noqa: F401,E402
-from fin_skills.data.adapters import edgar as _edgar            # noqa: F401,E402
-from fin_skills.data.adapters import fredapi as _fredapi        # noqa: F401,E402
-from fin_skills.data.adapters import yfinance as _yfinance      # noqa: F401,E402
+from fin_skills.data.adapters import akshare as _akshare              # noqa: F401,E402
+from fin_skills.data.adapters import alphavantage as _alphavantage    # noqa: F401,E402
+from fin_skills.data.adapters import ccxt as _ccxt                    # noqa: F401,E402
+from fin_skills.data.adapters import edgar as _edgar                  # noqa: F401,E402
+from fin_skills.data.adapters import fredapi as _fredapi              # noqa: F401,E402
+from fin_skills.data.adapters import stooq as _stooq                  # noqa: F401,E402
+from fin_skills.data.adapters import tiingo as _tiingo                # noqa: F401,E402
+from fin_skills.data.adapters import yfinance as _yfinance            # noqa: F401,E402
+
+# ...and these two come last. `advise` reads the registry the adapters just filled and
+# answers "which of them can serve what I need, and what if none of them can"; `sample`
+# is the seeded SYNTHETIC world every offline example runs on - no vendor data ships in
+# this package, and none is downloaded to build it.
+from fin_skills.data.advise import Need, Recommendation, recommend    # noqa: E402
+from fin_skills.data.sample import Sample, sample                     # noqa: E402
 
 get = _adapters_pkg.get
 
@@ -58,10 +69,11 @@ __version__ = "0.1.0"
 
 __all__ = [
     "Adjustment", "Bars", "Cache", "CachePolicyError", "Declaration", "Divergence",
-    "FILLS", "Fundamentals", "Macro", "PerAccount", "PerHourDayMonth", "PerIP",
-    "PerInstanceDelay", "PerMinute", "PerSecond", "Provenance", "RateLimit",
-    "Unpublished", "WeightedDaily", "adapters", "content_hash", "credential",
-    "declarations", "describe", "fills", "get", "guard_convention", "lookup", "pit_used",
-    "register", "stack_fields", "to_bundle", "to_long", "validate_bars",
-    "validate_fundamentals", "validate_macro",
+    "FILLS", "Fundamentals", "Macro", "Need", "PerAccount", "PerDay", "PerHourDayMonth",
+    "PerIP", "PerInstanceDelay", "PerMinute", "PerSecond", "Provenance", "RateLimit",
+    "Recommendation", "Sample", "Unpublished", "WeightedDaily", "adapters",
+    "content_hash", "credential", "declarations", "describe", "fills", "get",
+    "guard_convention", "lookup", "pit_used", "recommend", "register", "sample",
+    "stack_fields", "to_bundle", "to_long", "validate_bars", "validate_fundamentals",
+    "validate_macro",
 ]

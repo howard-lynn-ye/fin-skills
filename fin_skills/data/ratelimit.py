@@ -9,6 +9,9 @@ models none of them.
     WeightedDaily(budget, {}) eodhd - 20 CALLS/day where a whole-exchange bulk request
                               costs 100 calls; a naive request counter is 5-100x wrong
     PerHourDayMonth(...)      tiingo - 50/hr, 1,000/day, 500 symbols/mo, 1 GB/mo
+    PerDay(n)                 alphavantage - 25 requests a DAY on the free key, and the
+                              paid plans are quoted per minute with "No daily limits", so
+                              the two tiers are not even the same shape
     PerSecond(n)              SEC EDGAR - "no more than 10 requests per second, regardless
                               of the number of machines used to submit requests"
     Unpublished()             yfinance, akshare, FRED - no usable published number. Paces
@@ -34,9 +37,9 @@ import random
 import time
 from typing import Any, Callable, Mapping, Protocol, runtime_checkable
 
-__all__ = ["Clock", "PerAccount", "PerHourDayMonth", "PerIP", "PerInstanceDelay",
-           "PerMinute", "PerSecond", "RateLimit", "SHAPES", "SystemClock",
-           "Unpublished", "WeightedDaily"]
+__all__ = ["Clock", "PerAccount", "PerDay", "PerHourDayMonth", "PerIP",
+           "PerInstanceDelay", "PerMinute", "PerSecond", "RateLimit", "SHAPES",
+           "SystemClock", "Unpublished", "WeightedDaily"]
 
 
 # ------------------------------------------------------------------------------- clock
@@ -251,6 +254,32 @@ class PerMinute(_Windowed):
 
     def describe(self) -> str:
         return f"PerMinute({self.n:g}/min)"
+
+
+class PerDay(_Windowed):
+    """A flat daily allowance and nothing else - no per-second shape, no weighting.
+
+    Alpha Vantage, verified 2026-09-10 on alphavantage.co/support: "We are pleased to
+    provide free stock API service covering the majority of our datasets for 25 API
+    requests per day". Its premium plans are quoted per MINUTE and say "No daily limits",
+    so the free and paid tiers are not the same shape and a per-minute pace tells a free
+    user nothing about when they will be cut off.
+
+    Distinct from `WeightedDaily`, whose whole point is that one request can cost many
+    calls; here every request costs exactly one, and saying so is the honest declaration.
+    """
+
+    def __init__(self, n: float, *, clock: Clock | None = None) -> None:
+        if n <= 0:
+            raise ValueError("PerDay needs a positive allowance")
+        super().__init__({"day": (float(n), 86400.0)}, clock=clock)
+        self.n = float(n)
+
+    def acquire(self, cost: float = 1.0) -> None:
+        self._charge(["day"], float(cost))
+
+    def describe(self) -> str:
+        return f"PerDay({self.n:g}/day)"
 
 
 class PerInstanceDelay(_Spaced):
@@ -475,4 +504,4 @@ class Unpublished(_Limiter):
 
 #: every registered shape, for `python -m fin_skills.data adapters` and the tests
 SHAPES: tuple[type, ...] = (PerInstanceDelay, PerIP, PerAccount, WeightedDaily,
-                            PerHourDayMonth, PerSecond, PerMinute, Unpublished)
+                            PerHourDayMonth, PerSecond, PerMinute, PerDay, Unpublished)

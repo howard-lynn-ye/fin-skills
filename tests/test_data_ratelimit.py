@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from fin_skills.data.ratelimit import (PerAccount, PerHourDayMonth, PerIP,
+from fin_skills.data.ratelimit import (PerAccount, PerDay, PerHourDayMonth, PerIP,
                                        PerInstanceDelay, PerMinute, PerSecond, RateLimit,
                                        SHAPES, Unpublished)
 
@@ -36,6 +36,7 @@ def clock() -> FakeClock:
 SHAPE_EXAMPLES = {
     PerSecond: lambda: PerSecond(10),                       # SEC EDGAR
     PerMinute: lambda: PerMinute(5),                        # Polygon/Massive free
+    PerDay: lambda: PerDay(25),                             # Alpha Vantage free key
     PerInstanceDelay: lambda: PerInstanceDelay(2000),       # ccxt
     PerAccount: lambda: PerAccount(200),                    # Alpaca Basic
     PerIP: lambda: PerIP(timeseries_per_s=100, batch_submit_per_min=20),   # Databento
@@ -146,6 +147,31 @@ def test_per_hour_day_month_counts_symbols_not_only_requests(clock):
     lim.record_bytes(2048)
     assert lim.bytes_used == 2048
     assert "GB/mo" in lim.describe()
+
+
+# ------------------------------------------------------------------------------- PerDay
+def test_per_day_is_a_flat_daily_allowance_and_the_25th_call_waits_out_the_day(clock):
+    """Alpha Vantage's free key, verified 2026-09-10: 25 API requests per day, with no
+    per-minute component at all. The 26th call inside one day waits for the window to
+    roll, which is 24 hours - not a retry-in-a-second situation."""
+    lim = PerDay(25, clock=clock)
+    for _ in range(25):
+        lim.acquire()
+    assert clock.waits == [], "nothing is spaced inside the allowance"
+    lim.acquire()
+    assert len(clock.waits) == 1 and clock.waits[0] == pytest.approx(86400.0, rel=1e-6)
+    assert lim.describe() == "PerDay(25/day)"
+    with pytest.raises(ValueError, match="positive allowance"):
+        PerDay(0)
+
+
+def test_per_day_is_not_weighted_daily():
+    """WeightedDaily exists because one EODHD request can cost 100 calls. Alpha Vantage's
+    is not weighted, and declaring it as WeightedDaily would say a thing that is not so."""
+    from fin_skills.data.ratelimit import WeightedDaily
+
+    assert "weighted" not in PerDay(25).describe()
+    assert "weighted" in WeightedDaily(20).describe()
 
 
 # ------------------------------------------------------------------------- Unpublished
