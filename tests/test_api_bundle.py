@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from fin_skills.api import Bundle, Suite, check, coverage, input_names, registry, slots, vocabulary
+from fin_skills.api import (Bundle, Suite, check, coverage, get, input_names, registry, slots,
+                            vocabulary)
 from fin_skills.api.bundle import ALIASES, DATA_SLOTS, _slot_of
 
 
@@ -109,6 +110,41 @@ def test_the_book_and_adv_slots_turn_one_turnover_into_two_cost_questions(run):
     assert full.inputs_for("cost_plausibility")["book"] == 2.5e7   # slot name, no alias
     with pytest.raises(TypeError, match="'book' expects a number"):
         Bundle(book="25m")
+
+
+def test_one_model_returns_panel_answers_two_different_search_questions(run):
+    # `model_returns` is "every candidate you tried" for BOTH the bootstrap test against a
+    # benchmark and the PBO computed over the same panel - one slot, two guards. The trial
+    # count arrives three ways (n_trials, sharpes, ledger) and research_audit accepts any.
+    rng = np.random.default_rng(3)
+    idx = run["returns"].index
+    panel = pd.DataFrame(rng.normal(0, 0.01, (len(idx), 20)), index=idx,
+                         columns=[f"cfg{i}" for i in range(20)])
+    sharpes = panel.mean() / panel.std(ddof=1)
+    b = Bundle(model_returns=panel, benchmark_returns=pd.Series(0.0, index=idx),
+               best_sharpe=float(sharpes.max()), n_obs=len(idx), n_trials=20, n_blocks=8)
+    cov = b.coverage(["spa_test", "research_audit"])
+    assert sorted(cov.ready) == ["research_audit", "spa_test"] and cov.missing == {}
+    assert b.inputs_for("spa_test")["model_returns"] is panel
+    assert b.inputs_for("research_audit")["model_returns"] is panel
+    assert b.inputs_for("research_audit")["n_trials"] == 20
+
+    # The count is the only other thing it needs. `missing_for` reads `required` directly,
+    # so an either/or requirement (research_audit's, and trial_ledger's) does not show up
+    # there; the refusal surfaces from run() and lands in report.rejected instead.
+    thin = b.without("n_trials")
+    assert thin.missing_for("research_audit") == []
+    assert get("research_audit").missing(thin.slots()) == ["n_trials or ledger or sharpes"]
+    thin_report = check(thin, guards=["research_audit"])
+    assert thin_report.ran == []
+    assert "n_trials or ledger or sharpes" in thin_report.rejected["research_audit"]
+    assert thin.with_(sharpes=list(sharpes.values)).coverage(["research_audit"]).ready
+    with pytest.raises(TypeError, match="'n_trials' expects a number"):
+        Bundle(n_trials="fifty")
+
+    # 20 pure-noise configurations: the audit must not certify them
+    report = check(b, guards=["research_audit"])
+    assert report.ran == ["research_audit"] and not report.passed
 
 
 def test_close_and_bars_reach_the_signal_guards(run):

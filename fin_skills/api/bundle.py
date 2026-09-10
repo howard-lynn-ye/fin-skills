@@ -133,6 +133,7 @@ DATA_SLOTS: tuple[Slot, ...] = (
     Slot("best_sharpe", "scalar", "the best in-sample Sharpe found"),
     Slot("n_obs", "scalar", "observations behind that Sharpe"),
     Slot("sharpes", "sequence", "the Sharpe of every configuration tried"),
+    Slot("n_trials", "scalar", "honest count of EVERY configuration tried, abandoned and automated ones included"),
     Slot("ledger", "any", "path to trials.jsonl, or a TrialLedger"),
     Slot("broker", "text", "'ib', 'alpaca', 'schwab', 'ccxt:<venue>'"),
     Slot("bar", "mapping", "one A-share bar: prev_close, open, high, low, close, volume"),

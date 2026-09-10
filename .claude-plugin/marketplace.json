@@ -12,7 +12,7 @@
     {
       "name": "fin-core",
       "source": "./plugins/fin-core",
-      "description": "US/global quant stack: market data sourcing and engineering, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest.",
+      "description": "US/global quant stack: market data sourcing and engineering, SEC/macro point-in-time data, backtesting engines, broker APIs, signals, factors, portfolio construction, risk analytics, backtest validation, derivatives pricing — plus the research-integrity guards that keep a backtest honest. 21 skills, measured at ~4,546 tokens of skill-listing budget - past the ~20 skills at which Claude Code starts silently dropping descriptions to name-only, so set skillListingBudgetFraction to 0.03 before installing it.",
       "version": "0.1.0",
       "license": "MIT",
       "keywords": [
@@ -24,6 +24,7 @@
         "python"
       ],
       "skills": [
+        "./skills/backtest-overfitting",
         "./skills/backtest-validation",
         "./skills/backtesting-engines",
         "./skills/broker-execution-apis",
@@ -36,6 +37,7 @@
         "./skills/intraday-microstructure",
         "./skills/market-data-engineering",
         "./skills/market-data-sourcing",
+        "./skills/multiple-testing-ledger",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
         "./skills/quant-stack-router",
