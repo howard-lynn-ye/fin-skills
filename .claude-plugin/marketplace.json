@@ -424,6 +424,28 @@
       ]
     },
     {
+      "name": "fin-alt-data",
+      "source": "./plugins/fin-alt-data",
+      "description": "Disclosure feeds and social data as point-in-time objects. Congressional Periodic Transaction Reports, insider Form 4, institutional 13F and social/influencer panels - each disclosed on a LAG, so the transaction date on the filing is not the date the information existed, and a signal keyed on it is a look-ahead. Every skill measures its own lag distribution on seeded data and prints the transaction-date versus disclosure-date Sharpe rather than quoting a number. Ships no scraper and no credential path for any source.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "alternative-data",
+        "point-in-time",
+        "disclosure-lag",
+        "congressional-trading",
+        "form-4",
+        "13f",
+        "sentiment"
+      ],
+      "skills": [
+        "./skills/congressional-trading-disclosures",
+        "./skills/insider-form-4",
+        "./skills/institutional-13f",
+        "./skills/social-and-influencer-feeds"
+      ]
+    },
+    {
       "name": "trading-skills",
       "source": {
         "source": "github",
