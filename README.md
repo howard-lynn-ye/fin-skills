@@ -62,7 +62,7 @@ from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 from fin_skills.core.option_lifecycle import crr                # a CRR tree, no QuantLib
 ```
 
-The same checks behind one interface — 29 guards that return a `GuardResult` instead of raising, and
+The same checks behind one interface — 30 guards that return a `GuardResult` instead of raising, and
 a typed `conventions` module (annualisation, risk-free, pip and liquidation arithmetic), the way
 PyOD puts its detectors behind one API. PyOD's uniformity comes from a
 uniform data container (every detector is `fit(X)`); here the container is a `Bundle` — the artefacts

@@ -171,6 +171,17 @@ def build_paper_account_guard() -> dict:
                                   extra={"paper": True})}
 
 
+def build_pre_trade() -> dict:
+    from fin_skills.core.pre_trade import PLANTED, seeded_blotter
+    proposals, state = seeded_blotter()
+    by_id = {p.client_order_id: p for p in proposals}
+    clean = next(p for p in proposals if p.client_order_id not in PLANTED)
+    return {"clean": dict(proposal=clean, state=state),
+            "defect": dict(proposal=by_id["slip-qty"], state=state),
+            "defect_price": dict(proposal=by_id["slip-px"], state=state),
+            "defect_replay": dict(proposal=by_id["replay"], state=state)}
+
+
 def build_cost_curve() -> dict:
     rng = np.random.default_rng(11)
     gross = pd.Series(rng.normal(0.001, 0.006, 1000),
