@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 105,
+  "n_skills": 107,
   "n_reference_files": 74,
-  "n_scripts": 89,
+  "n_scripts": 91,
   "discovery_cost": {
-    "total_description_chars": 94135,
-    "approx_tokens": 23533,
+    "total_description_chars": 96638,
+    "approx_tokens": 24159,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -81,16 +81,32 @@
       ]
     },
     {
+      "name": "backtest-overfitting",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/backtest-overfitting/SKILL.md",
+      "description": "Decide whether an edge that passed every mechanical check is still just the best of N tries. TRIGGER - PBO, probability of backtest overfitting, CSCV, combinatorially symmetric cross validation, logit of the out-of-sample rank; minimum backtest length, MinBTL, \"how much history do I need\", \"how many parameter sets can I try on N years of data\"; a grid search, Optuna or AutoML picked a winner and it decayed; \"in-sample Sharpe 2, live Sharpe 0\", \"the best parameter set stopped working\", \"is this peak on my parameter surface real\"; pypbo, RiskLabAI CSCV. SKIP for the deflated and probabilistic Sharpe ratios, the trial ledger and SPA/StepM/MCS against a benchmark (backtest-validation); for family-wise error and false-discovery control over a whole research programme (multiple-testing-ledger); for the purged and combinatorial CV splitters themselves (lib-purgedcv); for the mechanical leakage gates that come first (research-integrity-guards); and for regime coverage of the test window (regime-detection).",
+      "summary": "Decide whether an edge that passed every mechanical check is still just the best of N tries.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 13592,
+      "approx_body_tokens": 3398,
+      "references": [],
+      "scripts": [
+        "overfitting.py"
+      ]
+    },
+    {
       "name": "backtest-validation",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/backtest-validation/SKILL.md",
-      "description": "Decide whether a result survives the number of things you tried. TRIGGER - \"I tried N strategies or parameters and the best one...\"; overfitting, p-hacking, data snooping, multiple testing, \"is this result real\", \"is this statistically significant\"; deflated Sharpe, DSR, PSR, probability of backtest overfitting, PBO; purged or combinatorial cross-validation, embargo, walk-forward, \"cross validation on time series without leaking\"; a grid search, hyperopt or AutoML picked a winner; triple-barrier labeling, meta-labeling, fractional differentiation, mlfinlab. Load whenever a Sharpe ratio is about to be offered as evidence for trading. SKIP only for plain performance metrics - Sharpe, Sortino, CAGR, drawdown (portfolio-and-risk); the deflated and probabilistic Sharpe ratios are computed HERE.",
+      "description": "Decide whether a result survives the number of things you tried. TRIGGER - \"I tried N strategies or parameters and the best one...\"; overfitting, p-hacking, data snooping, \"is this result real\", \"is this statistically significant\"; deflated Sharpe, DSR, PSR, the trial ledger; White's Reality Check, Hansen SPA, StepM, model confidence set, arch.bootstrap; purged or combinatorial cross-validation, embargo, walk-forward, \"cross validation on time series without leaking\"; a grid search, hyperopt or AutoML picked a winner; triple-barrier labeling, meta-labeling, fractional differentiation, mlfinlab. Load whenever a Sharpe ratio is about to be offered as evidence for trading. SKIP for plain performance metrics - Sharpe, Sortino, CAGR, drawdown (portfolio-and-risk); for PBO, CSCV and the minimum backtest length (backtest-overfitting); and for Bonferroni, Holm, Benjamini-Hochberg or Benjamini-Yekutieli over a ledger of trials (multiple-testing-ledger). The deflated and probabilistic Sharpe ratios are computed HERE.",
       "summary": "Decide whether a result survives the number of things you tried.",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 12289,
-      "approx_body_tokens": 3072,
+      "body_chars": 13100,
+      "approx_body_tokens": 3275,
       "references": [
         "afml-stack.md",
         "purgedcv.md",
@@ -213,6 +229,22 @@
       "scripts": []
     },
     {
+      "name": "multiple-testing-ledger",
+      "plugin": "fin-core",
+      "path": "plugins/fin-core/skills/multiple-testing-ledger/SKILL.md",
+      "description": "Apply family-wise error and false-discovery control to a whole research programme, using the trial ledger's own registered count as m. TRIGGER - Bonferroni, Holm, Benjamini-Hochberg, Benjamini-Yekutieli, BHY, FDR, FWER, \"adjust my p-values\", statsmodels multipletests, \"which of my factors survive the correction\"; haircut Sharpe ratio, Harvey-Liu-Zhu, \"t-stat of 3\", factor zoo, \"is a t of 2.1 enough\"; \"I screened 500 signals and 30 came back significant\", \"which correction should I use\", \"my strategies are all correlated so Bonferroni is too strict\". SKIP for the deflated and probabilistic Sharpe ratios and the ledger file format itself (backtest-validation); for PBO, CSCV and the minimum backtest length (backtest-overfitting); for SPA / StepM / MCS, which correct for the search using the bootstrap instead of p-values (backtest-validation); and for the leakage and cost gates that must pass before a p-value means anything (research-integrity-guards).",
+      "summary": "Apply family-wise error and false-discovery control to a whole research programme, using the trial ledger's own registered count as m.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-10",
+      "body_chars": 14325,
+      "approx_body_tokens": 3581,
+      "references": [],
+      "scripts": [
+        "research_history.py"
+      ]
+    },
+    {
       "name": "options-backtesting",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/options-backtesting/SKILL.md",
@@ -310,13 +342,13 @@
       "name": "research-integrity-guards",
       "plugin": "fin-core",
       "path": "plugins/fin-core/skills/research-integrity-guards/SKILL.md",
-      "description": "Second-pass audit that decides whether a finance result is real, applied after the work exists. TRIGGER - about to REPORT, publish or act on a backtest, factor test or model score; a result that looks good (\"Sharpe 3.5\", \"beats SPY\", \"85% accuracy\") and needs challenging; asked to validate, verify, sanity-check or critique a research design; asked \"what should I check\". Covers five gates: universe survivorship, availability timestamps, label leakage, cost realism, trial count. SKIP when the task is to BUILD something rather than judge it - go to the domain skill first (market-data-sourcing, backtesting-engines, factor-and-timeseries-research) and return here before reporting a number.",
+      "description": "Second-pass audit that decides whether a finance result is real, applied after the work exists. TRIGGER - about to REPORT, publish or act on a backtest, factor test or model score; a result that looks good (\"Sharpe 3.5\", \"beats SPY\", \"85% accuracy\") and needs challenging; asked to validate, verify, sanity-check or critique a research design; asked \"what should I check\". Covers five gates: universe survivorship, availability timestamps, label leakage, cost realism, trial count. SKIP when the task is to BUILD something rather than judge it - go to the domain skill first (market-data-sourcing, backtesting-engines, factor-and-timeseries-research) and return here before reporting a number. SKIP too for the arithmetic that runs AFTER these gates pass and asks whether the surviving edge beats the best of N tries: PBO, CSCV and minimum backtest length (backtest-overfitting), Bonferroni/Holm/BH/BY over a ledger of trials (multiple-testing-ledger), and the deflated Sharpe (backtest-validation).",
       "summary": "Second-pass audit that decides whether a finance result is real, applied after the work exists.",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 15434,
-      "approx_body_tokens": 3858,
+      "body_chars": 15746,
+      "approx_body_tokens": 3936,
       "references": [
         "adjustment-conventions.md",
         "leakage-checklist.md"
