@@ -33,6 +33,7 @@ from fin_skills.api.guards import (  # noqa: F401  (import for the registration 
     safe_asof,
     spa_test,
     survivorship_audit,
+    synthesis_integrity,
     trial_ledger,
     warmup_probe,
     weight_traps,
@@ -45,6 +46,6 @@ __all__ = [
     "fx_conventions", "greeks_convention", "join_asof_sortedness", "leveraged_reset",
     "npv_zero", "paper_account_guard", "pit_fundamentals", "pit_universe", "purge_effect",
     "reconcile_sources", "regime_coverage", "regime_lookahead", "result_manifest",
-    "rf_convention", "safe_asof", "spa_test", "survivorship_audit", "trial_ledger",
-    "warmup_probe", "weight_traps",
+    "rf_convention", "safe_asof", "spa_test", "survivorship_audit", "synthesis_integrity",
+    "trial_ledger", "warmup_probe", "weight_traps",
 ]

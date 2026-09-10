@@ -33,7 +33,8 @@ EXCLUDED = excluded()
 
 # The guards whose required input is a live Python object. Named here so a change to the
 # exclusion rule has to be a deliberate edit to this list, not a silent drift.
-CANNOT_CROSS_JSON = {"assert_causal", "fold_leak_test", "result_manifest", "warmup_probe"}
+CANNOT_CROSS_JSON = {"assert_causal", "fold_leak_test", "result_manifest",
+                     "synthesis_integrity", "warmup_probe"}
 
 
 def _validator():
