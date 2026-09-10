@@ -36,8 +36,10 @@ EXCLUDED = excluded()
 # `pre_trade` is here on purpose, not by accident: its facts (a declared calendar, an ADV,
 # the broker's own positions) have to be ASSEMBLED by the caller from things it read, and a
 # model composing them into a JSON blob is the failure that guard exists to prevent.
-CANNOT_CROSS_JSON = {"assert_causal", "fold_leak_test", "pre_trade", "result_manifest",
-                     "warmup_probe"}
+CANNOT_CROSS_JSON = {
+    "assert_causal", "fold_leak_test", "pre_trade", "result_manifest",
+    "synthesis_integrity", "warmup_probe"
+}
 
 
 def _validator():

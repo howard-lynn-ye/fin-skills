@@ -373,6 +373,23 @@ def build_research_audit() -> dict:
 
     return {"clean": kw(real), "defect": kw(noise)}
 
+def build_synthesis_integrity() -> dict:
+    from fin_skills.synthesis import Dossier, Entity, Fact, Timeline, combine, price_fact
+    apple = Entity("0000320193", "cik")
+    px = price_fact("close", apple, 189.4, "2024-02-02", source="vendor-a")
+    rev = Fact(field="revenue", entity=apple, value=1.19e11, period_start="2023-10-01",
+               period_end="2023-12-30", filed_at="2024-02-01", available_at="2024-02-14",
+               kind="fundamental", source="edgar")
+    good = combine("earnings_yield", (px, rev), 0.062)          # clock = max(inputs)
+    bad = Fact(field="earnings_yield", entity=apple, value=0.062, period_end="2024-02-02",
+               filed_at="2024-02-02", available_at="2024-02-02", kind="derived",
+               source="combined", inputs=(px, rev))             # clock = min(inputs)
+    clean = Timeline([px, rev, good])
+    return {"clean": dict(timeline=clean,
+                          dossier=Dossier(entity=apple, as_of="2024-03-01",
+                                          timeline=clean)),
+            "defect": dict(timeline=Timeline([px, rev, bad]))}
+
 
 _BUILDERS: dict[str, Callable[[], dict]] = {
     k[len("build_"):]: v for k, v in dict(globals()).items() if k.startswith("build_")}

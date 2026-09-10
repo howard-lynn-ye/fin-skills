@@ -130,6 +130,8 @@ DATA_SLOTS: tuple[Slot, ...] = (
     Slot("flag", "text", "'c' or 'p'"),
     Slot("pair", "any", "'EURUSD' or a sequence of pairs"),
     Slot("card", "any", "a result_manifest.ResultCard"),
+    Slot("timeline", "any", "a fin_skills.synthesis.Timeline - facts of mixed kinds, each with its clock"),
+    Slot("dossier", "any", "a fin_skills.synthesis.Dossier - one entity as of one date, fields with provenance"),
     Slot("best_sharpe", "scalar", "the best in-sample Sharpe found"),
     Slot("n_obs", "scalar", "observations behind that Sharpe"),
     Slot("sharpes", "sequence", "the Sharpe of every configuration tried"),

@@ -158,6 +158,33 @@ def test_close_and_bars_reach_the_signal_guards(run):
     assert "one slot away" in cov.summary() and "+ actions" in cov.summary()
 
 
+def test_the_timeline_and_dossier_slots_carry_a_synthesised_view(run):
+    from fin_skills.synthesis import Dossier, Entity, Fact, Timeline, price_fact
+    apple = Entity("0000320193", "cik")
+    px = price_fact("close", apple, 189.4, "2024-02-02", source="vendor-a")
+    rev = Fact(field="revenue", entity=apple, value=1.19e11, period_end="2023-12-30",
+               filed_at="2024-02-01", available_at="2024-02-14", kind="fundamental",
+               source="edgar")
+    tl = Timeline([px, rev])
+    tl.combine("earnings_yield", (px, rev), 0.062)
+    d = Dossier(entity=apple, as_of="2024-03-01", timeline=tl)
+
+    by_name = {s.name: s for s in slots()}
+    assert "synthesis_integrity" in by_name["timeline"].doc      # the slot reaches it
+    assert "synthesis_integrity" in by_name["dossier"].doc
+
+    # the whole synthesised view goes in as slots, with no strategy and no backtest
+    b = Bundle(timeline=tl, dossier=d)
+    assert b.coverage(["synthesis_integrity"]).ready == ["synthesis_integrity"]
+    assert Bundle().missing_for("synthesis_integrity") == ["timeline"]
+    assert d.to_bundle().has("dossier", "timeline", "as_of")
+    report = check(b, guards=["synthesis_integrity"])
+    assert report.ran == ["synthesis_integrity"] and report.passed
+    # a Series in the timeline slot is refused by the guard, recorded not raised
+    rejected = check(Bundle(timeline=run["close"]), guards=["synthesis_integrity"])
+    assert list(rejected.rejected) == ["synthesis_integrity"]
+
+
 # ------------------------------------------------------------------ check()
 def test_check_runs_ready_guards_and_reports_the_rest(run):
     b = Bundle(returns=run["returns"], turnover=run["turnover"], rf=0.05,

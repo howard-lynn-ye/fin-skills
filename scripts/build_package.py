@@ -45,9 +45,11 @@ HAND_WRITTEN = {"__init__.py"}          # kept as-is; everything else under fin_
 #   engine/   the reference backtesting engine
 #   data/     the unified data-access layer
 #   bridges/  adapters to vectorbt, qlib, QuantLib, the optimizers, brokers and reporting
+#   synthesis/ combining information of DIFFERENT kinds into one traceable research view
 # A new layer is added here in the SAME commit that creates it, or the next regeneration
 # deletes it. --check enforces this.
-HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/", "engine/", "data/", "bridges/")
+HAND_WRITTEN_DIRS = ("api/", "tools/", "mcp/", "engine/", "data/", "bridges/",
+                     "synthesis/")
 
 
 def is_hand_written(rel: str) -> bool:
