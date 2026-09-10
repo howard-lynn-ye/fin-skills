@@ -22,6 +22,15 @@ if hasattr(sys.stdout, "reconfigure"):
 
 ROOT = Path(__file__).resolve().parent.parent
 
+# Validate THIS checkout, not whichever fin_skills happens to be importable. Running
+# `python scripts/validate.py` puts scripts/ on sys.path[0], so `import fin_skills` finds
+# the editable install - which, in a git worktree, is a DIFFERENT tree. Three agents hit
+# that as a false "README says N guards; there are N+1", a count read from another
+# checkout. Prepend the repo root so the live-count check below reads the tree it is
+# actually validating.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 SPEC_FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 REQUIRED = {"name", "description"}
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
