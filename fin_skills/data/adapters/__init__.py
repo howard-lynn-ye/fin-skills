@@ -1,11 +1,11 @@
-"""Five thin adapters. An adapter normalises and DECLARES; it does not clean, fill,
+"""Eight thin adapters. An adapter normalises and DECLARES; it does not clean, fill,
 resample or repair.
 
-`import fin_skills.data` imports all five of these modules, so `adapters()` can print the
-whole table, and imports **none** of yfinance, akshare, ccxt, fredapi or edgartools. Every
-vendor import happens inside the method that needs it, through `require()`, which names the
-pip install in its error. The tests prove it by blocking the five names on `sys.meta_path`
-and importing the package anyway.
+`import fin_skills.data` imports all eight of these modules, so `adapters()` can print the
+whole table, and imports **none** of yfinance, akshare, ccxt, fredapi, edgartools, tiingo,
+alpha-vantage or requests. Every vendor import happens inside the method that needs it,
+through `require()`, which names the pip install in its error. The tests prove it by
+blocking those names on `sys.meta_path` and importing the package anyway.
 
 The other rule is about credentials: no constructor, no method and no helper in this
 package accepts an API key, a token or a password. `get()` rejects such a keyword by name.
@@ -32,6 +32,9 @@ MODULES: dict[str, str] = {
     "ccxt": "ccxt",
     "fred": "fredapi",
     "edgar": "edgar",
+    "tiingo": "tiingo",
+    "alphavantage": "alphavantage",
+    "stooq": "stooq",
 }
 
 _CREDENTIAL_KW = re.compile(
@@ -59,7 +62,7 @@ def require(module: str, pip_name: str | None = None):
     """Import a vendor library HERE, with a message naming the pip install if it is gone.
 
     Never called at module import. `import fin_skills.data` must work with none of the
-    five installed, and a test asserts it does.
+    eight installed, and a test asserts it does.
     """
     try:
         return importlib.import_module(module)
