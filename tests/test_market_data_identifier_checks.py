@@ -1,4 +1,4 @@
-"""fin_skills.core.identifier_checks - the arithmetic, against published identifiers.
+"""fin_skills.market_data.identifier_checks - the arithmetic, against published identifiers.
 
 Every identifier asserted here was read out of a filing on sec.gov on 2026-09-10, so the
 check digits are validated against what an issuer actually printed rather than against
@@ -10,7 +10,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from fin_skills.core.identifier_checks import (AAPL_FORMER_NAMES, DEMO_TICKERS,
+from fin_skills.market_data.identifier_checks import (AAPL_FORMER_NAMES, DEMO_TICKERS,
                                                NPX_PAIRS, PUBLISHED, WMI_CURRENT_NAME,
                                                WMI_FORMER_NAMES, Window,
                                                check_identifier, cusip_check_digit,
@@ -196,7 +196,7 @@ def test_multi_ticker_rate_on_an_empty_file_reports_zero_rather_than_dividing():
 
 # ------------------------------------------------------------------------------ demo
 def test_demo_runs_and_stays_ascii(run_main):
-    out = run_main("fin_skills.core.identifier_checks")
+    out = run_main("fin_skills.market_data.identifier_checks")
     assert out.isascii()
     assert "Maverick Merger Sub 2, LLC" in out
     assert "resolve() must return a LIST" in out

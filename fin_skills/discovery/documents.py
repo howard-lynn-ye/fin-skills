@@ -38,7 +38,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 import pandas as pd
 
-from fin_skills.core.pit_fundamentals import available_at as _availability
+from fin_skills.market_data.pit_fundamentals import available_at as _availability
 from fin_skills.data.ratelimit import PerSecond
 from fin_skills.discovery.search import (SEC_PACE_PER_S, SearchQuery, Transport, _json,
                                          sec_identity)

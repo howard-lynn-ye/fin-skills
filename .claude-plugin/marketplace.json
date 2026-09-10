@@ -33,7 +33,6 @@
         "./skills/etf-mechanics",
         "./skills/execution-cost-analysis",
         "./skills/external-skill-index",
-        "./skills/finding-and-searching-data",
         "./skills/multiple-testing-ledger",
         "./skills/options-backtesting",
         "./skills/portfolio-and-risk",
@@ -41,7 +40,6 @@
         "./skills/quant-stack-router",
         "./skills/regime-detection",
         "./skills/research-integrity-guards",
-        "./skills/security-master-and-symbology",
         "./skills/signal-construction",
         "./skills/us-market-rules"
       ]
@@ -70,9 +68,11 @@
       ],
       "skills": [
         "./skills/choosing-a-data-vendor",
+        "./skills/finding-and-searching-data",
         "./skills/fundamental-and-macro-data",
         "./skills/market-data-engineering",
-        "./skills/market-data-sourcing"
+        "./skills/market-data-sourcing",
+        "./skills/security-master-and-symbology"
       ]
     },
     {

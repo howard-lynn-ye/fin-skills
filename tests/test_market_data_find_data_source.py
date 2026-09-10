@@ -1,4 +1,4 @@
-"""fin_skills.core.find_data_source - the search routing table and the three dates.
+"""fin_skills.market_data.find_data_source - the search routing table and the three dates.
 
 The routing table's value is the rows that route NOWHERE. A table that claims a free
 source for every need is the failure mode this skill exists to prevent, so the empty
@@ -9,7 +9,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from fin_skills.core.find_data_source import (AAPL_FILINGS, FTS_HIT, PERIODIC_FORMS,
+from fin_skills.market_data.find_data_source import (AAPL_FILINGS, FTS_HIT, PERIODIC_FORMS,
                                               ROUTES, SOURCES, document_dates,
                                               lookahead_summary, source_table,
                                               where_to_search)
@@ -129,7 +129,7 @@ def test_a_full_text_hit_is_an_exhibit_wearing_the_parent_form():
 
 # ------------------------------------------------------------------------------ demo
 def test_demo_runs_and_stays_ascii(run_main):
-    out = run_main("fin_skills.core.find_data_source")
+    out = run_main("fin_skills.market_data.find_data_source")
     assert out.isascii()
     assert "NOTHING FREE CAN DO THIS" in out
     assert "Only available_at is safe to join on." in out

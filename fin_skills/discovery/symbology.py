@@ -20,7 +20,7 @@ statement about today wearing the clothes of history:
 So: `resolve(identifier, scheme, as_of)` -> the candidates whose window covers `as_of`,
 and `check_usage()` -> a guard-shaped verdict that FAILS when a mapping was used outside
 its window. The check-digit arithmetic lives in the skill script this layer is generated
-alongside (`fin_skills.core.identifier_checks`) and is re-exported here.
+alongside (`fin_skills.market_data.identifier_checks`) and is re-exported here.
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ from typing import Any, Iterable, Mapping, Sequence
 import pandas as pd
 
 from fin_skills.api.base import Finding, ascii_only
-from fin_skills.core.identifier_checks import (CheckResult, check_identifier,
+from fin_skills.market_data.identifier_checks import (CheckResult, check_identifier,
                                                cusip_from_isin, cusip_check_digit,
                                                figi_check_digit, isin_check_digit,
                                                sedol_check_digit)
