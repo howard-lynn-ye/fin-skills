@@ -56,16 +56,20 @@ from fin_skills.data.adapters import stooq as _stooq                  # noqa: F4
 from fin_skills.data.adapters import tiingo as _tiingo                # noqa: F401,E402
 from fin_skills.data.adapters import yfinance as _yfinance            # noqa: F401,E402
 
+# ...and this one reads the registry the adapters just filled, so it comes after them:
+# `advise` answers "which of them can serve what I need, and what if none of them can".
+from fin_skills.data.advise import Need, Recommendation, recommend    # noqa: E402
+
 get = _adapters_pkg.get
 
 __version__ = "0.1.0"
 
 __all__ = [
     "Adjustment", "Bars", "Cache", "CachePolicyError", "Declaration", "Divergence",
-    "FILLS", "Fundamentals", "Macro", "PerAccount", "PerDay", "PerHourDayMonth", "PerIP",
-    "PerInstanceDelay", "PerMinute", "PerSecond", "Provenance", "RateLimit",
-    "Unpublished", "WeightedDaily", "adapters", "content_hash", "credential",
-    "declarations", "describe", "fills", "get", "guard_convention", "lookup", "pit_used",
-    "register", "stack_fields", "to_bundle", "to_long", "validate_bars",
-    "validate_fundamentals", "validate_macro",
+    "FILLS", "Fundamentals", "Macro", "Need", "PerAccount", "PerDay", "PerHourDayMonth",
+    "PerIP", "PerInstanceDelay", "PerMinute", "PerSecond", "Provenance", "RateLimit",
+    "Recommendation", "Unpublished", "WeightedDaily", "adapters", "content_hash",
+    "credential", "declarations", "describe", "fills", "get", "guard_convention",
+    "lookup", "pit_used", "recommend", "register", "stack_fields", "to_bundle", "to_long",
+    "validate_bars", "validate_fundamentals", "validate_macro",
 ]
