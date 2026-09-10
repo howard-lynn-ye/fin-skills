@@ -62,7 +62,7 @@ from fin_skills.futures_fx.fx_conventions import pip_size, carry_return
 from fin_skills.core.option_lifecycle import crr                # a CRR tree, no QuantLib
 ```
 
-The same checks behind one interface — 31 instead of raising, and
+The same checks behind one interface — 31 guards that return a `GuardResult` instead of raising, and
 a typed `conventions` module (annualisation, risk-free, pip and liquidation arithmetic), the way
 PyOD puts its detectors behind one API. PyOD's uniformity comes from a
 uniform data container (every detector is `fit(X)`); here the container is a `Bundle` — the artefacts
@@ -108,7 +108,7 @@ skill script runs standalone too (`python plugins/<plugin>/skills/<skill>/script
 ### For LLM agents
 
 Reading a skill changes what a model says; running a guard changes what its pipeline is allowed
-to report. `fin_skills.tools` is the second one — 33: seven
+to report. `fin_skills.tools` is the second one — 33 tools an agent can call over JSON: seven
 catalogue tools that need no data (`list_skills`, `read_skill`, `search_skills`, `list_guards`,
 `describe_guard`, `bundle_coverage`, `check_backtest`) and one `check_<guard>` per guard. Every
 schema is derived from the guard itself, so it cannot go stale.
