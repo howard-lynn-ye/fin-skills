@@ -9,6 +9,7 @@
 [![Unit Tests](https://img.shields.io/badge/Tests-1%2C600%2B_Passed-brightgreen.svg)](#5-empirical-benchmarks--maturity-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
+**Language / 语言切换:** **English (`README.md`)** · [简体中文 (`README_ZH.md`)](README_ZH.md)  
 **API Documentation:** [howard-lynn-ye.github.io/fin-skills](https://howard-lynn-ye.github.io/fin-skills/) · **Spec:** [agentskills.io](https://agentskills.io/specification)
 
 </div>
