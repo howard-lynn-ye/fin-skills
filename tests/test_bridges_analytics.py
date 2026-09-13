@@ -193,7 +193,11 @@ def test_optimizer_solver_class_is_named_not_left_to_the_backend():
         assert "exponential- or power-cone" in str(exc)
         assert "pip install clarabel" in str(exc)
     else:
-        assert got in O.CONE_SOLVERS
+        if not got:
+            import importlib.util
+            assert importlib.util.find_spec("cvxpy") is None
+        else:
+            assert got in O.CONE_SOLVERS
     assert O.require_solver_class("min_vol", "MV", {}) == ""
 
 

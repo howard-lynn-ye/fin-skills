@@ -125,7 +125,7 @@ def _load_frame(path: Path, meta: dict[str, Any]) -> pd.DataFrame:
     # text, so they are read as text - the file is never trusted to say so itself.
     probe = pd.read_csv(path, header=header, index_col=0, nrows=0, encoding="utf-8")
     as_text = {lbl: "object" for lbl in probe.columns
-               if want.get(_col_key(lbl)) == "object"}
+               if str(want.get(_col_key(lbl), "")).lower() in ("object", "str", "string")}
 
     # float_precision="round_trip" is not decoration either: the default C parser is a
     # fast approximate one and loses about 1e-14 relative, which is enough to change a

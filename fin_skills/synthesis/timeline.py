@@ -435,8 +435,9 @@ class Timeline:
                            key=lambda f: (f.available_at, f.period_end))
             if not group:
                 continue
-            avail = np.array([f.available_at.value for f in group], dtype="int64")
-            pos = np.searchsorted(avail, idx.asi8, side="right") - 1
+            avail = pd.DatetimeIndex([f.available_at for f in group]).to_numpy("datetime64[ns]").view("int64")
+            idx_i8 = idx.to_numpy("datetime64[ns]").view("int64")
+            pos = np.searchsorted(avail, idx_i8, side="right") - 1
             # among everything knowable by each session, the latest PERIOD, then the
             # latest vintage of that period - never the last non-null of each column
             best_val: list[Any] = []

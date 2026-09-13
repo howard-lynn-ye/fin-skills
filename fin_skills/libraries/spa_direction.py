@@ -209,6 +209,10 @@ def main() -> None:
           f"{ok.pvalues['consistent']:.4f} correct, {bad.pvalues['consistent']:.4f} trap -- "
           f"so the\n  p-value cannot tell you which way round the input went")
 
+    print("\n  Rule: losses = -returns before SPA / StepM / RealityCheck / MCS."
+          "\n        Already-loss-shaped inputs (squared error, NLL, drawdown) go in as-is."
+          "\n        A Sharpe, or any other ratio, is not a valid input at all.")
+
     # ---- verify the reference implementation against the real library ----
     try:
         from arch.bootstrap import MCS, SPA, StepM
@@ -240,9 +244,6 @@ def main() -> None:
 
     print("\n  Neither arch call raised. Neither warned. Only the sign of the input"
           "\n  distinguishes them, and it decided which strategy gets funded.")
-    print("\n  Rule: losses = -returns before SPA / StepM / RealityCheck / MCS."
-          "\n        Already-loss-shaped inputs (squared error, NLL, drawdown) go in as-is."
-          "\n        A Sharpe, or any other ratio, is not a valid input at all.")
 
 
 if __name__ == "__main__":

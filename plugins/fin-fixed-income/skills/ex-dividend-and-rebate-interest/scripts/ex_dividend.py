@@ -269,7 +269,7 @@ if __name__ == "__main__":
     exd = gilt_price_from_yield(COUPON, YIELD, date(2026, 11, 27), MAT)
     print(f"   -> accrued falls {cum['accrued']:+.6f} -> {exd['accrued']:+.6f}, a drop of "
           f"{cum['accrued'] - exd['accrued']:.6f} = exactly one coupon ({COUPON / 2 * 100:.2f} "
-          f"per 100)")
+          f"per 100, or {FACE * COUPON / 2:,.2f} on {FACE:,.0f} nominal)")
     print(f"   -> the DIRTY price drops {exd['dirty'] - cum['dirty']:+.6f} but the CLEAN price "
           f"moves only {exd['clean'] - cum['clean']:+.6f}")
     print("   -> that is the point: clean prices are continuous across the ex-dividend date "

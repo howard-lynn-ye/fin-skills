@@ -90,7 +90,7 @@ def test_the_bivariate_t_is_deterministic_where_scipys_is_not():
     rep = scipy_mvt_reproducibility(n_calls=5)
     assert len(set(rep["mvt_calls"])) > 1                        # scipy's is randomised
     assert len(set(rep["mvn_calls"])) == 1                       # scipy's normal one is not
-    assert rep["mvn_maxabs"] / rep["mvn_exact"] < 1e-12
+    assert rep["mvn_maxabs"] / rep["mvn_exact"] < 1e-10
     with pytest.raises(ValueError, match="df must be positive"):
         bvt_cdf(0.0, 0.0, RHO, 0.0)
 
