@@ -1,6 +1,10 @@
 # 📘 fin-skills 实战连接与集成使用手册（User Manual & Integration Playbook）
 
-> **核心目标**：本手册指导如何将 **114 个量化金融 Agent Skills**、**32 个可执行代码防伪守卫 (`fin_skills.api`)** 与您本地的 **`stock_prediction` 多模态量化投研仓库（867 万行物理数据湖、MMAN/Qwen3 模型、5日回测引擎）** 深度连接，构建“AI 辅助研发 $\rightarrow$ 自动化防伪体检 $\rightarrow$ 顶会/机构级可信交付”的完整闭环。
+> [!IMPORTANT] **核心定位声明：`fin-skills` 本身完全不包含、也不需要任何模型训练**  
+> `fin-skills` 的本质是 **“量化投研的防伪质检员（Auditor & Guard）”** 与 **“AI Agent 的专业知识规约库（Knowledge Base）”**。  
+> 1. **零训练、零权重、零 GPU 依赖**：全库由 114 个 Markdown 格式的投研规约与 32 个基于 `numpy`/`pandas`/`scipy` 的纯确定性数学/统计守卫（`fin_skills.api`）组成，没有任何神经网络、反向传播或梯度更新。  
+> 2. **通用性**：无论您的量化策略是**传统多因子、简单技术指标（如均线/动量/RSI）、统计套利**，还是**复杂的机器学习/大模型策略**，`fin-skills` 都只对输入的**特征序列、行情面板（OHLCV）与回测净值曲线**进行数学严密性审计（如前瞻偏差、数据截断、费率盈亏平衡等）。  
+> 3. **职责划分**：`stock_prediction` 是具体的投研策略与数据仓库；而 `fin-skills` 是独立的、无需训练的质量与合规守卫。
 
 ---
 
@@ -90,49 +94,50 @@ python3 scripts/audit_with_fin_skills.py
 
 ---
 
-### 通道三：在您的自定义训练/回测脚本中嵌入 `fin_skills.api`（代码模板）
+### 通道三：在您的策略回测与特征计算脚本中嵌入 `fin_skills.api`（代码模板）
 
-当您在编写新的实验脚本（例如 `scripts/train_mman_xueqiu_gpu.py` 或 `scripts/evaluate_xueqiu_feature_effectiveness.py`）时，只需在脚本末尾加入 **8 行代码**，即可为每次实验自动加上“防伪钢印”：
+当您在运行量化因子挖掘、策略仿真回测或特征评估脚本时，只需在计算结果输出后加入 **8 行确定性审计代码**，即可自动为回测序列盖上“防伪合格印”：
 
 ```python
 # =====================================================================
-# 📋 嵌入模板：在任何回测/评估脚本末尾加入 fin-skills 自动防伪体检
+# 📋 嵌入模板：在任何策略回测/因子评估脚本末尾加入 fin-skills 自动化质检
+# （纯数学/统计计算，无需 GPU，耗时 < 0.05 秒）
 # =====================================================================
 from fin_skills.api import Bundle, check
 
-# 1. 将您脚本算出的回测序列装入 Bundle
+# 1. 将策略产出的日收益率、换手率与行情数据装入 Bundle 容器
 audit_bundle = Bundle(
     returns=my_strategy_daily_returns,   # pd.Series (DatetimeIndex)
     turnover=my_daily_turnover,          # pd.Series (每日双边换手率，如 0.15 表示 15%)
     rf=0.02,                             # 年化无风险利率 (如 2%)
     bars=my_ohlcv_dataframe,             # 包含 open, high, low, close, volume 的 DataFrame
     signal_fn=my_feature_function,       # 您的特征/信号计算函数 def fn(df) -> Series
-    cutoff="2024-12-01",                 # 若使用了 LLM，填入模型预训练语料截止日
+    cutoff="2024-12-01",                 # （可选）若策略中使用了外部大模型打分，填入该模型的语料截止日
     test_start=str(my_strategy_daily_returns.index.min().date()),
     test_end=str(my_strategy_daily_returns.index.max().date()),
 )
 
-# 2. 运行全套防伪守卫并打印报告
+# 2. 运行纯数学与统计防伪守卫（0 训练、0 模型）并打印体检报告
 audit_report = check(audit_bundle)
 print(audit_report.summary())
 
-# 3. (可选) 若有任何严重作弊/泄露未通过，直接阻断实验结果保存，防止污染实验账本！
-assert audit_report.passed, "❌ 实验未通过 fin-skills 防伪审计，请检查未来函数或数据泄露！"
+# 3. (可选) 若有任何严重未来函数或统计作弊未通过，直接阻断保存，防止伪信号入库
+assert audit_report.passed, "❌ 策略未通过 fin-skills 防伪审计，请检查未来函数或前瞻偏差！"
 ```
 
 ---
 
 ## 🔍 3. 常用核心守卫（Guards）速查表：什么时候用哪个？
 
-您可以随时通过 `from fin_skills.api import get` 单独调用以下高频守卫：
+所有守卫均为**确定性纯 Python 函数**，您可以随时通过 `from fin_skills.api import get` 单独调用：
 
 | 守卫名称 (`get("...")`) | 适用阶段 | 传入参数示例 | 它帮您抓什么致命问题？ |
 | :--- | :---: | :--- | :--- |
-| **`assert_causal`** | 特征工程 / 信号构建 | `fn=my_signal_fn, df=bars_df, k=500` | 抓出 `shift(-1)`、居中滚动窗口、全样本归一化等一切**未来函数**。 |
-| **`warmup_probe`** | 技术指标 / 情绪平滑 | `indicator=my_1d_fn, close=close_series` | 测出 EMA/RSI/Z-Score 指标需要多少根 K 线**预热（Warm-up）**才能收敛，防止测试集开头因冷启动失真。 |
+| **`assert_causal`** | 特征工程 / 信号构建 | `fn=my_signal_fn, df=bars_df, k=500` | 抓出 `shift(-1)`、居中滚动窗口、全样本归一化等一切**未来函数**（通过未来数据扰动压力测试）。 |
+| **`warmup_probe`** | 技术指标 / 情绪平滑 | `indicator=my_1d_fn, close=close_series` | 测出 EMA/RSI/Z-Score 等指标需要多少根 K 线**预热（Warm-up）**才能收敛，防止测试集开头因冷启动失真。 |
 | **`safe_asof`** | 舆情/财报与 K 线合并 | `left=posts_df, right=bars_df, on="timestamp"` | 抓出 `pd.merge_asof` 中方向写反（`direction="forward"`）或盘后舆情错误对齐至当日收盘价的**时间戳穿越**。 |
-| **`contamination_probe`** | Qwen3 / FinBERT 评测 | `test_start="2025-01-01", test_end="2026-08-28", cutoff="2024-12-01"` | 证明您的测试集时间窗口完全位于大模型**预训练语料截止日（Cutoff）之后**，回应审稿人对 LLM 记忆背诵的质疑。 |
-| **`cost_curve`** | 5日交易仿真回测 | `returns=ret_series, turnover=turn_series, cost_bps=10.0` | 计算策略的**盈亏平衡手续费（Breakeven Cost bps）**，判断策略在扣除真实印花税与滑点后是否依然盈利。 |
+| **`contamination_probe`** | 外部大模型预测核查 | `test_start="2025-01-01", test_end="2026-08-28", cutoff="2024-12-01"` | 若策略使用了外部 LLM 打分，纯通过**日期比对**核查测试窗口是否位于模型 Cutoff 之后，杜绝“背诵历史”当预测。 |
+| **`cost_curve`** | 交易策略仿真回测 | `returns=ret_series, turnover=turn_series, cost_bps=10.0` | 纯数学推演策略的**盈亏平衡手续费（Breakeven Cost bps）**，判断策略在真实印花税与滑点下是否被扣光。 |
 | **`survivorship_audit`** | 股票池构建 (`universe`) | `prices=price_matrix_df` | 检查历史股票池是否只包含活到今天的股票，抓出**幸存者偏差**。 |
 | **`adjustment_check`** | 行情数据清洗 (`bars`) | `close=close_series, actions=splits_df` | 检查拆股/分红除权日是否存在虚假暴跌跳空，或因直接使用前复权（`qfq`）导致历史早期出现负价格。 |
 
@@ -140,7 +145,7 @@ assert audit_report.passed, "❌ 实验未通过 fin-skills 防伪审计，请�
 
 ## 🚀 4. 推荐日常投研工作流（Best Practice Workflow）
 
-1. **Step 1（设计特征）**：在写新特征前，让 Jetski 参考 `signal-construction` 和 `fin-ml`（如三道屏障标签 `triple-barrier-labeling` 或分数阶差分 `fractional-differentiation`）。
-2. **Step 2（单测验证）**：对写好的特征函数跑一行 `get("assert_causal").run(fn=..., df=...)`，确保 `0.01 秒` 拿到 `PASS`。
-3. **Step 3（模型回测）**：运行 MMAN / Qwen3 训练与回测（如 `train_mman_xueqiu_gpu.py`）。
-4. **Step 4（一键审计）**：运行 `python3 scripts/audit_with_fin_skills.py`（或在脚本末尾调用 `check(bundle)`），生成包含 **因果性、预热期、盈亏平衡成本、无风险利率口径、LLM 零语料污染** 的五维合格证报告，直接附在论文或实验记录（Research Notebook）中！
+1. **Step 1（设计特征/规则）**：在编写新因子或交易逻辑前，让 Jetski 参考 `signal-construction`、`triple-barrier-labeling` 或 `fractional-differentiation` 规避常见数学陷阱。
+2. **Step 2（单测验证未来函数）**：对写好的特征计算函数跑一行 `get("assert_causal").run(fn=..., df=...)`，确保 `0.01 秒` 内拿到因果性 `PASS`。
+3. **Step 3（运行策略回测）**：执行您的选股、择时或多因子回测逻辑，生成净值曲线与换手率序列。
+4. **Step 4（一键防伪质检）**：运行 `python3 scripts/audit_with_fin_skills.py`（或在回测脚本末尾调用 `check(bundle)`），生成包含 **因果性、预热期、盈亏平衡成本、无风险利率口径、数据窗口** 的五维合格证报告，直接附在论文或实验记录（Research Notebook）中！
