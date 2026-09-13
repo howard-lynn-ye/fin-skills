@@ -9,7 +9,7 @@
 [![Unit Tests](https://img.shields.io/badge/单元测试-1%2C600%2B_全绿通过-brightgreen.svg)](#3-项目成熟度与当前进度记分卡)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#8-开源协议与免责声明)
 
-**语言切换 / Language:** [English (`README.md`)](README.md) · **简体中文 (`README_ZH.md`)**  
+**语言切换 / Language:** [English (`README.md`)](README.md) · **简体中文 (`README_ZH.md`)** · 📘 **[实战连接与集成使用手册 (`USER_MANUAL_ZH.md`)](USER_MANUAL_ZH.md)**  
 **官方 API 文档站:** [howard-lynn-ye.github.io/fin-skills](https://howard-lynn-ye.github.io/fin-skills/) · **Agent Skills 规范:** [agentskills.io](https://agentskills.io/specification)
 
 </div>
