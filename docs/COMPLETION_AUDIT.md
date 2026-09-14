@@ -84,11 +84,15 @@ recommendation using the web form. The existing submission draft is in `.github/
 its 2026-09-18 age-based date is still in the future at this audit. This is a date/human-action
 dependency, not an unfinished Python module.
 
-The original saved blind evaluation predates the new calendar skill. A fresh isolated
-listing-only evaluation now lives in [evals/2026-09-14](../evals/2026-09-14/README.md):
+The original saved routing evaluation predates the new calendar skill. A newer
+listing-prompt evaluation lives in [evals/2026-09-14](../evals/2026-09-14/README.md):
 **92/108** matches against unchanged historical labels and **16/16** on a separately authored
 new-capability smoke set. Several old labels name broad routes now replaced by specialists.
 The results were not relabeled or tuned after selection; neither metric establishes adoption.
+Correction after the answer-access audit: prompt separation was recorded, but enforced
+filesystem/tool isolation was not. These scores must not be described as verified blind
+performance. The new [sealed evaluation protocol](EVALUATION_SECURITY.md) constrains API
+inputs and tool access; it does not retroactively certify these historical results.
 
 ## Network and runtime verification
 
@@ -142,3 +146,22 @@ records this run rather than retaining earlier timing claims.
 The repository's broader roadmap also mentions conda-forge and further market coverage.
 Those are future distribution/maintenance options; they are not additional implementation
 requirements inferred from the present request.
+
+## Answer-access hardening, 2026-09-14
+
+The follow-up request to prevent models reading answers is implemented in
+`fin_skills.api.sealed_eval` and `scripts/eval_sealed.py`. It uses separate private labels,
+whitelisted stateless API inputs without tools, one attempt per packet, independently
+retained receipt hashes, complete-response scoring and per-decision point-in-time inputs.
+The boundary applies to the remote evaluated model; it does not sandbox a local coding
+agent or prove independence of the trusted author/controller. See
+[EVALUATION_SECURITY.md](EVALUATION_SECURITY.md) for operation and limits.
+
+The final targeted adversarial suite passed **59 tests** on Windows/Python 3.11. The related
+API/tool/contamination/fold-isolation integration run passed **243 tests** before two further
+alternate-checkout rejection cases were added; the final 59-test run includes those cases.
+Source/index/package validation passed. Historical scores replay unchanged with explicit
+isolation warnings. The real API smoke attempt returned **HTTP 429** on its first request;
+the failed attempt was retained without retry. No new live-model or private-holdout accuracy
+is claimed. Availability of API access/quota and independently authored unseen questions
+remain prerequisites for such a measurement.

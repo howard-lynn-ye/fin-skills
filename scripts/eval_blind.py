@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Blind skill-selection test — the real one, not the lexical proxy.
+"""Historical selection replay. This script does NOT enforce answer isolation.
 
 `eval_triggers.py` scores word overlap. This script prepares the inputs for a
 test where a MODEL does the selecting, seeing exactly what it sees at discovery
-time: a list of skill names and descriptions, and one user query. Nothing else.
+time: a list of skill names and descriptions, and one user query. Keeping other
+files out of the prompt does not prevent an agent with tools from reading them.
+For enforced API input separation use scripts/eval_sealed.py instead.
 
 Usage
 -----
@@ -69,6 +71,7 @@ def prepare() -> int:
 
 
 def score() -> int:
+    print("Historical replay: answer isolation is NOT verified by this scorer.")
     qs = load_queries()
     total = hits = 0
     misses: list[tuple] = []
@@ -79,9 +82,26 @@ def score() -> int:
             missing_batches.append(i)
             continue
         batch = qs[i::N_BATCHES]
-        ans = json.loads(f.read_text(encoding="utf-8"))
+        def unique_keys(pairs):
+            result = {}
+            for k, v in pairs:
+                if k in result:
+                    raise ValueError("duplicate JSON key")
+                result[k] = v
+            return result
+        try:
+            ans = json.loads(f.read_text(encoding="utf-8"), object_pairs_hook=unique_keys)
+        except ValueError:
+            print(f"batch{i}: invalid JSON or duplicate answer IDs")
+            missing_batches.append(i)
+            continue
+        if not isinstance(ans, (list, dict)):
+            print(f"batch{i}: expected an answer array or numbered object")
+            missing_batches.append(i)
+            continue
         if len(ans) != len(batch):
             print(f"batch{i}: {len(ans)} answers for {len(batch)} queries — skipped")
+            missing_batches.append(i)
             continue
         # `ans` is a dict keyed by 1-based query number. Iterating it yields KEYS, so
         # zip(batch, ans) silently compares query numbers to skill names and reports 0%.
@@ -93,8 +113,12 @@ def score() -> int:
                 return v["pick"]
             raise SystemExit(f"batch{batch_number} answer {key!r} is {v!r} — expected a skill name "
                              f"or an object with a 'pick' string")
-        picks = ([pick(value, i + 1) for i, value in enumerate(ans)] if isinstance(ans, list)
-                 else [pick(ans[k], k) for k in sorted(ans, key=lambda s: int(s))])
+        if isinstance(ans, dict) and set(ans) != {str(k + 1) for k in range(len(batch))}:
+            print(f"batch{i}: answer IDs must be exactly 1..{len(batch)}")
+            missing_batches.append(i)
+            continue
+        picks = ([pick(value, j + 1) for j, value in enumerate(ans)] if isinstance(ans, list)
+                 else [pick(ans[str(k + 1)], k + 1) for k in range(len(batch))])
         for c, a in zip(batch, picks):
             total += 1
             if a == c["expect"]:
@@ -103,11 +127,12 @@ def score() -> int:
                 misses.append((c["q"], c["expect"], a))
 
     if missing_batches:
-        print(f"missing batches: {missing_batches} (run `prepare`, ask a model, save the JSON)")
+        print(f"missing or invalid batches: {missing_batches}; no complete score")
+        return 1
     if not total:
         return 1
 
-    print(f"\nblind top-1 accuracy: {hits}/{total} = {hits/total:.0%}")
+    print(f"\nhistorical top-1 accuracy (isolation unverified): {hits}/{total} = {hits/total:.0%}")
     if misses:
         print("\nmisses:")
         for q, exp, got in misses:

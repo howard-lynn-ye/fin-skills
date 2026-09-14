@@ -77,14 +77,18 @@ tests skip when the library is absent. Beyond the unit tests, verification is:
 | `scripts/validate.py` | spec compliance, name/directory match, description caps, dead reference links, empty `references/`, domain backlinks, README skill count |
 | `scripts/build_index.py` | regenerates the catalog and README table |
 | `scripts/eval_triggers.py` | lexical smoke test — reports strict top-1 and routed accuracy. Deliberately reproducible across `PYTHONHASHSEED` values |
-| `scripts/eval_blind.py` | the real measurement: a model picks a skill from the listing alone. `prepare`, then have models answer, then `score` |
+| `scripts/eval_blind.py` | historical replay; does not enforce answer isolation; refuses incomplete batches |
+| `scripts/eval_sealed.py` | separate public inputs/private labels, stateless tool-free API inference, frozen receipt before independent scoring |
 | `scripts/check_drift.py` | re-checks version claims against PyPI (network) |
 | `scripts/check_repo_stats.py` | re-checks GitHub stats. Note `open_issues_count` includes pull requests |
 | `scripts/check_scripts.py` | runs every skill script in a subprocess with `PYTHONIOENCODING` stripped. A script that prints a non-ASCII character passes under UTF-8 and dies on a stock Windows console |
 | `scripts/build_package.py` | regenerates `fin_skills/` - the skills as an importable package (`--check` is run by `validate.py`). Never edit `fin_skills/` by hand |
 
 `eval_triggers.py` is a bag-of-words proxy and degrades once two skills cover the same package.
-`eval_blind.py` is the ground truth. Do not tune descriptions to the proxy.
+`eval_blind.py` cannot prove an agent did not read answer files. Use `eval_sealed.py` for
+constrained API evaluation and report the declared dataset exposure and protocol limits.
+Do not tune descriptions to the proxy. Never publish private holdout labels or treat public
+regression fixtures as unseen questions. See `docs/EVALUATION_SECURITY.md`.
 
 ## Verifying a claim at a primary source
 
