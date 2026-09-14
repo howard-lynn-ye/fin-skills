@@ -18,7 +18,7 @@ claim of PyOD-equivalent maturity or external adoption. The package remains Alph
 - Workflow tutorial, compatibility/migration policy, adapter contribution criteria and
   a feedback template for independent users.
 
-## Verification
+## Local verification before hosted CI
 
 The first core workflow pass completed with 68 passed and 4 absent-optimizer skips.
 The expanded algorithm/tools pass completed with 162 passed and 6 optimizer skips in that
@@ -60,14 +60,36 @@ that claim to the measured environments. Final full regression/script results fo
 - Ordered index/package generation and validation: **127 skills valid**, with the existing
   library-plugin discovery-budget warning. `git diff --check` reports no whitespace errors.
 
+## Hosted verification follow-up (2026-09-14)
+
+The implementation was pushed as `2be0474` after the owner completed GitHub workflow
+authorization. The [first hosted matrix](https://github.com/howard-lynn-ye/fin-skills/actions/runs/34892049735)
+finished with 17 successful jobs and 4 failures. It exposed unsupported minimum dependencies,
+Python 3.10 TOML imports, and macOS-sensitive degenerate regressions. Commit `d431bc7` fixes
+these issues without dropping the failing checks, and adds regression cases at multiple scales.
+
+The [complete rerun](https://github.com/howard-lynn-ye/fin-skills/actions/runs/34893229959)
+tested `d431bc7e80fb9e0bb6bb7eee2a94999558e6db96` and finished **21/21 jobs successful**:
+
+- Linux and Windows full regression on Python 3.10, 3.11, 3.12 and 3.13; macOS on 3.12.
+- Exact minimum base dependencies on Python 3.10; all four optional extras on Linux/Windows.
+- Clean wheel/sdist installation on Linux/Windows, slow tests, every standalone script,
+  the strict defect benchmark, multi-seed guard benchmark and algorithm-selection benchmark.
+
+For a concrete full-suite result, Windows/Python 3.12 reported **2918 passed, 72 skipped,
+47 slow tests deselected**, with 18 warnings. Optional extras have separate jobs; the skip
+counts must not be interpreted as backend parity coverage. The local minimum-dependency
+environment on Python 3.11 reported **2887 passed, 103 skipped, 47 deselected**. Focused
+numerical/bridge checks reported **74 passed** in the broader local environment and
+**68 passed, 6 absent-statsmodels skips** at the minimum dependency versions.
+
+These checks validate the implemented scope. They do not establish PyOD-level adoption,
+algorithm-selection superiority on arbitrary data, or a public package release.
+
 ## External acceptance still required
 
-- The implementation was pushed as `2be0474` after the owner completed GitHub workflow
-  authorization. The [first hosted matrix](https://github.com/howard-lynn-ye/fin-skills/actions/runs/34892049735)
-  exposed unsupported minimum dependencies, Python 3.10 TOML imports, and macOS-sensitive
-  degenerate regressions. Corrections now tighten dependency declarations and treat
-  numerically exact regressions as statistically undefined. A complete rerun is required
-  before claiming hosted matrix acceptance.
+- Integration into `master`: the reviewed implementation and fixes are on
+  `codex/complete-library-capabilities`; no merge is claimed by this record.
 - Choose a release version and publish tested artifacts using configured PyPI credentials
   or trusted publishing. This work does not claim a public PyPI release.
 - Obtain independent user reproductions and maintenance history. No real user feedback
