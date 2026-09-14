@@ -9,11 +9,23 @@ All notable changes to fin-skills. The format follows
 
 ### Added
 
-- `fin-models` and `fin-strategies`: two marketplace entries registered with an empty
-  `skills` array (93c2216) as the merge base for the model-family and strategy skills being
-  written in parallel. The skills themselves land here when merged.
-  <!-- MAINTAINER: if both plugins are merged before v0.1.0 is tagged, move this bullet
-       into the 0.1.0 section and regenerate the skill counts below. -->
+- Completed model/strategy, fixed-income, credit, macro, data, engine, bridge, discovery
+  and synthesis layers added after the original release.
+- Thirteen additional skills: five Asia markets, four crypto mechanics, trading calendars,
+  corporate actions, data quality and real public-information collection.
+- `fin_skills.collect`: persistent SQLite watches, RSS/Atom and static-page crawlers,
+  SEC Form 4/13F and House PTR disclosure parsing, public Bluesky feeds, retries,
+  revision deduplication, an alert outbox and a continuous-polling CLI.
+- Collection/data-discovery tools in the shared JSON/MCP registry and `data_quality`
+  in the common guard API. Optional `collect` extra for PDF extraction.
+
+### Fixed
+
+- Recovered unfinished Claude market work and corrected its accounting/session mechanics.
+- Per-filing retries prevent failed old documents from starving new disclosures; source
+  Retry-After controls scheduling. Watch configuration commits atomically.
+- Completed all external marketplace commit pins and corrected stale progress claims.
+- Incorporated the v2 branch's existing Python compatibility fixes, manuals and active CI.
 
 ## [0.1.0] - 2026-09-09
 

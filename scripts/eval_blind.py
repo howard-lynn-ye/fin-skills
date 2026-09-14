@@ -25,6 +25,7 @@ the description may be used.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -38,13 +39,15 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = Path(__file__).resolve().parent.parent
 EVALS = ROOT / "evals"
 N_BATCHES = 3
+QUERIES = EVALS / 'queries.jsonl'
 
 
 def load_queries() -> list[dict]:
-    return [json.loads(l) for l in (EVALS / "queries.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    return [json.loads(l) for l in QUERIES.read_text(encoding="utf-8").splitlines() if l.strip()]
 
 
 def prepare() -> int:
+    EVALS.mkdir(parents=True, exist_ok=True)
     listing = []
     for md in sorted(ROOT.glob("plugins/*/skills/*/SKILL.md")):
         fm = re.match(r"(?s)^---\n(.*?)\n---\n", md.read_text(encoding="utf-8")).group(1)
@@ -83,14 +86,15 @@ def score() -> int:
         # `ans` is a dict keyed by 1-based query number. Iterating it yields KEYS, so
         # zip(batch, ans) silently compares query numbers to skill names and reports 0%.
         # Order by numeric key, and accept either a bare name or a {"pick": ...} object.
-        def pick(v, key):
+        def pick(v, key, batch_number=i):
             if isinstance(v, str):
                 return v
             if isinstance(v, dict) and isinstance(v.get("pick"), str):
                 return v["pick"]
-            raise SystemExit(f"batch{i} answer {key!r} is {v!r} — expected a skill name "
+            raise SystemExit(f"batch{batch_number} answer {key!r} is {v!r} — expected a skill name "
                              f"or an object with a 'pick' string")
-        picks = [pick(ans[k], k) for k in sorted(ans, key=lambda s: int(s))]
+        picks = ([pick(value, i + 1) for i, value in enumerate(ans)] if isinstance(ans, list)
+                 else [pick(ans[k], k) for k in sorted(ans, key=lambda s: int(s))])
         for c, a in zip(batch, picks):
             total += 1
             if a == c["expect"]:
@@ -112,5 +116,11 @@ def score() -> int:
 
 
 if __name__ == "__main__":
-    cmd = sys.argv[1] if len(sys.argv) > 1 else "score"
-    sys.exit(prepare() if cmd == "prepare" else score())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('command', nargs='?', choices=['prepare', 'score'], default='score')
+    parser.add_argument('--output-dir', type=Path, default=EVALS,
+                        help='keep a new evaluation separate from historical answers')
+    parser.add_argument('--queries', type=Path, default=QUERIES)
+    args = parser.parse_args()
+    EVALS, QUERIES = args.output_dir, args.queries
+    sys.exit(prepare() if args.command == 'prepare' else score())

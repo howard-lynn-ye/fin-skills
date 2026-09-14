@@ -14,6 +14,10 @@ yf.json
 build/
 dist/
 site/
+fin-skills-events.sqlite3*
+.collector-check.log
+.dependency-check.log
+.completion-*.log
 
 # agent worktrees created by the Claude Code Agent tool (isolation: worktree)
 .claude/worktrees/

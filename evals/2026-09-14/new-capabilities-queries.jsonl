@@ -1,0 +1,16 @@
+{"q":"每五分钟抓新闻，重启以后还能继续采集，已读过的新闻不要重复提醒。这个库用哪个模块？","expect":"public-information-collection"}
+{"q":"I want a persistent watchlist that downloads an executive's actual Form 4 XML and stores the reported transactions.","expect":"public-information-collection"}
+{"q":"Follow new Pelosi disclosure PDFs, keep reported amount ranges, and flag unreadable documents for review.","expect":"public-information-collection"}
+{"q":"Give me a bounded crawler for public static pages that obeys robots.txt and records changed content.","expect":"public-information-collection"}
+{"q":"My Tokyo intraday strategy includes lunch as tradable minutes and assumes every market is continuous until the close. What do I fix?","expect":"japan-markets"}
+{"q":"港股组合按整手取整后剩下很多现金，怎么计算实际的权重误差？","expect":"hong-kong-markets"}
+{"q":"Which Indian auction and price-band rules belong in a dated NSE fill simulation?","expect":"india-markets"}
+{"q":"For Korea and Taiwan daily bars, can a bar at its limit price tell me whether my order would fill?","expect":"korea-taiwan-markets"}
+{"q":"My Singapore/Thailand strategy treats their sessions as identical, and my Thai foreign-share premium calculation looks wrong.","expect":"asean-markets"}
+{"q":"A token redenominated during my backtest. How do I adjust units and avoid treating the price change as a huge loss?","expect":"crypto-token-events"}
+{"q":"How should the cash ledger change at each perpetual funding settlement, including the sign for longs and shorts?","expect":"perpetuals-and-funding"}
+{"q":"Does a concentrated-liquidity AMM position still match the usual constant-product impermanent-loss formula outside its price range?","expect":"defi-and-amm-mechanics"}
+{"q":"My crypto daily-return volatility changes when I remove weekends. What sampling and annualization assumptions need to be explicit?","expect":"crypto-market-structure"}
+{"q":"Build expected intraday bar timestamps from an exchange schedule with lunch, early closes and daylight-saving transitions.","expect":"trading-calendars-and-sessions"}
+{"q":"How do I handle splits, spin-offs and cash distributions without double-counting corporate actions in total returns?","expect":"corporate-actions-processing"}
+{"q":"Check this delivered OHLCV panel for impossible highs/lows, stale prices, duplicated rows and missing sessions without filling anything.","expect":"data-quality-validation"}

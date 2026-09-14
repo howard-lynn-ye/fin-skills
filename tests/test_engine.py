@@ -60,7 +60,10 @@ def raw_frames(n: int = N_DAYS, n_names: int = N_NAMES, seed: int = 11, split: b
 
 def build_panel(adjustment: str = "back", split: bool = True, **kw) -> Panel:
     close, volume, actions, listings = raw_frames(split=split, **kw)
-    p = Panel(open=close.shift(1).fillna(close), high=close * 1.01, low=close * 0.99,
+    opening = close.shift(1).fillna(close)
+    # Both observed endpoints must lie inside the daily high/low range.
+    p = Panel(open=opening, high=np.maximum(opening, close) * 1.01,
+              low=np.minimum(opening, close) * 0.99,
               close=close, volume=volume, sessions=sessions(len(close)), adjustment="raw",
               actions=actions, listings=listings, source="synthetic (tests/test_engine.py)",
               retrieved_at="2026-09-09T00:00Z")
@@ -69,7 +72,9 @@ def build_panel(adjustment: str = "back", split: bool = True, **kw) -> Panel:
 
 def rebuild(base: Panel, close: pd.DataFrame) -> Panel:
     """A panel from a wide close frame - the shape assert_causal perturbs."""
-    return Panel(open=close.shift(1).fillna(close), high=close * 1.01, low=close * 0.99,
+    opening = close.shift(1).fillna(close)
+    return Panel(open=opening, high=np.maximum(opening, close) * 1.01,
+                 low=np.minimum(opening, close) * 0.99,
                  close=close, volume=base.volume, sessions=base.sessions,
                  adjustment=base.adjustment, listings=base.listings, source=base.source,
                  retrieved_at=base.retrieved_at)
@@ -90,7 +95,8 @@ def one_name(n: int = 60, flat_open: bool = True):
     close = pd.DataFrame({"AAA": px}, index=idx)
     op = close.copy() if flat_open else close.shift(1).fillna(close)
     vol = pd.DataFrame({"AAA": 10_000.0}, index=idx)
-    return Panel(open=op, high=close * 1.001, low=close * 0.999, close=close, volume=vol,
+    return Panel(open=op, high=np.maximum(op, close) * 1.001,
+                 low=np.minimum(op, close) * 0.999, close=close, volume=vol,
                  sessions=Sessions.from_index(idx, tz=TZ, periods_per_year=PPY, name="XNYS"),
                  adjustment="raw")
 
@@ -457,17 +463,17 @@ def test_engine_has_no_shared_state_across_folds():
 
 
 # ================================================================== the bundle
-def test_check_runs_six_guards_with_no_adapter(full):
+def test_check_runs_seven_guards_with_no_adapter(full):
     report = check(full.to_bundle())
-    assert set(report.ran) == {"adjustment_check", "assert_causal", "cost_curve",
+    assert set(report.ran) == {"adjustment_check", "assert_causal", "cost_curve", "data_quality",
                                "pit_universe", "rf_convention", "survivorship_audit"}
     assert set(report.ran).isdisjoint(report.skipped)
-    assert "ran 6 guard(s)" in report.summary() and report.summary().isascii()
-    # the five that test an ENGINE property pass; cost_curve tests the STRATEGY, and this
+    assert "ran 7 guard(s)" in report.summary() and report.summary().isascii()
+    # The six that test engine/data properties pass; cost_curve tests the STRATEGY, and this
     # one is a 40-bar momentum rule on seeded noise, so it dies below the 3 bps it pays -
     # which is the outcome the design wants a run to end with by default.
     by_name = {r.guard: r for r in report}
-    assert all(by_name[g].passed for g in ("adjustment_check", "assert_causal", "pit_universe",
+    assert all(by_name[g].passed for g in ("adjustment_check", "assert_causal", "data_quality", "pit_universe",
                                            "rf_convention", "survivorship_audit"))
     assert not by_name["cost_curve"].passed
     assert by_name["cost_curve"].evidence["breakeven_bps"] <= 3.0

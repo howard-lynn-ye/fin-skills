@@ -3,10 +3,10 @@
 <div align="center">
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
-[![Skills](https://img.shields.io/badge/Agent_Skills-114_Verified-emerald.svg)](#6-complete-skill-catalog-114-skills)
-[![Executable Guards](https://img.shields.io/badge/Executable_Guards-32_Guards-purple.svg)](#2-executable-audit-engine-fin_skillsapi)
+[![Skills](https://img.shields.io/badge/Agent_Skills-127_Verified-emerald.svg)](#6-complete-skill-catalog-127-skills)
+[![Executable Guards](https://img.shields.io/badge/Executable_Guards-33_Guards-purple.svg)](#2-executable-audit-engine-fin_skillsapi)
 [![Leak Benchmark](https://img.shields.io/badge/Leak_Benchmark-12%2F12_Caught_(0_FP)-success.svg)](#5-empirical-benchmarks--maturity-status)
-[![Unit Tests](https://img.shields.io/badge/Tests-1%2C600%2B_Passed-brightgreen.svg)](#5-empirical-benchmarks--maturity-status)
+[![Unit Tests](https://img.shields.io/badge/Tests-pytest-brightgreen.svg)](#5-empirical-benchmarks--maturity-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
 **Language / 语言切换:** **English (`README.md`)** · [简体中文 (`README_ZH.md`)](README_ZH.md) · 📂 **[Documentation Hub (`docs/`)](docs/README.md)** · 📘 [集成手册 (`docs/USER_MANUAL_ZH.md`)](docs/USER_MANUAL_ZH.md) · 🛠️ [操作指南 (`docs/OPERATIONS_GUIDE_ZH.md`)](docs/OPERATIONS_GUIDE_ZH.md)  
@@ -18,7 +18,7 @@
 
 ## 🎯 1. What This Repo Does (Executive Summary)
 
-**114 [Agent Skills](https://agentskills.io/specification) for Claude Code and coding agents that tell an LLM which Python quant-finance library to use, what each one silently gets wrong, and whether a backtest result is real.** 90 domain skills, plus 24 optional per-library deep dives you install only if you want them.
+**127 [Agent Skills](https://agentskills.io/specification) for Claude Code and coding agents that tell an LLM which Python quant-finance library to use, what each one silently gets wrong, and whether a backtest result is real.** 103 domain skills, plus 24 optional per-library deep dives you install only if you want them.
 
 ### Why Does This Exist?
 The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (how to fetch a price) and **textbook dumps** (what is Black-Scholes)—but nearly vacant at **research integrity and library implementation traps**. Pre-trained LLMs routinely write backtest code with fatal, silent defects because popular Python libraries harbor unintuitive defaults:
@@ -31,7 +31,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **32 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **33 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **33 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **43 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 
@@ -39,16 +39,16 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 ```mermaid
 flowchart TD
-    subgraph TIER1 ["1. 🧠 Source-Verified Knowledge Layer (114 Agent Skills)"]
-        D1["90 Domain Skills (16 Plugins)<br/>Task Routing & Methodology"] --> D2["24 Library Skills (fin-libraries)<br/>Source-Code Traps & Version Drift"] --> D3["74 Reference Deep-Dives<br/>Formulas, Rulebooks & Tables"]
+    subgraph TIER1 ["1. 🧠 Source-Verified Knowledge Layer (127 Agent Skills)"]
+        D1["103 Domain Skills (16 Plugins)<br/>Task Routing & Methodology"] --> D2["24 Library Skills (fin-libraries)<br/>Source-Code Traps & Version Drift"] --> D3["75 Reference Deep-Dives<br/>Formulas, Rulebooks & Tables"]
     end
 
     subgraph TIER2 ["2. 🛡️ Executable Research Integrity Engine (fin_skills.api)"]
-        E1["Bundle Container<br/>146 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["32 Executable Guards<br/>GuardResult + Diagnostic Summary"]
+        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["33 Executable Guards<br/>GuardResult + Diagnostic Summary"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
-        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>33 Live Agent Inspection Tools"]
+        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>43 Live Agent Inspection Tools"]
     end
 
     D3 ==>|Compiled by build_package.py| E1
@@ -63,15 +63,15 @@ flowchart TD
 
 ## 📊 3. Project Maturity & Current Progress Scorecard
 
-**Current Status:** Production Release **`v0.1.0`** (September 2026). All core domain plugins, library deep-dives, unified Python API, MCP server, and empirical leak benchmarks are complete and verified.
+**Current status:** Alpha library. The published `v0.1.0` release predates the current source. The September 14 completion adds executable collection and deeper market modules; see the [acceptance audit](docs/COMPLETION_AUDIT.md) for validation and deployment dependencies.
 
 | Dimension | Current Milestone / Metric | Verification & Engineering Status |
 | :--- | :--- | :--- |
-| **Knowledge Coverage** | **114 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
-| **Executable Code Guards** | **32 Unified Guards** (`fin_skills.api`)<br>**99 Standalone Scripts** | **Production Ready.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. Standalone scripts verified across OS/encoding boundaries (`scripts/check_scripts.py`). |
-| **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught (100%)**<br>**0 False Positives** on Clean Data | **Benchmark Verified** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,565-day synthetic world with delistings and splits; every guard executes in **< 0.07s**. |
-| **Agent Routing Accuracy (`eval_blind`)** | **107 / 108 Queries Correct (99.1%)** | **Ground-Truth Verified** (`scripts/eval_blind.py`). Blind LLM selection from skill descriptions alone across 108 realistic English/Chinese queries and stack traces. |
-| **Test Suite & CI Rigor** | **123 Test Files · 1,600+ Unit Tests** | **100% Passing** (`pytest -q`). Zero drift enforced between `SKILL.md` sources, `catalog/index.json`, README counts, and generated Python modules. |
+| **Knowledge Coverage** | **127 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
+| **Executable Code Guards** | **33 Unified Guards** (`fin_skills.api`)<br>**111 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. The standalone demo/encoding check is `scripts/check_scripts.py`; platform results are listed in the completion audit. |
+| **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught (100%)**<br>**0 False Positives** on Clean Data | **Benchmark Verified** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,565-day synthetic world with delistings and splits; timings for this machine are recorded in the generated benchmark output. |
+| **Agent Routing (`eval_blind`)** | **92/108 historical-label matches; 16/16 new-capability queries** | Independent listing-only evaluation on 2026-09-14. Old labels include superseded broad routes; the new set is a small smoke test. [Inputs, answers and limitations](evals/2026-09-14/README.md). |
+| **Test Suite & CI Rigor** | **Repository-wide default test suite** | Run `pytest -q`; current measured results are recorded in the [acceptance audit](docs/COMPLETION_AUDIT.md). Zero drift enforced between `SKILL.md` sources, `catalog/index.json`, README counts, and generated Python modules. |
 | **Ecosystem Federation** | **92 Third-Party Packs Federated**<br>(from 139 Repos / 4,851 Skills Audited) | **Curated & Commit-Pinned** ([`catalog/federation-notes.md`](catalog/federation-notes.md)). Official vendor packs (Alpaca, Kraken, OKX, Longbridge) and community repos integrated with SHA pinning. |
 
 ---
@@ -87,7 +87,7 @@ pip install git+https://github.com/howard-lynn-ye/fin-skills
 ```
 
 #### 1. Audit a Backtest Run with `Bundle` and `check()`
-The `Bundle` container holds the artefacts of a research run under a fixed 146-slot vocabulary. Calling `check(b)` automatically runs every guard whose required inputs are present:
+The `Bundle` container holds the artefacts of a research run under a fixed 151-slot vocabulary. Calling `check(b)` automatically runs every guard whose required inputs are present:
 
 ```python
 from fin_skills.api import Bundle, check, get, Suite, conventions as c
@@ -131,13 +131,17 @@ c.pip_value("USDJPY", notional=100_000, price=150.25).value_usd     # Exact FX p
 ```python
 import fin_skills
 
-fin_skills.catalog()                           # List all 114 skills: name, plugin, summary
+fin_skills.catalog()                           # List all 127 skills: name, plugin, summary
 fin_skills.load("research-integrity-guards")   # Read full SKILL.md markdown text
 fin_skills.references("options-backtesting")   # Dict of reference files {filename: text}
 fin_skills.find("survivorship", "universe")    # Search skills mentioning both terms
 ```
 
 ---
+
+### Public news, crawlers and disclosure tracking
+
+The library now includes real retrieval through `fin_skills.collect`: RSS/Atom, bounded static-page crawling, SEC Form 4 and 13F, House PTR PDFs, and public Bluesky posts. SQLite retains watch state, deduplicated revisions and pending alerts. Use the [collection guide](docs/COLLECTION.md) for Python, CLI and MCP commands. Continuous polling must be started explicitly; public filings carry disclosure delays.
 
 ### Mode B: In Claude Code / Coding Agents (Skill Plugins)
 
@@ -163,7 +167,7 @@ fin_skills.find("survivorship", "universe")    # Search skills mentioning both t
 
 ### Mode C: As an MCP Server or JSON Tool Suite for LLM Agents
 
-Give any LLM agent live execution access to the 33 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
+Give any LLM agent live execution access to the 43 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
 
 ```bash
 pip install "fin-skills[mcp]"
@@ -204,25 +208,25 @@ We evaluate our executable guards against a 1,565-day synthetic market containin
 
 | Planted Research Defect | Severity | Corrupted Sharpe (vs 1.80 Clean) | Caught By Guard | Execution Time |
 | :--- | :---: | :---: | :--- | :---: |
-| **`wrong_side_asof`** (Point-in-time timestamp leak) | High | `2.63` (+0.83 fake boost) | `safe_asof` | `0.020s` |
-| **`cost_too_low`** (Unrealistic 1bp execution assumption) | High | `2.09` (+0.29 fake boost) | `cost_plausibility` | `0.001s` |
-| **`lookahead_signal`** (Centered rolling window / shift(-1)) | Critical | `1.99` (+0.19 fake boost) | `assert_causal` | `0.006s` |
-| **`warmup_live_window`** (Indicator warm-up inside test window) | Medium | `1.83` (+0.03 distortion) | `warmup_probe` | `0.063s` |
-| **`survivor_only_universe`** (Omitting 10 delisted stocks) | High | `1.82` (+0.02 survivorship) | `survivorship_audit`, `pit_universe` | `0.010s` |
-| **`unpurged_cv`** (Overlapping labels across K-Fold splits) | High | `1.79` (leaked validation) | `purge_effect` | `0.031s` |
-| **`latest_vintage_fundamentals`** (Restated financial statements) | High | `1.78` (restatement leak) | `pit_fundamentals` | `0.023s` |
-| **`shared_scaler`** (`StandardScaler` fit on full train+test) | High | `1.76` (distribution leak) | `fold_leak_test` | `0.022s` |
-| **`forward_adjusted_qfq`** (Trading on forward-adjusted prices) | Medium | `1.71` (level distortion) | `adjustment_check` | `0.001s` |
-| **`llm_cutoff_overlap`** (Evaluating LLM inside training window) | Critical | `1.46` (memorization bias) | `contamination_probe` | `0.000s` |
-| **`unadjusted_split`** (Trading raw prices across stock splits) | High | `0.77` (-1.03 fake crash) | `adjustment_check` | `0.001s` |
-| **`single_calm_quarter`** (Cherry-picked low-vol regime window) | Medium | `0.77` (regime fragility) | `regime_coverage` | `0.001s` |
+| **`wrong_side_asof`** (Point-in-time timestamp leak) | High | `2.63` (+0.83 fake boost) | `safe_asof` | see RESULTS.md |
+| **`cost_too_low`** (Unrealistic 1bp execution assumption) | High | `2.09` (+0.29 fake boost) | `cost_plausibility` | see RESULTS.md |
+| **`lookahead_signal`** (Centered rolling window / shift(-1)) | Critical | `1.99` (+0.19 fake boost) | `assert_causal` | see RESULTS.md |
+| **`warmup_live_window`** (Indicator warm-up inside test window) | Medium | `1.83` (+0.03 distortion) | `warmup_probe` | see RESULTS.md |
+| **`survivor_only_universe`** (Omitting 10 delisted stocks) | High | `1.82` (+0.02 survivorship) | `survivorship_audit`, `pit_universe` | see RESULTS.md |
+| **`unpurged_cv`** (Overlapping labels across K-Fold splits) | High | `1.79` (leaked validation) | `purge_effect` | see RESULTS.md |
+| **`latest_vintage_fundamentals`** (Restated financial statements) | High | `1.78` (restatement leak) | `pit_fundamentals` | see RESULTS.md |
+| **`shared_scaler`** (`StandardScaler` fit on full train+test) | High | `1.76` (distribution leak) | `fold_leak_test` | see RESULTS.md |
+| **`forward_adjusted_qfq`** (Trading on forward-adjusted prices) | Medium | `1.71` (level distortion) | `adjustment_check` | see RESULTS.md |
+| **`llm_cutoff_overlap`** (Evaluating LLM inside training window) | Critical | `1.46` (memorization bias) | `contamination_probe` | see RESULTS.md |
+| **`unadjusted_split`** (Trading raw prices across stock splits) | High | `0.77` (-1.03 fake crash) | `adjustment_check` | see RESULTS.md |
+| **`single_calm_quarter`** (Cherry-picked low-vol regime window) | Medium | `0.77` (regime fragility) | `regime_coverage` | see RESULTS.md |
 | **Clean Baseline Data (False Alarm Test)** | — | **`1.80` (True Sharpe)** | **0 False Alarms (`ok` across all 13)** | — |
 
 Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
 
 ---
 
-## 📚 6. Complete Skill Catalog (114 Skills across 17 Plugins)
+## 📚 6. Complete Skill Catalog (127 Skills across 17 Plugins)
 
 ### Plugin Architecture Overview
 
@@ -256,8 +260,14 @@ Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS
 | `fin-alt-data` | [`congressional-trading-disclosures`](plugins/fin-alt-data/skills/congressional-trading-disclosures/SKILL.md) | Build a congressional-trading signal on the disclosure date instead of the transaction date, and price what the amount brackets cost you. | 0 | 1 |
 | `fin-alt-data` | [`insider-form-4`](plugins/fin-alt-data/skills/insider-form-4/SKILL.md) | Filter Form 4 to open-market purchases by transaction code, then key the signal to the first session that can trade the acceptance timestamp. | 0 | 1 |
 | `fin-alt-data` | [`institutional-13f`](plugins/fin-alt-data/skills/institutional-13f/SKILL.md) | Clone or study 13F holdings without the quarter-end look-ahead, and report the full age distribution of the positions instead of the 45-day deadline. | 0 | 1 |
+| `fin-alt-data` | [`public-information-collection`](plugins/fin-alt-data/skills/public-information-collection/SKILL.md) | Collect public news and disclosures with the importable fin_skills.collect runtime. | 0 | 0 |
 | `fin-alt-data` | [`social-and-influencer-feeds`](plugins/fin-alt-data/skills/social-and-influencer-feeds/SKILL.md) | What social data you can legally and practically get in 2026, and what the part you can get does to a backtest. | 0 | 1 |
-| `fin-asia` | [`asia-pacific-markets`](plugins/fin-asia/skills/asia-pacific-markets/SKILL.md) | Data and trading for Asia-Pacific outside mainland China. | 0 | 0 |
+| `fin-asia` | [`asean-markets`](plugins/fin-asia/skills/asean-markets/SKILL.md) | TRIGGER - ASEAN, SGX, Singapore, Bursa Malaysia, SET Thailand, Thai foreign board or NVDR, IDX Indonesia, PSE Philippines, HOSE HNX UPCoM Vietnam, foreign ownership room, Southeast | 0 | 1 |
+| `fin-asia` | [`asia-pacific-markets`](plugins/fin-asia/skills/asia-pacific-markets/SKILL.md) | TRIGGER - choose an Asia-Pacific data or trading stack outside mainland China, compare Asian venues, multi-market calendars, regional survivorship and currency alignment. | 0 | 0 |
+| `fin-asia` | [`hong-kong-markets`](plugins/fin-asia/skills/hong-kong-markets/SKILL.md) | TRIGGER - HKEX, 港股, 每手 board lot, 碎股 odd lot, Stock Connect, 滬港通, 深港通, northbound quota, southbound quota, VCM, CAS, A/H premium, ADR ratio, typhoon trading. | 0 | 1 |
+| `fin-asia` | [`india-markets`](plugins/fin-asia/skills/india-markets/SKILL.md) | TRIGGER - NSE, BSE, Nifty, Sensex, upper circuit, lower circuit, price bands, Indian STT, index derivatives contract size, T+1 rollout, T+0, Muhurat, bhavcopy, kiteconnect, Zerodha | 0 | 1 |
+| `fin-asia` | [`japan-markets`](plugins/fin-asia/skills/japan-markets/SKILL.md) | TRIGGER - Japanese equities, TSE, JPX, 東証, 前場, 後場, lunch-break bars, TOPIX500 ticks, Nikkei divisor, 空売り規制, J-Quants, e-Stat, yen quotes. | 0 | 1 |
+| `fin-asia` | [`korea-taiwan-markets`](plugins/fin-asia/skills/korea-taiwan-markets/SKILL.md) | TRIGGER - KRX, KOSPI, KOSDAQ, 韓國 공매도, Korean short-selling ban, TWSE, TPEX, 台股, 漲跌停, limit-up queue, Korea foreign registration, Taiwan ticks, pykrx, FinanceDataReader, FinMind, sh | 0 | 1 |
 | `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Get China A-share and Greater China market data without the ecosystem's silent traps. | 4 | 0 |
 | `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies under the rules a Western engine gets wrong. | 3 | 1 |
 | `fin-core` | [`backtest-overfitting`](plugins/fin-core/skills/backtest-overfitting/SKILL.md) | Decide whether an edge that passed every mechanical check is still just the best of N tries. | 0 | 1 |
@@ -282,7 +292,11 @@ Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS
 | `fin-credit` | [`corporate-bond-data-and-trace`](plugins/fin-credit/skills/corporate-bond-data-and-trace/SKILL.md) | Use FINRA TRACE corporate bond data without inheriting the two things it does not tell you - the 15-minute reporting window and the size caps that censor volume. | 0 | 1 |
 | `fin-credit` | [`credit-spread-measures`](plugins/fin-credit/skills/credit-spread-measures/SKILL.md) | Work out which spread a corporate bond quote actually is and what it was measured against, so two "spreads" on the same bond stop disagreeing. | 0 | 1 |
 | `fin-credit` | [`ratings-transitions-and-migration`](plugins/fin-credit/skills/ratings-transitions-and-migration/SKILL.md) | Estimate and use a credit rating transition matrix without producing negative probabilities or a five-year default rate that is five times the wrong number. | 0 | 1 |
-| `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | Crypto market data and execution, and how a 24/7 market breaks equity tooling. | 3 | 1 |
+| `fin-crypto` | [`crypto-data-and-execution`](plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md) | TRIGGER - choose a crypto data or exchange client, Bitcoin or Ethereum OHLCV, crypto order book feeds, ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot, OctoBot; exch | 4 | 1 |
+| `fin-crypto` | [`crypto-market-structure`](plugins/fin-crypto/skills/crypto-market-structure/SKILL.md) | TRIGGER - crypto annualisation, 365 versus 252, weekend returns, 24/7 market, calendar-day rolling windows, exchange daily close timezone, cross-venue price dispersion, no consolid | 0 | 1 |
+| `fin-crypto` | [`crypto-token-events`](plugins/fin-crypto/skills/crypto-token-events/SKILL.md) | TRIGGER - token swap, redenomination, migration, same ticker changed units, hard fork, airdropped fork coin, rebase, elastic supply, balance changed but price did not, wrapped or b | 0 | 1 |
+| `fin-crypto` | [`defi-and-amm-mechanics`](plugins/fin-crypto/skills/defi-and-amm-mechanics/SKILL.md) | TRIGGER - AMM, constant-product pool, x*y=k, Uniswap v2 or v3, concentrated liquidity, LP position, impermanent loss, divergence loss, fee income versus IL, pool price impact, out- | 0 | 1 |
+| `fin-crypto` | [`perpetuals-and-funding`](plugins/fin-crypto/skills/perpetuals-and-funding/SKILL.md) | TRIGGER - perpetual swap, perp funding, funding interval, funding history, mark versus index versus last price, liquidation threshold, maintenance margin, inverse contract, cash-an | 0 | 1 |
 | `fin-fixed-income` | [`bond-conventions-and-accrued`](plugins/fin-fixed-income/skills/bond-conventions-and-accrued/SKILL.md) | Compute accrued interest, clean and dirty prices and day-count year fractions on a bond without silently picking the wrong convention. | 0 | 1 |
 | `fin-fixed-income` | [`duration-convexity-and-dv01`](plugins/fin-fixed-income/skills/duration-convexity-and-dv01/SKILL.md) | Get the right duration number and the right DV01, for a bond, a floater or a hedge ratio. | 0 | 1 |
 | `fin-fixed-income` | [`ex-dividend-and-rebate-interest`](plugins/fin-fixed-income/skills/ex-dividend-and-rebate-interest/SKILL.md) | Handle bonds that trade ex-dividend, where accrued interest goes negative and the buyer is paid rebate interest instead of paying it. | 0 | 1 |
@@ -327,11 +341,14 @@ Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS
 | `fin-macro` | [`real-time-macro-backtesting`](plugins/fin-macro/skills/real-time-macro-backtesting/SKILL.md) | Run a macro strategy twice - once on today's revised series and once on the vintage that existed at each decision date - and report both Sharpes. | 0 | 1 |
 | `fin-macro` | [`seasonal-adjustment-and-x13`](plugins/fin-macro/skills/seasonal-adjustment-and-x13/SKILL.md) | Seasonal adjustment is a second, silent vintage - the published seasonally adjusted history keeps changing with no new data. | 0 | 1 |
 | `fin-market-data` | [`choosing-a-data-vendor`](plugins/fin-market-data/skills/choosing-a-data-vendor/SKILL.md) | Decide whether a data source may legally and factually serve a research question, before any fetch code is written. | 0 | 1 |
+| `fin-market-data` | [`corporate-actions-processing`](plugins/fin-market-data/skills/corporate-actions-processing/SKILL.md) | TRIGGER - spin-off, spinoff, rights issue, TERP, merger, exchange ratio, reverse split, cash in lieu, ticker change, symbol recycling, special dividend, parent price dropped on ex- | 0 | 1 |
+| `fin-market-data` | [`data-quality-validation`](plugins/fin-market-data/skills/data-quality-validation/SKILL.md) | TRIGGER - stale closes, zero volume, missing trading sessions, duplicate timestamps, negative prices, invalid OHLC, outlier returns, validate downloaded bars, 数据质量, 缺失行情. | 0 | 1 |
 | `fin-market-data` | [`finding-and-searching-data`](plugins/fin-market-data/skills/finding-and-searching-data/SKILL.md) | Find the identifier before you fetch it, and know which free sources can actually search. | 0 | 1 |
 | `fin-market-data` | [`fundamental-and-macro-data`](plugins/fin-market-data/skills/fundamental-and-macro-data/SKILL.md) | Company fundamentals and macro series with correct point-in-time semantics. | 3 | 1 |
 | `fin-market-data` | [`market-data-engineering`](plugins/fin-market-data/skills/market-data-engineering/SKILL.md) | Store, join and parallelize market data you already hold, without corrupting it. | 4 | 2 |
 | `fin-market-data` | [`market-data-sourcing`](plugins/fin-market-data/skills/market-data-sourcing/SKILL.md) | Choose a market price or reference data vendor and use it without silently corrupting the numbers. | 11 | 1 |
 | `fin-market-data` | [`security-master-and-symbology`](plugins/fin-market-data/skills/security-master-and-symbology/SKILL.md) | Map ticker, CIK, ISIN, FIGI, SEDOL and CUSIP on (identifier, DATE) rather than on identifier, and detect when the entity behind one changed. | 0 | 1 |
+| `fin-market-data` | [`trading-calendars-and-sessions`](plugins/fin-market-data/skills/trading-calendars-and-sessions/SKILL.md) | TRIGGER - trading calendar, market sessions, early close, lunch break, holidays.US, exchange_calendars, pandas_market_calendars, DateOutOfBounds, resample has empty bars, aligning  | 0 | 1 |
 | `fin-microstructure` | [`copulas-and-dependence`](plugins/fin-microstructure/skills/copulas-and-dependence/SKILL.md) | Separate the marginals from the dependence - Gaussian, Student t, Clayton and Gumbel copulas, Kendall's tau, tail dependence coefficients, and what fitting the wrong family costs i | 0 | 1 |
 | `fin-microstructure` | [`hawkes-processes`](plugins/fin-microstructure/skills/hawkes-processes/SKILL.md) | Fit and test a self-exciting point process for clustered order arrivals - exponential-kernel Hawkes intensity, Ogata thinning, maximum likelihood, the branching ratio, and the rand | 0 | 1 |
 | `fin-microstructure` | [`intraday-microstructure`](plugins/fin-microstructure/skills/intraday-microstructure/SKILL.md) | Measure the market at the tick level and know when the measure is lying. | 0 | 1 |
@@ -396,9 +413,9 @@ The marketplace also lists 92 third-party skill packs by their own GitHub source
 python scripts/build_index.py    # 1. Regenerate catalog/index.json and README skill table/counts
 python scripts/build_package.py  # 2. Compile plugins/*/skills/ into importable fin_skills/ package
 python scripts/validate.py       # 3. Validate 6-field spec, live counts, references & zero drift
-python scripts/eval_blind.py     # 4. Run blind LLM routing evaluation (107/108 accuracy)
+python scripts/eval_blind.py     # 4. Score saved blind-routing responses (historical listing)
 python benchmarks/leak_bench.py  # 5. Re-run the 12-defect x 13-guard leak detection benchmark
-pytest -q                        # 6. Execute the 1,600+ unit test suite
+pytest -q                        # 6. Execute the default unit test suite
 ```
 
 ---

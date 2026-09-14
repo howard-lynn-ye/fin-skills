@@ -1,0 +1,25 @@
+{
+  "watches": [
+    {
+      "id": "fed-releases",
+      "source": "rss",
+      "target": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "interval_seconds": 300
+    },
+    {
+      "id": "pelosi-ptr-2026",
+      "source": "house",
+      "target": "Pelosi",
+      "interval_seconds": 1800,
+      "options": {"year": 2026, "first_name": "Nancy", "since": "2026-01-01"}
+    },
+    {
+      "id": "berkshire-13f",
+      "source": "sec",
+      "target": "1067983",
+      "interval_seconds": 900,
+      "enabled": false,
+      "options": {"forms": ["13F-HR", "13F-HR/A"], "since": "2026-01-01", "value_units": "USD"}
+    }
+  ]
+}

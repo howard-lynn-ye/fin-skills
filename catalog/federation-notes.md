@@ -3,6 +3,12 @@
 How third-party skill packs get into this marketplace without being copied, what was checked, and
 what was left out and why. Verified 2026-09-08.
 
+Update 2026-09-14: all 92 external entries now carry a full commit SHA. The eight original
+unpinned entries were resolved against their default branches, licenses and declared paths;
+`metadata.source_pinned_on` records this narrower check separately from the original
+`verified_on`. At the new pin `ib-options-income` contains 29 skills. Pinning is not a
+verification of third-party skill instructions. See [the completion audit](../docs/COMPLETION_AUDIT.md).
+
 ## The mechanism
 
 A marketplace plugin entry's `source` may be an external repository (from the Claude Code plugin

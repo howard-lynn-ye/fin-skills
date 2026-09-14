@@ -1,0 +1,5 @@
+1. I want a persistent watchlist that downloads an executive's actual Form 4 XML and stores the reported transactions.
+2. My Tokyo intraday strategy includes lunch as tradable minutes and assumes every market is continuous until the close. What do I fix?
+3. For Korea and Taiwan daily bars, can a bar at its limit price tell me whether my order would fill?
+4. How should the cash ledger change at each perpetual funding settlement, including the sign for longs and shorts?
+5. Build expected intraday bar timestamps from an exchange schedule with lunch, early closes and daylight-saving transitions.
