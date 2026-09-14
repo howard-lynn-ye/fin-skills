@@ -1,6 +1,6 @@
 # Examples
 
-Three runnable scripts, in the order to read them. Each one is self-contained: seeded
+Runnable scripts, in the order to read them. Each one is self-contained: seeded
 synthetic data, no network, numpy/pandas plus the installed `fin_skills` package, ASCII
 output, under five seconds, under 200 lines. Each ends with a `TAKEAWAY` block that says what
 you were supposed to see.
@@ -10,9 +10,10 @@ pip install -e .                                   # or set PYTHONPATH to the re
 python examples/audit_a_backtest.py
 python examples/point_in_time_fundamentals.py
 python examples/futures_roll.py
+python examples/algorithm_selection.py
 ```
 
-`tests/test_examples.py` runs all three in a subprocess and asserts their **conclusions**, not
+`tests/test_examples.py` runs each example in a subprocess and asserts its **conclusions**, not
 just their exit codes, so they cannot rot quietly. It is marked `slow` (~10 s of subprocesses),
 so run it with `python -m pytest -q -m slow tests/test_examples.py`; CI runs it in its `-m slow`
 job.
@@ -22,6 +23,7 @@ job.
 | [`audit_a_backtest.py`](audit_a_backtest.py) | The whole API in one call: put a research run in a `Bundle`, read `coverage()` to see which checks can run at all, `check()` to run them, then fix the two planted defects and watch them go green | ~3 s |
 | [`point_in_time_fundamentals.py`](point_in_time_fundamentals.py) | The same fundamentals joined to the same prices two ways — latest vintage on an exact stamp, versus filed-date vintage on a backward as-of with a tolerance — and what the difference is worth in Sharpe | ~4 s |
 | [`futures_roll.py`](futures_roll.py) | One futures chain stitched three ways, which return operator reproduces true dollar P&L, and the back-adjusted series walking through zero into negative prices under backwardation | ~1 s |
+| [`algorithm_selection.py`](algorithm_selection.py) | Automatic algorithm selection, portfolio weights, execution schedules and chronological forecast comparison | Offline |
 
 ## 1. `audit_a_backtest.py`
 
@@ -69,3 +71,5 @@ of the crossing and `log()` is NaN for more than half the sample, so
   or `fin_skills.api.slots()` for the vocabulary a Bundle accepts.
 - Whether the guards catch what they claim: `benchmarks/README.md` and `benchmarks/RESULTS.md`.
 - The knowledge each guard came from: `fin_skills.load("<skill>")` returns the SKILL.md text.
+
+- [research_workflow.py](research_workflow.py): chronological selection, reserved holdout, trial ledger, provenance and model save/load.

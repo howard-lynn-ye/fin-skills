@@ -1739,9 +1739,9 @@
       "summary": "Estimate a covariance matrix an optimizer can actually invert, and report how much variance it hides.",
       "license": "MIT",
       "version": "0.1.0",
-      "verified_on": "2026-09-09",
-      "body_chars": 15077,
-      "approx_body_tokens": 3769,
+      "verified_on": "2026-09-14",
+      "body_chars": 15706,
+      "approx_body_tokens": 3926,
       "references": [],
       "scripts": [
         "risk_model.py"

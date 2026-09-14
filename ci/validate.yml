@@ -1,8 +1,6 @@
 name: validate
-# NOT ACTIVE YET. This file cannot live at .github/workflows/validate.yml until the
-# maintainer grants the `workflow` OAuth scope - see ci/README.md for the one command
-# and the one `git mv`. It is version-controlled here so it is reviewable and cannot be
-# lost; move it, do not copy it.
+# HISTORICAL, INACTIVE TEMPLATE. Superseded by .github/workflows/ci.yml as of 2026-09-14.
+# Do not activate alongside that workflow; see ci/README.md for observed run status.
 on:
   push:
     branches: [master]

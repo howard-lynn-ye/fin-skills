@@ -189,17 +189,19 @@ def test_matches_pypfopt_constant_correlation_shrinkage():
 
 @requires("sklearn")
 @requires("osqp")
-def test_the_import_order_that_kills_the_interpreter_is_still_what_the_skill_says():
-    """SKILL.md section 5 claims sklearn-then-osqp crashes and the reverse does not.
-
-    A property test, not a correctness test: it asserts the claim is still true here. If this
-    ever fails because BOTH orders survive, the trap has been fixed upstream and the SKILL.md
-    section should be re-dated, not the test deleted.
-    """
+def test_import_orders_match_the_documented_environment_scope():
+    """The historical Windows combination crashes; current environments must survive both."""
+    import platform
+    from importlib.metadata import version
     good, _ = probe("import osqp; import sklearn.covariance; print('ok')")
     assert good == 0
     bad, _ = probe("import sklearn.covariance; import osqp; print('ok')")
-    assert bad != 0, "sklearn -> osqp no longer crashes; re-verify SKILL.md section 5"
+    historical = platform.system() == "Windows" and tuple(version(n) for n in
+        ("numpy", "scikit-learn", "osqp")) == ("2.2.6", "1.4.2", "1.1.3")
+    if historical:
+        assert bad == 3221225477, "re-verify the historical Windows access-violation claim"
+    else:
+        assert bad == 0, "unexpected import-order failure; isolate and record this environment"
 
 
 # --------------------------------------------------------------------------- the demo

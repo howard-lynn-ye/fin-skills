@@ -1,5 +1,11 @@
 # leak_bench - do the guards catch the defects they claim to?
 
+`python benchmarks/guard_bench.py` repeats the quick world at fixed independent seeds and
+records misses, false alarms, uncovered defects and errors in `GUARD_ROBUSTNESS.json`.
+`leak_bench.py --seed N --output path.md` preserves each world's report separately;
+`--check` fails on false alarms, uncovered defects or guard errors. Seed variation expands
+robustness evidence within this synthetic design; it does not establish general detection accuracy.
+
 The analogue of PyOD's ADBench for this library's research-integrity guards. It answers one
 question with a matrix instead of a list of features: **if a backtest has defect X, which
 guard fires?** - and, as a secondary number, how far the reported Sharpe moves because of X.

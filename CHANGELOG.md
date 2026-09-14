@@ -9,6 +9,14 @@ All notable changes to fin-skills. The format follows
 
 ### Added
 
+- Algorithm research workflow with shared preflight, chronological selection and reserved
+  holdout evaluation, task-specific losses, existing audit/ledger integration and JSON records.
+- Fitted forecasting/supervised model lifecycle and trusted, version-checked local persistence.
+- Optional AutoARIMA, ARCH, boosting, Qlib linear, Heston, cointegration and regime adapters;
+  isolated backend diagnostics and numerical parity tests.
+- Frozen ECB/synthetic forecast benchmark, broader CI, clean wheel/sdist installation checks,
+  compatibility policy, workflow tutorial and independent-user feedback template.
+
 - Completed model/strategy, fixed-income, credit, macro, data, engine, bridge, discovery
   and synthesis layers added after the original release.
 - Thirteen additional skills: five Asia markets, four crypto mechanics, trading calendars,

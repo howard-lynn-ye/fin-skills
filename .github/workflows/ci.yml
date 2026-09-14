@@ -1,47 +1,100 @@
 name: CI
-
 on:
   push:
-    branches: [ main, master, v2 ]
+    branches: [main, master, v2]
   pull_request:
-    branches: [ main, master, v2 ]
-
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
+permissions:
+  contents: read
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
-    name: Test (Python ${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
-
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.11', '3.12', '3.13']
+        include:
+          - os: macos-latest
+            python: '3.12'
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[all]" pytest
-
-      - name: Validate Agent Skills specification
-        run: |
-          python scripts/validate.py
-
-      - name: Run Core API Tests
-        run: |
-          pytest tests/test_api.py tests/test_api_bundle.py -v
-
-      - name: Run Full Test Suite
-        run: |
-          pytest -q
-
-      - name: Run Leak Detection Benchmark
-        run: |
-          python benchmarks/leak_bench.py
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[stats,dev]"
+      - run: python scripts/validate.py
+      - run: python -m pytest -q --cov=fin_skills --cov-report=xml --cov-report=term:skip-covered
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-${{ matrix.os }}-${{ matrix.python }}
+          path: coverage.xml
+  minimum-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: python -m pip install -e . pytest "numpy==1.24.*" "pandas==2.0.*" "scipy==1.10.*"
+      - run: python -m pytest -q
+  optional-backends:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        extra: [algorithms, qlib, optimizers, mcp]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -e ".[${{ matrix.extra }},dev]"
+      - run: python -m pytest -q tests/test_algorithms.py tests/test_algorithm_research.py tests/test_algorithm_backends.py tests/test_mcp.py
+        env:
+          FIN_SKILLS_REQUIRE_EXTRA: ${{ matrix.extra }}
+  extended-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[all,dev]"
+      - run: python -m pytest -q -m slow
+      - run: python scripts/check_scripts.py
+      - run: python benchmarks/leak_bench.py --check
+      - run: python benchmarks/guard_bench.py
+      - run: python benchmarks/algorithm_bench.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmarks
+          path: |
+            benchmarks/RESULTS.md
+            benchmarks/ALGORITHM_RESULTS.json
+            benchmarks/GUARD_ROBUSTNESS.json
+  packaging:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install build twine
+      - run: python scripts/check_distribution.py

@@ -44,8 +44,9 @@ def synthetic_run(seed: int = SEED) -> dict:
 
     # --- one instrument's bars, the input a signal function actually sees
     close = prices["N00"]
-    bars = pd.DataFrame({"open": close.shift(1).bfill(), "high": close * 1.008,
-                         "low": close * 0.992, "close": close,
+    open_price = close.shift(1).bfill()
+    bars = pd.DataFrame({"open": open_price, "high": np.maximum(open_price, close) * 1.008,
+                         "low": np.minimum(open_price, close) * 0.992, "close": close,
                          "volume": rng.integers(2_000, 9_000, N_DAYS)}, index=dates)
 
     # --- the strategy: modest edge, 9% one-way turnover a day

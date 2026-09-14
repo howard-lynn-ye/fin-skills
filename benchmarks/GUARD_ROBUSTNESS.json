@@ -1,0 +1,53 @@
+{
+  "worlds": [
+    {
+      "seed": 17,
+      "defects": 12,
+      "caught": 12,
+      "false_alarms": [],
+      "gaps": [],
+      "errors": [],
+      "misses": [
+        [
+          "cost_too_low",
+          "cost_curve"
+        ]
+      ],
+      "elapsed_seconds": 17.769405841827393
+    },
+    {
+      "seed": 29,
+      "defects": 12,
+      "caught": 12,
+      "false_alarms": [],
+      "gaps": [],
+      "errors": [],
+      "misses": [
+        [
+          "cost_too_low",
+          "cost_curve"
+        ]
+      ],
+      "elapsed_seconds": 16.04894256591797
+    },
+    {
+      "seed": 43,
+      "defects": 12,
+      "caught": 12,
+      "false_alarms": [],
+      "gaps": [],
+      "errors": [],
+      "misses": [
+        [
+          "cost_too_low",
+          "cost_curve"
+        ]
+      ],
+      "elapsed_seconds": 16.262184381484985
+    }
+  ],
+  "scope": "seed robustness of one synthetic strategy/defect design",
+  "false_alarms": 0,
+  "gaps": 0,
+  "errors": 0
+}

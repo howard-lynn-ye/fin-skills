@@ -1,5 +1,8 @@
 # Completion audit
 
+This records the earlier capability-completion phase. Subsequent algorithm workflow,
+backend, CI and benchmark changes have their own [engineering acceptance record](PROFESSIONAL_READINESS.md).
+
 Checked 2026-09-14 against the local source, the original Claude conversation and read-only
 GitHub/PyPI responses. This is an acceptance ledger, not a promise that every market, vendor
 or third-party pack has been tested. The source implementation and targeted acceptance checks

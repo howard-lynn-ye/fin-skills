@@ -1,11 +1,14 @@
 # fin-skills documentation
 
+[Research workflow](RESEARCH_WORKFLOW.md) | [API compatibility](API_COMPATIBILITY.md)
+
 The library combines importable finance skills, research checks, source adapters and public
-information collection. The current source contains 127 skills, 33 guards and 43 JSON/MCP tools.
+information collection. The current source contains 127 skills, 33 guards and 50 JSON/MCP tools.
 
 | Document | Purpose |
 |---|---|
 | [Collection guide](COLLECTION.md) | Real news/disclosure sources, Python/CLI/MCP setup, polling and retries |
+| [Algorithm guide](ALGORITHMS.md) | Algorithm registry, automatic selection/execution, temporal comparison and custom adapters |
 | [Completion audit](COMPLETION_AUDIT.md) | Requirements, measured checks and remaining account prerequisites |
 | [English README](../README.md) | Installation, architecture and generated skill catalog |
 | [Chinese overview](../README_ZH.md) | Chinese introduction and earlier skill explanations |

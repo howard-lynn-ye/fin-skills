@@ -37,6 +37,19 @@ changes after running it, commit them.
 
 ## Adding a skill
 
+For executable algorithm adapters, first read [the workflow contract](docs/RESEARCH_WORKFLOW.md)
+and [API compatibility policy](docs/API_COMPATIBILITY.md). A contribution must provide the
+upstream source and license/installation constraints, lazy dependency imports, explicit
+parameters and units, shared preflight checks, and numerical/edge-case tests. Compare results
+with the real upstream implementation; do not replace it with a mock in the acceptance test.
+Test fitting without prediction data, feature alignment, deterministic seeds where supported,
+convergence failures, and serialization for fitted models. Optional-backend tests run in fresh
+processes so a native-extension crash cannot be mistaken for a missing dependency.
+
+Document retrospective outputs and unavailable lifecycle operations. Include a baseline and
+an untouched chronological test period for performance claims. Adding a directory entry is
+not evidence that an adapter executes, and local tests are not independent user validation.
+
 The Agent Skills spec allows **exactly six** frontmatter fields: `name`, `description`, `license`,
 `compatibility`, `metadata`, `allowed-tools`. Any other key is a hard error on claude.ai upload,
 even though Claude Code tolerates it. `name` must equal the parent directory name.

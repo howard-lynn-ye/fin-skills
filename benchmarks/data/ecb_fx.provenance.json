@@ -1,0 +1,14 @@
+{
+  "source": "European Central Bank",
+  "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
+  "terms_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+  "attribution": "Source: European Central Bank. Reference rates are freely available from the ECB.",
+  "transformations": "Selected Date/USD/JPY/GBP/CHF and 2005-2025 inclusive; sorted ascending; values not adjusted.",
+  "units": "foreign currency units per euro; reference rates, not executable quotes",
+  "retrieved_at": "2026-09-14T16:57:16.876277+00:00",
+  "upstream_zip_sha256": "c6ee4f5975b2663a5379a78b6bd106b3ab73bdbb09b6565a7db6cbe49e69113f",
+  "fixture_sha256": "c1125d6df0c6eb3253e0889114945919cc0727d41983697d6563e1b1c519e899",
+  "rows": 5376,
+  "start": "2005-01-03",
+  "end": "2025-12-31"
+}

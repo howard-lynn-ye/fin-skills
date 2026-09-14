@@ -1,0 +1,30 @@
+name: Research workflow feedback
+description: Report an independent installation or research workflow reproduction.
+title: '[Workflow] '
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and installation
+      description: OS, Python, fin-skills/backend versions, install command, and doctor output if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task and minimal reproduction
+      description: What were you trying to do? Include runnable code and shareable synthetic/public inputs.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and observed result
+      description: Include the exception or research record, removing credentials and private data.
+    validations:
+      required: true
+  - type: textarea
+    id: usability
+    attributes:
+      label: Documentation and independent use
+      description: Which steps required help or guessing? Could you reproduce the published example?

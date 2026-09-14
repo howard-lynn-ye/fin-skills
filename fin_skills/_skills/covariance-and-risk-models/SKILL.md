@@ -15,10 +15,13 @@ description: >-
 license: MIT
 metadata:
   version: "0.1.0"
-  verified_on: "2026-09-09"
+  verified_on: "2026-09-14"
 ---
 
 # Covariance and risk models
+
+Verification scope: section 5's import-order probe was re-run on 2026-09-14 in both
+environments below. The numerical DGP tables retain their 2026-09-09 measurement provenance.
 
 **`np.cov(returns.T)` is an unbiased estimate of every entry and a bad estimate of the matrix.**
 The optimizer does not consume entries; it consumes the inverse, and the inverse is where the
@@ -176,13 +179,20 @@ residual variance is below 1, so the true edge is lower and the test is conserva
   `fix_nonpositive_semidefinite(fix_method="spectral")`. A pypfopt covariance is annualized and
   a sklearn one is not; comparing them without setting `frequency=1` is a factor-of-252 error.
 
-🚨 **`import sklearn` followed by `import osqp` terminates the interpreter.** ✅ Measured on this
-machine (Windows 11, Python 3.11.3, scikit-learn 1.4.2, osqp 1.1.3, cvxpy 1.9.2, numpy 2.2.6):
+🚨 **An older Windows dependency combination crashes on sklearn followed by osqp.**
+✅ Reproduced 2026-09-14 on Windows 11, Python 3.11.3, scikit-learn 1.4.2, osqp 1.1.3,
+numpy 2.2.6 (the original environment also had cvxpy 1.9.2):
 
 | order | return code |
 |---|---|
 | `import sklearn.covariance` then `import osqp` | **3221225477** (0xC0000005, access violation) |
 | `import osqp` then `import sklearn.covariance` | **0** |
+
+✅ On the same workstation and Python, a fresh environment with numpy 2.4.6,
+scikit-learn 1.9.1 and osqp 1.1.3 returned **0 for both orders** on 2026-09-14.
+Each measurement used a separate subprocess running only the two imports and a print.
+The newer environment no longer reproduces the failure; this does not identify which
+dependency change fixed it or prove that every supported combination is unaffected.
 
 The minimal reproduction is those two imports and nothing else; no computation is involved. osqp
 is a cvxpy dependency, so **PyPortfolioOpt, Riskfolio-Lib and skfolio all inherit it**. A
