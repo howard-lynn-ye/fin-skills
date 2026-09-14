@@ -129,7 +129,8 @@ records this run rather than retaining earlier timing claims.
   quality guard. Its adoption also exposed invalid OHLC ranges in an old test fixture;
   the fixture now bounds both opening and closing prices.
 - Wheel/sdist validation, isolated wheel installation and live-source smoke checks passed.
-  All-script execution and GitHub/Pages delivery are the remaining sign-off steps in this run.
+  **111/111** standalone skill scripts ran clean with the console-encoding override removed.
+  Three existing demos took over 30 seconds; none failed or timed out.
 - A callable poller is not a continuously running deployment. The example SEC watch remains
   disabled without the caller's contact identity. PyPI/DOI account setup, human-only
   directory submissions and third-party acceptance remain explicit external dependencies.
