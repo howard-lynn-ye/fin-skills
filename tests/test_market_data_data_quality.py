@@ -96,6 +96,15 @@ def test_stale_runs_count_repeats_excluding_first_print_and_nan():
     assert stale_mask(close).sum() == 3
 
 
+def test_stale_detection_accepts_copy_on_write_series_without_mutating_input():
+    with pd.option_context('mode.copy_on_write', True):
+        close = pd.Series([1., 1., 2., 2.])
+        original = close.copy(deep=True)
+        assert stale_mask(close).tolist() == [False, True, False, True]
+        assert stale_runs(close)['length'].tolist() == [1, 1]
+        pd.testing.assert_series_equal(close, original)
+
+
 def test_stale_filtering_changes_clock_and_does_not_recover_latent_volatility():
     table = mechanism_table().set_index("mechanism")
     assert table.loc["deferred", "vol_retained"] == table.loc["fabricated", "vol_retained"]

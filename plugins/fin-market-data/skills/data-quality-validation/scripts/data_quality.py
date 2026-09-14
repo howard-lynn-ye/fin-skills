@@ -104,7 +104,7 @@ def stale_runs(close: pd.Series) -> pd.DataFrame:
     close printed on Monday and repeated Tuesday and Wednesday is length 2.
     """
     c = pd.Series(close).astype(float)
-    same = c.eq(c.shift()).to_numpy()
+    same = c.eq(c.shift()).to_numpy(copy=True)
     if len(same):
         same[0] = False
     rows = []
@@ -123,7 +123,7 @@ def stale_runs(close: pd.Series) -> pd.DataFrame:
 
 def stale_mask(close: pd.Series) -> np.ndarray:
     c = pd.Series(close).astype(float)
-    m = c.eq(c.shift()).to_numpy()
+    m = c.eq(c.shift()).to_numpy(copy=True)
     if len(m):
         m[0] = False
     return m

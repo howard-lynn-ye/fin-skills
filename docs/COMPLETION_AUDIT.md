@@ -37,11 +37,11 @@ transaction, reporting and observation dates; public filings are not a live exec
 
 | Item | Observed evidence on 2026-09-14 | Remaining dependency |
 |---|---|---|
-| Public repository | GitHub API reports public, default branch `master` | Final implementation must be committed/pushed to the branch named by installation instructions. |
+| Public repository | GitHub API reports public, default branch `master` | Completion code was pushed to `master` at `9cec201`; a subsequent Pandas compatibility fix is described below. |
 | Existing release | [v0.1.0](https://github.com/howard-lynn-ye/fin-skills/releases/tag/v0.1.0), published 2026-09-09 | The release already exists. It does not contain this uncommitted completion work. |
 | Active CI | [Successful v2 run, 2026-09-13](https://github.com/howard-lynn-ye/fin-skills/actions/runs/34773998923) | Current workflow covers Ubuntu/Python 3.11–3.13. Earlier plans for Windows, Python 3.10 and dependency floors are broader than this active workflow. |
-| Documentation hosting | GitHub Pages API reports `built`, serving the `gh-pages` branch | Latest observed Pages deployment is 2026-09-08; rebuild/publish after final integration if the public API reference should reflect this work. |
-| Branch delivery | [master...v2](https://github.com/howard-lynn-ye/fin-skills/compare/master...v2) reports v2 ahead by 7 commits, behind by 0 | A default-branch Git install does not automatically include v2-only commits. |
+| Documentation hosting | API reference rebuilt as **234 HTML pages** and pushed to `gh-pages`; Pages reports `built` | Includes the collection API and completed market modules. |
+| Branch delivery | At the start, v2 was ahead of master by 7 commits | Master now includes those v2 changes and the completion work, so default-branch Git installs receive them. |
 | PyPI | `https://pypi.org/pypi/fin-skills/json` returned HTTP 404 | No published distribution observed. `ci/publish.yml` is still a template; the repository has no `pypi` environment. Trusted publisher/account setup is not proven complete. |
 | DOI | `CITATION.cff` has repository/release metadata and no DOI identifier | No DOI is recorded in this repository. Zenodo linkage/archive is a separate account/service step. |
 
@@ -131,6 +131,10 @@ records this run rather than retaining earlier timing claims.
 - Wheel/sdist validation, isolated wheel installation and live-source smoke checks passed.
   **111/111** standalone skill scripts ran clean with the console-encoding override removed.
   Three existing demos took over 30 seconds; none failed or timed out.
+- The first new GitHub CI run exposed Pandas 3's read-only NumPy views in the new stale-price
+  detector. Both mutation sites now request owned copies, with a Copy-on-Write regression
+  test. Validation uses the source plugin and regenerated package together. See GitHub's
+  current CI run for the latest cross-version result; the prior v2 result is historical.
 - A callable poller is not a continuously running deployment. The example SEC watch remains
   disabled without the caller's contact identity. PyPI/DOI account setup, human-only
   directory submissions and third-party acceptance remain explicit external dependencies.

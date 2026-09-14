@@ -26,6 +26,8 @@ All notable changes to fin-skills. The format follows
   Retry-After controls scheduling. Watch configuration commits atomically.
 - Completed all external marketplace commit pins and corrected stale progress claims.
 - Incorporated the v2 branch's existing Python compatibility fixes, manuals and active CI.
+- Data-quality stale-price masks now own their arrays before mutation, including under
+  Pandas 3 Copy-on-Write behavior; a regression test covers that input contract.
 
 ## [0.1.0] - 2026-09-09
 
