@@ -1,0 +1,2206 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="pdoc 16.0.0"/>
+    <title>fin_skills.engine API documentation</title>
+
+    <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
+    <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
+    <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;z-index:999;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent; z-index:1}nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{cursor:pointer;display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:.75rem center;margin-bottom:1rem;}.pdoc .alert > em{display:none;}.pdoc .alert > *:last-child{margin-bottom:0;}.pdoc .alert.note{color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .alert.tip{color:#0a3622;background-color:#d1e7dd;border-color:#a3cfbb;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%230a3622%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%206a6%206%200%201%201%2010.174%204.31c-.203.196-.359.4-.453.619l-.762%201.769A.5.5%200%200%201%2010.5%2013a.5.5%200%200%201%200%201%20.5.5%200%200%201%200%201l-.224.447a1%201%200%200%201-.894.553H6.618a1%201%200%200%201-.894-.553L5.5%2015a.5.5%200%200%201%200-1%20.5.5%200%200%201%200-1%20.5.5%200%200%201-.46-.302l-.761-1.77a2%202%200%200%200-.453-.618A5.98%205.98%200%200%201%202%206m6-5a5%205%200%200%200-3.479%208.592c.263.254.514.564.676.941L5.83%2012h4.342l.632-1.467c.162-.377.413-.687.676-.941A5%205%200%200%200%208%201%22/%3E%3C/svg%3E");}.pdoc .alert.important{color:#055160;background-color:#cff4fc;border-color:#9eeaf9;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23055160%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%200a2%202%200%200%200-2%202v12a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V2a2%202%200%200%200-2-2zm6%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .alert.caution{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M11.46.146A.5.5%200%200%200%2011.107%200H4.893a.5.5%200%200%200-.353.146L.146%204.54A.5.5%200%200%200%200%204.893v6.214a.5.5%200%200%200%20.146.353l4.394%204.394a.5.5%200%200%200%20.353.146h6.214a.5.5%200%200%200%20.353-.146l4.394-4.394a.5.5%200%200%200%20.146-.353V4.893a.5.5%200%200%200-.146-.353zM8%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--accent);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .decorator-deprecated{color:#842029;}.pdoc .decorator-deprecated ~ span{filter:grayscale(1) opacity(0.8);}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .view-value-toggle-state,.pdoc .view-value-toggle-state ~ .default_value{display:none;}.pdoc .view-value-toggle-state:checked ~ .default_value{display:inherit;}.pdoc .view-value-button{font-size:.5rem;vertical-align:middle;border-style:dashed;margin-top:-0.1rem;}.pdoc .view-value-button:hover{background:white;}.pdoc .view-value-button::before{content:"show";text-align:center;width:2.2em;display:inline-block;}.pdoc .view-value-toggle-state:checked ~ .view-value-button::before{content:"hide";}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:27px;vertical-align:bottom;width:50px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! custom.css */</style></head>
+<body>
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
+        <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
+        <div>            <a class="pdoc-button module-list-button" href="../fin_skills.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills</a>
+
+
+            <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
+                   pattern=".+" required>
+
+
+            <h2>Submodules</h2>
+            <ul>
+                    <li><a href="engine/invariants.html">invariants</a></li>
+            </ul>
+
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="class" href="#BacktestResult">BacktestResult</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#BacktestResult.__init__">BacktestResult</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.returns">returns</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.gross_returns">gross_returns</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.turnover">turnover</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.weights">weights</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.positions">positions</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.cash">cash</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.equity">equity</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.fills">fills</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.unfilled">unfilled</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.universe">universe</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.panel">panel</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.spec">spec</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.benchmark">benchmark</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.signal_fn">signal_fn</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BacktestResult.findings">findings</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#BacktestResult.net">net</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#BacktestResult.held_weights">held_weights</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#BacktestResult.cost_curve">cost_curve</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#BacktestResult.to_bundle">to_bundle</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#BacktestResult.check">check</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#BacktestResult.card">card</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#Costs">Costs</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Costs.__init__">Costs</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Costs.commission_bps">commission_bps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Costs.min_commission">min_commission</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Costs.spread_bps">spread_bps</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Costs.slippage">slippage</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Costs.borrow_bps_annual">borrow_bps_annual</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Costs.financing_bps_annual">financing_bps_annual</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Costs.cash_rate">cash_rate</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Costs.round_trip_bps">round_trip_bps</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#Execution">Execution</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Execution.__init__">Execution</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.fill_at">fill_at</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.signal_lag">signal_lag</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.participation_cap">participation_cap</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.allow_partial">allow_partial</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.on_delist">on_delist</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.on_halt">on_halt</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Execution.max_gross">max_gross</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="variable" href="#INVARIANTS">INVARIANTS</a>
+            </li>
+            <li>
+                    <a class="class" href="#Panel">Panel</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Panel.__init__">Panel</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.FIELDS">FIELDS</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.ADJUSTMENTS">ADJUSTMENTS</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.DETECTED_AS">DETECTED_AS</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.sessions">sessions</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.adjustment">adjustment</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.actions">actions</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Panel.listings">listings</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.from_bars">from_bars</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.readjust">readjust</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.alive">alive</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.liquidity">liquidity</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.ohlcv">ohlcv</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.swap">swap</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.head">head</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.restrict">restrict</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Panel.fingerprint">fingerprint</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#Sessions">Sessions</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Sessions.__init__">Sessions</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Sessions.index">index</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Sessions.tz">tz</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Sessions.periods_per_year">periods_per_year</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Sessions.name">name</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Sessions.half_days">half_days</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.from_index">from_index</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.from_panel_index">from_panel_index</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.bars_between">bars_between</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.shift">shift</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.is_session">is_session</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.restrict">restrict</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Sessions.head">head</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="variable" href="#Sizer">Sizer</a>
+            </li>
+            <li>
+                    <a class="class" href="#SizingContext">SizingContext</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SizingContext.__init__">SizingContext</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.date">date</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.signal">signal</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.universe">universe</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.history">history</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.prev_weights">prev_weights</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.equity">equity</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SizingContext.sessions">sessions</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SlippageContext">SlippageContext</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SlippageContext.__init__">SlippageContext</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.date">date</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.tickers">tickers</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.side">side</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.shares">shares</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.price">price</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.volume">volume</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SlippageContext.history">history</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="variable" href="#SlippageModel">SlippageModel</a>
+            </li>
+            <li>
+                    <a class="class" href="#Universe">Universe</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Universe.__init__">Universe</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Universe.rebalance">rebalance</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Universe.min_adv">min_adv</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Universe.adv_lookback">adv_lookback</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Universe.max_names">max_names</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Universe.members">members</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Universe.dates">dates</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Universe.build">build</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="function" href="#cum_factor">cum_factor</a>
+            </li>
+            <li>
+                    <a class="function" href="#equal_weight">equal_weight</a>
+            </li>
+            <li>
+                    <a class="function" href="#fixed_bps">fixed_bps</a>
+            </li>
+            <li>
+                    <a class="function" href="#fractional_kelly">fractional_kelly</a>
+            </li>
+            <li>
+                    <a class="function" href="#from_weights">from_weights</a>
+            </li>
+            <li>
+                    <a class="function" href="#normalize_actions">normalize_actions</a>
+            </li>
+            <li>
+                    <a class="function" href="#normalize_listings">normalize_listings</a>
+            </li>
+            <li>
+                    <a class="function" href="#rank_long_short">rank_long_short</a>
+            </li>
+            <li>
+                    <a class="function" href="#run">run</a>
+            </li>
+            <li>
+                    <a class="function" href="#spread_share">spread_share</a>
+            </li>
+            <li>
+                    <a class="function" href="#square_root_impact">square_root_impact</a>
+            </li>
+            <li>
+                    <a class="function" href="#vol_target">vol_target</a>
+            </li>
+            <li>
+                    <a class="function" href="#volume_share">volume_share</a>
+            </li>
+    </ul>
+
+
+
+        <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
+            built with <span class="visually-hidden">pdoc</span><img
+                alt="pdoc logo"
+                src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22160%22%20viewBox%3D%220%200%20150%2080%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M132.316%2048.886c.276-4.679%202.342-6.698%204.409-7.982s4.27-1.165%206.751-1.055c1.586.07%203.044.156%204.222-.482%201.142-.619%202.026-1.932%202.162-3.739.268-3.576-1.929-5.368-5.006-5.551s-7.599.524-10.517%201.606c-4.455%201.652-8.588%206.606-9.552%208.992s-2.342%206.193-1.745%2010.873%202.664%209.221%205.878%2011.79%205.878%203.808%2010.103%204.312%203.444.229%206.062.229%205.006-2.202%204.914-4.909-2.296-5.001-4.501-4.863-3.077.505-5.281.229-7.715-2.064-7.899-9.451z%22%20fill%3D%22%23198754%22/%3E%3Ccircle%20cx%3D%22101.504%22%20cy%3D%2248.943%22%20r%3D%2214.208%22%20fill%3D%22none%22%20stroke%3D%22%23198754%22%20stroke-width%3D%229.354%22/%3E%3Cpath%20d%3D%22M87.81.002c-3.637.065-5.001.454-7.014%201.232s-3.443%201.363-6.3%204.282c-1.723%201.76-3.148%205.019-3.776%207.329-.413%201.521-.316%202.63-.316%202.63l-.195%2034.612c.065%205.774-6.755%208.305-9.612%208.37s-9.678-1.038-9.743-9.408%207.128-9.521%208.362-9.521c1.413-.13%202.526-.021%203.718-.016%202.071.009%204.157-.778%204.092-4.671s-4.157-4.736-4.157-4.736c-6.3-.843-11.43%202.206-11.43%202.206S40.917%2038.15%2041.372%2049.634%2051.568%2068.19%2061.311%2068.125s18.316-7.007%2018.445-17.193l.13-22.772c.046-2.291%202.683-3.644%204.476-4.203.745-.232%201.694-.274%201.694-.274l10.457-.13s4.871-.324%207.729-3.114%204.352-6.294%204.352-6.294.974-3.049.13-4.606-.195-1.233-2.792-3.309-8.573-4.477-8.573-4.477S91.447-.063%2087.81.002zM0%2047.169l.065%2028.417S0%2080.127%204.481%2079.997s5.072-3.866%205.049-4.152l-.113-28.482s1.624-7.656%209.937-7.721%2010.002%206.942%2010.002%208.499-.909%2010.51-9.093%2010.51c-.948%200-2.99-.567-4.145-.272-3.919%201-3.194%204.554-3.194%204.554s.065%205.061%207.404%204.996%2018.575-6.034%2018.575-19.074S26.953%2030.04%2019.549%2029.91%201.234%2035.296%200%2047.169z%22%20fill%3D%22%23198754%22/%3E%3Cg%20transform%3D%22matrix%28.325601%200%200%20.325256%20-10.32669%20-45.802786%29%22%3E%3Ccircle%20cx%3D%22297.554%22%20cy%3D%22172.286%22%20r%3D%2216.5%22%20fill%3D%22%23fff%22/%3E%3Cellipse%20cx%3D%22297.709%22%20cy%3D%22172.642%22%20rx%3D%2211.071%22%20ry%3D%2210.871%22%20fill%3D%22%23105a48%22/%3E%3Ccircle%20cx%3D%22304.104%22%20cy%3D%22167.667%22%20r%3D%224.5%22%20fill%3D%22%23fff%22/%3E%3C/g%3E%3Cpath%20d%3D%22M94.661%2017.032l.893-1.476s.99.714%201.916.925%201.575.114%202.955.114l14.565-.162c1.283-.032%203.085-.762%203.02-3.293s-.373-3.503-.373-3.503l1.283-.487s.52.503.877%201.573.309%201.995.292%202.66-.227%201.541-.227%201.541%201.564-.308%202.359-1.038.823-.779%201.489-1.508.812-.86.812-.86.552-.13.877.26.341.957.065%201.46-1.672%202.206-3.247%203.066-2.76%201.427-3.929%201.768-3.848.73-7.063.714l-10.944-.114s-2.143-.081-3.02-.373-2.241-.973-2.598-1.265z%22%20fill%3D%22%23d36d49%22/%3E%3Cg%20fill%3D%22%23105a48%22%3E%3Cellipse%20cx%3D%2293.052%22%20cy%3D%2243.567%22%20rx%3D%22.869%22%20ry%3D%221.014%22%20transform%3D%22rotate%28341.022%29%22/%3E%3Cellipse%20cx%3D%22104.3%22%20cy%3D%22-16.184%22%20rx%3D%22.865%22%20ry%3D%221.009%22%20transform%3D%22rotate%2814.786%29%22/%3E%3C/g%3E%3C/svg%3E"/>
+        </a>
+</div>
+    </nav>
+    <main class="pdoc">
+            <section class="module-info">
+                    <h1 class="modulename">
+<a href="./../fin_skills.html">fin_skills</a><wbr>.engine    </h1>
+
+                        <div class="docstring"><p><a href="">fin_skills.engine</a> - the reference backtester, written so the library's own guards can falsify it.</p>
+
+<p>It is not fast, it is not event-driven and it does not trade. It exists for one property no
+other engine in <code>backtesting-engines</code> has: <strong>its result is a Bundle</strong>, so every guard in
+this library runs on a real run with no adapter.</p>
+
+<pre><code>from <a href="api.html">fin_skills.api</a> import check
+from <a href="">fin_skills.engine</a> import Sessions, Panel, Universe, Execution, Costs, run
+
+sessions = <a href="#Sessions.from_index">Sessions.from_index</a>(pd.bdate_range("2020-01-01", "2023-12-29"),
+                               tz="America/New_York", periods_per_year=252, name="XNYS")
+panel = <a href="#Panel.from_bars">Panel.from_bars</a>(bars, sessions, adjustment="raw+factors",
+                        actions=actions, listings=listings).readjust("back")
+res = run(panel, momentum, execution=Execution(fill_at="next_open", signal_lag=1),
+          costs=Costs(commission_bps=0.5, spread_bps=1.0, cash_rate=0.05),
+          universe=Universe(rebalance="ME", min_adv=8e6), benchmark=spy)
+print(res.to_bundle().coverage().summary())   # what is ready, what each gap unlocks
+print(check(res.to_bundle()).summary())       # six guards, no hand-written adapter
+</code></pre>
+
+<p>The twelve invariants it holds, and where each is proven (<code>invariants.describe()</code> prints
+this list with the test names):</p>
+
+<pre><code>I1  causality        no output cell before bar k moves when rows &gt;= k are perturbed
+I2  signal lag       Execution(signal_lag=0) raises; a bar-t signal fills at t+lag
+I3  no same-bar fill every fill is dated strictly after its decision bar
+I4  adjustment       the convention is declared, and checked against the action table
+I5  delisting        a booked closeout at the last price, never a NaN that vanishes
+I6  point-in-time    universe[d] uses only rows &lt;= d
+I7  turnover         turnover[t] == |weights[t] - weights[t-1]|.sum(), exactly
+I8  costs            net(0) IS gross; net(b) is non-increasing in b
+I9  calendar         every index is a subset of the DECLARED sessions; windows are bars
+I10 participation    no fill exceeds cap * volume; the remainder carries, never vanishes
+I11 cash             cash is a position; held weights plus cash weight are exactly 1
+I12 determinism      two runs are identical; folds share no state
+</code></pre>
+
+<p>Seven of them - I1, I4, I5, I6, I8, I11, I12 - are proven by running <code>assert_causal</code>,
+<code>adjustment_check</code>, <code>survivorship_audit</code>, <code>pit_universe</code>, <code>cost_curve</code>, <code>rf_convention</code>
+and <code>fold_leak_test</code> on the engine's own output. Six is the number
+<code>check(result.to_bundle())</code> runs unaided: fold_leak_test needs <code>run_fold</code> and <code>folds</code>,
+which are not artefacts of a single run. What the engine refuses to do is documented in
+<code>backtesting-engines/SKILL.md</code> section 5; the short version is that it has no intrabar
+model, no order types beyond market, no margin or borrow availability, and no live path.</p>
+</div>
+
+                
+                
+                
+            </section>
+                <section id="BacktestResult">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True, eq=False)</div>
+
+    <span class="def">class</span>
+    <span class="name">BacktestResult</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult"></a>
+    
+            <div class="docstring"><p>What one run produced. Every frame is indexed on the declared session calendar.</p>
+</div>
+
+
+                            <div id="BacktestResult.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">BacktestResult</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">returns</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">gross_returns</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">turnover</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">weights</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">positions</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">cash</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">equity</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">fills</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">unfilled</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">universe</span><span class="p">:</span> <span class="nb">dict</span>,</span><span class="param">	<span class="n">panel</span><span class="p">:</span> <span class="n"><a href="#Panel">Panel</a></span>,</span><span class="param">	<span class="n">spec</span><span class="p">:</span> <span class="nb">dict</span>,</span><span class="param">	<span class="n">benchmark</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">signal_fn</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">findings</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.returns" class="classattr">
+                                <div class="attr variable">
+            <span class="name">returns</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.returns"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.gross_returns" class="classattr">
+                                <div class="attr variable">
+            <span class="name">gross_returns</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.gross_returns"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.turnover" class="classattr">
+                                <div class="attr variable">
+            <span class="name">turnover</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.turnover"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.weights" class="classattr">
+                                <div class="attr variable">
+            <span class="name">weights</span><span class="annotation">: pandas.core.frame.DataFrame</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.weights"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.positions" class="classattr">
+                                <div class="attr variable">
+            <span class="name">positions</span><span class="annotation">: pandas.core.frame.DataFrame</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.positions"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.cash" class="classattr">
+                                <div class="attr variable">
+            <span class="name">cash</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.cash"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.equity" class="classattr">
+                                <div class="attr variable">
+            <span class="name">equity</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.equity"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.fills" class="classattr">
+                                <div class="attr variable">
+            <span class="name">fills</span><span class="annotation">: pandas.core.frame.DataFrame</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.fills"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.unfilled" class="classattr">
+                                <div class="attr variable">
+            <span class="name">unfilled</span><span class="annotation">: pandas.core.frame.DataFrame</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.unfilled"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.universe" class="classattr">
+                                <div class="attr variable">
+            <span class="name">universe</span><span class="annotation">: dict</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.universe"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.panel" class="classattr">
+                                <div class="attr variable">
+            <span class="name">panel</span><span class="annotation">: <a href="#Panel">Panel</a></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.panel"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.spec" class="classattr">
+                                <div class="attr variable">
+            <span class="name">spec</span><span class="annotation">: dict</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.spec"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.benchmark" class="classattr">
+                                <div class="attr variable">
+            <span class="name">benchmark</span><span class="annotation">: pandas.core.series.Series | None</span>        =
+<span class="default_value">None</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.benchmark"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.signal_fn" class="classattr">
+                                <div class="attr variable">
+            <span class="name">signal_fn</span><span class="annotation">: object</span>        =
+<span class="default_value">None</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.signal_fn"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.findings" class="classattr">
+                                <div class="attr variable">
+            <span class="name">findings</span><span class="annotation">: list</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.findings"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.net" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">net</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">round_trip_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.net"></a>
+    
+            <div class="docstring"><p>The engine's own net series, or gross less a flat round-trip assumption.</p>
+
+<p>net(0) IS gross_returns, so a cost curve drawn from this method and one drawn by
+cost_curve() agree by construction rather than by coincidence.</p>
+</div>
+
+
+                            </div>
+                            <div id="BacktestResult.held_weights" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">held_weights</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.held_weights"></a>
+    
+            <div class="docstring"><p>Realised weights from the accounting, not the targets. With cash they sum to 1.</p>
+</div>
+
+
+                            </div>
+                            <div id="BacktestResult.cost_curve" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">cost_curve</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">bps</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">)</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.cost_curve"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.to_bundle" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">to_bundle</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">**</span><span class="n">extra</span></span><span class="return-annotation">) -> <span class="n"><a href="api.html#Bundle">fin_skills.api.Bundle</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.to_bundle"></a>
+    
+            <div class="docstring"><p>The artefacts of this run under the library's shared vocabulary.</p>
+</div>
+
+
+                            </div>
+                            <div id="BacktestResult.check" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">check</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">guards</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="o">*</span>,</span><span class="param">	<span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n"><a href="api.html#RunReport">fin_skills.api.RunReport</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.check"></a>
+    
+    
+
+                            </div>
+                            <div id="BacktestResult.card" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">card</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">strategy_id</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">falsifier</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="o">**</span><span class="n">kw</span></span><span class="return-annotation">):</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#BacktestResult.card"></a>
+    
+            <div class="docstring"><p>A result_manifest.ResultCard pre-filled from the run.</p>
+
+<p>Provenance comes from the panel; the cost curve from net() at 0/5/10/20/50 bps.
+The trial count and the falsifier stay the caller's - they are not the engine's to
+know, and a card that invented them would be the thing the card exists to prevent.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="Costs">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True, eq=False)</div>
+
+    <span class="def">class</span>
+    <span class="name">Costs</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Costs"></a>
+    
+            <div class="docstring"><p>Every charge, in the units the library's guards expect.</p>
+</div>
+
+
+                            <div id="Costs.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Costs</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">commission_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">min_commission</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">spread_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">slippage</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SlippageContext">SlippageContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">fixed_bps</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">slip</span><span class="o">&gt;</span>,</span><span class="param">	<span class="n">borrow_bps_annual</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">financing_bps_annual</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">cash_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.commission_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">commission_bps</span><span class="annotation">: float</span>        =
+<span class="default_value">0.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.commission_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.min_commission" class="classattr">
+                                <div class="attr variable">
+            <span class="name">min_commission</span><span class="annotation">: float</span>        =
+<span class="default_value">0.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.min_commission"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.spread_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">spread_bps</span><span class="annotation">: float</span>        =
+<span class="default_value">0.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.spread_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.slippage" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">slippage</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">ctx</span><span class="p">:</span> <span class="n"><a href="#SlippageContext">SlippageContext</a></span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.slippage"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.borrow_bps_annual" class="classattr">
+                                <div class="attr variable">
+            <span class="name">borrow_bps_annual</span><span class="annotation">: float</span>        =
+<span class="default_value">0.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.borrow_bps_annual"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.financing_bps_annual" class="classattr">
+                                <div class="attr variable">
+            <span class="name">financing_bps_annual</span><span class="annotation">: float</span>        =
+<span class="default_value">0.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.financing_bps_annual"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.cash_rate" class="classattr">
+                                <div class="attr variable">
+            <span class="name">cash_rate</span><span class="annotation">: float</span>        =
+<span class="default_value">0.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.cash_rate"></a>
+    
+    
+
+                            </div>
+                            <div id="Costs.round_trip_bps" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">round_trip_bps</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Costs.round_trip_bps"></a>
+    
+            <div class="docstring"><p>The single number cost_curve is anchored on: 2*(commission + spread + slippage).</p>
+
+<p>The slippage term is the model's own stated bps where it has one (fixed_bps); an
+impact model has no context-free number, so it contributes 0 here and the honest
+figure is the realised one in <code><a href="#BacktestResult.fills">BacktestResult.fills</a></code>.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="Execution">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">Execution</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Execution"></a>
+    
+            <div class="docstring"><p>When an order fills, how much of it fills, and what happens when it cannot.</p>
+</div>
+
+
+                            <div id="Execution.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Execution</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">fill_at</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'next_open'</span>,</span><span class="param">	<span class="n">signal_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>,</span><span class="param">	<span class="n">participation_cap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mf">0.05</span>,</span><span class="param">	<span class="n">allow_partial</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">on_delist</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'close_at_last'</span>,</span><span class="param">	<span class="n">on_halt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'carry'</span>,</span><span class="param">	<span class="n">max_gross</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.fill_at" class="classattr">
+                                <div class="attr variable">
+            <span class="name">fill_at</span><span class="annotation">: str</span>        =
+<span class="default_value">&#39;next_open&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.fill_at"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.signal_lag" class="classattr">
+                                <div class="attr variable">
+            <span class="name">signal_lag</span><span class="annotation">: int</span>        =
+<span class="default_value">1</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.signal_lag"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.participation_cap" class="classattr">
+                                <div class="attr variable">
+            <span class="name">participation_cap</span><span class="annotation">: float | None</span>        =
+<span class="default_value">0.05</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.participation_cap"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.allow_partial" class="classattr">
+                                <div class="attr variable">
+            <span class="name">allow_partial</span><span class="annotation">: bool</span>        =
+<span class="default_value">True</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.allow_partial"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.on_delist" class="classattr">
+                                <div class="attr variable">
+            <span class="name">on_delist</span><span class="annotation">: str</span>        =
+<span class="default_value">&#39;close_at_last&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.on_delist"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.on_halt" class="classattr">
+                                <div class="attr variable">
+            <span class="name">on_halt</span><span class="annotation">: str</span>        =
+<span class="default_value">&#39;carry&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.on_halt"></a>
+    
+    
+
+                            </div>
+                            <div id="Execution.max_gross" class="classattr">
+                                <div class="attr variable">
+            <span class="name">max_gross</span><span class="annotation">: float</span>        =
+<span class="default_value">1.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Execution.max_gross"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="INVARIANTS">
+                    <div class="attr variable">
+            <span class="name">INVARIANTS</span>        =
+<input id="INVARIANTS-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="INVARIANTS-view-value"></label><span class="default_value">{&#39;I1&#39;: (&#39;no output cell before bar k moves when panel rows &gt;= k are perturbed&#39;, &#39;test_engine_is_causal&#39;, &#39;assert_causal&#39;), &#39;I2&#39;: (&#39;a signal from bar t can first fill on bar t+signal_lag, and signal_lag &gt;= 1&#39;, &#39;test_signal_lag_zero_is_rejected&#39;, &#39;-&#39;), &#39;I3&#39;: (&#39;no same-bar fill: every fill is dated strictly after its decision bar&#39;, &#39;test_no_same_bar_fill&#39;, &#39;-&#39;), &#39;I4&#39;: (&#39;the adjustment convention is declared and consistent with the action table&#39;, &#39;test_forward_adjusted_panel_labelled_back_is_rejected&#39;, &#39;adjustment_check&#39;), &#39;I5&#39;: (&#39;a delisting is a booked closeout, not a NaN, and the name never reappears&#39;, &#39;test_delisting_closes_out&#39;, &#39;survivorship_audit&#39;), &#39;I6&#39;: (&#39;universe[d] depends only on panel rows &lt;= d&#39;, &#39;test_universe_is_point_in_time&#39;, &#39;pit_universe&#39;), &#39;I7&#39;: (&#39;turnover[t] == |weights[t] - weights[t-1]|.sum()&#39;, &#39;test_turnover_identity&#39;, &#39;-&#39;), &#39;I8&#39;: (&#39;costs are subtracted once: net(0) is gross, and net(b) is non-increasing in b&#39;, &#39;test_cost_curve_is_monotone&#39;, &#39;cost_curve&#39;), &#39;I9&#39;: (&#39;every result index is a subset of sessions.index; windows count BARS&#39;, &#39;test_calendar_is_declared_not_inferred&#39;, &#39;-&#39;), &#39;I10&#39;: (&#39;no fill exceeds participation_cap * volume; the remainder carries&#39;, &#39;test_participation_cap_carries_the_remainder&#39;, &#39;-&#39;), &#39;I11&#39;: (&#39;cash is a position: held weights plus the cash weight are exactly 1&#39;, &#39;test_cash_is_a_position_and_earns_the_declared_rate&#39;, &#39;rf_convention&#39;), &#39;I12&#39;: (&#39;run() is deterministic and holds no state across folds&#39;, &#39;test_engine_is_deterministic&#39;, &#39;fold_leak_test&#39;)}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#INVARIANTS"></a>
+    
+    
+
+                </section>
+                <section id="Panel">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">Panel</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Panel"></a>
+    
+            <div class="docstring"><p>Aligned OHLCV for one universe on ONE declared calendar.</p>
+</div>
+
+
+                            <div id="Panel.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Panel</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="o">*</span>,</span><span class="param">	<span class="nb">open</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">high</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">low</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">close</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">volume</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">sessions</span><span class="p">:</span> <span class="n"><a href="#Sessions">Sessions</a></span>,</span><span class="param">	<span class="n">adjustment</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">actions</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">listings</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">currency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'USD'</span>,</span><span class="param">	<span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span>,</span><span class="param">	<span class="n">retrieved_at</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.FIELDS" class="classattr">
+                                <div class="attr variable">
+            <span class="name">FIELDS</span>        =
+<span class="default_value">(&#39;open&#39;, &#39;high&#39;, &#39;low&#39;, &#39;close&#39;, &#39;volume&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.FIELDS"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.ADJUSTMENTS" class="classattr">
+                                <div class="attr variable">
+            <span class="name">ADJUSTMENTS</span>        =
+<span class="default_value">(&#39;raw&#39;, &#39;back&#39;, &#39;forward&#39;, &#39;raw+factors&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.ADJUSTMENTS"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.DETECTED_AS" class="classattr">
+                                <div class="attr variable">
+            <span class="name">DETECTED_AS</span>        =
+<span class="default_value">{&#39;raw&#39;: &#39;raw&#39;, &#39;raw+factors&#39;: &#39;raw&#39;, &#39;back&#39;: &#39;back-adjusted&#39;, &#39;forward&#39;: &#39;forward-adjusted&#39;}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.DETECTED_AS"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.sessions" class="classattr">
+                                <div class="attr variable">
+            <span class="name">sessions</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.sessions"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.adjustment" class="classattr">
+                                <div class="attr variable">
+            <span class="name">adjustment</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.adjustment"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.actions" class="classattr">
+                                <div class="attr variable">
+            <span class="name">actions</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.actions"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.listings" class="classattr">
+                                <div class="attr variable">
+            <span class="name">listings</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.listings"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.from_bars" class="classattr">
+                                <div class="attr function">
+                    <div class="decorator decorator-classmethod">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">from_bars</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">cls</span>,</span><span class="param">	<span class="n">bars</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">sessions</span><span class="p">:</span> <span class="n"><a href="#Sessions">Sessions</a></span>,</span><span class="param">	<span class="n">adjustment</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="o">**</span><span class="n">kw</span></span><span class="return-annotation">) -> <span class="n"><a href="#Panel">Panel</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.from_bars"></a>
+    
+            <div class="docstring"><p>Long (date, ticker, open..volume) or wide MultiIndex (field, ticker) -> Panel.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.readjust" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">readjust</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">to</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n"><a href="#Panel">Panel</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.readjust"></a>
+    
+            <div class="docstring"><p>Recompute prices onto another convention from <code><a href="#Panel.actions">actions</a></code>.</p>
+
+<p>Refuses when <code><a href="#Panel.actions">actions</a></code> is None, because a convention with no event table is
+unfalsifiable - and an unfalsifiable convention is worse than a raw quote.
+Volume moves by the inverse factor, so dollar volume is invariant across splits.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.alive" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">alive</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.alive"></a>
+    
+            <div class="docstring"><p>bool, dates x tickers: the name traded that session on this panel's own data.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.liquidity" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">liquidity</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">lookback</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">21</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.liquidity"></a>
+    
+            <div class="docstring"><p>Trailing dollar ADV, window ENDING at each session - causal by construction.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.ohlcv" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">ohlcv</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ticker</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.ohlcv"></a>
+    
+            <div class="docstring"><p>One instrument's OHLCV frame - the shape the <code>bars</code> slot wants.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.swap" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">swap</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">bars</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="n">ticker</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n"><a href="#Panel">Panel</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.swap"></a>
+    
+            <div class="docstring"><p>This panel restricted to one name, with its OHLCV replaced by <code>bars</code>.</p>
+
+<p>The engine's re-entry point: assert_causal perturbs a bars frame, and this turns
+that frame back into a Panel, so a guard can drive the engine with no adapter.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.head" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">head</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="n"><a href="#Panel">Panel</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.head"></a>
+    
+            <div class="docstring"><p>This panel's first n sessions, sharing every table. The bar loop hands one of
+these to the sizer as <code>history</code>, so it skips checks the frames already passed.</p>
+</div>
+
+
+                            </div>
+                            <div id="Panel.restrict" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">restrict</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">start</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">end</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">tickers</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">) -> <span class="n"><a href="#Panel">Panel</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.restrict"></a>
+    
+    
+
+                            </div>
+                            <div id="Panel.fingerprint" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">fingerprint</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Panel.fingerprint"></a>
+    
+            <div class="docstring"><p>sha256 over the traded arrays plus every declared field. Store THIS, not a path.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="Sessions">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True, eq=False)</div>
+
+    <span class="def">class</span>
+    <span class="name">Sessions</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions"></a>
+    
+            <div class="docstring"><p>The trading calendar, DECLARED. There is no default and none is computed.</p>
+
+<p>exchange_calendars derives GLOBAL_DEFAULT_START/_END from pd.Timestamp.now() at IMPORT
+(verified in market-data-sourcing SKILL.md section 5), so a calendar built from its
+defaults returns different sessions tomorrow. This class refuses to have a default.</p>
+</div>
+
+
+                            <div id="Sessions.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Sessions</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">index</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span>,</span><span class="param">	<span class="n">tz</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">periods_per_year</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span>,</span><span class="param">	<span class="n">half_days</span><span class="p">:</span> <span class="nb">frozenset</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.index" class="classattr">
+                                <div class="attr variable">
+            <span class="name">index</span><span class="annotation">: pandas.core.indexes.datetimes.DatetimeIndex</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.index"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.tz" class="classattr">
+                                <div class="attr variable">
+            <span class="name">tz</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.tz"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.periods_per_year" class="classattr">
+                                <div class="attr variable">
+            <span class="name">periods_per_year</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.periods_per_year"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.name" class="classattr">
+                                <div class="attr variable">
+            <span class="name">name</span><span class="annotation">: str</span>        =
+<span class="default_value">&#39;&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.name"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.half_days" class="classattr">
+                                <div class="attr variable">
+            <span class="name">half_days</span><span class="annotation">: frozenset</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.half_days"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.from_index" class="classattr">
+                                <div class="attr function">
+                    <div class="decorator decorator-classmethod">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">from_index</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">cls</span>,</span><span class="param">	<span class="n">index</span>,</span><span class="param">	<span class="n">tz</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">periods_per_year</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span></span><span class="return-annotation">) -> <span class="n"><a href="#Sessions">Sessions</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.from_index"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.from_panel_index" class="classattr">
+                                <div class="attr function">
+                    <div class="decorator decorator-classmethod">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">from_panel_index</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">cls</span>,</span><span class="param">	<span class="n">index</span>,</span><span class="param">	<span class="n">tz</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">periods_per_year</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="n"><a href="#Sessions">Sessions</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.from_panel_index"></a>
+    
+            <div class="docstring"><p>Adopt the data's own index as the calendar - honest for crypto and for a vendor
+whose sessions you trust, and recorded as name='observed' so the manifest says so.</p>
+</div>
+
+
+                            </div>
+                            <div id="Sessions.bars_between" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">bars_between</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">a</span>, </span><span class="param"><span class="n">b</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.bars_between"></a>
+    
+            <div class="docstring"><p>BAR count between two timestamps. Never calendar days.</p>
+</div>
+
+
+                            </div>
+                            <div id="Sessions.shift" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">shift</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ts</span>, </span><span class="param"><span class="n">k</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.shift"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.is_session" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_session</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ts</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.is_session"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.restrict" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">restrict</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">index</span></span><span class="return-annotation">) -> <span class="n"><a href="#Sessions">Sessions</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.restrict"></a>
+    
+    
+
+                            </div>
+                            <div id="Sessions.head" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">head</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="n"><a href="#Sessions">Sessions</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sessions.head"></a>
+    
+            <div class="docstring"><p>The first n sessions, skipping the checks an already-valid index has passed.
+The bar loop calls this once per session, so it must not be O(len(index)).</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="Sizer">
+                    <div class="attr variable">
+            <span class="name">Sizer</span>        =
+<span class="default_value">typing.Callable[[<a href="#SizingContext">SizingContext</a>], pandas.core.series.Series]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Sizer"></a>
+    
+    
+
+                </section>
+                <section id="SizingContext">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True, eq=False)</div>
+
+    <span class="def">class</span>
+    <span class="name">SizingContext</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext"></a>
+    
+    
+
+                            <div id="SizingContext.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SizingContext</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">date</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span>,</span><span class="param">	<span class="n">signal</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">universe</span><span class="p">:</span> <span class="nb">list</span>,</span><span class="param">	<span class="n">history</span><span class="p">:</span> <span class="nb">object</span>,</span><span class="param">	<span class="n">prev_weights</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">equity</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">sessions</span><span class="p">:</span> <span class="nb">object</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.date" class="classattr">
+                                <div class="attr variable">
+            <span class="name">date</span><span class="annotation">: pandas._libs.tslibs.timestamps.Timestamp</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.date"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.signal" class="classattr">
+                                <div class="attr variable">
+            <span class="name">signal</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.signal"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.universe" class="classattr">
+                                <div class="attr variable">
+            <span class="name">universe</span><span class="annotation">: list</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.universe"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.history" class="classattr">
+                                <div class="attr variable">
+            <span class="name">history</span><span class="annotation">: object</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.history"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.prev_weights" class="classattr">
+                                <div class="attr variable">
+            <span class="name">prev_weights</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.prev_weights"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.equity" class="classattr">
+                                <div class="attr variable">
+            <span class="name">equity</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.equity"></a>
+    
+    
+
+                            </div>
+                            <div id="SizingContext.sessions" class="classattr">
+                                <div class="attr variable">
+            <span class="name">sessions</span><span class="annotation">: object</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SizingContext.sessions"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SlippageContext">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True, eq=False)</div>
+
+    <span class="def">class</span>
+    <span class="name">SlippageContext</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext"></a>
+    
+            <div class="docstring"><p>Everything a slippage model may look at. <code><a href="#SlippageContext.history">history</a></code> is the whole panel; a model that
+reads rows after <code><a href="#SlippageContext.date">date</a></code> is a look-ahead the engine's own causality test will catch.</p>
+</div>
+
+
+                            <div id="SlippageContext.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SlippageContext</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">date</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span>,</span><span class="param">	<span class="n">tickers</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Index</span>,</span><span class="param">	<span class="n">side</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">shares</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">price</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">volume</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span>,</span><span class="param">	<span class="n">history</span><span class="p">:</span> <span class="nb">object</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.date" class="classattr">
+                                <div class="attr variable">
+            <span class="name">date</span><span class="annotation">: pandas._libs.tslibs.timestamps.Timestamp</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.date"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.tickers" class="classattr">
+                                <div class="attr variable">
+            <span class="name">tickers</span><span class="annotation">: pandas.core.indexes.base.Index</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.tickers"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.side" class="classattr">
+                                <div class="attr variable">
+            <span class="name">side</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.side"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.shares" class="classattr">
+                                <div class="attr variable">
+            <span class="name">shares</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.shares"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.price" class="classattr">
+                                <div class="attr variable">
+            <span class="name">price</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.price"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.volume" class="classattr">
+                                <div class="attr variable">
+            <span class="name">volume</span><span class="annotation">: pandas.core.series.Series</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.volume"></a>
+    
+    
+
+                            </div>
+                            <div id="SlippageContext.history" class="classattr">
+                                <div class="attr variable">
+            <span class="name">history</span><span class="annotation">: object</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageContext.history"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SlippageModel">
+                    <div class="attr variable">
+            <span class="name">SlippageModel</span>        =
+<span class="default_value">typing.Callable[[<a href="#SlippageContext">SlippageContext</a>], pandas.core.series.Series]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SlippageModel"></a>
+    
+    
+
+                </section>
+                <section id="Universe">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">Universe</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Universe"></a>
+    
+            <div class="docstring"><p>The point-in-time membership rule.</p>
+
+<p>rebalance    : a pandas offset alias ("ME", "QE", "W-FRI") resolved to the LAST session
+               of each period, or an explicit DatetimeIndex snapped back to sessions.
+min_adv      : trailing dollar-ADV floor, measured over a window ENDING at the
+               rebalance - the screen everyone writes with today's ADV by accident.
+members      : ticker / start_date / end_date. Supplied, it is the membership truth;
+               absent, the panel's own <code>alive()</code> is, which is weaker and says so.</p>
+</div>
+
+
+                            <div id="Universe.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Universe</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">rebalance</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span> <span class="o">=</span> <span class="s1">'ME'</span>,</span><span class="param">	<span class="n">min_adv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">adv_lookback</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">21</span>,</span><span class="param">	<span class="n">max_names</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">members</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.rebalance" class="classattr">
+                                <div class="attr variable">
+            <span class="name">rebalance</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.rebalance"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.min_adv" class="classattr">
+                                <div class="attr variable">
+            <span class="name">min_adv</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.min_adv"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.adv_lookback" class="classattr">
+                                <div class="attr variable">
+            <span class="name">adv_lookback</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.adv_lookback"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.max_names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">max_names</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.max_names"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.members" class="classattr">
+                                <div class="attr variable">
+            <span class="name">members</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.members"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.dates" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">dates</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">sessions</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.dates"></a>
+    
+    
+
+                            </div>
+                            <div id="Universe.build" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">build</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">panel</span><span class="p">:</span> <span class="n"><a href="#Panel">Panel</a></span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Universe.build"></a>
+    
+            <div class="docstring"><p>{rebalance date: [tickers]} - the shape pit_universe reads.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="cum_factor">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">cum_factor</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">actions</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">index</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span>,</span><span class="param">	<span class="n">tickers</span>,</span><span class="param">	<span class="n">convention</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#cum_factor"></a>
+    
+            <div class="docstring"><p>The multiplier taking a RAW quote to <code>convention</code>, as a dates x tickers frame.</p>
+
+<p>raw and raw+factors are the identity: raw+factors keeps the quotes AND this table, so
+the two are the same prices with the events kept alongside instead of folded in.</p>
+</div>
+
+
+                </section>
+                <section id="equal_weight">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">equal_weight</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">long_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">max_names</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SizingContext">SizingContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#equal_weight"></a>
+    
+            <div class="docstring"><p>1/N over the names the signal likes. The baseline every other sizer has to beat.</p>
+</div>
+
+
+                </section>
+                <section id="fixed_bps">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">fixed_bps</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">bps</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SlippageContext">SlippageContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#fixed_bps"></a>
+    
+            <div class="docstring"><p>A flat assumption. Honest only as a placeholder you then vary in a cost curve.</p>
+</div>
+
+
+                </section>
+                <section id="fractional_kelly">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">fractional_kelly</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span>,</span><span class="param">	<span class="n">lookback</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">252</span>,</span><span class="param">	<span class="n">cap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SizingContext">SizingContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#fractional_kelly"></a>
+    
+            <div class="docstring"><p>f* = mu / sigma^2 per name, times <code>fraction</code>, and only where the signal agrees.</p>
+
+<p>Full Kelly is a theoretical maximum, not a target: estimation error in mu makes it a
+ruin machine, which is why the fraction defaults to a quarter.</p>
+</div>
+
+
+                </section>
+                <section id="from_weights">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">from_weights</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">weights</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SizingContext">SizingContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#from_weights"></a>
+    
+            <div class="docstring"><p>Bring your own optimizer output (PyPortfolioOpt / skfolio / Riskfolio).</p>
+
+<p>The engine still applies the lag, the participation cap, the costs and the closeouts -
+an optimizer's weights are a target, not a fill.</p>
+</div>
+
+
+                </section>
+                <section id="normalize_actions">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">normalize_actions</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">actions</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#normalize_actions"></a>
+    
+            <div class="docstring"><p>(date, ticker, ratio[, kind]) -> a sorted frame carrying all four columns.</p>
+</div>
+
+
+                </section>
+                <section id="normalize_listings">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">normalize_listings</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">listings</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#normalize_listings"></a>
+    
+            <div class="docstring"><p>(ticker, start_date, end_date) or (ticker, listing_date, delisting_date) -> the first.</p>
+</div>
+
+
+                </section>
+                <section id="rank_long_short">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">rank_long_short</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">quantile</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>,</span><span class="param">	<span class="n">gross</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SizingContext">SizingContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#rank_long_short"></a>
+    
+            <div class="docstring"><p>Top and bottom quantile, each leg carrying half the gross. Dollar-neutral.</p>
+</div>
+
+
+                </section>
+                <section id="run">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">run</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">panel</span><span class="p">:</span> <span class="n"><a href="#Panel">Panel</a></span>,</span><span class="param">	<span class="n">signal</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#Panel">Panel</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span>,</span><span class="param">	<span class="o">*</span>,</span><span class="param">	<span class="n">execution</span><span class="p">:</span> <span class="n"><a href="#Execution">Execution</a></span> <span class="o">=</span> <span class="n">Execution</span><span class="p">(</span><span class="n">fill_at</span><span class="o">=</span><span class="s1">'next_open'</span><span class="p">,</span> <span class="n">signal_lag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">participation_cap</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_delist</span><span class="o">=</span><span class="s1">'close_at_last'</span><span class="p">,</span> <span class="n">on_halt</span><span class="o">=</span><span class="s1">'carry'</span><span class="p">,</span> <span class="n">max_gross</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>,</span><span class="param">	<span class="n">costs</span><span class="p">:</span> <span class="n"><a href="#Costs">Costs</a></span> <span class="o">=</span> <span class="n">Costs</span><span class="p">(</span><span class="n">commission_bps</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">min_commission</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">spread_bps</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">slippage</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">fixed_bps</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">slip</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">borrow_bps_annual</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">financing_bps_annual</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cash_rate</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>,</span><span class="param">	<span class="n">sizing</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SizingContext">SizingContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">equal_weight</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">size</span><span class="o">&gt;</span>,</span><span class="param">	<span class="n">universe</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n"><a href="#Universe">Universe</a></span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">capital</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000000.0</span>,</span><span class="param">	<span class="n">benchmark</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></span><span class="return-annotation">) -> <span class="n"><a href="#BacktestResult">BacktestResult</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#run"></a>
+    
+            <div class="docstring"><p>One bar loop over <code>panel</code>, returning a BacktestResult whose to_bundle() every guard reads.</p>
+
+<p><code>signal</code> as a CALLABLE is the preferred form: the engine then stores it in the Bundle's
+<code>signal_fn</code> slot, which is what makes assert_causal runnable on YOUR signal without
+you writing an adapter. Every invariant in <a href="engine/invariants.html">fin_skills.engine.invariants</a> is asserted as
+the run proceeds when strict=True; strict=False downgrades them to result.findings.</p>
+</div>
+
+
+                </section>
+                <section id="spread_share">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">spread_share</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SlippageContext">SlippageContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#spread_share"></a>
+    
+            <div class="docstring"><p>A share of the spread, proxied by the fill bar's own high-low range in bps.</p>
+</div>
+
+
+                </section>
+                <section id="square_root_impact">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">square_root_impact</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">coef</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span>,</span><span class="param">	<span class="n">sigma_lookback</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">21</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SlippageContext">SlippageContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#square_root_impact"></a>
+    
+            <div class="docstring"><p>Almgren-style: bps = 1e4 * coef * sigma_daily * sqrt(participation).</p>
+</div>
+
+
+                </section>
+                <section id="vol_target">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">vol_target</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">annual_vol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>,</span><span class="param">	<span class="n">lookback</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">63</span>,</span><span class="param">	<span class="n">cap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SizingContext">SizingContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#vol_target"></a>
+    
+            <div class="docstring"><p>Scale an equal-weight book to a target ANNUAL vol, levered no more than <code>cap</code>.</p>
+
+<p>Realised vol is measured on the book's own trailing returns, not name by name, so the
+correlation the portfolio actually has is in the number.</p>
+</div>
+
+
+                </section>
+                <section id="volume_share">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">volume_share</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">price_impact</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n"><a href="#SlippageContext">SlippageContext</a></span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#volume_share"></a>
+    
+            <div class="docstring"><p>zipline's quadratic model: bps = 1e4 * price_impact * participation**2.</p>
+</div>
+
+
+                </section>
+    </main>
+<script>
+    function escapeHTML(html) {
+        return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+    }
+
+    const originalContent = document.querySelector("main.pdoc");
+    let currentContent = originalContent;
+
+    function setContent(innerHTML) {
+        let elem;
+        if (innerHTML) {
+            elem = document.createElement("main");
+            elem.classList.add("pdoc");
+            elem.innerHTML = innerHTML;
+        } else {
+            elem = originalContent;
+        }
+        if (currentContent !== elem) {
+            currentContent.replaceWith(elem);
+            currentContent = elem;
+        }
+    }
+
+    function getSearchTerm() {
+        return (new URL(window.location)).searchParams.get("search");
+    }
+
+    const searchBox = document.querySelector(".pdoc input[type=search]");
+    searchBox.addEventListener("input", function () {
+        let url = new URL(window.location);
+        if (searchBox.value.trim()) {
+            url.hash = "";
+            url.searchParams.set("search", searchBox.value);
+        } else {
+            url.searchParams.delete("search");
+        }
+        history.replaceState("", "", url.toString());
+        onInput();
+    });
+    window.addEventListener("popstate", onInput);
+
+
+    let search, searchErr;
+
+    async function initialize() {
+        try {
+            search = await new Promise((resolve, reject) => {
+                const script = document.createElement("script");
+                script.type = "text/javascript";
+                script.async = true;
+                script.onload = () => resolve(window.pdocSearch);
+                script.onerror = (e) => reject(e);
+                script.src = "../search.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+            });
+        } catch (e) {
+            console.error("Cannot fetch pdoc search index");
+            searchErr = "Cannot fetch search index.";
+        }
+        onInput();
+
+        document.querySelector("nav.pdoc").addEventListener("click", e => {
+            if (e.target.hash) {
+                searchBox.value = "";
+                searchBox.dispatchEvent(new Event("input"));
+            }
+        });
+    }
+
+    function onInput() {
+        setContent((() => {
+            const term = getSearchTerm();
+            if (!term) {
+                return null
+            }
+            if (searchErr) {
+                return `<h3>Error: ${searchErr}</h3>`
+            }
+            if (!search) {
+                return "<h3>Searching...</h3>"
+            }
+
+            window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+
+            const results = search(term);
+
+            let html;
+            if (results.length === 0) {
+                html = `No search results for '${escapeHTML(term)}'.`
+            } else {
+                html = `<h4>${results.length} search result${results.length > 1 ? "s" : ""} for '${escapeHTML(term)}'.</h4>`;
+            }
+            for (let result of results.slice(0, 10)) {
+                let doc = result.doc;
+                let url = `../${doc.modulename.replaceAll(".", "/")}.html`;
+                if (doc.qualname) {
+                    url += `#${doc.qualname}`;
+                }
+
+                let heading;
+                switch (result.doc.kind) {
+                    case "function":
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
+                        break;
+                    case "class":
+                        heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
+                        if (doc.bases)
+                            heading += `<wbr>(<span class="base">${doc.bases}</span>)`;
+                        heading += `:`;
+                        break;
+                    case "variable":
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        if (doc.annotation)
+                            heading += `<span class="annotation">${doc.annotation}</span>`;
+                        if (doc.default_value)
+                            heading += `<span class="default_value"> = ${doc.default_value}</span>`;
+                        break;
+                    default:
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        break;
+                }
+                html += `
+                        <section class="search-result">
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
+                        <div class="docstring">${doc.doc}</div>
+                        </section>
+                    `;
+
+            }
+            return html;
+        })());
+    }
+
+    if (getSearchTerm()) {
+        initialize();
+        searchBox.value = getSearchTerm();
+        onInput();
+    } else {
+        searchBox.addEventListener("focus", initialize, {once: true});
+    }
+
+    searchBox.addEventListener("keydown", e => {
+        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+            let focused = currentContent.querySelector(".search-result.focused");
+            if (!focused) {
+                currentContent.querySelector(".search-result").classList.add("focused");
+            } else if (
+                e.key === "ArrowDown"
+                && focused.nextElementSibling
+                && focused.nextElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.nextElementSibling.classList.add("focused");
+                focused.nextElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "ArrowUp"
+                && focused.previousElementSibling
+                && focused.previousElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.previousElementSibling.classList.add("focused");
+                focused.previousElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "Enter"
+            ) {
+                focused.querySelector("a").click();
+            }
+        }
+    });
+</script></body>
+</html>

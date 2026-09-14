@@ -1,0 +1,1847 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="pdoc 16.0.0"/>
+    <title>fin_skills.discovery.search API documentation</title>
+
+    <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
+    <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
+    <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;z-index:999;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent; z-index:1}nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{cursor:pointer;display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:.75rem center;margin-bottom:1rem;}.pdoc .alert > em{display:none;}.pdoc .alert > *:last-child{margin-bottom:0;}.pdoc .alert.note{color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .alert.tip{color:#0a3622;background-color:#d1e7dd;border-color:#a3cfbb;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%230a3622%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%206a6%206%200%201%201%2010.174%204.31c-.203.196-.359.4-.453.619l-.762%201.769A.5.5%200%200%201%2010.5%2013a.5.5%200%200%201%200%201%20.5.5%200%200%201%200%201l-.224.447a1%201%200%200%201-.894.553H6.618a1%201%200%200%201-.894-.553L5.5%2015a.5.5%200%200%201%200-1%20.5.5%200%200%201%200-1%20.5.5%200%200%201-.46-.302l-.761-1.77a2%202%200%200%200-.453-.618A5.98%205.98%200%200%201%202%206m6-5a5%205%200%200%200-3.479%208.592c.263.254.514.564.676.941L5.83%2012h4.342l.632-1.467c.162-.377.413-.687.676-.941A5%205%200%200%200%208%201%22/%3E%3C/svg%3E");}.pdoc .alert.important{color:#055160;background-color:#cff4fc;border-color:#9eeaf9;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23055160%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%200a2%202%200%200%200-2%202v12a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V2a2%202%200%200%200-2-2zm6%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .alert.caution{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M11.46.146A.5.5%200%200%200%2011.107%200H4.893a.5.5%200%200%200-.353.146L.146%204.54A.5.5%200%200%200%200%204.893v6.214a.5.5%200%200%200%20.146.353l4.394%204.394a.5.5%200%200%200%20.353.146h6.214a.5.5%200%200%200%20.353-.146l4.394-4.394a.5.5%200%200%200%20.146-.353V4.893a.5.5%200%200%200-.146-.353zM8%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--accent);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .decorator-deprecated{color:#842029;}.pdoc .decorator-deprecated ~ span{filter:grayscale(1) opacity(0.8);}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .view-value-toggle-state,.pdoc .view-value-toggle-state ~ .default_value{display:none;}.pdoc .view-value-toggle-state:checked ~ .default_value{display:inherit;}.pdoc .view-value-button{font-size:.5rem;vertical-align:middle;border-style:dashed;margin-top:-0.1rem;}.pdoc .view-value-button:hover{background:white;}.pdoc .view-value-button::before{content:"show";text-align:center;width:2.2em;display:inline-block;}.pdoc .view-value-toggle-state:checked ~ .view-value-button::before{content:"hide";}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:27px;vertical-align:bottom;width:50px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! custom.css */</style></head>
+<body>
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
+        <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
+        <div>            <a class="pdoc-button module-list-button" href="../discovery.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.discovery</a>
+
+
+            <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
+                   pattern=".+" required>
+
+
+
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="variable" href="#CCXT_CAP">CCXT_CAP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#EDGAR_COMPANY_CAP">EDGAR_COMPANY_CAP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#EDGAR_FTS_CAP">EDGAR_FTS_CAP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#EDGAR_FTS_URL">EDGAR_FTS_URL</a>
+            </li>
+            <li>
+                    <a class="variable" href="#FRED_CAP">FRED_CAP</a>
+            </li>
+            <li>
+                    <a class="variable" href="#FRED_SEARCH_URL">FRED_SEARCH_URL</a>
+            </li>
+            <li>
+                    <a class="variable" href="#SEC_CEILING_PER_S">SEC_CEILING_PER_S</a>
+            </li>
+            <li>
+                    <a class="variable" href="#SEC_IDENTITY_ENV">SEC_IDENTITY_ENV</a>
+            </li>
+            <li>
+                    <a class="variable" href="#SEC_PACE_PER_S">SEC_PACE_PER_S</a>
+            </li>
+            <li>
+                    <a class="variable" href="#SEC_TICKERS_URL">SEC_TICKERS_URL</a>
+            </li>
+            <li>
+                    <a class="class" href="#CcxtMarketSearch">CcxtMarketSearch</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#CcxtMarketSearch.__init__">CcxtMarketSearch</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#CcxtMarketSearch.capability">capability</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#CcxtMarketSearch.venue">venue</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#CcxtMarketSearch.limiter">limiter</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#CcxtMarketSearch.markets">markets</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#CcxtMarketSearch.search">search</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#EdgarCompanySearch">EdgarCompanySearch</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#EdgarCompanySearch.__init__">EdgarCompanySearch</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#EdgarCompanySearch.capability">capability</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#EdgarCompanySearch.rows">rows</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#EdgarCompanySearch.search">search</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#EdgarFullTextSearch">EdgarFullTextSearch</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#EdgarFullTextSearch.__init__">EdgarFullTextSearch</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#EdgarFullTextSearch.capability">capability</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#EdgarFullTextSearch.search">search</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#FredSeriesSearch">FredSeriesSearch</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#FredSeriesSearch.capability">capability</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#FredSeriesSearch.search">search</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SearchCapability">SearchCapability</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SearchCapability.__init__">SearchCapability</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.name">name</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.endpoint">endpoint</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.searches">searches</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.returns">returns</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.asset_classes">asset_classes</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.cannot">cannot</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.as_of_supported">as_of_supported</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.requires_key">requires_key</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.key_env_var">key_env_var</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.key_sharing">key_sharing</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.user_agent_required">user_agent_required</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.rate_limit">rate_limit</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.terms_url">terms_url</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.verified_on">verified_on</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchCapability.notes">notes</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SearchCapability.row">row</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SearchQuery">SearchQuery</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SearchQuery.__init__">SearchQuery</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchQuery.text">text</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchQuery.asset_class">asset_class</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchQuery.market">market</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchQuery.as_of">as_of</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchQuery.limit">limit</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchQuery.extra">extra</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SearchReport">SearchReport</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SearchReport.__init__">SearchReport</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchReport.query">query</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchReport.results">results</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchReport.skipped">skipped</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchReport.warnings">warnings</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchReport.ran">ran</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SearchReport.frame">frame</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SearchReport.summary">summary</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SearchResult">SearchResult</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SearchResult.__init__">SearchResult</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.identifier">identifier</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.scheme">scheme</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.name">name</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.market">market</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.asset_class">asset_class</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.source">source</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.confidence">confidence</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.active">active</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.as_of">as_of</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchResult.detail">detail</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SearchResult.row">row</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SearchSource">SearchSource</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SearchSource.__init__">SearchSource</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SearchSource.capability">capability</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SearchSource.search">search</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SearchUnavailable">SearchUnavailable</a>
+                            <ul class="memberlist">
+                </ul>
+
+            </li>
+            <li>
+                    <a class="variable" href="#Transport">Transport</a>
+            </li>
+            <li>
+                    <a class="function" href="#capabilities">capabilities</a>
+            </li>
+            <li>
+                    <a class="function" href="#capability">capability</a>
+            </li>
+            <li>
+                    <a class="function" href="#catalogue">catalogue</a>
+            </li>
+            <li>
+                    <a class="function" href="#credential">credential</a>
+            </li>
+            <li>
+                    <a class="function" href="#describe">describe</a>
+            </li>
+            <li>
+                    <a class="function" href="#get_source">get_source</a>
+            </li>
+            <li>
+                    <a class="function" href="#register_source">register_source</a>
+            </li>
+            <li>
+                    <a class="function" href="#search">search</a>
+            </li>
+            <li>
+                    <a class="function" href="#sec_identity">sec_identity</a>
+            </li>
+            <li>
+                    <a class="function" href="#sources">sources</a>
+            </li>
+            <li>
+                    <a class="function" href="#unregister_source">unregister_source</a>
+            </li>
+            <li>
+                    <a class="function" href="#urllib_transport">urllib_transport</a>
+            </li>
+    </ul>
+
+
+
+        <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
+            built with <span class="visually-hidden">pdoc</span><img
+                alt="pdoc logo"
+                src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22160%22%20viewBox%3D%220%200%20150%2080%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M132.316%2048.886c.276-4.679%202.342-6.698%204.409-7.982s4.27-1.165%206.751-1.055c1.586.07%203.044.156%204.222-.482%201.142-.619%202.026-1.932%202.162-3.739.268-3.576-1.929-5.368-5.006-5.551s-7.599.524-10.517%201.606c-4.455%201.652-8.588%206.606-9.552%208.992s-2.342%206.193-1.745%2010.873%202.664%209.221%205.878%2011.79%205.878%203.808%2010.103%204.312%203.444.229%206.062.229%205.006-2.202%204.914-4.909-2.296-5.001-4.501-4.863-3.077.505-5.281.229-7.715-2.064-7.899-9.451z%22%20fill%3D%22%23198754%22/%3E%3Ccircle%20cx%3D%22101.504%22%20cy%3D%2248.943%22%20r%3D%2214.208%22%20fill%3D%22none%22%20stroke%3D%22%23198754%22%20stroke-width%3D%229.354%22/%3E%3Cpath%20d%3D%22M87.81.002c-3.637.065-5.001.454-7.014%201.232s-3.443%201.363-6.3%204.282c-1.723%201.76-3.148%205.019-3.776%207.329-.413%201.521-.316%202.63-.316%202.63l-.195%2034.612c.065%205.774-6.755%208.305-9.612%208.37s-9.678-1.038-9.743-9.408%207.128-9.521%208.362-9.521c1.413-.13%202.526-.021%203.718-.016%202.071.009%204.157-.778%204.092-4.671s-4.157-4.736-4.157-4.736c-6.3-.843-11.43%202.206-11.43%202.206S40.917%2038.15%2041.372%2049.634%2051.568%2068.19%2061.311%2068.125s18.316-7.007%2018.445-17.193l.13-22.772c.046-2.291%202.683-3.644%204.476-4.203.745-.232%201.694-.274%201.694-.274l10.457-.13s4.871-.324%207.729-3.114%204.352-6.294%204.352-6.294.974-3.049.13-4.606-.195-1.233-2.792-3.309-8.573-4.477-8.573-4.477S91.447-.063%2087.81.002zM0%2047.169l.065%2028.417S0%2080.127%204.481%2079.997s5.072-3.866%205.049-4.152l-.113-28.482s1.624-7.656%209.937-7.721%2010.002%206.942%2010.002%208.499-.909%2010.51-9.093%2010.51c-.948%200-2.99-.567-4.145-.272-3.919%201-3.194%204.554-3.194%204.554s.065%205.061%207.404%204.996%2018.575-6.034%2018.575-19.074S26.953%2030.04%2019.549%2029.91%201.234%2035.296%200%2047.169z%22%20fill%3D%22%23198754%22/%3E%3Cg%20transform%3D%22matrix%28.325601%200%200%20.325256%20-10.32669%20-45.802786%29%22%3E%3Ccircle%20cx%3D%22297.554%22%20cy%3D%22172.286%22%20r%3D%2216.5%22%20fill%3D%22%23fff%22/%3E%3Cellipse%20cx%3D%22297.709%22%20cy%3D%22172.642%22%20rx%3D%2211.071%22%20ry%3D%2210.871%22%20fill%3D%22%23105a48%22/%3E%3Ccircle%20cx%3D%22304.104%22%20cy%3D%22167.667%22%20r%3D%224.5%22%20fill%3D%22%23fff%22/%3E%3C/g%3E%3Cpath%20d%3D%22M94.661%2017.032l.893-1.476s.99.714%201.916.925%201.575.114%202.955.114l14.565-.162c1.283-.032%203.085-.762%203.02-3.293s-.373-3.503-.373-3.503l1.283-.487s.52.503.877%201.573.309%201.995.292%202.66-.227%201.541-.227%201.541%201.564-.308%202.359-1.038.823-.779%201.489-1.508.812-.86.812-.86.552-.13.877.26.341.957.065%201.46-1.672%202.206-3.247%203.066-2.76%201.427-3.929%201.768-3.848.73-7.063.714l-10.944-.114s-2.143-.081-3.02-.373-2.241-.973-2.598-1.265z%22%20fill%3D%22%23d36d49%22/%3E%3Cg%20fill%3D%22%23105a48%22%3E%3Cellipse%20cx%3D%2293.052%22%20cy%3D%2243.567%22%20rx%3D%22.869%22%20ry%3D%221.014%22%20transform%3D%22rotate%28341.022%29%22/%3E%3Cellipse%20cx%3D%22104.3%22%20cy%3D%22-16.184%22%20rx%3D%22.865%22%20ry%3D%221.009%22%20transform%3D%22rotate%2814.786%29%22/%3E%3C/g%3E%3C/svg%3E"/>
+        </a>
+</div>
+    </nav>
+    <main class="pdoc">
+            <section class="module-info">
+                    <h1 class="modulename">
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../discovery.html">discovery</a><wbr>.search    </h1>
+
+                        <div class="docstring"><p>Search: the half <code><a href="../data.html">fin_skills.data</a></code> does not have.</p>
+
+<p>Every method on the Adapter protocol - bars, fundamentals, macro, actions, universe -
+takes an identifier you must already know. There is no <code>find</code>. So an agent that does not
+already know <code>DGS10</code>, <code>0000320193</code> or <code>ES=F</code> cannot start, and an agent that guesses is
+worse than stuck: a wrong series id returns an empty frame rather than an error, and an
+empty frame is indistinguishable from "no data" once it is written to disk.</p>
+
+<p>This module is the mirror image of <code><a href="../data/declare.html">fin_skills.data.declare</a></code>. A source registers a
+<code><a href="#SearchCapability">SearchCapability</a></code> before it can be reached, and the field that earns its place is
+<code>cannot</code>: three of the four shipped backends cannot answer "as of a past date" at all, so
+anything they return is a CURRENT snapshot however you label it. That is the same
+survivorship axis <code>Declaration.includes_delisted</code> exists for, applied to discovery.</p>
+
+<h6 id="four-rules-hold-everywhere-in-this-package">Four rules hold everywhere in this package:</h6>
+
+<blockquote>
+  <ul>
+  <li><strong>Transport is injected.</strong> Every backend takes <code>transport=(url, headers) -&gt; bytes</code>.
+  The default builds a urllib transport at CALL time, so importing this module opens no
+  socket and the tests run the whole registry offline against canned bytes.</li>
+  <li><strong>Nothing is imported until it is used.</strong> No vendor library is imported at module
+  scope; <code>import <a href="../discovery.html">fin_skills.discovery</a></code> works with none of them installed.</li>
+  <li><strong>A credential is read, used and dropped.</strong> It comes from the environment variable the
+  capability names, at the moment of the call. No URL carrying one is stored, returned,
+  logged or put in an exception message - <code>_redact()</code> runs on every URL that reaches a
+  message.</li>
+  <li><strong>A source that cannot run says so.</strong> <code><a href="#search">search()</a></code> never raises because a backend is
+  unavailable; it returns a <code><a href="#SearchReport">SearchReport</a></code> whose <code>skipped</code> maps each source to the
+  reason. With every backend absent the report is empty and complete.</li>
+  </ul>
+</blockquote>
+</div>
+
+                
+                
+                
+            </section>
+                <section id="CCXT_CAP">
+                    <div class="attr variable">
+            <span class="name">CCXT_CAP</span>        =
+<input id="CCXT_CAP-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="CCXT_CAP-view-value"></label><span class="default_value">SearchCapability(name=&#39;ccxt_markets&#39;, endpoint=&#39;ccxt &lt;venue&gt;.load_markets()&#39;, searches=(&#39;unified symbol&#39;, &#39;base&#39;, &#39;quote&#39;, &#34;the venue&#39;s own market id - LOCALLY, over the market map the instance already holds&#34;), returns=(&#39;market_symbol&#39;,), asset_classes=(&#39;crypto&#39;, &#39;perpetual&#39;, &#39;future&#39;, &#39;option&#39;), cannot=(&#39;find a DELISTED pair: load_markets() returns what the venue lists right now, so a pair list built from it is survivorship-biased in a market where listings turn over faster than they do in equities&#39;, &#39;answer as of a past date - there is no historical market map in ccxt at all&#39;, &#39;search across venues in one call: the market map belongs to ONE exchange instance, and constructing a fresh instance per call resets its rate limiter&#39;), as_of_supported=False, requires_key=False, key_env_var=&#39;&#39;, key_sharing=&#39;n/a&#39;, user_agent_required=False, rate_limit=PerInstanceDelay(2000ms, per exchange instance), terms_url=&#39;https://github.com/ccxt/ccxt#licence&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#34;Verified in ccxt&#39;s own source (python/ccxt/base/exchange.py at 4.5.78, read 2026-09-10): load_markets(reload=False) returns self.markets without a request when they are already loaded, and otherwise issues fetch_currencies() AND fetch_markets() - up to two calls through the instance&#39;s own limiter.\nThis source holds ONE instance per venue for its lifetime, mirroring the leaky bucket that lives on that instance.&#34;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CCXT_CAP"></a>
+    
+    
+
+                </section>
+                <section id="EDGAR_COMPANY_CAP">
+                    <div class="attr variable">
+            <span class="name">EDGAR_COMPANY_CAP</span>        =
+<input id="EDGAR_COMPANY_CAP-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="EDGAR_COMPANY_CAP-view-value"></label><span class="default_value">SearchCapability(name=&#39;edgar_company&#39;, endpoint=&#39;https://www.sec.gov/files/company_tickers.json&#39;, searches=(&#39;ticker&#39;, &#39;company title - substring, case-insensitive, LOCALLY after one download of the whole file&#39;), returns=(&#39;ticker&#39;, &#39;cik&#39;), asset_classes=(&#39;equity&#39;, &#39;etf&#39;, &#39;etn&#39;), cannot=(&#34;find a company that no longer trades: the file is a CURRENT snapshot, so a universe built from it carries the survivorship bias EDGAR&#39;s own filings do not&#34;, &#39;say WHEN a ticker mapped to that CIK - the file has no date field at all, which is why every mapping it produces opens at the moment you downloaded it&#39;, &#34;separate a common share from a preferred line or an ETN: one CIK&#39;s ticker list mixes them, so ticker -&gt; CIK -&gt; fundamentals can attach a bank&#39;s income statement to a note&#34;), as_of_supported=False, requires_key=False, key_env_var=&#39;&#39;, key_sharing=&#39;n/a&#39;, user_agent_required=True, rate_limit=PerSecond(8/s), terms_url=&#39;https://www.sec.gov/about/privacy-information#security&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#39;The SEC ceiling is 10 requests/second REGARDLESS of the number of machines, so parallelism buys no throughput; this source paces at 8/s to keep a margin under a limit whose penalty is a ten-minute block.\nThe whole file is fetched once per instance and searched in memory: one request answers every query, which is the only polite way to use it.&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EDGAR_COMPANY_CAP"></a>
+    
+    
+
+                </section>
+                <section id="EDGAR_FTS_CAP">
+                    <div class="attr variable">
+            <span class="name">EDGAR_FTS_CAP</span>        =
+<input id="EDGAR_FTS_CAP-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="EDGAR_FTS_CAP-view-value"></label><span class="default_value">SearchCapability(name=&#39;edgar_fulltext&#39;, endpoint=&#39;https://efts.sec.gov/LATEST/search-index&#39;, searches=(&#39;the full text of filings AND of every exhibit attached to them, 2001 onwards&#39;,), returns=(&#39;accession&#39;, &#39;cik&#39;), asset_classes=(&#39;filing&#39;,), cannot=(&#39;reach a filing made before 2001 - the index does not cover 1994-2000&#39;, &#39;tell you when a hit became PUBLIC: a hit carries file_date and no acceptanceDateTime, so it is NOT point-in-time until it is enriched from the Submissions API&#39;, &#39;distinguish the primary document from an exhibit: a forms=10-K query returns EX-19 and EX-99 attachments whose `form` is still 10-K&#39;, &#39;report a total above 10000 - the count saturates rather than paginating further&#39;), as_of_supported=True, requires_key=False, key_env_var=&#39;&#39;, key_sharing=&#39;n/a&#39;, user_agent_required=True, rate_limit=PerSecond(8/s), terms_url=&#39;https://www.sec.gov/about/privacy-information#security&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#34;as_of narrows on `file_date`, which is the date the SEC STAMPS, not the instant the document appeared. Treat a hit as provisional and enrich it before using it point-in-time - <a href="documents.html">fin_skills.discovery.documents</a> does.\nThe hit id is &#39;&lt;accession&gt;:&lt;document&gt;&#39;, so two hits can share one filing.&#34;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EDGAR_FTS_CAP"></a>
+    
+    
+
+                </section>
+                <section id="EDGAR_FTS_URL">
+                    <div class="attr variable">
+            <span class="name">EDGAR_FTS_URL</span>        =
+<span class="default_value">&#39;https://efts.sec.gov/LATEST/search-index&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EDGAR_FTS_URL"></a>
+    
+    
+
+                </section>
+                <section id="FRED_CAP">
+                    <div class="attr variable">
+            <span class="name">FRED_CAP</span>        =
+<input id="FRED_CAP-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="FRED_CAP-view-value"></label><span class="default_value">SearchCapability(name=&#39;fred_series&#39;, endpoint=&#39;https://api.stlouisfed.org/fred/series/search&#39;, searches=(&#39;series title&#39;, &#39;units&#39;, &#39;frequency&#39;, &#39;tags - stemmed word matching&#39;, &#34;the series id itself, but only with search_type=&#39;series_id&#39;&#34;), returns=(&#39;series_id&#39;,), asset_classes=(&#39;macro&#39;,), cannot=(&#34;match a series id in the DEFAULT search_type=&#39;full_text&#39; mode - the documented behaviour is to match title, units, frequency and tags, so searching &#39;DGS10&#39; full-text can miss the series it names&#34;, &#39;return observations: search answers about the series, never about its values&#39;, &#34;run without a key, and a shared key cannot ship - FRED&#39;s API-key page says all users of an application shall use their own&#34;), as_of_supported=True, requires_key=True, key_env_var=&#39;FRED_API_KEY&#39;, key_sharing=&#39;byok-required&#39;, user_agent_required=False, rate_limit=Unpublished(no vendor number; caller&#39;s courtesy pace 2/s, adaptive on 429), terms_url=&#39;https://fred.stlouisfed.org/docs/api/api_key.html&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#39;limit defaults to 1000 and is capped at 1000; order_by defaults to search_rank (fred/series/search docs, read 2026-09-10).\nrealtime_start/realtime_end default to TODAY, so the default answer is which series exist now - pass query.as_of to ask which existed then.\nThe rate limit has no single published shape: the v1 errors page says 120 requests/minute, the v2 page says 2/second. Pacing at 2/s satisfies both.&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#FRED_CAP"></a>
+    
+    
+
+                </section>
+                <section id="FRED_SEARCH_URL">
+                    <div class="attr variable">
+            <span class="name">FRED_SEARCH_URL</span>        =
+<span class="default_value">&#39;https://api.stlouisfed.org/fred/series/search&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#FRED_SEARCH_URL"></a>
+    
+    
+
+                </section>
+                <section id="SEC_CEILING_PER_S">
+                    <div class="attr variable">
+            <span class="name">SEC_CEILING_PER_S</span>        =
+<span class="default_value">10</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SEC_CEILING_PER_S"></a>
+    
+    
+
+                </section>
+                <section id="SEC_IDENTITY_ENV">
+                    <div class="attr variable">
+            <span class="name">SEC_IDENTITY_ENV</span>        =
+<span class="default_value">&#39;EDGAR_IDENTITY&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SEC_IDENTITY_ENV"></a>
+    
+    
+
+                </section>
+                <section id="SEC_PACE_PER_S">
+                    <div class="attr variable">
+            <span class="name">SEC_PACE_PER_S</span>        =
+<span class="default_value">8</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SEC_PACE_PER_S"></a>
+    
+    
+
+                </section>
+                <section id="SEC_TICKERS_URL">
+                    <div class="attr variable">
+            <span class="name">SEC_TICKERS_URL</span>        =
+<span class="default_value">&#39;https://www.sec.gov/files/company_tickers.json&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SEC_TICKERS_URL"></a>
+    
+    
+
+                </section>
+                <section id="CcxtMarketSearch">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">CcxtMarketSearch</span><wbr>(<span class="base"><a href="#_Backend">_Backend</a></span>):
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch"></a>
+    
+            <div class="docstring"><p>One venue's market map, loaded once and searched in memory.</p>
+
+<p><code>markets_loader</code> is injected in the tests; in production it lazily imports ccxt,
+constructs the venue once, and reuses it - the same discipline the ccxt adapter keeps,
+for the same reason.</p>
+</div>
+
+
+                            <div id="CcxtMarketSearch.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">CcxtMarketSearch</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">venue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'binance'</span>,</span><span class="param">	<span class="n">transport</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="nb">bytes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">markets_loader</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="CcxtMarketSearch.capability" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capability</span>        =
+<input id="CcxtMarketSearch.capability-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="CcxtMarketSearch.capability-view-value"></label><span class="default_value">SearchCapability(name=&#39;ccxt_markets&#39;, endpoint=&#39;ccxt &lt;venue&gt;.load_markets()&#39;, searches=(&#39;unified symbol&#39;, &#39;base&#39;, &#39;quote&#39;, &#34;the venue&#39;s own market id - LOCALLY, over the market map the instance already holds&#34;), returns=(&#39;market_symbol&#39;,), asset_classes=(&#39;crypto&#39;, &#39;perpetual&#39;, &#39;future&#39;, &#39;option&#39;), cannot=(&#39;find a DELISTED pair: load_markets() returns what the venue lists right now, so a pair list built from it is survivorship-biased in a market where listings turn over faster than they do in equities&#39;, &#39;answer as of a past date - there is no historical market map in ccxt at all&#39;, &#39;search across venues in one call: the market map belongs to ONE exchange instance, and constructing a fresh instance per call resets its rate limiter&#39;), as_of_supported=False, requires_key=False, key_env_var=&#39;&#39;, key_sharing=&#39;n/a&#39;, user_agent_required=False, rate_limit=PerInstanceDelay(2000ms, per exchange instance), terms_url=&#39;https://github.com/ccxt/ccxt#licence&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#34;Verified in ccxt&#39;s own source (python/ccxt/base/exchange.py at 4.5.78, read 2026-09-10): load_markets(reload=False) returns self.markets without a request when they are already loaded, and otherwise issues fetch_currencies() AND fetch_markets() - up to two calls through the instance&#39;s own limiter.\nThis source holds ONE instance per venue for its lifetime, mirroring the leaky bucket that lives on that instance.&#34;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch.capability"></a>
+    
+    
+
+                            </div>
+                            <div id="CcxtMarketSearch.venue" class="classattr">
+                                <div class="attr variable">
+            <span class="name">venue</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch.venue"></a>
+    
+    
+
+                            </div>
+                            <div id="CcxtMarketSearch.limiter" class="classattr">
+                                <div class="attr variable">
+            <span class="name">limiter</span>
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch.limiter"></a>
+    
+    
+
+                            </div>
+                            <div id="CcxtMarketSearch.markets" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">markets</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch.markets"></a>
+    
+    
+
+                            </div>
+                            <div id="CcxtMarketSearch.search" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">search</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#SearchResult">SearchResult</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#CcxtMarketSearch.search"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#_Backend">_Backend</a></dt>
+                                <dd id="CcxtMarketSearch.transport" class="variable"><a href="#_Backend.transport">transport</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="EdgarCompanySearch">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">EdgarCompanySearch</span><wbr>(<span class="base"><a href="#_Backend">_Backend</a></span>):
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarCompanySearch"></a>
+    
+            <div class="docstring"><p>company_tickers.json, downloaded once per instance and searched in memory.</p>
+</div>
+
+
+                            <div id="EdgarCompanySearch.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">EdgarCompanySearch</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">transport</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="nb">bytes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">identity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarCompanySearch.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="EdgarCompanySearch.capability" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capability</span>        =
+<input id="EdgarCompanySearch.capability-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="EdgarCompanySearch.capability-view-value"></label><span class="default_value">SearchCapability(name=&#39;edgar_company&#39;, endpoint=&#39;https://www.sec.gov/files/company_tickers.json&#39;, searches=(&#39;ticker&#39;, &#39;company title - substring, case-insensitive, LOCALLY after one download of the whole file&#39;), returns=(&#39;ticker&#39;, &#39;cik&#39;), asset_classes=(&#39;equity&#39;, &#39;etf&#39;, &#39;etn&#39;), cannot=(&#34;find a company that no longer trades: the file is a CURRENT snapshot, so a universe built from it carries the survivorship bias EDGAR&#39;s own filings do not&#34;, &#39;say WHEN a ticker mapped to that CIK - the file has no date field at all, which is why every mapping it produces opens at the moment you downloaded it&#39;, &#34;separate a common share from a preferred line or an ETN: one CIK&#39;s ticker list mixes them, so ticker -&gt; CIK -&gt; fundamentals can attach a bank&#39;s income statement to a note&#34;), as_of_supported=False, requires_key=False, key_env_var=&#39;&#39;, key_sharing=&#39;n/a&#39;, user_agent_required=True, rate_limit=PerSecond(8/s), terms_url=&#39;https://www.sec.gov/about/privacy-information#security&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#39;The SEC ceiling is 10 requests/second REGARDLESS of the number of machines, so parallelism buys no throughput; this source paces at 8/s to keep a margin under a limit whose penalty is a ten-minute block.\nThe whole file is fetched once per instance and searched in memory: one request answers every query, which is the only polite way to use it.&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarCompanySearch.capability"></a>
+    
+    
+
+                            </div>
+                            <div id="EdgarCompanySearch.rows" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">rows</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarCompanySearch.rows"></a>
+    
+            <div class="docstring"><p>The file, fetched at most once. <code>retrieved_at</code> is the only date it has.</p>
+</div>
+
+
+                            </div>
+                            <div id="EdgarCompanySearch.search" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">search</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#SearchResult">SearchResult</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarCompanySearch.search"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#_Backend">_Backend</a></dt>
+                                <dd id="EdgarCompanySearch.limiter" class="variable"><a href="#_Backend.limiter">limiter</a></dd>
+                <dd id="EdgarCompanySearch.transport" class="variable"><a href="#_Backend.transport">transport</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="EdgarFullTextSearch">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">EdgarFullTextSearch</span><wbr>(<span class="base"><a href="#_Backend">_Backend</a></span>):
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarFullTextSearch"></a>
+    
+            <div class="docstring"><p>efts.sec.gov - free, no key, and it searches exhibits as well as filings.</p>
+</div>
+
+
+                            <div id="EdgarFullTextSearch.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">EdgarFullTextSearch</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">transport</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="nb">bytes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">identity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarFullTextSearch.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="EdgarFullTextSearch.capability" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capability</span>        =
+<input id="EdgarFullTextSearch.capability-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="EdgarFullTextSearch.capability-view-value"></label><span class="default_value">SearchCapability(name=&#39;edgar_fulltext&#39;, endpoint=&#39;https://efts.sec.gov/LATEST/search-index&#39;, searches=(&#39;the full text of filings AND of every exhibit attached to them, 2001 onwards&#39;,), returns=(&#39;accession&#39;, &#39;cik&#39;), asset_classes=(&#39;filing&#39;,), cannot=(&#39;reach a filing made before 2001 - the index does not cover 1994-2000&#39;, &#39;tell you when a hit became PUBLIC: a hit carries file_date and no acceptanceDateTime, so it is NOT point-in-time until it is enriched from the Submissions API&#39;, &#39;distinguish the primary document from an exhibit: a forms=10-K query returns EX-19 and EX-99 attachments whose `form` is still 10-K&#39;, &#39;report a total above 10000 - the count saturates rather than paginating further&#39;), as_of_supported=True, requires_key=False, key_env_var=&#39;&#39;, key_sharing=&#39;n/a&#39;, user_agent_required=True, rate_limit=PerSecond(8/s), terms_url=&#39;https://www.sec.gov/about/privacy-information#security&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#34;as_of narrows on `file_date`, which is the date the SEC STAMPS, not the instant the document appeared. Treat a hit as provisional and enrich it before using it point-in-time - <a href="documents.html">fin_skills.discovery.documents</a> does.\nThe hit id is &#39;&lt;accession&gt;:&lt;document&gt;&#39;, so two hits can share one filing.&#34;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarFullTextSearch.capability"></a>
+    
+    
+
+                            </div>
+                            <div id="EdgarFullTextSearch.search" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">search</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#SearchResult">SearchResult</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#EdgarFullTextSearch.search"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#_Backend">_Backend</a></dt>
+                                <dd id="EdgarFullTextSearch.limiter" class="variable"><a href="#_Backend.limiter">limiter</a></dd>
+                <dd id="EdgarFullTextSearch.transport" class="variable"><a href="#_Backend.transport">transport</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="FredSeriesSearch">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">FredSeriesSearch</span><wbr>(<span class="base"><a href="#_Backend">_Backend</a></span>):
+
+        
+    </div>
+    <a class="headerlink" href="#FredSeriesSearch"></a>
+    
+            <div class="docstring"><p><code>fred/series/search</code> - the only way to turn 'ten year treasury' into DGS10.</p>
+</div>
+
+
+                            <div id="FredSeriesSearch.capability" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capability</span>        =
+<input id="FredSeriesSearch.capability-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="FredSeriesSearch.capability-view-value"></label><span class="default_value">SearchCapability(name=&#39;fred_series&#39;, endpoint=&#39;https://api.stlouisfed.org/fred/series/search&#39;, searches=(&#39;series title&#39;, &#39;units&#39;, &#39;frequency&#39;, &#39;tags - stemmed word matching&#39;, &#34;the series id itself, but only with search_type=&#39;series_id&#39;&#34;), returns=(&#39;series_id&#39;,), asset_classes=(&#39;macro&#39;,), cannot=(&#34;match a series id in the DEFAULT search_type=&#39;full_text&#39; mode - the documented behaviour is to match title, units, frequency and tags, so searching &#39;DGS10&#39; full-text can miss the series it names&#34;, &#39;return observations: search answers about the series, never about its values&#39;, &#34;run without a key, and a shared key cannot ship - FRED&#39;s API-key page says all users of an application shall use their own&#34;), as_of_supported=True, requires_key=True, key_env_var=&#39;FRED_API_KEY&#39;, key_sharing=&#39;byok-required&#39;, user_agent_required=False, rate_limit=Unpublished(no vendor number; caller&#39;s courtesy pace 2/s, adaptive on 429), terms_url=&#39;https://fred.stlouisfed.org/docs/api/api_key.html&#39;, verified_on=&#39;2026-09-10&#39;, notes=&#39;limit defaults to 1000 and is capped at 1000; order_by defaults to search_rank (fred/series/search docs, read 2026-09-10).\nrealtime_start/realtime_end default to TODAY, so the default answer is which series exist now - pass query.as_of to ask which existed then.\nThe rate limit has no single published shape: the v1 errors page says 120 requests/minute, the v2 page says 2/second. Pacing at 2/s satisfies both.&#39;)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#FredSeriesSearch.capability"></a>
+    
+    
+
+                            </div>
+                            <div id="FredSeriesSearch.search" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">search</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#SearchResult">SearchResult</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#FredSeriesSearch.search"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#_Backend">_Backend</a></dt>
+                                <dd id="FredSeriesSearch.__init__" class="function"><a href="#_Backend.__init__">_Backend</a></dd>
+                <dd id="FredSeriesSearch.limiter" class="variable"><a href="#_Backend.limiter">limiter</a></dd>
+                <dd id="FredSeriesSearch.transport" class="variable"><a href="#_Backend.transport">transport</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="SearchCapability">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">SearchCapability</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability"></a>
+    
+            <div class="docstring"><p>What a source can search, and - the load-bearing half - what it cannot.</p>
+
+<p>Same posture as <code>data.declare.Declaration</code>: no field has a default except <code><a href="#SearchCapability.notes">notes</a></code>,
+because a source that will not state whether it can answer as of a past date is a
+source whose results cannot be dated.</p>
+</div>
+
+
+                            <div id="SearchCapability.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SearchCapability</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">searches</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">returns</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">asset_classes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">cannot</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">as_of_supported</span><span class="p">:</span> <span class="nb">bool</span>,</span><span class="param">	<span class="n">requires_key</span><span class="p">:</span> <span class="nb">bool</span>,</span><span class="param">	<span class="n">key_env_var</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">key_sharing</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">user_agent_required</span><span class="p">:</span> <span class="nb">bool</span>,</span><span class="param">	<span class="n">rate_limit</span><span class="p">:</span> <span class="n"><a href="../data.html#RateLimit">fin_skills.data.RateLimit</a></span>,</span><span class="param">	<span class="n">terms_url</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">verified_on</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">notes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.name" class="classattr">
+                                <div class="attr variable">
+            <span class="name">name</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.name"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.endpoint" class="classattr">
+                                <div class="attr variable">
+            <span class="name">endpoint</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.endpoint"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.searches" class="classattr">
+                                <div class="attr variable">
+            <span class="name">searches</span><span class="annotation">: tuple[str, ...]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.searches"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.returns" class="classattr">
+                                <div class="attr variable">
+            <span class="name">returns</span><span class="annotation">: tuple[str, ...]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.returns"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.asset_classes" class="classattr">
+                                <div class="attr variable">
+            <span class="name">asset_classes</span><span class="annotation">: tuple[str, ...]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.asset_classes"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.cannot" class="classattr">
+                                <div class="attr variable">
+            <span class="name">cannot</span><span class="annotation">: tuple[str, ...]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.cannot"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.as_of_supported" class="classattr">
+                                <div class="attr variable">
+            <span class="name">as_of_supported</span><span class="annotation">: bool</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.as_of_supported"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.requires_key" class="classattr">
+                                <div class="attr variable">
+            <span class="name">requires_key</span><span class="annotation">: bool</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.requires_key"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.key_env_var" class="classattr">
+                                <div class="attr variable">
+            <span class="name">key_env_var</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.key_env_var"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.key_sharing" class="classattr">
+                                <div class="attr variable">
+            <span class="name">key_sharing</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.key_sharing"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.user_agent_required" class="classattr">
+                                <div class="attr variable">
+            <span class="name">user_agent_required</span><span class="annotation">: bool</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.user_agent_required"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.rate_limit" class="classattr">
+                                <div class="attr variable">
+            <span class="name">rate_limit</span><span class="annotation">: <a href="../data.html#RateLimit">fin_skills.data.RateLimit</a></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.rate_limit"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.terms_url" class="classattr">
+                                <div class="attr variable">
+            <span class="name">terms_url</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.terms_url"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.verified_on" class="classattr">
+                                <div class="attr variable">
+            <span class="name">verified_on</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.verified_on"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.notes" class="classattr">
+                                <div class="attr variable">
+            <span class="name">notes</span><span class="annotation">: str</span>        =
+<span class="default_value">&#39;&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.notes"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchCapability.row" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">row</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchCapability.row"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SearchQuery">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">SearchQuery</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery"></a>
+    
+            <div class="docstring"><p>Free text, plus the three narrowings a source may or may not honour.</p>
+
+<p><code><a href="#SearchQuery.as_of">as_of</a></code> is the one that matters. A source whose capability says <code>as_of_supported</code> is
+False does not silently ignore it - <code><a href="#search">search()</a></code> records a warning naming the source, so
+a result set that cannot be historical never passes for one.</p>
+</div>
+
+
+                            <div id="SearchQuery.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SearchQuery</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">text</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">asset_class</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">market</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">as_of</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">_libs</span><span class="o">.</span><span class="n">tslibs</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>,</span><span class="param">	<span class="n">extra</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchQuery.text" class="classattr">
+                                <div class="attr variable">
+            <span class="name">text</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.text"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchQuery.asset_class" class="classattr">
+                                <div class="attr variable">
+            <span class="name">asset_class</span><span class="annotation">: str | None</span>        =
+<span class="default_value">None</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.asset_class"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchQuery.market" class="classattr">
+                                <div class="attr variable">
+            <span class="name">market</span><span class="annotation">: str | None</span>        =
+<span class="default_value">None</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.market"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchQuery.as_of" class="classattr">
+                                <div class="attr variable">
+            <span class="name">as_of</span><span class="annotation">: pandas._libs.tslibs.timestamps.Timestamp | None</span>        =
+<span class="default_value">None</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.as_of"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchQuery.limit" class="classattr">
+                                <div class="attr variable">
+            <span class="name">limit</span><span class="annotation">: int</span>        =
+<span class="default_value">20</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.limit"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchQuery.extra" class="classattr">
+                                <div class="attr variable">
+            <span class="name">extra</span><span class="annotation">: dict</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchQuery.extra"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SearchReport">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">SearchReport</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport"></a>
+    
+            <div class="docstring"><p>What a fan-out produced, including every source that could NOT answer and why.</p>
+</div>
+
+
+                            <div id="SearchReport.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SearchReport</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span>,</span><span class="param">	<span class="n">results</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n"><a href="#SearchResult">SearchResult</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">skipped</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>,</span><span class="param">	<span class="n">warnings</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.query" class="classattr">
+                                <div class="attr variable">
+            <span class="name">query</span><span class="annotation">: <a href="#SearchQuery">SearchQuery</a></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.query"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.results" class="classattr">
+                                <div class="attr variable">
+            <span class="name">results</span><span class="annotation">: tuple[<a href="#SearchResult">SearchResult</a>, ...]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.results"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.skipped" class="classattr">
+                                <div class="attr variable">
+            <span class="name">skipped</span><span class="annotation">: dict[str, str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.skipped"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.warnings" class="classattr">
+                                <div class="attr variable">
+            <span class="name">warnings</span><span class="annotation">: tuple[str, ...]</span>        =
+<span class="default_value">()</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.warnings"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.ran" class="classattr">
+                                <div class="attr variable">
+            <span class="name">ran</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.ran"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.frame" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">frame</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.frame"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchReport.summary" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">summary</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchReport.summary"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SearchResult">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">SearchResult</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult"></a>
+    
+            <div class="docstring"><p>One candidate. <code><a href="#SearchResult.confidence">confidence</a></code> orders results WITHIN one source and nowhere else.</p>
+
+<p>It is the source's own ranking normalised to [0, 1] - an exact identifier match is
+1.0, an exact name match 0.9, everything else decays with rank. It is not a
+probability and two sources' confidences are not comparable, which is why
+<code><a href="#SearchReport.frame">SearchReport.frame()</a></code> keeps <code><a href="#SearchResult.source">source</a></code> next to it.</p>
+</div>
+
+
+                            <div id="SearchResult.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SearchResult</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">scheme</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">market</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">asset_class</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">source</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">as_of</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span>,</span><span class="param">	<span class="n">detail</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.identifier" class="classattr">
+                                <div class="attr variable">
+            <span class="name">identifier</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.identifier"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.scheme" class="classattr">
+                                <div class="attr variable">
+            <span class="name">scheme</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.scheme"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.name" class="classattr">
+                                <div class="attr variable">
+            <span class="name">name</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.name"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.market" class="classattr">
+                                <div class="attr variable">
+            <span class="name">market</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.market"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.asset_class" class="classattr">
+                                <div class="attr variable">
+            <span class="name">asset_class</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.asset_class"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.source" class="classattr">
+                                <div class="attr variable">
+            <span class="name">source</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.source"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.confidence" class="classattr">
+                                <div class="attr variable">
+            <span class="name">confidence</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.confidence"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.active" class="classattr">
+                                <div class="attr variable">
+            <span class="name">active</span><span class="annotation">: bool | None</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.active"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.as_of" class="classattr">
+                                <div class="attr variable">
+            <span class="name">as_of</span><span class="annotation">: str</span>        =
+<span class="default_value">&#39;&#39;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.as_of"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.detail" class="classattr">
+                                <div class="attr variable">
+            <span class="name">detail</span><span class="annotation">: dict</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.detail"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchResult.row" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">row</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchResult.row"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SearchSource">
+                    <div class="attr class">
+                    <div class="decorator decorator-runtime_checkable">@runtime_checkable</div>
+
+    <span class="def">class</span>
+    <span class="name">SearchSource</span><wbr>(<span class="base">typing.Protocol</span>):
+
+        
+    </div>
+    <a class="headerlink" href="#SearchSource"></a>
+    
+            <div class="docstring"><p>What a backend offers. <code><a href="#SearchSource.search">search</a></code> returns [] for no match and raises
+SearchUnavailable when it cannot run at all - the two are never conflated.</p>
+</div>
+
+
+                            <div id="SearchSource.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">SearchSource</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">args</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchSource.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchSource.capability" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capability</span><span class="annotation">: <a href="#SearchCapability">SearchCapability</a></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchSource.capability"></a>
+    
+    
+
+                            </div>
+                            <div id="SearchSource.search" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">search</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#SearchResult">SearchResult</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#SearchSource.search"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="SearchUnavailable">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">SearchUnavailable</span><wbr>(<span class="base">builtins.RuntimeError</span>):
+
+        
+    </div>
+    <a class="headerlink" href="#SearchUnavailable"></a>
+    
+            <div class="docstring"><p>This source cannot answer right now, and the message says why.</p>
+
+<p>Raised for a missing credential, a missing library, a refused network - never for
+"the query matched nothing", which is a legitimate empty result.</p>
+</div>
+
+
+                </section>
+                <section id="Transport">
+                    <div class="attr variable">
+            <span class="name">Transport</span>        =
+<span class="default_value">typing.Callable[[str, typing.Mapping[str, str]], bytes]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Transport"></a>
+    
+    
+
+                </section>
+                <section id="capabilities">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">capabilities</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#SearchCapability">SearchCapability</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#capabilities"></a>
+    
+    
+
+                </section>
+                <section id="capability">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">capability</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n"><a href="#SearchCapability">SearchCapability</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#capability"></a>
+    
+    
+
+                </section>
+                <section id="catalogue">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">catalogue</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#catalogue"></a>
+    
+            <div class="docstring"><p>Every registered source and what it declares - the table to read BEFORE searching.</p>
+</div>
+
+
+                </section>
+                <section id="credential">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">credential</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">cap</span><span class="p">:</span> <span class="n"><a href="#SearchCapability">SearchCapability</a></span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#credential"></a>
+    
+            <div class="docstring"><p>Read the key from the variable the capability names. Read, used, never stored.</p>
+
+<p>No function in this package takes a key as an argument and no dataclass field can hold
+one, for the reason FRED states on its own API-key page: "All users of an application
+shall use their own API key." The code path that would ship or proxy one does not exist.</p>
+</div>
+
+
+                </section>
+                <section id="describe">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">describe</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#describe"></a>
+    
+            <div class="docstring"><p>The capability table plus every <code>cannot</code>, as ASCII text.</p>
+</div>
+
+
+                </section>
+                <section id="get_source">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">get_source</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span></span><span class="return-annotation">) -> <span class="n"><a href="#SearchSource">SearchSource</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#get_source"></a>
+    
+    
+
+                </section>
+                <section id="register_source">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">register_source</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">source</span><span class="p">:</span> <span class="nb">type</span>,</span><span class="param">	<span class="n">capability</span><span class="p">:</span> <span class="n"><a href="#SearchCapability">SearchCapability</a></span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#register_source"></a>
+    
+            <div class="docstring"><p>Accept a backend, or refuse it. The only way into <code><a href="#sources">sources()</a></code>.</p>
+</div>
+
+
+                </section>
+                <section id="search">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">search</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">query</span><span class="p">:</span> <span class="n"><a href="#SearchQuery">SearchQuery</a></span> <span class="o">|</span> <span class="nb">str</span>,</span><span class="param">	<span class="o">*</span>,</span><span class="param">	<span class="n">sources</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">instances</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n"><a href="#SearchSource">SearchSource</a></span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">**</span><span class="n">construct</span><span class="p">:</span> <span class="n">Any</span></span><span class="return-annotation">) -> <span class="n"><a href="#SearchReport">SearchReport</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#search"></a>
+    
+            <div class="docstring"><p>Fan out across the registered sources and collect what came back.</p>
+
+<p>This never raises because a source is unavailable. A missing key, a missing library
+and a refused socket all land in <code>report.skipped</code> with the reason, so the same call
+works with every backend absent and the report says so rather than looking empty.</p>
+
+<p><code>instances</code> injects already-built sources, which is how the tests run the whole
+registry offline.</p>
+</div>
+
+
+                </section>
+                <section id="sec_identity">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">sec_identity</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">explicit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#sec_identity"></a>
+    
+            <div class="docstring"><p>The declared User-Agent every sec.gov request needs, or a message saying so.</p>
+</div>
+
+
+                </section>
+                <section id="sources">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">sources</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#sources"></a>
+    
+    
+
+                </section>
+                <section id="unregister_source">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">unregister_source</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#unregister_source"></a>
+    
+    
+
+                </section>
+                <section id="urllib_transport">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">urllib_transport</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">30.0</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="nb">bytes</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#urllib_transport"></a>
+    
+            <div class="docstring"><p>The default transport, built lazily so importing this module opens nothing.</p>
+</div>
+
+
+                </section>
+    </main>
+<script>
+    function escapeHTML(html) {
+        return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+    }
+
+    const originalContent = document.querySelector("main.pdoc");
+    let currentContent = originalContent;
+
+    function setContent(innerHTML) {
+        let elem;
+        if (innerHTML) {
+            elem = document.createElement("main");
+            elem.classList.add("pdoc");
+            elem.innerHTML = innerHTML;
+        } else {
+            elem = originalContent;
+        }
+        if (currentContent !== elem) {
+            currentContent.replaceWith(elem);
+            currentContent = elem;
+        }
+    }
+
+    function getSearchTerm() {
+        return (new URL(window.location)).searchParams.get("search");
+    }
+
+    const searchBox = document.querySelector(".pdoc input[type=search]");
+    searchBox.addEventListener("input", function () {
+        let url = new URL(window.location);
+        if (searchBox.value.trim()) {
+            url.hash = "";
+            url.searchParams.set("search", searchBox.value);
+        } else {
+            url.searchParams.delete("search");
+        }
+        history.replaceState("", "", url.toString());
+        onInput();
+    });
+    window.addEventListener("popstate", onInput);
+
+
+    let search, searchErr;
+
+    async function initialize() {
+        try {
+            search = await new Promise((resolve, reject) => {
+                const script = document.createElement("script");
+                script.type = "text/javascript";
+                script.async = true;
+                script.onload = () => resolve(window.pdocSearch);
+                script.onerror = (e) => reject(e);
+                script.src = "../../search.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+            });
+        } catch (e) {
+            console.error("Cannot fetch pdoc search index");
+            searchErr = "Cannot fetch search index.";
+        }
+        onInput();
+
+        document.querySelector("nav.pdoc").addEventListener("click", e => {
+            if (e.target.hash) {
+                searchBox.value = "";
+                searchBox.dispatchEvent(new Event("input"));
+            }
+        });
+    }
+
+    function onInput() {
+        setContent((() => {
+            const term = getSearchTerm();
+            if (!term) {
+                return null
+            }
+            if (searchErr) {
+                return `<h3>Error: ${searchErr}</h3>`
+            }
+            if (!search) {
+                return "<h3>Searching...</h3>"
+            }
+
+            window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+
+            const results = search(term);
+
+            let html;
+            if (results.length === 0) {
+                html = `No search results for '${escapeHTML(term)}'.`
+            } else {
+                html = `<h4>${results.length} search result${results.length > 1 ? "s" : ""} for '${escapeHTML(term)}'.</h4>`;
+            }
+            for (let result of results.slice(0, 10)) {
+                let doc = result.doc;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
+                if (doc.qualname) {
+                    url += `#${doc.qualname}`;
+                }
+
+                let heading;
+                switch (result.doc.kind) {
+                    case "function":
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
+                        break;
+                    case "class":
+                        heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
+                        if (doc.bases)
+                            heading += `<wbr>(<span class="base">${doc.bases}</span>)`;
+                        heading += `:`;
+                        break;
+                    case "variable":
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        if (doc.annotation)
+                            heading += `<span class="annotation">${doc.annotation}</span>`;
+                        if (doc.default_value)
+                            heading += `<span class="default_value"> = ${doc.default_value}</span>`;
+                        break;
+                    default:
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        break;
+                }
+                html += `
+                        <section class="search-result">
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
+                        <div class="docstring">${doc.doc}</div>
+                        </section>
+                    `;
+
+            }
+            return html;
+        })());
+    }
+
+    if (getSearchTerm()) {
+        initialize();
+        searchBox.value = getSearchTerm();
+        onInput();
+    } else {
+        searchBox.addEventListener("focus", initialize, {once: true});
+    }
+
+    searchBox.addEventListener("keydown", e => {
+        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+            let focused = currentContent.querySelector(".search-result.focused");
+            if (!focused) {
+                currentContent.querySelector(".search-result").classList.add("focused");
+            } else if (
+                e.key === "ArrowDown"
+                && focused.nextElementSibling
+                && focused.nextElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.nextElementSibling.classList.add("focused");
+                focused.nextElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "ArrowUp"
+                && focused.previousElementSibling
+                && focused.previousElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.previousElementSibling.classList.add("focused");
+                focused.previousElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "Enter"
+            ) {
+                focused.querySelector("a").click();
+            }
+        }
+    });
+</script></body>
+</html>

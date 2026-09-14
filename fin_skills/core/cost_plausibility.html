@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="pdoc 16.0.0"/>
+    <title>fin_skills.core.cost_plausibility API documentation</title>
+
+    <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
+    <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
+    <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;z-index:999;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent; z-index:1}nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{cursor:pointer;display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:.75rem center;margin-bottom:1rem;}.pdoc .alert > em{display:none;}.pdoc .alert > *:last-child{margin-bottom:0;}.pdoc .alert.note{color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .alert.tip{color:#0a3622;background-color:#d1e7dd;border-color:#a3cfbb;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%230a3622%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%206a6%206%200%201%201%2010.174%204.31c-.203.196-.359.4-.453.619l-.762%201.769A.5.5%200%200%201%2010.5%2013a.5.5%200%200%201%200%201%20.5.5%200%200%201%200%201l-.224.447a1%201%200%200%201-.894.553H6.618a1%201%200%200%201-.894-.553L5.5%2015a.5.5%200%200%201%200-1%20.5.5%200%200%201%200-1%20.5.5%200%200%201-.46-.302l-.761-1.77a2%202%200%200%200-.453-.618A5.98%205.98%200%200%201%202%206m6-5a5%205%200%200%200-3.479%208.592c.263.254.514.564.676.941L5.83%2012h4.342l.632-1.467c.162-.377.413-.687.676-.941A5%205%200%200%200%208%201%22/%3E%3C/svg%3E");}.pdoc .alert.important{color:#055160;background-color:#cff4fc;border-color:#9eeaf9;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23055160%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%200a2%202%200%200%200-2%202v12a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V2a2%202%200%200%200-2-2zm6%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .alert.caution{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M11.46.146A.5.5%200%200%200%2011.107%200H4.893a.5.5%200%200%200-.353.146L.146%204.54A.5.5%200%200%200%200%204.893v6.214a.5.5%200%200%200%20.146.353l4.394%204.394a.5.5%200%200%200%20.353.146h6.214a.5.5%200%200%200%20.353-.146l4.394-4.394a.5.5%200%200%200%20.146-.353V4.893a.5.5%200%200%200-.146-.353zM8%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--accent);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .decorator-deprecated{color:#842029;}.pdoc .decorator-deprecated ~ span{filter:grayscale(1) opacity(0.8);}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .view-value-toggle-state,.pdoc .view-value-toggle-state ~ .default_value{display:none;}.pdoc .view-value-toggle-state:checked ~ .default_value{display:inherit;}.pdoc .view-value-button{font-size:.5rem;vertical-align:middle;border-style:dashed;margin-top:-0.1rem;}.pdoc .view-value-button:hover{background:white;}.pdoc .view-value-button::before{content:"show";text-align:center;width:2.2em;display:inline-block;}.pdoc .view-value-toggle-state:checked ~ .view-value-button::before{content:"hide";}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:27px;vertical-align:bottom;width:50px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! custom.css */</style></head>
+<body>
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
+        <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
+        <div>            <a class="pdoc-button module-list-button" href="../core.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.core</a>
+
+
+            <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
+                   pattern=".+" required>
+
+
+
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="variable" href="#GAMMA">GAMMA</a>
+            </li>
+            <li>
+                    <a class="variable" href="#ETA">ETA</a>
+            </li>
+            <li>
+                    <a class="variable" href="#BETA">BETA</a>
+            </li>
+            <li>
+                    <a class="variable" href="#BETA_SQRT">BETA_SQRT</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DELTA">DELTA</a>
+            </li>
+            <li>
+                    <a class="variable" href="#INVERSE_TURNOVER">INVERSE_TURNOVER</a>
+            </li>
+            <li>
+                    <a class="variable" href="#DEFAULT_DAILY_VOL">DEFAULT_DAILY_VOL</a>
+            </li>
+            <li>
+                    <a class="variable" href="#MODEL_MIN_PARTICIPATION">MODEL_MIN_PARTICIPATION</a>
+            </li>
+            <li>
+                    <a class="variable" href="#MODEL_MAX_PARTICIPATION">MODEL_MAX_PARTICIPATION</a>
+            </li>
+            <li>
+                    <a class="variable" href="#MAX_PARTICIPATION">MAX_PARTICIPATION</a>
+            </li>
+            <li>
+                    <a class="function" href="#impact_bps">impact_bps</a>
+            </li>
+            <li>
+                    <a class="function" href="#participation_rate">participation_rate</a>
+            </li>
+            <li>
+                    <a class="function" href="#implied_cost_bps">implied_cost_bps</a>
+            </li>
+            <li>
+                    <a class="function" href="#plausible_book">plausible_book</a>
+            </li>
+            <li>
+                    <a class="class" href="#Plausibility">Plausibility</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Plausibility.__init__">Plausibility</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.cost_bps">cost_bps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.implied_bps">implied_bps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.participation">participation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.order_usd">order_usd</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.book">book</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.plausible_book">plausible_book</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.n_names">n_names</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.adv">adv</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.turnover">turnover</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.daily_vol">daily_vol</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.exec_horizon">exec_horizon</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.permanent_bps">permanent_bps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.temporary_bps">temporary_bps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.max_participation">max_participation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.reasons">reasons</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.ok">ok</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.shortfall_bps">shortfall_bps</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Plausibility.status">status</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="function" href="#check_cost">check_cost</a>
+            </li>
+            <li>
+                    <a class="function" href="#render">render</a>
+            </li>
+            <li>
+                    <a class="variable" href="#TABLE_3">TABLE_3</a>
+            </li>
+            <li>
+                    <a class="function" href="#table3">table3</a>
+            </li>
+    </ul>
+
+
+
+        <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
+            built with <span class="visually-hidden">pdoc</span><img
+                alt="pdoc logo"
+                src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22160%22%20viewBox%3D%220%200%20150%2080%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M132.316%2048.886c.276-4.679%202.342-6.698%204.409-7.982s4.27-1.165%206.751-1.055c1.586.07%203.044.156%204.222-.482%201.142-.619%202.026-1.932%202.162-3.739.268-3.576-1.929-5.368-5.006-5.551s-7.599.524-10.517%201.606c-4.455%201.652-8.588%206.606-9.552%208.992s-2.342%206.193-1.745%2010.873%202.664%209.221%205.878%2011.79%205.878%203.808%2010.103%204.312%203.444.229%206.062.229%205.006-2.202%204.914-4.909-2.296-5.001-4.501-4.863-3.077.505-5.281.229-7.715-2.064-7.899-9.451z%22%20fill%3D%22%23198754%22/%3E%3Ccircle%20cx%3D%22101.504%22%20cy%3D%2248.943%22%20r%3D%2214.208%22%20fill%3D%22none%22%20stroke%3D%22%23198754%22%20stroke-width%3D%229.354%22/%3E%3Cpath%20d%3D%22M87.81.002c-3.637.065-5.001.454-7.014%201.232s-3.443%201.363-6.3%204.282c-1.723%201.76-3.148%205.019-3.776%207.329-.413%201.521-.316%202.63-.316%202.63l-.195%2034.612c.065%205.774-6.755%208.305-9.612%208.37s-9.678-1.038-9.743-9.408%207.128-9.521%208.362-9.521c1.413-.13%202.526-.021%203.718-.016%202.071.009%204.157-.778%204.092-4.671s-4.157-4.736-4.157-4.736c-6.3-.843-11.43%202.206-11.43%202.206S40.917%2038.15%2041.372%2049.634%2051.568%2068.19%2061.311%2068.125s18.316-7.007%2018.445-17.193l.13-22.772c.046-2.291%202.683-3.644%204.476-4.203.745-.232%201.694-.274%201.694-.274l10.457-.13s4.871-.324%207.729-3.114%204.352-6.294%204.352-6.294.974-3.049.13-4.606-.195-1.233-2.792-3.309-8.573-4.477-8.573-4.477S91.447-.063%2087.81.002zM0%2047.169l.065%2028.417S0%2080.127%204.481%2079.997s5.072-3.866%205.049-4.152l-.113-28.482s1.624-7.656%209.937-7.721%2010.002%206.942%2010.002%208.499-.909%2010.51-9.093%2010.51c-.948%200-2.99-.567-4.145-.272-3.919%201-3.194%204.554-3.194%204.554s.065%205.061%207.404%204.996%2018.575-6.034%2018.575-19.074S26.953%2030.04%2019.549%2029.91%201.234%2035.296%200%2047.169z%22%20fill%3D%22%23198754%22/%3E%3Cg%20transform%3D%22matrix%28.325601%200%200%20.325256%20-10.32669%20-45.802786%29%22%3E%3Ccircle%20cx%3D%22297.554%22%20cy%3D%22172.286%22%20r%3D%2216.5%22%20fill%3D%22%23fff%22/%3E%3Cellipse%20cx%3D%22297.709%22%20cy%3D%22172.642%22%20rx%3D%2211.071%22%20ry%3D%2210.871%22%20fill%3D%22%23105a48%22/%3E%3Ccircle%20cx%3D%22304.104%22%20cy%3D%22167.667%22%20r%3D%224.5%22%20fill%3D%22%23fff%22/%3E%3C/g%3E%3Cpath%20d%3D%22M94.661%2017.032l.893-1.476s.99.714%201.916.925%201.575.114%202.955.114l14.565-.162c1.283-.032%203.085-.762%203.02-3.293s-.373-3.503-.373-3.503l1.283-.487s.52.503.877%201.573.309%201.995.292%202.66-.227%201.541-.227%201.541%201.564-.308%202.359-1.038.823-.779%201.489-1.508.812-.86.812-.86.552-.13.877.26.341.957.065%201.46-1.672%202.206-3.247%203.066-2.76%201.427-3.929%201.768-3.848.73-7.063.714l-10.944-.114s-2.143-.081-3.02-.373-2.241-.973-2.598-1.265z%22%20fill%3D%22%23d36d49%22/%3E%3Cg%20fill%3D%22%23105a48%22%3E%3Cellipse%20cx%3D%2293.052%22%20cy%3D%2243.567%22%20rx%3D%22.869%22%20ry%3D%221.014%22%20transform%3D%22rotate%28341.022%29%22/%3E%3Cellipse%20cx%3D%22104.3%22%20cy%3D%22-16.184%22%20rx%3D%22.865%22%20ry%3D%221.009%22%20transform%3D%22rotate%2814.786%29%22/%3E%3C/g%3E%3C/svg%3E"/>
+        </a>
+</div>
+    </nav>
+    <main class="pdoc">
+            <section class="module-info">
+                    <h1 class="modulename">
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../core.html">core</a><wbr>.cost_plausibility    </h1>
+
+                        <div class="docstring"><p>Is the cost you ASSUMED consistent with the size of the orders it implies?</p>
+
+<p>WHY this exists: <code>../../backtest-validation/scripts/cost_curve.py</code> asks whether a strategy
+SURVIVES at the cost you stated. It cannot ask whether that cost was ever available to you.
+A strategy whose breakeven is 46 bps survives a 2 bps assumption comfortably -- the survival
+gate never binds -- and the 2 bps is still a fiction if the orders it implies are 8% of the
+day's volume in every name. Survival and plausibility are two different questions and the
+second one is almost never asked.</p>
+
+<h6 id="the-chain-is-short-and-entirely-mechanical">The chain is short and entirely mechanical:</h6>
+
+<blockquote>
+  <p>one-way dollars traded per period = turnover * book
+  order size per name               = turnover * book / n_names
+  participation                     = order size / ADV of that name        (X/V)
+  impact                            = a market-impact model of participation</p>
+</blockquote>
+
+<p>and then: is the cost you stated at least as large as that impact? Impact is a FLOOR -- it
+excludes spread, commission, borrow and taxes -- so a stated cost below it is not a
+conservative estimate, it is an arithmetic impossibility.</p>
+
+<p>THE MODEL -- Almgren, Thum, Hauptmann and Li, "Direct Estimation of Equity Market Impact",
+May 10 2005 (Citigroup US equity desks, Dec 2001 - Jun 2003, 29,509 orders in S&amp;P 500 names
+after filtering). Section 4.3 and the summary equations on p.21:</p>
+
+<pre><code>I = gamma * sigma * (X/V) * (Theta/V)^(1/4)                 permanent
+J = I/2 + sgn(X) * eta * sigma * |X/(V*T)|^(3/5)            realized cost of the order
+
+gamma = 0.314 +- 0.041 (t=7.7)      eta = 0.142 +- 0.0062 (t=23)
+</code></pre>
+
+<p>with sigma the daily volatility, V the average daily volume, Theta the shares outstanding
+(so Theta/V is the days it takes to turn the float), X the order, T the execution time as a
+fraction of a day. <code><a href="#table3">table3()</a></code> reproduces their own worked example to the printed digit.</p>
+
+<p>The exponent is 3/5, NOT 1/2. The square-root law is the folklore version; this paper
+rejects beta = 1/2 at the 95% level and fits beta = 0.600 +- 0.038. Over the participations
+a backtest actually implies the two disagree by tens of percent, not by orders of magnitude,
+so the verdict rarely turns on it -- <code>impact_bps(..., beta=BETA_SQRT)</code> prints the other one.</p>
+
+<p>WHAT THIS IS NOT: a calibrated cost model for your market. The coefficients are one desk's
+US large-cap fit from 2002. Their own filters keep orders between 0.25% and a few percent of
+ADV and this code says so when you leave that band. Fit your own on your own fills; use this
+to reject a number that was never possible, which it can do even when badly calibrated.</p>
+
+<h6 id="usage">Usage:</h6>
+
+<blockquote>
+  <p>from cost_plausibility import check_cost, render
+  v = check_cost(turnover=0.09, book=25e6, adv=1.7e7, n_names=6.5,
+                 cost_bps=2.0, daily_vol=0.022)
+  print(render(v))</p>
+</blockquote>
+</div>
+
+                
+                
+                
+            </section>
+                <section id="GAMMA">
+                    <div class="attr variable">
+            <span class="name">GAMMA</span>        =
+<span class="default_value">0.314</span>
+
+        
+    </div>
+    <a class="headerlink" href="#GAMMA"></a>
+    
+    
+
+                </section>
+                <section id="ETA">
+                    <div class="attr variable">
+            <span class="name">ETA</span>        =
+<span class="default_value">0.142</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ETA"></a>
+    
+    
+
+                </section>
+                <section id="BETA">
+                    <div class="attr variable">
+            <span class="name">BETA</span>        =
+<span class="default_value">0.6</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BETA"></a>
+    
+    
+
+                </section>
+                <section id="BETA_SQRT">
+                    <div class="attr variable">
+            <span class="name">BETA_SQRT</span>        =
+<span class="default_value">0.5</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BETA_SQRT"></a>
+    
+    
+
+                </section>
+                <section id="DELTA">
+                    <div class="attr variable">
+            <span class="name">DELTA</span>        =
+<span class="default_value">0.25</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DELTA"></a>
+    
+    
+
+                </section>
+                <section id="INVERSE_TURNOVER">
+                    <div class="attr variable">
+            <span class="name">INVERSE_TURNOVER</span>        =
+<span class="default_value">250.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#INVERSE_TURNOVER"></a>
+    
+    
+
+                </section>
+                <section id="DEFAULT_DAILY_VOL">
+                    <div class="attr variable">
+            <span class="name">DEFAULT_DAILY_VOL</span>        =
+<span class="default_value">0.02</span>
+
+        
+    </div>
+    <a class="headerlink" href="#DEFAULT_DAILY_VOL"></a>
+    
+    
+
+                </section>
+                <section id="MODEL_MIN_PARTICIPATION">
+                    <div class="attr variable">
+            <span class="name">MODEL_MIN_PARTICIPATION</span>        =
+<span class="default_value">0.0025</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MODEL_MIN_PARTICIPATION"></a>
+    
+    
+
+                </section>
+                <section id="MODEL_MAX_PARTICIPATION">
+                    <div class="attr variable">
+            <span class="name">MODEL_MAX_PARTICIPATION</span>        =
+<span class="default_value">0.05</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MODEL_MAX_PARTICIPATION"></a>
+    
+    
+
+                </section>
+                <section id="MAX_PARTICIPATION">
+                    <div class="attr variable">
+            <span class="name">MAX_PARTICIPATION</span>        =
+<span class="default_value">0.1</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MAX_PARTICIPATION"></a>
+    
+    
+
+                </section>
+                <section id="impact_bps">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">impact_bps</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">participation</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">daily_vol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>,</span><span class="param">	<span class="n">inverse_turnover</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">250.0</span>,</span><span class="param">	<span class="n">exec_horizon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>,</span><span class="param">	<span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#impact_bps"></a>
+    
+            <div class="docstring"><p>Almgren et al. (2005) permanent / temporary / realized impact of ONE order, in bps.</p>
+
+<p><code>participation</code> is X/V, the order as a fraction of that name's average daily volume;
+<code>exec_horizon</code> is T in days (1.0 = worked over the whole session, the cheapest case).
+Returns bps of the arrival price, all non-negative -- the sign is the trade's.</p>
+</div>
+
+
+                </section>
+                <section id="participation_rate">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">participation_rate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">turnover</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">book</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">adv</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">n_names</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#participation_rate"></a>
+    
+            <div class="docstring"><p>Order size as a fraction of one name's ADV: (turnover * book / n_names) / adv.</p>
+</div>
+
+
+                </section>
+                <section id="implied_cost_bps">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">implied_cost_bps</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">turnover</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">book</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">adv</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">n_names</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">daily_vol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>,</span><span class="param">	<span class="n">inverse_turnover</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">250.0</span>,</span><span class="param">	<span class="n">exec_horizon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>,</span><span class="param">	<span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#implied_cost_bps"></a>
+    
+            <div class="docstring"><p>Impact, in bps per dollar traded one way, at the participation this book implies.</p>
+</div>
+
+
+                </section>
+                <section id="plausible_book">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">plausible_book</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">cost_bps</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">turnover</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">adv</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">n_names</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">daily_vol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>,</span><span class="param">	<span class="n">inverse_turnover</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">250.0</span>,</span><span class="param">	<span class="n">exec_horizon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>,</span><span class="param">	<span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span>,</span><span class="param">	<span class="n">hi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10000000000000.0</span>,</span><span class="param">	<span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-06</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#plausible_book"></a>
+    
+            <div class="docstring"><p>Book size at which the impact alone equals <code>cost_bps</code> -- the capacity of the claim.</p>
+
+<p>Impact is strictly increasing in the book (both terms are positive powers of it), so
+bisection is exact. Returns 0.0 for a non-positive cost and <code>hi</code> if the search bound is
+reached, which means the assumption is not the binding constraint at any sane size.</p>
+</div>
+
+
+                </section>
+                <section id="Plausibility">
+                    <div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass</div>
+
+    <span class="def">class</span>
+    <span class="name">Plausibility</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility"></a>
+    
+            <div class="docstring"><p>The verdict plus every number that produced it. <code><a href="#Plausibility.ok">ok</a></code> is False when the cost is a lie.</p>
+</div>
+
+
+                            <div id="Plausibility.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Plausibility</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">cost_bps</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">implied_bps</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">participation</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">order_usd</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">book</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">plausible_book</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">n_names</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">adv</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">turnover</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">daily_vol</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">exec_horizon</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">permanent_bps</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">temporary_bps</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">max_participation</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">reasons</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.cost_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">cost_bps</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.cost_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.implied_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">implied_bps</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.implied_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.participation" class="classattr">
+                                <div class="attr variable">
+            <span class="name">participation</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.participation"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.order_usd" class="classattr">
+                                <div class="attr variable">
+            <span class="name">order_usd</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.order_usd"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.book" class="classattr">
+                                <div class="attr variable">
+            <span class="name">book</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.book"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.plausible_book" class="classattr">
+                                <div class="attr variable">
+            <span class="name">plausible_book</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.plausible_book"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.n_names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">n_names</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.n_names"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.adv" class="classattr">
+                                <div class="attr variable">
+            <span class="name">adv</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.adv"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.turnover" class="classattr">
+                                <div class="attr variable">
+            <span class="name">turnover</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.turnover"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.daily_vol" class="classattr">
+                                <div class="attr variable">
+            <span class="name">daily_vol</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.daily_vol"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.exec_horizon" class="classattr">
+                                <div class="attr variable">
+            <span class="name">exec_horizon</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.exec_horizon"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.permanent_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">permanent_bps</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.permanent_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.temporary_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">temporary_bps</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.temporary_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.max_participation" class="classattr">
+                                <div class="attr variable">
+            <span class="name">max_participation</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.max_participation"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.reasons" class="classattr">
+                                <div class="attr variable">
+            <span class="name">reasons</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.reasons"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.ok" class="classattr">
+                                <div class="attr variable">
+            <span class="name">ok</span><span class="annotation">: bool</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.ok"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.shortfall_bps" class="classattr">
+                                <div class="attr variable">
+            <span class="name">shortfall_bps</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.shortfall_bps"></a>
+    
+    
+
+                            </div>
+                            <div id="Plausibility.status" class="classattr">
+                                <div class="attr variable">
+            <span class="name">status</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Plausibility.status"></a>
+    
+            <div class="docstring"><p>A compact verdict for a table row: 'ok', 'impact N bps', 'over M% of ADV'.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="check_cost">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">check_cost</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">turnover</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">book</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">adv</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">n_names</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">cost_bps</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">daily_vol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>,</span><span class="param">	<span class="n">inverse_turnover</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">250.0</span>,</span><span class="param">	<span class="n">exec_horizon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>,</span><span class="param">	<span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span>,</span><span class="param">	<span class="n">max_participation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span></span><span class="return-annotation">) -> <span class="n"><a href="#Plausibility">Plausibility</a></span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#check_cost"></a>
+    
+            <div class="docstring"><p>Is <code>cost_bps</code> at least the impact the orders imply, and is the size tradeable at all?</p>
+
+<p><code>cost_bps</code> is the number a backtest multiplies by ONE-WAY turnover, i.e. the all-in cost
+of moving one dollar in one direction (cost_curve.py's convention).</p>
+</div>
+
+
+                </section>
+                <section id="render">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">render</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">v</span><span class="p">:</span> <span class="n"><a href="#Plausibility">Plausibility</a></span>,</span><span class="param">	<span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'COST PLAUSIBILITY'</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#render"></a>
+    
+            <div class="docstring"><p>Fixed-width text block. Everything a reader needs to check the arithmetic by hand.</p>
+</div>
+
+
+                </section>
+                <section id="TABLE_3">
+                    <div class="attr variable">
+            <span class="name">TABLE_3</span>        =
+<input id="TABLE_3-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="TABLE_3-view-value"></label><span class="default_value">      sigma  inverse_turnover  ...  paper_J_T0.2  paper_J_T0.5
+IBM  0.0157             263.0  ...          25.0          18.0
+DRI  0.0226              87.0  ...          32.0          23.0
+
+[2 rows x 8 columns]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#TABLE_3"></a>
+    
+    
+
+                </section>
+                <section id="table3">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">table3</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#table3"></a>
+    
+            <div class="docstring"><p>Recompute Almgren et al.'s Table 3 with this code. Every column must match theirs.</p>
+</div>
+
+
+                </section>
+    </main>
+<script>
+    function escapeHTML(html) {
+        return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+    }
+
+    const originalContent = document.querySelector("main.pdoc");
+    let currentContent = originalContent;
+
+    function setContent(innerHTML) {
+        let elem;
+        if (innerHTML) {
+            elem = document.createElement("main");
+            elem.classList.add("pdoc");
+            elem.innerHTML = innerHTML;
+        } else {
+            elem = originalContent;
+        }
+        if (currentContent !== elem) {
+            currentContent.replaceWith(elem);
+            currentContent = elem;
+        }
+    }
+
+    function getSearchTerm() {
+        return (new URL(window.location)).searchParams.get("search");
+    }
+
+    const searchBox = document.querySelector(".pdoc input[type=search]");
+    searchBox.addEventListener("input", function () {
+        let url = new URL(window.location);
+        if (searchBox.value.trim()) {
+            url.hash = "";
+            url.searchParams.set("search", searchBox.value);
+        } else {
+            url.searchParams.delete("search");
+        }
+        history.replaceState("", "", url.toString());
+        onInput();
+    });
+    window.addEventListener("popstate", onInput);
+
+
+    let search, searchErr;
+
+    async function initialize() {
+        try {
+            search = await new Promise((resolve, reject) => {
+                const script = document.createElement("script");
+                script.type = "text/javascript";
+                script.async = true;
+                script.onload = () => resolve(window.pdocSearch);
+                script.onerror = (e) => reject(e);
+                script.src = "../../search.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+            });
+        } catch (e) {
+            console.error("Cannot fetch pdoc search index");
+            searchErr = "Cannot fetch search index.";
+        }
+        onInput();
+
+        document.querySelector("nav.pdoc").addEventListener("click", e => {
+            if (e.target.hash) {
+                searchBox.value = "";
+                searchBox.dispatchEvent(new Event("input"));
+            }
+        });
+    }
+
+    function onInput() {
+        setContent((() => {
+            const term = getSearchTerm();
+            if (!term) {
+                return null
+            }
+            if (searchErr) {
+                return `<h3>Error: ${searchErr}</h3>`
+            }
+            if (!search) {
+                return "<h3>Searching...</h3>"
+            }
+
+            window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+
+            const results = search(term);
+
+            let html;
+            if (results.length === 0) {
+                html = `No search results for '${escapeHTML(term)}'.`
+            } else {
+                html = `<h4>${results.length} search result${results.length > 1 ? "s" : ""} for '${escapeHTML(term)}'.</h4>`;
+            }
+            for (let result of results.slice(0, 10)) {
+                let doc = result.doc;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
+                if (doc.qualname) {
+                    url += `#${doc.qualname}`;
+                }
+
+                let heading;
+                switch (result.doc.kind) {
+                    case "function":
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
+                        break;
+                    case "class":
+                        heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
+                        if (doc.bases)
+                            heading += `<wbr>(<span class="base">${doc.bases}</span>)`;
+                        heading += `:`;
+                        break;
+                    case "variable":
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        if (doc.annotation)
+                            heading += `<span class="annotation">${doc.annotation}</span>`;
+                        if (doc.default_value)
+                            heading += `<span class="default_value"> = ${doc.default_value}</span>`;
+                        break;
+                    default:
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        break;
+                }
+                html += `
+                        <section class="search-result">
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
+                        <div class="docstring">${doc.doc}</div>
+                        </section>
+                    `;
+
+            }
+            return html;
+        })());
+    }
+
+    if (getSearchTerm()) {
+        initialize();
+        searchBox.value = getSearchTerm();
+        onInput();
+    } else {
+        searchBox.addEventListener("focus", initialize, {once: true});
+    }
+
+    searchBox.addEventListener("keydown", e => {
+        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+            let focused = currentContent.querySelector(".search-result.focused");
+            if (!focused) {
+                currentContent.querySelector(".search-result").classList.add("focused");
+            } else if (
+                e.key === "ArrowDown"
+                && focused.nextElementSibling
+                && focused.nextElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.nextElementSibling.classList.add("focused");
+                focused.nextElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "ArrowUp"
+                && focused.previousElementSibling
+                && focused.previousElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.previousElementSibling.classList.add("focused");
+                focused.previousElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "Enter"
+            ) {
+                focused.querySelector("a").click();
+            }
+        }
+    });
+</script></body>
+</html>

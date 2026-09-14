@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="pdoc 16.0.0"/>
+    <title>fin_skills.strategies.execution_algos API documentation</title>
+
+    <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
+    <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
+    <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;z-index:999;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent; z-index:1}nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{cursor:pointer;display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:.75rem center;margin-bottom:1rem;}.pdoc .alert > em{display:none;}.pdoc .alert > *:last-child{margin-bottom:0;}.pdoc .alert.note{color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .alert.tip{color:#0a3622;background-color:#d1e7dd;border-color:#a3cfbb;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%230a3622%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%206a6%206%200%201%201%2010.174%204.31c-.203.196-.359.4-.453.619l-.762%201.769A.5.5%200%200%201%2010.5%2013a.5.5%200%200%201%200%201%20.5.5%200%200%201%200%201l-.224.447a1%201%200%200%201-.894.553H6.618a1%201%200%200%201-.894-.553L5.5%2015a.5.5%200%200%201%200-1%20.5.5%200%200%201%200-1%20.5.5%200%200%201-.46-.302l-.761-1.77a2%202%200%200%200-.453-.618A5.98%205.98%200%200%201%202%206m6-5a5%205%200%200%200-3.479%208.592c.263.254.514.564.676.941L5.83%2012h4.342l.632-1.467c.162-.377.413-.687.676-.941A5%205%200%200%200%208%201%22/%3E%3C/svg%3E");}.pdoc .alert.important{color:#055160;background-color:#cff4fc;border-color:#9eeaf9;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23055160%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%200a2%202%200%200%200-2%202v12a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V2a2%202%200%200%200-2-2zm6%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .alert.caution{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M11.46.146A.5.5%200%200%200%2011.107%200H4.893a.5.5%200%200%200-.353.146L.146%204.54A.5.5%200%200%200%200%204.893v6.214a.5.5%200%200%200%20.146.353l4.394%204.394a.5.5%200%200%200%20.353.146h6.214a.5.5%200%200%200%20.353-.146l4.394-4.394a.5.5%200%200%200%20.146-.353V4.893a.5.5%200%200%200-.146-.353zM8%204c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%204.995A.905.905%200%200%201%208%204m.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E");}.pdoc .alert.danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--accent);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .decorator-deprecated{color:#842029;}.pdoc .decorator-deprecated ~ span{filter:grayscale(1) opacity(0.8);}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .view-value-toggle-state,.pdoc .view-value-toggle-state ~ .default_value{display:none;}.pdoc .view-value-toggle-state:checked ~ .default_value{display:inherit;}.pdoc .view-value-button{font-size:.5rem;vertical-align:middle;border-style:dashed;margin-top:-0.1rem;}.pdoc .view-value-button:hover{background:white;}.pdoc .view-value-button::before{content:"show";text-align:center;width:2.2em;display:inline-block;}.pdoc .view-value-toggle-state:checked ~ .view-value-button::before{content:"hide";}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:27px;vertical-align:bottom;width:50px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! custom.css */</style></head>
+<body>
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
+        <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
+        <div>            <a class="pdoc-button module-list-button" href="../strategies.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;fin_skills.strategies</a>
+
+
+            <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
+                   pattern=".+" required>
+
+
+
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="variable" href="#SEED">SEED</a>
+            </li>
+            <li>
+                    <a class="variable" href="#BPS">BPS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#AC_TABLE1">AC_TABLE1</a>
+            </li>
+            <li>
+                    <a class="function" href="#simulate_session">simulate_session</a>
+            </li>
+            <li>
+                    <a class="function" href="#twap_schedule">twap_schedule</a>
+            </li>
+            <li>
+                    <a class="function" href="#vwap_schedule">vwap_schedule</a>
+            </li>
+            <li>
+                    <a class="function" href="#pov_schedule">pov_schedule</a>
+            </li>
+            <li>
+                    <a class="function" href="#pov_shortfall">pov_shortfall</a>
+            </li>
+            <li>
+                    <a class="function" href="#fill_prices">fill_prices</a>
+            </li>
+            <li>
+                    <a class="function" href="#session_vwap">session_vwap</a>
+            </li>
+            <li>
+                    <a class="function" href="#cost_bps">cost_bps</a>
+            </li>
+            <li>
+                    <a class="function" href="#vwap_self_contamination">vwap_self_contamination</a>
+            </li>
+            <li>
+                    <a class="function" href="#eta_tilde">eta_tilde</a>
+            </li>
+            <li>
+                    <a class="function" href="#ac_kappa">ac_kappa</a>
+            </li>
+            <li>
+                    <a class="function" href="#ac_trajectory">ac_trajectory</a>
+            </li>
+            <li>
+                    <a class="function" href="#ac_trade_list">ac_trade_list</a>
+            </li>
+            <li>
+                    <a class="function" href="#direct_cost">direct_cost</a>
+            </li>
+            <li>
+                    <a class="function" href="#linear_cost">linear_cost</a>
+            </li>
+            <li>
+                    <a class="function" href="#ac_cost">ac_cost</a>
+            </li>
+            <li>
+                    <a class="function" href="#eq16_residual">eq16_residual</a>
+            </li>
+            <li>
+                    <a class="function" href="#efficient_frontier">efficient_frontier</a>
+            </li>
+            <li>
+                    <a class="function" href="#implementation_shortfall">implementation_shortfall</a>
+            </li>
+    </ul>
+
+
+
+        <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
+            built with <span class="visually-hidden">pdoc</span><img
+                alt="pdoc logo"
+                src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22160%22%20viewBox%3D%220%200%20150%2080%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M132.316%2048.886c.276-4.679%202.342-6.698%204.409-7.982s4.27-1.165%206.751-1.055c1.586.07%203.044.156%204.222-.482%201.142-.619%202.026-1.932%202.162-3.739.268-3.576-1.929-5.368-5.006-5.551s-7.599.524-10.517%201.606c-4.455%201.652-8.588%206.606-9.552%208.992s-2.342%206.193-1.745%2010.873%202.664%209.221%205.878%2011.79%205.878%203.808%2010.103%204.312%203.444.229%206.062.229%205.006-2.202%204.914-4.909-2.296-5.001-4.501-4.863-3.077.505-5.281.229-7.715-2.064-7.899-9.451z%22%20fill%3D%22%23198754%22/%3E%3Ccircle%20cx%3D%22101.504%22%20cy%3D%2248.943%22%20r%3D%2214.208%22%20fill%3D%22none%22%20stroke%3D%22%23198754%22%20stroke-width%3D%229.354%22/%3E%3Cpath%20d%3D%22M87.81.002c-3.637.065-5.001.454-7.014%201.232s-3.443%201.363-6.3%204.282c-1.723%201.76-3.148%205.019-3.776%207.329-.413%201.521-.316%202.63-.316%202.63l-.195%2034.612c.065%205.774-6.755%208.305-9.612%208.37s-9.678-1.038-9.743-9.408%207.128-9.521%208.362-9.521c1.413-.13%202.526-.021%203.718-.016%202.071.009%204.157-.778%204.092-4.671s-4.157-4.736-4.157-4.736c-6.3-.843-11.43%202.206-11.43%202.206S40.917%2038.15%2041.372%2049.634%2051.568%2068.19%2061.311%2068.125s18.316-7.007%2018.445-17.193l.13-22.772c.046-2.291%202.683-3.644%204.476-4.203.745-.232%201.694-.274%201.694-.274l10.457-.13s4.871-.324%207.729-3.114%204.352-6.294%204.352-6.294.974-3.049.13-4.606-.195-1.233-2.792-3.309-8.573-4.477-8.573-4.477S91.447-.063%2087.81.002zM0%2047.169l.065%2028.417S0%2080.127%204.481%2079.997s5.072-3.866%205.049-4.152l-.113-28.482s1.624-7.656%209.937-7.721%2010.002%206.942%2010.002%208.499-.909%2010.51-9.093%2010.51c-.948%200-2.99-.567-4.145-.272-3.919%201-3.194%204.554-3.194%204.554s.065%205.061%207.404%204.996%2018.575-6.034%2018.575-19.074S26.953%2030.04%2019.549%2029.91%201.234%2035.296%200%2047.169z%22%20fill%3D%22%23198754%22/%3E%3Cg%20transform%3D%22matrix%28.325601%200%200%20.325256%20-10.32669%20-45.802786%29%22%3E%3Ccircle%20cx%3D%22297.554%22%20cy%3D%22172.286%22%20r%3D%2216.5%22%20fill%3D%22%23fff%22/%3E%3Cellipse%20cx%3D%22297.709%22%20cy%3D%22172.642%22%20rx%3D%2211.071%22%20ry%3D%2210.871%22%20fill%3D%22%23105a48%22/%3E%3Ccircle%20cx%3D%22304.104%22%20cy%3D%22167.667%22%20r%3D%224.5%22%20fill%3D%22%23fff%22/%3E%3C/g%3E%3Cpath%20d%3D%22M94.661%2017.032l.893-1.476s.99.714%201.916.925%201.575.114%202.955.114l14.565-.162c1.283-.032%203.085-.762%203.02-3.293s-.373-3.503-.373-3.503l1.283-.487s.52.503.877%201.573.309%201.995.292%202.66-.227%201.541-.227%201.541%201.564-.308%202.359-1.038.823-.779%201.489-1.508.812-.86.812-.86.552-.13.877.26.341.957.065%201.46-1.672%202.206-3.247%203.066-2.76%201.427-3.929%201.768-3.848.73-7.063.714l-10.944-.114s-2.143-.081-3.02-.373-2.241-.973-2.598-1.265z%22%20fill%3D%22%23d36d49%22/%3E%3Cg%20fill%3D%22%23105a48%22%3E%3Cellipse%20cx%3D%2293.052%22%20cy%3D%2243.567%22%20rx%3D%22.869%22%20ry%3D%221.014%22%20transform%3D%22rotate%28341.022%29%22/%3E%3Cellipse%20cx%3D%22104.3%22%20cy%3D%22-16.184%22%20rx%3D%22.865%22%20ry%3D%221.009%22%20transform%3D%22rotate%2814.786%29%22/%3E%3C/g%3E%3C/svg%3E"/>
+        </a>
+</div>
+    </nav>
+    <main class="pdoc">
+            <section class="module-info">
+                    <h1 class="modulename">
+<a href="./../../fin_skills.html">fin_skills</a><wbr>.<a href="./../strategies.html">strategies</a><wbr>.execution_algos    </h1>
+
+                        <div class="docstring"><p>Execution schedules, Almgren-Chriss in closed form, and the shortfall nobody reports.</p>
+
+<p>Three things, on one seeded session and on the Almgren-Chriss paper's own parameters:</p>
+
+<ol>
+<li>VWAP / TWAP / POV schedules against a synthetic intraday volume profile, and what a
+participation-rate cap actually does to the tail of an order;</li>
+<li>Almgren &amp; Chriss (2000) in closed form - kappa, the trajectory, and the expected cost
+and variance - reproducing the paper's own printed numbers, and comparing the optimal
+trajectory with TWAP at a stated risk aversion;</li>
+<li>Perold's implementation-shortfall decomposition, with the opportunity term that a
+fill-only analysis cannot see because unfilled shares leave no fill record.</li>
+</ol>
+
+<h6 id="the-two-traps">The two traps:</h6>
+
+<blockquote>
+  <ul>
+  <li>benchmarking an order against the VWAP the order's own impact moved. This is NOT the
+  dilution effect that execution-cost-analysis measures (fills held fixed, benchmark
+  drifting toward them) - here the PRICES move, for the trader and for everyone else in
+  the session, and the SHARE of the true cost the benchmark absorbs grows with
+  participation: 5% of it at 1%, 30% of it at 25%;</li>
+  <li>"Almgren-Chriss beats TWAP". At any positive risk aversion it does not, on expected
+  cost - it deliberately pays MORE to buy less variance, and TWAP is the paper's own
+  minimum-expected-cost trajectory.</li>
+  </ul>
+</blockquote>
+
+<p>ALMGREN &amp; CHRISS (2000), "Optimal Execution of Portfolio Transactions". Every formula below
+was read in the December 2000 preprint (smallake.kr/wp-content/uploads/2016/03/optliq.pdf),
+equation numbers as printed there:</p>
+
+<p>(6)  g(v) = gamma * v                                   permanent impact, linear
+  (7)  h(n_k/tau) = eps<em>sgn(n_k) + (eta/tau)<em>n_k          temporary impact, linear
+  (5)  V(x) = sigma^2 * sum_k tau * x_k^2
+  (8)  E(x) = 0.5</em>gamma</em>X^2 + eps<em>sum_k |n_k| + (eta~/tau)<em>sum_k n_k^2
+       with  eta~ = eta - 0.5</em>gamma</em>tau        (unnumbered, immediately after (8))
+  (9)  linear trajectory: n_k = X/N, x_k = (N-k)<em>X/N
+  (10) E = 0.5</em>gamma<em>X^2 + eps</em>X + (eta - 0.5<em>gamma</em>tau) * X^2/T
+  (11) V = (1/3)<em>sigma^2</em>X^2<em>T</em>(1 - 1/N)<em>(1 - 1/(2N))
+  (16) (1/tau^2)</em>(x_{j-1} - 2 x_j + x_{j+1}) = kappa~^2 * x_j
+       with kappa~^2 = lambda<em>sigma^2 / eta~, and (2/tau^2)</em>(cosh(kappa<em>tau) - 1) = kappa~^2
+  (17) x_j = sinh(kappa</em>(T - t_j)) / sinh(kappa<em>T) * X
+  (18) n_j = 2</em>sinh(kappa<em>tau/2) / sinh(kappa</em>T) * cosh(kappa*(T - t_{j-1/2})) * X
+  (19) kappa ~ kappa~ + O(tau^2) ~ sqrt(lambda<em>sigma^2 / eta) + O(tau)
+  (20) E(X) = 0.5</em>gamma<em>X^2 + eps</em>X
+              + eta~ * X^2 * tanh(kappa<em>tau/2)
+                * (tau</em>sinh(2<em>kappa</em>T) + 2<em>T</em>sinh(kappa<em>tau))
+                / (2 * tau^2 * sinh^2(kappa</em>T))
+       V(X) = 0.5<em>sigma^2</em>X^2
+              * (tau<em>sinh(kappa</em>T)<em>cosh(kappa</em>(T - tau)) - T<em>sinh(kappa</em>tau))
+                / (sinh^2(kappa<em>T) * sinh(kappa</em>tau))
+  section 2.3: the half-life theta = 1/kappa, "the amount of time it takes to deplete the
+       portfolio by a factor of e" - and it is INDEPENDENT of the execution time T.</p>
+
+<p>Table 1 (p. 25), the paper's test case, verbatim: S0 = 50 $/share; X = 10^6 share; T = 5
+days; N = 5; sigma = 0.95 ($/share)/day^(1/2); alpha = 0.02 ($/share)/day; eps = 0.0625
+$/share; gamma = 2.5e-7 $/share^2; eta = 2.5e-6 ($/share)/(share/day); lambda_u = 1e-6 /$;
+lambda_v = 1.645.</p>
+
+<p>Run:  python execution_algos.py     (numpy + pandas only, fixed seed, a few seconds)</p>
+</div>
+
+                
+                
+                
+            </section>
+                <section id="SEED">
+                    <div class="attr variable">
+            <span class="name">SEED</span>        =
+<span class="default_value">20260909</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SEED"></a>
+    
+    
+
+                </section>
+                <section id="BPS">
+                    <div class="attr variable">
+            <span class="name">BPS</span>        =
+<span class="default_value">10000.0</span>
+
+        
+    </div>
+    <a class="headerlink" href="#BPS"></a>
+    
+    
+
+                </section>
+                <section id="AC_TABLE1">
+                    <div class="attr variable">
+            <span class="name">AC_TABLE1</span>        =
+<input id="AC_TABLE1-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+            <label class="view-value-button pdoc-button" for="AC_TABLE1-view-value"></label><span class="default_value">{&#39;S0&#39;: 50.0, &#39;X&#39;: 1000000.0, &#39;T&#39;: 5.0, &#39;N&#39;: 5, &#39;sigma&#39;: 0.95, &#39;alpha&#39;: 0.02, &#39;eps&#39;: 0.0625, &#39;gamma&#39;: 2.5e-07, &#39;eta&#39;: 2.5e-06, &#39;lam_u&#39;: 1e-06, &#39;lam_v&#39;: 1.645}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#AC_TABLE1"></a>
+    
+    
+
+                </section>
+                <section id="simulate_session">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">simulate_session</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">n_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">390</span>,</span><span class="param">	<span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20260909</span>,</span><span class="param">	<span class="n">s0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span>,</span><span class="param">	<span class="n">day_volume</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5000000.0</span>,</span><span class="param">	<span class="n">vol_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span>,</span><span class="param">	<span class="n">drift_bps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span></span><span class="return-annotation">) -> <span class="nb">dict</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#simulate_session"></a>
+    
+            <div class="docstring"><p>One session of minute bars: a U-shaped volume profile and an arithmetic mid path.</p>
+
+<p>Arithmetic (not geometric) because that is Almgren-Chriss's own price model, eq. (1).
+The drift is imposed deterministically rather than sampled, so no conclusion below
+depends on which way one draw happened to go.</p>
+</div>
+
+
+                </section>
+                <section id="twap_schedule">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">twap_schedule</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">shares</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">n_bins</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#twap_schedule"></a>
+    
+            <div class="docstring"><p>Equal size per bin. Ignores volume entirely - that is the whole definition.</p>
+</div>
+
+
+                </section>
+                <section id="vwap_schedule">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">vwap_schedule</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">shares</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">volume_forecast</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span></span><span class="return-annotation">) -> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#vwap_schedule"></a>
+    
+            <div class="docstring"><p>Proportional to the FORECAST volume profile. A realised profile is not available
+in advance, which is the practical difference between this and a VWAP benchmark.</p>
+</div>
+
+
+                </section>
+                <section id="pov_schedule">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">pov_schedule</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">shares</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">volume</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>, </span><span class="param"><span class="n">rate</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#pov_schedule"></a>
+    
+            <div class="docstring"><p>Trade <code>rate</code> of each bin's volume until the order is done. Returns the filled sizes.</p>
+
+<p>A POV order does not promise completion: if the day is thin, the tail is simply not
+filled. <code><a href="#pov_shortfall">pov_shortfall</a></code> below is that unfilled quantity, and it is the input to the
+opportunity term of the implementation shortfall.</p>
+</div>
+
+
+                </section>
+                <section id="pov_shortfall">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">pov_shortfall</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">shares</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">volume</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>, </span><span class="param"><span class="n">rate</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#pov_shortfall"></a>
+    
+            <div class="docstring"><p>Shares a POV order at <code>rate</code> fails to complete within the session.</p>
+</div>
+
+
+                </section>
+                <section id="fill_prices">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">fill_prices</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">mid</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>,</span><span class="param">	<span class="n">own</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>,</span><span class="param">	<span class="n">volume</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>,</span><span class="param">	<span class="n">side</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>,</span><span class="param">	<span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5e-07</span>,</span><span class="param">	<span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5e-06</span>,</span><span class="param">	<span class="n">day_len</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></span><span class="return-annotation">):</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#fill_prices"></a>
+    
+            <div class="docstring"><p>Prices with the order's OWN impact, in the Almgren-Chriss linear form.</p>
+
+<p>Permanent, eq. (6): the mid is displaced by gamma * (cumulative own shares) and stays
+displaced - so every later print in the session, yours and everybody else's, is at the
+moved price. Temporary, eq. (7): the trader additionally pays eta * (own rate) on their
+own fills only. <code>side=+1</code> is a buy (impact pushes the price up and costs the buyer).</p>
+
+<p>Returns (mid_with_permanent_impact, own_fill_price).</p>
+</div>
+
+
+                </section>
+                <section id="session_vwap">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">session_vwap</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">price</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>, </span><span class="param"><span class="n">volume</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#session_vwap"></a>
+    
+    
+
+                </section>
+                <section id="cost_bps">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">cost_bps</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">avg_fill</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">benchmark</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">side</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#cost_bps"></a>
+    
+            <div class="docstring"><p>Positive = the execution cost money against that benchmark. side=+1 buy.</p>
+</div>
+
+
+                </section>
+                <section id="vwap_self_contamination">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">vwap_self_contamination</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">session</span><span class="p">:</span> <span class="nb">dict</span>,</span><span class="param">	<span class="n">participations</span>,</span><span class="param">	<span class="n">side</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>,</span><span class="param">	<span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5e-07</span>,</span><span class="param">	<span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5e-06</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#vwap_self_contamination"></a>
+    
+            <div class="docstring"><p>How much of the order's true cost the realised session VWAP hides.</p>
+
+<p>For each participation rate: run the SAME (volume-proportional) schedule, let it move
+the market through eq. (6) and eq. (7), then compare the average fill against</p>
+
+<ul>
+<li>the realised session VWAP, which contains the impact the order caused, and</li>
+<li>the counterfactual VWAP of the same session with the order absent.
+The gap between those two costs is the bias, and it is one-signed.</li>
+</ul>
+</div>
+
+
+                </section>
+                <section id="eta_tilde">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">eta_tilde</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">eta</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">tau</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#eta_tilde"></a>
+    
+            <div class="docstring"><p>AC (2000), unnumbered display after eq. (8):  eta~ = eta - 0.5<em>gamma</em>tau.</p>
+</div>
+
+
+                </section>
+                <section id="ac_kappa">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">ac_kappa</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">lam</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">eta</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">tau</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">dict</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#ac_kappa"></a>
+    
+            <div class="docstring"><p>kappa~ and the exact kappa of AC (2000) section 2.2.</p>
+
+<p>kappa~^2 = lambda<em>sigma^2 / eta~                      (unnumbered, after eq. 16)
+(2/tau^2) * (cosh(kappa</em>tau) - 1) = kappa~^2          (unnumbered, after eq. 16)
+kappa ~ sqrt(lambda*sigma^2/eta)                      (eq. 19, the small-tau form)</p>
+
+<p>lambda &lt; 0 (a risk-SEEKING trader, the paper's trajectory C) makes kappa~^2 negative and
+kappa imaginary; the difference equation then has the trigonometric solution, which
+<code><a href="#ac_trajectory">ac_trajectory</a></code> handles with sin/cos. lambda = 0 gives the linear trajectory of eq. (9).</p>
+</div>
+
+
+                </section>
+                <section id="ac_trajectory">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">ac_trajectory</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">X</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">T</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">N</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">trigonometric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">):</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#ac_trajectory"></a>
+    
+            <div class="docstring"><p>AC (2000) eq. (17) and (18): holdings x_j, j = 0..N, and the trade list n_j, j = 1..N.</p>
+
+<p>kappa = 0 is the linear trajectory of eq. (9), which is the limit of (17).</p>
+</div>
+
+
+                </section>
+                <section id="ac_trade_list">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">ac_trade_list</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">X</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">T</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">N</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#ac_trade_list"></a>
+    
+            <div class="docstring"><p>AC (2000) eq. (18) written out directly, as a cross-check on -diff(eq. 17).</p>
+</div>
+
+
+                </section>
+                <section id="direct_cost">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">direct_cost</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>,</span><span class="param">	<span class="n">T</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eta</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eps</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#direct_cost"></a>
+    
+            <div class="docstring"><p>AC (2000) eq. (8) and eq. (5) evaluated on ANY holdings path. The reference.</p>
+
+<p>E(x) = 0.5<em>gamma</em>X^2 + eps*sum|n_k| + (eta~/tau)*sum n_k^2      (8)
+V(x) = sigma^2 * sum_k tau * x_k^2                              (5)</p>
+
+<p>The closed forms below must reproduce these exactly; the demo checks that they do.</p>
+</div>
+
+
+                </section>
+                <section id="linear_cost">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">linear_cost</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">X</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">T</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">N</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eta</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eps</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#linear_cost"></a>
+    
+            <div class="docstring"><p>AC (2000) eq. (10) and eq. (11): the constant-rate (TWAP) trajectory in closed form.</p>
+</div>
+
+
+                </section>
+                <section id="ac_cost">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">ac_cost</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">X</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">T</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">N</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eta</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eps</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#ac_cost"></a>
+    
+            <div class="docstring"><p>AC (2000) eq. (20): E(X) and V(X) of the optimal trajectory, in closed form.</p>
+</div>
+
+
+                </section>
+                <section id="eq16_residual">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">eq16_residual</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>, </span><span class="param"><span class="n">T</span><span class="p">:</span> <span class="nb">float</span>, </span><span class="param"><span class="n">kappa_tilde_sq</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#eq16_residual"></a>
+    
+            <div class="docstring"><p>Max |LHS - RHS| of AC eq. (16) on the interior points. Zero iff (17) solves (16).</p>
+</div>
+
+
+                </section>
+                <section id="efficient_frontier">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">efficient_frontier</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">lams</span>,</span><span class="param">	<span class="n">X</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">T</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">N</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eta</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">eps</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#efficient_frontier"></a>
+    
+            <div class="docstring"><p>(E, V) of the optimal trajectory for a list of risk aversions - AC section 2.1.</p>
+</div>
+
+
+                </section>
+                <section id="implementation_shortfall">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">implementation_shortfall</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">decision_px</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">arrival_px</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">avg_fill_px</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">final_px</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">target_qty</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">filled_qty</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">fees</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>,</span><span class="param">	<span class="n">side</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">dict</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#implementation_shortfall"></a>
+    
+            <div class="docstring"><p>The four-way decomposition, in currency, on a side-signed convention.</p>
+
+<pre><code>delay        = filled   * (arrival  - decision)     the research-to-desk handoff
+execution    = filled   * (avg_fill - arrival)      the algorithm
+opportunity  = unfilled * (final    - decision)     the shares never bought
+fees         = explicit
+total        = delay + execution + opportunity + fees
+</code></pre>
+
+<p>Positive = a cost to the fund. The identity is exact by construction and the returned
+<code>identity_error</code> proves it on every call. <code>bps</code> are on the notional the decision
+intended, target_qty * decision_px, so the components are additive in bps too.</p>
+
+<p>ATTRIBUTION. The paper-portfolio framing, the decision-time bid-ask midpoint as the
+paper price, and charging the unfilled shares are Perold (1988), "The Implementation
+Shortfall: Paper Versus Reality", JPM 14(3), 4-9. His own decomposition has TWO terms,
+execution and opportunity, with commissions folded into the net transaction price;
+there is no arrival price and no separate delay term in his math. The FOUR-way split
+above - commission, price impact, timing/delay, opportunity - is Wagner &amp; Edwards
+(1993), "Best Execution", Financial Analysts Journal 49(1), 65-71, p. 67. It is a
+refinement of Perold's execution term, since delay + execution = filled * (avg_fill -
+decision), not a contradiction of it. Calling it "Perold's four-way decomposition" is
+the common miscitation.</p>
+</div>
+
+
+                </section>
+    </main>
+<script>
+    function escapeHTML(html) {
+        return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+    }
+
+    const originalContent = document.querySelector("main.pdoc");
+    let currentContent = originalContent;
+
+    function setContent(innerHTML) {
+        let elem;
+        if (innerHTML) {
+            elem = document.createElement("main");
+            elem.classList.add("pdoc");
+            elem.innerHTML = innerHTML;
+        } else {
+            elem = originalContent;
+        }
+        if (currentContent !== elem) {
+            currentContent.replaceWith(elem);
+            currentContent = elem;
+        }
+    }
+
+    function getSearchTerm() {
+        return (new URL(window.location)).searchParams.get("search");
+    }
+
+    const searchBox = document.querySelector(".pdoc input[type=search]");
+    searchBox.addEventListener("input", function () {
+        let url = new URL(window.location);
+        if (searchBox.value.trim()) {
+            url.hash = "";
+            url.searchParams.set("search", searchBox.value);
+        } else {
+            url.searchParams.delete("search");
+        }
+        history.replaceState("", "", url.toString());
+        onInput();
+    });
+    window.addEventListener("popstate", onInput);
+
+
+    let search, searchErr;
+
+    async function initialize() {
+        try {
+            search = await new Promise((resolve, reject) => {
+                const script = document.createElement("script");
+                script.type = "text/javascript";
+                script.async = true;
+                script.onload = () => resolve(window.pdocSearch);
+                script.onerror = (e) => reject(e);
+                script.src = "../../search.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+            });
+        } catch (e) {
+            console.error("Cannot fetch pdoc search index");
+            searchErr = "Cannot fetch search index.";
+        }
+        onInput();
+
+        document.querySelector("nav.pdoc").addEventListener("click", e => {
+            if (e.target.hash) {
+                searchBox.value = "";
+                searchBox.dispatchEvent(new Event("input"));
+            }
+        });
+    }
+
+    function onInput() {
+        setContent((() => {
+            const term = getSearchTerm();
+            if (!term) {
+                return null
+            }
+            if (searchErr) {
+                return `<h3>Error: ${searchErr}</h3>`
+            }
+            if (!search) {
+                return "<h3>Searching...</h3>"
+            }
+
+            window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+
+            const results = search(term);
+
+            let html;
+            if (results.length === 0) {
+                html = `No search results for '${escapeHTML(term)}'.`
+            } else {
+                html = `<h4>${results.length} search result${results.length > 1 ? "s" : ""} for '${escapeHTML(term)}'.</h4>`;
+            }
+            for (let result of results.slice(0, 10)) {
+                let doc = result.doc;
+                let url = `../../${doc.modulename.replaceAll(".", "/")}.html`;
+                if (doc.qualname) {
+                    url += `#${doc.qualname}`;
+                }
+
+                let heading;
+                switch (result.doc.kind) {
+                    case "function":
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
+                        break;
+                    case "class":
+                        heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
+                        if (doc.bases)
+                            heading += `<wbr>(<span class="base">${doc.bases}</span>)`;
+                        heading += `:`;
+                        break;
+                    case "variable":
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        if (doc.annotation)
+                            heading += `<span class="annotation">${doc.annotation}</span>`;
+                        if (doc.default_value)
+                            heading += `<span class="default_value"> = ${doc.default_value}</span>`;
+                        break;
+                    default:
+                        heading = `<span class="name">${doc.fullname}</span>`;
+                        break;
+                }
+                html += `
+                        <section class="search-result">
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
+                        <div class="docstring">${doc.doc}</div>
+                        </section>
+                    `;
+
+            }
+            return html;
+        })());
+    }
+
+    if (getSearchTerm()) {
+        initialize();
+        searchBox.value = getSearchTerm();
+        onInput();
+    } else {
+        searchBox.addEventListener("focus", initialize, {once: true});
+    }
+
+    searchBox.addEventListener("keydown", e => {
+        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+            let focused = currentContent.querySelector(".search-result.focused");
+            if (!focused) {
+                currentContent.querySelector(".search-result").classList.add("focused");
+            } else if (
+                e.key === "ArrowDown"
+                && focused.nextElementSibling
+                && focused.nextElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.nextElementSibling.classList.add("focused");
+                focused.nextElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "ArrowUp"
+                && focused.previousElementSibling
+                && focused.previousElementSibling.classList.contains("search-result")
+            ) {
+                focused.classList.remove("focused");
+                focused.previousElementSibling.classList.add("focused");
+                focused.previousElementSibling.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"
+                });
+            } else if (
+                e.key === "Enter"
+            ) {
+                focused.querySelector("a").click();
+            }
+        }
+    });
+</script></body>
+</html>
