@@ -159,8 +159,14 @@ def adf_tstat(x: np.ndarray, lags: int = ADF_LAGS, trend: str = "c") -> float:
         raise ValueError("trend must be 'c' or 'n'")
     X = np.column_stack(cols)
     y = dx[lags:]
-    coef, *_ = np.linalg.lstsq(X, y, rcond=None)
+    coef, _, rank, _ = np.linalg.lstsq(X, y, rcond=None)
     resid = y - X @ coef
+    # A rank-deficient or effectively exact fit has no estimable ADF standard error.
+    # BLAS rounding must not turn a deterministic trend into evidence of stationarity.
+    noise_floor = (np.finfo(float).eps * max(X.shape)
+                   * (np.linalg.norm(X) * np.linalg.norm(coef) + np.linalg.norm(y)))
+    if rank < X.shape[1] or np.linalg.norm(resid) <= noise_floor:
+        return float("nan")
     s2 = float(resid @ resid) / (n - X.shape[1])
     xtx_inv = np.linalg.pinv(X.T @ X)
     return float(coef[0] / math.sqrt(s2 * xtx_inv[0, 0]))
@@ -265,7 +271,8 @@ def min_d_passing_adf(price: np.ndarray, crit: float = ADF_CRIT_5, thresh: float
     why the demo prints the whole scan next to it.
     """
     lo, hi = 0.0, 1.0
-    if adf_tstat(frac_diff_ffd(price, hi, thresh), lags) >= crit:
+    upper_stat = adf_tstat(frac_diff_ffd(price, hi, thresh), lags)
+    if not np.isfinite(upper_stat) or upper_stat >= crit:
         return {"d": float("nan"), "adf": float("nan"), "width": 0, "n_obs": 0,
                 "corr_level": float("nan"), "ic": float("nan")}
     while hi - lo > tol:

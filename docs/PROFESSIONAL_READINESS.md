@@ -62,11 +62,12 @@ that claim to the measured environments. Final full regression/script results fo
 
 ## External acceptance still required
 
-- Push the reviewed change and observe the hosted OS/Python CI matrix. Local Windows
-  verification does not establish Linux/macOS success. `gh auth status` on 2026-09-14
-  reported `gist`, `read:org`, `repo` scopes and no `workflow` scope. To grant the missing
-  GitHub authorization, run `gh auth refresh -h github.com -s workflow` and complete its
-  browser authorization before pushing workflow changes. No credential refresh was initiated.
+- The implementation was pushed as `2be0474` after the owner completed GitHub workflow
+  authorization. The [first hosted matrix](https://github.com/howard-lynn-ye/fin-skills/actions/runs/34892049735)
+  exposed unsupported minimum dependencies, Python 3.10 TOML imports, and macOS-sensitive
+  degenerate regressions. Corrections now tighten dependency declarations and treat
+  numerically exact regressions as statistically undefined. A complete rerun is required
+  before claiming hosted matrix acceptance.
 - Choose a release version and publish tested artifacts using configured PyPI credentials
   or trusted publishing. This work does not claim a public PyPI release.
 - Obtain independent user reproductions and maintenance history. No real user feedback

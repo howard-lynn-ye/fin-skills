@@ -23,6 +23,15 @@ interfaces remain available. The additions are `research`, `profile_data`, `fit`
 
 ## Migration notes for the algorithm workflow
 
+The supported base dependencies are NumPy >=1.24, pandas >=2.2.2 and SciPy >=1.11.4.
+The former pandas >=2.0 / SciPy >=1.10 declarations admitted environments that failed
+existing code: quarter/month-end aliases, `future_stack`, and the multivariate-t CDF.
+The floor now uses pandas' NumPy-2-compatible 2.2.2 release and the final SciPy 1.11 patch.
+CI pins the exact lower bounds on Python 3.10; its development extra includes `tomli`
+there for TOML checks. Upgrade these dependencies when installing this revision.
+See the [pandas release notes](https://pandas.pydata.org/docs/whatsnew/v2.2.2.html)
+and [SciPy CDF addition](https://scipy.github.io/devdocs/release/1.11.0-notes.html).
+
 Automatic selection now checks actual data and supplied parameters. Constant assets can route
 to equal weight; HRP is excluded until `linkage` is explicit. Metadata-only recommendations
 retain their previous purpose. Unknown adapter parameters fail during preflight.

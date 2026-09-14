@@ -29,6 +29,10 @@ All notable changes to fin-skills. The format follows
 
 ### Fixed
 
+- Corrected minimum dependency declarations to pandas 2.2.2 and SciPy 1.11.4 after
+  hosted CI exposed unsupported older APIs; added Python 3.10 TOML support for checks.
+- Reject degenerate ADF fits and report undefined half-life significance for deterministic
+  series, preventing platform-dependent floating-point residuals from driving conclusions.
 - Recovered unfinished Claude market work and corrected its accounting/session mechanics.
 - Per-filing retries prevent failed old documents from starving new disclosures; source
   Retry-After controls scheduling. Watch configuration commits atomically.

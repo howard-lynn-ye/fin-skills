@@ -132,6 +132,13 @@ def test_the_scan_trades_stationarity_against_memory(price):
     assert corrs == sorted(corrs, reverse=True)
 
 
+@pytest.mark.parametrize("scale", [1e-6, 1.0, 1e6])
+def test_adf_does_not_score_a_deterministic_fit(scale):
+    for path in (np.ones(100), np.arange(100.0), np.arange(100.0) ** 2):
+        assert math.isnan(fd.adf_tstat(path * scale))
+        assert math.isnan(fd.min_d_passing_adf(path * scale)["d"])
+
+
 def test_min_d_is_the_smallest_that_passes(price):
     best = fd.min_d_passing_adf(price)
     assert 0.0 < best["d"] < 1.0

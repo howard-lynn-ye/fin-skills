@@ -217,7 +217,13 @@ def half_life(s: np.ndarray) -> dict[str, float]:
     """AR(1) on the spread: ds_t = a + b s_{t-1} + e. Half-life = -ln 2 / ln(1 + b) (exact for the
     discrete AR(1)); -ln 2 / b is the continuous-time OU approximation."""
     s = np.asarray(s, dtype=float)
+    if s.ndim != 1 or len(s) < 4 or not np.isfinite(s).all():
+        raise ValueError("half_life needs at least four finite observations in one dimension")
     ds, lag = np.diff(s), s[:-1]
+    noise_floor = np.finfo(float).eps * len(ds) * np.linalg.norm(ds)
+    if np.linalg.norm(ds - ds.mean()) <= noise_floor:
+        return {"b": 0.0, "t_stat": float("nan"), "phi": 1.0,
+                "half_life": float("inf"), "half_life_ou": float("inf")}
     X = np.column_stack([np.ones_like(lag), lag])
     coef, *_ = np.linalg.lstsq(X, ds, rcond=None)
     resid = ds - X @ coef
@@ -226,9 +232,8 @@ def half_life(s: np.ndarray) -> dict[str, float]:
     b = float(coef[1])
     hl = -math.log(2.0) / math.log(1.0 + b) if -1.0 < b < 0.0 else float("inf")
     hl_ou = -math.log(2.0) / b if b < 0.0 else float("inf")
-    # se_b is exactly zero on a perfectly fitted (deterministic) series; report nan rather than
-    # raising, so a degenerate leg does not take the screen down.
-    t_stat = b / se_b if se_b > 0.0 else float("nan")
+    # A deterministic fit can leave tiny BLAS-dependent residuals; they are not sampling noise.
+    t_stat = b / se_b if se_b > 0.0 and np.linalg.norm(resid) > noise_floor else float("nan")
     return {"b": b, "t_stat": t_stat, "phi": 1.0 + b, "half_life": hl, "half_life_ou": hl_ou}
 
 

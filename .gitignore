@@ -9,6 +9,7 @@
 .venv/
 .venv-professional/
 .venv-optimizers/
+.venv-minimum/
 release-dist/
 .professional-*.log
 .coverage*

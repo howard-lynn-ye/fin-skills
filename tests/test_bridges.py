@@ -121,7 +121,10 @@ def test_copyleft_libraries_are_not_dependencies():
     verdict binding: they are optional imports with a printed warning, never
     install_requires and never an extra, exactly as this repo treats openbb.
     """
-    import tomllib
+    try:
+        import tomllib
+    except ModuleNotFoundError:  # Python 3.10; installed by the dev extra
+        import tomli as tomllib
 
     cfg = tomllib.loads((REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     project = cfg.get("project", {})

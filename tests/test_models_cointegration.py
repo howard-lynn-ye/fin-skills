@@ -134,6 +134,16 @@ def test_every_random_walk_residual_reports_a_finite_half_life(walks):
     assert 10 < np.median(hls) < 200
 
 
+@pytest.mark.parametrize("scale", [1e-6, 1.0, 1e6])
+def test_half_life_has_no_significance_without_sampling_noise(scale):
+    for path in (np.ones(50), np.arange(50.0), 0.9 ** np.arange(50.0)):
+        assert math.isnan(co.half_life(path * scale)["t_stat"])
+    assert co.half_life(np.ones(50) * scale)["half_life"] == float("inf")
+    assert co.half_life(np.arange(50.0) * scale)["half_life"] == float("inf")
+    assert co.half_life(0.9 ** np.arange(50.0) * scale)["half_life"] == pytest.approx(
+        -math.log(2) / math.log(0.9))
+
+
 def test_half_life_recovers_a_known_ar1(pair):
     _, _, s = pair
     hl = co.half_life(s)
