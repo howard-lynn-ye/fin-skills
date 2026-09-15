@@ -1,10 +1,12 @@
 # fin-skills — Python 量化金融源码级验证知识库与可执行防伪审计引擎
 
+> 2026-09-14 更新：现有 127 个技能、33 个统一检查模块、43 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
+
 <div align="center">
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
-[![Skills](https://img.shields.io/badge/Agent_Skills-114_个已验证技能-emerald.svg)](#6-完整技能全景目录-114-个-skills)
-[![Executable Guards](https://img.shields.io/badge/Executable_Guards-32_个可执行守卫-purple.svg)](#2-系统全景架构)
+[![Skills](https://img.shields.io/badge/Agent_Skills-127_个已验证技能-emerald.svg)](#6-完整技能全景目录-127-个-skills)
+[![Executable Guards](https://img.shields.io/badge/Executable_Guards-33_个可执行守卫-purple.svg)](#2-系统全景架构)
 [![Leak Benchmark](https://img.shields.io/badge/造假检出基准-12%2F12_全部捕获_(0误报)-success.svg)](#5-实证基准评测与大模型常见错误纠偏)
 [![Unit Tests](https://img.shields.io/badge/单元测试-1%2C600%2B_全绿通过-brightgreen.svg)](#3-项目成熟度与当前进度记分卡)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#8-开源协议与免责声明)
@@ -18,7 +20,7 @@
 
 ## 🎯 1. 这个仓库做了什么？（核心定位与执行摘要）
 
-**`fin-skills` 是专为 Claude Code、Jetski 等编程 Agent 及量化研究员打造的 Python 量化金融知识库与自动化防伪审计引擎。** 它包含 **114 个符合 Agent Skills 国际规范的技能包**（90 个按投研任务划分的领域技能 + 24 个可选的单库源码级深潜技能），以及 **32 个可通过统一 Python API (`fin_skills.api`) 或 MCP 协议直接调用的可执行代码守卫（Guards）**。
+**`fin-skills` 是专为 Claude Code、Jetski 等编程 Agent 及量化研究员打造的 Python 量化金融知识库与自动化防伪审计引擎。** 它包含 **127 个符合 Agent Skills 国际规范的技能包**（103 个按投研任务划分的领域技能 + 24 个可选的单库源码级深潜技能），以及 **33 个可通过统一 Python API (`fin_skills.api`) 或 MCP 协议直接调用的可执行代码守卫（Guards）**。
 
 ### 为什么需要这个项目？
 当前 AI + 金融开源生态呈现出极端的“两头大、中间空”：
@@ -39,7 +41,7 @@
    - 每一条结论均标注了**验证日期 (`verified_on`)** 与可信度溯源标记：`✅ 一手源码/交易所规则实测验证` · `⚠️ 二手文献` · `❓ 暂无法验证`。凡是可以通过安装库并运行代码实测对比的结论（如 QuantLib 与 vollib 希腊字母量纲相差 100 倍），均附带可复现脚本。
 2. **第二层：可执行的回测防伪审计引擎 (`fin_skills.api` & MCP Tools)**
    - **读文档只能改变大模型“怎么说”，运行代码守卫才能决定投研流水线“允许报告什么结果”。**
-   - 我们将 **32 个返回 `GuardResult` 的可执行守卫函数**封装在统一的 **`Bundle` 容器与 `check()` 接口**之后，并导出了 **33 个 JSON 工具 (`fin_skills.tools`)**，支持 Agent 在生成回测报告前自动运行全套防伪体检。
+   - 我们将 **33 个返回 `GuardResult` 的可执行守卫函数**封装在统一的 **`Bundle` 容器与 `check()` 接口**之后，并导出了 **43 个 JSON 工具 (`fin_skills.tools`)**，支持 Agent 在生成回测报告前自动运行全套防伪体检。
 
 ---
 
@@ -47,16 +49,16 @@
 
 ```mermaid
 flowchart TD
-    subgraph TIER1 ["1. 🧠 源码级验证知识层 (114 个 Agent Skills)"]
-        D1["90 个领域技能 (16 个 Plugins)<br/>投研任务路由与防伪方法论"] --> D2["24 个单库深潜技能 (fin-libraries)<br/>底层库源码陷阱与版本漂移"] --> D3["74 份深度参考文档 (references/)<br/>数学公式、交易所规则与对比表"]
+    subgraph TIER1 ["1. 🧠 源码级验证知识层 (127 个 Agent Skills)"]
+        D1["103 个领域技能 (16 个 Plugins)<br/>投研任务路由与防伪方法论"] --> D2["24 个单库深潜技能 (fin-libraries)<br/>底层库源码陷阱与版本漂移"] --> D3["74 份深度参考文档 (references/)<br/>数学公式、交易所规则与对比表"]
     end
 
     subgraph TIER2 ["2. 🛡️ 可执行回测防伪审计引擎 (fin_skills.api)"]
-        E1["Bundle 标准数据容器<br/>146 个强类型回测产物槽位 (Slots)"] --> E2["check(bundle) 统一调度器<br/>自动匹配并运行所有就绪守卫"] --> E3["32 个可执行代码守卫 (Guards)<br/>输出 GuardResult 诊断报告与指标"]
+        E1["Bundle 标准数据容器<br/>151 个强类型回测产物槽位 (Slots)"] --> E2["check(bundle) 统一调度器<br/>自动匹配并运行所有就绪守卫"] --> E3["33 个可执行代码守卫 (Guards)<br/>输出 GuardResult 诊断报告与指标"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent 与投研工程接入层"]
-        I1["Claude Code / Jetski 插件<br/>按 SKILL.md 触发词自动激活"] --> I2["Python SDK (pip install)<br/>可导入防伪模块与市场惯例库"] --> I3["MCP Server 与 JSON 工具集<br/>33 个供大模型实时调用的审计工具"]
+        I1["Claude Code / Jetski 插件<br/>按 SKILL.md 触发词自动激活"] --> I2["Python SDK (pip install)<br/>可导入防伪模块与市场惯例库"] --> I3["MCP Server 与 JSON 工具集<br/>43 个供大模型实时调用的审计工具"]
     end
 
     D3 ==>|由 build_package.py 自动编译同步| E1
@@ -71,15 +73,15 @@ flowchart TD
 
 ## 📊 3. 项目成熟度与当前进度记分卡（做到什么程度了？）
 
-**当前状态：** 生产级正式版本 **`v0.1.0`**（2026 年 9 月）。全套 17 个领域的知识库、24 个主流 Python 库源码审计、统一防伪 API、MCP Server 以及 12 类量化作弊检出基准测试均已 100% 完成并验证通过。
+**当前状态：** Alpha 阶段。已发布的 `v0.1.0` 早于本次补全；当前源码已加入真实采集和更细的市场模块。测试结果、运行边界和仍需配置的账户信息见[完成审计](docs/COMPLETION_AUDIT.md)。
 
 | 核心维度 | 当前完成度与量化指标 | 验证标准与工程状态说明 |
 | :--- | :--- | :--- |
-| **1. 知识库覆盖规模** | **114 个自研 Skills**<br>（分布在 **17 个 Plugins**） | **100% 通过规范校验** (`scripts/validate.py`)。全面覆盖股票、中国 A 股、加密货币、期权衍生品、固收、信用债、宏观、市场微观结构、金融机器学习与税务会计。 |
-| **2. 可执行防伪代码** | **32 个统一 API 守卫 (`fin_skills.api`)**<br>**99 个独立复现脚本** | **生产级可用。** 每个守卫返回结构化的 `GuardResult(passed, summary, metrics)`。所有 99 个独立脚本均通过 Windows/Linux 跨平台与字符编码严格测试 (`check_scripts.py`)。 |
+| **1. 知识库覆盖规模** | **127 个自研 Skills**<br>（分布在 **17 个 Plugins**） | **100% 通过规范校验** (`scripts/validate.py`)。全面覆盖股票、中国 A 股、加密货币、期权衍生品、固收、信用债、宏观、市场微观结构、金融机器学习与税务会计。 |
+| **2. 可执行防伪代码** | **33 个统一 API 守卫 (`fin_skills.api`)**<br>**111 个独立复现脚本** | **Alpha 阶段，提供可执行接口。** 每个守卫返回结构化的 `GuardResult(passed, summary, metrics)`。脚本与字符编码检查使用 `check_scripts.py`；本次平台和结果见完成审计。 |
 | **3. 造假检出基准 (`leak_bench`)** | **12 / 12 植入缺陷 100% 捕获**<br>**干净数据 0 误报 (FP = 0)** | **实证基准验证** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md))。在包含退市与拆股的 1,565 天合成股票市场中植入 12 类典型量化作弊，13 个守卫在 **< 0.07 秒**内全部精准拦截。 |
-| **4. Agent 路由准确率 (`eval_blind`)** | **107 / 108 真实投研提问路由正确 (99.1%)** | **盲测真值验证** (`scripts/eval_blind.py`)。大模型仅凭 Skill 列表描述，在 108 个中英文真实投研问题、报错堆栈与症状描述上实现 99.1% 精准选型。 |
-| **5. 自动化测试与零漂移** | **123 个测试文件 · 1,600+ 单元测试** | **100% 全绿通过** (`pytest -q`)。通过 `build_index.py` 与 `build_package.py --check` 强制保证 `SKILL.md` 文档、目录索引与生成的 Python 包之间 **零漂移（Zero Drift）**。 |
+| **4. Agent 路由 (`eval_blind`)** | **旧标签 92/108；新增能力 16/16** | 2026-09-14 独立盲测。部分旧标签仍指向已细分的总入口；新增能力集合只是小规模测试。完整输入、结果和局限见[评估记录](evals/2026-09-14/README.md)。 |
+| **5. 自动化测试与零漂移** | **全仓默认测试集** | **100% 全绿通过** (`pytest -q`)。通过 `build_index.py` 与 `build_package.py --check` 强制保证 `SKILL.md` 文档、目录索引与生成的 Python 包之间 **零漂移（Zero Drift）**。 |
 | **6. 第三方联邦生态 (`Marketplace`)** | **联邦集成 92 个第三方金融 Skill 包**<br>（审计 139 个仓库 / 4,851 个 Skills） | **严格审计并锁定 Commit SHA** ([`catalog/federation-notes.md`](catalog/federation-notes.md))。集成 Alpaca、Kraken、OKX、Longbridge 等官方库及 A 股社区库（默认禁用防误触实盘）。 |
 
 ---
@@ -95,7 +97,7 @@ pip install git+https://github.com/howard-lynn-ye/fin-skills
 ```
 
 #### 1. 使用 `Bundle` 和 `check()` 一键审计回测结果
-`Bundle` 容器定义了 146 个标准数据槽位（Slots）。只需将回测产出的收益率、换手率、K 线或信号函数放入 `Bundle`，调用 `check(b)` 即可自动运行所有输入条件已满足的防伪守卫：
+`Bundle` 容器定义了 151 个标准数据槽位（Slots）。只需将回测产出的收益率、换手率、K 线或信号函数放入 `Bundle`，调用 `check(b)` 即可自动运行所有输入条件已满足的防伪守卫：
 
 ```python
 from fin_skills.api import Bundle, check, get, Suite, conventions as c
@@ -139,7 +141,7 @@ c.pip_value("USDJPY", notional=100_000, price=150.25).value_usd     # 外汇标�
 ```python
 import fin_skills
 
-fin_skills.catalog()                           # 列出全部 114 个技能的名称、所属插件与摘要
+fin_skills.catalog()                           # 列出全部 127 个技能的名称、所属插件与摘要
 fin_skills.load("research-integrity-guards")   # 读取指定技能完整的 SKILL.md 文本
 fin_skills.references("options-backtesting")   # 获取该技能下的所有参考文档字典
 fin_skills.find("survivorship", "universe")    # 检索同时包含指定关键词的技能
@@ -171,7 +173,7 @@ fin_skills.find("survivorship", "universe")    # 检索同时包含指定关键�
 
 ### 模式 C：作为 MCP Server 或 JSON 工具集挂载给任意大模型 Agent
 
-将全部 **33 个 JSON 可调用工具**（7 个目录检索工具 + 26 个实时代码审计工具）挂载给任意支持 MCP 或 Function Calling 的 Agent 框架：
+将全部 **43 个 JSON 可调用工具**（7 个目录工具 + 27 个检查工具 + 9 个采集与数据工具）挂载给任意支持 MCP 或 Function Calling 的 Agent 框架：
 
 ```bash
 pip install "fin-skills[mcp]"
@@ -212,25 +214,25 @@ python -m fin_skills.tools --json --format anthropic  # 可选: openai, openai-c
 
 | 植入的回测作弊 / 数据缺陷类型 | 严重程度 | 作弊后虚增/失真夏普 (干净基准 `1.80`) | 成功拦截的守卫 (Guard) | 守卫运行耗时 |
 | :--- | :---: | :---: | :--- | :---: |
-| **`wrong_side_asof`**（Point-in-Time 时间戳对齐方向错误） | 高危 | `2.63` (+0.83 虚假暴涨) | `safe_asof` | `0.020s` |
-| **`cost_too_low`**（假设不切实际的 1bp 超低交易成本） | 高危 | `2.09` (+0.29 虚假虚增) | `cost_plausibility` | `0.001s` |
-| **`lookahead_signal`**（居中滚动窗口 / `shift(-1)` 未来函数） | 致命 | `1.99` (+0.19 虚假虚增) | `assert_causal` | `0.006s` |
-| **`warmup_live_window`**（在测试集窗口内才开始计算指标预热期） | 中危 | `1.83` (+0.03 统计失真) | `warmup_probe` | `0.063s` |
-| **`survivor_only_universe`**（剔除 10 支退市股票的幸存者偏差） | 高危 | `1.82` (+0.02 幸存者虚增) | `survivorship_audit`, `pit_universe` | `0.010s` |
-| **`unpurged_cv`**（重叠标签在 K-Fold 切分时未做 Purge/Embargo） | 高危 | `1.79` (验证集泄露) | `purge_effect` | `0.031s` |
-| **`latest_vintage_fundamentals`**（使用事后重述修正的财报数据） | 高危 | `1.78` (财报重述泄露) | `pit_fundamentals` | `0.023s` |
-| **`shared_scaler`**（在 Train+Test 全样本上拟合 `StandardScaler`） | 高危 | `1.76` (分布泄露) | `fold_leak_test` | `0.022s` |
-| **`forward_adjusted_qfq`**（直接使用前复权价格序列进行回测交易） | 中危 | `1.71` (价格水平失真) | `adjustment_check` | `0.001s` |
-| **`llm_cutoff_overlap`**（在大模型预训练语料时间窗口内评测 LLM） | 致命 | `1.46` (记忆背诵偏差) | `contamination_probe` | `0.000s` |
-| **`unadjusted_split`**（在拆股除权日直接交易未复权原始价格） | 高危 | `0.77` (-1.03 虚假暴跌) | `adjustment_check` | `0.001s` |
-| **`single_calm_quarter`**（精心挑选单一低波动平稳季度进行汇报） | 中危 | `0.77` (跨周期脆弱性) | `regime_coverage` | `0.001s` |
+| **`wrong_side_asof`**（Point-in-Time 时间戳对齐方向错误） | 高危 | `2.63` (+0.83 虚假暴涨) | `safe_asof` | see RESULTS.md |
+| **`cost_too_low`**（假设不切实际的 1bp 超低交易成本） | 高危 | `2.09` (+0.29 虚假虚增) | `cost_plausibility` | see RESULTS.md |
+| **`lookahead_signal`**（居中滚动窗口 / `shift(-1)` 未来函数） | 致命 | `1.99` (+0.19 虚假虚增) | `assert_causal` | see RESULTS.md |
+| **`warmup_live_window`**（在测试集窗口内才开始计算指标预热期） | 中危 | `1.83` (+0.03 统计失真) | `warmup_probe` | see RESULTS.md |
+| **`survivor_only_universe`**（剔除 10 支退市股票的幸存者偏差） | 高危 | `1.82` (+0.02 幸存者虚增) | `survivorship_audit`, `pit_universe` | see RESULTS.md |
+| **`unpurged_cv`**（重叠标签在 K-Fold 切分时未做 Purge/Embargo） | 高危 | `1.79` (验证集泄露) | `purge_effect` | see RESULTS.md |
+| **`latest_vintage_fundamentals`**（使用事后重述修正的财报数据） | 高危 | `1.78` (财报重述泄露) | `pit_fundamentals` | see RESULTS.md |
+| **`shared_scaler`**（在 Train+Test 全样本上拟合 `StandardScaler`） | 高危 | `1.76` (分布泄露) | `fold_leak_test` | see RESULTS.md |
+| **`forward_adjusted_qfq`**（直接使用前复权价格序列进行回测交易） | 中危 | `1.71` (价格水平失真) | `adjustment_check` | see RESULTS.md |
+| **`llm_cutoff_overlap`**（在大模型预训练语料时间窗口内评测 LLM） | 致命 | `1.46` (记忆背诵偏差) | `contamination_probe` | see RESULTS.md |
+| **`unadjusted_split`**（在拆股除权日直接交易未复权原始价格） | 高危 | `0.77` (-1.03 虚假暴跌) | `adjustment_check` | see RESULTS.md |
+| **`single_calm_quarter`**（精心挑选单一低波动平稳季度进行汇报） | 中危 | `0.77` (跨周期脆弱性) | `regime_coverage` | see RESULTS.md |
 | **干净基准数据测试（False Positive 误报率测试）** | — | **`1.80` (真实夏普比率)** | **全部 13 个守卫 0 误报 (`ok`)** | — |
 
 完整复现脚本与检测矩阵详见：[`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)。
 
 ---
 
-## 📚 6. 完整技能全景目录（114 个 Skills / 17 个 Plugins）
+## 📚 6. 完整技能全景目录（127 个 Skills / 17 个 Plugins）
 
 ### 17 个插件模块分类导览
 
@@ -255,7 +257,7 @@ python -m fin_skills.tools --json --format anthropic  # 可选: openai, openai-c
 
 ---
 
-### 全部 114 个 Skills 详细中文解析目录
+### 原有技能中文说明（新增模块见完成审计）
 
 | 所属插件 (Plugin) | 技能名称 (Skill) | 核心解决的问题与防伪覆盖范围 (中文解析) | 参考文档数 | 验证脚本数 |
 | :--- | :--- | :--- | :---: | :---: |

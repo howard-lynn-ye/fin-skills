@@ -1,5 +1,7 @@
 # 📘 fin-skills 实战连接与集成使用手册（User Manual & Integration Playbook）
 
+> 适用范围（2026-09-14）：本文保留此前另一台主机的 `stock_prediction` 集成案例，路径、数据集、账户连接和实测收益结果均非本仓库随附或本机已验证的资源。原文计数和 v2 分支操作属于历史快照。当前库有 127 个技能、33 个检查模块、43 个工具；真实信息采集与运行步骤请看[采集指南](docs/COLLECTION.md)。
+
 > [!IMPORTANT] **核心定位声明：`fin-skills` 本身完全不包含、也不需要任何模型训练**  
 > `fin-skills` 的本质是 **“量化投研的防伪质检员（Auditor & Guard）”** 与 **“AI Agent 的专业知识规约库（Knowledge Base）”**。  
 > 1. **零训练、零权重、零 GPU 依赖**：全库由 114 个 Markdown 格式的投研规约与 32 个基于 `numpy`/`pandas`/`scipy` 的纯确定性数学/统计守卫（`fin_skills.api`）组成，没有任何神经网络、反向传播或梯度更新。  

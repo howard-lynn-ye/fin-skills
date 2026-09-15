@@ -1,0 +1,5 @@
+1. Follow new Pelosi disclosure PDFs, keep reported amount ranges, and flag unreadable documents for review.
+2. 港股组合按整手取整后剩下很多现金，怎么计算实际的权重误差？
+3. My Singapore/Thailand strategy treats their sessions as identical, and my Thai foreign-share premium calculation looks wrong.
+4. Does a concentrated-liquidity AMM position still match the usual constant-product impermanent-loss formula outside its price range?
+5. How do I handle splits, spin-offs and cash distributions without double-counting corporate actions in total returns?

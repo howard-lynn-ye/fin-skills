@@ -1,0 +1,36 @@
+1. download SPY daily prices with yfinance and plot the 200 day moving average
+2. my prices from yahooquery and yfinance don't match around a split
+3. merge_asof is matching the wrong quote
+4. timestamps come back wrong after writing to parquet
+5. I need GDP data but without the later revisions
+6. which backtesting library should I use for a multi asset portfolio strategy
+7. connect to interactive brokers and read my positions
+8. TWS paper trading port keeps refusing the connection
+9. ta library RSI doesn't match tradingview
+10. forecast realized volatility with a GARCH model
+11. compute the Sharpe ratio and max drawdown of this return series
+12. I tried 200 parameter combinations and the best one has Sharpe 2.5
+13. compute the deflated sharpe ratio
+14. my vega is 100x off between two libraries
+15. how do I avoid survivorship bias in my universe
+16. akshare vs tushare which should I use
+17. set up vnpy with a CTP gateway
+18. use ccxt to place a limit order
+19. which finance MCP server should I install
+20. finrl import fails with ModuleNotFoundError
+21. korean stock delisted list and short selling ban dates
+22. quantstats cagr is ignoring my risk free rate
+23. arch SPA test says my worst strategy is best
+24. freqtrade stoploss filled exactly at my stop price
+25. wash sale rule and my high turnover strategy
+26. my short call got assigned before ex-dividend
+27. did my execution beat VWAP or did it cost us money
+28. what slippage should I assume in my backtest
+29. my ETF is trading at a premium to NAV, is that an arbitrage
+30. ETF price dropped on the ex-dividend date but nothing happened to the index
+31. compute the effective spread and realized spread from quotes and trades
+32. detect bull and bear regimes with a hidden markov model
+33. my strategy only works in the low volatility regime
+34. annualize daily crypto returns with 365 or 252
+35. how is the TradingAgents architecture put together
+36. backtest a moving average crossover on SPY

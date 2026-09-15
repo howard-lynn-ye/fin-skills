@@ -1,0 +1,36 @@
+1. which data provider should I use if I need delisted tickers
+2. 帮我拉一下美股 ETF 的历史日线数据
+3. how should I store 10 years of minute bars for 3000 tickers
+4. get Apple's quarterly revenue as it was known in 2019
+5. what CIK maps to this ticker
+6. my vectorbt equity curve looks amazing, is something wrong
+7. make sure this script cannot accidentally send a real order
+8. compute RSI and MACD on this dataframe
+9. is my factor any good, compute the information coefficient
+10. do an event study around earnings announcements
+11. empyrical is giving me a Sharpe of -65
+12. is this backtest result statistically real
+13. price an american put option with dividends
+14. bootstrap a yield curve from swap rates
+15. my strategy has a Sharpe of 4, what should I check
+16. how do I get delisted A share tickers
+17. download BTC perpetual funding rates from binance
+18. should I build a TradingAgents style multi agent trader
+19. is there an MCP for SEC filings
+20. will an LSTM beat a linear model for return prediction
+21. NSE India trading calendar
+22. HRPOpt gave me nonsense weights
+23. tushare qfq prices change when I change end_date
+24. can I short this stock, is it hard to borrow
+25. am I allowed to redistribute this price data
+26. where do I get historical option chains
+27. compute implementation shortfall on these fills
+28. why is TQQQ down this month when the Nasdaq is flat
+29. what does return of capital mean in this ETF distribution
+30. build dollar bars from tick data
+31. estimate Kyle's lambda from signed order flow
+32. result_manifest says no regime coverage stated, what do I put
+33. how much funding will I pay holding a long BTC perp for a month
+34. cash and carry basis trade between BTC spot and the quarterly future
+35. the ai-hedge-fund repo, how does its pipeline work
+36. what bid ask spread should I assume in my daily backtest

@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 114,
-  "n_reference_files": 74,
-  "n_scripts": 99,
+  "n_skills": 127,
+  "n_reference_files": 75,
+  "n_scripts": 111,
   "discovery_cost": {
-    "total_description_chars": 103405,
-    "approx_tokens": 25851,
+    "total_description_chars": 109322,
+    "approx_tokens": 27330,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -77,6 +77,20 @@
       ]
     },
     {
+      "name": "public-information-collection",
+      "plugin": "fin-alt-data",
+      "path": "plugins/fin-alt-data/skills/public-information-collection/SKILL.md",
+      "description": "Collect public news and disclosures with the importable fin_skills.collect runtime. TRIGGER - RSS or Atom ingestion, static-page crawler, persistent watchlist, polling, real information collection, congressional trade tracker, SEC Form 4 XML, 13F holdings changes, public influencer posts, 爬虫, 实时采集, 名人交易跟踪. SKIP for interpreting disclosure lag (congressional-trading-disclosures, insider-form-4, institutional-13f), social backtest bias (social-and-influencer-feeds), finding company identifiers (finding-and-searching-data), and price-vendor selection (market-data-sourcing).",
+      "summary": "Collect public news and disclosures with the importable fin_skills.collect runtime.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 7846,
+      "approx_body_tokens": 1961,
+      "references": [],
+      "scripts": []
+    },
+    {
       "name": "social-and-influencer-feeds",
       "plugin": "fin-alt-data",
       "path": "plugins/fin-alt-data/skills/social-and-influencer-feeds/SKILL.md",
@@ -93,18 +107,98 @@
       ]
     },
     {
+      "name": "asean-markets",
+      "plugin": "fin-asia",
+      "path": "plugins/fin-asia/skills/asean-markets/SKILL.md",
+      "description": "TRIGGER - ASEAN, SGX, Singapore, Bursa Malaysia, SET Thailand, Thai foreign board or NVDR, IDX Indonesia, PSE Philippines, HOSE HNX UPCoM Vietnam, foreign ownership room, Southeast Asian sessions and settlement. SKIP for Japan (japan-markets), Hong Kong (hong-kong-markets), India (india-markets), Korea or Taiwan (korea-taiwan-markets), mainland China (china-trading-stack), and regional stack selection (asia-pacific-markets).",
+      "summary": "TRIGGER - ASEAN, SGX, Singapore, Bursa Malaysia, SET Thailand, Thai foreign board or NVDR, IDX Indonesia, PSE Philippines, HOSE HNX UPCoM Vietnam, foreign ownership room, Southeast",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 7565,
+      "approx_body_tokens": 1891,
+      "references": [],
+      "scripts": [
+        "asean.py"
+      ]
+    },
+    {
       "name": "asia-pacific-markets",
       "plugin": "fin-asia",
       "path": "plugins/fin-asia/skills/asia-pacific-markets/SKILL.md",
-      "description": "Data and trading for Asia-Pacific outside mainland China. TRIGGER - Hong Kong, HKEX, 港股, Stock Connect, VCM, per-stock lot sizes; Taiwan, TWSE, 台股, shioaji, FinMind, twstock; Japan, TSE, JPX, J-Quants, jquants-api-client, the 2022 TSE restructuring; Korea, KRX, KOSPI, KOSDAQ, pykrx, FinanceDataReader, CSAT, Korean short-selling ban dates, Korean delisted-stock lists; India, NSE, BSE, kiteconnect, Zerodha, Upstox, STT, Muhurat; Singapore SGX, Australia ASX; futu-api, tigeropen. Also documents four verified exchange_calendars defects that affect US work too. SKIP for mainland A-shares (china-ashare-data, china-trading-stack).",
-      "summary": "Data and trading for Asia-Pacific outside mainland China.",
+      "description": "TRIGGER - choose an Asia-Pacific data or trading stack outside mainland China, compare Asian venues, multi-market calendars, regional survivorship and currency alignment. SKIP for Japan (japan-markets), Hong Kong or Connect (hong-kong-markets), India (india-markets), Korea or Taiwan (korea-taiwan-markets), Southeast Asia (asean-markets), and mainland A-shares (china-ashare-data, china-trading-stack).",
+      "summary": "TRIGGER - choose an Asia-Pacific data or trading stack outside mainland China, compare Asian venues, multi-market calendars, regional survivorship and currency alignment.",
       "license": "MIT",
-      "version": "0.1.0",
-      "verified_on": "2026-09-04",
-      "body_chars": 10329,
-      "approx_body_tokens": 2582,
+      "version": "0.2.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 3838,
+      "approx_body_tokens": 959,
       "references": [],
       "scripts": []
+    },
+    {
+      "name": "hong-kong-markets",
+      "plugin": "fin-asia",
+      "path": "plugins/fin-asia/skills/hong-kong-markets/SKILL.md",
+      "description": "TRIGGER - HKEX, 港股, 每手 board lot, 碎股 odd lot, Stock Connect, 滬港通, 深港通, northbound quota, southbound quota, VCM, CAS, A/H premium, ADR ratio, typhoon trading. SKIP for Japan (japan-markets), India (india-markets), Korea or Taiwan (korea-taiwan-markets), ASEAN (asean-markets), regional selection (asia-pacific-markets), and the mainland leg (china-trading-stack).",
+      "summary": "TRIGGER - HKEX, 港股, 每手 board lot, 碎股 odd lot, Stock Connect, 滬港通, 深港通, northbound quota, southbound quota, VCM, CAS, A/H premium, ADR ratio, typhoon trading.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 6590,
+      "approx_body_tokens": 1647,
+      "references": [],
+      "scripts": [
+        "hong_kong.py"
+      ]
+    },
+    {
+      "name": "india-markets",
+      "plugin": "fin-asia",
+      "path": "plugins/fin-asia/skills/india-markets/SKILL.md",
+      "description": "TRIGGER - NSE, BSE, Nifty, Sensex, upper circuit, lower circuit, price bands, Indian STT, index derivatives contract size, T+1 rollout, T+0, Muhurat, bhavcopy, kiteconnect, Zerodha. SKIP for Japan (japan-markets), Hong Kong (hong-kong-markets), Korea or Taiwan (korea-taiwan-markets), ASEAN (asean-markets), regional selection (asia-pacific-markets), and mainland China (china-trading-stack).",
+      "summary": "TRIGGER - NSE, BSE, Nifty, Sensex, upper circuit, lower circuit, price bands, Indian STT, index derivatives contract size, T+1 rollout, T+0, Muhurat, bhavcopy, kiteconnect, Zerodha",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 7198,
+      "approx_body_tokens": 1799,
+      "references": [],
+      "scripts": [
+        "india.py"
+      ]
+    },
+    {
+      "name": "japan-markets",
+      "plugin": "fin-asia",
+      "path": "plugins/fin-asia/skills/japan-markets/SKILL.md",
+      "description": "TRIGGER - Japanese equities, TSE, JPX, 東証, 前場, 後場, lunch-break bars, TOPIX500 ticks, Nikkei divisor, 空売り規制, J-Quants, e-Stat, yen quotes. SKIP for Hong Kong (hong-kong-markets), India (india-markets), Korea or Taiwan (korea-taiwan-markets), ASEAN (asean-markets), regional selection (asia-pacific-markets), and mainland China (china-trading-stack).",
+      "summary": "TRIGGER - Japanese equities, TSE, JPX, 東証, 前場, 後場, lunch-break bars, TOPIX500 ticks, Nikkei divisor, 空売り規制, J-Quants, e-Stat, yen quotes.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 7057,
+      "approx_body_tokens": 1764,
+      "references": [],
+      "scripts": [
+        "japan.py"
+      ]
+    },
+    {
+      "name": "korea-taiwan-markets",
+      "plugin": "fin-asia",
+      "path": "plugins/fin-asia/skills/korea-taiwan-markets/SKILL.md",
+      "description": "TRIGGER - KRX, KOSPI, KOSDAQ, 韓國 공매도, Korean short-selling ban, TWSE, TPEX, 台股, 漲跌停, limit-up queue, Korea foreign registration, Taiwan ticks, pykrx, FinanceDataReader, FinMind, shioaji. SKIP for Japan (japan-markets), Hong Kong (hong-kong-markets), India (india-markets), ASEAN (asean-markets), regional selection (asia-pacific-markets), and mainland China (china-trading-stack).",
+      "summary": "TRIGGER - KRX, KOSPI, KOSDAQ, 韓國 공매도, Korean short-selling ban, TWSE, TPEX, 台股, 漲跌停, limit-up queue, Korea foreign registration, Taiwan ticks, pykrx, FinanceDataReader, FinMind, sh",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 6197,
+      "approx_body_tokens": 1549,
+      "references": [],
+      "scripts": [
+        "korea_taiwan.py"
+      ]
     },
     {
       "name": "china-ashare-data",
@@ -543,20 +637,85 @@
       "name": "crypto-data-and-execution",
       "plugin": "fin-crypto",
       "path": "plugins/fin-crypto/skills/crypto-data-and-execution/SKILL.md",
-      "description": "Crypto market data and execution, and how a 24/7 market breaks equity tooling. TRIGGER - crypto, Bitcoin, BTC, Ethereum, ETH, digital assets, perpetuals, perps, funding rate, basis or cash-and-carry, liquidation price, maintenance margin, inverse or coin-margined contract, Deribit, crypto options, crypto order book; ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot, OctoBot; a crypto exchange, testnet or sandbox; annualizing crypto returns, 365 vs 252; porting an equity strategy to crypto. Annualization is 365 not 252, funding is a carry that spot backtests omit, liquidation is not a stop-loss, and exchange pair lists are chronically survivorship-biased. SKIP for equity and futures brokers (broker-execution-apis), for RL or deep-learning agents even on crypto (rl-and-ml-trading), and for ccxt or freqtrade specifics once the library is named (lib-ccxt, lib-freqtrade).",
-      "summary": "Crypto market data and execution, and how a 24/7 market breaks equity tooling.",
+      "description": "TRIGGER - choose a crypto data or exchange client, Bitcoin or Ethereum OHLCV, crypto order book feeds, ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot, OctoBot; exchange API pagination, testnet, sandbox, precision, retries, or order safety. SKIP for token migrations, rebases and delisted universes (crypto-token-events), perpetual funding and mark-price liquidation (perpetuals-and-funding), AMM pools and impermanent loss (defi-and-amm-mechanics), 365-day annualisation, venue outages and stablecoin depegs (crypto-market-structure), equity brokers (broker-execution-apis), RL agents (rl-and-ml-trading), and named-library implementation details (lib-ccxt, lib-freqtrade).",
+      "summary": "TRIGGER - choose a crypto data or exchange client, Bitcoin or Ethereum OHLCV, crypto order book feeds, ccxt, cryptofeed, python-binance, freqtrade, jesse, hummingbot, OctoBot; exch",
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-08",
-      "body_chars": 19739,
-      "approx_body_tokens": 4934,
+      "body_chars": 7536,
+      "approx_body_tokens": 1884,
       "references": [
+        "2026-09-08-research-snapshot.md",
         "_venue-notes.md",
         "ccxt.md",
         "freqtrade.md"
       ],
       "scripts": [
         "perp_mechanics.py"
+      ]
+    },
+    {
+      "name": "crypto-market-structure",
+      "plugin": "fin-crypto",
+      "path": "plugins/fin-crypto/skills/crypto-market-structure/SKILL.md",
+      "description": "TRIGGER - crypto annualisation, 365 versus 252, weekend returns, 24/7 market, calendar-day rolling windows, exchange daily close timezone, cross-venue price dispersion, no consolidated tape, venue outage, auto-deleveraging, ADL, socialised losses, stablecoin depeg or quote-currency conversion. SKIP for token events and delisting universes (crypto-token-events), perpetual funding and mark-price liquidation (perpetuals-and-funding), AMM pools and LP fees (defi-and-amm-mechanics), and choosing exchange clients or fetching data (crypto-data-and-execution).",
+      "summary": "TRIGGER - crypto annualisation, 365 versus 252, weekend returns, 24/7 market, calendar-day rolling windows, exchange daily close timezone, cross-venue price dispersion, no consolid",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 8046,
+      "approx_body_tokens": 2011,
+      "references": [],
+      "scripts": [
+        "market_structure.py"
+      ]
+    },
+    {
+      "name": "crypto-token-events",
+      "plugin": "fin-crypto",
+      "path": "plugins/fin-crypto/skills/crypto-token-events/SKILL.md",
+      "description": "TRIGGER - token swap, redenomination, migration, same ticker changed units, hard fork, airdropped fork coin, rebase, elastic supply, balance changed but price did not, wrapped or bridged token, delisted pair, reconstruct a historical top-N crypto universe, survivorship bias, a -90% day caused by a token conversion. SKIP for funding and liquidation (perpetuals-and-funding), AMM pools and LP losses (defi-and-amm-mechanics), 24/7 calendars, outages and stablecoin depegs (crypto-market-structure), and exchange clients and OHLCV fetching (crypto-data-and-execution).",
+      "summary": "TRIGGER - token swap, redenomination, migration, same ticker changed units, hard fork, airdropped fork coin, rebase, elastic supply, balance changed but price did not, wrapped or b",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 7708,
+      "approx_body_tokens": 1927,
+      "references": [],
+      "scripts": [
+        "token_events.py"
+      ]
+    },
+    {
+      "name": "defi-and-amm-mechanics",
+      "plugin": "fin-crypto",
+      "path": "plugins/fin-crypto/skills/defi-and-amm-mechanics/SKILL.md",
+      "description": "TRIGGER - AMM, constant-product pool, x*y=k, Uniswap v2 or v3, concentrated liquidity, LP position, impermanent loss, divergence loss, fee income versus IL, pool price impact, out-of-range liquidity, DEX quote versus fill, sandwich, MEV or gas. SKIP for funding, mark price and liquidation (perpetuals-and-funding), rebases and token swaps (crypto-token-events), calendars, venue outages and stablecoin depegs (crypto-market-structure), centralised exchange clients (crypto-data-and-execution), and quoting on an order book (market-making-models).",
+      "summary": "TRIGGER - AMM, constant-product pool, x*y=k, Uniswap v2 or v3, concentrated liquidity, LP position, impermanent loss, divergence loss, fee income versus IL, pool price impact, out-",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 8470,
+      "approx_body_tokens": 2117,
+      "references": [],
+      "scripts": [
+        "amm.py"
+      ]
+    },
+    {
+      "name": "perpetuals-and-funding",
+      "plugin": "fin-crypto",
+      "path": "plugins/fin-crypto/skills/perpetuals-and-funding/SKILL.md",
+      "description": "TRIGGER - perpetual swap, perp funding, funding interval, funding history, mark versus index versus last price, liquidation threshold, maintenance margin, inverse contract, cash-and-carry, basis to dated futures, open interest versus volume, why a perp backtest disagrees with cash P&L. SKIP for token swaps and delistings (crypto-token-events), AMM impact and LP fees (defi-and-amm-mechanics), calendars, outages and stablecoin depegs (crypto-market-structure), exchange clients and data fetching (crypto-data-and-execution), and rolling dated contracts (futures-continuous-contracts).",
+      "summary": "TRIGGER - perpetual swap, perp funding, funding interval, funding history, mark versus index versus last price, liquidation threshold, maintenance margin, inverse contract, cash-an",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 7788,
+      "approx_body_tokens": 1947,
+      "references": [],
+      "scripts": [
+        "perpetuals.py"
       ]
     },
     {
@@ -1231,6 +1390,38 @@
       ]
     },
     {
+      "name": "corporate-actions-processing",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/corporate-actions-processing/SKILL.md",
+      "description": "TRIGGER - spin-off, spinoff, rights issue, TERP, merger, exchange ratio, reverse split, cash in lieu, ticker change, symbol recycling, special dividend, parent price dropped on ex-date, 分拆, 配股, 并购. Reconcile event cash and share entitlements with position returns. SKIP for ordinary split/dividend price-adjustment detection (market-data-sourcing), stale prices and OHLC validation (data-quality-validation), calendars (trading-calendars-and-sessions), and survivorship-free universes (research-integrity-guards).",
+      "summary": "TRIGGER - spin-off, spinoff, rights issue, TERP, merger, exchange ratio, reverse split, cash in lieu, ticker change, symbol recycling, special dividend, parent price dropped on ex-",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 5121,
+      "approx_body_tokens": 1280,
+      "references": [],
+      "scripts": [
+        "corporate_actions.py"
+      ]
+    },
+    {
+      "name": "data-quality-validation",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/data-quality-validation/SKILL.md",
+      "description": "TRIGGER - stale closes, zero volume, missing trading sessions, duplicate timestamps, negative prices, invalid OHLC, outlier returns, validate downloaded bars, 数据质量, 缺失行情. Validate a daily OHLCV panel and report defects without filling, clipping or deleting data. SKIP for selecting a vendor or detecting price-adjustment convention (market-data-sourcing), session schedules (trading-calendars-and-sessions), corporate event accounting (corporate-actions-processing), and storage/as-of joins (market-data-engineering).",
+      "summary": "TRIGGER - stale closes, zero volume, missing trading sessions, duplicate timestamps, negative prices, invalid OHLC, outlier returns, validate downloaded bars, 数据质量, 缺失行情.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 5184,
+      "approx_body_tokens": 1296,
+      "references": [],
+      "scripts": [
+        "data_quality.py"
+      ]
+    },
+    {
       "name": "finding-and-searching-data",
       "plugin": "fin-market-data",
       "path": "plugins/fin-market-data/skills/finding-and-searching-data/SKILL.md",
@@ -1330,6 +1521,22 @@
       "references": [],
       "scripts": [
         "identifier_checks.py"
+      ]
+    },
+    {
+      "name": "trading-calendars-and-sessions",
+      "plugin": "fin-market-data",
+      "path": "plugins/fin-market-data/skills/trading-calendars-and-sessions/SKILL.md",
+      "description": "TRIGGER - trading calendar, market sessions, early close, lunch break, holidays.US, exchange_calendars, pandas_market_calendars, DateOutOfBounds, resample has empty bars, aligning Tokyo to New York, 交易日历, 休市. Pin session bounds, compare venue calendars, and aggregate against explicit sessions. SKIP for vendor choice and price adjustments (market-data-sourcing), stale closes and bad OHLC (data-quality-validation), corporate events (corporate-actions-processing), storage and as-of joins (market-data-engineering), and settlement or lot-size rules (asia-pacific-markets).",
+      "summary": "TRIGGER - trading calendar, market sessions, early close, lunch break, holidays.US, exchange_calendars, pandas_market_calendars, DateOutOfBounds, resample has empty bars, aligning ",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-14",
+      "body_chars": 5151,
+      "approx_body_tokens": 1287,
+      "references": [],
+      "scripts": [
+        "calendars.py"
       ]
     },
     {

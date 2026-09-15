@@ -35,6 +35,8 @@ def build() -> None:
         import pdoc  # noqa: F401
     except ImportError:
         sys.exit("pdoc is not installed: pip install pdoc")
+    if SITE.resolve().parent != ROOT.resolve() or SITE.is_symlink():
+        sys.exit('refusing to replace a site directory outside the repository')
     if SITE.exists():
         shutil.rmtree(SITE)
     # One page per module, plus the package index. Google-style docstrings; the generated
@@ -76,6 +78,8 @@ def publish() -> None:
         sys.exit("site/ is empty - run without --publish first")
     with tempfile.TemporaryDirectory() as td:
         wt = Path(td) / "gh-pages"
+        if not wt.resolve().is_relative_to(Path(td).resolve()):
+            raise ValueError('docs worktree must remain inside its temporary directory')
         # Does the branch exist on the remote?
         exists = run("git", "ls-remote", "--exit-code", "--heads", "origin", "gh-pages", check=False).returncode == 0
         if exists:
@@ -87,6 +91,8 @@ def publish() -> None:
             run("git", "rm", "-rfq", ".", cwd=wt, check=False)
         for p in list(wt.iterdir()):
             if p.name != ".git":
+                if p.is_symlink() or not p.resolve().is_relative_to(wt.resolve()):
+                    raise ValueError('refusing to remove a path outside the docs worktree')
                 shutil.rmtree(p) if p.is_dir() else p.unlink()
         for p in SITE.iterdir():
             (shutil.copytree if p.is_dir() else shutil.copy2)(p, wt / p.name)

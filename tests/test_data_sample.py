@@ -173,7 +173,7 @@ def test_to_bundle_works_on_the_sample_directly_and_every_data_guard_runs_green(
     assert bundle.get("periods_per_year") == 252
 
     report = check(bundle)
-    assert {r.guard for r in report} == {"adjustment_check", "pit_fundamentals",
+    assert {r.guard for r in report} == {"adjustment_check", "data_quality", "pit_fundamentals",
                                          "survivorship_audit"}
     assert not report.failed, [str(f) for r in report for f in r.errors]
 
@@ -186,7 +186,9 @@ def test_the_same_world_in_RAW_makes_the_adjustment_guard_fail_on_purpose():
 
     s = sample(n_names=6, years=4, n_dead=2, quarters=12, adjustment=Adjustment.RAW)
     report = check(s.to_bundle(ticker=s.split_ticker))
-    assert {r.guard for r in report.failed} == {"adjustment_check"}
+    assert {r.guard for r in report.failed} == {"adjustment_check", "data_quality"}
+    quality = next(r for r in report if r.guard == 'data_quality')
+    assert any(f.where == 'extreme_returns' for f in quality.errors)
     assert any("RAW" in str(f) for r in report.failed for f in r.errors)
 
 

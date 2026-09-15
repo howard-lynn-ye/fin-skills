@@ -1,0 +1,6 @@
+1. 每五分钟抓新闻，重启以后还能继续采集，已读过的新闻不要重复提醒。这个库用哪个模块？
+2. Give me a bounded crawler for public static pages that obeys robots.txt and records changed content.
+3. Which Indian auction and price-band rules belong in a dated NSE fill simulation?
+4. A token redenominated during my backtest. How do I adjust units and avoid treating the price change as a huge loss?
+5. My crypto daily-return volatility changes when I remove weekends. What sampling and annualization assumptions need to be explicit?
+6. Check this delivered OHLCV panel for impossible highs/lows, stale prices, duplicated rows and missing sessions without filling anything.

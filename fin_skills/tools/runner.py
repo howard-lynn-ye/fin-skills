@@ -34,6 +34,8 @@ from fin_skills.api import slots as slot_vocabulary
 from fin_skills.api.base import Guard, ascii_only
 from fin_skills.api.bundle import DATA_SLOTS, _slot_of, vocabulary
 from fin_skills.tools import payloads
+from fin_skills.tools.collection import FUNCTIONS as COLLECTION_FUNCTIONS
+from fin_skills.tools.collection import definitions as collection_definitions
 from fin_skills.tools.schema import Exported, exported, excluded, input_docs, input_kinds
 
 MAX_SKILL_CHARS = 200_000
@@ -384,6 +386,7 @@ _CATALOGUE = {
     "describe_guard": describe_guard,
     "bundle_coverage": bundle_coverage,
     "check_backtest": check_backtest,
+    **COLLECTION_FUNCTIONS,
 }
 
 _TOOLS: list[dict[str, Any]] | None = None
@@ -398,7 +401,7 @@ def list_tools() -> list[dict[str, Any]]:
     """
     global _TOOLS
     if _TOOLS is None:
-        tools = _catalogue_tools()
+        tools = _catalogue_tools() + collection_definitions()
         for name in sorted(exported()):
             spec = exported()[name]
             tools.append({"name": spec.tool, "description": spec.description,

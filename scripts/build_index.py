@@ -53,6 +53,18 @@ def rewrite_counts(txt: str, skills: list) -> str:
                  rf"\g<1>{n_domain}\g<2>{n_library}\g<3>", txt, count=1)
     txt = re.sub(r"(The marketplace also lists )\w+( third-party skill packs)",
                  rf"\g<1>{fed_word}\g<2>", txt, count=1)
+    # v2 added catalog counts in badges, architecture and the scorecard.
+    for pattern, replacement in (
+        (r"Agent_Skills-\d+_", f"Agent_Skills-{n_total}_"),
+        (r"complete-skill-catalog-\d+-skills", f"complete-skill-catalog-{n_total}-skills"),
+        (r"\b\d+ Agent Skills", f"{n_total} Agent Skills"),
+        (r"\b\d+ Domain Skills", f"{n_domain} Domain Skills"),
+        (r"List all \d+ skills", f"List all {n_total} skills"),
+        (r"Complete Skill Catalog \(\d+ Skills", f"Complete Skill Catalog ({n_total} Skills"),
+        (r"\d+ Reference Deep-Dives", f"{sum(len(s['references']) for s in skills)} Reference Deep-Dives"),
+        (r"\d+ Standalone Scripts", f"{sum(len(s['scripts']) for s in skills)} Standalone Scripts"),
+    ):
+        txt = re.sub(pattern, replacement, txt)
     return txt
 
 

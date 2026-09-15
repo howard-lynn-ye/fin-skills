@@ -3,6 +3,9 @@
 Module -> owning skill:
 
     adjustment_check             market-data-sourcing
+    calendars                    trading-calendars-and-sessions
+    corporate_actions            corporate-actions-processing
+    data_quality                 data-quality-validation
     find_data_source             finding-and-searching-data
     fold_leak_test               market-data-engineering
     identifier_checks            security-master-and-symbology
@@ -13,6 +16,9 @@ Module -> owning skill:
 
 __all__ = [
     'adjustment_check',
+    'calendars',
+    'corporate_actions',
+    'data_quality',
     'find_data_source',
     'fold_leak_test',
     'identifier_checks',

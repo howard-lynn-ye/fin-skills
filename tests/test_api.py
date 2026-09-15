@@ -391,6 +391,13 @@ def build_synthesis_integrity() -> dict:
             "defect": dict(timeline=Timeline([px, rev, bad]))}
 
 
+def build_data_quality() -> dict:
+    from fin_skills.market_data.data_quality import clean_panel
+    dates, bars = clean_panel()
+    return {"clean": dict(bars=bars, dates=dates),
+            "defect": dict(bars=bars.drop(index=dates[3]), dates=dates)}
+
+
 _BUILDERS: dict[str, Callable[[], dict]] = {
     k[len("build_"):]: v for k, v in dict(globals()).items() if k.startswith("build_")}
 
