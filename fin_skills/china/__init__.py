@@ -9,6 +9,7 @@ Module -> owning skill:
     portfolio_manager            china-trading-stack
     qdii_premium_guard           china-trading-stack
     sentiment_flow_collector     china-trading-stack
+    signal_reconciler            china-trading-stack
 """
 
 __all__ = [
@@ -19,4 +20,5 @@ __all__ = [
     'portfolio_manager',
     'qdii_premium_guard',
     'sentiment_flow_collector',
+    'signal_reconciler',
 ]
