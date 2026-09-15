@@ -11,6 +11,7 @@ Module -> owning skill:
     qdii_premium_guard           china-trading-stack
     sentiment_flow_collector     china-trading-stack
     signal_reconciler            china-trading-stack
+    stock_predictability_stratifier china-trading-stack
 """
 
 __all__ = [
@@ -23,4 +24,5 @@ __all__ = [
     'qdii_premium_guard',
     'sentiment_flow_collector',
     'signal_reconciler',
+    'stock_predictability_stratifier',
 ]
