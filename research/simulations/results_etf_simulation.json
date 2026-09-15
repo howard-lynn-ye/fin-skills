@@ -1,0 +1,140 @@
+{
+  "50000": {
+    "hs300_hold": {
+      "final_equity": 71019.71445722527,
+      "total_return": 0.4203942891445054,
+      "cagr": 0.14479143601318967,
+      "annual_vol": 0.1975196617504425,
+      "max_drawdown": -0.1705531413691393,
+      "sharpe_excess": 0.7145720418027209,
+      "friction_total": 19.9764,
+      "friction_pct": 0.000399528,
+      "trades_count": 1
+    },
+    "stock_bond_60_40": {
+      "final_equity": 64021.8185085671,
+      "total_return": 0.28043637017134193,
+      "cagr": 0.09993571374684329,
+      "annual_vol": 0.11854787834883906,
+      "max_drawdown": -0.09981308926191165,
+      "sharpe_excess": 0.7283639121664031,
+      "friction_total": 51.20246,
+      "friction_pct": 0.0010240492,
+      "trades_count": 18
+    },
+    "all_weather": {
+      "final_equity": 69225.14139670342,
+      "total_return": 0.3845028279340683,
+      "cagr": 0.13355735909804922,
+      "annual_vol": 0.09419638787170126,
+      "max_drawdown": -0.07201063239684126,
+      "sharpe_excess": 1.171069965599335,
+      "friction_total": 109.33752,
+      "friction_pct": 0.0021867504,
+      "trades_count": 47
+    },
+    "momentum_rotation": {
+      "final_equity": 60118.30087937345,
+      "total_return": 0.20236601758746886,
+      "cagr": 0.07359338468768128,
+      "annual_vol": 0.24947352793765748,
+      "max_drawdown": -0.2854979347244691,
+      "sharpe_excess": 0.3425201778125375,
+      "friction_total": 1353.2782599999996,
+      "friction_pct": 0.027065565199999992,
+      "trades_count": 169
+    }
+  },
+  "200000": {
+    "hs300_hold": {
+      "final_equity": 284078.8578289011,
+      "total_return": 0.4203942891445054,
+      "cagr": 0.14479143601318967,
+      "annual_vol": 0.1975196617504425,
+      "max_drawdown": -0.1705531413691393,
+      "sharpe_excess": 0.7145720418027209,
+      "friction_total": 79.9056,
+      "friction_pct": 0.000399528,
+      "trades_count": 1
+    },
+    "stock_bond_60_40": {
+      "final_equity": 257163.78269566267,
+      "total_return": 0.28581891347831334,
+      "cagr": 0.10171505579728124,
+      "annual_vol": 0.11774336977871938,
+      "max_drawdown": -0.09799672897695158,
+      "sharpe_excess": 0.7468387466825408,
+      "friction_total": 147.66585999999998,
+      "friction_pct": 0.0007383292999999999,
+      "trades_count": 29
+    },
+    "all_weather": {
+      "final_equity": 276969.07087940845,
+      "total_return": 0.38484535439704226,
+      "cagr": 0.13366541128396014,
+      "annual_vol": 0.09383118093545462,
+      "max_drawdown": -0.07180010509971835,
+      "sharpe_excess": 1.1765964715016328,
+      "friction_total": 278.15587999999997,
+      "friction_pct": 0.0013907794,
+      "trades_count": 87
+    },
+    "momentum_rotation": {
+      "final_equity": 240604.92592267625,
+      "total_return": 0.2030246296133813,
+      "cagr": 0.07381994429569039,
+      "annual_vol": 0.2500615217078709,
+      "max_drawdown": -0.28726744394463954,
+      "sharpe_excess": 0.34361952980610194,
+      "friction_total": 5453.019199999998,
+      "friction_pct": 0.02726509599999999,
+      "trades_count": 184
+    }
+  },
+  "1000000": {
+    "hs300_hold": {
+      "final_equity": 1420631.488011334,
+      "total_return": 0.420631488011334,
+      "cagr": 0.14486509581879847,
+      "annual_vol": 0.19762713012332353,
+      "max_drawdown": -0.1706435776991652,
+      "sharpe_excess": 0.7146365074869374,
+      "friction_total": 399.78576000000004,
+      "friction_pct": 0.00039978576000000005,
+      "trades_count": 1
+    },
+    "stock_bond_60_40": {
+      "final_equity": 1286696.163500902,
+      "total_return": 0.286696163500902,
+      "cagr": 0.10200461982931563,
+      "annual_vol": 0.1175148053371183,
+      "max_drawdown": -0.09725270555669303,
+      "sharpe_excess": 0.750331219168193,
+      "friction_total": 569.1366399999999,
+      "friction_pct": 0.00056913664,
+      "trades_count": 36
+    },
+    "all_weather": {
+      "final_equity": 1387900.5921153026,
+      "total_return": 0.3879005921153025,
+      "cagr": 0.13462847981713422,
+      "annual_vol": 0.09364927305763701,
+      "max_drawdown": -0.07160968819636317,
+      "sharpe_excess": 1.1878535690087388,
+      "friction_total": 834.0719799999999,
+      "friction_pct": 0.0008340719799999999,
+      "trades_count": 107
+    },
+    "momentum_rotation": {
+      "final_equity": 1202335.2547250602,
+      "total_return": 0.2023352547250601,
+      "cagr": 0.07358280053529498,
+      "annual_vol": 0.2502598455606978,
+      "max_drawdown": -0.2879196110696653,
+      "sharpe_excess": 0.34274687767789,
+      "friction_total": 27225.80273999998,
+      "friction_pct": 0.027225802739999982,
+      "trades_count": 190
+    }
+  }
+}
