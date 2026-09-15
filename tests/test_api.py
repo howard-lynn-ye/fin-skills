@@ -398,6 +398,28 @@ def build_data_quality() -> dict:
             "defect": dict(bars=bars.drop(index=dates[3]), dates=dates)}
 
 
+def build_board_lot_feasibility() -> dict:
+    weights = {"510300": 0.20, "511010": 0.30, "518880": 0.25, "513100": 0.25}
+    return {
+        "clean": dict(capital=150000.0, target_weights=weights),
+        "defect": dict(capital=12000.0, target_weights=weights),
+    }
+
+
+def build_cash_drag() -> dict:
+    return {
+        "clean": dict(idle_cash=2000.0, total_capital=100000.0),
+        "defect": dict(idle_cash=40000.0, total_capital=100000.0),
+    }
+
+
+def build_qdii_premium() -> dict:
+    return {
+        "clean": dict(code="513100", price=1.01, iopv=1.00),
+        "defect": dict(code="513100", price=1.15, iopv=1.00),
+    }
+
+
 _BUILDERS: dict[str, Callable[[], dict]] = {
     k[len("build_"):]: v for k, v in dict(globals()).items() if k.startswith("build_")}
 

@@ -6,7 +6,7 @@
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
 [![Skills](https://img.shields.io/badge/Agent_Skills-127_个已验证技能-emerald.svg)](#6-完整技能全景目录-127-个-skills)
-[![Executable Guards](https://img.shields.io/badge/Executable_Guards-33_个可执行守卫-purple.svg)](#2-系统全景架构)
+[![Executable Guards](https://img.shields.io/badge/Executable_Guards-36_个可执行守卫-purple.svg)](#2-系统全景架构)
 [![Leak Benchmark](https://img.shields.io/badge/造假检出基准-12%2F12_全部捕获_(0误报)-success.svg)](#5-实证基准评测与大模型常见错误纠偏)
 [![Unit Tests](https://img.shields.io/badge/单元测试-1%2C600%2B_全绿通过-brightgreen.svg)](#3-项目成熟度与当前进度记分卡)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#8-开源协议与免责声明)
@@ -20,7 +20,7 @@
 
 ## 🎯 1. 这个仓库做了什么？（核心定位与执行摘要）
 
-**`fin-skills` 是专为 Claude Code、Jetski 等编程 Agent 及量化研究员打造的 Python 量化金融知识库与自动化防伪审计引擎。** 它包含 **127 个符合 Agent Skills 国际规范的技能包**（103 个按投研任务划分的领域技能 + 24 个可选的单库源码级深潜技能），以及 **33 个可通过统一 Python API (`fin_skills.api`) 或 MCP 协议直接调用的可执行代码守卫（Guards）**。
+**`fin-skills` 是专为 Claude Code、Jetski 等编程 Agent 及量化研究员打造的 Python 量化金融知识库与自动化防伪审计引擎。** 它包含 **127 个符合 Agent Skills 国际规范的技能包**（103 个按投研任务划分的领域技能 + 24 个可选的单库源码级深潜技能），以及 **36 个可通过统一 Python API (`fin_skills.api`) 或 MCP 协议直接调用的可执行代码守卫（Guards）**。
 
 ### 为什么需要这个项目？
 当前 AI + 金融开源生态呈现出极端的“两头大、中间空”：
@@ -145,6 +145,26 @@ fin_skills.catalog()                           # 列出全部 127 个技能的�
 fin_skills.load("research-integrity-guards")   # 读取指定技能完整的 SKILL.md 文本
 fin_skills.references("options-backtesting")   # 获取该技能下的所有参考文档字典
 fin_skills.find("survivorship", "universe")    # 检索同时包含指定关键词的技能
+```
+
+#### 4. 实盘交易前防御体系与 14:30 自动决策机器人 (`live_advisor_bot.py`)
+
+除事后学术审计外，`fin-skills` 提供了直接服务于每日真实下单的**交易前防御守卫与增量调仓引擎**（完整技术白皮书参见 [实盘交易与事前守卫指南](docs/guides/live_trading_and_pre_trade_guards.md)）：
+
+- **`qdii_premium`**: 监控跨境 ETF（纳指、标普）二级市场相对 IOPV 溢价率，溢价 >1.5% 减半降权，>3% 硬性熔断并重定向至避险资产（黄金 ETF 518880）；
+- **`board_lot_feasibility`**: 测算 A 股 100 股单手对小账户资金造成的颗粒度失真度（Distortion Index），超标时报警并给出最低建议启动资金；
+- **`cash_drag`**: 监控活期闲置资金拖累，自动生成 14:50-15:30 国债逆回购（GC001）操作指令，周四自动激活 3 天利息加速器；
+- **`DeadbandRebalancer`**: 5% 偏离死区节流，工资定投新增现金优先买入落后资产（零卖出换手摩擦）。
+
+```bash
+# 每日 14:30 自动巡检并输出挂单指令
+python3 research/production/live_advisor_bot.py --holdings research/production/my_holdings.json
+
+# 带 5000 元定投资金运行（增量优先平抑）
+python3 research/production/live_advisor_bot.py --holdings research/production/my_holdings.json --inflow 5000
+
+# 推送决策卡片到飞书 / 企业微信机器人
+python3 research/production/live_advisor_bot.py --webhook "https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
 ```
 
 ---

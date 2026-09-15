@@ -17,6 +17,16 @@ implementation is [docs/COMPLETION_AUDIT.md](docs/COMPLETION_AUDIT.md).
 - [Public information collection](docs/COLLECTION.md): RSS/Atom, bounded static crawling,
   SEC Form 4/13F, House PTR and Bluesky. SQLite checkpoints, revisions, retry scheduling
   and an alert outbox support repeated polling. Operators choose and start their watches.
+- **Pre-Trade Defense Guard Suite (2026-09-15)**: 36 registered API guards, adding:
+  - `qdii_premium`: Real-time IOPV secondary market premium monitoring, soft derating (1.5%), and hard circuit breaker (3.0%) capital redirection to safe-haven assets (`518880`).
+  - `board_lot_feasibility`: A-share 100-share integer lot constraints and portfolio capital granularity distortion index.
+  - `cash_drag`: Detection of unmanaged demand deposit cash drag, GC001 / R-001 overnight sweep instructions, and Thursday 3-day interest multiplier optimization.
+- **Persistent Portfolio State & Inflow-First Deadband Rebalancing**:
+  - `PortfolioState`: JSON state serialization, real-time position valuation, and transaction logging.
+  - `DeadbandRebalancer`: 5% relative drift deadband, salary deposit inflow-first allocation (zero-sell-side friction).
+- **Automated 14:30 Daily Production Advisor & Multi-Channel Webhook Bot**:
+  - `research/production/live_advisor_bot.py`: End-to-end 14:30 daily inspection with rich interactive card payloads for Feishu, WeChat Work, DingTalk, and terminal.
+  - Comprehensive user guide: [docs/guides/live_trading_and_pre_trade_guards.md](docs/guides/live_trading_and_pre_trade_guards.md).
 - Worked examples, an API documentation site, the v0.1.0 release and active CI on Ubuntu
   with Python 3.11–3.13. The original release predates this completion work.
 

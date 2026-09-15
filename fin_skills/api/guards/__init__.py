@@ -10,7 +10,9 @@ from fin_skills.api.guards import (  # noqa: F401  (import for the registration 
     adjustment_check,
     ashare_rules,
     assert_causal,
+    board_lot_feasibility,
     brinson_attribution,
+    cash_drag,
     contamination_probe,
     continuous_contract,
     cost_curve,
@@ -27,6 +29,7 @@ from fin_skills.api.guards import (  # noqa: F401  (import for the registration 
     pit_universe,
     pre_trade,
     purge_effect,
+    qdii_premium,
     reconcile_sources,
     regime_coverage,
     regime_lookahead,
@@ -43,12 +46,12 @@ from fin_skills.api.guards import (  # noqa: F401  (import for the registration 
 )
 
 __all__ = [
-    "adjustment_check", "ashare_rules", "assert_causal", "brinson_attribution",
-    "contamination_probe", "continuous_contract", "cost_curve", "cost_plausibility",
+    "adjustment_check", "ashare_rules", "assert_causal", "board_lot_feasibility", "brinson_attribution",
+    "cash_drag", "contamination_probe", "continuous_contract", "cost_curve", "cost_plausibility",
     "data_quality",
     "fold_leak_test", "fx_conventions", "greeks_convention", "join_asof_sortedness",
     "leveraged_reset", "npv_zero", "paper_account_guard", "pit_fundamentals", "pit_universe",
-    "pre_trade", "purge_effect", "reconcile_sources", "regime_coverage", "regime_lookahead",
+    "pre_trade", "purge_effect", "qdii_premium", "reconcile_sources", "regime_coverage", "regime_lookahead",
     "research_audit", "result_manifest", "rf_convention", "safe_asof", "spa_test",
     "survivorship_audit", "synthesis_integrity", "trial_ledger", "warmup_probe",
     "weight_traps"

@@ -4,7 +4,7 @@
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
 [![Skills](https://img.shields.io/badge/Agent_Skills-127_Verified-emerald.svg)](#6-complete-skill-catalog-127-skills)
-[![Executable Guards](https://img.shields.io/badge/Executable_Guards-33_Guards-purple.svg)](#2-executable-audit-engine-fin_skillsapi)
+[![Executable Guards](https://img.shields.io/badge/Executable_Guards-36_Guards-purple.svg)](#2-executable-audit-engine-fin_skillsapi)
 [![Leak Benchmark](https://img.shields.io/badge/Leak_Benchmark-12%2F12_Caught_(0_FP)-success.svg)](#5-empirical-benchmarks--maturity-status)
 [![Unit Tests](https://img.shields.io/badge/Tests-pytest-brightgreen.svg)](#5-empirical-benchmarks--maturity-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
@@ -31,7 +31,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **33 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **43 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit & Pre-Trade Defense Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API (including live execution guards: `qdii_premium`, `board_lot_feasibility`, `cash_drag`), plus **43 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 
@@ -44,7 +44,7 @@ flowchart TD
     end
 
     subgraph TIER2 ["2. 🛡️ Executable Research Integrity Engine (fin_skills.api)"]
-        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["33 Executable Guards<br/>GuardResult + Diagnostic Summary"]
+        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["36 Executable Guards<br/>GuardResult + Diagnostic Summary"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
@@ -68,7 +68,7 @@ flowchart TD
 | Dimension | Current Milestone / Metric | Verification & Engineering Status |
 | :--- | :--- | :--- |
 | **Knowledge Coverage** | **127 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
-| **Executable Code Guards** | **33 Unified Guards** (`fin_skills.api`)<br>**111 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. The standalone demo/encoding check is `scripts/check_scripts.py`; platform results are listed in the completion audit. |
+| **Executable Code Guards** | **36 Unified Guards** (`fin_skills.api`)<br>**111 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. Features newly added Pre-Trade Defense guards: `qdii_premium`, `board_lot_feasibility`, and `cash_drag`. |
 | **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught (100%)**<br>**0 False Positives** on Clean Data | **Benchmark Verified** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,565-day synthetic world with delistings and splits; timings for this machine are recorded in the generated benchmark output. |
 | **Agent Routing (`eval_blind`)** | **92/108 historical-label matches; 16/16 new-capability queries** | Independent listing-only evaluation on 2026-09-14. Old labels include superseded broad routes; the new set is a small smoke test. [Inputs, answers and limitations](evals/2026-09-14/README.md). |
 | **Test Suite & CI Rigor** | **Repository-wide default test suite** | Run `pytest -q`; current measured results are recorded in the [acceptance audit](docs/COMPLETION_AUDIT.md). Zero drift enforced between `SKILL.md` sources, `catalog/index.json`, README counts, and generated Python modules. |

@@ -1,0 +1,211 @@
+"""QDII Premium & IOPV Circuit Breaker Guard for Cross-Border ETFs in China.
+
+In mainland China, cross-border ETFs (such as Nasdaq 100 513100, S&P 500 513500,
+Nikkei 225 513520) frequently encounter foreign exchange quota limits (QDII quota).
+When creation (申购) is suspended or limited, secondary market retail frenzy drives
+trading prices significantly above the Indicative Optimized Portfolio Value (IOPV).
+
+Key risks:
+1. Premium Collapse: When quotas are reopened or market sentiment cools, the 5%~15%
+   premium vanishes instantly, causing severe unhedged losses regardless of underlying index.
+2. Naive Backtest Fiction: Western/naive backtests fill at NAV or unadjusted close,
+   ignoring that real buyers paid a 10% premium.
+
+This module provides real-time premium calculation, risk tiering, and allocation redirection.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from decimal import Decimal
+from typing import Any, Mapping
+
+# Known cross-border / QDII ETF identifiers (Shenzhen & Shanghai)
+KNOWN_QDII_ETFS: dict[str, str] = {
+    "513100": "Nasdaq 100 ETF",
+    "513500": "S&P 500 ETF",
+    "513050": "China Internet ETF",
+    "513180": "Hang Seng Tech ETF",
+    "510900": "Hang Seng China Enterprises ETF",
+    "513520": "Nikkei 225 ETF",
+    "513010": "Euro Stoxx 50 ETF",
+    "159941": "Nasdaq 100 ETF (SZ)",
+    "159509": "Nasdaq Tech ETF",
+    "159920": "Hang Seng ETF (SZ)",
+    "159655": "S&P 500 ETF (SZ)",
+    "159518": "Sino-Korea Semi ETF",
+}
+
+# Default risk thresholds
+DEFAULT_MAX_ALLOWED_PREMIUM = 0.015   # 1.5%: Acceptable tracking band
+DEFAULT_HARD_CIRCUIT_PREMIUM = 0.030  # 3.0%: Hard circuit breaker threshold
+DEFAULT_DISCOUNT_THRESHOLD = -0.010   # -1.0%: Discount opportunity threshold
+
+
+@dataclass(frozen=True)
+class QDIIPremiumResult:
+    """Evaluation outcome for a QDII ETF purchase order."""
+    code: str
+    name: str
+    price: float
+    iopv: float
+    premium_rate: float
+    status: str  # 'NORMAL', 'DERATE_50', 'HARD_CIRCUIT', 'DISCOUNT_OPPORTUNITY', 'NON_QDII'
+    allowed_weight_factor: float  # 1.0 (full), 0.5 (half), 0.0 (blocked)
+    recommended_action: str
+    redirect_target: str | None
+    message: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "code": self.code,
+            "name": self.name,
+            "price": self.price,
+            "iopv": self.iopv,
+            "premium_rate": round(self.premium_rate, 4),
+            "premium_pct": f"{round(self.premium_rate * 100, 2)}%",
+            "status": self.status,
+            "allowed_weight_factor": self.allowed_weight_factor,
+            "recommended_action": self.recommended_action,
+            "redirect_target": self.redirect_target,
+            "message": self.message,
+        }
+
+
+def is_qdii_etf(code: str) -> bool:
+    """Check if the given ticker is a recognized QDII cross-border ETF."""
+    clean_code = code.split(".")[0].strip()
+    return clean_code in KNOWN_QDII_ETFS
+
+
+def calculate_premium_rate(price: float, iopv: float) -> float:
+    """Calculate the secondary market premium/discount rate relative to IOPV.
+
+    Formula: (Price - IOPV) / IOPV
+    Positive = Premium (溢价, trading above net asset value)
+    Negative = Discount (折价, trading below net asset value)
+    """
+    if iopv <= 0:
+        raise ValueError(f"IOPV must be strictly positive, got {iopv}")
+    if price <= 0:
+        raise ValueError(f"Price must be strictly positive, got {price}")
+    return (price - iopv) / iopv
+
+
+def evaluate_qdii_order(
+    code: str,
+    price: float,
+    iopv: float | None = None,
+    premium_rate: float | None = None,
+    max_allowed_premium: float = DEFAULT_MAX_ALLOWED_PREMIUM,
+    hard_circuit_premium: float = DEFAULT_HARD_CIRCUIT_PREMIUM,
+    fallback_safety_asset: str = "518880",  # Gold ETF as default safe haven
+) -> QDIIPremiumResult:
+    """Evaluate whether a proposed QDII ETF purchase passes the premium guard.
+
+    Args:
+        code: ETF ticker (e.g. '513100' or '513500.SH')
+        price: Current secondary market price
+        iopv: Indicative Optimized Portfolio Value (if known)
+        premium_rate: Direct premium rate if already pre-computed
+        max_allowed_premium: Warning threshold (default 1.5%)
+        hard_circuit_premium: Hard circuit breaker threshold (default 3.0%)
+        fallback_safety_asset: Asset ticker to receive redirected capital
+
+    Returns:
+        QDIIPremiumResult with detailed decision and allocation multiplier.
+    """
+    clean_code = code.split(".")[0].strip()
+    name = KNOWN_QDII_ETFS.get(clean_code, f"ETF-{clean_code}")
+
+    if not is_qdii_etf(clean_code):
+        # Domestic ETF: premium guard is non-blocking (IOPV drift typically < 0.1%)
+        prem = premium_rate if premium_rate is not None else 0.0
+        return QDIIPremiumResult(
+            code=clean_code,
+            name=name,
+            price=price,
+            iopv=iopv if iopv is not None else price,
+            premium_rate=prem,
+            status="NON_QDII",
+            allowed_weight_factor=1.0,
+            recommended_action="EXECUTE_NORMAL",
+            redirect_target=None,
+            message="Domestic asset: not subject to cross-border QDII quota limits.",
+        )
+
+    if premium_rate is None:
+        if iopv is None:
+            raise ValueError(f"Either iopv or premium_rate must be provided for QDII ETF {code}")
+        calculated_prem = calculate_premium_rate(price, iopv)
+    else:
+        calculated_prem = float(premium_rate)
+        if iopv is None:
+            iopv = price / (1.0 + calculated_prem)
+
+    prem_pct_str = f"{calculated_prem * 100:.2f}%"
+
+    if calculated_prem > hard_circuit_premium:
+        return QDIIPremiumResult(
+            code=clean_code,
+            name=name,
+            price=price,
+            iopv=iopv,
+            premium_rate=calculated_prem,
+            status="HARD_CIRCUIT",
+            allowed_weight_factor=0.0,
+            recommended_action="CIRCUIT_BREAKER_BLOCK",
+            redirect_target=fallback_safety_asset,
+            message=(
+                f"CRITICAL: {name} ({clean_code}) trading at extreme premium of {prem_pct_str} "
+                f"(> limit {hard_circuit_premium*100:.1f}%). Secondary market bubble detected. "
+                f"Hard block executed. Capital redirected to {fallback_safety_asset}."
+            ),
+        )
+
+    if calculated_prem > max_allowed_premium:
+        return QDIIPremiumResult(
+            code=clean_code,
+            name=name,
+            price=price,
+            iopv=iopv,
+            premium_rate=calculated_prem,
+            status="DERATE_50",
+            allowed_weight_factor=0.5,
+            recommended_action="DERATE_ALLOCATION",
+            redirect_target=fallback_safety_asset,
+            message=(
+                f"WARNING: {name} ({clean_code}) premium of {prem_pct_str} exceeds tolerance "
+                f"{max_allowed_premium*100:.1f}%. Reducing allocation by 50%. "
+                f"Redirect remaining 50% to {fallback_safety_asset}."
+            ),
+        )
+
+    if calculated_prem < DEFAULT_DISCOUNT_THRESHOLD:
+        return QDIIPremiumResult(
+            code=clean_code,
+            name=name,
+            price=price,
+            iopv=iopv,
+            premium_rate=calculated_prem,
+            status="DISCOUNT_OPPORTUNITY",
+            allowed_weight_factor=1.0,
+            recommended_action="EXECUTE_FAVORABLE",
+            redirect_target=None,
+            message=(
+                f"FAVORABLE: {name} ({clean_code}) trading at discount of {prem_pct_str}. "
+                f"Buying below real-time NAV. Full execution approved."
+            ),
+        )
+
+    return QDIIPremiumResult(
+        code=clean_code,
+        name=name,
+        price=price,
+        iopv=iopv,
+        premium_rate=calculated_prem,
+        status="NORMAL",
+        allowed_weight_factor=1.0,
+        recommended_action="EXECUTE_NORMAL",
+        redirect_target=None,
+        message=f"{name} ({clean_code}) premium {prem_pct_str} within safe range. Full execution approved.",
+    )
