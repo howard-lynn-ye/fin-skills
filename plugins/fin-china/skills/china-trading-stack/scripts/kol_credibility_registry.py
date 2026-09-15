@@ -63,13 +63,17 @@ EMBEDDED_KOL_PROFILES = {
     "财联社": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 155620, "calls": 108, "win_rate_5d": 0.426, "bayesian_wr": 0.430, "mean_ret_5d": -0.0066, "payoff": 0.88},
     "新浪财经": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 24478, "calls": 95, "win_rate_5d": 0.484, "bayesian_wr": 0.485, "mean_ret_5d": -0.0021, "payoff": 0.95},
 
-    # Verified Contrarian Indicators / 反向明灯 (High followers, chronic FOMO top buyers <40% win rate)
-    "钟华守正出奇": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 425254, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0133, "payoff": 0.65},
+    # Verified Contrarian Indicators / 反向明灯 (High followers, chronic FOMO top buyers <=40% win rate)
+    "钟华守正出奇": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 425254, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0133, "payoff": 0.64},
+    "朱酒": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 404287, "calls": 17, "win_rate_5d": 0.353, "bayesian_wr": 0.388, "mean_ret_5d": -0.0150, "payoff": 0.43},
+    "青侨阳光": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 378862, "calls": 15, "win_rate_5d": 0.133, "bayesian_wr": 0.256, "mean_ret_5d": -0.0314, "payoff": 0.69},
+    "二马由之": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 278202, "calls": 14, "win_rate_5d": 0.286, "bayesian_wr": 0.358, "mean_ret_5d": -0.0181, "payoff": 0.39},
+    "ericwarn丁宁": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 256643, "calls": 13, "win_rate_5d": 0.308, "bayesian_wr": 0.375, "mean_ret_5d": -0.0184, "payoff": 0.61},
+    "鑫鑫-投资": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 222823, "calls": 40, "win_rate_5d": 0.200, "bayesian_wr": 0.250, "mean_ret_5d": -0.0308, "payoff": 0.47},
+    "价值事务所": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 198687, "calls": 18, "win_rate_5d": 0.389, "bayesian_wr": 0.415, "mean_ret_5d": -0.0046, "payoff": 0.99},
     "东先生": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 150267, "calls": 10, "win_rate_5d": 0.400, "bayesian_wr": 0.433, "mean_ret_5d": -0.0284, "payoff": 0.52},
     "冷小二": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 105725, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0191, "payoff": 0.58},
     "做个IT价投人": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 97352, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0033, "payoff": 0.79},
-    "浊静徐清": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 60683, "calls": 13, "win_rate_5d": 0.385, "bayesian_wr": 0.417, "mean_ret_5d": -0.0150, "payoff": 0.61},
-    "最后遇到你": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 52696, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0076, "payoff": 0.71},
     "王增森": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47021, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0796, "payoff": 0.31},
 }
 
