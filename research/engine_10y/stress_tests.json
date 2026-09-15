@@ -1,0 +1,126 @@
+{
+  "2015_crash_and_circuit_breaker": {
+    "meta": {
+      "name": "2015 股灾与千股跌停熔断",
+      "start": "2015-06-12",
+      "end": "2016-01-29",
+      "desc": "A股5178点见顶，经历三次去杠杆踩踏暴跌与2016年1月熔断测试"
+    },
+    "trading_days": 157,
+    "metrics": {
+      "benchmark_hs300": {
+        "period_return": -0.5109437368549103,
+        "period_maxdd": -0.5288059003160848
+      },
+      "global_60_40": {
+        "period_return": -0.19161919370710323,
+        "period_maxdd": -0.2107479876727209
+      },
+      "classic_all_weather": {
+        "period_return": -0.19098354397585182,
+        "period_maxdd": -0.2050130109290602
+      },
+      "dynamic_risk_parity": {
+        "period_return": -0.07888696853205723,
+        "period_maxdd": -0.08702489398441744
+      },
+      "smart_all_weather": {
+        "period_return": -0.09018678627484211,
+        "period_maxdd": -0.09755870726694492
+      }
+    }
+  },
+  "2018_us_china_trade_war": {
+    "meta": {
+      "name": "2018 中美贸易战单边大熊市",
+      "start": "2018-01-29",
+      "end": "2018-12-28",
+      "desc": "中美贸易摩擦全面爆发，去杠杆叠加外部冲击，A股全年单边阴跌至2440点"
+    },
+    "trading_days": 224,
+    "metrics": {
+      "benchmark_hs300": {
+        "period_return": -0.3367827777707134,
+        "period_maxdd": -0.33867941957533754
+      },
+      "global_60_40": {
+        "period_return": -0.0983728347768128,
+        "period_maxdd": -0.11440797941401859
+      },
+      "classic_all_weather": {
+        "period_return": -0.0872583536170366,
+        "period_maxdd": -0.09656050228487444
+      },
+      "dynamic_risk_parity": {
+        "period_return": -0.0449466692006123,
+        "period_maxdd": -0.05607980074584886
+      },
+      "smart_all_weather": {
+        "period_return": -0.049961476756020806,
+        "period_maxdd": -0.062286619434457756
+      }
+    }
+  },
+  "2020_covid_liquidity_shock": {
+    "meta": {
+      "name": "2020 疫情全球流动性闪崩",
+      "start": "2020-01-20",
+      "end": "2020-03-23",
+      "desc": "国内疫情暴发开盘千股跌停，美股10天熔断4次，全球大类资产流动性无差别抛售"
+    },
+    "trading_days": 40,
+    "metrics": {
+      "benchmark_hs300": {
+        "period_return": -0.17746785235069462,
+        "period_maxdd": -0.18168088601930824
+      },
+      "global_60_40": {
+        "period_return": -0.10247811367027115,
+        "period_maxdd": -0.1257722900283572
+      },
+      "classic_all_weather": {
+        "period_return": -0.08091017681193635,
+        "period_maxdd": -0.09572480497628166
+      },
+      "dynamic_risk_parity": {
+        "period_return": -0.0789669806232024,
+        "period_maxdd": -0.10144764844387626
+      },
+      "smart_all_weather": {
+        "period_return": -0.08331049459009177,
+        "period_maxdd": -0.10333033133377173
+      }
+    }
+  },
+  "2022_fed_tightening_stagflation": {
+    "meta": {
+      "name": "2022 美联储激进加息与股债双杀",
+      "start": "2022-01-04",
+      "end": "2022-10-31",
+      "desc": "俄乌冲突引发全球通胀危机，美联储单次加息75bps，全球权益与债券同时大幅杀估值"
+    },
+    "trading_days": 198,
+    "metrics": {
+      "benchmark_hs300": {
+        "period_return": -0.2952840280388679,
+        "period_maxdd": -0.2952840280388679
+      },
+      "global_60_40": {
+        "period_return": -0.08375547844838738,
+        "period_maxdd": -0.09321454920738094
+      },
+      "classic_all_weather": {
+        "period_return": -0.0550425061926515,
+        "period_maxdd": -0.05907926757668794
+      },
+      "dynamic_risk_parity": {
+        "period_return": -0.061310677809352065,
+        "period_maxdd": -0.063858196351354
+      },
+      "smart_all_weather": {
+        "period_return": -0.06149352407470399,
+        "period_maxdd": -0.0630380039609117
+      }
+    }
+  }
+}
