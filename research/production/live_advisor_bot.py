@@ -53,6 +53,8 @@ from fin_skills.china.portfolio_manager import (HoldingRecord, PortfolioState,
                                                TradeTicket,
                                                plan_portfolio_rebalance)
 from fin_skills.china.qdii_premium_guard import evaluate_qdii_order
+from fin_skills.china.sentiment_flow_collector import (apply_sentiment_overlay,
+                                                      collect_daily_market_intel)
 
 GLOBAL_ETF_UNIVERSE = {
     "510300": {"secid": "1.510300", "name": "沪深300ETF", "category": "A股核心大盘", "role": "国内核心资产"},
@@ -254,6 +256,7 @@ def run_live_advisor(
     webhook_url: str | None = None,
     confirm_execution: bool = False,
     initial_capital_if_empty: float = 100000.0,
+    sentiment_tilt: bool = True,
 ) -> dict[str, Any]:
     """Execute end-to-end 14:30 daily inspection and advisory loop."""
     today_str = datetime.now().strftime("%Y-%m-%d")
@@ -277,8 +280,20 @@ def run_live_advisor(
     price_map = {code: data["price"] for code, data in market_snapshot.items()}
     state.recalculate(price_map)
 
-    # 3. Base target weights
-    target_weights = compute_target_weights(profile, market_snapshot)
+    # 3. Base target weights & Point-in-Time Market Intel
+    base_target_weights = compute_target_weights(profile, market_snapshot)
+    intel_report = collect_daily_market_intel(
+        cutoff_time="14:30:00",
+        market_snapshot=market_snapshot,
+    )
+    if sentiment_tilt and intel_report.asset_sentiments:
+        target_weights = apply_sentiment_overlay(
+            base_weights=base_target_weights,
+            asset_sentiments=intel_report.asset_sentiments,
+            max_tilt=0.015,
+        )
+    else:
+        target_weights = dict(base_target_weights)
 
     # 4. Pre-Trade Guard 1: QDII Premium Guard
     # Check QDII ETFs for secondary market bubbles
@@ -405,6 +420,10 @@ def run_live_advisor(
     lines.append(f"- **增益要点**: {cash_plan.notes}")
     lines.append("")
 
+    # Market Intel & Sentiment Intel Section
+    lines.append(intel_report.to_markdown())
+    lines.append("")
+
     # Board lot note
     if not board_res.passed or board_res.evidence.get("feasibility_status") == "MODERATE_DISTORTION":
         lines.append(f"> ⚠️ **资金颗粒度提示**: {board_res.findings[0].message}")
@@ -449,6 +468,7 @@ def run_live_advisor(
         "state": state,
         "plan": plan,
         "cash_plan": cash_plan,
+        "intel_report": intel_report,
         "markdown": full_markdown,
     }
 
@@ -462,6 +482,7 @@ def main():
     parser.add_argument("--force", action="store_true", help="Force rebalance bypassing deadbands")
     parser.add_argument("--confirm", action="store_true", help="Confirm execution and update holdings.json")
     parser.add_argument("--webhook", default=None, help="Webhook URL (Feishu / WeCom / DingTalk)")
+    parser.add_argument("--no-sentiment", action="store_true", help="Disable sentiment overlay tilting")
     args = parser.parse_args()
 
     result = run_live_advisor(
@@ -472,6 +493,7 @@ def main():
         webhook_url=args.webhook,
         confirm_execution=args.confirm,
         initial_capital_if_empty=args.capital,
+        sentiment_tilt=not args.no_sentiment,
     )
     print(result["markdown"])
 
