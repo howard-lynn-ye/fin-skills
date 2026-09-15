@@ -25,11 +25,31 @@ import sys
 import time
 import urllib.request
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, time as dtime
+from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
 logger = logging.getLogger("sentiment_flow")
+
+try:
+    from fin_skills.china.data_cleaning_filter import (
+        DataQualityAuditor,
+        TextAuditResult,
+        filter_high_signal_posts,
+    )
+except ImportError:
+    try:
+        from data_cleaning_filter import (
+            DataQualityAuditor,
+            TextAuditResult,
+            filter_high_signal_posts,
+        )
+    except ImportError:
+        from .data_cleaning_filter import (
+            DataQualityAuditor,
+            TextAuditResult,
+            filter_high_signal_posts,
+        )
 
 # Core 8 ETF Universe metadata
 DEFAULT_ETF_UNIVERSE = {
@@ -64,6 +84,9 @@ class MacroNewsItem:
     category: str = "GENERAL"
     bias: str = "NEUTRAL"  # 'EXPANSION_BIAS', 'DEFENSIVE_BIAS', 'NEUTRAL'
     urgency: str = "NORMAL"  # 'HIGH', 'NORMAL', 'LOW'
+    quality_score: float = 1.0
+    information_density: float = 1.0
+    audit_flags: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -118,6 +141,7 @@ class MarketIntelReport:
     defensive_alert: bool = False
     defensive_alert_msg: str = ""
     tilt_recommendations: dict[str, float] = field(default_factory=dict)
+    cleaning_stats: dict[str, int] = field(default_factory=dict)
 
     def to_markdown(self) -> str:
         """Format a rich, human-readable markdown section for advisor bots."""
@@ -155,6 +179,17 @@ class MarketIntelReport:
                     f"| `{code}` | {s.name} | {s.temperature_label} | {s.discussion_heat:.1f}x | {s.sentiment_zscore:+.1f} | **{tilt_pct}** | {s.rationale} |"
                 )
 
+        # 4. Data cleaning audit summary
+        if self.cleaning_stats and self.cleaning_stats.get("total_evaluated", 0) > 0:
+            total = self.cleaning_stats.get("total_evaluated", 0)
+            passed = self.cleaning_stats.get("clean_valid_passed", 0)
+            spam = self.cleaning_stats.get("spam_rejected", 0)
+            clickbait = self.cleaning_stats.get("clickbait_rejected", 0)
+            noise = self.cleaning_stats.get("too_short_rejected", 0) + self.cleaning_stats.get("low_density_rejected", 0)
+            lines.append(
+                f"\n🛡️ **数据源清洗与防误导审计**: 评估文本 `{total}` 条 | 高价值保留 `{passed}` 条 | 拦截导流广告 `{spam}` 条 | 拦截虚假爆料 `{clickbait}` 条 | 剔除口水噪音 `{noise}` 条"
+            )
+
         if self.defensive_alert:
             lines.append(f"\n> 🚨 **系统性防守警报**: {self.defensive_alert_msg}")
 
@@ -166,9 +201,14 @@ def fetch_live_macro_news(
     timeout: float = 5.0,
     cutoff_time: str = "14:30:00",
     today_only: bool = True,
+    auditor: DataQualityAuditor | None = None,
+    cleaning_stats: dict[str, int] | None = None,
 ) -> list[MacroNewsItem]:
     """Fetch live breaking macro news from high-signal public feeds up to cutoff_time."""
-    today_str = datetime.now().strftime("%Y-%m-%d")
+    if auditor is None:
+        auditor = DataQualityAuditor(min_clean_length=10, min_quality_threshold=0.30)
+
+    today_str = (datetime.now(timezone.utc) + timedelta(hours=8)).strftime("%Y-%m-%d")
     items: list[MacroNewsItem] = []
 
     # Source 1: Sina 7x24 global financial live feed
@@ -187,12 +227,10 @@ def fetch_live_macro_news(
         for it in feed_list:
             create_time = it.get("create_time", "")
             raw_text = it.get("rich_text", "") or it.get("text", "")
-            clean_text = " ".join(raw_text.split()).strip()
-
-            if not clean_text:
+            if not raw_text:
                 continue
 
-            # Point-in-Time filter
+            # Point-in-Time filter (Beijing time)
             if today_only and today_str not in create_time:
                 # If outside today, skip
                 continue
@@ -201,6 +239,28 @@ def fetch_live_macro_news(
             if cutoff_time and time_part > cutoff_time:
                 # Discard items after 14:30 to avoid look-ahead
                 continue
+
+            if cleaning_stats is not None:
+                cleaning_stats["total_evaluated"] = cleaning_stats.get("total_evaluated", 0) + 1
+
+            # Data Quality Audit (filter out spam, clickbait rumors, low density)
+            audit_res = auditor.audit_text(raw_text)
+            if not audit_res.is_valid:
+                if cleaning_stats is not None:
+                    reason = audit_res.rejection_reason
+                    if reason == "SPAM_SOLICITATION":
+                        cleaning_stats["spam_rejected"] = cleaning_stats.get("spam_rejected", 0) + 1
+                    elif reason == "CLICKBAIT_RUMOR":
+                        cleaning_stats["clickbait_rejected"] = cleaning_stats.get("clickbait_rejected", 0) + 1
+                    elif reason in ("TOO_SHORT_NOISE", "EMPTY_TEXT"):
+                        cleaning_stats["too_short_rejected"] = cleaning_stats.get("too_short_rejected", 0) + 1
+                    else:
+                        cleaning_stats["low_density_rejected"] = cleaning_stats.get("low_density_rejected", 0) + 1
+                continue
+
+            clean_text = audit_res.cleaned_text
+            if cleaning_stats is not None:
+                cleaning_stats["clean_valid_passed"] = cleaning_stats.get("clean_valid_passed", 0) + 1
 
             # Keyword matching for macro/financial relevance
             matched_keywords = [k for k in MACRO_KEYWORDS if k in clean_text]
@@ -233,6 +293,9 @@ def fetch_live_macro_news(
                     source="新浪7x24快讯",
                     category=category,
                     bias=bias,
+                    quality_score=audit_res.quality_score,
+                    information_density=audit_res.information_density,
+                    audit_flags=audit_res.flags,
                 )
             )
             if len(items) >= max_items:
@@ -249,6 +312,9 @@ def fetch_live_macro_news(
                 source="政策公告快讯",
                 category="MONETARY_POLICY",
                 bias="EXPANSION_BIAS",
+                quality_score=0.85,
+                information_density=0.80,
+                audit_flags=["OFFLINE_FALLBACK"],
             ),
             MacroNewsItem(
                 timestamp=f"{today_str} 13:40:00",
@@ -256,6 +322,9 @@ def fetch_live_macro_news(
                 source="交易所公告",
                 category="REGULATORY",
                 bias="DEFENSIVE_BIAS",
+                quality_score=0.90,
+                information_density=0.85,
+                audit_flags=["OFFLINE_FALLBACK"],
             ),
         ]
 
@@ -351,6 +420,9 @@ def compute_asset_sentiments(
     universe: dict[str, dict[str, Any]] | None = None,
     market_snapshot: dict[str, dict[str, Any]] | None = None,
     stock_prediction_dir: str | Path | None = None,
+    raw_social_posts: list[dict[str, Any] | str] | None = None,
+    cleaning_stats: dict[str, int] | None = None,
+    auditor: DataQualityAuditor | None = None,
 ) -> dict[str, AssetSentimentMetric]:
     """Compute Point-in-Time sentiment metrics and recommended weight tilts for target ETFs.
 
@@ -369,6 +441,45 @@ def compute_asset_sentiments(
     if universe is None:
         universe = DEFAULT_ETF_UNIVERSE
 
+    post_sentiments_by_code: dict[str, list[float]] = {}
+    post_heat_by_code: dict[str, int] = {}
+
+    if raw_social_posts:
+        if auditor is None:
+            auditor = DataQualityAuditor()
+        clean_posts, p_stats = filter_high_signal_posts(raw_social_posts, auditor)
+        if cleaning_stats is not None:
+            for k, v in p_stats.items():
+                cleaning_stats[k] = cleaning_stats.get(k, 0) + v
+
+        for p in clean_posts:
+            txt = p.cleaned_text.lower()
+            for code, meta in universe.items():
+                name_stem = meta.get("name", "").replace("ETF", "").lower()
+                matched = (code in txt) or (bool(name_stem) and name_stem in txt)
+                if not matched:
+                    if code == "510300" and ("沪深300" in txt or "大盘" in txt):
+                        matched = True
+                    elif code == "510500" and ("中证500" in txt or "中盘" in txt or "成长" in txt):
+                        matched = True
+                    elif code == "510880" and ("红利" in txt or "高股息" in txt or "分红" in txt):
+                        matched = True
+                    elif code == "518880" and ("黄金" in txt or "金价" in txt):
+                        matched = True
+                    elif code == "511010" and ("国债" in txt or "债市" in txt or "利率债" in txt):
+                        matched = True
+                    elif code == "513100" and ("纳指" in txt or "纳斯达克" in txt):
+                        matched = True
+                    elif code == "513500" and ("标普" in txt or "美股" in txt):
+                        matched = True
+                    elif code == "510900" and ("恒生" in txt or "港股" in txt):
+                        matched = True
+
+                if matched:
+                    # Weight by cleaned quality score to prioritize institutional-grade logic
+                    post_sentiments_by_code.setdefault(code, []).append(p.sentiment_polarity * p.quality_score)
+                    post_heat_by_code[code] = post_heat_by_code.get(code, 0) + 1
+
     results = {}
 
     for code, meta in universe.items():
@@ -383,8 +494,38 @@ def compute_asset_sentiments(
         tilt = 0.0
         rationale = "舆情与热度处于正常区间，维持基准平价"
 
+        # Check audited social signals first
+        if code in post_sentiments_by_code and post_sentiments_by_code[code]:
+            social_scores = post_sentiments_by_code[code]
+            avg_polarity = sum(social_scores) / len(social_scores)
+            count = len(social_scores)
+            heat = round(min(3.0, 1.0 + (count * 0.2)), 2)
+            zscore = round(max(-3.0, min(3.0, avg_polarity * 2.5)), 2)
+            score = round(avg_polarity, 3)
+
+            if zscore > 2.0 and heat > 1.8:
+                label = "极度贪婪(FOMO)"
+                tilt = -0.015
+                rationale = f"清洗后社区讨论过热(Z={zscore:+.1f}, 热度{heat:.1f}x)，警惕FOMO接盘顶，执行反向刹车"
+            elif zscore < -1.8 and heat > 1.5:
+                label = "极度恐慌(冰点)"
+                tilt = +0.015
+                rationale = f"清洗后舆情出现恐慌割肉盘(Z={zscore:+.1f})，深度价值与安全边际凸显，逆向吸筹"
+            elif zscore > 0.8:
+                label = "偏热活跃"
+                tilt = 0.0 if "QDII" in category else +0.005
+                rationale = f"社区看好论据充实(Z={zscore:+.1f})，基本面指标支撑良好"
+            elif zscore < -0.8:
+                label = "低迷偏冷"
+                tilt = +0.005 if code in ("518880", "511010", "510880") else 0.0
+                rationale = f"短期情绪低迷淡静(Z={zscore:+.1f})，防守型配置维持"
+            else:
+                label = "中性均衡"
+                tilt = 0.0
+                rationale = f"社区讨论中性理性(Z={zscore:+.1f})，维持基准平价"
+
         # Check market data context if available
-        if market_snapshot and code in market_snapshot:
+        elif market_snapshot and code in market_snapshot:
             item = market_snapshot[code]
             daily_pct = item.get("daily_pct", 0.0)
             vol = item.get("vol_60d", 0.15)
@@ -510,19 +651,40 @@ def apply_sentiment_overlay(
 def collect_daily_market_intel(
     cutoff_time: str = "14:30:00",
     market_snapshot: dict[str, dict[str, Any]] | None = None,
+    raw_social_posts: list[dict[str, Any] | str] | None = None,
     timeout: float = 5.0,
+    auditor: DataQualityAuditor | None = None,
 ) -> MarketIntelReport:
     """End-to-end collection and aggregation pipeline for 14:30 live advisory loop."""
     today_str = datetime.now().strftime("%Y-%m-%d")
+    cleaning_stats = {
+        "total_evaluated": 0,
+        "clean_valid_passed": 0,
+        "spam_rejected": 0,
+        "clickbait_rejected": 0,
+        "too_short_rejected": 0,
+        "low_density_rejected": 0,
+    }
 
-    # 1. Fetch live macro news
-    macro_items = fetch_live_macro_news(max_items=6, timeout=timeout, cutoff_time=cutoff_time)
+    # 1. Fetch live macro news with data quality auditing
+    macro_items = fetch_live_macro_news(
+        max_items=6,
+        timeout=timeout,
+        cutoff_time=cutoff_time,
+        auditor=auditor,
+        cleaning_stats=cleaning_stats,
+    )
 
     # 2. Fetch live capital flows
     cap_flows = fetch_live_capital_flows(timeout=timeout, cutoff_time=cutoff_time)
 
-    # 3. Compute asset sentiments
-    sentiments = compute_asset_sentiments(market_snapshot=market_snapshot)
+    # 3. Compute asset sentiments incorporating audited social posts
+    sentiments = compute_asset_sentiments(
+        market_snapshot=market_snapshot,
+        raw_social_posts=raw_social_posts,
+        cleaning_stats=cleaning_stats,
+        auditor=auditor,
+    )
 
     # 4. Check for system-level defensive alerts
     defensive_alert = False
@@ -545,6 +707,7 @@ def collect_daily_market_intel(
         defensive_alert=defensive_alert,
         defensive_alert_msg=alert_msg,
         tilt_recommendations=tilts,
+        cleaning_stats=cleaning_stats,
     )
 
 

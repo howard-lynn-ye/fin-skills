@@ -1,0 +1,282 @@
+"""Institutional-Grade Financial Text Cleaning, De-noising & Anti-Misinformation Filter.
+
+Why this exists:
+Raw scraped financial text (especially from retail forums like Xueqiu, Guba, social media, and clickbait media)
+is contaminated by:
+1. Spam & Solicitations (引流广告、加V、荐股进群、翻倍黑马战法)
+2. Sensationalist Clickbait & Unverified Rumors (震惊体、小作文、内部绝密爆料)
+3. Emotional Venting & Sloganeering (无逻辑谩骂、吃面、牛逼、发泄、冲冲冲)
+4. Sarcasm & Cynical Inversion (反讽与阴阳怪气: '主力真是大善人', '跌得太棒了')
+5. Low-Information Density (没有任何财务指标、估值数字或因果论据的空洞口水帖)
+
+This module implements a rigorous multi-stage audit pipeline:
+- Rule-based sanitization (stripping HTML, URLs, emojis, nested @ handles).
+- Spam & solicitation discard (regex match on contact info, group shilling).
+- Clickbait & rumor penalization (flagging unverified sensationalism).
+- Sarcasm detection (inverting sentiment when positive words combine with despair/plunges).
+- Information Density Scoring (IDS) based on financial metrics, numbers, and thesis structure.
+"""
+from __future__ import annotations
+
+import logging
+import re
+from dataclasses import asdict, dataclass, field
+from typing import Any, Mapping
+
+logger = logging.getLogger("data_cleaning_filter")
+
+# 1. Regex for Structural Sanitization
+RE_URL = re.compile(r"https?://\S+|www\.\S+", re.I)
+RE_HTML = re.compile(r"<[^>]+>")
+RE_REPLY_PREFIX = re.compile(r"^(?:回复\s*@[^:：]+[:：]?\s*)+")
+RE_REPOST_CHAIN = re.compile(r"//@[^:：]+[:：]?.*$")
+RE_STOCK_TAG = re.compile(r"\$([^$(\)]+)(?:\([A-Z0-9\.]+\))?\$")
+RE_EMOJIS_PUNCT = re.compile(r"\[[^\]]+\]")
+
+# 2. Spam & Solicitation Filters
+RE_SPAM = re.compile(
+    r"(加[vV微]|微信|群号|进群|带盘|内部票|战法|涨停牛股|扫码|私信|联系方式|扣群|代客理财|老师指导|免费领票|翻倍黑马)",
+    re.I,
+)
+
+# 3. Clickbait & Unverified Rumor Patterns
+RE_CLICKBAIT = re.compile(
+    r"(震惊|内部爆料|重磅惊天|绝密|惊天利好|惊天利空|小作文|刚刚突发大动作|速看|内部传闻|惊掉下巴)",
+    re.I,
+)
+
+# 4. Sarcasm & Cynical Inversion Phrases (ironic praise during drops)
+RE_SARCASM = re.compile(
+    r"(可真善良|真是良心|大善人|跌得太好|跌得太棒|继续跌停|遥遥领先|发大财了|感恩主力|多谢套牢)",
+    re.I,
+)
+
+# 5. Financial Metric Indicators (Anchors of substantive thesis)
+RE_FINANCIAL_NUMBERS = re.compile(
+    r"(\d+(\.\d+)?%|\d+(\.\d+)?倍|\d+(\.\d+)?(万|亿|元|点)|pe|pb|roe|eps|股息率|分红|逆回购|折价|溢价)",
+    re.I,
+)
+
+# Core Financial Vocabulary
+BULLISH_KEYWORDS = [
+    "加仓", "买入", "低估", "看好", "建仓", "反弹", "突破", "重仓", "安全边际",
+    "超预期", "低位", "估值低", "分红高", "业绩增长", "拐点", "回购", "增持", "配置"
+]
+BEARISH_KEYWORDS = [
+    "减仓", "卖出", "高估", "看空", "清仓", "破位", "跌停", "暴跌", "泡沫", "见顶",
+    "低于预期", "高位", "估值高", "亏损", "套牢", "暴雷", "减持", "清仓", "回避", "止损"
+]
+
+
+@dataclass(frozen=True)
+class TextAuditResult:
+    is_valid: bool
+    quality_score: float  # 0.0 (toxic/noise) to 1.0 (institutional-grade thesis)
+    rejection_reason: str  # 'CLEAN_AND_VALID', 'SPAM_SOLICITATION', 'CLICKBAIT_RUMOR', 'TOO_SHORT_NOISE', 'EMPTY_TEXT'
+    cleaned_text: str
+    has_substantive_thesis: bool
+    sentiment_polarity: float  # -1.0 to +1.0
+    information_density: float  # 0.0 to 1.0
+    detected_metrics: list[str] = field(default_factory=list)
+    flags: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+class DataQualityAuditor:
+    """Institutional-grade text auditor for scraped financial data."""
+
+    def __init__(self, min_clean_length: int = 10, min_quality_threshold: float = 0.35):
+        self.min_clean_length = min_clean_length
+        self.min_quality_threshold = min_quality_threshold
+
+    def sanitize(self, raw_text: str) -> str:
+        """Strip HTML tags, raw URLs, nested replies, and format whitespace."""
+        if not isinstance(raw_text, str):
+            return ""
+        text = raw_text.strip()
+        text = RE_URL.sub("", text)
+        text = RE_HTML.sub("", text)
+        text = RE_REPLY_PREFIX.sub("", text)
+        text = RE_REPOST_CHAIN.sub("", text)
+        text = RE_EMOJIS_PUNCT.sub("", text)
+        text = RE_STOCK_TAG.sub(r"\1", text)
+        return " ".join(text.split()).strip()
+
+    def audit_text(
+        self,
+        raw_text: str,
+        author_is_verified: bool = False,
+        recent_asset_pct_change: float = 0.0,
+    ) -> TextAuditResult:
+        """Execute full multi-stage audit on raw scraped text."""
+        cleaned = self.sanitize(raw_text)
+
+        # Stage 1: Empty or trivially short check
+        if not cleaned:
+            return TextAuditResult(
+                is_valid=False,
+                quality_score=0.0,
+                rejection_reason="EMPTY_TEXT",
+                cleaned_text="",
+                has_substantive_thesis=False,
+                sentiment_polarity=0.0,
+                information_density=0.0,
+                flags=["EMPTY"],
+            )
+
+        if len(cleaned) < self.min_clean_length:
+            return TextAuditResult(
+                is_valid=False,
+                quality_score=0.1,
+                rejection_reason="TOO_SHORT_NOISE",
+                cleaned_text=cleaned,
+                has_substantive_thesis=False,
+                sentiment_polarity=0.0,
+                information_density=0.0,
+                flags=["LOW_CHAR_COUNT"],
+            )
+
+        flags = []
+
+        # Stage 2: Hard Spam & Solicitation Discard
+        if RE_SPAM.search(cleaned):
+            return TextAuditResult(
+                is_valid=False,
+                quality_score=0.0,
+                rejection_reason="SPAM_SOLICITATION",
+                cleaned_text=cleaned,
+                has_substantive_thesis=False,
+                sentiment_polarity=0.0,
+                information_density=0.0,
+                flags=["SPAM_PATTERNS_DETECTED"],
+            )
+
+        # Stage 3: Clickbait & Sensation Discard / Penalty
+        is_clickbait = bool(RE_CLICKBAIT.search(cleaned))
+        if is_clickbait:
+            flags.append("CLICKBAIT_SENSATIONALISM")
+
+        # Stage 4: Detect financial metrics and quantitative anchors
+        metric_matches = [m.group(0) for m in RE_FINANCIAL_NUMBERS.finditer(cleaned)]
+        num_metrics = len(metric_matches)
+
+        # Stage 5: Sarcasm & Cynical Inversion Check
+        is_sarcastic = bool(RE_SARCASM.search(cleaned))
+        if is_sarcastic:
+            flags.append("CYNICAL_SARCASM")
+
+        # Stage 6: Compute Sentiment Polarity
+        cleaned_lower = cleaned.lower()
+        bull_hits = sum(1 for kw in BULLISH_KEYWORDS if kw in cleaned_lower)
+        bear_hits = sum(1 for kw in BEARISH_KEYWORDS if kw in cleaned_lower)
+        total_hits = bull_hits + bear_hits
+
+        if is_sarcastic:
+            # Cynical sarcasm inverts apparent praise into deep negative sentiment
+            polarity = -0.8
+        elif total_hits > 0:
+            raw_polarity = (bull_hits - bear_hits) / total_hits
+            # If asset fell heavily but someone is aggressively praising with zero metrics, discount
+            if recent_asset_pct_change < -0.03 and raw_polarity > 0 and num_metrics == 0:
+                raw_polarity *= 0.2
+                flags.append("SUSPICIOUS_BULL_ON_DROP")
+            polarity = round(raw_polarity, 4)
+        else:
+            polarity = 0.0
+
+        # Stage 7: Information Density Score (IDS)
+        # Ratio of quantitative / semantic tokens to total length
+        density_score = min(1.0, (num_metrics * 0.25) + (total_hits * 0.1) + (min(len(cleaned), 120) / 200))
+        if is_clickbait:
+            density_score *= 0.4
+
+        has_substantive_thesis = (num_metrics >= 1 and total_hits >= 1) or (len(cleaned) >= 40 and num_metrics >= 1)
+
+        # Quality Score Calculation
+        quality = density_score * (1.2 if author_is_verified else 1.0)
+        if is_clickbait:
+            quality *= 0.3
+        quality = max(0.0, min(1.0, round(quality, 4)))
+
+        is_valid = quality >= self.min_quality_threshold and not is_clickbait
+
+        rejection_reason = "CLEAN_AND_VALID" if is_valid else ("CLICKBAIT_RUMOR" if is_clickbait else "LOW_INFORMATION_DENSITY")
+
+        return TextAuditResult(
+            is_valid=is_valid,
+            quality_score=quality,
+            rejection_reason=rejection_reason,
+            cleaned_text=cleaned,
+            has_substantive_thesis=has_substantive_thesis,
+            sentiment_polarity=polarity,
+            information_density=round(density_score, 4),
+            detected_metrics=metric_matches[:6],
+            flags=flags,
+        )
+
+
+def filter_high_signal_posts(
+    posts: list[str | dict[str, Any]],
+    auditor: DataQualityAuditor | None = None,
+) -> tuple[list[TextAuditResult], dict[str, int]]:
+    """Batch filter and distill raw scraped posts into high-signal records."""
+    if auditor is None:
+        auditor = DataQualityAuditor()
+
+    clean_results: list[TextAuditResult] = []
+    stats = {
+        "total_evaluated": len(posts),
+        "clean_valid_passed": 0,
+        "spam_rejected": 0,
+        "clickbait_rejected": 0,
+        "too_short_rejected": 0,
+        "low_density_rejected": 0,
+    }
+
+    for p in posts:
+        raw_text = p.get("text", "") if isinstance(p, dict) else str(p)
+        author_verified = bool(p.get("verified", False)) if isinstance(p, dict) else False
+
+        res = auditor.audit_text(raw_text, author_is_verified=author_verified)
+        if res.is_valid:
+            clean_results.append(res)
+            stats["clean_valid_passed"] += 1
+        else:
+            if res.rejection_reason == "SPAM_SOLICITATION":
+                stats["spam_rejected"] += 1
+            elif res.rejection_reason == "CLICKBAIT_RUMOR":
+                stats["clickbait_rejected"] += 1
+            elif res.rejection_reason in ("TOO_SHORT_NOISE", "EMPTY_TEXT"):
+                stats["too_short_rejected"] += 1
+            else:
+                stats["low_density_rejected"] += 1
+
+    return clean_results, stats
+
+
+if __name__ == "__main__":
+    auditor = DataQualityAuditor()
+    samples = [
+        "央行宣布公开市场开展2000亿元逆回购，资金面保持充裕，银行间同业拆借利率稳定。",
+        "【重磅内幕】某万亿龙头被调查！即将爆雷！内部速看！",
+        "加V领明天开盘必涨停金股，免费带单，微信: 13800138000",
+        "沪深300当前PE为11.8倍，股息率达到3.2%，处于近10年20%分位数，估值安全边际充裕，建议定投分批建仓。",
+        "主力真是太善良了，连续跌停让我抄底，跌得太棒了！",
+        "牛逼！冲！",
+    ]
+    print("Testing DataQualityAuditor on raw scraped samples:\n")
+    for s in samples:
+        res = auditor.audit_text(s)
+        status = "PASS" if res.is_valid else "REJECT"
+        print(f"[{status}] Quality: {res.quality_score:.2f} | Reason: {res.rejection_reason} | Polarity: {res.sentiment_polarity:+.2f}")
+        try:
+            print(f"  Text: {s[:50]}...")
+        except UnicodeEncodeError:
+            print(f"  Text: {s[:50].encode('ascii', 'replace').decode('ascii')}...")
+        if res.detected_metrics:
+            print(f"  Metrics: {res.detected_metrics}")
+        if res.flags:
+            print(f"  Flags: {res.flags}")
+        print()
