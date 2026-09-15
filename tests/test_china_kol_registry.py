@@ -120,3 +120,41 @@ def test_sentiment_flow_collector_kol_integration() -> None:
     # KOL credibility weighting flips the contrarians negative and amplifies the alpha KOLs!
     assert metric.sentiment_score < -0.30
     assert "大V信誉加权" in metric.rationale
+
+
+def test_overseas_global_kol_credibility() -> None:
+    """Verify that overseas (StockTwits / FinTwit) KOLs are loaded and properly weighted."""
+    registry = KOLCredibilityRegistry()
+    assert len(registry.profiles) >= 2000
+
+    # 1. Overseas Elite KOL amplification
+    elite = registry.get_author_profile("@THE_TRADE")
+    assert elite.tier == "TIER_0_ELITE_KOL"
+    assert elite.directional_weight == 3.0
+    assert elite.win_rate_5d > 0.85
+
+    # 2. Overseas Contrarian Indicator inversion (e.g. Jim Cramer & JFDI)
+    cramer = registry.get_author_profile("JimCramer")
+    assert cramer.tier == "TIER_CONTRARIAN_INDICATOR"
+    assert cramer.is_contrarian is True
+    assert cramer.directional_weight < 0.0
+
+    jfdi = registry.get_author_profile("@JFDI")
+    assert jfdi.tier == "TIER_CONTRARIAN_INDICATOR"
+    assert jfdi.directional_weight < 0.0
+
+    # 3. Overseas Breaking News aggregator neutralization
+    delta = registry.get_author_profile("@DeItaone")
+    assert delta.tier == "TIER_MEDIA_AGGREGATOR"
+    assert delta.directional_weight == 0.0
+
+    # Test evaluation on an overseas QDII / US Tech basket (e.g. NVDA / QQQ)
+    overseas_posts = [
+        {"author": "@JimCramer", "polarity": 0.95},        # Bullish call from Cramer -> inverted to bearish!
+        {"author": "@JFDI", "polarity": 0.85},             # Bullish call from JFDI -> inverted to bearish!
+        {"author": "@DeItaone", "polarity": 0.70},         # Breaking news -> direction stripped (0.0x)
+        {"author": "@THE_TRADE", "polarity": -0.80},       # Bearish warning from 89.8% win-rate researcher -> amplified 3.0x!
+    ]
+    res = registry.evaluate_weighted_sentiment(overseas_posts)
+    assert res.raw_unweighted_polarity > 0.40  # Naive average is fooled into +0.425 bullish
+    assert res.kol_weighted_polarity < -0.60   # KOL credibility weighting flips to -0.78 strong bearish!

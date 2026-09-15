@@ -79,6 +79,25 @@ EMBEDDED_KOL_PROFILES = {
     "冷小二": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 105725, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0191, "payoff": 0.58},
     "做个IT价投人": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 97352, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0033, "payoff": 0.79},
     "王增森": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47021, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0796, "payoff": 0.31},
+
+    # Overseas / Global Verified Alpha KOLs (StockTwits / US Equities / FinTwit)
+    "THE_TRADE": {"tier": "TIER_0_ELITE_KOL", "fans": 1144, "calls": 128, "win_rate_5d": 0.898, "bayesian_wr": 0.875, "mean_ret_5d": 0.0245, "payoff": 1.95},
+    "TheProfitPhantom": {"tier": "TIER_0_ELITE_KOL", "fans": 5150, "calls": 30, "win_rate_5d": 1.000, "bayesian_wr": 0.895, "mean_ret_5d": 0.0347, "payoff": 3.47},
+    "StockMaster617": {"tier": "TIER_0_ELITE_KOL", "fans": 201, "calls": 45, "win_rate_5d": 0.978, "bayesian_wr": 0.906, "mean_ret_5d": 0.1479, "payoff": 1.33},
+    "HindenburgResearch": {"tier": "TIER_0_ELITE_KOL", "fans": 1200000, "calls": 25, "win_rate_5d": 0.840, "bayesian_wr": 0.760, "mean_ret_5d": 0.1250, "payoff": 4.20},
+    "CitronResearch": {"tier": "TIER_1_CORE_ALPHA", "fans": 850000, "calls": 30, "win_rate_5d": 0.700, "bayesian_wr": 0.658, "mean_ret_5d": 0.0480, "payoff": 2.15},
+
+    # Overseas Breaking News & Media Aggregators (Direction stripped, heat only)
+    "DeItaone": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 890000, "calls": 500, "win_rate_5d": 0.502, "bayesian_wr": 0.502, "mean_ret_5d": 0.0010, "payoff": 1.01},
+    "UnusualWhales": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 1950000, "calls": 420, "win_rate_5d": 0.510, "bayesian_wr": 0.510, "mean_ret_5d": 0.0015, "payoff": 1.03},
+    "ZeroHedge": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 2800000, "calls": 600, "win_rate_5d": 0.485, "bayesian_wr": 0.485, "mean_ret_5d": -0.0020, "payoff": 0.95},
+
+    # Overseas High-Reach Contrarian Indicators (FinTwit / StockTwits FOMO top indicators)
+    "JimCramer": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 2100000, "calls": 85, "win_rate_5d": 0.365, "bayesian_wr": 0.377, "mean_ret_5d": -0.0195, "payoff": 0.58},
+    "JFDI": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 111443, "calls": 46, "win_rate_5d": 0.391, "bayesian_wr": 0.407, "mean_ret_5d": -0.0112, "payoff": 0.92},
+    "Doozio": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47628, "calls": 109, "win_rate_5d": 0.395, "bayesian_wr": 0.402, "mean_ret_5d": -0.0125, "payoff": 0.92},
+    "SpudZone": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 27050, "calls": 14, "win_rate_5d": 0.000, "bayesian_wr": 0.182, "mean_ret_5d": -0.0536, "payoff": 0.19},
+    "Steve_TheBull_Rogers": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 19712, "calls": 6, "win_rate_5d": 0.000, "bayesian_wr": 0.286, "mean_ret_5d": -0.0396, "payoff": 0.25},
 }
 
 
@@ -117,26 +136,33 @@ class KOLWeightedSentimentResult:
 
 
 class KOLCredibilityRegistry:
-    """Registry for auditing author track records and weighting social sentiment."""
+    """Registry for auditing author track records and weighting social sentiment (Bilingual CN + Global)."""
 
     def __init__(self, csv_path: str | Path | None = None):
         self.profiles: dict[str, KOLProfile] = {}
         self._load_embedded_defaults()
 
-        # Automatically attempt to load full 1,445 KOL database from stock_prediction if available
-        default_paths = [
+        # Automatically attempt to load both Chinese (1,445) and Global (1,070) KOL databases
+        default_cn_paths = [
             Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv"),
             Path("../stock_prediction/data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv"),
         ]
-        target_path = Path(csv_path) if csv_path else None
-        if not target_path or not target_path.exists():
-            for p in default_paths:
-                if p.exists():
-                    target_path = p
-                    break
+        default_global_paths = [
+            Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv"),
+            Path("../stock_prediction/data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv"),
+        ]
 
-        if target_path and target_path.exists():
-            self.load_from_csv(target_path)
+        if csv_path and Path(csv_path).exists():
+            self.load_from_csv(csv_path)
+        else:
+            for p in default_cn_paths:
+                if p.exists():
+                    self.load_from_csv(p)
+                    break
+            for p in default_global_paths:
+                if p.exists():
+                    self.load_from_csv(p)
+                    break
 
     def _load_embedded_defaults(self) -> None:
         for name, data in EMBEDDED_KOL_PROFILES.items():
@@ -163,7 +189,7 @@ class KOLCredibilityRegistry:
             with open(path, mode="r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    author = str(row.get("author", "")).strip()
+                    author = str(row.get("author", "")).strip().lstrip("@")
                     if not author:
                         continue
                     tier = str(row.get("tier", "TIER_NEUTRAL_RETAIL")).strip()
@@ -189,7 +215,7 @@ class KOLCredibilityRegistry:
 
     def get_author_profile(self, author_name: str) -> KOLProfile:
         """Lookup author credibility profile; returns baseline retail profile if unknown."""
-        clean_name = str(author_name).strip()
+        clean_name = str(author_name).strip().lstrip("@")
         if clean_name in self.profiles:
             return self.profiles[clean_name]
 
