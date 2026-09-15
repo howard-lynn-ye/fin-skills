@@ -37,6 +37,7 @@ try:
         TextAuditResult,
         filter_high_signal_posts,
     )
+    from fin_skills.china.kol_credibility_registry import KOLCredibilityRegistry
 except ImportError:
     try:
         from data_cleaning_filter import (
@@ -44,12 +45,14 @@ except ImportError:
             TextAuditResult,
             filter_high_signal_posts,
         )
+        from kol_credibility_registry import KOLCredibilityRegistry
     except ImportError:
         from .data_cleaning_filter import (
             DataQualityAuditor,
             TextAuditResult,
             filter_high_signal_posts,
         )
+        from .kol_credibility_registry import KOLCredibilityRegistry
 
 # Core 8 ETF Universe metadata
 DEFAULT_ETF_UNIVERSE = {
@@ -441,19 +444,36 @@ def compute_asset_sentiments(
     if universe is None:
         universe = DEFAULT_ETF_UNIVERSE
 
-    post_sentiments_by_code: dict[str, list[float]] = {}
+    post_sentiments_by_code: dict[str, list[dict[str, Any]]] = {}
     post_heat_by_code: dict[str, int] = {}
 
     if raw_social_posts:
         if auditor is None:
             auditor = DataQualityAuditor()
-        clean_posts, p_stats = filter_high_signal_posts(raw_social_posts, auditor)
-        if cleaning_stats is not None:
-            for k, v in p_stats.items():
-                cleaning_stats[k] = cleaning_stats.get(k, 0) + v
+        kol_registry = KOLCredibilityRegistry()
+        for raw_p in raw_social_posts:
+            raw_text = raw_p.get("text", "") if isinstance(raw_p, dict) else str(raw_p)
+            author = str(raw_p.get("author") or raw_p.get("user_screen_name") or "anonymous") if isinstance(raw_p, dict) else "anonymous"
+            verified = bool(raw_p.get("verified", False)) if isinstance(raw_p, dict) else False
 
-        for p in clean_posts:
-            txt = p.cleaned_text.lower()
+            res = auditor.audit_text(raw_text, author_is_verified=verified)
+            if cleaning_stats is not None:
+                cleaning_stats["total_evaluated"] = cleaning_stats.get("total_evaluated", 0) + 1
+                if res.is_valid:
+                    cleaning_stats["clean_valid_passed"] = cleaning_stats.get("clean_valid_passed", 0) + 1
+                elif res.rejection_reason == "SPAM_SOLICITATION":
+                    cleaning_stats["spam_rejected"] = cleaning_stats.get("spam_rejected", 0) + 1
+                elif res.rejection_reason == "CLICKBAIT_RUMOR":
+                    cleaning_stats["clickbait_rejected"] = cleaning_stats.get("clickbait_rejected", 0) + 1
+                elif res.rejection_reason in ("TOO_SHORT_NOISE", "EMPTY_TEXT"):
+                    cleaning_stats["too_short_rejected"] = cleaning_stats.get("too_short_rejected", 0) + 1
+                else:
+                    cleaning_stats["low_density_rejected"] = cleaning_stats.get("low_density_rejected", 0) + 1
+
+            if not res.is_valid:
+                continue
+
+            txt = res.cleaned_text.lower()
             for code, meta in universe.items():
                 name_stem = meta.get("name", "").replace("ETF", "").lower()
                 matched = (code in txt) or (bool(name_stem) and name_stem in txt)
@@ -476,8 +496,11 @@ def compute_asset_sentiments(
                         matched = True
 
                 if matched:
-                    # Weight by cleaned quality score to prioritize institutional-grade logic
-                    post_sentiments_by_code.setdefault(code, []).append(p.sentiment_polarity * p.quality_score)
+                    post_sentiments_by_code.setdefault(code, []).append({
+                        "author": author,
+                        "polarity": res.sentiment_polarity,
+                        "quality_score": res.quality_score,
+                    })
                     post_heat_by_code[code] = post_heat_by_code.get(code, 0) + 1
 
     results = {}
@@ -496,33 +519,39 @@ def compute_asset_sentiments(
 
         # Check audited social signals first
         if code in post_sentiments_by_code and post_sentiments_by_code[code]:
-            social_scores = post_sentiments_by_code[code]
-            avg_polarity = sum(social_scores) / len(social_scores)
-            count = len(social_scores)
+            post_entries = post_sentiments_by_code[code]
+            kol_registry = KOLCredibilityRegistry()
+            kol_eval = kol_registry.evaluate_weighted_sentiment(post_entries)
+            avg_polarity = kol_eval.kol_weighted_polarity
+            count = len(post_entries)
             heat = round(min(3.0, 1.0 + (count * 0.2)), 2)
             zscore = round(max(-3.0, min(3.0, avg_polarity * 2.5)), 2)
             score = round(avg_polarity, 3)
 
+            kol_note = ""
+            if kol_eval.elite_alpha_count > 0 or kol_eval.contrarian_inverted_count > 0:
+                kol_note = f" [{kol_eval.summary_explanation}]"
+
             if zscore > 2.0 and heat > 1.8:
                 label = "极度贪婪(FOMO)"
                 tilt = -0.015
-                rationale = f"清洗后社区讨论过热(Z={zscore:+.1f}, 热度{heat:.1f}x)，警惕FOMO接盘顶，执行反向刹车"
+                rationale = f"清洗后社区讨论过热(Z={zscore:+.1f}, 热度{heat:.1f}x)，警惕FOMO接盘顶，执行反向刹车{kol_note}"
             elif zscore < -1.8 and heat > 1.5:
                 label = "极度恐慌(冰点)"
                 tilt = +0.015
-                rationale = f"清洗后舆情出现恐慌割肉盘(Z={zscore:+.1f})，深度价值与安全边际凸显，逆向吸筹"
+                rationale = f"清洗后舆情出现恐慌割肉盘(Z={zscore:+.1f})，深度价值与安全边际凸显，逆向吸筹{kol_note}"
             elif zscore > 0.8:
                 label = "偏热活跃"
                 tilt = 0.0 if "QDII" in category else +0.005
-                rationale = f"社区看好论据充实(Z={zscore:+.1f})，基本面指标支撑良好"
+                rationale = f"社区看好论据充实(Z={zscore:+.1f})，基本面指标支撑良好{kol_note}"
             elif zscore < -0.8:
                 label = "低迷偏冷"
                 tilt = +0.005 if code in ("518880", "511010", "510880") else 0.0
-                rationale = f"短期情绪低迷淡静(Z={zscore:+.1f})，防守型配置维持"
+                rationale = f"短期情绪低迷淡静(Z={zscore:+.1f})，防守型配置维持{kol_note}"
             else:
                 label = "中性均衡"
                 tilt = 0.0
-                rationale = f"社区讨论中性理性(Z={zscore:+.1f})，维持基准平价"
+                rationale = f"社区讨论中性理性(Z={zscore:+.1f})，维持基准平价{kol_note}"
 
         # Check market data context if available
         elif market_snapshot and code in market_snapshot:
