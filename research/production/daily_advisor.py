@@ -177,38 +177,95 @@ def generate_advisor_ticket(capital: float, profile: str = "conservative") -> di
     }
 
 
+# ANSI styling helpers
+USE_COLOR = sys.stdout.isatty() and not os.environ.get("NO_COLOR")
+
+def _c(text: str, code: str) -> str:
+    return f"\033[{code}m{text}\033[0m" if USE_COLOR else str(text)
+
+def bold(text: str) -> str: return _c(text, "1")
+def dim(text: str) -> str: return _c(text, "2")
+def green(text: str) -> str: return _c(text, "32")
+def yellow(text: str) -> str: return _c(text, "33")
+def blue(text: str) -> str: return _c(text, "34")
+def magenta(text: str) -> str: return _c(text, "35")
+def cyan(text: str) -> str: return _c(text, "36")
+
+
 def print_cli_report(ticket: dict):
     cap = ticket["capital"]
     meta = ticket["profile_meta"]
-    print("=" * 95)
-    print(f" 🤖 A股全球大类资产实盘投资决策清单 (每日投顾报告) ")
-    print("=" * 95)
-    print(f"行情基准日期 : {ticket['date']}")
-    print(f"账户初始本金 : {cap:,.2f} 元 ({cap/10000:.1f} 万元)")
-    print(f"选定策略模式 : {meta['name']}")
-    print(f"策略核心定位 : {meta['desc']}")
-    print(f"制度红利优势 : A股全市场 ETF 免征印花税 (0.00%)，一手仅需百元，适合小资金")
-    print("-" * 95)
+    print("=" * 100)
+    print(f" {bold(cyan('🤖 A股全球大类资产实盘投资决策清单 (每日投顾报告)'))} ")
+    print("=" * 100)
+    print(f" 行情基准日期 : {bold(ticket['date'])}")
+    print(f" 账户初始本金 : {bold(f'{cap:,.2f}')} 元 ({cyan(f'{cap/10000:.1f} 万元')})")
+    print(f" 选定策略模式 : {bold(green(meta['name']))}")
+    print(f" 策略核心定位 : {meta['desc']}")
+    print(f" 制度红利优势 : {green('A股全市场 ETF 免征印花税 (0.00%)')}，一手仅需百元，适合小资金精准配置")
+    print("-" * 100)
 
-    print(f"{'代码':8s} | {'标的名称':12s} | {'资产类别':14s} | {'现价(元)':8s} | {'目标仓位':8s} | {'买入手数':8s} | {'实买股数':8s} | {'配置金额':10s} | {'当前趋势':8s}")
-    print("-" * 95)
+    print(f" {'代码':8s} | {'标的名称':12s} | {'资产类别':14s} | {'现价(元)':8s} | {'目标仓位':8s} | {'买入手数':8s} | {'实买股数':8s} | {'配置金额':10s} | {'当前趋势':8s}")
+    print("-" * 100)
     for a in ticket["allocations"]:
         lots = a["shares"] // 100
+        trend_str = green(a['trend']) if "多头" in a['trend'] else yellow(a['trend'])
+        code_str = cyan(a['code'])
+        lots_str = bold(f"{lots:5d}手")
         print(
-            f"{a['code']:8s} | {a['name']:12s} | {a['category']:14s} | {a['latest_price']:8.3f} | "
-            f"{a['target_pct']:7.1%} | {lots:7d}手 | {a['shares']:7d}股 | {a['actual_amount']:9,.1f}元 | {a['trend']:8s}"
+            f" {code_str:17s} | {a['name']:12s} | {a['category']:14s} | {a['latest_price']:8.3f} | "
+            f"{a['target_pct']:7.1%} | {lots_str:17s} | {a['shares']:7d}股 | {a['actual_amount']:9,.1f}元 | {trend_str:17s}"
         )
 
-    print("-" * 95)
-    print(f"实际建仓总市值 : {ticket['total_invested']:,.2f} 元 (资金利用率: {ticket['total_invested']/cap:.1%})")
-    print(f"剩余可用现金   : {ticket['remaining_cash']:,.2f} 元 ({ticket['cash_pct']:.1%}，建议自动买入场内逆回购享年化2%利息)")
-    print(f"预估建仓摩擦费 : {ticket['total_est_fee']:.2f} 元 (占本金比例仅: {ticket['total_est_fee']/cap:.3%}，免印花税极低损耗)")
-    print("=" * 95)
+    print("-" * 100)
+    util_rate = ticket['total_invested'] / cap
+    tot_str = f"{ticket['total_invested']:,.2f}"
+    fee_str = f"{ticket['total_est_fee']:.2f}"
+    fee_pct = f"{ticket['total_est_fee']/cap:.3%}"
+    rem_str = f"{ticket['remaining_cash']:,.2f}"
+    util_str = f"资金利用率: {util_rate:.1%}"
+
+    print(f" 实际建仓总市值 : {bold(tot_str)} 元 ({cyan(util_str)})")
+    print(f" 预估建仓摩擦费 : {green(fee_str)} 元 (占本金比例仅: {fee_pct}，{green('免印花税极低磨损')})")
+    print("-" * 100)
+    print(f" 💡 {bold(yellow('尾盘 14:50 闲置现金逆回购操作指导:'))}")
+    print(f"    剩余可用现金 : {bold(rem_str)} 元 ({ticket['cash_pct']:.1%})")
+    print(f"    操作建议     : 请于交易日 {bold('14:50 ~ 15:30')} 在券商 App 搜索 {bold(cyan('GC001 (204001)'))} 或 {bold(cyan('R-001 (131810)'))} 进行【卖出/出借】。")
+    print(f"    收益预期     : 按年化约 {green('2.0%')} 计息，{bold('次日开盘资金自动解冻可用')}，消除 1.7% 活期现金拖累。")
+    print("=" * 100)
+    print(f" 🖥️ 提示: 访问交互式网页看板以获得可视化图表: {cyan('http://shwaihe.c.googlers.com:8088/')}")
+    print("=" * 100)
+
+
+def run_interactive_mode() -> tuple[float, str]:
+    print("\n" + "=" * 60)
+    print(" 🌟 欢迎使用 A股全球多资产实盘投顾助手 (交互模式) 🌟")
+    print("=" * 60)
+    
+    # Capital prompt
+    default_cap = 100000.0
+    cap_input = input(f"请输入您的拟投资资金 (元) [默认 {default_cap:,.0f}]: ").strip()
+    try:
+        capital = float(cap_input) if cap_input else default_cap
+    except ValueError:
+        capital = default_cap
+    
+    # Profile prompt
+    print("\n请选择您的风险偏好与资产配置策略:")
+    print("  [1] 稳健防守型 (Smart Risk Parity, 10年回撤严格<10%, 推荐)")
+    print("  [2] 经典全天候 (All-Weather, 股债金均衡对冲)")
+    print("  [3] 全球进取型 (Global 60/40, 全球股6债4追求长期复利)")
+    prof_input = input("请输入选项编号 (1/2/3) [默认 1]: ").strip()
+    
+    prof_map = {"1": "conservative", "2": "balanced", "3": "aggressive"}
+    profile = prof_map.get(prof_input, "conservative")
+    print("\n正在从东方财富抓取最新盘中行情并计算最优资产配比...\n")
+    return capital, profile
 
 
 def main():
     parser = argparse.ArgumentParser(description="A-Share Global Multi-Asset Daily Advisor")
-    parser.add_argument("--capital", type=float, default=50000.0, help="Investment capital in RMB (e.g. 50000, 200000, 1000000)")
+    parser.add_argument("--capital", type=float, default=100000.0, help="Investment capital in RMB (e.g. 50000, 100000, 1000000)")
     parser.add_argument(
         "--profile",
         type=str,
@@ -216,10 +273,24 @@ def main():
         choices=["conservative", "balanced", "aggressive"],
         help="Strategy profile: conservative (Risk Parity, MaxDD<10%), balanced (All-Weather), aggressive (Global 60/40)",
     )
+    parser.add_argument("-i", "--interactive", action="store_true", help="Run in interactive guided wizard mode")
     parser.add_argument("--json", action="store_true", help="Output raw JSON format")
+    parser.add_argument("--web", action="store_true", help="Print and launch web dashboard server link")
     args = parser.parse_args()
 
-    ticket = generate_advisor_ticket(args.capital, args.profile)
+    if args.web:
+        print("\n" + "=" * 70)
+        print(" 🚀 正在检查并启动交互式 Web 决策看板...")
+        print(f" 浏览器访问地址: {cyan('http://shwaihe.c.googlers.com:8088/')}")
+        print("=" * 70 + "\n")
+
+    capital = args.capital
+    profile = args.profile
+
+    if args.interactive:
+        capital, profile = run_interactive_mode()
+
+    ticket = generate_advisor_ticket(capital, profile)
     if args.json:
         print(json.dumps(ticket, indent=2, ensure_ascii=False))
     else:
@@ -228,3 +299,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -10,9 +10,28 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
 **Language / 语言切换:** **English (`README.md`)** · [简体中文 (`README_ZH.md`)](README_ZH.md) · 📂 **[Documentation Hub (`docs/`)](docs/README.md)** · 📘 [集成手册 (`docs/USER_MANUAL_ZH.md`)](docs/USER_MANUAL_ZH.md) · 🛠️ [操作指南 (`docs/OPERATIONS_GUIDE_ZH.md`)](docs/OPERATIONS_GUIDE_ZH.md)  
+**Recommended Guides:** 📘 [AI Quant Background](docs/guides/quantitative_finance_background_for_ai.md) · 📖 [Financial Terminology Glossary](docs/guides/financial_terminology_glossary.md) · 🛡️ [10Y Multi-Asset Stress Testing Whitepaper](docs/guides/global_asset_allocation_10y_whitepaper.md) · 🚦 [Pre-Trade Defense System](docs/guides/live_trading_and_pre_trade_guards.md) · 🖥️ [Interactive Web Dashboard](research/production/dashboard.html)  
 **API Documentation:** [howard-lynn-ye.github.io/fin-skills](https://howard-lynn-ye.github.io/fin-skills/) · **Spec:** [agentskills.io](https://agentskills.io/specification)
 
 </div>
+
+---
+
+## ⚡ Quickstart: Interactive Multi-Asset Live Advisor (Web Dashboard)
+
+To bridge quantitative research and retail execution, we provide an interactive, zero-dependency Web Dashboard:
+
+```bash
+# Launch local Web Dashboard (pulls live market quotes automatically)
+python3 research/production/web_dashboard.py --port 8088
+# Open in browser: http://localhost:8088/ or http://shwaihe.c.googlers.com:8088/
+```
+
+- 💰 **Dynamic Capital & Strategy Testing**: Slide your investment capital (50K ~ 2M RMB) and toggle 3 risk profiles (Conservative Risk Parity MaxDD<10%, Balanced All-Weather, Aggressive 60/40);
+- 📊 **Interactive SVG Donut Chart**: Inspect live asset weights and risk distributions;
+- 📝 **100-Share Board Lot Execution Ticket**: Exact lot sizes, exempt stamp duties, and 1-click clipboard order copying;
+- 💡 **Idle Cash Yield Optimizer**: Automated 14:50 GC001 reverse repo allocation eliminating 1.7% cash drag;
+- 🛡️ **Pre-Trade Defense Center**: Real-time traffic lights for QDII bubble premiums, board-lot tracking errors, and liquidity drag.
 
 ---
 

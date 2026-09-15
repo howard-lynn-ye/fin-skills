@@ -12,9 +12,29 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#8-开源协议与免责声明)
 
 **语言切换 / Language:** [English (`README.md`)](README.md) · **简体中文 (`README_ZH.md`)** · 📂 **[文档中心 (`docs/`)](docs/README.md)** · 📘 **[集成手册 (`docs/USER_MANUAL_ZH.md`)](docs/USER_MANUAL_ZH.md)** · 🛠️ **[操作指南 (`docs/OPERATIONS_GUIDE_ZH.md`)](docs/OPERATIONS_GUIDE_ZH.md)**  
+**核心指南推荐:** 📘 [量化背景认知指南](docs/guides/quantitative_finance_background_for_ai.md) · 📖 [核心术语词典](docs/guides/financial_terminology_glossary.md) · 🛡️ [10年穿越牛熊白皮书](docs/guides/global_asset_allocation_10y_whitepaper.md) · 🚦 [实盘防御体系](docs/guides/live_trading_and_pre_trade_guards.md) · 🖥️ [Web实盘决策看板](research/production/dashboard.html)  
 **官方 API 文档站:** [howard-lynn-ye.github.io/fin-skills](https://howard-lynn-ye.github.io/fin-skills/) · **Agent Skills 规范:** [agentskills.io](https://agentskills.io/specification)
 
 </div>
+
+---
+
+## ⚡ 极速体验：A股全球大类资产交互式实盘决策看板 (Web Dashboard)
+
+为了彻底解决“量化策略黑盒复杂、命令行输出不直观、散户无法直接执行实盘”的用户痛点，我们推出了**自包含、零依赖的交互式实盘决策看板**：
+
+```bash
+# 启动本地实时 Web 决策看板（自动拉取盘中实时行情）
+python3 research/production/web_dashboard.py --port 8088
+# 浏览器访问：http://localhost:8088/ 或 http://shwaihe.c.googlers.com:8088/
+```
+
+- 💰 **资金与策略实时试算**：随意滑动本金（5万 ~ 200万），动态切换三大策略（稳健防守型 MaxDD<10%、经典全天候、全球进取型）；
+- 📊 **动态持仓环形图**：实时渲染标的配置权重、各资产类别风险分布；
+- 📝 **100股整数手实盘委托单**：自动计算整百股买入手数、精确到分的免印花税手续费，支持**一键复制下单指令**；
+- 💡 **闲置资金尾盘逆回购增益**：对因整百股截断产生的剩余现金，自动规划 14:50 ~ 15:30 GC001 (204001) 逆回购操作，消除 1.7% 活期拖累；
+- 🛡️ **实盘事前防御红绿灯**：实时监控 QDII 溢价率、整百股偏离残差与现金拖累风险；
+- ⚔️ **10年跨周期黑天鹅极端压力测试**：交互式对比 2015 股灾、2018 阴跌、2020 流动性危机、2022 双杀历史回撤。
 
 ---
 
