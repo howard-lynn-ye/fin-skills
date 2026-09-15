@@ -1,0 +1,158 @@
+{
+  "cash_only": {
+    "name": "cash_only",
+    "description": "Hold nothing. Earns the 2% risk-free rate. The null hypothesis.",
+    "metrics": {
+      "total_return": 0.05265332285921276,
+      "cagr": 0.01996911563600068,
+      "annual_vol": 0.0,
+      "sharpe_excess": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity": 1052736.0455595197,
+      "turnover_one_way_total": 0.0,
+      "turnover_one_way_annual": 0.0,
+      "friction": {
+        "stamp_duty": 0.0,
+        "commission": 0.0,
+        "slippage": 0.0,
+        "total": 0.0,
+        "pct_of_initial": 0.0
+      },
+      "trades": {
+        "buys": 0,
+        "sells": 0,
+        "blocked_by_price_limit": 0
+      }
+    }
+  },
+  "buy_and_hold": {
+    "name": "buy_and_hold",
+    "description": "Equal weight across the point-in-time universe on day one, then never trade again. Pays friction exactly once.",
+    "metrics": {
+      "total_return": 0.3310157050687086,
+      "cagr": 0.11647859074266642,
+      "annual_vol": 0.17705408848107765,
+      "sharpe_excess": 0.6001028662844463,
+      "max_drawdown": -0.1433380787925882,
+      "final_equity": 1328587.7080692975,
+      "turnover_one_way_total": 0.3891474982637387,
+      "turnover_one_way_annual": 0.14994674245024792,
+      "friction": {
+        "stamp_duty": 0.0,
+        "commission": 240.0,
+        "slippage": 458.7535000000002,
+        "total": 698.7535000000003,
+        "pct_of_initial": 0.0006987535000000003
+      },
+      "trades": {
+        "buys": 48,
+        "sells": 0,
+        "blocked_by_price_limit": 0
+      }
+    }
+  },
+  "xs_momentum_weekly": {
+    "name": "xs_momentum_weekly",
+    "description": "Every 5 days hold the top 6 of the universe by trailing 20-day return, equal weighted.",
+    "metrics": {
+      "total_return": 0.33803062558374664,
+      "cagr": 0.11874224827677304,
+      "annual_vol": 0.2942901866754332,
+      "sharpe_excess": 0.4614596655813743,
+      "max_drawdown": -0.3271739904893085,
+      "final_equity": 1341547.7875268667,
+      "turnover_one_way_total": 54.09911509105307,
+      "turnover_one_way_annual": 20.845530585543386,
+      "friction": {
+        "stamp_duty": 34413.347999999976,
+        "commission": 34632.840500000006,
+        "slippage": 69256.73800000001,
+        "total": 138302.9265,
+        "pct_of_initial": 0.1383029265
+      },
+      "trades": {
+        "buys": 351,
+        "sells": 348,
+        "blocked_by_price_limit": 5
+      }
+    }
+  },
+  "ma60_timing": {
+    "name": "ma60_timing",
+    "description": "Equal-weight the universe while the index sits above its 60-day moving average; otherwise hold cash.",
+    "metrics": {
+      "total_return": 0.11495374823654902,
+      "cagr": 0.042819304567512484,
+      "annual_vol": 0.11895949805579821,
+      "sharpe_excess": 0.246256689145832,
+      "max_drawdown": -0.12089505141714241,
+      "final_equity": 1115041.3668121698,
+      "turnover_one_way_total": 8.365582984985373,
+      "turnover_one_way_annual": 3.223435645590694,
+      "friction": {
+        "stamp_duty": 4618.955000000004,
+        "commission": 4947.569000000001,
+        "slippage": 9183.181500000008,
+        "total": 18749.70550000001,
+        "pct_of_initial": 0.018749705500000012
+      },
+      "trades": {
+        "buys": 467,
+        "sells": 476,
+        "blocked_by_price_limit": 3
+      }
+    }
+  },
+  "vol_target_timing": {
+    "name": "vol_target_timing",
+    "description": "Moreira & Muir (2017): scale equal-weight exposure by 12% / realised 20-day volatility, capped at 1.0. No leverage -- the cap is what makes it a long-only retail strategy rather than the paper's version.",
+    "metrics": {
+      "total_return": 0.20610818268510012,
+      "cagr": 0.07487966003109303,
+      "annual_vol": 0.1310084554504767,
+      "sharpe_excess": 0.4663890853304126,
+      "max_drawdown": -0.12699005870028224,
+      "final_equity": 1204180.5057388528,
+      "turnover_one_way_total": 2.961503964255561,
+      "turnover_one_way_annual": 1.1411299678782896,
+      "friction": {
+        "stamp_duty": 1437.3210000000004,
+        "commission": 5300.13875,
+        "slippage": 3336.5869999999986,
+        "total": 10074.046749999998,
+        "pct_of_initial": 0.010074046749999998
+      },
+      "trades": {
+        "buys": 522,
+        "sells": 538,
+        "blocked_by_price_limit": 3
+      }
+    }
+  },
+  "breadth_timing": {
+    "name": "breadth_timing",
+    "description": "Fully invested when at least 50% of the universe trades above its own 50-day average; otherwise flat. Breadth is measured on the names held, not on an index, so it cannot be distorted by index weights.",
+    "metrics": {
+      "total_return": 0.12068206050017083,
+      "cagr": 0.04488049101183367,
+      "annual_vol": 0.09977964306519793,
+      "sharpe_excess": 0.2923508019800934,
+      "max_drawdown": -0.08588543247337088,
+      "final_equity": 1120770.1292348783,
+      "turnover_one_way_total": 12.039221982289288,
+      "turnover_one_way_annual": 4.6389662684050466,
+      "friction": {
+        "stamp_duty": 6417.200000000002,
+        "commission": 6671.452249999997,
+        "slippage": 12777.225499999999,
+        "total": 25865.87775,
+        "pct_of_initial": 0.02586587775
+      },
+      "trades": {
+        "buys": 638,
+        "sells": 646,
+        "blocked_by_price_limit": 8
+      }
+    }
+  }
+}

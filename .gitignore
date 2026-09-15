@@ -22,3 +22,5 @@ fin-skills-events.sqlite3*
 # agent worktrees created by the Claude Code Agent tool (isolation: worktree)
 .claude/worktrees/
 *.stackdump
+research/**/_cache/
+

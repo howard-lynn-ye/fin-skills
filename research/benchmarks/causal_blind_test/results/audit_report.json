@@ -1,0 +1,28 @@
+{
+  "causality_guard": {
+    "passed": true,
+    "findings": [
+      "info: momentum_20d: causal: no cell before k depends on rows >= k",
+      "info: breadth_50d: causal: no cell before k depends on rows >= k"
+    ],
+    "errors": [],
+    "warnings": [],
+    "info": [
+      "causal: no cell before k depends on rows >= k",
+      "causal: no cell before k depends on rows >= k"
+    ]
+  },
+  "trial_ledger_guard": {
+    "best_strategy": "buy_and_hold",
+    "best_sharpe": 0.6001028662844463,
+    "passed": true,
+    "findings": [
+      "info: dsr: DSR 1.000 after 6 trials: survives the search"
+    ],
+    "errors": [],
+    "warnings": [],
+    "info": [
+      "DSR 1.000 after 6 trials: survives the search"
+    ]
+  }
+}
