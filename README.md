@@ -31,7 +31,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit & Pre-Trade Defense Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API (including live execution guards: `qdii_premium`, `board_lot_feasibility`, `cash_drag`), plus **43 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit & Pre-Trade Defense Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API (including live execution guards: `qdii_premium`, `board_lot_feasibility`, `cash_drag`), plus **46 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 
@@ -48,7 +48,7 @@ flowchart TD
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
-        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>43 Live Agent Inspection Tools"]
+        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>46 Live Agent Inspection Tools"]
     end
 
     D3 ==>|Compiled by build_package.py| E1
@@ -167,7 +167,7 @@ The library now includes real retrieval through `fin_skills.collect`: RSS/Atom, 
 
 ### Mode C: As an MCP Server or JSON Tool Suite for LLM Agents
 
-Give any LLM agent live execution access to the 43 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
+Give any LLM agent live execution access to the 46 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
 
 ```bash
 pip install "fin-skills[mcp]"
