@@ -5,6 +5,7 @@ Module -> owning skill:
     ashare_rules                 china-trading-stack
     board_lot_guard              china-trading-stack
     cash_yield_optimizer         china-trading-stack
+    core_satellite_advisor       china-trading-stack
     data_cleaning_filter         china-trading-stack
     kol_credibility_registry     china-trading-stack
     portfolio_manager            china-trading-stack
@@ -18,6 +19,7 @@ __all__ = [
     'ashare_rules',
     'board_lot_guard',
     'cash_yield_optimizer',
+    'core_satellite_advisor',
     'data_cleaning_filter',
     'kol_credibility_registry',
     'portfolio_manager',

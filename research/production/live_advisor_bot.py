@@ -41,6 +41,24 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+# Ensure UTF-8 / ASCII-safe console output across environments
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+
+def _safe_print(msg: str, file=None) -> None:
+    """Print text safely without crashing on ASCII-only or cp1252 terminals."""
+    target = file or sys.stdout
+    try:
+        print(msg, file=target)
+    except UnicodeEncodeError:
+        enc = getattr(target, "encoding", None) or "ascii"
+        safe_msg = msg.encode(enc, errors="replace").decode(enc, errors="replace")
+        print(safe_msg, file=target)
+
+
 # Add repo root to Python path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
@@ -49,6 +67,10 @@ if str(REPO_ROOT) not in sys.path:
 from fin_skills.api import get
 from fin_skills.china.board_lot_guard import DEFAULT_TYPICAL_PRICES
 from fin_skills.china.cash_yield_optimizer import plan_cash_placement
+from fin_skills.china.core_satellite_advisor import (
+    DEFAULT_STOCK_PRICES,
+    generate_core_satellite_plan,
+)
 from fin_skills.china.portfolio_manager import (HoldingRecord, PortfolioState,
                                                TradeTicket,
                                                plan_portfolio_rebalance)
@@ -244,7 +266,7 @@ def send_webhook_notification(webhook_url: str, card_data: dict[str, Any]) -> bo
         with urllib.request.urlopen(req, timeout=10) as resp:
             return resp.status in (200, 201)
     except Exception as e:
-        print(f"⚠️ Webhook delivery failed: {e}", file=sys.stderr)
+        _safe_print(f"⚠️ Webhook delivery failed: {e}", file=sys.stderr)
         return False
 
 
@@ -257,6 +279,7 @@ def run_live_advisor(
     confirm_execution: bool = False,
     initial_capital_if_empty: float = 100000.0,
     sentiment_tilt: bool = True,
+    candidate_stock_signals: list[dict[str, Any]] | dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Execute end-to-end 14:30 daily inspection and advisory loop."""
     today_str = datetime.now().strftime("%Y-%m-%d")
@@ -271,7 +294,7 @@ def run_live_advisor(
         )
         h_path.parent.mkdir(parents=True, exist_ok=True)
         state.save_to_file(h_path)
-        print(f"ℹ️ Initialized fresh portfolio with {initial_capital_if_empty:,.0f} RMB cash at {h_path}")
+        _safe_print(f"ℹ️ Initialized fresh portfolio with {initial_capital_if_empty:,.0f} RMB cash at {h_path}")
     else:
         state = PortfolioState.load_from_file(h_path)
 
@@ -321,16 +344,25 @@ def run_live_advisor(
                     active_weights[code] = half_w
                     active_weights["518880"] += half_w
 
-    # 5. Pre-Trade Guard 2: Board Lot Feasibility Guard
-    board_guard = get("board_lot_feasibility")
+    # 5. Core-Satellite Architecture (80% Core All-Weather ETFs + 20% Tier-S Stock Event Alpha)
     total_nav_est = state.total_nav + inflow
-    board_res = board_guard.run(capital=total_nav_est, target_weights=active_weights, prices=price_map)
+    core_satellite_plan = generate_core_satellite_plan(
+        total_capital=total_nav_est,
+        core_base_weights=active_weights,
+        candidate_stock_signals=candidate_stock_signals,
+        market_prices={**DEFAULT_STOCK_PRICES, **price_map},
+    )
+    core_etf_target_weights = core_satellite_plan.core_etf_weights
 
-    # 6. Deadband Rebalancer & Inflow Balancing
+    # 6. Pre-Trade Guard 2: Board Lot Feasibility Guard
+    board_guard = get("board_lot_feasibility")
+    board_res = board_guard.run(capital=total_nav_est, target_weights=core_etf_target_weights, prices=price_map)
+
+    # 7. Deadband Rebalancer & Inflow Balancing
     asset_names = {code: meta["name"] for code, meta in GLOBAL_ETF_UNIVERSE.items()}
     plan = plan_portfolio_rebalance(
         state=state,
-        target_weights=active_weights,
+        target_weights=core_etf_target_weights,
         current_prices=price_map,
         asset_names=asset_names,
         new_cash_inflow=inflow,
@@ -338,7 +370,7 @@ def run_live_advisor(
         force_rebalance=force_rebalance,
     )
 
-    # 7. Post-Trade Guard 3: Cash Drag & Overnight Sweep Optimizer
+    # 8. Post-Trade Guard 3: Cash Drag & Overnight Sweep Optimizer
     cash_guard = get("cash_drag")
     cash_plan = plan_cash_placement(
         idle_cash=plan.post_rebalance_cash,
@@ -350,10 +382,13 @@ def run_live_advisor(
         trade_date=today_str,
     )
 
-    # 8. Compile Markdown Report
+    # 9. Compile Markdown Report
     lines = []
     lines.append(f"## 🌐 全球大类资产自适应全天候（14:30 盘中决策建议）")
-    lines.append(f"**日期**: {today_str} | **配置策略**: {STRATEGY_PROFILES[profile]['name']}")
+    lines.append(
+        f"**日期**: {today_str} | **配置策略**: {STRATEGY_PROFILES[profile]['name']} "
+        f"(Core-Satellite 80/20 架构)"
+    )
     lines.append(f"**账户总净值 (NAV)**: {state.total_nav:,.2f} RMB | **可用现金**: {state.cash:,.2f} RMB")
     if inflow > 0:
         lines.append(f"**今日新增定投资金**: +{inflow:,.2f} RMB 💵 (触发增量优先平抑)")
@@ -391,14 +426,14 @@ def run_live_advisor(
         lines.append("")
 
     # Current Portfolio Breakdown
-    lines.append("### 📊 资产配置最新分布")
+    lines.append("### 📊 资产配置最新分布 (80% 核心全天候 ETF 仓)")
     lines.append("| 代码 | 资产名称 | 类别 | 当前市值 | 当前权重 | 目标权重 | 状态 |")
     lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
     for code, meta in GLOBAL_ETF_UNIVERSE.items():
         h = state.holdings.get(code)
         val = h.market_value if h else 0.0
         curr_w = val / state.total_nav if state.total_nav > 0 else 0.0
-        tgt_w = active_weights.get(code, 0.0)
+        tgt_w = core_etf_target_weights.get(code, 0.0)
         diff = curr_w - tgt_w
         if abs(diff) < 0.02:
             status = "✅ 匹配"
@@ -409,8 +444,15 @@ def run_live_advisor(
         lines.append(
             f"| `{code}` | {meta['name']} | {meta['category']} | {val:,.0f}元 | {curr_w*100:.1f}% | {tgt_w*100:.1f}% | {status} |"
         )
+    sat_total_w = sum(core_satellite_plan.satellite_stock_weights.values())
+    lines.append(
+        f"| `SATELLITE` | 卫星事件 Alpha 狙击仓 | Tier-S/A 个股 | - | - | {sat_total_w*100:.1f}% | T+5 独立轮动 |"
+    )
     lines.append(f"| `CASH` | 闲置可用现金 | 现金资产 | {state.cash:,.0f}元 | {state.cash/state.total_nav*100:.1f}% | 0.0% | 待增益管理 |")
     lines.append("")
+
+    # Core-Satellite 20% Tier-S Event Alpha Section
+    lines.append(core_satellite_plan.to_markdown())
 
     # Cash Management Advice
     lines.append("### 💰 盘尾现金管理增益提示 (15:00 - 15:30)")
@@ -431,9 +473,9 @@ def run_live_advisor(
 
     full_markdown = "\n".join(lines)
 
-    # 9. Optional Execution Confirmation
+    # 10. Optional Execution Confirmation
     if confirm_execution and plan.trade_tickets:
-        print("\n⚡ Applying suggested trades to portfolio state...")
+        _safe_print("\n⚡ Applying suggested trades to portfolio state...")
         for t in plan.trade_tickets:
             state.apply_trade(
                 code=t.code,
@@ -447,9 +489,9 @@ def run_live_advisor(
         state.last_rebalance_date = today_str
         state.rebalance_count += 1
         state.save_to_file(h_path)
-        print(f"✅ Successfully updated and saved state to {h_path} (Rebalance #{state.rebalance_count})")
+        _safe_print(f"✅ Successfully updated and saved state to {h_path} (Rebalance #{state.rebalance_count})")
 
-    # 10. Webhook Trigger
+    # 11. Webhook Trigger
     if webhook_url:
         card_data = {
             "title": f"📈 全天候自适应资产配置决策 ({today_str})",
@@ -461,12 +503,13 @@ def run_live_advisor(
         }
         ok = send_webhook_notification(webhook_url, card_data)
         if ok:
-            print(f"✅ Webhook card successfully sent to {webhook_url[:35]}...")
+            _safe_print(f"✅ Webhook card successfully sent to {webhook_url[:35]}...")
 
     return {
         "today": today_str,
         "state": state,
         "plan": plan,
+        "core_satellite_plan": core_satellite_plan,
         "cash_plan": cash_plan,
         "intel_report": intel_report,
         "markdown": full_markdown,
@@ -495,7 +538,7 @@ def main():
         initial_capital_if_empty=args.capital,
         sentiment_tilt=not args.no_sentiment,
     )
-    print(result["markdown"])
+    _safe_print(result["markdown"])
 
 
 if __name__ == "__main__":

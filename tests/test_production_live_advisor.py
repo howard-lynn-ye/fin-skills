@@ -51,8 +51,10 @@ def test_run_live_advisor_end_to_end(tmp_path: Path):
     )
     assert "state" in result
     assert "plan" in result
+    assert "core_satellite_plan" in result
     assert "cash_plan" in result
     assert "markdown" in result
     assert result["state"].total_nav > 0
     assert "## 🌐 全球大类资产自适应全天候" in result["markdown"]
+    assert "🎯 卫星增强仓 (20% Tier-S 个股大V事件 Alpha 狙击单 - T+5 策略)" in result["markdown"]
     assert h_file.exists()
