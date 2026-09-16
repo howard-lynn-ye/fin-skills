@@ -259,6 +259,62 @@ class SignalReconciler:
         )
 
 
+ReconciledSignal = ReconciliationResult
+
+
+def compute_belief_entropy(probabilities: list[float]) -> float:
+    """Compute Shannon belief entropy across multi-channel probability weights: -sum(p * log2(p)).
+
+    Higher entropy reflects severe information divergence / disagreement across channels.
+    """
+    valid = [p for p in probabilities if p > 0.0]
+    if not valid:
+        return 0.0
+    total = sum(valid)
+    norm = [p / total for p in valid]
+    return round(-sum(p * math.log2(p) for p in norm if p > 0), 4)
+
+
+def reconcile_views(
+    asset_code: str,
+    signals: list[ChannelSignal],
+    qdii_premium_pct: float = 0.0,
+    reconciler: SignalReconciler | None = None,
+) -> ReconciliationResult:
+    """Resolve conflicting signals across macro, valuation, smart money, and sentiment channels.
+
+    Applies the 5-tier hierarchical conflict resolution rules:
+    1. Macro & Regulatory Veto (Hard circuit breaker for policy risk or extreme QDII premium)
+    2. Cross-Border Premium Disconnect (US tech hype vs domestic premium risk)
+    3. Distribution Trap (Smart Money Selling vs Retail Euphoria -> defensive tilt)
+    4. Contrarian Bottom (Institutional Accumulation + Valuation vs Retail Panic -> contrarian buy)
+    5. Hierarchical Consensus with Disagreement Uncertainty Damping
+
+    Args:
+        asset_code: Security ticker (e.g. "510300", "513100").
+        signals: List of ChannelSignal observations from various market channels.
+        qdii_premium_pct: Domestic ETF market premium percentage over IOPV/NAV.
+        reconciler: Optional pre-configured SignalReconciler instance.
+
+    Returns:
+        ReconciliationResult (or ReconciledSignal) with resolved score, tilt, and rationale.
+    """
+    if reconciler is None:
+        reconciler = SignalReconciler()
+    return reconciler.reconcile_asset_signals(asset_code, signals, qdii_premium_pct=qdii_premium_pct)
+
+
+__all__ = [
+    "CHANNEL_BASE_WEIGHTS",
+    "ChannelSignal",
+    "ReconciliationResult",
+    "ReconciledSignal",
+    "SignalReconciler",
+    "compute_belief_entropy",
+    "reconcile_views",
+]
+
+
 if __name__ == "__main__":
     reconciler = SignalReconciler(max_tilt=0.015)
 

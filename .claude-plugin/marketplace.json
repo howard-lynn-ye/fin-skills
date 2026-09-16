@@ -94,7 +94,9 @@
       ],
       "skills": [
         "./skills/china-ashare-data",
-        "./skills/china-trading-stack"
+        "./skills/china-trading-stack",
+        "./skills/kol-credibility-registry",
+        "./skills/signal-reconciler"
       ]
     },
     {

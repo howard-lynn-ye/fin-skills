@@ -347,6 +347,81 @@ class KOLCredibilityRegistry:
         )
 
 
+def update_bayesian_track_record(
+    prior_alpha: float = 5.0,
+    prior_beta: float = 5.0,
+    wins: int = 0,
+    total: int = 0,
+) -> tuple[float, float, float]:
+    """Update Beta(alpha, beta) conjugate prior with observed binomial win/loss outcomes.
+
+    Args:
+        prior_alpha: Prior alpha parameter (uninformative or empirical Bayes prior).
+        prior_beta: Prior beta parameter.
+        wins: Number of successful directional calls.
+        total: Total evaluated predictions.
+
+    Returns:
+        (posterior_alpha, posterior_beta, posterior_mean_win_rate)
+    """
+    losses = max(0, total - wins)
+    post_alpha = prior_alpha + wins
+    post_beta = prior_beta + losses
+    denom = post_alpha + post_beta
+    posterior_mean = post_alpha / denom if denom > 0 else 0.5
+    return round(post_alpha, 4), round(post_beta, 4), round(posterior_mean, 4)
+
+
+def compute_brier_score(
+    forecasts: list[float],
+    outcomes: list[int | float],
+) -> float:
+    """Compute Brier calibration error score: (1/N) * sum((f_i - o_i)^2).
+
+    Lower values indicate superior calibration (0.0 = perfect calibration,
+    0.25 = uninformative 50/50 guessing, >0.25 = anti-calibrated/contrarian).
+    """
+    if not forecasts or not outcomes or len(forecasts) != len(outcomes):
+        return 0.25
+    n = len(forecasts)
+    sq_errs = [(float(f) - float(o)) ** 2 for f, o in zip(forecasts, outcomes)]
+    return round(sum(sq_errs) / n, 4)
+
+
+def calibrate_sentiment(
+    posts: list[dict[str, Any]],
+    registry: KOLCredibilityRegistry | None = None,
+) -> KOLWeightedSentimentResult:
+    """Calibrate social posts using the KOL Credibility Registry.
+
+    Amplifies high-win-rate alpha researchers (+2.5x to +3.0x),
+    neutralizes financial media aggregators (0.0x), and inverts
+    retail FOMO contrarian indicators (-1.5x) to prevent retail traps.
+
+    Args:
+        posts: List of post dictionaries with \x27author\x27 and \x27polarity\x27.
+        registry: Optional pre-loaded KOLCredibilityRegistry instance.
+
+    Returns:
+        KOLWeightedSentimentResult with calibrated polarity and detailed breakdown.
+    """
+    if registry is None:
+        registry = KOLCredibilityRegistry()
+    return registry.evaluate_weighted_sentiment(posts)
+
+
+__all__ = [
+    "EMBEDDED_KOL_PROFILES",
+    "KOLCredibilityRegistry",
+    "KOLProfile",
+    "KOLWeightedSentimentResult",
+    "TIER_WEIGHT_MAP",
+    "calibrate_sentiment",
+    "compute_brier_score",
+    "update_bayesian_track_record",
+]
+
+
 if __name__ == "__main__":
     registry = KOLCredibilityRegistry()
     print(f"Initialized KOLCredibilityRegistry with {len(registry.profiles):,} verified profiles.\n")

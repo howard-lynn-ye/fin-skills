@@ -1,11 +1,11 @@
 {
   "generated_by": "scripts/build_index.py — do not edit by hand",
-  "n_skills": 127,
+  "n_skills": 129,
   "n_reference_files": 75,
-  "n_scripts": 111,
+  "n_scripts": 122,
   "discovery_cost": {
-    "total_description_chars": 109322,
-    "approx_tokens": 27330,
+    "total_description_chars": 109653,
+    "approx_tokens": 27413,
     "note": "Claude Code's default skill-listing budget is ~1% of the context window. Past roughly 20 skills, descriptions are silently dropped to name-only and those skills stop auto-triggering. Skills are split across plugins so a user installs only what they need."
   },
   "plugins": [
@@ -236,7 +236,48 @@
         "vnpy.md"
       ],
       "scripts": [
-        "ashare_rules.py"
+        "ashare_rules.py",
+        "board_lot_guard.py",
+        "cash_yield_optimizer.py",
+        "core_satellite_advisor.py",
+        "data_cleaning_filter.py",
+        "portfolio_manager.py",
+        "qdii_premium_guard.py",
+        "sentiment_flow_collector.py",
+        "stock_predictability_stratifier.py"
+      ]
+    },
+    {
+      "name": "kol-credibility-registry",
+      "plugin": "fin-china",
+      "path": "plugins/fin-china/skills/kol-credibility-registry/SKILL.md",
+      "description": "[fin-china] Score and calibrate financial KOL credibility across Xueqiu and StockTwits using Bayesian win-rate updating, Brier scores, and contrarian inversion.",
+      "summary": "[fin-china] Score and calibrate financial KOL credibility across Xueqiu and StockTwits using Bayesian win-rate updating, Brier scores, and contrarian inversion.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-16",
+      "body_chars": 11221,
+      "approx_body_tokens": 2805,
+      "references": [],
+      "scripts": [
+        "kol_credibility_registry.py",
+        "kol_registry.py"
+      ]
+    },
+    {
+      "name": "signal-reconciler",
+      "plugin": "fin-china",
+      "path": "plugins/fin-china/skills/signal-reconciler/SKILL.md",
+      "description": "[fin-china] Resolve conflicting bullish and bearish signals across macro, fundamental, technical, and social sentiment sources using entropy-weighted evidence combination.",
+      "summary": "[fin-china] Resolve conflicting bullish and bearish signals across macro, fundamental, technical, and social sentiment sources using entropy-weighted evidence combination.",
+      "license": "MIT",
+      "version": "0.1.0",
+      "verified_on": "2026-09-16",
+      "body_chars": 12069,
+      "approx_body_tokens": 3017,
+      "references": [],
+      "scripts": [
+        "signal_reconciler.py"
       ]
     },
     {

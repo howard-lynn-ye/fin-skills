@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-09-16 15:26:19",
+  "holdings_file": "research/production/my_holdings.json",
+  "total_nav": 100000.0,
+  "cash": 100000.0,
+  "cash_weight": 1.0,
+  "cash_weight_pct": "100.00%",
+  "health_score": 85.0,
+  "verdict": "WARNING_REQUIRES_ATTENTION",
+  "guard_results": {
+    "qdii_premium": {
+      "name": "qdii_premium",
+      "title": "QDII 跨境二级市场溢价守卫",
+      "status": "PASS",
+      "score_deduction": 0.0,
+      "summary": "无高溢价 QDII 跨境 ETF 暴露 (No Bubble Exposure)",
+      "findings": [
+        "✅ 投资组合当前无 QDII 跨境 ETF 持仓，不受海外额度封顶与二级市场溢价炒作影响。"
+      ],
+      "metrics": {
+        "qdii_count": 0,
+        "max_premium_pct": "0.00%"
+      },
+      "remediation": "持续保持资产配置正常监控。"
+    },
+    "ashare_rules": {
+      "name": "ashare_rules",
+      "title": "A股交易规则与流动性守卫",
+      "status": "PASS",
+      "score_deduction": 0.0,
+      "summary": "全部持仓标的流动性良好，符合 A 股涨跌停与 T+1 规则",
+      "findings": [
+        "✅ 全部持仓标的均处于正常交易状态，流动性充沛，无跌停封死与停牌异常。"
+      ],
+      "metrics": {
+        "audited_holdings": 0,
+        "date": "2026-09-16"
+      },
+      "remediation": "维持标准流动性监控，严禁对跌停标的盲目抄底。"
+    },
+    "board_lot_feasibility": {
+      "name": "board_lot_feasibility",
+      "title": "100股整手颗粒度与失真守卫",
+      "status": "PASS",
+      "score_deduction": 0.0,
+      "summary": "持仓完全满足 100 股整数手规范，资金颗粒度失真良好",
+      "findings": [
+        "✅ 所有持仓完全满足 100 股整数手要求 (零股数量为 0)，资金规模对资产配置无离散失真。"
+      ],
+      "metrics": {
+        "fractional_violations_count": 0,
+        "granularity_distortion_pct": "0.00%"
+      },
+      "remediation": "维持 100 股整手委托纪律。"
+    },
+    "cash_drag": {
+      "name": "cash_drag",
+      "title": "闲置现金拖累与增益优化守卫",
+      "status": "WARN",
+      "score_deduction": 15.0,
+      "summary": "严重闲置现金拖累 (现金占比 100.0% > 20%)",
+      "findings": [
+        "🟡 [严重现金拖累] 闲置可用资金 **¥100,000.00** (占比 **100.0%**) 严重超过 20.0% 安全上限！滞留活期存款 (0.30%) 每年造成 **-¥1,800.00** 隐性收益拖累。"
+      ],
+      "metrics": {
+        "cash_ratio_pct": "100.00%",
+        "idle_cash_rmb": "¥100,000.00",
+        "annual_drag_rmb": "-¥1,800.00",
+        "recommended_vehicle": "204001 (GC001) / 131810 (R-001)"
+      },
+      "remediation": "今日 14:50 - 15:30 务必执行现金增益管理: Execute 1-day reverse repo for 100,000 RMB (100 lots)，拒绝资金休眠。"
+    },
+    "weight_traps": {
+      "name": "weight_traps",
+      "title": "投资组合权重陷阱与集中度守卫",
+      "status": "PASS",
+      "score_deduction": 0.0,
+      "summary": "权重归一化合规，无负权重，卫星个股分散度良好",
+      "findings": [
+        "✅ 组合总权重精确归一化 (100.0%)，无负权重裸卖空；卫星个股分散度优异 (单股 <= 5.0%)。"
+      ],
+      "metrics": {
+        "total_weight_pct": "100.00%",
+        "max_single_stock_weight": "0.00%",
+        "worst_stock": "None"
+      },
+      "remediation": "维持 80% 全天候核心 ETF + 20% 卫星个股 (单股 <= 5%) 分散配置。"
+    },
+    "data_quality": {
+      "name": "data_quality",
+      "title": "截面数据质量与前视偏差守卫",
+      "status": "PASS",
+      "score_deduction": 0.0,
+      "summary": "行情真实有效，时序严格因果单调，无前视偏差",
+      "findings": [
+        "✅ 截面行情价格真实有效，调仓时序与时间戳严格满足单调性因果律，无前视未来数据泄漏。"
+      ],
+      "metrics": {
+        "missing_price_count": 0,
+        "audit_date": "2026-09-16"
+      },
+      "remediation": "维持实时行情校验并定期校准时区时间戳。"
+    }
+  },
+  "holdings_audit": []
+}
