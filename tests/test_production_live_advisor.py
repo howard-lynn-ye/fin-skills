@@ -58,3 +58,31 @@ def test_run_live_advisor_end_to_end(tmp_path: Path):
     assert "## 🌐 全球大类资产自适应全天候" in result["markdown"]
     assert "🎯 卫星增强仓 (20% Tier-S 个股大V事件 Alpha 狙击单 - T+5 策略)" in result["markdown"]
     assert h_file.exists()
+
+
+def test_run_live_advisor_with_satellite_execution(tmp_path: Path):
+    h_file = tmp_path / "test_advisor_holdings.json"
+    ledger_file = tmp_path / "test_satellite_ledger.json"
+
+    candidates = [
+        {"symbol": "SZ300760", "name": "迈瑞医疗", "kol_weighted_sentiment": 0.85},
+    ]
+
+    # Day 1: Confirm execution of satellite buy
+    result_day1 = run_live_advisor(
+        holdings_path=h_file,
+        ledger_path=ledger_file,
+        profile="conservative",
+        confirm_execution=True,
+        initial_capital_if_empty=100000.0,
+        candidate_stock_signals=candidates,
+    )
+
+    assert ledger_file.exists()
+    assert "SZ300760" in result_day1["state"].holdings
+
+    from fin_skills.china.core_satellite_advisor import SatelliteLifecycleManager
+    mgr = SatelliteLifecycleManager(ledger_path=ledger_file)
+    assert "SZ300760" in mgr.positions
+    assert mgr.positions["SZ300760"].shares > 0
+

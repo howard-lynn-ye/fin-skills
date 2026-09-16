@@ -95,6 +95,182 @@ class SatelliteAlphaTicket:
 
 
 @dataclass
+class SatellitePositionRecord:
+    """Persistent tracking record for an open T+5 satellite equity position."""
+
+    symbol: str
+    name: str
+    shares: int
+    entry_price: float
+    entry_date: str
+    target_holding_days: int = 5
+    stop_loss_pct: float = -0.05
+    take_profit_pct: float = 0.08
+    kol_trigger_summary: str = ""
+    current_price: float = 0.0
+    current_holding_days: int = 0
+    unrealized_pnl_pct: float = 0.0
+    lifecycle_status: str = "HOLD_IN_PROGRESS"  # 'HOLD_IN_PROGRESS', 'EXIT_TARGET_HORIZON_REACHED', 'EXIT_TAKE_PROFIT', 'EXIT_STOP_LOSS'
+    action: str = "HOLD"  # 'HOLD', 'SELL_EXIT'
+    exit_reason: str = ""
+
+    def update_valuation(self, current_price: float, today_date: str) -> None:
+        self.current_price = float(current_price)
+        if self.entry_price > 0:
+            self.unrealized_pnl_pct = (self.current_price - self.entry_price) / self.entry_price
+        else:
+            self.unrealized_pnl_pct = 0.0
+
+        try:
+            from datetime import datetime
+            d0 = datetime.strptime(self.entry_date[:10], "%Y-%m-%d").date()
+            d1 = datetime.strptime(today_date[:10], "%Y-%m-%d").date()
+            self.current_holding_days = max(0, (d1 - d0).days)
+        except Exception:
+            self.current_holding_days = 0
+
+        # Check exit triggers
+        if self.unrealized_pnl_pct >= self.take_profit_pct:
+            self.lifecycle_status = "EXIT_TAKE_PROFIT"
+            self.action = "SELL_EXIT"
+            self.exit_reason = (
+                f"达标止盈 (+{self.unrealized_pnl_pct*100:.1f}% >= +{self.take_profit_pct*100:.1f}%)，"
+                f"锁定收益，资金全额归集回国债ETF/GC001"
+            )
+        elif self.unrealized_pnl_pct <= self.stop_loss_pct:
+            self.lifecycle_status = "EXIT_STOP_LOSS"
+            self.action = "SELL_EXIT"
+            self.exit_reason = (
+                f"触发硬止损 ({self.unrealized_pnl_pct*100:.1f}% <= {self.stop_loss_pct*100:.1f}%)，"
+                f"截断个股尾部风险，资金回流压舱石"
+            )
+        elif self.current_holding_days >= self.target_holding_days:
+            self.lifecycle_status = "EXIT_TARGET_HORIZON_REACHED"
+            self.action = "SELL_EXIT"
+            self.exit_reason = (
+                f"已满 T+{self.target_holding_days} 事件驱动窗口期，正常获利退出，资金归集回国债ETF"
+            )
+        else:
+            self.lifecycle_status = "HOLD_IN_PROGRESS"
+            self.action = "HOLD"
+            days_left = self.target_holding_days - self.current_holding_days
+            self.exit_reason = (
+                f"持有中 (已持有 {self.current_holding_days} 天，浮动盈亏 {self.unrealized_pnl_pct*100:+.1f}%，"
+                f"距 T+{self.target_holding_days} 还剩 {days_left} 天)"
+            )
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+class SatelliteLifecycleManager:
+    """Manages persistence and T+5 holding lifecycle for satellite equity positions."""
+
+    def __init__(self, ledger_path: str | Path | None = None):
+        import os
+        from pathlib import Path
+        self.ledger_path = Path(ledger_path) if ledger_path else Path("research/production/satellite_ledger.json")
+        self.positions: dict[str, SatellitePositionRecord] = {}
+        self.history: list[dict[str, Any]] = []
+        self.load()
+
+    def load(self) -> int:
+        import json
+        if not self.ledger_path.exists():
+            return 0
+        try:
+            with open(self.ledger_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            self.positions.clear()
+            for p in data.get("active_positions", []):
+                rec = SatellitePositionRecord(**p)
+                self.positions[rec.symbol] = rec
+            self.history = data.get("closed_history", [])
+            return len(self.positions)
+        except Exception as exc:
+            logger.warning(f"Failed to load satellite ledger {self.ledger_path}: {exc}")
+            return 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "active_positions": [p.to_dict() for p in self.positions.values()],
+            "closed_history": list(self.history),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any], ledger_path: str | Path | None = None) -> SatelliteLifecycleManager:
+        inst = cls(ledger_path=ledger_path)
+        inst.positions.clear()
+        for p in data.get("active_positions", []):
+            rec = SatellitePositionRecord(**p)
+            inst.positions[rec.symbol] = rec
+        inst.history = list(data.get("closed_history", []))
+        return inst
+
+    def save(self) -> None:
+        import json
+        self.ledger_path.parent.mkdir(parents=True, exist_ok=True)
+        data = self.to_dict()
+        data["closed_history"] = self.history[-50:]
+        with open(self.ledger_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+    def add_ticket(self, ticket: SatelliteAlphaTicket, entry_date: str) -> SatellitePositionRecord:
+        rec = SatellitePositionRecord(
+            symbol=ticket.symbol,
+            name=ticket.name,
+            shares=ticket.shares_to_buy,
+            entry_price=ticket.entry_price,
+            entry_date=entry_date,
+            target_holding_days=ticket.target_holding_days,
+            stop_loss_pct=ticket.stop_loss_pct,
+            take_profit_pct=ticket.take_profit_pct,
+            kol_trigger_summary=ticket.kol_trigger_summary,
+            current_price=ticket.entry_price,
+            current_holding_days=0,
+            unrealized_pnl_pct=0.0,
+            lifecycle_status="HOLD_IN_PROGRESS",
+            action="HOLD",
+            exit_reason=f"今日开仓买入，目标持有 T+{ticket.target_holding_days} 天",
+        )
+        self.positions[ticket.symbol] = rec
+        return rec
+
+    def close_position(self, symbol: str, exit_date: str, exit_price: float, reason: str) -> None:
+        if symbol in self.positions:
+            pos = self.positions.pop(symbol)
+            pnl_pct = (exit_price - pos.entry_price) / pos.entry_price if pos.entry_price > 0 else 0.0
+            self.history.append({
+                "symbol": pos.symbol,
+                "name": pos.name,
+                "shares": pos.shares,
+                "entry_price": pos.entry_price,
+                "entry_date": pos.entry_date,
+                "exit_price": round(exit_price, 3),
+                "exit_date": exit_date,
+                "holding_days": pos.current_holding_days,
+                "realized_pnl_pct": round(pnl_pct, 4),
+                "reason": reason,
+            })
+
+    def audit_positions(
+        self,
+        current_prices: dict[str, float],
+        today_date: str,
+    ) -> tuple[list[SatellitePositionRecord], list[SatellitePositionRecord]]:
+        active_list: list[SatellitePositionRecord] = []
+        exit_list: list[SatellitePositionRecord] = []
+        for sym, pos in self.positions.items():
+            price = current_prices.get(sym, pos.current_price or pos.entry_price)
+            pos.update_valuation(price, today_date)
+            if pos.action == "SELL_EXIT":
+                exit_list.append(pos)
+            else:
+                active_list.append(pos)
+        return active_list, exit_list
+
+
+@dataclass
 class CoreSatellitePlan:
     """Unified Core-Satellite (80% Core ETFs + 20% Satellite Event Alpha) allocation plan."""
 
@@ -104,6 +280,8 @@ class CoreSatellitePlan:
     satellite_stock_weights: dict[str, float] = field(default_factory=dict)
     satellite_tickets: list[SatelliteAlphaTicket] = field(default_factory=list)
     blocked_noisy_stocks: list[dict[str, Any]] = field(default_factory=list)
+    active_positions: list[SatellitePositionRecord] = field(default_factory=list)
+    exit_tickets: list[SatellitePositionRecord] = field(default_factory=list)
 
     @property
     def total_weight_sum(self) -> float:
@@ -131,6 +309,8 @@ class CoreSatellitePlan:
             "satellite_stock_weights": dict(self.satellite_stock_weights),
             "satellite_tickets": [t.to_dict() for t in self.satellite_tickets],
             "blocked_noisy_stocks": list(self.blocked_noisy_stocks),
+            "active_positions": [p.to_dict() for p in self.active_positions],
+            "exit_tickets": [p.to_dict() for p in self.exit_tickets],
             "total_weight_sum": self.total_weight_sum,
             "unused_satellite_budget": self.unused_satellite_budget,
         }
@@ -148,8 +328,36 @@ class CoreSatellitePlan:
         )
         lines.append("")
 
+        # 1. Exit sell tickets
+        if self.exit_tickets:
+            lines.append("#### ⏰ T+5 到期平仓 / 止盈止损卖出单 (资金归集回国债 ETF / GC001)")
+            lines.append("| 代码 | 标的名称 | 买入日期 | 持仓天数 | 成本价 | 最新价 | 浮动盈亏 | 操作指令 | 退出平仓理由 |")
+            lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+            for ex in self.exit_tickets:
+                lines.append(
+                    f"| `{ex.symbol}` | **{ex.name}** | {ex.entry_date} | {ex.current_holding_days} 天 | "
+                    f"{ex.entry_price:.2f} | {ex.current_price:.2f} | **{ex.unrealized_pnl_pct*100:+.2f}%** | "
+                    f"🔴 **全部卖出平仓 ({ex.shares:,}股)** | {ex.exit_reason} |"
+                )
+            lines.append("")
+
+        # 2. Active holding positions
+        if self.active_positions:
+            lines.append("#### 📋 当前在持卫星仓生命周期跟踪 (T+5 观察中)")
+            lines.append("| 代码 | 标的名称 | 买入日期 | 持仓天数 | 成本价 | 最新价 | 浮动盈亏 | 状态 | 目标平仓倒计时 |")
+            lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+            for ap in self.active_positions:
+                days_left = max(0, ap.target_holding_days - ap.current_holding_days)
+                lines.append(
+                    f"| `{ap.symbol}` | {ap.name} | {ap.entry_date} | {ap.current_holding_days} 天 | "
+                    f"{ap.entry_price:.2f} | {ap.current_price:.2f} | {ap.unrealized_pnl_pct*100:+.2f}% | "
+                    f"🟢 持仓正常 | 还剩 **{days_left}** 个交易日 |"
+                )
+            lines.append("")
+
+        # 3. New entry tickets
         if self.satellite_tickets:
-            lines.append("#### 🚀 激活 Tier-S / Tier-A 事件 Alpha 狙击单 (单票上限 5% | T+5 持有期)")
+            lines.append("#### 🚀 今日新增激活 Tier-S / Tier-A 事件 Alpha 狙击单 (单票上限 5% | T+5 持有期)")
             lines.append("| 代码 | 标的名称 | 可预测性分层 | 触发大V / 逆向指标共振信号 | 加权情绪 | 建议买入 | 入场价 | 权重 | 止盈 / 止损 | 策略逻辑 |")
             lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
             for t in self.satellite_tickets:
@@ -163,7 +371,7 @@ class CoreSatellitePlan:
                 )
             lines.append("")
         else:
-            lines.append("> ℹ️ **当前无满足高胜率大V/逆向共振阈值的 Tier-S/A 个股信号，20% 卫星预算全额停泊于 `511010` 国债ETF 享受无风险收益。**")
+            lines.append("> ℹ️ **今日无新触发的 Tier-S/A 个股建仓信号，未用卫星预算自动停泊于 `511010` 国债ETF 享受无风险收益。**")
             lines.append("")
 
         if self.blocked_noisy_stocks:
@@ -348,6 +556,8 @@ def generate_core_satellite_plan(
     satellite_weight_budget: float = 0.20,
     max_single_stock_weight: float = 0.05,
     min_sentiment_threshold: float = 0.20,
+    lifecycle_mgr: SatelliteLifecycleManager | None = None,
+    today_date: str | None = None,
 ) -> CoreSatellitePlan:
     """Evaluate stock signals via all 4 intelligence modules and build an 80/20 Core-Satellite plan.
 
@@ -653,6 +863,12 @@ def generate_core_satellite_plan(
     if abs(residual) > 0:
         core_etf_weights["511010"] = round(core_etf_weights.get("511010", 0.0) + residual, 6)
 
+    active_positions: list[SatellitePositionRecord] = []
+    exit_tickets: list[SatellitePositionRecord] = []
+    if lifecycle_mgr is not None:
+        t_date = today_date or "2026-09-16"
+        active_positions, exit_tickets = lifecycle_mgr.audit_positions(prices, t_date)
+
     return CoreSatellitePlan(
         core_weight_budget=core_weight_budget,
         satellite_weight_budget=satellite_weight_budget,
@@ -660,6 +876,8 @@ def generate_core_satellite_plan(
         satellite_stock_weights=satellite_stock_weights,
         satellite_tickets=satellite_tickets,
         blocked_noisy_stocks=blocked_noisy_stocks,
+        active_positions=active_positions,
+        exit_tickets=exit_tickets,
     )
 
 

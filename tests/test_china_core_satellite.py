@@ -192,3 +192,116 @@ def test_tier_c_noisy_stock_interception_and_etf_substitution():
     assert "迈瑞医疗" in md
     assert "02015" in md
     assert "510900" in md
+
+
+def test_satellite_lifecycle_manager_holding_and_exits():
+    """Test 5: Verify SatelliteLifecycleManager tracks positions, audits T+5 horizon, take-profit, stop-loss, and closes trades."""
+    from fin_skills.china.core_satellite_advisor import (
+        SatelliteLifecycleManager,
+        SatellitePositionRecord,
+    )
+
+    mgr = SatelliteLifecycleManager()
+
+    # 1. Add positions
+    t1 = SatelliteAlphaTicket(
+        symbol="SZ300760",
+        name="迈瑞医疗",
+        tier="TIER_S_HIGH_PREDICTABILITY",
+        kol_trigger_summary="阿尔法工场看多",
+        kol_weighted_sentiment=0.88,
+        action="BUY",
+        shares_to_buy=200,
+        entry_price=250.0,
+        target_holding_days=5,
+        stop_loss_pct=-0.05,
+        take_profit_pct=0.08,
+        rationale="低估值蓝筹反弹",
+    )
+    t2 = SatelliteAlphaTicket(
+        symbol="SH600036",
+        name="招商银行",
+        tier="TIER_S_HIGH_PREDICTABILITY",
+        kol_trigger_summary="大V共振看多",
+        kol_weighted_sentiment=0.85,
+        action="BUY",
+        shares_to_buy=1000,
+        entry_price=35.0,
+        target_holding_days=5,
+        stop_loss_pct=-0.05,
+        take_profit_pct=0.08,
+        rationale="高股息价值中枢",
+    )
+    t3 = SatelliteAlphaTicket(
+        symbol="SZ000963",
+        name="华东医药",
+        tier="TIER_S_HIGH_PREDICTABILITY",
+        kol_trigger_summary="医药大V研报催化",
+        kol_weighted_sentiment=0.82,
+        action="BUY",
+        shares_to_buy=500,
+        entry_price=30.0,
+        target_holding_days=5,
+        stop_loss_pct=-0.05,
+        take_profit_pct=0.08,
+        rationale="创新药放量",
+    )
+
+    mgr.add_ticket(t1, entry_date="2026-09-08")
+    mgr.add_ticket(t2, entry_date="2026-09-10")
+    mgr.add_ticket(t3, entry_date="2026-09-12")
+
+    assert len(mgr.positions) == 3
+
+    # 2. Audit scenario on 2026-09-16:
+    # - SZ300760 (entry 2026-09-08): holding days = 6 >= 5 -> trigger EXIT_TARGET_HORIZON_REACHED
+    # - SH600036 (entry 2026-09-10, price 38.0): return = (38-35)/35 = +8.57% >= +8% -> trigger EXIT_TAKE_PROFIT
+    # - SZ000963 (entry 2026-09-12, price 28.0): return = (28-30)/30 = -6.67% <= -5% -> trigger EXIT_STOP_LOSS
+    prices = {
+        "SZ300760": 252.0,  # +0.8%, but holding days = 6 >= 5
+        "SH600036": 38.0,   # +8.57% (Take profit)
+        "SZ000963": 28.0,   # -6.67% (Stop loss)
+    }
+
+    active, exits = mgr.audit_positions(prices, today_date="2026-09-16")
+    assert len(active) == 0
+    assert len(exits) == 3
+
+    exit_reasons = {e.symbol: e.lifecycle_status for e in exits}
+    assert exit_reasons["SZ300760"] == "EXIT_TARGET_HORIZON_REACHED"
+    assert exit_reasons["SH600036"] == "EXIT_TAKE_PROFIT"
+    assert exit_reasons["SZ000963"] == "EXIT_STOP_LOSS"
+
+    # Close positions in ledger
+    for e in exits:
+        mgr.close_position(
+            symbol=e.symbol,
+            exit_date="2026-09-16",
+            exit_price=prices[e.symbol],
+            reason=e.exit_reason,
+        )
+
+    assert len(mgr.positions) == 0
+    assert len(mgr.history) == 3
+    # Check realized PnL
+    hist_map = {h["symbol"]: h for h in mgr.history}
+    assert hist_map["SH600036"]["realized_pnl_pct"] == pytest.approx(0.0857, abs=1e-3)
+    assert hist_map["SZ000963"]["realized_pnl_pct"] == pytest.approx(-0.0667, abs=1e-3)
+
+    # 3. Test In-Progress Holding Status (Holding < 5 days, within [-5%, +8%])
+    mgr.add_ticket(t1, entry_date="2026-09-15")
+    active_now, exits_now = mgr.audit_positions({"SZ300760": 255.0}, today_date="2026-09-16")
+    assert len(active_now) == 1
+    assert len(exits_now) == 0
+    assert active_now[0].lifecycle_status == "HOLD_IN_PROGRESS"
+    assert active_now[0].action == "HOLD"
+    assert active_now[0].current_holding_days == 1
+    assert active_now[0].unrealized_pnl_pct == pytest.approx(0.02, abs=1e-4)
+
+    # 4. Test Serialization / Deserialization
+    state_dict = mgr.to_dict()
+    mgr_restored = SatelliteLifecycleManager.from_dict(state_dict)
+    assert len(mgr_restored.positions) == 1
+    assert "SZ300760" in mgr_restored.positions
+    assert len(mgr_restored.history) == 3
+

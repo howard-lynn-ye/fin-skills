@@ -69,6 +69,7 @@ from fin_skills.china.board_lot_guard import DEFAULT_TYPICAL_PRICES
 from fin_skills.china.cash_yield_optimizer import plan_cash_placement
 from fin_skills.china.core_satellite_advisor import (
     DEFAULT_STOCK_PRICES,
+    SatelliteLifecycleManager,
     generate_core_satellite_plan,
 )
 from fin_skills.china.portfolio_manager import (HoldingRecord, PortfolioState,
@@ -272,6 +273,7 @@ def send_webhook_notification(webhook_url: str, card_data: dict[str, Any]) -> bo
 
 def run_live_advisor(
     holdings_path: str | Path,
+    ledger_path: str | Path | None = "research/production/satellite_ledger.json",
     profile: str = "conservative",
     inflow: float = 0.0,
     force_rebalance: bool = False,
@@ -297,6 +299,11 @@ def run_live_advisor(
         _safe_print(f"ℹ️ Initialized fresh portfolio with {initial_capital_if_empty:,.0f} RMB cash at {h_path}")
     else:
         state = PortfolioState.load_from_file(h_path)
+
+    # Load satellite lifecycle manager if ledger_path given
+    lifecycle_mgr = None
+    if ledger_path:
+        lifecycle_mgr = SatelliteLifecycleManager(ledger_path=ledger_path)
 
     # 2. Fetch live quotes
     market_snapshot = fetch_live_market_snapshot()
@@ -351,6 +358,8 @@ def run_live_advisor(
         core_base_weights=active_weights,
         candidate_stock_signals=candidate_stock_signals,
         market_prices={**DEFAULT_STOCK_PRICES, **price_map},
+        lifecycle_mgr=lifecycle_mgr,
+        today_date=today_str,
     )
     core_etf_target_weights = core_satellite_plan.core_etf_weights
 
@@ -474,22 +483,75 @@ def run_live_advisor(
     full_markdown = "\n".join(lines)
 
     # 10. Optional Execution Confirmation
-    if confirm_execution and plan.trade_tickets:
-        _safe_print("\n⚡ Applying suggested trades to portfolio state...")
-        for t in plan.trade_tickets:
-            state.apply_trade(
-                code=t.code,
-                name=t.name,
-                side=t.side,
-                shares=t.shares,
-                price=t.price,
-                fee=t.est_fee,
-            )
-        state.cash = plan.post_rebalance_cash
-        state.last_rebalance_date = today_str
-        state.rebalance_count += 1
-        state.save_to_file(h_path)
-        _safe_print(f"✅ Successfully updated and saved state to {h_path} (Rebalance #{state.rebalance_count})")
+    if confirm_execution:
+        applied_any = False
+        if plan.trade_tickets:
+            _safe_print("\n⚡ Applying suggested core ETF trades to portfolio state...")
+            for t in plan.trade_tickets:
+                state.apply_trade(
+                    code=t.code,
+                    name=t.name,
+                    side=t.side,
+                    shares=t.shares,
+                    price=t.price,
+                    fee=t.est_fee,
+                )
+            state.cash = plan.post_rebalance_cash
+            state.last_rebalance_date = today_str
+            state.rebalance_count += 1
+            applied_any = True
+
+        # Handle Satellite Exits
+        if lifecycle_mgr and core_satellite_plan.exit_tickets:
+            _safe_print("\n⚡ Closing matured / stop-loss / take-profit satellite positions...")
+            for ex in core_satellite_plan.exit_tickets:
+                exit_price = ex.current_price or ex.entry_price
+                lifecycle_mgr.close_position(
+                    symbol=ex.symbol,
+                    exit_date=today_str,
+                    exit_price=exit_price,
+                    reason=ex.exit_reason,
+                )
+                fee = ex.shares * exit_price * 0.0006
+                state.apply_trade(
+                    code=ex.symbol,
+                    name=ex.name,
+                    side="SELL",
+                    shares=ex.shares,
+                    price=exit_price,
+                    fee=fee,
+                )
+                applied_any = True
+                _safe_print(f"  🔴 [SELL] {ex.name} ({ex.symbol}): {ex.shares:,} shares @ {exit_price:.2f} (Reason: {ex.exit_reason})")
+
+        # Handle Satellite New Entries
+        if lifecycle_mgr and core_satellite_plan.satellite_tickets:
+            _safe_print("\n⚡ Executing new Tier-S/A event alpha satellite tickets...")
+            for t in core_satellite_plan.satellite_tickets:
+                fee = t.shares_to_buy * t.entry_price * 0.0001
+                cost = t.shares_to_buy * t.entry_price + fee
+                if state.cash >= cost:
+                    state.apply_trade(
+                        code=t.symbol,
+                        name=t.name,
+                        side="BUY",
+                        shares=t.shares_to_buy,
+                        price=t.entry_price,
+                        fee=fee,
+                    )
+                    lifecycle_mgr.add_ticket(t, entry_date=today_str)
+                    applied_any = True
+                    _safe_print(f"  🟢 [BUY] {t.name} ({t.symbol}): {t.shares_to_buy:,} shares @ {t.entry_price:.2f} ({t.kol_trigger_summary})")
+                else:
+                    _safe_print(f"  ⚠️ Insufficient cash to buy {t.symbol}: cost {cost:,.1f} > cash {state.cash:,.1f}")
+
+        if lifecycle_mgr:
+            lifecycle_mgr.save()
+
+        if applied_any:
+            state.recalculate(price_map)
+            state.save_to_file(h_path)
+            _safe_print(f"✅ Successfully updated and saved state to {h_path} (Rebalance #{state.rebalance_count})")
 
     # 11. Webhook Trigger
     if webhook_url:
@@ -519,17 +581,19 @@ def run_live_advisor(
 def main():
     parser = argparse.ArgumentParser(description="14:30 Automated Live Portfolio Advisor & Webhook Bot")
     parser.add_argument("--holdings", default="research/production/my_holdings.json", help="Path to holdings.json")
+    parser.add_argument("--ledger", default="research/production/satellite_ledger.json", help="Path to satellite_ledger.json")
     parser.add_argument("--profile", default="conservative", choices=["conservative", "balanced", "aggressive"], help="Risk profile")
     parser.add_argument("--inflow", type=float, default=0.0, help="New cash inflow deposited today (e.g. 5000 RMB)")
     parser.add_argument("--capital", type=float, default=100000.0, help="Initial capital if holdings.json does not exist")
     parser.add_argument("--force", action="store_true", help="Force rebalance bypassing deadbands")
-    parser.add_argument("--confirm", action="store_true", help="Confirm execution and update holdings.json")
+    parser.add_argument("--confirm", action="store_true", help="Confirm execution and update holdings.json and ledger")
     parser.add_argument("--webhook", default=None, help="Webhook URL (Feishu / WeCom / DingTalk)")
     parser.add_argument("--no-sentiment", action="store_true", help="Disable sentiment overlay tilting")
     args = parser.parse_args()
 
     result = run_live_advisor(
         holdings_path=args.holdings,
+        ledger_path=args.ledger,
         profile=args.profile,
         inflow=args.inflow,
         force_rebalance=args.force,
