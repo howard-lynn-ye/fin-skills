@@ -1,6 +1,6 @@
 # 🛡️ 机构级投资组合全维度风控守卫审计综合报告
 
-> **生成时间**: `2026-09-16 15:26:19` | **审计对象**: `research/production/my_holdings.json` | **执行引擎**: `fin-skills 2.0 (Direction 3 Auditor)`
+> **生成时间**: `2026-09-16 15:38:42` | **审计对象**: `research/production/my_holdings.json` | **执行引擎**: `fin-skills 2.0 (Direction 3 Auditor)`
 > **综合健康评分**: **`85.0 / 100`** | **审计裁定**: 🟡 **WARNING_REQUIRES_ATTENTION (需关注 / 存在风险隐患或摩擦损耗)**
 
 ---
