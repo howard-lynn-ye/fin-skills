@@ -7,6 +7,20 @@ from fin_skills.bridges.stock_prediction import (StockPredictionBridge,
                                                  find_stock_prediction_dir)
 
 
+def _has_stock_prediction() -> bool:
+    try:
+        find_stock_prediction_dir()
+        return True
+    except FileNotFoundError:
+        return False
+
+
+pytestmark = pytest.mark.skipif(
+    not _has_stock_prediction(),
+    reason="stock_prediction repository (or STOCK_PREDICTION_DIR) not available in this environment",
+)
+
+
 def test_find_stock_prediction_dir():
     d = find_stock_prediction_dir()
     assert d.is_dir()
