@@ -5,14 +5,14 @@ description: >-
 license: MIT
 metadata:
   version: "0.1.0"
-  verified_on: "2026-09-16"
+  verified_on: "2026-09-17"
 ---
 
 # KOL Credibility Registry
 
 The standard retail sentiment strategy is fatally flawed: **follower count does not equal predictive accuracy**. In quantitative analysis of social sentiment across Chinese and global equities, raw unweighted post counts act as a retail FOMO trap that buys tops and sells bottoms.
 
-The `kol-credibility-registry` skill solves this by providing empirical credibility scoring, Bayesian track-record shrinkage, Brier calibration metrics, and contrarian signal inversion across 2,521 bilingual financial KOLs (Key Opinion Leaders) across **Xueqiu (雪球)**, **StockTwits**, and **FinTwit**.
+The `kol-credibility-registry` skill solves this by providing empirical credibility scoring, Bayesian track-record shrinkage, Brier calibration metrics, and contrarian signal inversion for financial KOLs (Key Opinion Leaders) on **Xueqiu (雪球)**, **StockTwits**, and **FinTwit**.
 
 ---
 
@@ -20,12 +20,12 @@ The `kol-credibility-registry` skill solves this by providing empirical credibil
 
 A naive sentiment indicator counts positive vs. negative posts or computes a simple average of LLM sentiment scores. In practice, this guarantees underperformance for three structural reasons:
 
-1. **The 48.79% Coin-Flip Reality**:
-   An empirical audit of **1,445 active Xueqiu authors** across 182 core equities (2018–2026, comprising >42,000 forward-evaluated calls) proves that the unweighted 5-day directional win rate of financial social media is **48.79%** — slightly worse than a random coin toss.
+1. **The Coin-Flip Reality** ⚠️ secondhand:
+   An external audit of Xueqiu authors (2018–2026, in the separate `stock_prediction` project, not bundled or re-run here) reported an unweighted 5-day directional win rate of about **49%** — no better than a coin toss.
 2. **Mega-Influencers as FOMO Top Chasers**:
-   Accounts with 100,000 to 425,000+ followers exhibit win rates between **13.3% and 40.0%** with negative realized returns. High-follower retail KOLs grow their audience by validating the crowd's excitement at market peaks. Following them directionally leads to buying at distribution tops (主力派发、散户接盘).
+   In that external audit, several accounts with 100,000+ followers had 5-day win rates below 40% with negative realized returns. High-follower retail KOLs grow their audience by validating the crowd's excitement at market peaks. Following them directionally leads to buying at distribution tops (主力派发、散户接盘).
 3. **Media News Aggregators Have Zero Directional Alpha**:
-   Major financial news feeds (e.g., 财联社, 每日经济新闻, 7X24快讯, @DeItaone, @UnusualWhales) average a **47.0%** directional win rate. Financial news reports *events that already occurred*. They are invaluable for event detection and volume heat, but disastrous as directional trading signals.
+   News-wire and media aggregator accounts were near a coin flip directionally in the same external audit. Financial news reports *events that already occurred*. They are invaluable for event detection and volume heat, but disastrous as directional trading signals.
 
 ```
 +-----------------------------------------------------------------------------------+
@@ -92,12 +92,20 @@ Each author is classified into one of 6 operational tiers with calibrated direct
 
 ---
 
-## 3. The 2,521 Bilingual KOL Database Schema
+## 3. KOL Database Schema
 
-The registry maintains a verified historical database covering **2,521 financial authors** across Chinese mainland (Xueqiu) and overseas (StockTwits, FinTwit) markets:
-- **1,445 Xueqiu profiles** (`XUEQIU_KOL_ALPHA_PROFILES.csv`)
-- **1,070 Global profiles** (`GLOBAL_KOL_ALPHA_PROFILES.csv`)
-- **Standalone embedded fallback profiles** in `kol_credibility_registry.py` for zero-dependency operation.
+The registry ships only a **small embedded fixture of 40 pseudonymous profiles** (`cn_elite_01`,
+`us_contrarian_01`, ...). Their statistics were copied from an external audit in the separate
+`stock_prediction` project and are illustrative: no script here reproduces them, and the handles
+deliberately do not identify real people. ⚠️ secondhand.
+
+Full databases can be loaded when you have them, from `$FIN_SKILLS_BENCHMARK_DIR`
+(default `../stock_prediction/data/benchmark`) or an explicit `csv_path`:
+- `XUEQIU_KOL_ALPHA_PROFILES.csv` (Chinese mainland authors)
+- `GLOBAL_KOL_ALPHA_PROFILES.csv` (StockTwits / FinTwit authors)
+
+Neither file is bundled or verified by this repository. Before publishing tiers for named real
+accounts, keep the evaluation code and data with the results and check platform terms.
 
 ### Schema Fields
 
@@ -127,12 +135,12 @@ from fin_skills.china.kol_registry import KOLCredibilityRegistry, KOLProfile
 registry = KOLCredibilityRegistry()
 
 # Query an elite alpha author
-elite_prof = registry.get_author_profile("阿尔法工场")
+elite_prof = registry.get_author_profile("cn_elite_01")
 print(f"Author: {elite_prof.author} | Tier: {elite_prof.tier}")
 print(f"5D Win Rate: {elite_prof.win_rate_5d:.1%} | Weight: {elite_prof.directional_weight}x")
 
-# Query a verified contrarian indicator (反向明灯)
-contrarian_prof = registry.get_author_profile("钟华守正出奇")
+# Query a contrarian-indicator profile from the fixture (反向明灯)
+contrarian_prof = registry.get_author_profile("cn_contrarian_01")
 print(f"Author: {contrarian_prof.author} | Fans: {contrarian_prof.fans:,}")
 print(f"Win Rate: {contrarian_prof.win_rate_5d:.1%} | Inverted Weight: {contrarian_prof.directional_weight}x")
 ```
@@ -144,11 +152,11 @@ from fin_skills.china.kol_registry import calibrate_sentiment
 
 # Realistic divergence: Retail mega-influencers shouting long, alpha researchers warning short
 posts = [
-    {"author": "钟华守正出奇", "polarity": +0.90, "quality_score": 0.85},  # 425k fans, 40% win rate -> Inverted to -1.15
-    {"author": "东先生", "polarity": +0.85, "quality_score": 0.85},        # 150k fans, 40% win rate -> Inverted to -1.08
-    {"author": "财联社", "polarity": +0.60, "quality_score": 0.90},        # News aggregator -> Direction 0.0x
-    {"author": "阿尔法工场", "polarity": -0.75, "quality_score": 0.95},   # Elite researcher (91.7% win rate) -> Amplified to -2.14
-    {"author": "价投傻鱼", "polarity": -0.65, "quality_score": 0.90},     # Core alpha researcher (70.8% win rate) -> Amplified to -1.46
+    {"author": "cn_contrarian_01", "polarity": +0.90, "quality_score": 0.85},  # 425k fans, 40% win rate -> Inverted to -1.15
+    {"author": "cn_contrarian_08", "polarity": +0.85, "quality_score": 0.85},        # 150k fans, 40% win rate -> Inverted to -1.08
+    {"author": "cn_media_04", "polarity": +0.60, "quality_score": 0.90},        # News aggregator -> Direction 0.0x
+    {"author": "cn_elite_01", "polarity": -0.75, "quality_score": 0.95},   # Elite researcher (91.7% win rate) -> Amplified to -2.14
+    {"author": "cn_core_01", "polarity": -0.65, "quality_score": 0.90},     # Core alpha researcher (70.8% win rate) -> Amplified to -1.46
 ]
 
 result = calibrate_sentiment(posts)

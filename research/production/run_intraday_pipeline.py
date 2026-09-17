@@ -111,13 +111,13 @@ DEFAULT_ALPHA_CANDIDATE_POOL = [
         "base_weight": 0.04,
         "posts": [
             {
-                "author": "阿尔法工场",
+                "author": "cn_elite_01",
                 "text": "迈瑞医疗PE估值进入近10年极值低位区间，海外高端超声与微创外科订单保持高速放量，具备极高安全边际。",
                 "polarity": 0.88,
                 "verified": True,
             },
             {
-                "author": "钟华守正出奇",
+                "author": "cn_contrarian_01",
                 "text": "医疗集采利空出尽还是深渊？彻底割肉清仓！",
                 "polarity": -0.85,
                 "verified": True,

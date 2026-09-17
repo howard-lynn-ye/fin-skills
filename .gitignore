@@ -35,3 +35,9 @@ research/**/_cache*/
 
 # local GitHub credential store for pushes from the Cowork VM (never commit)
 .git-credentials
+
+# per-run outputs of research/production tools (regenerated on every run)
+research/production/paper_ledger.json
+research/production/1430_DAILY_ACTION_CARD.md
+research/production/feishu_card.json
+research/production/wecom_card.json

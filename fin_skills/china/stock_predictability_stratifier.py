@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import csv
 import logging
+import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -92,8 +93,7 @@ class StockPredictabilityStratifier:
         self._load_embedded_defaults()
 
         default_paths = [
-            Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/STOCK_PREDICTABILITY_TIERS.csv"),
-            Path("../stock_prediction/data/benchmark/STOCK_PREDICTABILITY_TIERS.csv"),
+            Path(os.environ.get("FIN_SKILLS_BENCHMARK_DIR", "../stock_prediction/data/benchmark")) / "STOCK_PREDICTABILITY_TIERS.csv",
         ]
         target = Path(csv_path) if csv_path else None
         if not target or not target.exists():

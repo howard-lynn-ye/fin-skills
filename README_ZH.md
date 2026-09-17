@@ -31,7 +31,7 @@
 ```bash
 # 启动本地实时 Web 决策看板（自动拉取盘中实时行情）
 python3 research/production/web_dashboard.py --port 8088
-# 浏览器访问：http://localhost:8088/ 或 http://shwaihe.c.googlers.com:8088/
+# 浏览器访问：http://localhost:8088/
 ```
 
 - 💰 **资金与策略实时试算**：随意滑动本金（5万 ~ 200万），动态切换三大策略（稳健防守型 MaxDD<10%、经典全天候、全球进取型）；

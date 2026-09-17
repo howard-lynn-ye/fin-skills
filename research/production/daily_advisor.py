@@ -50,6 +50,9 @@ COMMISSION_RATE = 0.0002  # 万分之二
 COMMISSION_MIN = 2.0      # 2元起
 
 
+DASHBOARD_URL = os.environ.get("FIN_SKILLS_DASHBOARD_URL", "http://localhost:8088/")
+
+
 def fetch_latest_market_snapshot() -> dict[str, dict]:
     """Fetch latest real-time prices and recent 60-day history for volatility calculation."""
     snapshot = {}
@@ -233,7 +236,7 @@ def print_cli_report(ticket: dict):
     print(f"    操作建议     : 请于交易日 {bold('14:50 ~ 15:30')} 在券商 App 搜索 {bold(cyan('GC001 (204001)'))} 或 {bold(cyan('R-001 (131810)'))} 进行【卖出/出借】。")
     print(f"    收益预期     : 按年化约 {green('2.0%')} 计息，{bold('次日开盘资金自动解冻可用')}，消除 1.7% 活期现金拖累。")
     print("=" * 100)
-    print(f" 🖥️ 提示: 访问交互式网页看板以获得可视化图表: {cyan('http://shwaihe.c.googlers.com:8088/')}")
+    print(f" 🖥️ 提示: 访问交互式网页看板以获得可视化图表: {cyan(DASHBOARD_URL)}")
     print("=" * 100)
 
 
@@ -281,7 +284,7 @@ def main():
     if args.web:
         print("\n" + "=" * 70)
         print(" 🚀 正在检查并启动交互式 Web 决策看板...")
-        print(f" 浏览器访问地址: {cyan('http://shwaihe.c.googlers.com:8088/')}")
+        print(f" 浏览器访问地址: {cyan(DASHBOARD_URL)}")
         print("=" * 70 + "\n")
 
     capital = args.capital

@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import socket
 import sys
 from http import HTTPStatus
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -97,11 +98,11 @@ class AdvisorDashboardHandler(SimpleHTTPRequestHandler):
 def run_server(port: int = 8088):
     server_address = ("", port)
     httpd = HTTPServer(server_address, AdvisorDashboardHandler)
-    hostname = "shwaihe.c.googlers.com"
+    hostname = os.environ.get("FIN_SKILLS_DASHBOARD_HOST") or socket.gethostname()
     print("=" * 80)
     print(f" 🚀 fin-skills 交互式实盘决策看板已成功启动！")
     print(f" 本地直连访问:  http://localhost:{port}/")
-    print(f" 工作站代理访问: http://{hostname}:{port}/")
+    print(f" 本机网络访问:  http://{hostname}:{port}/")
     print("=" * 80)
     print(" 按 Ctrl+C 停止服务。")
     try:

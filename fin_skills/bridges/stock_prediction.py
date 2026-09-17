@@ -21,7 +21,7 @@ import pandas as pd
 logger = logging.getLogger("bridge_stock_prediction")
 
 DEFAULT_CANDIDATE_DIRS = [
-    Path("/usr/local/google/home/shwaihe/stock_prediction"),
+    Path.home() / "stock_prediction",
     Path(__file__).resolve().parents[3] / "stock_prediction",
 ]
 

@@ -14,7 +14,7 @@
 将仓库以可编辑模式（Editable Mode）安装到当前 Python 环境中，确保任何代码修改实时生效：
 
 ```bash
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 pip install --user --break-system-packages -e .
 ```
 
@@ -26,7 +26,7 @@ python3 -c "import fin_skills; print('Skills count:', len(fin_skills.catalog()))
 
 ### 1.2 验证 API 核心单元测试套件
 ```bash
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 python3 -m pytest -q tests/test_api.py
 # 预期输出: 79 passed in 3.3s
 ```
@@ -39,7 +39,7 @@ python3 -m pytest -q tests/test_api.py
 在每次因子计算更新、特征工程调整或策略回测产出净值序列后，执行以下命令生成五维防伪体检报告（因果性、预热期、盈亏平衡成本、无风险利率口径、数据窗口验证）：
 
 ```bash
-cd /usr/local/google/home/shwaihe/stock_prediction
+cd ~/stock_prediction
 python3 scripts/audit_with_fin_skills.py
 ```
 
@@ -61,7 +61,7 @@ python3 -c "from fin_skills.api import slots; import pprint; pprint.pprint(slots
 验证当前环境下的 13 个核心守卫能否在 `<0.07s` 内 100% 捕获 12 种典型回测造假且保持 0 误报：
 
 ```bash
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 python3 benchmarks/leak_bench.py --quick
 ```
 
@@ -74,7 +74,7 @@ python3 benchmarks/leak_bench.py --quick
 
 ### 标准三步编译与校验命令：
 ```bash
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 
 # 第 1 步：重新扫描所有 SKILL.md，更新 catalog/index.json 与 README 统计计数
 python3 scripts/build_index.py
@@ -94,7 +94,7 @@ python3 scripts/validate.py
 
 ### 4.1 同步 `fin-skills` 仓库 (`howard-lynn-ye/fin-skills`)
 ```bash
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 
 # 确认当前处于 v2 分支
 git branch -vv
@@ -110,7 +110,7 @@ git push origin v2
 
 ### 4.2 同步 `stock_prediction` 仓库 (`Shwai-He/stock-prediction`)
 ```bash
-cd /usr/local/google/home/shwaihe/stock_prediction
+cd ~/stock_prediction
 
 # 确认当前处于 v2 分支
 git branch -vv

@@ -98,7 +98,7 @@ flowchart TD
 
 ```bash
 # 进入仓库根目录
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 
 # 执行因果盲测基准
 python3 research/benchmarks/causal_blind_test/run.py

@@ -18,6 +18,10 @@ information collection. The current source contains 129 skills, 36 guards and 53
 | [Operations guide](OPERATIONS_GUIDE_ZH.md) | Historical external-host operations; adapt paths to your checkout |
 | [CI and publishing](../ci/README.md) | Active checks and distribution prerequisites |
 
+---
+
+## 中文导览
+
 `fin-skills` 是一个融合了源码级验证知识库、自动化防伪审计引擎、实盘事前交易防御与交互式大类资产决策系统的综合量化投研框架。包含 129 个金融技能、36 个可执行守卫、53 个 JSON/MCP 工具以及完整的 10 年跨周期资产配置引擎。
 
 ---
@@ -26,9 +30,11 @@ information collection. The current source contains 129 skills, 36 guards and 53
 
 | 工具 / 脚本 | 访问方式 / 启动命令 | 功能定位与核心价值 |
 | :--- | :--- | :--- |
-| **交互式 Web 决策看板** | `http://shwaihe.c.googlers.com:8088/`<br/>或启动：`python3 research/production/web_dashboard.py` | **零门槛可视化交互界面**。支持滑动选择资金（5万~200万）、一键切换策略模式、实时环形图与 100 股整数手买卖指令生成、一键复制券商下单单。 |
+| **交互式 Web 决策看板** | 启动后访问 `http://localhost:8088/`：`python3 research/production/web_dashboard.py` | **零门槛可视化交互界面**。支持滑动选择资金（5万~200万）、一键切换策略模式、实时环形图与 100 股整数手买卖指令生成、一键复制券商下单单。 |
 | **每日实盘投顾命令行** | `python3 research/production/daily_advisor.py --capital 100000` | 实时拉取东方财富盘中行情，根据目标波动率计算最优配比，规整整百股并评估免印花税手续费。 |
 | **14:30 自动巡检与多通道机器人** | `python3 research/production/live_advisor_bot.py --holdings ...` | 盘中 14:30 自动执行 QDII 溢价熔断、死区增量调仓、14:50 GC001 逆回购收益规划，支持飞书/企微 Webhook。 |
+
+> ⚠️ 这些工具是研究与模拟盘示例，输出不是投资建议；本库不会自动下单，实际交易由使用者自行决定并承担风险。
 
 ---
 

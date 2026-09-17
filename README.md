@@ -26,7 +26,7 @@ To bridge quantitative research and retail execution, we provide an interactive,
 ```bash
 # Launch local Web Dashboard (pulls live market quotes automatically)
 python3 research/production/web_dashboard.py --port 8088
-# Open in browser: http://localhost:8088/ or http://shwaihe.c.googlers.com:8088/
+# Open in browser: http://localhost:8088/
 ```
 
 - 💰 **Dynamic Capital & Strategy Testing**: Slide your investment capital (50K ~ 2M RMB) and toggle 3 risk profiles (Conservative Risk Parity MaxDD<10%, Balanced All-Weather, Aggressive 60/40);

@@ -16,13 +16,13 @@
 
 ```mermaid
 flowchart TD
-    subgraph R1 ["📦 资源一：fin-skills 防伪引擎与知识底座 (/home/shwaihe/fin-skills)"]
+    subgraph R1 ["📦 资源一：fin-skills 防伪引擎与知识底座 (~/fin-skills)"]
         S1["114 个 Agent Skills (SKILL.md)<br/>已挂载至 ~/.gemini/config/skills/"]
         S2["fin_skills.api 统一 Python 包<br/>Bundle 容器 + 32 个 GuardResult 守卫"]
         S3["conventions 市场惯例与税率库<br/>A股 T+1/涨跌停/印花税减半 & 美股规则"]
     end
 
-    subgraph R2 ["📊 资源二：stock_prediction 投研与数据湖 (/home/shwaihe/stock_prediction)"]
+    subgraph R2 ["📊 资源二：stock_prediction 投研与数据湖 (~/stock_prediction)"]
         D1["本地物理数据湖 (867万行 / 1.1GB)<br/>雪球/股吧/StockTwits + SEC 财报 + 54D特征"]
         D2["多模态预测模型 (MMAN + Qwen3)<br/>特征工程脚本 & 投资者信誉门控"]
         D3["5日真实交易仿真回测引擎<br/>净值曲线 / 换手率 / 夏普比率报告"]
@@ -58,22 +58,22 @@ flowchart TD
 
 | 您的开发/投研场景 | 推荐对 Agent 说的话（触发词示例） | Agent 自动加载的 Skill 与保护机制 |
 | :--- | :--- | :--- |
-| **构建新特征 / 滚动归一化** | *“帮我在 `stock_prediction` 里加一个 30 日情绪动量特征，请遵循 `signal-construction` 规范防止未来函数。”* | 自动加载 [`signal-construction`](file:///usr/local/google/home/shwaihe/.gemini/config/skills/signal-construction/SKILL.md)：严禁使用 `center=True`、全样本 `StandardScaler` 或未对齐的 `rolling`，并自动生成 `assert_causal` 测试。 |
-| **A 股雪球/股吧策略回测** | *“我们要测 A 股 2021-2026 的回测收益，请按 `china-trading-stack` 和 `china-ashare-trading-taxes` 设置交易成本与涨跌停限制。”* | 自动加载 [`china-trading-stack`](file:///usr/local/google/home/shwaihe/.gemini/config/skills/china-trading-stack/SKILL.md) 与 [`china-ashare-trading-taxes`](file:///usr/local/google/home/shwaihe/.gemini/config/skills/china-ashare-trading-taxes/SKILL.md)：强制开启 T+1、剔除一字涨跌停无法成交订单、并在 `2023-08-28` 前后切换卖方单边印花税率（0.1% $\rightarrow$ 0.05%）。 |
-| **评估 Qwen3 / FinBERT 表现** | *“帮我检查 Qwen3 在盲测集上的准确率是否存在预训练语料时间重叠，参考 `llm-finance-agents`。”* | 自动加载 [`llm-finance-agents`](file:///usr/local/google/home/shwaihe/.gemini/config/skills/llm-finance-agents/SKILL.md)：调用 `contamination_probe` 比对模型 Cutoff 日期与回测起止日，防止把“模型背诵历史”当成预测能力。 |
-| **合并 SEC 财报或公告时间戳** | *“将 `interaction_matrix.csv` 中的公告与日 K 线对齐，请按 `combining-data-sources` 检查时间戳。”* | 自动加载 [`combining-data-sources`](file:///usr/local/google/home/shwaihe/.gemini/config/skills/combining-data-sources/SKILL.md)：将盘后（`>16:00`）发布的公告严格映射至**次一交易日（T+1）**开盘后交易，杜绝盘后信息穿越回当日收盘价成交。 |
-| **出论文/报告前的终极自检** | *“我们的回测跑出了 Sharpe 1.8，请按 `research-integrity-guards` 帮我做一次五关防伪审查。”* | 自动加载 [`research-integrity-guards`](file:///usr/local/google/home/shwaihe/.gemini/config/skills/research-integrity-guards/SKILL.md)：逐一核查股票池幸存者偏差、时间戳可得性、标签重叠泄露、盈亏平衡换手成本与多重试验次数平减（DSR）。 |
+| **构建新特征 / 滚动归一化** | *“帮我在 `stock_prediction` 里加一个 30 日情绪动量特征，请遵循 `signal-construction` 规范防止未来函数。”* | 自动加载 [`signal-construction`](../plugins/fin-core/skills/signal-construction/SKILL.md)：严禁使用 `center=True`、全样本 `StandardScaler` 或未对齐的 `rolling`，并自动生成 `assert_causal` 测试。 |
+| **A 股雪球/股吧策略回测** | *“我们要测 A 股 2021-2026 的回测收益，请按 `china-trading-stack` 和 `china-ashare-trading-taxes` 设置交易成本与涨跌停限制。”* | 自动加载 [`china-trading-stack`](../plugins/fin-china/skills/china-trading-stack/SKILL.md) 与 [`china-ashare-trading-taxes`](../plugins/fin-tax-accounting/skills/china-ashare-trading-taxes/SKILL.md)：强制开启 T+1、剔除一字涨跌停无法成交订单、并在 `2023-08-28` 前后切换卖方单边印花税率（0.1% $\rightarrow$ 0.05%）。 |
+| **评估 Qwen3 / FinBERT 表现** | *“帮我检查 Qwen3 在盲测集上的准确率是否存在预训练语料时间重叠，参考 `llm-finance-agents`。”* | 自动加载 [`llm-finance-agents`](../plugins/fin-llm/skills/llm-finance-agents/SKILL.md)：调用 `contamination_probe` 比对模型 Cutoff 日期与回测起止日，防止把“模型背诵历史”当成预测能力。 |
+| **合并 SEC 财报或公告时间戳** | *“将 `interaction_matrix.csv` 中的公告与日 K 线对齐，请按 `combining-data-sources` 检查时间戳。”* | 自动加载 [`combining-data-sources`](../plugins/fin-core/skills/combining-data-sources/SKILL.md)：将盘后（`>16:00`）发布的公告严格映射至**次一交易日（T+1）**开盘后交易，杜绝盘后信息穿越回当日收盘价成交。 |
+| **出论文/报告前的终极自检** | *“我们的回测跑出了 Sharpe 1.8，请按 `research-integrity-guards` 帮我做一次五关防伪审查。”* | 自动加载 [`research-integrity-guards`](../plugins/fin-core/skills/research-integrity-guards/SKILL.md)：逐一核查股票池幸存者偏差、时间戳可得性、标签重叠泄露、盈亏平衡换手成本与多重试验次数平减（DSR）。 |
 
 ---
 
 ### 通道二：一键运行桥接审计脚本（已为您内置在 `stock_prediction` 中）
 
 为了让您无需手写胶水代码就能立即体验连接效果，我们已在您的 `stock_prediction` 仓库中创建了专属桥接脚本：
-👉 **[`scripts/audit_with_fin_skills.py`](file:///usr/local/google/home/shwaihe/stock_prediction/scripts/audit_with_fin_skills.py)**
+👉 **`stock_prediction/scripts/audit_with_fin_skills.py`**（外部仓库，未随本库发布）
 
 #### 运行命令：
 ```bash
-cd /usr/local/google/home/shwaihe/stock_prediction
+cd ~/stock_prediction
 python3 scripts/audit_with_fin_skills.py
 ```
 

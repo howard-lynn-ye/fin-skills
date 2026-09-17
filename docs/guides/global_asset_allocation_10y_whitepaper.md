@@ -112,7 +112,7 @@ flowchart LR
 
 ## 四、生产级实盘投资决策工具使用手册 (`daily_advisor.py`)
 
-为了将上述 10 年历史回测成果无缝转化为每一个交易日的实盘行动，我们编写了命令行生产级投顾工具 [`research/production/daily_advisor.py`](file:///usr/local/google/home/shwaihe/fin-skills/research/production/daily_advisor.py)。
+为了将上述 10 年历史回测成果无缝转化为每一个交易日的实盘行动，我们编写了命令行生产级投顾工具 [`research/production/daily_advisor.py`](../../research/production/daily_advisor.py)。
 
 ### 1. 快速使用指令
 
@@ -163,7 +163,7 @@ python3 research/production/daily_advisor.py --capital 50000 --json
 
 ## 五、严苛学术审计清单 (`fin-skills` 守卫验证)
 
-本系统在构建完成后，自动运行了 `fin-skills` 工业级量化安全守卫库，审计清单（[`audit_manifest_10y.json`](file:///usr/local/google/home/shwaihe/fin-skills/research/engine_10y/audit_manifest_10y.json)）全量通过：
+本系统在构建完成后，自动运行了 `fin-skills` 工业级量化安全守卫库，审计清单（[`audit_manifest_10y.json`](../../research/engine_10y/audit_manifest_10y.json)）全量通过：
 
 1. **`CausalityGuard` (因果守卫)**：`PASSED`
    - 对 60 日已实现波动率和 20 日动量特征进行第 $k$ 期的未来数据扰动测试。
@@ -180,7 +180,7 @@ python3 research/production/daily_advisor.py --capital 50000 --json
 
 ```bash
 # 进入代码主仓库
-cd /usr/local/google/home/shwaihe/fin-skills
+cd ~/fin-skills
 
 # 1. 运行 10 年极端压力测试模拟 (输出 nav_10y.csv / metrics_10y.json / stress_tests.json)
 python3 research/engine_10y/stress_test.py

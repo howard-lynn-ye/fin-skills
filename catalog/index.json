@@ -257,9 +257,9 @@
       "summary": "[fin-china] Score and calibrate financial KOL credibility across Xueqiu and StockTwits using Bayesian win-rate updating, Brier scores, and contrarian inversion.",
       "license": "MIT",
       "version": "0.1.0",
-      "verified_on": "2026-09-16",
-      "body_chars": 11221,
-      "approx_body_tokens": 2805,
+      "verified_on": "2026-09-17",
+      "body_chars": 11602,
+      "approx_body_tokens": 2900,
       "references": [],
       "scripts": [
         "kol_credibility_registry.py",

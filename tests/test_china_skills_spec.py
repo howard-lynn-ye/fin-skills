@@ -39,12 +39,13 @@ def test_kol_credibility_registry_skill_spec() -> None:
     assert "StockTwits" in fm["description"]
     assert "Bayesian" in fm["description"]
     assert fm.get("license") == "MIT"
-    assert (fm.get("metadata") or {}).get("verified_on") == "2026-09-16"
+    assert (fm.get("metadata") or {}).get("verified_on") == "2026-09-17"
 
     # Verify key sections exist
     assert "The Trap of Raw Sentiment" in text
     assert "Bayesian Track Record Formulation" in text
-    assert "2,521 Bilingual KOL Database Schema" in text
+    assert "KOL Database Schema" in text
+    assert "PSEUDONYM" in Path(ROOT / "plugins/fin-china/skills/kol-credibility-registry/scripts/kol_credibility_registry.py").read_text(encoding="utf-8")
     assert "Python Usage Examples" in text
     assert "Anti-Patterns and Point-in-Time Causality Safeguards" in text
 
@@ -93,7 +94,7 @@ def test_kol_registry_python_module_api() -> None:
     assert len(reg.profiles) > 0
 
     # Test author profile lookup
-    prof = reg.get_author_profile("阿尔法工场")
+    prof = reg.get_author_profile("cn_elite_01")
     assert isinstance(prof, KOLProfile)
     assert prof.tier in ("TIER_0_ELITE_KOL", "TIER_1_CORE_ALPHA")
     assert prof.directional_weight >= 2.5
@@ -112,8 +113,8 @@ def test_kol_registry_python_module_api() -> None:
 
     # Test calibrate_sentiment wrapper
     posts = [
-        {"author": "钟华守正出奇", "polarity": 0.90},  # Contrarian -> inverted
-        {"author": "阿尔法工场", "polarity": -0.80},  # Elite -> amplified
+        {"author": "cn_contrarian_01", "polarity": 0.90},  # Contrarian -> inverted
+        {"author": "cn_elite_01", "polarity": -0.80},  # Elite -> amplified
     ]
     res = calibrate_sentiment(posts, registry=reg)
     assert isinstance(res, KOLWeightedSentimentResult)

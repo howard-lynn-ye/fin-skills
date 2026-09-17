@@ -464,16 +464,16 @@ def get_default_candidate_stock_signals() -> list[dict[str, Any]]:
             "symbol": "SZ300760",
             "name": "迈瑞医疗",
             "is_substantive_event": True,
-            "kol_trigger_summary": "头部大V[阿尔法工场]看多 + 反向明灯[钟华守正出奇]恐慌割肉倒置",
+            "kol_trigger_summary": "头部大V[cn_elite_01]看多 + 反向明灯[cn_contrarian_01]恐慌割肉倒置",
             "posts": [
                 {
-                    "author": "阿尔法工场",
+                    "author": "cn_elite_01",
                     "text": "迈瑞医疗当前PE估值仅22倍处于近10年15%分位数，海外高端医疗器械订单超预期增长25%，安全边际极高，建议重仓买入配置。",
                     "polarity": 0.90,
                     "verified": True,
                 },
                 {
-                    "author": "钟华守正出奇",
+                    "author": "cn_contrarian_01",
                     "text": "医疗板块彻底没戏了，迈瑞医疗跌破支撑位，赶紧清仓割肉止损！",
                     "polarity": -0.85,
                     "verified": True,
@@ -484,16 +484,16 @@ def get_default_candidate_stock_signals() -> list[dict[str, Any]]:
             "symbol": "SH600036",
             "name": "招商银行",
             "is_substantive_event": True,
-            "kol_trigger_summary": "头部大V[雪球调研团]基本面看多 + 反向明灯[朱酒]看空倒置",
+            "kol_trigger_summary": "头部大V[cn_elite_03]基本面看多 + 反向明灯[cn_contrarian_02]看空倒置",
             "posts": [
                 {
-                    "author": "雪球调研团",
+                    "author": "cn_elite_03",
                     "text": "招商银行当前股息率高达5.4%，PB仅0.88倍，资产质量与ROE稳居行业第一，主力资金连续5日净流入18亿元，具备极强防御与分红价值，建议买入。",
                     "polarity": 0.88,
                     "verified": True,
                 },
                 {
-                    "author": "朱酒",
+                    "author": "cn_contrarian_02",
                     "text": "银行股净息差还要跌，招商银行反弹就是最后逃命机会，坚决卖出清仓！",
                     "polarity": -0.80,
                     "verified": True,
@@ -504,16 +504,16 @@ def get_default_candidate_stock_signals() -> list[dict[str, Any]]:
             "symbol": "SZ000963",
             "name": "华东医药",
             "is_substantive_event": True,
-            "kol_trigger_summary": "高胜率投研大V[价投傻鱼]看多 + 反向明灯[青侨阳光]看空倒置",
+            "kol_trigger_summary": "高胜率投研大V[cn_core_01]看多 + 反向明灯[cn_contrarian_03]看空倒置",
             "posts": [
                 {
-                    "author": "价投傻鱼",
+                    "author": "cn_core_01",
                     "text": "华东医药医美与创新药管线双轮驱动，三季报业绩超预期增长18.5%，当前估值仅15倍PE，迎来确定性业绩拐点，建议建仓买入。",
                     "polarity": 0.85,
                     "verified": True,
                 },
                 {
-                    "author": "青侨阳光",
+                    "author": "cn_contrarian_03",
                     "text": "医药股还要阴跌，华东医药赶紧止损回避！",
                     "polarity": -0.78,
                     "verified": True,
@@ -524,16 +524,16 @@ def get_default_candidate_stock_signals() -> list[dict[str, Any]]:
             "symbol": "BEKE",
             "name": "贝壳",
             "is_substantive_event": True,
-            "kol_trigger_summary": "海外高胜率大V[THE_TRADE]看多 + 反向明灯[JimCramer]看空倒置",
+            "kol_trigger_summary": "海外高胜率大V[us_elite_01]看多 + 反向明灯[us_contrarian_01]看空倒置",
             "posts": [
                 {
-                    "author": "THE_TRADE",
+                    "author": "us_elite_01",
                     "text": "BEKE 贝壳现金储备充裕，伴随一二线城市二手房成交量回暖超预期增长30%，回购力度持续加大，PE估值处于历史底部，强烈看好买入。",
                     "polarity": 0.86,
                     "verified": True,
                 },
                 {
-                    "author": "JimCramer",
+                    "author": "us_contrarian_01",
                     "text": "Avoid Chinese real estate stocks like BEKE at all costs, sell now!",
                     "polarity": -0.85,
                     "verified": True,

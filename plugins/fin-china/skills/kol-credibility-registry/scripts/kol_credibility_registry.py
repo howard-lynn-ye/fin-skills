@@ -1,18 +1,21 @@
 """KOL (Big V) Credibility Registry & Bayesian Track-Record Weighting Engine.
 
 Why this exists:
-1. Follower count != Predictive accuracy. Empirical audit of 1,445 active Xueqiu authors across
-   182 core equities (2018-2026) proves the overall social media 5-day win rate is 48.79% (coin flip).
+1. Follower count != Predictive accuracy. An external audit of Xueqiu authors (2018-2026, in the
+   separate `stock_prediction` project, not bundled here) reported an overall 5-day directional win
+   rate near 49%. That audit's data and code are not in this repository, so treat the figure as
+   secondhand.
 2. Several mega-influencers with 100,000 to 425,000+ followers exhibit <40% win rates and negative
    alpha because they systematically chase FOMO tops and capitulate at panic bottoms.
 3. Conversely, a small cohort of deep-research KOLs consistently achieves >68% 5-day directional win
    rates and positive payoff ratios.
-4. Financial media accounts (e.g. 财联社, 每日经济新闻, 7X24快讯) average 46.98% directional win rate
-   because news reports backward-looking facts; they must be used for event heat, never directional alpha.
+4. News-wire / media aggregator accounts report backward-looking facts; the same external audit
+   found them near a coin flip directionally, so they are used for event heat, never direction.
 
 This module provides:
 - Point-in-Time KOL Credibility Lookup across 6 empirical tiers.
-- Automatic loading of full `XUEQIU_KOL_ALPHA_PROFILES.csv` (1,445 profiles) with standalone embedded fallback.
+- Optional loading of external `XUEQIU_KOL_ALPHA_PROFILES.csv` / `GLOBAL_KOL_ALPHA_PROFILES.csv` from
+  `$FIN_SKILLS_BENCHMARK_DIR` (not bundled), with a small pseudonymous embedded fixture as fallback.
 - Dynamic Signal Weighting & Contrarian Inversion:
   * TIER_0_ELITE_KOL:          Weight = +3.0x (Core Alpha Amplifier)
   * TIER_1_CORE_ALPHA:         Weight = +2.5x (High-Conviction Researcher)
@@ -25,6 +28,7 @@ from __future__ import annotations
 
 import csv
 import logging
+import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -41,59 +45,61 @@ TIER_WEIGHT_MAP = {
     "TIER_CONTRARIAN_INDICATOR": -1.5,  # Negative weight: flips bullish FOMO into bearish warning!
 }
 
-# Embedded Standalone Snapshot (Top verified profiles from empirical 2018-2026 audit)
+# Embedded fallback fixture. Author handles are PSEUDONYMS (cn_/us_ + tier + index); the statistics
+# are copied from the external stock_prediction audit and are illustrative only - they are not
+# reproduced by any script in this repository and must not be read as a rating of real people.
 EMBEDDED_KOL_PROFILES = {
-    # Top Elite & Core Alpha Whitelist (Win rate > 68%, Bayesian > 65%)
-    "阿尔法工场": {"tier": "TIER_0_ELITE_KOL", "fans": 47707, "calls": 12, "win_rate_5d": 0.917, "bayesian_wr": 0.794, "mean_ret_5d": 0.0639, "payoff": 5.56},
-    "冰冻三尺一": {"tier": "TIER_0_ELITE_KOL", "fans": 90341, "calls": 15, "win_rate_5d": 0.867, "bayesian_wr": 0.775, "mean_ret_5d": 0.0382, "payoff": 0.61},
-    "雪球调研团": {"tier": "TIER_0_ELITE_KOL", "fans": 273671, "calls": 11, "win_rate_5d": 0.818, "bayesian_wr": 0.719, "mean_ret_5d": 0.0676, "payoff": 3.71},
-    "宗哥投资": {"tier": "TIER_0_ELITE_KOL", "fans": 55645, "calls": 9, "win_rate_5d": 0.778, "bayesian_wr": 0.679, "mean_ret_5d": 0.0161, "payoff": 3.81},
-    "马毛": {"tier": "TIER_0_ELITE_KOL", "fans": 80450, "calls": 8, "win_rate_5d": 0.750, "bayesian_wr": 0.654, "mean_ret_5d": 0.0343, "payoff": 1.77},
-    "价投傻鱼": {"tier": "TIER_1_CORE_ALPHA", "fans": 10808, "calls": 24, "win_rate_5d": 0.708, "bayesian_wr": 0.672, "mean_ret_5d": 0.0565, "payoff": 4.35},
-    "半瓶子老酒": {"tier": "TIER_1_CORE_ALPHA", "fans": 13907, "calls": 35, "win_rate_5d": 0.686, "bayesian_wr": 0.662, "mean_ret_5d": 0.0287, "payoff": 1.58},
-    "浪里掌帆人": {"tier": "TIER_1_CORE_ALPHA", "fans": 17383, "calls": 26, "win_rate_5d": 0.692, "bayesian_wr": 0.661, "mean_ret_5d": 0.0257, "payoff": 2.08},
-    "必有一得": {"tier": "TIER_1_CORE_ALPHA", "fans": 11203, "calls": 18, "win_rate_5d": 0.778, "bayesian_wr": 0.717, "mean_ret_5d": 0.0148, "payoff": 1.40},
-    "知德说": {"tier": "TIER_1_CORE_ALPHA", "fans": 46605, "calls": 9, "win_rate_5d": 0.778, "bayesian_wr": 0.679, "mean_ret_5d": 0.0300, "payoff": 9.51},
-    "拥抱大时代": {"tier": "TIER_1_CORE_ALPHA", "fans": 23699, "calls": 9, "win_rate_5d": 0.778, "bayesian_wr": 0.679, "mean_ret_5d": 0.0417, "payoff": 2.07},
+    # Elite & core-alpha tier (Win rate > 68%, Bayesian > 65%)
+    "cn_elite_01": {"tier": "TIER_0_ELITE_KOL", "fans": 47707, "calls": 12, "win_rate_5d": 0.917, "bayesian_wr": 0.794, "mean_ret_5d": 0.0639, "payoff": 5.56},
+    "cn_elite_02": {"tier": "TIER_0_ELITE_KOL", "fans": 90341, "calls": 15, "win_rate_5d": 0.867, "bayesian_wr": 0.775, "mean_ret_5d": 0.0382, "payoff": 0.61},
+    "cn_elite_03": {"tier": "TIER_0_ELITE_KOL", "fans": 273671, "calls": 11, "win_rate_5d": 0.818, "bayesian_wr": 0.719, "mean_ret_5d": 0.0676, "payoff": 3.71},
+    "cn_elite_04": {"tier": "TIER_0_ELITE_KOL", "fans": 55645, "calls": 9, "win_rate_5d": 0.778, "bayesian_wr": 0.679, "mean_ret_5d": 0.0161, "payoff": 3.81},
+    "cn_elite_05": {"tier": "TIER_0_ELITE_KOL", "fans": 80450, "calls": 8, "win_rate_5d": 0.750, "bayesian_wr": 0.654, "mean_ret_5d": 0.0343, "payoff": 1.77},
+    "cn_core_01": {"tier": "TIER_1_CORE_ALPHA", "fans": 10808, "calls": 24, "win_rate_5d": 0.708, "bayesian_wr": 0.672, "mean_ret_5d": 0.0565, "payoff": 4.35},
+    "cn_core_02": {"tier": "TIER_1_CORE_ALPHA", "fans": 13907, "calls": 35, "win_rate_5d": 0.686, "bayesian_wr": 0.662, "mean_ret_5d": 0.0287, "payoff": 1.58},
+    "cn_core_03": {"tier": "TIER_1_CORE_ALPHA", "fans": 17383, "calls": 26, "win_rate_5d": 0.692, "bayesian_wr": 0.661, "mean_ret_5d": 0.0257, "payoff": 2.08},
+    "cn_core_04": {"tier": "TIER_1_CORE_ALPHA", "fans": 11203, "calls": 18, "win_rate_5d": 0.778, "bayesian_wr": 0.717, "mean_ret_5d": 0.0148, "payoff": 1.40},
+    "cn_core_05": {"tier": "TIER_1_CORE_ALPHA", "fans": 46605, "calls": 9, "win_rate_5d": 0.778, "bayesian_wr": 0.679, "mean_ret_5d": 0.0300, "payoff": 9.51},
+    "cn_core_06": {"tier": "TIER_1_CORE_ALPHA", "fans": 23699, "calls": 9, "win_rate_5d": 0.778, "bayesian_wr": 0.679, "mean_ret_5d": 0.0417, "payoff": 2.07},
 
     # Financial Media Aggregators (High follower count, ~47% coin-flip directional win rate)
-    "每日经济新闻": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 129789, "calls": 354, "win_rate_5d": 0.517, "bayesian_wr": 0.517, "mean_ret_5d": 0.0034, "payoff": 1.02},
-    "证券之星财经": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 97548, "calls": 261, "win_rate_5d": 0.548, "bayesian_wr": 0.546, "mean_ret_5d": 0.0065, "payoff": 1.05},
-    "7X24快讯": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 574163, "calls": 151, "win_rate_5d": 0.470, "bayesian_wr": 0.471, "mean_ret_5d": -0.0050, "payoff": 0.92},
-    "财联社": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 155620, "calls": 108, "win_rate_5d": 0.426, "bayesian_wr": 0.430, "mean_ret_5d": -0.0066, "payoff": 0.88},
-    "新浪财经": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 24478, "calls": 95, "win_rate_5d": 0.484, "bayesian_wr": 0.485, "mean_ret_5d": -0.0021, "payoff": 0.95},
+    "cn_media_01": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 129789, "calls": 354, "win_rate_5d": 0.517, "bayesian_wr": 0.517, "mean_ret_5d": 0.0034, "payoff": 1.02},
+    "cn_media_02": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 97548, "calls": 261, "win_rate_5d": 0.548, "bayesian_wr": 0.546, "mean_ret_5d": 0.0065, "payoff": 1.05},
+    "cn_media_03": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 574163, "calls": 151, "win_rate_5d": 0.470, "bayesian_wr": 0.471, "mean_ret_5d": -0.0050, "payoff": 0.92},
+    "cn_media_04": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 155620, "calls": 108, "win_rate_5d": 0.426, "bayesian_wr": 0.430, "mean_ret_5d": -0.0066, "payoff": 0.88},
+    "cn_media_05": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 24478, "calls": 95, "win_rate_5d": 0.484, "bayesian_wr": 0.485, "mean_ret_5d": -0.0021, "payoff": 0.95},
 
-    # Verified Contrarian Indicators / 反向明灯 (High followers, chronic FOMO top buyers <=40% win rate)
-    "钟华守正出奇": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 425254, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0133, "payoff": 0.64},
-    "朱酒": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 404287, "calls": 17, "win_rate_5d": 0.353, "bayesian_wr": 0.388, "mean_ret_5d": -0.0150, "payoff": 0.43},
-    "青侨阳光": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 378862, "calls": 15, "win_rate_5d": 0.133, "bayesian_wr": 0.256, "mean_ret_5d": -0.0314, "payoff": 0.69},
-    "二马由之": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 278202, "calls": 14, "win_rate_5d": 0.286, "bayesian_wr": 0.358, "mean_ret_5d": -0.0181, "payoff": 0.39},
-    "ericwarn丁宁": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 256643, "calls": 13, "win_rate_5d": 0.308, "bayesian_wr": 0.375, "mean_ret_5d": -0.0184, "payoff": 0.61},
-    "鑫鑫-投资": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 222823, "calls": 40, "win_rate_5d": 0.200, "bayesian_wr": 0.250, "mean_ret_5d": -0.0308, "payoff": 0.47},
-    "价值事务所": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 198687, "calls": 18, "win_rate_5d": 0.389, "bayesian_wr": 0.415, "mean_ret_5d": -0.0046, "payoff": 0.99},
-    "东先生": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 150267, "calls": 10, "win_rate_5d": 0.400, "bayesian_wr": 0.433, "mean_ret_5d": -0.0284, "payoff": 0.52},
-    "冷小二": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 105725, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0191, "payoff": 0.58},
-    "做个IT价投人": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 97352, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0033, "payoff": 0.79},
-    "王增森": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47021, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0796, "payoff": 0.31},
+    # Contrarian-indicator tier / 反向明灯 (High followers, chronic FOMO top buyers <=40% win rate)
+    "cn_contrarian_01": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 425254, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0133, "payoff": 0.64},
+    "cn_contrarian_02": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 404287, "calls": 17, "win_rate_5d": 0.353, "bayesian_wr": 0.388, "mean_ret_5d": -0.0150, "payoff": 0.43},
+    "cn_contrarian_03": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 378862, "calls": 15, "win_rate_5d": 0.133, "bayesian_wr": 0.256, "mean_ret_5d": -0.0314, "payoff": 0.69},
+    "cn_contrarian_04": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 278202, "calls": 14, "win_rate_5d": 0.286, "bayesian_wr": 0.358, "mean_ret_5d": -0.0181, "payoff": 0.39},
+    "cn_contrarian_05": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 256643, "calls": 13, "win_rate_5d": 0.308, "bayesian_wr": 0.375, "mean_ret_5d": -0.0184, "payoff": 0.61},
+    "cn_contrarian_06": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 222823, "calls": 40, "win_rate_5d": 0.200, "bayesian_wr": 0.250, "mean_ret_5d": -0.0308, "payoff": 0.47},
+    "cn_contrarian_07": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 198687, "calls": 18, "win_rate_5d": 0.389, "bayesian_wr": 0.415, "mean_ret_5d": -0.0046, "payoff": 0.99},
+    "cn_contrarian_08": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 150267, "calls": 10, "win_rate_5d": 0.400, "bayesian_wr": 0.433, "mean_ret_5d": -0.0284, "payoff": 0.52},
+    "cn_contrarian_09": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 105725, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0191, "payoff": 0.58},
+    "cn_contrarian_10": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 97352, "calls": 20, "win_rate_5d": 0.400, "bayesian_wr": 0.420, "mean_ret_5d": -0.0033, "payoff": 0.79},
+    "cn_contrarian_11": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47021, "calls": 8, "win_rate_5d": 0.375, "bayesian_wr": 0.423, "mean_ret_5d": -0.0796, "payoff": 0.31},
 
     # Overseas / Global Verified Alpha KOLs (StockTwits / US Equities / FinTwit)
-    "THE_TRADE": {"tier": "TIER_0_ELITE_KOL", "fans": 1144, "calls": 128, "win_rate_5d": 0.898, "bayesian_wr": 0.875, "mean_ret_5d": 0.0245, "payoff": 1.95},
-    "TheProfitPhantom": {"tier": "TIER_0_ELITE_KOL", "fans": 5150, "calls": 30, "win_rate_5d": 1.000, "bayesian_wr": 0.895, "mean_ret_5d": 0.0347, "payoff": 3.47},
-    "StockMaster617": {"tier": "TIER_0_ELITE_KOL", "fans": 201, "calls": 45, "win_rate_5d": 0.978, "bayesian_wr": 0.906, "mean_ret_5d": 0.1479, "payoff": 1.33},
-    "HindenburgResearch": {"tier": "TIER_0_ELITE_KOL", "fans": 1200000, "calls": 25, "win_rate_5d": 0.840, "bayesian_wr": 0.760, "mean_ret_5d": 0.1250, "payoff": 4.20},
-    "CitronResearch": {"tier": "TIER_1_CORE_ALPHA", "fans": 850000, "calls": 30, "win_rate_5d": 0.700, "bayesian_wr": 0.658, "mean_ret_5d": 0.0480, "payoff": 2.15},
+    "us_elite_01": {"tier": "TIER_0_ELITE_KOL", "fans": 1144, "calls": 128, "win_rate_5d": 0.898, "bayesian_wr": 0.875, "mean_ret_5d": 0.0245, "payoff": 1.95},
+    "us_elite_02": {"tier": "TIER_0_ELITE_KOL", "fans": 5150, "calls": 30, "win_rate_5d": 1.000, "bayesian_wr": 0.895, "mean_ret_5d": 0.0347, "payoff": 3.47},
+    "us_elite_03": {"tier": "TIER_0_ELITE_KOL", "fans": 201, "calls": 45, "win_rate_5d": 0.978, "bayesian_wr": 0.906, "mean_ret_5d": 0.1479, "payoff": 1.33},
+    "us_elite_04": {"tier": "TIER_0_ELITE_KOL", "fans": 1200000, "calls": 25, "win_rate_5d": 0.840, "bayesian_wr": 0.760, "mean_ret_5d": 0.1250, "payoff": 4.20},
+    "us_core_01": {"tier": "TIER_1_CORE_ALPHA", "fans": 850000, "calls": 30, "win_rate_5d": 0.700, "bayesian_wr": 0.658, "mean_ret_5d": 0.0480, "payoff": 2.15},
 
     # Overseas Breaking News & Media Aggregators (Direction stripped, heat only)
-    "DeItaone": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 890000, "calls": 500, "win_rate_5d": 0.502, "bayesian_wr": 0.502, "mean_ret_5d": 0.0010, "payoff": 1.01},
-    "UnusualWhales": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 1950000, "calls": 420, "win_rate_5d": 0.510, "bayesian_wr": 0.510, "mean_ret_5d": 0.0015, "payoff": 1.03},
-    "ZeroHedge": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 2800000, "calls": 600, "win_rate_5d": 0.485, "bayesian_wr": 0.485, "mean_ret_5d": -0.0020, "payoff": 0.95},
+    "us_media_01": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 890000, "calls": 500, "win_rate_5d": 0.502, "bayesian_wr": 0.502, "mean_ret_5d": 0.0010, "payoff": 1.01},
+    "us_media_02": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 1950000, "calls": 420, "win_rate_5d": 0.510, "bayesian_wr": 0.510, "mean_ret_5d": 0.0015, "payoff": 1.03},
+    "us_media_03": {"tier": "TIER_MEDIA_AGGREGATOR", "fans": 2800000, "calls": 600, "win_rate_5d": 0.485, "bayesian_wr": 0.485, "mean_ret_5d": -0.0020, "payoff": 0.95},
 
     # Overseas High-Reach Contrarian Indicators (FinTwit / StockTwits FOMO top indicators)
-    "JimCramer": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 2100000, "calls": 85, "win_rate_5d": 0.365, "bayesian_wr": 0.377, "mean_ret_5d": -0.0195, "payoff": 0.58},
-    "JFDI": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 111443, "calls": 46, "win_rate_5d": 0.391, "bayesian_wr": 0.407, "mean_ret_5d": -0.0112, "payoff": 0.92},
-    "Doozio": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47628, "calls": 109, "win_rate_5d": 0.395, "bayesian_wr": 0.402, "mean_ret_5d": -0.0125, "payoff": 0.92},
-    "SpudZone": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 27050, "calls": 14, "win_rate_5d": 0.000, "bayesian_wr": 0.182, "mean_ret_5d": -0.0536, "payoff": 0.19},
-    "Steve_TheBull_Rogers": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 19712, "calls": 6, "win_rate_5d": 0.000, "bayesian_wr": 0.286, "mean_ret_5d": -0.0396, "payoff": 0.25},
+    "us_contrarian_01": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 2100000, "calls": 85, "win_rate_5d": 0.365, "bayesian_wr": 0.377, "mean_ret_5d": -0.0195, "payoff": 0.58},
+    "us_contrarian_02": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 111443, "calls": 46, "win_rate_5d": 0.391, "bayesian_wr": 0.407, "mean_ret_5d": -0.0112, "payoff": 0.92},
+    "us_contrarian_03": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 47628, "calls": 109, "win_rate_5d": 0.395, "bayesian_wr": 0.402, "mean_ret_5d": -0.0125, "payoff": 0.92},
+    "us_contrarian_04": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 27050, "calls": 14, "win_rate_5d": 0.000, "bayesian_wr": 0.182, "mean_ret_5d": -0.0536, "payoff": 0.19},
+    "us_contrarian_05": {"tier": "TIER_CONTRARIAN_INDICATOR", "fans": 19712, "calls": 6, "win_rate_5d": 0.000, "bayesian_wr": 0.286, "mean_ret_5d": -0.0396, "payoff": 0.25},
 }
 
 
@@ -138,16 +144,14 @@ class KOLCredibilityRegistry:
         self.profiles: dict[str, KOLProfile] = {}
         self._load_embedded_defaults()
 
-        # Automatically attempt to load both Chinese (1,445) and Global (1,070) KOL databases
+        # Optionally load external Chinese and global KOL databases (not bundled with this package)
         default_cn_paths = [
             Path(__file__).resolve().parents[2] / "data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv",
-            Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv"),
-            Path("../stock_prediction/data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv"),
+            Path(os.environ.get("FIN_SKILLS_BENCHMARK_DIR", "../stock_prediction/data/benchmark")) / "XUEQIU_KOL_ALPHA_PROFILES.csv",
         ]
         default_global_paths = [
             Path(__file__).resolve().parents[2] / "data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv",
-            Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv"),
-            Path("../stock_prediction/data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv"),
+            Path(os.environ.get("FIN_SKILLS_BENCHMARK_DIR", "../stock_prediction/data/benchmark")) / "GLOBAL_KOL_ALPHA_PROFILES.csv",
         ]
 
         if csv_path and Path(csv_path).exists():
@@ -426,17 +430,17 @@ __all__ = [
 
 if __name__ == "__main__":
     registry = KOLCredibilityRegistry()
-    print(f"Initialized KOLCredibilityRegistry with {len(registry.profiles):,} verified profiles.\n")
+    print(f"Initialized KOLCredibilityRegistry with {len(registry.profiles):,} profiles.\n")
 
     # Simulate a typical market divergence:
     # 2 mega-follower Contrarian Indicators (反向明灯) and 1 media account are screaming bullish (+0.90),
     # while 2 Elite Alpha researchers are calmly warning of valuation risk (-0.70).
     sample_posts = [
-        {"author": "钟华守正出奇", "polarity": +0.90, "quality_score": 0.8},  # 425k fans, 40% win rate (Contrarian!)
-        {"author": "东先生", "polarity": +0.85, "quality_score": 0.8},        # 150k fans, 40% win rate (Contrarian!)
-        {"author": "财联社", "polarity": +0.60, "quality_score": 0.9},        # Media aggregator
-        {"author": "阿尔法工场", "polarity": -0.75, "quality_score": 0.95},   # Elite KOL (91.7% 5D win rate)
-        {"author": "价投傻鱼", "polarity": -0.65, "quality_score": 0.90},     # Core Alpha (70.8% 5D win rate)
+        {"author": "cn_contrarian_01", "polarity": +0.90, "quality_score": 0.8},  # 425k fans, 40% win rate (Contrarian!)
+        {"author": "cn_contrarian_08", "polarity": +0.85, "quality_score": 0.8},        # 150k fans, 40% win rate (Contrarian!)
+        {"author": "cn_media_04", "polarity": +0.60, "quality_score": 0.9},        # Media aggregator
+        {"author": "cn_elite_01", "polarity": -0.75, "quality_score": 0.95},   # Elite KOL (91.7% 5D win rate)
+        {"author": "cn_core_01", "polarity": -0.65, "quality_score": 0.90},     # Core Alpha (70.8% 5D win rate)
     ]
 
     res = registry.evaluate_weighted_sentiment(sample_posts)

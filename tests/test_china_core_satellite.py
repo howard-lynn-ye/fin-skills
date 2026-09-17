@@ -65,13 +65,13 @@ def test_tier_s_stock_amplification_and_t5_ticket_generation():
             "base_weight": 0.04,
             "posts": [
                 {
-                    "author": "阿尔法工场",
+                    "author": "cn_elite_01",
                     "text": "迈瑞医疗PE仅22倍处于近10年15%分位数，订单超预期增长25%，安全边际极高，建议买入。",
                     "polarity": 0.90,
                     "verified": True,
                 },
                 {
-                    "author": "钟华守正出奇",
+                    "author": "cn_contrarian_01",
                     "text": "医疗集采彻底没戏了，赶紧割肉清仓止损！",
                     "polarity": -0.85,
                     "verified": True,
@@ -113,7 +113,7 @@ def test_tier_s_stock_amplification_and_t5_ticket_generation():
     assert mindray_ticket.entry_price == 250.0
     assert mindray_ticket.stop_loss_pct < 0
     assert mindray_ticket.take_profit_pct > 0
-    assert "阿尔法工场" in mindray_ticket.kol_trigger_summary or mindray_ticket.kol_weighted_sentiment > 0.5
+    assert "cn_elite_01" in mindray_ticket.kol_trigger_summary or mindray_ticket.kol_weighted_sentiment > 0.5
 
 
 def test_unused_satellite_budget_fallback_to_bond_etf_511010():
@@ -208,7 +208,7 @@ def test_satellite_lifecycle_manager_holding_and_exits(tmp_path):
         symbol="SZ300760",
         name="迈瑞医疗",
         tier="TIER_S_HIGH_PREDICTABILITY",
-        kol_trigger_summary="阿尔法工场看多",
+        kol_trigger_summary="cn_elite_01看多",
         kol_weighted_sentiment=0.88,
         action="BUY",
         shares_to_buy=200,

@@ -7,6 +7,17 @@ All notable changes to fin-skills. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Removed an internal workstation hostname and personal home-directory paths from docs, research
+  tools and data loaders; external data now resolves from `FIN_SKILLS_BENCHMARK_DIR` /
+  `STOCK_PREDICTION_DIR`, and the dashboard host from `FIN_SKILLS_DASHBOARD_HOST`/`_URL`.
+- `kol-credibility-registry`: the 40 embedded profiles now use pseudonymous handles and are
+  labelled as an illustrative external-audit fixture; removed the unbundled "2,521 KOL" and
+  other external-audit figures presented as verified.
+- Stopped tracking per-run outputs under `research/production/` (paper ledger, action card,
+  webhook cards) and added a not-investment-advice note for the research tools.
+
 ### Merged
 
 - Integrated the `v2` branch (A-share pre-trade guards `qdii_premium`, `board_lot_feasibility`,
