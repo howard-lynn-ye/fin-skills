@@ -29,18 +29,50 @@ from typing import Any
 try:
     from .data_cleaning_filter import DataQualityAuditor
     from .kol_credibility_registry import KOLCredibilityRegistry
+    from .qdii_smart_router import (
+        DEFAULT_QDII_REPLACEMENT_GRAPH,
+        QDIIRouteResult,
+        QDIISmartRouter,
+        QDIISubstitutionEvent,
+        QDII_Substitution_Event,
+    )
     from .signal_reconciler import ChannelSignal, SignalReconciler
     from .stock_predictability_stratifier import (
         EMBEDDED_PREDICTABILITY_TIERS,
         StockPredictabilityStratifier,
     )
+    from .volatility_regime_shield import (
+        REGIME_CALM_EXPANSION,
+        REGIME_ELEVATED_VOL_STRESS,
+        REGIME_EXTREME_PANIC_FREEZE,
+        REGIME_NORMAL_OSCILLATION,
+        MarketVolatilityMetrics,
+        VolatilityRegimeShield,
+        VolatilityShieldResult,
+    )
 except ImportError:
     from data_cleaning_filter import DataQualityAuditor
     from kol_credibility_registry import KOLCredibilityRegistry
+    from qdii_smart_router import (
+        DEFAULT_QDII_REPLACEMENT_GRAPH,
+        QDIIRouteResult,
+        QDIISmartRouter,
+        QDIISubstitutionEvent,
+        QDII_Substitution_Event,
+    )
     from signal_reconciler import ChannelSignal, SignalReconciler
     from stock_predictability_stratifier import (
         EMBEDDED_PREDICTABILITY_TIERS,
         StockPredictabilityStratifier,
+    )
+    from volatility_regime_shield import (
+        REGIME_CALM_EXPANSION,
+        REGIME_ELEVATED_VOL_STRESS,
+        REGIME_EXTREME_PANIC_FREEZE,
+        REGIME_NORMAL_OSCILLATION,
+        MarketVolatilityMetrics,
+        VolatilityRegimeShield,
+        VolatilityShieldResult,
     )
 
 logger = logging.getLogger("core_satellite_advisor")
@@ -282,11 +314,17 @@ class CoreSatellitePlan:
     blocked_noisy_stocks: list[dict[str, Any]] = field(default_factory=list)
     active_positions: list[SatellitePositionRecord] = field(default_factory=list)
     exit_tickets: list[SatellitePositionRecord] = field(default_factory=list)
+    volatility_regime: str = REGIME_NORMAL_OSCILLATION
+    volatility_shield_result: VolatilityShieldResult | None = None
+    cash_defensive_budget: float = 0.0
+    qdii_substitution_events: list[QDIISubstitutionEvent] = field(default_factory=list)
 
     @property
     def total_weight_sum(self) -> float:
         return round(
-            sum(self.core_etf_weights.values()) + sum(self.satellite_stock_weights.values()),
+            sum(self.core_etf_weights.values())
+            + sum(self.satellite_stock_weights.values())
+            + self.cash_defensive_budget,
             6,
         )
 
@@ -313,18 +351,35 @@ class CoreSatellitePlan:
             "exit_tickets": [p.to_dict() for p in self.exit_tickets],
             "total_weight_sum": self.total_weight_sum,
             "unused_satellite_budget": self.unused_satellite_budget,
+            "volatility_regime": self.volatility_regime,
+            "cash_defensive_budget": self.cash_defensive_budget,
+            "volatility_shield": self.volatility_shield_result.to_dict() if self.volatility_shield_result else None,
+            "qdii_substitution_events": [e.to_dict() for e in self.qdii_substitution_events],
         }
 
     def to_markdown(self) -> str:
         """Render the Core-Satellite cockpit section for terminal and Feishu/WeCom cards."""
         lines: list[str] = []
-        lines.append("### 🎯 卫星增强仓 (20% Tier-S 个股大V事件 Alpha 狙击单 - T+5 策略)")
+
+        # 1. Volatility Regime Shield Executive Card
+        if self.volatility_shield_result is not None:
+            shield = VolatilityRegimeShield()
+            lines.append(shield.format_shield_report(self.volatility_shield_result))
+            lines.append("")
+
+        # 2. QDII Smart Substitution Executive Card
+        router = QDIISmartRouter()
+        lines.append(router.format_substitution_report(self.qdii_substitution_events))
+        lines.append("")
+
+        lines.append(f"### 🎯 卫星增强仓 ({self.satellite_weight_budget*100:.0f}% Tier-S 个股大V事件 Alpha 狙击单 - T+5 策略)")
         used_sat_pct = sum(self.satellite_stock_weights.values()) * 100.0
         unused_sat_pct = self.unused_satellite_budget * 100.0
+        cash_note = f" | 防御现金 **{self.cash_defensive_budget*100:.0f}%** (GC001)" if self.cash_defensive_budget > 0 else ""
         lines.append(
             f"- **架构预算分配**: 核心全天候 ETF 仓位 **{self.core_weight_budget*100:.0f}%** | "
             f"卫星事件 Alpha 预算 **{self.satellite_weight_budget*100:.0f}%** "
-            f"(当前激活个股 **{used_sat_pct:.1f}%**，未用预算 **{unused_sat_pct:.1f}%** 自动停泊于 `511010` 国债ETF/GC001)"
+            f"(当前激活个股 **{used_sat_pct:.1f}%**，未用预算 **{unused_sat_pct:.1f}%** 自动停泊于 `511010` 国债ETF/GC001){cash_note}"
         )
         lines.append("")
 
@@ -558,22 +613,44 @@ def generate_core_satellite_plan(
     min_sentiment_threshold: float = 0.20,
     lifecycle_mgr: SatelliteLifecycleManager | None = None,
     today_date: str | None = None,
+    volatility_shield: VolatilityRegimeShield | None = None,
+    market_volatility_metrics: Any = None,
+    qdii_router: QDIISmartRouter | None = None,
+    qdii_current_premiums: dict[str, float] | None = None,
 ) -> CoreSatellitePlan:
-    """Evaluate stock signals via all 4 intelligence modules and build an 80/20 Core-Satellite plan.
+    """Evaluate stock signals via all 4 intelligence modules, VolatilityRegimeShield, and QDIISmartRouter.
 
     Args:
         total_capital: Total portfolio NAV / capital in RMB.
-        core_base_weights: Base weights for Core All-Weather ETFs (will be normalized and scaled to 80%).
+        core_base_weights: Base weights for Core All-Weather ETFs (will be normalized and scaled to Core budget).
         candidate_stock_signals: List or dict of candidate stock signals with social posts / KOL triggers.
         market_prices: Current market prices for stocks and ETFs.
         core_weight_budget: Target weight budget for Core ETF sleeve (default 0.80).
         satellite_weight_budget: Target weight budget for Satellite stock alpha sleeve (default 0.20).
         max_single_stock_weight: Concentration cap per single satellite stock (default 0.05 = 5%).
         min_sentiment_threshold: Minimum KOL-weighted sentiment required to trigger a satellite buy.
+        lifecycle_mgr: SatelliteLifecycleManager for active position audit and tracking.
+        today_date: Current date string (YYYY-MM-DD).
+        volatility_shield: VolatilityRegimeShield instance for adaptive risk budget shifts.
+        market_volatility_metrics: Realized volatility metrics, snapshot dict, float vol, or None.
+        qdii_router: QDIISmartRouter instance for secondary-market QDII bubble interception.
+        qdii_current_premiums: Dictionary of current secondary market premium rates for QDII ETFs.
 
     Returns:
         CoreSatellitePlan with strict sum-to-1.0 portfolio weights, T+5 tickets, and blocked Tier-C records.
     """
+    # 0. Macro Volatility Adaptive Shield Adaptation
+    v_shield = volatility_shield or VolatilityRegimeShield()
+    shield_res = v_shield.adapt_budget(
+        core_base_budget=core_weight_budget,
+        satellite_base_budget=satellite_weight_budget,
+        market_volatility_metrics=market_volatility_metrics,
+    )
+    effective_core_budget = shield_res.core_budget
+    effective_satellite_budget = shield_res.satellite_budget
+    active_regime = shield_res.regime
+    cash_defensive_budget = shield_res.cash_defensive_budget
+
     auditor = DataQualityAuditor()
     kol_registry = KOLCredibilityRegistry()
     reconciler = SignalReconciler()
@@ -769,74 +846,76 @@ def generate_core_satellite_plan(
     # Sort qualified candidates by priority score descending
     qualified_candidates.sort(key=lambda x: (x["priority_score"], x["desired_weight"]), reverse=True)
 
-    # Allocate up to satellite_weight_budget (default 0.20)
-    remaining_sat = round(satellite_weight_budget, 6)
+    # Allocate up to effective_satellite_budget (dynamically adapted by VolatilityRegimeShield)
+    remaining_sat = round(effective_satellite_budget, 6)
     satellite_stock_weights: dict[str, float] = {}
     satellite_tickets: list[SatelliteAlphaTicket] = []
 
-    for q in qualified_candidates:
-        if remaining_sat <= 1e-6:
-            break
-        sym = q["symbol"]
-        alloc_w = round(min(q["desired_weight"], remaining_sat), 6)
-        if alloc_w <= 1e-6:
-            continue
+    # If regime is EXTREME_PANIC_FREEZE or effective_satellite_budget is 0, satellite alpha is fully disabled
+    if active_regime != REGIME_EXTREME_PANIC_FREEZE and remaining_sat > 1e-6:
+        for q in qualified_candidates:
+            if remaining_sat <= 1e-6:
+                break
+            sym = q["symbol"]
+            alloc_w = round(min(q["desired_weight"], remaining_sat), 6)
+            if alloc_w <= 1e-6:
+                continue
 
-        remaining_sat = round(remaining_sat - alloc_w, 6)
-        satellite_stock_weights[sym] = alloc_w
+            remaining_sat = round(remaining_sat - alloc_w, 6)
+            satellite_stock_weights[sym] = alloc_w
 
-        entry_price = float(prices.get(sym, DEFAULT_STOCK_PRICES.get(sym, 50.0)))
-        if entry_price <= 0:
-            entry_price = 50.0
+            entry_price = float(prices.get(sym, DEFAULT_STOCK_PRICES.get(sym, 50.0)))
+            if entry_price <= 0:
+                entry_price = 50.0
 
-        target_amount = total_capital * alloc_w
-        raw_shares = target_amount / entry_price
+            target_amount = total_capital * alloc_w
+            raw_shares = target_amount / entry_price
 
-        # Round to 100-share board lots for A-shares where applicable, or exact integer shares
-        is_ashare = sym.startswith(("SH", "SZ")) or (len(sym) == 6 and sym.isdigit())
-        if is_ashare:
-            lot_shares = int(round(raw_shares / 100.0)) * 100
-            if lot_shares >= 100 and (lot_shares * entry_price) <= total_capital * (max_single_stock_weight + 0.005):
-                shares_to_buy = lot_shares
-            elif int(raw_shares // 100) * 100 >= 100:
-                shares_to_buy = int(raw_shares // 100) * 100
+            # Round to 100-share board lots for A-shares where applicable, or exact integer shares
+            is_ashare = sym.startswith(("SH", "SZ")) or (len(sym) == 6 and sym.isdigit())
+            if is_ashare:
+                lot_shares = int(round(raw_shares / 100.0)) * 100
+                if lot_shares >= 100 and (lot_shares * entry_price) <= total_capital * (max_single_stock_weight + 0.005):
+                    shares_to_buy = lot_shares
+                elif int(raw_shares // 100) * 100 >= 100:
+                    shares_to_buy = int(raw_shares // 100) * 100
+                else:
+                    shares_to_buy = max(1, int(round(raw_shares)))
             else:
                 shares_to_buy = max(1, int(round(raw_shares)))
-        else:
-            shares_to_buy = max(1, int(round(raw_shares)))
 
-        cand_dict = q["cand"]
-        hold_days = int(cand_dict.get("target_holding_days", 5))
-        stop_loss = float(cand_dict.get("stop_loss_pct", -0.05))
-        take_profit = float(cand_dict.get("take_profit_pct", 0.08))
+            cand_dict = q["cand"]
+            hold_days = int(cand_dict.get("target_holding_days", 5))
+            stop_loss = float(cand_dict.get("stop_loss_pct", -0.05))
+            take_profit = float(cand_dict.get("take_profit_pct", 0.08))
 
-        rationale = (
-            cand_dict.get("rationale")
-            or f"{q['tier']} 高确定性标的 (历史5D胜率 {q['win_rate']*100:.1f}%, Rank IC {q['rank_ic']:+.3f})，"
-               f"享受 {q['alloc_mult']:.2f}x 权重系数放大，目标持有 T+{hold_days} 交易日"
-        )
+            rationale = (
+                cand_dict.get("rationale")
+                or f"{q['tier']} 高确定性标的 (历史5D胜率 {q['win_rate']*100:.1f}%, Rank IC {q['rank_ic']:+.3f})，"
+                   f"享受 {q['alloc_mult']:.2f}x 权重系数放大，目标持有 T+{hold_days} 交易日"
+            )
 
-        ticket = SatelliteAlphaTicket(
-            symbol=sym,
-            name=q["name"],
-            tier=q["tier"],
-            kol_trigger_summary=q["kol_trigger_summary"],
-            kol_weighted_sentiment=round(q["kol_weighted_sentiment"], 4),
-            action=str(cand_dict.get("action", "BUY")),
-            shares_to_buy=int(shares_to_buy),
-            entry_price=round(entry_price, 3),
-            target_holding_days=hold_days,
-            stop_loss_pct=stop_loss,
-            take_profit_pct=take_profit,
-            rationale=rationale,
-        )
-        satellite_tickets.append(ticket)
+            ticket = SatelliteAlphaTicket(
+                symbol=sym,
+                name=q["name"],
+                tier=q["tier"],
+                kol_trigger_summary=q["kol_trigger_summary"],
+                kol_weighted_sentiment=round(q["kol_weighted_sentiment"], 4),
+                action=str(cand_dict.get("action", "BUY")),
+                shares_to_buy=int(shares_to_buy),
+                entry_price=round(entry_price, 3),
+                target_holding_days=hold_days,
+                stop_loss_pct=stop_loss,
+                take_profit_pct=take_profit,
+                rationale=rationale,
+            )
+            satellite_tickets.append(ticket)
 
     # -------------------------------------------------------------------------
-    # 5. Scale Core ETF Weights to 80% + Fallback Unused Satellite to 511010
+    # 5. Scale Core ETF Weights to Adapted Core Budget + Fallback Unused Satellite to 511010
     # -------------------------------------------------------------------------
     total_sat_used = round(sum(satellite_stock_weights.values()), 6)
-    unused_sat_budget = round(max(0.0, satellite_weight_budget - total_sat_used), 6)
+    unused_sat_budget = round(max(0.0, effective_satellite_budget - total_sat_used), 6)
 
     if not core_base_weights or sum(core_base_weights.values()) <= 0:
         norm_core = {"511010": 1.0}
@@ -845,7 +924,7 @@ def generate_core_satellite_plan(
         norm_core = {k: v / base_sum for k, v in core_base_weights.items()}
 
     core_etf_weights: dict[str, float] = {
-        k: round(v * core_weight_budget, 6) for k, v in norm_core.items()
+        k: round(v * effective_core_budget, 6) for k, v in norm_core.items()
     }
 
     # Add unused satellite budget to Core Bond ETF 511010
@@ -854,9 +933,22 @@ def generate_core_satellite_plan(
         6,
     )
 
-    # Enforce strict sum-to-1.0 invariant across all weights
+    # -------------------------------------------------------------------------
+    # 6. QDII Smart Substitution Router (Secondary Market Bubble Interception)
+    # -------------------------------------------------------------------------
+    router = qdii_router or QDIISmartRouter()
+    qdii_substitution_events: list[QDIISubstitutionEvent] = []
+    if qdii_current_premiums is not None:
+        core_etf_weights, qdii_substitution_events = router.route_portfolio_weights(
+            core_etf_weights,
+            qdii_current_premiums,
+        )
+
+    # Enforce strict sum-to-1.0 invariant across all weights (including defensive cash GC001)
     current_total = round(
-        sum(core_etf_weights.values()) + sum(satellite_stock_weights.values()),
+        sum(core_etf_weights.values())
+        + sum(satellite_stock_weights.values())
+        + cash_defensive_budget,
         6,
     )
     residual = round(1.0 - current_total, 6)
@@ -870,14 +962,18 @@ def generate_core_satellite_plan(
         active_positions, exit_tickets = lifecycle_mgr.audit_positions(prices, t_date)
 
     return CoreSatellitePlan(
-        core_weight_budget=core_weight_budget,
-        satellite_weight_budget=satellite_weight_budget,
+        core_weight_budget=effective_core_budget,
+        satellite_weight_budget=effective_satellite_budget,
         core_etf_weights=core_etf_weights,
         satellite_stock_weights=satellite_stock_weights,
         satellite_tickets=satellite_tickets,
         blocked_noisy_stocks=blocked_noisy_stocks,
         active_positions=active_positions,
         exit_tickets=exit_tickets,
+        volatility_regime=active_regime,
+        volatility_shield_result=shield_res,
+        cash_defensive_budget=cash_defensive_budget,
+        qdii_substitution_events=qdii_substitution_events,
     )
 
 

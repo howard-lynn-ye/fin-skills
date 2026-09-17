@@ -305,3 +305,87 @@ def test_satellite_lifecycle_manager_holding_and_exits():
     assert "SZ300760" in mgr_restored.positions
     assert len(mgr_restored.history) == 3
 
+
+
+def test_core_satellite_volatility_regime_shield_integration():
+    """Test 6: Verify VolatilityRegimeShield shifts Core-Satellite budget dynamically."""
+    core_base = {
+        "510300": 0.20,
+        "510880": 0.20,
+        "511010": 0.40,
+        "518880": 0.20,
+    }
+    candidates = [
+        {"symbol": "SZ300760", "name": "迈瑞医疗", "kol_weighted_sentiment": 0.88},
+        {"symbol": "SH600036", "name": "招商银行", "kol_weighted_sentiment": 0.85},
+        {"symbol": "SZ000963", "name": "华东医药", "kol_weighted_sentiment": 0.82},
+    ]
+
+    # 1. Elevated Volatility Stress (> 80th percentile) -> Core 90% / Satellite 10%
+    plan_stress = generate_core_satellite_plan(
+        total_capital=200000.0,
+        core_base_weights=core_base,
+        candidate_stock_signals=candidates,
+        market_volatility_metrics={"vol_60d": 0.26, "vol_percentile": 0.85},
+    )
+    assert plan_stress.volatility_regime == "ELEVATED_VOL_STRESS"
+    assert plan_stress.core_weight_budget == pytest.approx(0.90, abs=1e-4)
+    assert plan_stress.satellite_weight_budget == pytest.approx(0.10, abs=1e-4)
+    assert sum(plan_stress.satellite_stock_weights.values()) == pytest.approx(0.10, abs=1e-4)
+    assert plan_stress.total_weight_sum == pytest.approx(1.0, abs=1e-6)
+
+    # 2. Extreme Panic Freeze (> 95th percentile or liquidity freeze) -> Core 95% / Satellite 0% (5% cash)
+    plan_panic = generate_core_satellite_plan(
+        total_capital=200000.0,
+        core_base_weights=core_base,
+        candidate_stock_signals=candidates,
+        market_volatility_metrics={"vol_60d": 0.38, "vol_percentile": 0.98},
+    )
+    assert plan_panic.volatility_regime == "EXTREME_PANIC_FREEZE"
+    assert plan_panic.core_weight_budget == pytest.approx(0.95, abs=1e-4)
+    assert plan_panic.satellite_weight_budget == pytest.approx(0.00, abs=1e-4)
+    assert plan_panic.cash_defensive_budget == pytest.approx(0.05, abs=1e-4)
+    assert len(plan_panic.satellite_tickets) == 0
+    assert len(plan_panic.satellite_stock_weights) == 0
+    assert plan_panic.total_weight_sum == pytest.approx(1.0, abs=1e-6)
+
+
+def test_core_satellite_qdii_smart_router_integration():
+    """Test 7: Verify QDIISmartRouter intercepts bubbly QDII ETFs inside generate_core_satellite_plan."""
+    core_base = {
+        "510300": 0.20,
+        "511010": 0.30,
+        "513100": 0.15,
+        "513500": 0.15,
+    }
+    # 513100 is at 3.5% premium -> should substitute to 159509 (0.2%)
+    # 513500 is at 4.0% premium, all substitutes bubbly -> should fallback to 511010
+    qdii_premiums = {
+        "513100": 0.035,
+        "159509": 0.002,
+        "513870": 0.012,
+        "513500": 0.040,
+        "513520": 0.025,
+        "511010": 0.000,
+    }
+    plan = generate_core_satellite_plan(
+        total_capital=100000.0,
+        core_base_weights=core_base,
+        candidate_stock_signals=[],
+        qdii_current_premiums=qdii_premiums,
+    )
+
+    # 513100 should be routed to 159509
+    assert "513100" not in plan.core_etf_weights
+    assert "159509" in plan.core_etf_weights
+    # 513500 should be routed to 511010
+    assert "513500" not in plan.core_etf_weights
+    assert len(plan.qdii_substitution_events) == 2
+    assert plan.total_weight_sum == pytest.approx(1.0, abs=1e-6)
+
+    # Verify Markdown rendering includes both new status cards
+    md = plan.to_markdown()
+    assert "🛡️ 宏观波动率自适应防爆盾状态" in md
+    assert "🔄 QDII 智能溢价平替与防泡沫调度" in md
+    assert "159509" in md
+    assert "避免摩擦损耗" in md or "避免追高" in md

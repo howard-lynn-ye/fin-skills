@@ -76,6 +76,14 @@ from fin_skills.china.portfolio_manager import (HoldingRecord, PortfolioState,
                                                TradeTicket,
                                                plan_portfolio_rebalance)
 from fin_skills.china.qdii_premium_guard import evaluate_qdii_order
+from fin_skills.china.qdii_smart_router import (
+    QDIISmartRouter,
+    QDIISubstitutionEvent,
+)
+from fin_skills.china.volatility_regime_shield import (
+    MarketVolatilityMetrics,
+    VolatilityRegimeShield,
+)
 from fin_skills.china.sentiment_flow_collector import (apply_sentiment_overlay,
                                                       collect_daily_market_intel)
 
@@ -282,6 +290,8 @@ def run_live_advisor(
     initial_capital_if_empty: float = 100000.0,
     sentiment_tilt: bool = True,
     candidate_stock_signals: list[dict[str, Any]] | dict[str, Any] | None = None,
+    qdii_current_premiums: dict[str, float] | None = None,
+    volatility_metrics_override: Any = None,
 ) -> dict[str, Any]:
     """Execute end-to-end 14:30 daily inspection and advisory loop."""
     today_str = datetime.now().strftime("%Y-%m-%d")
@@ -351,7 +361,15 @@ def run_live_advisor(
                     active_weights[code] = half_w
                     active_weights["518880"] += half_w
 
-    # 5. Core-Satellite Architecture (80% Core All-Weather ETFs + 20% Tier-S Stock Event Alpha)
+    # VolatilityRegimeShield & QDIISmartRouter Setup
+    vol_shield = VolatilityRegimeShield()
+    if volatility_metrics_override is not None:
+        market_vol_metrics = volatility_metrics_override
+    else:
+        market_vol_metrics = vol_shield.evaluate_metrics_from_snapshot(market_snapshot)
+    qdii_router = QDIISmartRouter()
+
+    # 5. Core-Satellite Architecture with VolatilityRegimeShield & QDIISmartRouter
     total_nav_est = state.total_nav + inflow
     core_satellite_plan = generate_core_satellite_plan(
         total_capital=total_nav_est,
@@ -360,6 +378,10 @@ def run_live_advisor(
         market_prices={**DEFAULT_STOCK_PRICES, **price_map},
         lifecycle_mgr=lifecycle_mgr,
         today_date=today_str,
+        volatility_shield=vol_shield,
+        market_volatility_metrics=market_vol_metrics,
+        qdii_router=qdii_router,
+        qdii_current_premiums=qdii_current_premiums,
     )
     core_etf_target_weights = core_satellite_plan.core_etf_weights
 
@@ -589,7 +611,26 @@ def main():
     parser.add_argument("--confirm", action="store_true", help="Confirm execution and update holdings.json and ledger")
     parser.add_argument("--webhook", default=None, help="Webhook URL (Feishu / WeCom / DingTalk)")
     parser.add_argument("--no-sentiment", action="store_true", help="Disable sentiment overlay tilting")
+    parser.add_argument("--qdii-premiums", default=None, help="JSON string of QDII ETF premiums, e.g. 513100: 0.035")
+    parser.add_argument("--vol-override", default=None, help="JSON string or float overriding volatility metrics")
     args = parser.parse_args()
+
+    qdii_prems = None
+    if args.qdii_premiums:
+        try:
+            qdii_prems = json.loads(args.qdii_premiums)
+        except Exception:
+            qdii_prems = None
+
+    vol_override = None
+    if args.vol_override:
+        try:
+            vol_override = json.loads(args.vol_override)
+        except Exception:
+            try:
+                vol_override = float(args.vol_override)
+            except Exception:
+                vol_override = None
 
     result = run_live_advisor(
         holdings_path=args.holdings,
@@ -601,6 +642,8 @@ def main():
         confirm_execution=args.confirm,
         initial_capital_if_empty=args.capital,
         sentiment_tilt=not args.no_sentiment,
+        qdii_current_premiums=qdii_prems,
+        volatility_metrics_override=vol_override,
     )
     _safe_print(result["markdown"])
 

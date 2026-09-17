@@ -1,0 +1,356 @@
+"""QDII Smart Substitution Router (QDIISmartRouter).
+
+Automatically intercepts secondary-market QDII ETF orders suffering from high premium bubbles
+(e.g., >1.5% premium on 513100 Nasdaq 100 / 513500 S&P 500) and routes them to lowest-premium
+equivalent instruments (cross-market ETFs or OTC Feeder funds), or safely falls back to Treasury
+Bond ETF 511010 when all substitutes are bubbly.
+"""
+from __future__ import annotations
+
+import logging
+from dataclasses import asdict, dataclass, field
+from datetime import datetime
+from typing import Any, Mapping
+
+logger = logging.getLogger("qdii_smart_router")
+
+# Monitored primary QDII ETFs and standard candidate replacement graph
+DEFAULT_QDII_REPLACEMENT_GRAPH: dict[str, list[str]] = {
+    # 513100 (Nasdaq 100 ETF) -> Candidates: 159509 (Nasdaq Tech), 513870 (Global Tech), 513500 (S&P 500), 000043 (OTC Feeder)
+    "513100": ["159509", "513870", "513500", "000043"],
+    # 513500 (S&P 500 ETF) -> Candidates: 513520 (S&P Dividend), 513100 (Nasdaq 100), 006075 (OTC Feeder)
+    "513500": ["513520", "513100", "006075"],
+    # 510900 (Hang Seng China Enterprises) -> Candidates: 159920 (Hang Seng Index), 513180 (Hang Seng Tech), 000071 (OTC Feeder)
+    "510900": ["159920", "513180", "000071"],
+    # 159920 (Hang Seng Index) -> Candidates: 510900 (Hang Seng China Enterprises), 513180 (Hang Seng Tech), 000071 (OTC Feeder)
+    "159920": ["510900", "513180", "000071"],
+}
+
+# Known asset names for readable logging & cockpit reporting
+QDII_ASSET_NAMES: dict[str, str] = {
+    "513100": "纳指100ETF (Nasdaq 100)",
+    "513500": "标普500ETF (S&P 500)",
+    "510900": "恒生国企ETF (HSCEI)",
+    "159920": "恒生指数ETF (HSI)",
+    "159509": "纳斯达克科技ETF (Nasdaq Tech)",
+    "513870": "全球半导体/科技ETF (Global Tech)",
+    "000043": "嘉实原油/纳指场外联接基金 (OTC Feeder)",
+    "513520": "标普红利ETF (S&P Dividend)",
+    "006075": "博时标普500场外联接基金 (OTC Feeder)",
+    "513180": "恒生科技ETF (Hang Seng Tech)",
+    "000071": "华夏恒生指数场外联接 (OTC Feeder)",
+    "511010": "国债ETF (Treasury Bond ETF)",
+}
+
+# OTC feeder funds trade at NAV (0.0% secondary market premium)
+OTC_FEEDER_FUNDS: set[str] = {"000043", "006075", "000071"}
+
+
+@dataclass
+class QDIISubstitutionEvent:
+    """Structured audit log and ticket for a QDII ETF substitution or defensive routing event."""
+
+    original_symbol: str
+    substitute_symbol: str
+    original_name: str
+    substitute_name: str
+    original_premium_pct: float
+    substitute_premium_pct: float
+    avoided_friction_bps: float
+    routed_weight: float
+    status: str  # 'SUBSTITUTED', 'FALLBACK_SAFETY_BOND', 'PASS_THROUGH'
+    reason: str
+    timestamp: str = field(default_factory=lambda: datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+# Alias for explicit task naming requirement
+QDII_Substitution_Event = QDIISubstitutionEvent
+
+
+@dataclass
+class QDIIRouteResult:
+    """Outcome of a single QDII evaluation and routing decision."""
+
+    routed_symbol: str
+    routed_weight: float
+    event: QDIISubstitutionEvent | None = None
+    is_substituted: bool = False
+    original_symbol: str = ""
+    original_weight: float = 0.0
+
+    def __iter__(self):
+        yield self.routed_symbol
+        yield self.routed_weight
+        yield self.event
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "routed_symbol": self.routed_symbol,
+            "routed_weight": self.routed_weight,
+            "is_substituted": self.is_substituted,
+            "original_symbol": self.original_symbol,
+            "original_weight": self.original_weight,
+            "event": self.event.to_dict() if self.event else None,
+        }
+
+
+class QDIISmartRouter:
+    """Smart router to detect QDII ETF premium bubbles and execute lowest-premium substitution."""
+
+    def __init__(
+        self,
+        replacement_graph: Mapping[str, list[str]] | None = None,
+        premium_threshold_pct: float = 0.015,  # 1.5% premium triggers search for substitution
+        low_premium_threshold_pct: float = 0.005,  # 0.5% ideal low premium benchmark
+        fallback_safety_symbol: str = "511010",  # Treasury Bond ETF 511010
+        asset_names: Mapping[str, str] | None = None,
+    ):
+        self.replacement_graph = {
+            k: list(v) for k, v in (replacement_graph or DEFAULT_QDII_REPLACEMENT_GRAPH).items()
+        }
+        self.premium_threshold_pct = float(premium_threshold_pct)
+        self.low_premium_threshold_pct = float(low_premium_threshold_pct)
+        self.fallback_safety_symbol = str(fallback_safety_symbol).strip()
+        self.asset_names = {**QDII_ASSET_NAMES, **(asset_names or {})}
+
+    def _normalize_symbol(self, symbol: str) -> str:
+        return str(symbol).split(".")[0].strip().upper()
+
+    def _normalize_premium(self, raw_premium: float | None, symbol: str) -> float:
+        if raw_premium is None:
+            if symbol in OTC_FEEDER_FUNDS:
+                return 0.0
+            if symbol == self.fallback_safety_symbol:
+                return 0.0
+            return 0.0
+        val = float(raw_premium)
+        # Handle percentage vs decimal: if > 0.50 (e.g. 1.8), interpret as 1.8% -> 0.018
+        if abs(val) > 0.50:
+            val = val / 100.0
+        return val
+
+    def get_asset_name(self, symbol: str) -> str:
+        norm = self._normalize_symbol(symbol)
+        return self.asset_names.get(norm, f"Asset-{norm}")
+
+    def evaluate_and_route(
+        self,
+        symbol: str,
+        target_weight: float,
+        current_premiums: Mapping[str, float] | None = None,
+    ) -> QDIIRouteResult:
+        """Evaluate a target QDII ETF position and route to lowest-premium equivalent or 511010.
+
+        Args:
+            symbol: ETF ticker (e.g., '513100', '513500', '510900', '159920').
+            target_weight: Desired portfolio weight (e.g., 0.075).
+            current_premiums: Dictionary of current premium rates per symbol.
+
+        Returns:
+            QDIIRouteResult (can be unpacked as tuple: routed_symbol, routed_weight, event).
+        """
+        norm_sym = self._normalize_symbol(symbol)
+        w = float(target_weight)
+
+        if w <= 1e-7:
+            return QDIIRouteResult(
+                routed_symbol=norm_sym,
+                routed_weight=0.0,
+                event=None,
+                is_substituted=False,
+                original_symbol=norm_sym,
+                original_weight=0.0,
+            )
+
+        premiums_map = current_premiums or {}
+
+        # If not a monitored QDII ETF with candidates, pass through
+        if norm_sym not in self.replacement_graph:
+            return QDIIRouteResult(
+                routed_symbol=norm_sym,
+                routed_weight=w,
+                event=None,
+                is_substituted=False,
+                original_symbol=norm_sym,
+                original_weight=w,
+            )
+
+        orig_prem = self._normalize_premium(premiums_map.get(norm_sym), norm_sym)
+
+        # 1. If symbol premium <= threshold (default 1.5%), pass through original symbol
+        if orig_prem <= self.premium_threshold_pct:
+            return QDIIRouteResult(
+                routed_symbol=norm_sym,
+                routed_weight=w,
+                event=None,
+                is_substituted=False,
+                original_symbol=norm_sym,
+                original_weight=w,
+            )
+
+        # 2. Symbol is bubbly (> 1.5% premium). Scan candidate equivalents
+        candidates = self.replacement_graph.get(norm_sym, [])
+        candidate_premiums: dict[str, float] = {}
+
+        # Consider candidates present in premiums_map, or OTC funds if explicitly listed
+        for cand in candidates:
+            c_norm = self._normalize_symbol(cand)
+            if c_norm in premiums_map:
+                candidate_premiums[c_norm] = self._normalize_premium(premiums_map[c_norm], c_norm)
+            elif c_norm in OTC_FEEDER_FUNDS and "000043" in premiums_map or "006075" in premiums_map or "000071" in premiums_map:
+                candidate_premiums[c_norm] = self._normalize_premium(premiums_map.get(c_norm), c_norm)
+            elif not premiums_map:
+                # No premiums provided at all -> skip
+                pass
+
+        # Filter candidates whose premium <= threshold (1.5%)
+        eligible = [c for c, p in candidate_premiums.items() if p <= self.premium_threshold_pct]
+
+        if eligible:
+            # Preference 1: Candidates with premium <= low_premium_threshold_pct (0.5%)
+            ultra_low = [c for c in eligible if candidate_premiums[c] <= self.low_premium_threshold_pct]
+            if ultra_low:
+                # Pick the lowest premium among ultra-low candidates
+                best_substitute = min(ultra_low, key=lambda c: candidate_premiums[c])
+            else:
+                # Pick the candidate with the lowest premium overall among eligible
+                best_substitute = min(eligible, key=lambda c: candidate_premiums[c])
+
+            sub_prem = candidate_premiums[best_substitute]
+            avoided_friction_bps = round((orig_prem - sub_prem) * 10000.0, 2)
+            orig_name = self.get_asset_name(norm_sym)
+            sub_name = self.get_asset_name(best_substitute)
+
+            reason = (
+                f"原标的 [{orig_name}] 溢价率 ({orig_prem * 100:.2f}%) 突破安全阀值 ({self.premium_threshold_pct * 100:.1f}%)，"
+                f"智能平替至低溢价标的 [{sub_name}] (溢价率 {sub_prem * 100:.2f}%)，"
+                f"避免追高溢价摩擦损耗 {avoided_friction_bps:.1f} bps"
+            )
+
+            event = QDIISubstitutionEvent(
+                original_symbol=norm_sym,
+                substitute_symbol=best_substitute,
+                original_name=orig_name,
+                substitute_name=sub_name,
+                original_premium_pct=round(orig_prem, 4),
+                substitute_premium_pct=round(sub_prem, 4),
+                avoided_friction_bps=avoided_friction_bps,
+                routed_weight=w,
+                status="SUBSTITUTED",
+                reason=reason,
+            )
+
+            return QDIIRouteResult(
+                routed_symbol=best_substitute,
+                routed_weight=w,
+                event=event,
+                is_substituted=True,
+                original_symbol=norm_sym,
+                original_weight=w,
+            )
+
+        # 3. All substitutes are also bubbly (> 1.5%) or unavailable. Route to Treasury Bond ETF 511010
+        fallback_sym = self._normalize_symbol(self.fallback_safety_symbol)
+        fallback_prem = self._normalize_premium(premiums_map.get(fallback_sym), fallback_sym)
+        avoided_friction_bps = round((orig_prem - fallback_prem) * 10000.0, 2)
+        orig_name = self.get_asset_name(norm_sym)
+        fallback_name = self.get_asset_name(fallback_sym)
+
+        reason = (
+            f"原标的 [{orig_name}] 溢价率 ({orig_prem * 100:.2f}%) 与所有平替候选均处于泡沫警戒区 (> {self.premium_threshold_pct * 100:.1f}%)，"
+            f"触发硬核熔断拦截，资金全额重定向至国债避险ETF [{fallback_name}]，"
+            f"避免追高资本回撤损耗 {avoided_friction_bps:.1f} bps"
+        )
+
+        event = QDIISubstitutionEvent(
+            original_symbol=norm_sym,
+            substitute_symbol=fallback_sym,
+            original_name=orig_name,
+            substitute_name=fallback_name,
+            original_premium_pct=round(orig_prem, 4),
+            substitute_premium_pct=round(fallback_prem, 4),
+            avoided_friction_bps=avoided_friction_bps,
+            routed_weight=w,
+            status="FALLBACK_SAFETY_BOND",
+            reason=reason,
+        )
+
+        return QDIIRouteResult(
+            routed_symbol=fallback_sym,
+            routed_weight=w,
+            event=event,
+            is_substituted=True,
+            original_symbol=norm_sym,
+            original_weight=w,
+        )
+
+    def route_portfolio_weights(
+        self,
+        weights: Mapping[str, float],
+        current_premiums: Mapping[str, float] | None = None,
+    ) -> tuple[dict[str, float], list[QDIISubstitutionEvent]]:
+        """Route all assets in a portfolio weight dict, aggregating weights for shared substitutes."""
+        routed_weights: dict[str, float] = {}
+        events: list[QDIISubstitutionEvent] = []
+
+        for sym, weight in weights.items():
+            res = self.evaluate_and_route(sym, weight, current_premiums)
+            routed_sym = res.routed_symbol
+            routed_weights[routed_sym] = round(routed_weights.get(routed_sym, 0.0) + res.routed_weight, 6)
+            if res.event is not None:
+                events.append(res.event)
+
+        # Enforce sum invariant preservation
+        orig_sum = round(sum(weights.values()), 6)
+        routed_sum = round(sum(routed_weights.values()), 6)
+        diff = round(orig_sum - routed_sum, 6)
+        if abs(diff) > 1e-6 and self.fallback_safety_symbol in routed_weights:
+            routed_weights[self.fallback_safety_symbol] = round(
+                routed_weights[self.fallback_safety_symbol] + diff, 6
+            )
+
+        return routed_weights, events
+
+    def format_substitution_report(self, events: list[QDIISubstitutionEvent]) -> str:
+        """Format a clear Markdown report of all QDII routing decisions."""
+        lines: list[str] = []
+        lines.append("#### 🔄 QDII 智能溢价平替与防泡沫调度")
+
+        if not events:
+            lines.append(
+                f"> ✅ **所有 QDII 标的二级市场溢价率均处于安全阀值 (<= {self.premium_threshold_pct * 100:.1f}%) 以内，"
+                f"无需平替调度，原单正常执行。**"
+            )
+            return "\n".join(lines)
+
+        lines.append("| 原始标的 | 原始溢价 | 路由/平替目标 | 目标溢价 | 调配权重 | 避免摩擦损耗 | 调度判定理由 |")
+        lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+
+        total_saved_friction_weighted = 0.0
+        total_weight_routed = 0.0
+
+        for ev in events:
+            total_saved_friction_weighted += ev.avoided_friction_bps * ev.routed_weight
+            total_weight_routed += ev.routed_weight
+            status_tag = "🔄 平替" if ev.status == "SUBSTITUTED" else "🛡️ 避险熔断"
+            lines.append(
+                f"| `{ev.original_symbol}` {ev.original_name.split()[0]} | `{ev.original_premium_pct * 100:+.2f}%` | "
+                f"**`{ev.substitute_symbol}`** ({status_tag}) | `{ev.substitute_premium_pct * 100:+.2f}%` | "
+                f"**{ev.routed_weight * 100:.2f}%** | **+{ev.avoided_friction_bps:.0f} bps** | {ev.reason} |"
+            )
+
+        avg_bps = (
+            total_saved_friction_weighted / total_weight_routed
+            if total_weight_routed > 0
+            else 0.0
+        )
+        lines.append("")
+        lines.append(
+            f"💡 **防泡沫调度成效**: 成功拦截 **{len(events)}** 笔高溢价泡沫订单，"
+            f"累计重新调度权重 **{total_weight_routed * 100:.2f}%**，"
+            f"平均为组合挽回 **+{avg_bps:.1f} bps** 的无谓追高摩擦磨损。"
+        )
+        return "\n".join(lines)
