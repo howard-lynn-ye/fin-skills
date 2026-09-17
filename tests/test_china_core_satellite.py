@@ -194,14 +194,14 @@ def test_tier_c_noisy_stock_interception_and_etf_substitution():
     assert "510900" in md
 
 
-def test_satellite_lifecycle_manager_holding_and_exits():
+def test_satellite_lifecycle_manager_holding_and_exits(tmp_path):
     """Test 5: Verify SatelliteLifecycleManager tracks positions, audits T+5 horizon, take-profit, stop-loss, and closes trades."""
     from fin_skills.china.core_satellite_advisor import (
         SatelliteLifecycleManager,
         SatellitePositionRecord,
     )
 
-    mgr = SatelliteLifecycleManager()
+    mgr = SatelliteLifecycleManager(ledger_path=tmp_path / "test_satellite_ledger.json")
 
     # 1. Add positions
     t1 = SatelliteAlphaTicket(
@@ -300,7 +300,7 @@ def test_satellite_lifecycle_manager_holding_and_exits():
 
     # 4. Test Serialization / Deserialization
     state_dict = mgr.to_dict()
-    mgr_restored = SatelliteLifecycleManager.from_dict(state_dict)
+    mgr_restored = SatelliteLifecycleManager.from_dict(state_dict, ledger_path=tmp_path / "test_restored.json")
     assert len(mgr_restored.positions) == 1
     assert "SZ300760" in mgr_restored.positions
     assert len(mgr_restored.history) == 3
