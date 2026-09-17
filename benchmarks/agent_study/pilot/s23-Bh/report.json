@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 0.133,
+  "cost_bps_per_side": 1.0,
+  "method": "Linear regression model trained on historical LLM scores and lagged news sentiment to predict next-day returns. Portfolio is rebalanced daily with dollar-neutral long-short positions, using z-score normalization of predicted returns to determine position sizes.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

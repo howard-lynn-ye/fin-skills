@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 0.2421,
+  "cost_bps_per_side": 2,
+  "method": "Cross-sectional long-short equity strategy that combines LLM sentiment scores (70% weight) with news sentiment (30% weight). The strategy ranks stocks each day and takes equal-weighted long positions in top quintile and short positions in bottom quintile. Positions are fully rebalanced daily to maintain dollar neutrality.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

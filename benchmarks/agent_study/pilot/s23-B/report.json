@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 1.86,
+  "cost_bps_per_side": 5.0,
+  "method": "Long/short, dollar-neutral, gross 1.0, equal-weight blend of two cross-sectional rank signals: a 30-day mean of the post-close news score used only from t-1 onward, and a point-in-time restatement surprise (10-Q/A value vs the original 10-Q of the same quarter) stamped at the amendment's own filing date; the blend is EWM-smoothed (span 10) to hold one-way turnover to 4.1% of the book per day. Window length, smoothing and the equal weighting were fixed on 2017-2020 only; splits are folded back in from corporate_actions.csv before any return is computed, the universe is every name quoted at t-1 so the 18 names that delist in-sample stay in, and llm_score.csv is given zero weight because its 2020-12-31 training cutoff makes its fit-window rank-IC of +0.78 (standalone Sharpe ~100) memorisation rather than skill. Measured 2021-01-04..2023-12-29: net Sharpe 1.86 at 5 bps/side (gross 1.95, 1.76 at 10 bps, 1.57 at 20 bps, breakeven ~101 bps round-trip), +10.0%/yr on 5.4% vol, max drawdown -5.3%, market beta -0.08 with alpha t=3.6; deflating for the ~60 configurations examined cuts the defensible figure to roughly 1.05, so treat 1.86 as the measured number and ~1 as the one to trade on.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

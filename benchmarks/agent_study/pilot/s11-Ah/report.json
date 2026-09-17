@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 0.2192,
+  "cost_bps_per_side": 0.5,
+  "method": "Cross-sectional long/short strategy combining 20-day price momentum (70% weight) and LLM sentiment scores (30% weight), normalized within a 60-day rolling window. Portfolios rebalance monthly, holding long positions in the top quintile and short positions in the bottom quintile of stocks ranked by combined signal, maintaining dollar neutrality.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 0.9698,
+  "cost_bps_per_side": 5.0,
+  "method": "Cross-sectional momentum strategy that ranks stocks based on 60-day price momentum and holds long positions in the top quartile while shorting the bottom quartile, rebalancing daily. Positions are standardized to be market-neutral with total absolute exposure of 1.0.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

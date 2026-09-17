@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 2.24,
+  "cost_bps_per_side": 10.0,
+  "method": "Cross-sectional, dollar-neutral, daily-rebalanced long/short over all names quoted on the previous session, sized by rank so no single name can dominate the shrinking late-sample universe. The score is an ensemble of exponentially-weighted means (half-lives 21/42/63/126 days) of the post-close news score - a single day's score is ~0.65 rank-correlated with that same day's return and has no next-day content, only its slow component predicts - plus 0.3 x the cross-sectional rank of point-in-time log reported revenue, with 10-Q/A amendments applied only from their own filing date. Splits are removed with a factor built from corporate_actions.csv before any return is taken; llm_score.csv is excluded because its training cutoff is 2020-12-31 (rank IC +0.79 before that date, +0.002 after), and listings.csv is never read because delisting_date is not knowable ex ante.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

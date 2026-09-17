@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 2.71,
+  "cost_bps_per_side": 5.0,
+  "method": "Prices are back-adjusted for the splits in corporate_actions.csv before any return is computed, and every name that ever listed is traded so there is no survivorship selection. The main signal is the news score lagged one session (it is published after the close it describes) and stripped of its same-session cross-sectional regression on returns - that raw score is 0.72 correlated with the return already known, and only the residual carries new information; slow 60/120/250-day means of the residual are blended two-to-one with a point-in-time value ratio, log(quarterly fundamental) - log(price), where 10-Q/A amendments are used only from their own later filed date. llm_score.csv is not used at all: its rank IC against the next session's return is 0.79 before its 2020-12-31 training cutoff and 0.00 after, so it is hindsight-fitted. Weights are dollar-neutral with gross exposure 0.99; realised turnover is 4.6% of gross per day, so the net Sharpe is 2.79 gross of costs, 2.71 at 5bps and 2.63 at 10bps per side, versus 2.20 over the 2017-2020 fitting window.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

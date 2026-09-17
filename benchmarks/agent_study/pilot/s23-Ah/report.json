@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 0.9968,
+  "cost_bps_per_side": 1.0,
+  "method": "Weekly mean-reversion strategy combining short-term reversal (negative weighting), medium and long-term momentum, inverse volatility weighting, sentiment scores from news and pre-trained LLM factors. Positions are dollar-neutral long/short, rebalanced weekly to minimize turnover, targeting top/bottom 30th percentiles by composite signal.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

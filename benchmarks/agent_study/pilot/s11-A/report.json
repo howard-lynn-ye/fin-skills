@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 1.94,
+  "cost_bps_per_side": 5.0,
+  "method": "Prices are de-split with corporate_actions before any return is taken, and names enter/exit purely on whether prices print (delisting_date is never used as a forward-looking filter). The main sleeve is the news feed stripped of lookahead: score_t is published after the close of t so it is only used from t+1, and because its same-day cross-sectional rank IC is ~0.66 it is regressed on the same-day return each day and only the residual, averaged over 10/21/42/63 days, is kept; the second sleeve is reversion of log price to the cross-sectional mean, whose dispersion is stationary across the whole sample. Both sleeves are vol-normalised, z-scored, added at equal risk, demeaned and scaled to gross 1 (turnover ~0.11/day); llm_score.csv is discarded outright - rank IC 0.79 against next-day returns up to its 2020-12-31 cutoff and 0.006 after it.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

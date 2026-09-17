@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 1.94,
+  "cost_bps_per_side": 10.0,
+  "method": "Weights are a cross-sectional rank portfolio built from news_feed only. Because each score is published after the close of session feed_ts and is commentary about that session (rank IC ~0.68 with the same session's return, ~0.00 with the next), I regress the score cross-sectionally on that day's market-demeaned log return and keep the residual, then average that residual over 10/21/42/63 sessions, rank it, scale by inverse 21-day volatility and smooth the weights (EWMA halflife 3) to hold one-way turnover near 5% a day. Splits are removed with a start-anchored factor knowable at t (the present-anchored version leaks future splits into price levels and manufactures a fake value factor), the universe is rebuilt each session from prices and listing dates so delisted names are traded while they lived, and llm_score is not read at all since its rank IC with the next session's return is 0.79 before its 2020-12-31 cutoff and 0.01 after.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

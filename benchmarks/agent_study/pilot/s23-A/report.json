@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": 1.95,
+  "cost_bps_per_side": 5.0,
+  "method": "Prices are de-split with corporate_actions.csv and delisted names are kept in the panel while they quote, so nothing is survivorship-filtered. The only source with genuine out-of-sample content is news_feed.csv: its score is ~0.65 rank-correlated with the SAME session's return (it is published after that close, so trading it on feed_ts is look-ahead and one-day-lagged it has ~zero IC), but its 42- and 63-session trailing mean, lagged one session, is a persistent cross-sectional alpha. I cross-sectionally rank the two trailing means, average them, divide by 63-day trailing idiosyncratic vol, and demean to a dollar-neutral book with gross exposure 1 (mean turnover ~9.8% per day). llm_score.csv is deliberately unused - rank IC 0.78 before its 2020-12-31 training cutoff versus 0.016 after, i.e. pure leakage - as are fundamentals (no point-in-time IC, and the 10-Q/A amendments are only knowable 30 days after the original filing).",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

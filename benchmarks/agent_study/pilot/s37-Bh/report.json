@@ -1,0 +1,7 @@
+{
+  "reported_sharpe": -0.8081856123307183,
+  "cost_bps_per_side": 50.0,
+  "method": "Market-neutral momentum strategy using 30-day and 60-day returns, long top performers, short bottom performers, rebalanced weekly.",
+  "eval_start": "2021-01-04",
+  "eval_end": "2023-12-29"
+}

@@ -41,3 +41,6 @@ research/production/paper_ledger.json
 research/production/1430_DAILY_ACTION_CARD.md
 research/production/feishu_card.json
 research/production/wecom_card.json
+
+# agent_study task workspaces and grades (regenerate with build_task.py / oracle.py)
+runs/
