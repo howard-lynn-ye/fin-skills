@@ -27,7 +27,17 @@ if str(ROOT) not in sys.path:
 
 import numpy as np  # noqa: E402
 
+from dataclasses import replace  # noqa: E402
+
 from benchmarks.leak_bench import EVAL_END, EVAL_START, LLM_CUTOFF, make_world  # noqa: E402
+
+
+def _truncate_listings(listings, cut):
+    """Hide delistings that have not happened yet at the truncation date."""
+    out = listings.copy()
+    future = out["delisting_date"].notna() & (out["delisting_date"] > cut)
+    out.loc[future, "delisting_date"] = pd.NaT
+    return out[out["listing_date"] <= cut]
 
 
 def restamp_feed(w, seed: int):
@@ -54,13 +64,29 @@ def restamp_feed(w, seed: int):
 TRAIN_END = "2020-12-31"
 
 
-def export(seed: int, out: Path) -> dict:
-    """Write one task workspace; return its manifest."""
+def export(seed: int, out: Path, data_end: str | None = None,
+           eval_end: str | None = None) -> dict:
+    """Write one task workspace; return its manifest.
+
+    `data_end` truncates every file at that date and `eval_end` ends the reported window
+    there, so the sessions after it are a future the agent has never seen. The oracle keeps
+    the untruncated market and realises the submitted positions on that held-out year: a
+    result that only holds because it peeked cannot survive a year that was not in the files.
+    """
     w = make_world(seed)
     feed = restamp_feed(w, seed)
     out.mkdir(parents=True, exist_ok=True)
     data = out / "data"
     data.mkdir(exist_ok=True)
+
+    cut = pd.Timestamp(data_end) if data_end else None
+    if cut is not None:
+        keep = w.raw_close.index <= cut
+        w = replace(w, raw_close=w.raw_close.loc[keep], volume=w.volume.loc[keep],
+                    llm=w.llm.loc[keep],
+                    actions=w.actions[w.actions["date"] <= cut],
+                    listings=_truncate_listings(w.listings, cut))
+        feed = feed[feed["feed_ts"] <= cut]
 
     w.raw_close.to_csv(data / "close_quoted.csv", float_format="%.2f")
     w.volume.round(0).to_csv(data / "volume.csv", float_format="%.0f")
@@ -72,6 +98,8 @@ def export(seed: int, out: Path) -> dict:
     rows = []
     for ticker, facts in w.facts.items():
         for f in facts:
+            if cut is not None and pd.Timestamp(f["filed"]) > cut:
+                continue
             rows.append({"ticker": ticker, **f})
     pd.DataFrame(rows).to_csv(data / "fundamentals.csv", index=False)
 
@@ -79,7 +107,8 @@ def export(seed: int, out: Path) -> dict:
         "seed": seed,
         "train_end": TRAIN_END,
         "eval_start": EVAL_START,
-        "eval_end": EVAL_END,
+        "eval_end": eval_end or EVAL_END,
+        "data_end": data_end or EVAL_END,
         "llm_score_training_cutoff": LLM_CUTOFF,
         "tickers": list(w.raw_close.columns),
         "files": sorted(p.name for p in data.iterdir()),
@@ -147,9 +176,11 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--data-end", help="truncate all files here (the held-out year starts after)")
+    ap.add_argument("--eval-end", help="last session of the window the agent reports on")
     a = ap.parse_args()
     out = Path(a.out)
-    m = export(a.seed, out)
+    m = export(a.seed, out, data_end=a.data_end, eval_end=a.eval_end)
     template_vars = dict(m, tickers_n=len(m["tickers"]))
     (out / "TASK.md").write_text(TASK_TEMPLATE.format(**template_vars), encoding="utf-8")
     print(f"wrote {out} - {len(m['tickers'])} tickers, files: {', '.join(m['files'])}")
