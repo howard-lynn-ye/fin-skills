@@ -32,3 +32,6 @@ fin-skills-events.sqlite3*
 *.stackdump
 research/**/_cache*/
 
+
+# local GitHub credential store for pushes from the Cowork VM (never commit)
+.git-credentials
