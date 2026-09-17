@@ -144,10 +144,12 @@ class KOLCredibilityRegistry:
 
         # Automatically attempt to load both Chinese (1,445) and Global (1,070) KOL databases
         default_cn_paths = [
+            Path(__file__).resolve().parents[2] / "data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv",
             Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv"),
             Path("../stock_prediction/data/benchmark/XUEQIU_KOL_ALPHA_PROFILES.csv"),
         ]
         default_global_paths = [
+            Path(__file__).resolve().parents[2] / "data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv",
             Path("/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv"),
             Path("../stock_prediction/data/benchmark/GLOBAL_KOL_ALPHA_PROFILES.csv"),
         ]
