@@ -1,0 +1,463 @@
+"""Persistent Portfolio State & Deadband Inflow-First Rebalancer for A-Share Portfolios.
+
+Why this exists:
+1. Academic backtests assume a portfolio rebalances perfectly every single month or day,
+   incurring endless two-way churn (sell asset A, buy asset B) and bleeding minimum fees.
+2. In reality, investors hold existing assets and deposit regular monthly savings (cash inflow).
+3. "Inflow-First Balancing" deploys new capital exclusively to underweight buckets.
+   Only when drift severely breaches the deadband does the engine issue sell orders.
+4. All stock/ETF trades in China must obey 100-share board lot constraints and fee schedules
+   (0% ETF stamp duty, 0.02% comm with min 2 RMB per trade).
+"""
+from __future__ import annotations
+
+import json
+import math
+from dataclasses import asdict, dataclass, field
+from datetime import date, datetime
+from pathlib import Path
+from typing import Any, Mapping
+
+import pandas as pd
+
+from fin_skills.china.board_lot_guard import DEFAULT_TYPICAL_PRICES
+
+
+@dataclass
+class HoldingRecord:
+    code: str
+    name: str
+    shares: int
+    avg_cost: float
+    market_price: float
+    market_value: float = 0.0
+    weight: float = 0.0
+    unrealized_pnl: float = 0.0
+    unrealized_pnl_pct: float = 0.0
+
+    def update_valuation(self, current_price: float, total_nav: float) -> None:
+        self.market_price = float(current_price)
+        self.market_value = self.shares * self.market_price
+        if total_nav > 0:
+            self.weight = self.market_value / total_nav
+        else:
+            self.weight = 0.0
+        cost_basis = self.shares * self.avg_cost
+        self.unrealized_pnl = self.market_value - cost_basis
+        self.unrealized_pnl_pct = (self.unrealized_pnl / cost_basis) if cost_basis > 0 else 0.0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "code": self.code,
+            "name": self.name,
+            "shares": self.shares,
+            "lots": self.shares // 100,
+            "avg_cost": round(self.avg_cost, 4),
+            "market_price": round(self.market_price, 4),
+            "market_value": round(self.market_value, 2),
+            "weight": round(self.weight, 4),
+            "weight_pct": f"{round(self.weight * 100, 2)}%",
+            "unrealized_pnl": round(self.unrealized_pnl, 2),
+            "unrealized_pnl_pct": f"{round(self.unrealized_pnl_pct * 100, 2)}%",
+        }
+
+
+@dataclass
+class PortfolioState:
+    cash: float
+    holdings: dict[str, HoldingRecord] = field(default_factory=dict)
+    total_nav: float = 0.0
+    last_rebalance_date: str = "2026-01-01"
+    rebalance_count: int = 0
+
+    def recalculate(self, price_map: Mapping[str, float] | None = None) -> None:
+        """Update market values, total NAV, and weights for all assets."""
+        if price_map:
+            for code, holding in self.holdings.items():
+                if code in price_map and price_map[code] > 0:
+                    holding.market_price = float(price_map[code])
+
+        holdings_value = sum(h.shares * h.market_price for h in self.holdings.values())
+        self.total_nav = holdings_value + self.cash
+
+        for holding in self.holdings.values():
+            holding.update_valuation(holding.market_price, self.total_nav)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> PortfolioState:
+        state = cls(
+            cash=float(data.get("cash", 0.0)),
+            last_rebalance_date=str(data.get("last_rebalance_date", "2026-01-01")),
+            rebalance_count=int(data.get("rebalance_count", 0)),
+        )
+        for h_data in data.get("holdings", []):
+            rec = HoldingRecord(
+                code=h_data["code"],
+                name=h_data.get("name", h_data["code"]),
+                shares=int(h_data["shares"]),
+                avg_cost=float(h_data["avg_cost"]),
+                market_price=float(h_data.get("market_price", h_data["avg_cost"])),
+            )
+            state.holdings[rec.code] = rec
+        state.recalculate()
+        return state
+
+    @classmethod
+    def load_from_file(cls, path: str | Path) -> PortfolioState:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return cls.from_dict(data)
+
+    def save_to_file(self, path: str | Path) -> None:
+        self.recalculate()
+        data = {
+            "total_nav": round(self.total_nav, 2),
+            "cash": round(self.cash, 2),
+            "cash_weight_pct": f"{round((self.cash / self.total_nav if self.total_nav > 0 else 1.0) * 100, 2)}%",
+            "last_rebalance_date": self.last_rebalance_date,
+            "rebalance_count": self.rebalance_count,
+            "holdings": [h.to_dict() for h in self.holdings.values()],
+        }
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+    def apply_trade(self, code: str, name: str, side: str, shares: int, price: float, fee: float) -> None:
+        """Apply executed trade and adjust cash/holdings."""
+        side = side.upper()
+        if side == "BUY":
+            cost = shares * price + fee
+            self.cash -= cost
+            if code not in self.holdings:
+                self.holdings[code] = HoldingRecord(
+                    code=code, name=name, shares=shares, avg_cost=price, market_price=price
+                )
+            else:
+                h = self.holdings[code]
+                old_cost_basis = h.shares * h.avg_cost
+                new_shares = h.shares + shares
+                h.avg_cost = (old_cost_basis + shares * price) / new_shares
+                h.shares = new_shares
+        elif side == "SELL":
+            proceeds = shares * price - fee
+            self.cash += proceeds
+            if code in self.holdings:
+                h = self.holdings[code]
+                h.shares = max(0, h.shares - shares)
+                if h.shares == 0:
+                    del self.holdings[code]
+        self.recalculate()
+
+
+@dataclass(frozen=True)
+class TradeTicket:
+    code: str
+    name: str
+    side: str  # 'BUY' or 'SELL'
+    lots: int
+    shares: int
+    price: float
+    amount: float
+    est_fee: float
+    rationale: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "code": self.code,
+            "name": self.name,
+            "side": self.side,
+            "lots": self.lots,
+            "shares": self.shares,
+            "price": round(self.price, 4),
+            "amount": round(self.amount, 2),
+            "est_fee": round(self.est_fee, 2),
+            "rationale": self.rationale,
+        }
+
+
+@dataclass(frozen=True)
+class RebalancePlan:
+    decision: str  # 'HOLD_WITHIN_DEADBAND', 'INFLOW_ONLY_BALANCING', 'FULL_REBALANCE'
+    reason: str
+    max_absolute_drift: float
+    max_relative_drift: float
+    trade_tickets: list[TradeTicket]
+    gross_turnover_rmb: float
+    total_friction_rmb: float
+    post_rebalance_nav: float
+    post_rebalance_cash: float
+    post_rebalance_weights: dict[str, float]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "decision": self.decision,
+            "reason": self.reason,
+            "max_absolute_drift_pct": f"{round(self.max_absolute_drift * 100, 2)}%",
+            "max_relative_drift_pct": f"{round(self.max_relative_drift * 100, 2)}%",
+            "trades_count": len(self.trade_tickets),
+            "trade_tickets": [t.to_dict() for t in self.trade_tickets],
+            "gross_turnover_rmb": round(self.gross_turnover_rmb, 2),
+            "total_friction_rmb": round(self.total_friction_rmb, 2),
+            "post_rebalance_nav": round(self.post_rebalance_nav, 2),
+            "post_rebalance_cash": round(self.post_rebalance_cash, 2),
+            "post_rebalance_weights": {k: round(v, 4) for k, v in self.post_rebalance_weights.items()},
+        }
+
+
+def calculate_trade_fee(amount: float, commission_rate: float = 0.0002, min_commission: float = 2.0) -> float:
+    """A-share ETF trade fee: 0% stamp duty, 0.02% commission with min 2 RMB."""
+    return max(min_commission, amount * commission_rate)
+
+
+def plan_portfolio_rebalance(
+    state: PortfolioState,
+    target_weights: Mapping[str, float],
+    current_prices: Mapping[str, float],
+    asset_names: Mapping[str, str] | None = None,
+    new_cash_inflow: float = 0.0,
+    current_date: str | date | None = None,
+    relative_deadband: float = 0.05,   # 5% relative weight deviation tolerance
+    absolute_deadband: float = 0.02,   # 2% absolute weight deviation tolerance
+    min_rebalance_interval_days: int = 20,
+    force_rebalance: bool = False,
+) -> RebalancePlan:
+    """Compute optimal trades using deadband throttling and inflow-first balancing.
+
+    Args:
+        state: Current persistent portfolio state.
+        target_weights: Desired allocation weights (must sum to ~1.0).
+        current_prices: Current market price for each ticker.
+        asset_names: Human-readable names for tickers.
+        new_cash_inflow: Additional cash deposited today (e.g. monthly paycheck savings).
+        current_date: Today's date string.
+        relative_deadband: Max allowed relative weight drift before rebalance.
+        absolute_deadband: Max allowed absolute weight drift before rebalance.
+        min_rebalance_interval_days: Min trading days between full portfolio rebalances.
+        force_rebalance: Bypass deadband and interval checks if True.
+    """
+    names = dict(asset_names or {})
+    today_str = str(current_date or date.today())
+    state.recalculate(current_prices)
+
+    # 1. Evaluate drift of current state
+    current_nav = state.total_nav + new_cash_inflow
+    current_weights: dict[str, float] = {}
+    for code in target_weights:
+        h = state.holdings.get(code)
+        val = h.market_value if h else 0.0
+        current_weights[code] = val / current_nav if current_nav > 0 else 0.0
+
+    max_abs_drift = 0.0
+    max_rel_drift = 0.0
+    for code, target_w in target_weights.items():
+        curr_w = current_weights.get(code, 0.0)
+        abs_d = abs(curr_w - target_w)
+        rel_d = (abs_d / target_w) if target_w > 0 else 0.0
+        max_abs_drift = max(max_abs_drift, abs_d)
+        max_rel_drift = max(max_rel_drift, rel_d)
+
+    # Calculate days since last rebalance
+    try:
+        d_last = pd.to_datetime(state.last_rebalance_date)
+        d_now = pd.to_datetime(today_str)
+        days_passed = max(0, (d_now - d_last).days)
+    except Exception:
+        days_passed = 30
+
+    drift_exceeded = (max_abs_drift > absolute_deadband) or (max_rel_drift > relative_deadband)
+
+    # If within deadband and no cash inflow to deploy:
+    if not force_rebalance and not drift_exceeded and new_cash_inflow <= 100.0:
+        return RebalancePlan(
+            decision="HOLD_WITHIN_DEADBAND",
+            reason=(
+                f"Portfolio drift (abs: {max_abs_drift*100:.2f}%, rel: {max_rel_drift*100:.2f}%) "
+                f"is strictly within deadband tolerances (abs: {absolute_deadband*100:.1f}%, rel: {relative_deadband*100:.1f}%). "
+                f"Holding position; no trades executed to preserve capital from transaction friction."
+            ),
+            max_absolute_drift=max_abs_drift,
+            max_relative_drift=max_rel_drift,
+            trade_tickets=[],
+            gross_turnover_rmb=0.0,
+            total_friction_rmb=0.0,
+            post_rebalance_nav=current_nav,
+            post_rebalance_cash=state.cash + new_cash_inflow,
+            post_rebalance_weights=current_weights,
+        )
+
+    # 2. Check if we can satisfy rebalance using INFLOW ONLY (Buy Underweight Assets)
+    available_cash = state.cash + new_cash_inflow
+    underweight_deficits: dict[str, float] = {}
+    total_deficit = 0.0
+
+    for code, target_w in target_weights.items():
+        curr_w = current_weights.get(code, 0.0)
+        target_val = current_nav * target_w
+        curr_val = state.holdings[code].market_value if code in state.holdings else 0.0
+        diff = target_val - curr_val
+        if diff > 0:
+            underweight_deficits[code] = diff
+            total_deficit += diff
+
+    # If we have inflow and deficit, try inflow-first balancing
+    inflow_tickets: list[TradeTicket] = []
+    inflow_cash_remaining = available_cash
+    total_friction = 0.0
+    gross_turnover = 0.0
+
+    if new_cash_inflow > 100.0 and total_deficit > 0:
+        for code, deficit in sorted(underweight_deficits.items(), key=lambda x: -x[1]):
+            price = current_prices.get(code, DEFAULT_TYPICAL_PRICES.get(code, 1.0))
+            lot_cost = price * 100.0
+            # Target how many lots we can afford
+            wanted_amount = min(deficit, inflow_cash_remaining)
+            lots = int(wanted_amount // lot_cost)
+            if lots >= 1:
+                shares = lots * 100
+                amount = shares * price
+                fee = calculate_trade_fee(amount)
+                if amount + fee <= inflow_cash_remaining:
+                    inflow_tickets.append(
+                        TradeTicket(
+                            code=code,
+                            name=names.get(code, f"ETF-{code}"),
+                            side="BUY",
+                            lots=lots,
+                            shares=shares,
+                            price=price,
+                            amount=amount,
+                            est_fee=fee,
+                            rationale=f"Inflow-first balancing: top up underweight asset ({curr_w*100:.1f}% -> {target_w*100:.1f}%)",
+                        )
+                    )
+                    inflow_cash_remaining -= (amount + fee)
+                    gross_turnover += amount
+                    total_friction += fee
+
+        # Check if inflow-only trades brought the portfolio back into deadband
+        simulated_weights = dict(current_weights)
+        for t in inflow_tickets:
+            curr_val = state.holdings[t.code].market_value if t.code in state.holdings else 0.0
+            new_val = curr_val + t.amount
+            simulated_weights[t.code] = new_val / current_nav
+
+        new_max_abs = max(abs(simulated_weights.get(c, 0.0) - target_weights[c]) for c in target_weights)
+        new_max_rel = max(
+            abs(simulated_weights.get(c, 0.0) - target_weights[c]) / target_weights[c] for c in target_weights
+        )
+
+        # If inflow balancing successfully restored balance or if not forcing full rebalance:
+        if (new_max_abs <= absolute_deadband * 1.5) or not drift_exceeded:
+            return RebalancePlan(
+                decision="INFLOW_ONLY_BALANCING",
+                reason=(
+                    f"Successfully rebalanced using new cash inflow ({new_cash_inflow:,.0f} RMB) without selling any assets! "
+                    f"Zero sell-side friction incurred. Executed {len(inflow_tickets)} buy orders."
+                ),
+                max_absolute_drift=new_max_abs,
+                max_relative_drift=new_max_rel,
+                trade_tickets=inflow_tickets,
+                gross_turnover_rmb=gross_turnover,
+                total_friction_rmb=total_friction,
+                post_rebalance_nav=current_nav - total_friction,
+                post_rebalance_cash=inflow_cash_remaining,
+                post_rebalance_weights=simulated_weights,
+            )
+
+    # 3. Full Two-Way Rebalance (Sell Overweight -> Buy Underweight)
+    full_tickets: list[TradeTicket] = []
+    pool_cash = state.cash + new_cash_inflow
+    full_turnover = 0.0
+    full_friction = 0.0
+
+    # Step A: Generate SELL orders for overweight assets
+    for code, target_w in target_weights.items():
+        if code in state.holdings:
+            h = state.holdings[code]
+            target_val = current_nav * target_w
+            price = current_prices.get(code, h.market_price)
+            lot_cost = price * 100.0
+            excess_val = h.market_value - target_val
+            if excess_val >= lot_cost:
+                sell_lots = int(excess_val // lot_cost)
+                if sell_lots >= 1:
+                    shares = sell_lots * 100
+                    amount = shares * price
+                    fee = calculate_trade_fee(amount)
+                    full_tickets.append(
+                        TradeTicket(
+                            code=code,
+                            name=names.get(code, h.name),
+                            side="SELL",
+                            lots=sell_lots,
+                            shares=shares,
+                            price=price,
+                            amount=amount,
+                            est_fee=fee,
+                            rationale=f"Trim overweight asset ({h.weight*100:.1f}% -> target {target_w*100:.1f}%)",
+                        )
+                    )
+                    pool_cash += (amount - fee)
+                    full_turnover += amount
+                    full_friction += fee
+
+    # Step B: Generate BUY orders for underweight assets with released cash
+    for code, target_w in sorted(target_weights.items(), key=lambda x: -x[1]):
+        curr_val = state.holdings[code].market_value if code in state.holdings else 0.0
+        target_val = current_nav * target_w
+        deficit_val = target_val - curr_val
+        price = current_prices.get(code, DEFAULT_TYPICAL_PRICES.get(code, 1.0))
+        lot_cost = price * 100.0
+        if deficit_val >= lot_cost:
+            buy_lots = int(min(deficit_val, pool_cash) // lot_cost)
+            if buy_lots >= 1:
+                shares = buy_lots * 100
+                amount = shares * price
+                fee = calculate_trade_fee(amount)
+                if amount + fee <= pool_cash:
+                    full_tickets.append(
+                        TradeTicket(
+                            code=code,
+                            name=names.get(code, f"ETF-{code}"),
+                            side="BUY",
+                            lots=buy_lots,
+                            shares=shares,
+                            price=price,
+                            amount=amount,
+                            est_fee=fee,
+                            rationale=f"Top up underweight asset to target ({target_w*100:.1f}%)",
+                        )
+                    )
+                    pool_cash -= (amount + fee)
+                    full_turnover += amount
+                    full_friction += fee
+
+    # Calculate final simulated post-weights
+    post_nav = current_nav - full_friction
+    final_weights: dict[str, float] = {}
+    for code in target_weights:
+        h = state.holdings.get(code)
+        curr_sh = h.shares if h else 0
+        for t in full_tickets:
+            if t.code == code:
+                if t.side == "BUY":
+                    curr_sh += t.shares
+                elif t.side == "SELL":
+                    curr_sh -= t.shares
+        price = current_prices.get(code, DEFAULT_TYPICAL_PRICES.get(code, 1.0))
+        final_weights[code] = (curr_sh * price) / post_nav if post_nav > 0 else 0.0
+
+    return RebalancePlan(
+        decision="FULL_REBALANCE",
+        reason=(
+            f"Asset drift breached threshold (abs: {max_abs_drift*100:.2f}%, rel: {max_rel_drift*100:.2f}%). "
+            f"Executed full rebalancing across {len(full_tickets)} trade tickets. Total friction: {full_friction:.2f} RMB."
+        ),
+        max_absolute_drift=max_abs_drift,
+        max_relative_drift=max_rel_drift,
+        trade_tickets=full_tickets,
+        gross_turnover_rmb=full_turnover,
+        total_friction_rmb=full_friction,
+        post_rebalance_nav=post_nav,
+        post_rebalance_cash=pool_cash,
+        post_rebalance_weights=final_weights,
+    )

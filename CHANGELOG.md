@@ -7,6 +7,15 @@ All notable changes to fin-skills. The format follows
 
 ## [Unreleased]
 
+### Merged
+
+- Integrated the `v2` branch (A-share pre-trade guards `qdii_premium`, `board_lot_feasibility`,
+  `cash_drag`; KOL credibility registry and signal reconciler skills; core-satellite advisor,
+  paper-trading engine and research/production tools) with the algorithm-research and sealed
+  evaluation work on `master`. The combined tree has 129 skills, 36 guards and 53 JSON/MCP tools.
+- `core_satellite_advisor.py` now finds its sibling-skill dependencies when run standalone, so
+  `scripts/check_scripts.py` passes after the merge.
+
 ### Added
 
 - Algorithm research workflow with shared preflight, chronological selection and reserved

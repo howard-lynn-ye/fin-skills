@@ -1,0 +1,64 @@
+{
+  "audit_timestamp": "2026-09-15T05:49:13.318412",
+  "evaluation_period": "2015-01-05 to 2026-09-11 (2843 days)",
+  "models_audited": [
+    "benchmark_hs300",
+    "global_60_40",
+    "classic_all_weather",
+    "dynamic_risk_parity",
+    "smart_all_weather"
+  ],
+  "completed_metrics": {
+    "benchmark_hs300": {
+      "sharpe": 0.21266717372237456,
+      "cagr": 0.04436183113213943,
+      "max_drawdown": -0.5296356759264916,
+      "final_equity": 1631819.405284428
+    },
+    "global_60_40": {
+      "sharpe": 0.7034694363343211,
+      "cagr": 0.09766374683555634,
+      "max_drawdown": -0.2107479876727209,
+      "final_equity": 2861307.9320736164
+    },
+    "classic_all_weather": {
+      "sharpe": 0.7244561014345758,
+      "cagr": 0.0906698996828319,
+      "max_drawdown": -0.2050130109290602,
+      "final_equity": 2662235.9854822126
+    },
+    "dynamic_risk_parity": {
+      "sharpe": 0.8780283800581173,
+      "cagr": 0.08192223133802012,
+      "max_drawdown": -0.10144764844387626,
+      "final_equity": 2431034.3331449046
+    },
+    "smart_all_weather": {
+      "sharpe": 0.8319105703777147,
+      "cagr": 0.0786954416987713,
+      "max_drawdown": -0.10333033133377173,
+      "final_equity": 2350479.1183744567
+    }
+  },
+  "causality_guard": {
+    "passed": true,
+    "findings": [
+      "info: volatility_60d: causal: no cell before k depends on rows >= k",
+      "info: momentum_20d: causal: no cell before k depends on rows >= k"
+    ]
+  },
+  "trial_ledger_guard": {
+    "passed": true,
+    "best_strategy": "dynamic_risk_parity",
+    "best_sharpe": 0.8780283800581173,
+    "findings": [
+      "info: dsr: DSR 1.000 after 5 trials: survives the search"
+    ]
+  },
+  "cost_curve_guard": {
+    "passed": true,
+    "findings": [
+      "info: breakeven: breakeven 1006.0 bps vs 4.0 bps paid; net Sharpe 1.17 at that cost"
+    ]
+  }
+}

@@ -5,22 +5,41 @@
 <div align="center">
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
-[![Skills](https://img.shields.io/badge/Agent_Skills-127_Verified-emerald.svg)](#6-complete-skill-catalog-127-skills)
-[![Executable Guards](https://img.shields.io/badge/Executable_Guards-33_Guards-purple.svg)](#2-executable-audit-engine-fin_skillsapi)
+[![Skills](https://img.shields.io/badge/Agent_Skills-129_Verified-emerald.svg)](#6-complete-skill-catalog-129-skills)
+[![Executable Guards](https://img.shields.io/badge/Executable_Guards-36_Guards-purple.svg)](#2-executable-audit-engine-fin_skillsapi)
 [![Leak Benchmark](https://img.shields.io/badge/Leak_Benchmark-12%2F12_Caught_(0_FP)-success.svg)](#5-empirical-benchmarks--maturity-status)
 [![Unit Tests](https://img.shields.io/badge/Tests-pytest-brightgreen.svg)](#5-empirical-benchmarks--maturity-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
 **Language / 语言切换:** **English (`README.md`)** · [简体中文 (`README_ZH.md`)](README_ZH.md) · 📂 **[Documentation Hub (`docs/`)](docs/README.md)** · 📘 [集成手册 (`docs/USER_MANUAL_ZH.md`)](docs/USER_MANUAL_ZH.md) · 🛠️ [操作指南 (`docs/OPERATIONS_GUIDE_ZH.md`)](docs/OPERATIONS_GUIDE_ZH.md)  
+**Recommended Guides:** 📘 [AI Quant Background](docs/guides/quantitative_finance_background_for_ai.md) · 📖 [Financial Terminology Glossary](docs/guides/financial_terminology_glossary.md) · 🛡️ [10Y Multi-Asset Stress Testing Whitepaper](docs/guides/global_asset_allocation_10y_whitepaper.md) · 🚦 [Pre-Trade Defense System](docs/guides/live_trading_and_pre_trade_guards.md) · 🖥️ [Interactive Web Dashboard](research/production/dashboard.html)  
 **API Documentation:** [howard-lynn-ye.github.io/fin-skills](https://howard-lynn-ye.github.io/fin-skills/) · **Spec:** [agentskills.io](https://agentskills.io/specification)
 
 </div>
 
 ---
 
+## ⚡ Quickstart: Interactive Multi-Asset Live Advisor (Web Dashboard)
+
+To bridge quantitative research and retail execution, we provide an interactive, zero-dependency Web Dashboard:
+
+```bash
+# Launch local Web Dashboard (pulls live market quotes automatically)
+python3 research/production/web_dashboard.py --port 8088
+# Open in browser: http://localhost:8088/ or http://shwaihe.c.googlers.com:8088/
+```
+
+- 💰 **Dynamic Capital & Strategy Testing**: Slide your investment capital (50K ~ 2M RMB) and toggle 3 risk profiles (Conservative Risk Parity MaxDD<10%, Balanced All-Weather, Aggressive 60/40);
+- 📊 **Interactive SVG Donut Chart**: Inspect live asset weights and risk distributions;
+- 📝 **100-Share Board Lot Execution Ticket**: Exact lot sizes, exempt stamp duties, and 1-click clipboard order copying;
+- 💡 **Idle Cash Yield Optimizer**: Automated 14:50 GC001 reverse repo allocation eliminating 1.7% cash drag;
+- 🛡️ **Pre-Trade Defense Center**: Real-time traffic lights for QDII bubble premiums, board-lot tracking errors, and liquidity drag.
+
+---
+
 ## 🎯 1. What This Repo Does (Executive Summary)
 
-**127 [Agent Skills](https://agentskills.io/specification) for Claude Code and coding agents that tell an LLM which Python quant-finance library to use, what each one silently gets wrong, and whether a backtest result is real.** 103 domain skills, plus 24 optional per-library deep dives you install only if you want them.
+**129 [Agent Skills](https://agentskills.io/specification) for Claude Code and coding agents that tell an LLM which Python quant-finance library to use, what each one silently gets wrong, and whether a backtest result is real.** 105 domain skills, plus 24 optional per-library deep dives you install only if you want them.
 
 ### Why Does This Exist?
 The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (how to fetch a price) and **textbook dumps** (what is Black-Scholes)—but nearly vacant at **research integrity and library implementation traps**. Pre-trained LLMs routinely write backtest code with fatal, silent defects because popular Python libraries harbor unintuitive defaults:
@@ -33,7 +52,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **33 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **50 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **53 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 
@@ -41,16 +60,16 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 ```mermaid
 flowchart TD
-    subgraph TIER1 ["1. 🧠 Source-Verified Knowledge Layer (127 Agent Skills)"]
-        D1["103 Domain Skills (16 Plugins)<br/>Task Routing & Methodology"] --> D2["24 Library Skills (fin-libraries)<br/>Source-Code Traps & Version Drift"] --> D3["75 Reference Deep-Dives<br/>Formulas, Rulebooks & Tables"]
+    subgraph TIER1 ["1. 🧠 Source-Verified Knowledge Layer (129 Agent Skills)"]
+        D1["105 Domain Skills (16 Plugins)<br/>Task Routing & Methodology"] --> D2["24 Library Skills (fin-libraries)<br/>Source-Code Traps & Version Drift"] --> D3["75 Reference Deep-Dives<br/>Formulas, Rulebooks & Tables"]
     end
 
     subgraph TIER2 ["2. 🛡️ Executable Research Integrity Engine (fin_skills.api)"]
-        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["33 Executable Guards<br/>GuardResult + Diagnostic Summary"]
+        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["36 Executable Guards<br/>GuardResult + Diagnostic Summary"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
-        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>50 Live Agent Inspection Tools"]
+        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>53 Live Agent Inspection Tools"]
     end
 
     D3 ==>|Compiled by build_package.py| E1
@@ -69,8 +88,8 @@ flowchart TD
 
 | Dimension | Current Milestone / Metric | Verification & Engineering Status |
 | :--- | :--- | :--- |
-| **Knowledge Coverage** | **127 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
-| **Executable Code Guards** | **33 Unified Guards** (`fin_skills.api`)<br>**111 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. The standalone demo/encoding check is `scripts/check_scripts.py`; platform results are listed in the completion audit. |
+| **Knowledge Coverage** | **129 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
+| **Executable Code Guards** | **36 Unified Guards** (`fin_skills.api`)<br>**124 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. Features newly added Pre-Trade Defense guards: `qdii_premium`, `board_lot_feasibility`, and `cash_drag`. |
 | **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught (100%)**<br>**0 False Positives** on Clean Data | **Benchmark Verified** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,565-day synthetic world with delistings and splits; timings for this machine are recorded in the generated benchmark output. |
 | **Agent Routing (`eval_blind`)** | **92/108 historical-label matches; 16/16 new-capability queries** | Independent listing-only evaluation on 2026-09-14. Old labels include superseded broad routes; the new set is a small smoke test. [Inputs, answers and limitations](evals/2026-09-14/README.md). |
 | **Test Suite & CI Rigor** | **Repository-wide default test suite** | Run `pytest -q`; current measured results are recorded in the [acceptance audit](docs/COMPLETION_AUDIT.md). Zero drift enforced between `SKILL.md` sources, `catalog/index.json`, README counts, and generated Python modules. |
@@ -133,7 +152,7 @@ c.pip_value("USDJPY", notional=100_000, price=150.25).value_usd     # Exact FX p
 ```python
 import fin_skills
 
-fin_skills.catalog()                           # List all 127 skills: name, plugin, summary
+fin_skills.catalog()                           # List all 129 skills: name, plugin, summary
 fin_skills.load("research-integrity-guards")   # Read full SKILL.md markdown text
 fin_skills.references("options-backtesting")   # Dict of reference files {filename: text}
 fin_skills.find("survivorship", "universe")    # Search skills mentioning both terms
@@ -178,7 +197,7 @@ adapter coverage, input conventions and registration of additional libraries.
 
 ### Mode C: As an MCP Server or JSON Tool Suite for LLM Agents
 
-Give any LLM agent live execution access to the 50 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
+Give any LLM agent live execution access to the 53 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
 
 ```bash
 pip install "fin-skills[mcp]"
@@ -237,7 +256,7 @@ Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS
 
 ---
 
-## 📚 6. Complete Skill Catalog (127 Skills across 17 Plugins)
+## 📚 6. Complete Skill Catalog (129 Skills across 17 Plugins)
 
 ### Plugin Architecture Overview
 
@@ -280,7 +299,9 @@ Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS
 | `fin-asia` | [`japan-markets`](plugins/fin-asia/skills/japan-markets/SKILL.md) | TRIGGER - Japanese equities, TSE, JPX, 東証, 前場, 後場, lunch-break bars, TOPIX500 ticks, Nikkei divisor, 空売り規制, J-Quants, e-Stat, yen quotes. | 0 | 1 |
 | `fin-asia` | [`korea-taiwan-markets`](plugins/fin-asia/skills/korea-taiwan-markets/SKILL.md) | TRIGGER - KRX, KOSPI, KOSDAQ, 韓國 공매도, Korean short-selling ban, TWSE, TPEX, 台股, 漲跌停, limit-up queue, Korea foreign registration, Taiwan ticks, pykrx, FinanceDataReader, FinMind, sh | 0 | 1 |
 | `fin-china` | [`china-ashare-data`](plugins/fin-china/skills/china-ashare-data/SKILL.md) | Get China A-share and Greater China market data without the ecosystem's silent traps. | 4 | 0 |
-| `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies under the rules a Western engine gets wrong. | 3 | 1 |
+| `fin-china` | [`china-trading-stack`](plugins/fin-china/skills/china-trading-stack/SKILL.md) | Backtest and execute Chinese-market strategies under the rules a Western engine gets wrong. | 3 | 11 |
+| `fin-china` | [`kol-credibility-registry`](plugins/fin-china/skills/kol-credibility-registry/SKILL.md) | [fin-china] Score and calibrate financial KOL credibility across Xueqiu and StockTwits using Bayesian win-rate updating, Brier scores, and contrarian inversion. | 0 | 2 |
+| `fin-china` | [`signal-reconciler`](plugins/fin-china/skills/signal-reconciler/SKILL.md) | [fin-china] Resolve conflicting bullish and bearish signals across macro, fundamental, technical, and social sentiment sources using entropy-weighted evidence combination. | 0 | 1 |
 | `fin-core` | [`backtest-overfitting`](plugins/fin-core/skills/backtest-overfitting/SKILL.md) | Decide whether an edge that passed every mechanical check is still just the best of N tries. | 0 | 1 |
 | `fin-core` | [`backtest-validation`](plugins/fin-core/skills/backtest-validation/SKILL.md) | Decide whether a result survives the number of things you tried. | 3 | 3 |
 | `fin-core` | [`backtesting-engines`](plugins/fin-core/skills/backtesting-engines/SKILL.md) | Choose a backtesting engine and know what it silently models wrong. | 6 | 0 |

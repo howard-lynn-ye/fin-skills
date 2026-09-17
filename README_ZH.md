@@ -5,27 +5,47 @@
 新增 `fin_skills.algorithms`：统一登记算法及实现库，根据数据、样本数、目标和约束选择并运行，
 返回选择理由；支持按时间窗口比较预测算法和注册新算法库。详见[算法选择与运行指南](docs/ALGORITHMS.md)。
 
-> 2026-09-14 更新：现有 127 个技能、33 个统一检查模块、50 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
+> 2026-09-17 更新：现有 129 个技能、36 个统一检查模块、53 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
 
 <div align="center">
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
-[![Skills](https://img.shields.io/badge/Agent_Skills-127_个已验证技能-emerald.svg)](#6-完整技能全景目录-127-个-skills)
-[![Executable Guards](https://img.shields.io/badge/Executable_Guards-33_个可执行守卫-purple.svg)](#2-系统全景架构)
+[![Skills](https://img.shields.io/badge/Agent_Skills-129_个已验证技能-emerald.svg)](#6-完整技能全景目录-129-个-skills)
+[![Executable Guards](https://img.shields.io/badge/Executable_Guards-36_个可执行守卫-purple.svg)](#2-系统全景架构)
 [![Leak Benchmark](https://img.shields.io/badge/造假检出基准-12%2F12_全部捕获_(0误报)-success.svg)](#5-实证基准评测与大模型常见错误纠偏)
 [![Unit Tests](https://img.shields.io/badge/单元测试-1%2C600%2B_全绿通过-brightgreen.svg)](#3-项目成熟度与当前进度记分卡)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#8-开源协议与免责声明)
 
 **语言切换 / Language:** [English (`README.md`)](README.md) · **简体中文 (`README_ZH.md`)** · 📂 **[文档中心 (`docs/`)](docs/README.md)** · 📘 **[集成手册 (`docs/USER_MANUAL_ZH.md`)](docs/USER_MANUAL_ZH.md)** · 🛠️ **[操作指南 (`docs/OPERATIONS_GUIDE_ZH.md`)](docs/OPERATIONS_GUIDE_ZH.md)**  
+**核心指南推荐:** 📘 [量化背景认知指南](docs/guides/quantitative_finance_background_for_ai.md) · 📖 [核心术语词典](docs/guides/financial_terminology_glossary.md) · 🛡️ [10年穿越牛熊白皮书](docs/guides/global_asset_allocation_10y_whitepaper.md) · 🚦 [实盘防御体系](docs/guides/live_trading_and_pre_trade_guards.md) · 🖥️ [Web实盘决策看板](research/production/dashboard.html)  
 **官方 API 文档站:** [howard-lynn-ye.github.io/fin-skills](https://howard-lynn-ye.github.io/fin-skills/) · **Agent Skills 规范:** [agentskills.io](https://agentskills.io/specification)
 
 </div>
 
 ---
 
+## ⚡ 极速体验：A股全球大类资产交互式实盘决策看板 (Web Dashboard)
+
+为了彻底解决“量化策略黑盒复杂、命令行输出不直观、散户无法直接执行实盘”的用户痛点，我们推出了**自包含、零依赖的交互式实盘决策看板**：
+
+```bash
+# 启动本地实时 Web 决策看板（自动拉取盘中实时行情）
+python3 research/production/web_dashboard.py --port 8088
+# 浏览器访问：http://localhost:8088/ 或 http://shwaihe.c.googlers.com:8088/
+```
+
+- 💰 **资金与策略实时试算**：随意滑动本金（5万 ~ 200万），动态切换三大策略（稳健防守型 MaxDD<10%、经典全天候、全球进取型）；
+- 📊 **动态持仓环形图**：实时渲染标的配置权重、各资产类别风险分布；
+- 📝 **100股整数手实盘委托单**：自动计算整百股买入手数、精确到分的免印花税手续费，支持**一键复制下单指令**；
+- 💡 **闲置资金尾盘逆回购增益**：对因整百股截断产生的剩余现金，自动规划 14:50 ~ 15:30 GC001 (204001) 逆回购操作，消除 1.7% 活期拖累；
+- 🛡️ **实盘事前防御红绿灯**：实时监控 QDII 溢价率、整百股偏离残差与现金拖累风险；
+- ⚔️ **10年跨周期黑天鹅极端压力测试**：交互式对比 2015 股灾、2018 阴跌、2020 流动性危机、2022 双杀历史回撤。
+
+---
+
 ## 🎯 1. 这个仓库做了什么？（核心定位与执行摘要）
 
-**`fin-skills` 是专为 Claude Code、Jetski 等编程 Agent 及量化研究员打造的 Python 量化金融知识库与自动化防伪审计引擎。** 它包含 **127 个符合 Agent Skills 国际规范的技能包**（103 个按投研任务划分的领域技能 + 24 个可选的单库源码级深潜技能），以及 **33 个可通过统一 Python API (`fin_skills.api`) 或 MCP 协议直接调用的可执行代码守卫（Guards）**。
+**`fin-skills` 是专为 Claude Code、Jetski 等编程 Agent 及量化研究员打造的 Python 量化金融知识库与自动化防伪审计引擎。** 它包含 **129 个符合 Agent Skills 国际规范的技能包**（105 个按投研任务划分的领域技能 + 24 个可选的单库源码级深潜技能），以及 **36 个可通过统一 Python API (`fin_skills.api`) 或 MCP 协议直接调用的可执行代码守卫（Guards）**。
 
 ### 为什么需要这个项目？
 当前 AI + 金融开源生态呈现出极端的“两头大、中间空”：
@@ -46,7 +66,7 @@
    - 每一条结论均标注了**验证日期 (`verified_on`)** 与可信度溯源标记：`✅ 一手源码/交易所规则实测验证` · `⚠️ 二手文献` · `❓ 暂无法验证`。凡是可以通过安装库并运行代码实测对比的结论（如 QuantLib 与 vollib 希腊字母量纲相差 100 倍），均附带可复现脚本。
 2. **第二层：可执行的回测防伪审计引擎 (`fin_skills.api` & MCP Tools)**
    - **读文档只能改变大模型“怎么说”，运行代码守卫才能决定投研流水线“允许报告什么结果”。**
-   - 我们将 **33 个返回 `GuardResult` 的可执行守卫函数**封装在统一的 **`Bundle` 容器与 `check()` 接口**之后，并导出了 **50 个 JSON 工具 (`fin_skills.tools`)**，支持 Agent 在生成回测报告前自动运行全套防伪体检。
+   - 我们将 **36 个返回 `GuardResult` 的可执行守卫函数**封装在统一的 **`Bundle` 容器与 `check()` 接口**之后，并导出了 **53 个 JSON 工具 (`fin_skills.tools`)**，支持 Agent 在生成回测报告前自动运行全套防伪体检。
 
 ---
 
@@ -54,16 +74,16 @@
 
 ```mermaid
 flowchart TD
-    subgraph TIER1 ["1. 🧠 源码级验证知识层 (127 个 Agent Skills)"]
+    subgraph TIER1 ["1. 🧠 源码级验证知识层 (129 个 Agent Skills)"]
         D1["103 个领域技能 (16 个 Plugins)<br/>投研任务路由与防伪方法论"] --> D2["24 个单库深潜技能 (fin-libraries)<br/>底层库源码陷阱与版本漂移"] --> D3["74 份深度参考文档 (references/)<br/>数学公式、交易所规则与对比表"]
     end
 
     subgraph TIER2 ["2. 🛡️ 可执行回测防伪审计引擎 (fin_skills.api)"]
-        E1["Bundle 标准数据容器<br/>151 个强类型回测产物槽位 (Slots)"] --> E2["check(bundle) 统一调度器<br/>自动匹配并运行所有就绪守卫"] --> E3["33 个可执行代码守卫 (Guards)<br/>输出 GuardResult 诊断报告与指标"]
+        E1["Bundle 标准数据容器<br/>151 个强类型回测产物槽位 (Slots)"] --> E2["check(bundle) 统一调度器<br/>自动匹配并运行所有就绪守卫"] --> E3["36 个可执行代码守卫 (Guards)<br/>输出 GuardResult 诊断报告与指标"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent 与投研工程接入层"]
-        I1["Claude Code / Jetski 插件<br/>按 SKILL.md 触发词自动激活"] --> I2["Python SDK (pip install)<br/>可导入防伪模块与市场惯例库"] --> I3["MCP Server 与 JSON 工具集<br/>50 个供大模型实时调用的审计工具"]
+        I1["Claude Code / Jetski 插件<br/>按 SKILL.md 触发词自动激活"] --> I2["Python SDK (pip install)<br/>可导入防伪模块与市场惯例库"] --> I3["MCP Server 与 JSON 工具集<br/>53 个供大模型实时调用的审计工具"]
     end
 
     D3 ==>|由 build_package.py 自动编译同步| E1
@@ -82,8 +102,8 @@ flowchart TD
 
 | 核心维度 | 当前完成度与量化指标 | 验证标准与工程状态说明 |
 | :--- | :--- | :--- |
-| **1. 知识库覆盖规模** | **127 个自研 Skills**<br>（分布在 **17 个 Plugins**） | **100% 通过规范校验** (`scripts/validate.py`)。全面覆盖股票、中国 A 股、加密货币、期权衍生品、固收、信用债、宏观、市场微观结构、金融机器学习与税务会计。 |
-| **2. 可执行防伪代码** | **33 个统一 API 守卫 (`fin_skills.api`)**<br>**111 个独立复现脚本** | **Alpha 阶段，提供可执行接口。** 每个守卫返回结构化的 `GuardResult(passed, summary, metrics)`。脚本与字符编码检查使用 `check_scripts.py`；本次平台和结果见完成审计。 |
+| **1. 知识库覆盖规模** | **129 个自研 Skills**<br>（分布在 **17 个 Plugins**） | **100% 通过规范校验** (`scripts/validate.py`)。全面覆盖股票、中国 A 股、加密货币、期权衍生品、固收、信用债、宏观、市场微观结构、金融机器学习与税务会计。 |
+| **2. 可执行防伪代码** | **36 个统一 API 守卫 (`fin_skills.api`)**<br>**111 个独立复现脚本** | **Alpha 阶段，提供可执行接口。** 每个守卫返回结构化的 `GuardResult(passed, summary, metrics)`。脚本与字符编码检查使用 `check_scripts.py`；本次平台和结果见完成审计。 |
 | **3. 造假检出基准 (`leak_bench`)** | **12 / 12 植入缺陷 100% 捕获**<br>**干净数据 0 误报 (FP = 0)** | **实证基准验证** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md))。在包含退市与拆股的 1,565 天合成股票市场中植入 12 类典型量化作弊，13 个守卫在 **< 0.07 秒**内全部精准拦截。 |
 | **4. Agent 路由 (`eval_blind`)** | **旧标签 92/108；新增能力 16/16** | 2026-09-14 独立盲测。部分旧标签仍指向已细分的总入口；新增能力集合只是小规模测试。完整输入、结果和局限见[评估记录](evals/2026-09-14/README.md)。 |
 | **5. 自动化测试与零漂移** | **全仓默认测试集** | **100% 全绿通过** (`pytest -q`)。通过 `build_index.py` 与 `build_package.py --check` 强制保证 `SKILL.md` 文档、目录索引与生成的 Python 包之间 **零漂移（Zero Drift）**。 |
@@ -146,10 +166,30 @@ c.pip_value("USDJPY", notional=100_000, price=150.25).value_usd     # 外汇标�
 ```python
 import fin_skills
 
-fin_skills.catalog()                           # 列出全部 127 个技能的名称、所属插件与摘要
+fin_skills.catalog()                           # 列出全部 129 个技能的名称、所属插件与摘要
 fin_skills.load("research-integrity-guards")   # 读取指定技能完整的 SKILL.md 文本
 fin_skills.references("options-backtesting")   # 获取该技能下的所有参考文档字典
 fin_skills.find("survivorship", "universe")    # 检索同时包含指定关键词的技能
+```
+
+#### 4. 实盘交易前防御体系与 14:30 自动决策机器人 (`live_advisor_bot.py`)
+
+除事后学术审计外，`fin-skills` 提供了直接服务于每日真实下单的**交易前防御守卫与增量调仓引擎**（完整技术白皮书参见 [实盘交易与事前守卫指南](docs/guides/live_trading_and_pre_trade_guards.md)）：
+
+- **`qdii_premium`**: 监控跨境 ETF（纳指、标普）二级市场相对 IOPV 溢价率，溢价 >1.5% 减半降权，>3% 硬性熔断并重定向至避险资产（黄金 ETF 518880）；
+- **`board_lot_feasibility`**: 测算 A 股 100 股单手对小账户资金造成的颗粒度失真度（Distortion Index），超标时报警并给出最低建议启动资金；
+- **`cash_drag`**: 监控活期闲置资金拖累，自动生成 14:50-15:30 国债逆回购（GC001）操作指令，周四自动激活 3 天利息加速器；
+- **`DeadbandRebalancer`**: 5% 偏离死区节流，工资定投新增现金优先买入落后资产（零卖出换手摩擦）。
+
+```bash
+# 每日 14:30 自动巡检并输出挂单指令
+python3 research/production/live_advisor_bot.py --holdings research/production/my_holdings.json
+
+# 带 5000 元定投资金运行（增量优先平抑）
+python3 research/production/live_advisor_bot.py --holdings research/production/my_holdings.json --inflow 5000
+
+# 推送决策卡片到飞书 / 企业微信机器人
+python3 research/production/live_advisor_bot.py --webhook "https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
 ```
 
 ---
@@ -178,7 +218,7 @@ fin_skills.find("survivorship", "universe")    # 检索同时包含指定关键�
 
 ### 模式 C：作为 MCP Server 或 JSON 工具集挂载给任意大模型 Agent
 
-将全部 **50 个 JSON 可调用工具**（7 个目录工具 + 27 个检查工具 + 9 个采集与数据工具 + 7 个算法工具）挂载给任意支持 MCP 或 Function Calling 的 Agent 框架：
+将全部 **53 个 JSON 可调用工具**（7 个目录工具 + 30 个检查工具 + 9 个采集与数据工具 + 7 个算法工具）挂载给任意支持 MCP 或 Function Calling 的 Agent 框架：
 
 ```bash
 pip install "fin-skills[mcp]"
@@ -237,7 +277,7 @@ python -m fin_skills.tools --json --format anthropic  # 可选: openai, openai-c
 
 ---
 
-## 📚 6. 完整技能全景目录（127 个 Skills / 17 个 Plugins）
+## 📚 6. 完整技能全景目录（129 个 Skills / 17 个 Plugins）
 
 ### 17 个插件模块分类导览
 

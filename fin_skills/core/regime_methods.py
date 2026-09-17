@@ -36,11 +36,11 @@ import numpy as np
 import pandas as pd
 
 try:
-    from .regime_lookahead import (MU, N, P_STAY, PERIODS, SIG_CALM, TEST_START, calm_index,
-                                   detection, fit_ms, label_accuracy, strategy_stats)
+    from .regime_lookahead import (HAVE_SM, MU, N, P_STAY, PERIODS, SIG_CALM, TEST_START, calm_index,
+                                   detection, fit_ms, label_accuracy, strategy_stats, true_param_probs)
 except ImportError:
-    from regime_lookahead import (MU, N, P_STAY, PERIODS, SIG_CALM, TEST_START, calm_index,
-                                  detection, fit_ms, label_accuracy, strategy_stats)
+    from regime_lookahead import (HAVE_SM, MU, N, P_STAY, PERIODS, SIG_CALM, TEST_START, calm_index,
+                                  detection, fit_ms, label_accuracy, strategy_stats, true_param_probs)
 
 SEED = 0
 RATIO = 2.0
@@ -175,12 +175,20 @@ if __name__ == "__main__":
     in_dd = np.r_[False, (price / peak - 1.0 < -DD_LIMIT)[:-1]]
     rows.append(evaluate(f"drawdown > {int(DD_LIMIT * 100)}%", "price[..t-1]", in_dd, r, s, lo, hi))
 
-    t0 = time.time()
-    res, llfs = fit_ms(r)
-    p_pred = np.asarray(res.predicted_marginal_probabilities)[:, calm_index(res)]
-    rows.append(evaluate("Markov switching, predicted", "r[..t-1]; params from ALL r",
-                         p_pred < 0.5, r, s, lo, hi))
-    ms_time = time.time() - t0
+    if HAVE_SM:
+        t0 = time.time()
+        res, llfs = fit_ms(r)
+        p_pred = np.asarray(res.predicted_marginal_probabilities)[:, calm_index(res)]
+        rows.append(evaluate("Markov switching, predicted", "r[..t-1]; params from ALL r",
+                             p_pred < 0.5, r, s, lo, hi))
+        ms_time = time.time() - t0
+    else:
+        probs = true_param_probs(r, RATIO)
+        p_pred = probs["predicted"]
+        rows.append(evaluate("Markov switching, predicted (TRUE params)", "r[..t-1]; true params",
+                             p_pred < 0.5, r, s, lo, hi))
+        llfs = []
+        ms_time = 0.0
 
     quad = pd.crosstab(pd.Series(np.where(down[lo:hi], "down", "up"), name="trend"),
                        pd.Series(np.where(np.nan_to_num(high_vol[lo:hi]), "high vol", "low vol"),
@@ -206,7 +214,10 @@ if __name__ == "__main__":
 
     print(f"\n=== Trend/vol quadrant occupancy in the window ===")
     print(quad.to_string(float_format=lambda x: f"{x:6.3f}"))
-    print(f"\n  Markov fit: llf per start {np.round(llfs, 2)}, {ms_time:.1f}s")
+    if HAVE_SM:
+        print(f"\n  Markov fit: llf per start {np.round(llfs, 2)}, {ms_time:.1f}s")
+    else:
+        print("\n  Markov fit: (statsmodels not installed, TRUE parameters used)")
     dofs = [f"vol window {VOL_WINDOW}", f"vol percentile {PCTL_VOL}", "the fixed threshold",
             f"turbulence smoothing {TURB_SMOOTH}", f"turbulence percentile {PCTL_TURB}",
             f"SMA {SMA}", f"drawdown {DD_LIMIT}", f"min history {MIN_HISTORY}",

@@ -144,10 +144,12 @@ def check_skill(skill_md: Path) -> list[str]:
                         f"truncates at {DESC_LISTING_CAP}")
         # A description may legitimately open with the lowercase package name — for a
         # per-library skill the name IS the trigger, and package names are lowercase.
-        first = desc.split()[0].strip("`*.,").lower()
+        # Strip any leading bracketed plugin tag like [fin-china] before checking sentence casing.
+        clean_desc = re.sub(r"^\[[\w-]+\]\s*", "", desc)
+        first = clean_desc.split()[0].strip("`*.,").lower() if clean_desc.split() else ""
         bare = name.replace("lib-", "")
         starts_with_own_name = bool(first) and (first in bare or bare in first)
-        if (not desc[0].isupper() and not desc.startswith(("A ", "An ", "The "))
+        if (clean_desc and not clean_desc[0].isupper() and not clean_desc.startswith(("A ", "An ", "The "))
                 and not starts_with_own_name):
             errs.append(f"{rel}: description should read as a third-person sentence")
 

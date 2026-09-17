@@ -13,7 +13,7 @@
           "cost_curve"
         ]
       ],
-      "elapsed_seconds": 17.769405841827393
+      "elapsed_seconds": 14.975062370300293
     },
     {
       "seed": 29,
@@ -28,7 +28,7 @@
           "cost_curve"
         ]
       ],
-      "elapsed_seconds": 16.04894256591797
+      "elapsed_seconds": 16.0617356300354
     },
     {
       "seed": 43,
@@ -43,7 +43,7 @@
           "cost_curve"
         ]
       ],
-      "elapsed_seconds": 16.262184381484985
+      "elapsed_seconds": 15.765904188156128
     }
   ],
   "scope": "seed robustness of one synthetic strategy/defect design",
