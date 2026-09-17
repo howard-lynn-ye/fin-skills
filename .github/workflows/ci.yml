@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Full Test Suite
         run: |
-          pytest -q
+          pytest -ra --tb=short || { echo "::error::Test suite failed, rerunning failed tests with verbose trace:"; pytest --last-failed -v --tb=long; exit 1; }
 
       - name: Run Leak Detection Benchmark
         run: |
