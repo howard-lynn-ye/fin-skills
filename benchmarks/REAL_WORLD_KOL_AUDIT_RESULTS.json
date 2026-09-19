@@ -1,0 +1,99 @@
+{
+  "experiment_id": "E4_real_world_bilingual_kol_and_linguistic_audit",
+  "reproducibility_status": "VERIFIED_SELF_CONTAINED",
+  "total_kols_verified": 1445,
+  "key_findings": {
+    "follower_paradox_ratio_contrarian_vs_alpha": 3.96,
+    "tier1_core_alpha_5d_ic": 0.2158,
+    "contrarian_indicator_5d_ic": -0.213,
+    "mman_unweighted_rank_ic": -0.03184,
+    "mman_credibility_gated_rank_ic": 0.0104,
+    "mman_rank_ic_net_reversal": 0.04224,
+    "roberta_raw_text_rank_ic": 0.00842,
+    "roberta_distilled_text_rank_ic": 0.01862
+  },
+  "recomputed_tier_breakdown": [
+    {
+      "tier": "TIER_0_ELITE_KOL",
+      "kol_count": 31,
+      "share_pct": 2.15,
+      "mean_fans": 186610.1,
+      "mean_win_rate_5d": 0.6165,
+      "mean_bayesian_win_rate_5d": 0.5886,
+      "mean_realized_return_5d": 0.01167,
+      "mean_ic_5d": 0.1141,
+      "median_payoff_ratio": 1.055
+    },
+    {
+      "tier": "TIER_1_CORE_ALPHA",
+      "kol_count": 70,
+      "share_pct": 4.84,
+      "mean_fans": 14121.9,
+      "mean_win_rate_5d": 0.6847,
+      "mean_bayesian_win_rate_5d": 0.6287,
+      "mean_realized_return_5d": 0.02344,
+      "mean_ic_5d": 0.2158,
+      "median_payoff_ratio": 1.658
+    },
+    {
+      "tier": "TIER_2_SOLID_RESEARCHER",
+      "kol_count": 115,
+      "share_pct": 7.96,
+      "mean_fans": 31994.4,
+      "mean_win_rate_5d": 0.7092,
+      "mean_bayesian_win_rate_5d": 0.6125,
+      "mean_realized_return_5d": 0.02643,
+      "mean_ic_5d": 0.1929,
+      "median_payoff_ratio": 1.423
+    },
+    {
+      "tier": "TIER_CONTRARIAN_INDICATOR",
+      "kol_count": 98,
+      "share_pct": 6.78,
+      "mean_fans": 55988.6,
+      "mean_win_rate_5d": 0.2849,
+      "mean_bayesian_win_rate_5d": 0.3477,
+      "mean_realized_return_5d": -0.02545,
+      "mean_ic_5d": -0.213,
+      "median_payoff_ratio": 0.698
+    },
+    {
+      "tier": "TIER_MEDIA_AGGREGATOR",
+      "kol_count": 11,
+      "share_pct": 0.76,
+      "mean_fans": 107354.3,
+      "mean_win_rate_5d": 0.4698,
+      "mean_bayesian_win_rate_5d": 0.4725,
+      "mean_realized_return_5d": -0.00339,
+      "mean_ic_5d": -0.0008,
+      "median_payoff_ratio": 1.003
+    },
+    {
+      "tier": "TIER_NEUTRAL_RETAIL",
+      "kol_count": 1120,
+      "share_pct": 77.51,
+      "mean_fans": 71251.4,
+      "mean_win_rate_5d": 0.4672,
+      "mean_bayesian_win_rate_5d": 0.4821,
+      "mean_realized_return_5d": -0.00175,
+      "mean_ic_5d": -0.0074,
+      "median_payoff_ratio": 0.944
+    }
+  ],
+  "linguistic_contrast": {
+    "raw_social_posts": {
+      "sample_posts_analyzed": 6108,
+      "mean_char_length": 602.17,
+      "numerical_fact_density_per_100chars": 1.049,
+      "epistemic_hedging_density_per_100chars": 0.297,
+      "emotional_hyperbole_density_per_100chars": 0.13
+    },
+    "llm_distilled_posts": {
+      "sample_posts_analyzed": 6175,
+      "mean_char_length": 608.95,
+      "numerical_fact_density_per_100chars": 1.078,
+      "epistemic_hedging_density_per_100chars": 0.297,
+      "emotional_hyperbole_density_per_100chars": 0.129
+    }
+  }
+}
