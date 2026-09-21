@@ -4,6 +4,10 @@ This repo's only real asset is that its claims are **checked**. A skill that sou
 wrong is worse than no skill, because a model will act on it without hesitating. So the bar here is
 not writing quality — it is evidence.
 
+
+> **Branches:** `v2` has been merged into `master` and is archived; start new work from
+> `master`. See [docs/BRANCHES.md](docs/BRANCHES.md).
+
 ## The one rule
 
 **Every claim carries a marker and a date.**
