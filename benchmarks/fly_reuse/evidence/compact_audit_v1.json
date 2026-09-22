@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "windows": 94,
+  "fills": 6841,
+  "nav_observations": 21530,
+  "maximum_nav_absolute_error": 0.0,
+  "archive_sha256": "a65abbb85deb918de81cd6bc992600b72420028cd22e5be080f7441c23f72ee1",
+  "checks": [
+    "snapshot hash",
+    "next-open fill ordering",
+    "bid/ask fill arithmetic",
+    "commission",
+    "nonnegative cash and inventory",
+    "all NAVs and rewards",
+    "terminal return"
+  ],
+  "scope": "Bar-level accounting under declared costs; not a proof of real-market execution or profitable learning."
+}
