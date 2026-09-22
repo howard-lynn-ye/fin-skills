@@ -3,12 +3,24 @@
 [Research workflow](docs/RESEARCH_WORKFLOW.md) | [API compatibility](docs/API_COMPATIBILITY.md)
 
 [策略、决策与算法总目录](catalog/QUANT_METHODS.md) ·
+[中英文检索与模型工具接口](docs/QUANT_METHODS.md) ·
 [模型调用指南](docs/MODEL_USAGE.md) · [原生实现接入与验证](docs/UPSTREAM_METHODS.md)
+
+目录分别标明已接入、外部实现和文献参考。
+
+**研究证据状态（2026-09-21）：** [修订后的实验方案](paper/STUDY_PLAN.md)区分历史试验、
+合成回归检查和待完成实验。旧 E2 框架未真正执行检查，现已替换为实际运行、绑定最终文件的
+四组对照框架。KOL 文件中的预测指标仍是历史汇总，不能视为端到端复现。
+改动、验证结果和 BEACON 作业见[执行记录](paper/IMPLEMENTATION_STATUS.md)。
 
 新增 `fin_skills.algorithms`：统一登记算法及实现库，根据数据、样本数、目标和约束选择并运行，
 返回选择理由；支持按时间窗口比较预测算法和注册新算法库。详见[算法选择与运行指南](docs/ALGORITHMS.md)。
 
-> 2026-09-17 更新：现有 129 个技能、36 个统一检查模块、61 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
+新增[市场状态 → 新闻风险 → 策略推荐](docs/MARKET_STRATEGY.md)：突破、布林回归、RSI、MACD、
+波动率目标动量和横截面动量可直接运行；按因果滚动状态给出候选与仓位约束。
+新闻支持多源采集、URL 去重和点时过滤。可运行示例：`python examples/market_strategy.py`。
+
+> 2026-09-21 更新：现有 129 个技能、36 个统一检查模块、61 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
 
 <div align="center">
 
@@ -82,7 +94,7 @@ flowchart TD
     end
 
     subgraph TIER2 ["2. 🛡️ 可执行回测防伪审计引擎 (fin_skills.api)"]
-        E1["Bundle 标准数据容器<br/>151 个强类型回测产物槽位 (Slots)"] --> E2["check(bundle) 统一调度器<br/>自动匹配并运行所有就绪守卫"] --> E3["36 个可执行代码守卫 (Guards)<br/>输出 GuardResult 诊断报告与指标"]
+        E1["Bundle 标准数据容器<br/>166 个强类型回测产物槽位 (Slots)"] --> E2["check(bundle) 统一调度器<br/>自动匹配并运行所有就绪守卫"] --> E3["36 个可执行代码守卫 (Guards)<br/>输出 GuardResult 诊断报告与指标"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent 与投研工程接入层"]
@@ -106,8 +118,8 @@ flowchart TD
 | 核心维度 | 当前完成度与量化指标 | 验证标准与工程状态说明 |
 | :--- | :--- | :--- |
 | **1. 知识库覆盖规模** | **129 个自研 Skills**<br>（分布在 **17 个 Plugins**） | **100% 通过规范校验** (`scripts/validate.py`)。全面覆盖股票、中国 A 股、加密货币、期权衍生品、固收、信用债、宏观、市场微观结构、金融机器学习与税务会计。 |
-| **2. 可执行防伪代码** | **36 个统一 API 守卫 (`fin_skills.api`)**<br>**111 个独立复现脚本** | **Alpha 阶段，提供可执行接口。** 每个守卫返回结构化的 `GuardResult(passed, summary, metrics)`。脚本与字符编码检查使用 `check_scripts.py`；本次平台和结果见完成审计。 |
-| **3. 造假检出基准 (`leak_bench`)** | **12 / 12 植入缺陷 100% 捕获**<br>**干净数据 0 误报 (FP = 0)** | **实证基准验证** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md))。在包含退市与拆股的 1,565 天合成股票市场中植入 12 类典型量化作弊，13 个守卫在 **< 0.07 秒**内全部精准拦截。 |
+| **2. 可执行防伪代码** | **36 个统一 API 守卫 (`fin_skills.api`)**<br>[脚本数量见自动生成目录](catalog/index.json) | **Alpha 阶段，提供可执行接口。** 每个守卫返回结构化的 `GuardResult(passed, summary, metrics)`。脚本与字符编码检查使用 `check_scripts.py`；本次平台和结果见完成审计。 |
+| **3. 造假检出基准 (`leak_bench`)** | **12 / 12 植入缺陷被捕获**<br>**干净夹具 0 误报 (FP = 0)** | **开发回归验证** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md))。在包含退市与拆股的 1,825 天合成股票市场中植入 12 类研究缺陷，由 13 个守卫检查。计时见结果文件；这些已知用例不能证明对未知缺陷的总体检出率。 |
 | **4. Agent 路由 (`eval_blind`)** | **旧标签 92/108；新增能力 16/16** | 2026-09-14 独立盲测。部分旧标签仍指向已细分的总入口；新增能力集合只是小规模测试。完整输入、结果和局限见[评估记录](evals/2026-09-14/README.md)。 |
 | **5. 自动化测试与零漂移** | **全仓默认测试集** | **100% 全绿通过** (`pytest -q`)。通过 `build_index.py` 与 `build_package.py --check` 强制保证 `SKILL.md` 文档、目录索引与生成的 Python 包之间 **零漂移（Zero Drift）**。 |
 | **6. 第三方联邦生态 (`Marketplace`)** | **联邦集成 92 个第三方金融 Skill 包**<br>（审计 139 个仓库 / 4,851 个 Skills） | **严格审计并锁定 Commit SHA** ([`catalog/federation-notes.md`](catalog/federation-notes.md))。集成 Alpaca、Kraken、OKX、Longbridge 等官方库及 A 股社区库（默认禁用防误触实盘）。 |
@@ -125,7 +137,7 @@ pip install git+https://github.com/howard-lynn-ye/fin-skills
 ```
 
 #### 1. 使用 `Bundle` 和 `check()` 一键审计回测结果
-`Bundle` 容器定义了 151 个标准数据槽位（Slots）。只需将回测产出的收益率、换手率、K 线或信号函数放入 `Bundle`，调用 `check(b)` 即可自动运行所有输入条件已满足的防伪守卫：
+`Bundle` 容器定义了 166 个标准数据槽位（Slots）。只需将回测产出的收益率、换手率、K 线或信号函数放入 `Bundle`，调用 `check(b)` 即可自动运行所有输入条件已满足的防伪守卫：
 
 ```python
 from fin_skills.api import Bundle, check, get, Suite, conventions as c
@@ -147,6 +159,8 @@ print(b.coverage().summary())
 # 3. 一键运行所有就绪的防伪守卫并打印诊断报告
 report = check(b)
 print(report.summary())
+# 对任务要求的检查集单独判断完整性；空审计或仅部分检查通过不能证明任务合格。
+print(report.audit(["assert_causal", "survivorship_audit"]))
 ```
 
 #### 2. 单独调用某个未来函数 / 因果性检测器 (`assert_causal`)
@@ -258,23 +272,23 @@ python -m fin_skills.tools --json --format anthropic  # 可选: openai, openai-c
 
 ### B. 量化造假与数据泄露检出基准 (`benchmarks/leak_bench.py`)
 
-我们在一个包含 **1,565 个交易日、36 支股票（含 10 支退市股、16 次拆股）** 的合成市场中，人为植入了 **12 种量化论文与回测中最典型的作弊/缺陷**，测试 `fin_skills.api` 守卫的检出能力：
+本次重跑的合成市场包含 **1,825 个交易日、60 支股票、26 支退市股和 26 次拆股**，植入 **12 类研究缺陷**。这是合成回归检查，不能据此估计真实研究中的总体检出率。
 
-| 植入的回测作弊 / 数据缺陷类型 | 严重程度 | 作弊后虚增/失真夏普 (干净基准 `1.80`) | 成功拦截的守卫 (Guard) | 守卫运行耗时 |
+| 植入的回测作弊 / 数据缺陷类型 | 严重程度 | 作弊后虚增/失真夏普 (干净基准 `0.61`) | 成功拦截的守卫 (Guard) | 守卫运行耗时 |
 | :--- | :---: | :---: | :--- | :---: |
-| **`wrong_side_asof`**（Point-in-Time 时间戳对齐方向错误） | 高危 | `2.63` (+0.83 虚假暴涨) | `safe_asof` | see RESULTS.md |
-| **`cost_too_low`**（假设不切实际的 1bp 超低交易成本） | 高危 | `2.09` (+0.29 虚假虚增) | `cost_plausibility` | see RESULTS.md |
-| **`lookahead_signal`**（居中滚动窗口 / `shift(-1)` 未来函数） | 致命 | `1.99` (+0.19 虚假虚增) | `assert_causal` | see RESULTS.md |
-| **`warmup_live_window`**（在测试集窗口内才开始计算指标预热期） | 中危 | `1.83` (+0.03 统计失真) | `warmup_probe` | see RESULTS.md |
-| **`survivor_only_universe`**（剔除 10 支退市股票的幸存者偏差） | 高危 | `1.82` (+0.02 幸存者虚增) | `survivorship_audit`, `pit_universe` | see RESULTS.md |
-| **`unpurged_cv`**（重叠标签在 K-Fold 切分时未做 Purge/Embargo） | 高危 | `1.79` (验证集泄露) | `purge_effect` | see RESULTS.md |
-| **`latest_vintage_fundamentals`**（使用事后重述修正的财报数据） | 高危 | `1.78` (财报重述泄露) | `pit_fundamentals` | see RESULTS.md |
-| **`shared_scaler`**（在 Train+Test 全样本上拟合 `StandardScaler`） | 高危 | `1.76` (分布泄露) | `fold_leak_test` | see RESULTS.md |
-| **`forward_adjusted_qfq`**（直接使用前复权价格序列进行回测交易） | 中危 | `1.71` (价格水平失真) | `adjustment_check` | see RESULTS.md |
-| **`llm_cutoff_overlap`**（在大模型预训练语料时间窗口内评测 LLM） | 致命 | `1.46` (记忆背诵偏差) | `contamination_probe` | see RESULTS.md |
-| **`unadjusted_split`**（在拆股除权日直接交易未复权原始价格） | 高危 | `0.77` (-1.03 虚假暴跌) | `adjustment_check` | see RESULTS.md |
-| **`single_calm_quarter`**（精心挑选单一低波动平稳季度进行汇报） | 中危 | `0.77` (跨周期脆弱性) | `regime_coverage` | see RESULTS.md |
-| **干净基准数据测试（False Positive 误报率测试）** | — | **`1.80` (真实夏普比率)** | **全部 13 个守卫 0 误报 (`ok`)** | — |
+| **`wrong_side_asof`**（Point-in-Time 时间戳对齐方向错误） | 高危 | `1.94` | `safe_asof` | see RESULTS.md |
+| **`cost_too_low`**（假设不切实际的 1bp 超低交易成本） | 高危 | `1.01` | `cost_plausibility` | see RESULTS.md |
+| **`lookahead_signal`**（居中滚动窗口 / `shift(-1)` 未来函数） | 致命 | `1.15` | `assert_causal` | see RESULTS.md |
+| **`warmup_live_window`**（在测试集窗口内才开始计算指标预热期） | 中危 | `0.59` | `warmup_probe` | see RESULTS.md |
+| **`survivor_only_universe`**（剔除 26 支退市股票的幸存者偏差） | 高危 | `0.66` | `survivorship_audit`, `pit_universe` | see RESULTS.md |
+| **`unpurged_cv`**（重叠标签在 K-Fold 切分时未做 Purge/Embargo） | 高危 | `0.63` | `purge_effect` | see RESULTS.md |
+| **`latest_vintage_fundamentals`**（使用事后重述修正的财报数据） | 高危 | `0.60` | `pit_fundamentals` | see RESULTS.md |
+| **`shared_scaler`**（在 Train+Test 全样本上拟合 `StandardScaler`） | 高危 | `0.62` | `fold_leak_test` | see RESULTS.md |
+| **`forward_adjusted_qfq`**（直接使用前复权价格序列进行回测交易） | 中危 | `0.62` | `adjustment_check` | see RESULTS.md |
+| **`llm_cutoff_overlap`**（在大模型预训练语料时间窗口内评测 LLM） | 致命 | `1.42` | `contamination_probe` | see RESULTS.md |
+| **`unadjusted_split`**（在拆股除权日直接交易未复权原始价格） | 高危 | `-0.19` | `adjustment_check` | see RESULTS.md |
+| **`single_calm_quarter`**（精心挑选单一低波动平稳季度进行汇报） | 中危 | `3.70` | `regime_coverage` | see RESULTS.md |
+| **干净基准数据测试（False Positive 误报率测试）** | — | **`0.61` (样本夏普比率)** | **全部 13 个守卫 0 误报 (`ok`)** | — |
 
 完整复现脚本与检测矩阵详见：[`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)。
 
@@ -442,7 +456,7 @@ python -m fin_skills.tools --json --format anthropic  # 可选: openai, openai-c
 python scripts/build_index.py    # 1. 从 SKILL.md 重新生成 catalog/index.json 与英文 README 技能表
 python scripts/build_package.py  # 2. 将 plugins/*/skills/ 编译同步为可导入的 fin_skills/ Python 包
 python scripts/validate.py       # 3. 执行 6 字段规范、实时计数、引用完整性与零漂移强制校验
-python scripts/eval_blind.py     # 4. 运行大模型盲测路由评估（107/108 准确率）
+python scripts/eval_blind.py     # 4. 重放历史路由记录；独立隔离评估使用 eval_sealed.py
 python benchmarks/leak_bench.py  # 5. 重新运行 12 类作弊 x 13 守卫检出矩阵基准测试
 pytest -q                        # 6. 运行 1,600+ 单元测试套件
 ```

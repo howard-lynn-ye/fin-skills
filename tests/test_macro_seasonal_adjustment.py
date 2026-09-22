@@ -134,6 +134,20 @@ def test_latest_by_month_carries_one_factor_per_calendar_position(sim):
         assert last[k] == fac[np.arange(k, fac.size, 12)[-1]]
 
 
+@pytest.mark.parametrize("attribute", ["BINARY_NAMES", "_binary_names"])
+def test_x13_status_handles_binary_name_interface_versions(monkeypatch, attribute):
+    import sys
+    import types
+    wrapper = types.ModuleType("statsmodels.tsa.x13")
+    setattr(wrapper, attribute, ("x13as", "x12a"))
+    wrapper._find_x12 = lambda: "/test/x13as"
+    monkeypatch.setitem(sys.modules, "statsmodels.tsa.x13", wrapper)
+    result = sa.x13_status()
+    assert result["statsmodels"] is True
+    assert result["binary_names"] == ["x13as", "x12a"]
+    assert result["binary_found"] is True and result["detail"] == "/test/x13as"
+
+
 @requires("statsmodels")
 def test_x13_status_reports_the_binary_and_its_exact_exception_when_absent():
     st = sa.x13_status()

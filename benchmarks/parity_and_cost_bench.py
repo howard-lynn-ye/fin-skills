@@ -242,6 +242,9 @@ def run_guard_scaling_benchmark(repetitions: int = 5) -> dict[str, Any]:
         scaling_rows.append({
             "n_rows": n_rows,
             "guards_evaluated": n_guards_run,
+            "guard_names": report.ran,
+            "skipped_guards": report.skipped,
+            "rejected_guards": report.rejected,
             "p50_ms": round(float(np.median(timings_ms)), 3),
             "p95_ms": round(float(np.percentile(timings_ms, 95)), 3),
             "mean_ms": round(float(np.mean(timings_ms)), 3),
@@ -255,7 +258,7 @@ def run_guard_scaling_benchmark(repetitions: int = 5) -> dict[str, Any]:
     return {
         "scaling_curve": scaling_rows,
         "empirical_complexity_exponent_alpha": round(float(slope), 4),
-        "complexity_class": "Sub-linear / Linear O(N)" if slope <= 1.05 else f"O(N^{slope:.2f})",
+        "interpretation": "Descriptive log-log timing slope on this machine, not asymptotic complexity. Only listed guards ran.",
         "max_n_tested": max(DATA_SIZES),
         "p50_ms_at_25k_rows": scaling_rows[-1]["p50_ms"],
     }

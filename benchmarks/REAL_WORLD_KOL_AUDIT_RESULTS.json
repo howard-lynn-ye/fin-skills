@@ -1,6 +1,23 @@
 {
   "experiment_id": "E4_real_world_bilingual_kol_and_linguistic_audit",
-  "reproducibility_status": "VERIFIED_SELF_CONTAINED",
+  "reproducibility_status": "SUMMARY_FIXTURE_ONLY",
+  "prediction_reproduction": "NOT_RUN_MISSING_ROW_LEVEL_PREDICTIONS",
+  "recomputed": [
+    "tier_counts",
+    "tier_means",
+    "follower_ratio"
+  ],
+  "imported_not_recomputed": [
+    "model_IC",
+    "model_auc",
+    "linguistic_metrics",
+    "posterior_win_rates"
+  ],
+  "limitations": [
+    "No row-level predictions/outcomes or time-split provenance in fixture.",
+    "Tier definitions may use the same outcomes summarized within tiers.",
+    "Pooled Rank IC is not mean daily cross-sectional Rank IC."
+  ],
   "total_kols_verified": 1445,
   "key_findings": {
     "follower_paradox_ratio_contrarian_vs_alpha": 3.96,
@@ -8,6 +25,7 @@
     "contrarian_indicator_5d_ic": -0.213,
     "mman_unweighted_rank_ic": -0.03184,
     "mman_credibility_gated_rank_ic": 0.0104,
+    "mman_credibility_gated_mean_daily_rank_ic": -0.002535744147105601,
     "mman_rank_ic_net_reversal": 0.04224,
     "roberta_raw_text_rank_ic": 0.00842,
     "roberta_distilled_text_rank_ic": 0.01862

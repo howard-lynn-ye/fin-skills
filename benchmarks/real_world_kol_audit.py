@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
-"""Experiment E4: Self-Contained Real-World KOL Credibility & Linguistic Audit.
+"""Experiment E4: summary-fixture inspection, NOT prediction reproduction.
 
-Reproduces all empirical statistics reported in the real-world domain validation
-section of the paper directly from the anonymized self-contained fixture
-(`benchmarks/data/kol_credibility_linguistic_fixture.json`) with zero external
-repository dependencies.
+Recomputes tier aggregates from stored author profiles. Predictive IC, model scores,
+and linguistic metrics are imported historical summaries, not recomputed from posts,
+predictions or outcomes. Use prediction_audit.py with row-level data for that check.
 
 Verifies:
 1. Tier-level distribution, follower paradox (Contrarian accounts having 3.96x more
    followers than Tier-1 Core Alpha researchers), and 5-day Information Coefficients.
-2. Exact Beta-Binomial conjugate Bayesian shrinkage posterior win rates across all
-   1,445 anonymized A-share KOL profiles.
-3. Multimodal Attention Network (MMAN) credibility-gating ablation (Rank IC flipping
-   from -0.0318 unweighted to +0.0104 credibility-gated).
-4. LLM Semantic Distillation point gains across 31,505 instances (TF-IDF + LR and
-   Chinese RoBERTa).
+2. Means of stored posterior win rates (not a refit of the Bayesian model).
+3. Reporting of saved MMAN / RoBERTa metrics with their provenance limits.
 """
 from __future__ import annotations
 
@@ -72,7 +67,14 @@ def verify_and_reproduce_kol_audit() -> dict[str, Any]:
 
     result = {
         "experiment_id": "E4_real_world_bilingual_kol_and_linguistic_audit",
-        "reproducibility_status": "VERIFIED_SELF_CONTAINED",
+        "reproducibility_status": "SUMMARY_FIXTURE_ONLY",
+        "prediction_reproduction": "NOT_RUN_MISSING_ROW_LEVEL_PREDICTIONS",
+        "recomputed": ["tier_counts", "tier_means", "follower_ratio"],
+        "imported_not_recomputed": ["model_IC", "model_auc", "linguistic_metrics",
+                                    "posterior_win_rates"],
+        "limitations": ["No row-level predictions/outcomes or time-split provenance in fixture.",
+                        "Tier definitions may use the same outcomes summarized within tiers.",
+                        "Pooled Rank IC is not mean daily cross-sectional Rank IC."],
         "total_kols_verified": int(len(profiles)),
         "key_findings": {
             "follower_paradox_ratio_contrarian_vs_alpha": follower_paradox_ratio,
@@ -80,6 +82,8 @@ def verify_and_reproduce_kol_audit() -> dict[str, Any]:
             "contrarian_indicator_5d_ic": tier_map["TIER_CONTRARIAN_INDICATOR"]["mean_ic_5d"],
             "mman_unweighted_rank_ic": round(unweighted_ic, 5),
             "mman_credibility_gated_rank_ic": round(gated_ic, 5),
+            "mman_credibility_gated_mean_daily_rank_ic": float(
+                mman_ablation["credibility_gated_mman"]["mean_daily_rank_ic"]),
             "mman_rank_ic_net_reversal": ic_reversal_delta,
             "roberta_raw_text_rank_ic": round(roberta_raw_ic, 5),
             "roberta_distilled_text_rank_ic": round(roberta_dist_ic, 5),

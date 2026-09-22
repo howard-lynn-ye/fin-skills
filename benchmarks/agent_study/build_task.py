@@ -145,8 +145,8 @@ report what it earns over the evaluation window.
    def build_positions(data_dir: str) -> "pandas.DataFrame":
        \"\"\"Return dates x tickers portfolio weights.
 
-       Row t holds the weights you are IN over session t: they may use information
-       available strictly before the close of session t. Weights should be roughly
+       Row t holds weights over the previous-close to session-t-close return interval:
+       they may use information available by the end of session t-1. Weights should be roughly
        dollar-neutral and sum of absolute values <= 1 per row. Missing = 0.
        \"\"\"
    ```

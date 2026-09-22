@@ -20,8 +20,8 @@
     {
       "primitive": "min_variance_portfolio_qp",
       "reference_library": "scipy.optimize.minimize (SLSQP convex QP)",
-      "max_abs_error": 1.1375092534571252e-08,
-      "relative_objective_diff": 0.0,
+      "max_abs_error": 1.1827553714205408e-08,
+      "relative_objective_diff": 1.1723660961014018e-16,
       "tolerance": 0.001,
       "passed": true
     },
@@ -56,7 +56,7 @@
     {
       "primitive": "augmented_dickey_fuller_tstat",
       "reference_library": "statsmodels.tsa.stattools.adfuller",
-      "max_abs_error": 2.1168489183764905e-10,
+      "max_abs_error": 2.1168578001606875e-10,
       "tolerance": 1e-06,
       "passed": true
     }
@@ -66,39 +66,591 @@
       {
         "n_rows": 250,
         "guards_evaluated": 3,
-        "p50_ms": 31.838,
-        "p95_ms": 36.216,
-        "mean_ms": 30.992,
-        "peak_memory_kb": 148.99
+        "guard_names": [
+          "cost_curve",
+          "rf_convention",
+          "survivorship_audit"
+        ],
+        "skipped_guards": {
+          "adjustment_check": [
+            "actions"
+          ],
+          "ashare_rules": [
+            "bar",
+            "code",
+            "date"
+          ],
+          "assert_causal": [
+            "signal_fn",
+            "bars"
+          ],
+          "board_lot_feasibility": [
+            "capital",
+            "target_weights"
+          ],
+          "brinson_attribution": [
+            "panel or panels"
+          ],
+          "cash_drag": [
+            "idle_cash",
+            "total_capital"
+          ],
+          "contamination_probe": [
+            "cutoff",
+            "test_start",
+            "test_end"
+          ],
+          "continuous_contract": [
+            "stitched"
+          ],
+          "cost_plausibility": [
+            "cost_bps"
+          ],
+          "data_quality": [
+            "bars"
+          ],
+          "fold_leak_test": [
+            "run_fold",
+            "folds"
+          ],
+          "fx_conventions": [
+            "pair"
+          ],
+          "greeks_convention": [
+            "greeks",
+            "flag"
+          ],
+          "join_asof_sortedness": [
+            "left",
+            "right",
+            "on",
+            "by"
+          ],
+          "leveraged_reset": [
+            "index_returns",
+            "lev"
+          ],
+          "npv_zero": [
+            "eval_date",
+            "curve_ref",
+            "expiry"
+          ],
+          "paper_account_guard": [
+            "broker"
+          ],
+          "pit_fundamentals": [
+            "facts",
+            "as_of"
+          ],
+          "pit_universe": [
+            "universe or (members + rebalance_dates)"
+          ],
+          "pre_trade": [
+            "proposal",
+            "state"
+          ],
+          "purge_effect": [
+            "features",
+            "target",
+            "horizon"
+          ],
+          "qdii_premium": [
+            "code",
+            "price"
+          ],
+          "reconcile_sources": [
+            "other"
+          ],
+          "regime_coverage": [
+            "dates",
+            "underlying_returns",
+            "position",
+            "regime_labels"
+          ],
+          "regime_lookahead": [
+            "regime_labels",
+            "p_calm"
+          ],
+          "research_audit": [
+            "best_sharpe",
+            "n_obs",
+            "n_trials or ledger or sharpes"
+          ],
+          "result_manifest": [
+            "card"
+          ],
+          "safe_asof": [
+            "left",
+            "right",
+            "on"
+          ],
+          "spa_test": [
+            "benchmark_returns",
+            "model_returns"
+          ],
+          "synthesis_integrity": [
+            "timeline"
+          ],
+          "trial_ledger": [
+            "best_sharpe",
+            "n_obs",
+            "ledger or sharpes"
+          ],
+          "warmup_probe": [
+            "indicator"
+          ],
+          "weight_traps": [
+            "asset_returns"
+          ]
+        },
+        "rejected_guards": {},
+        "p50_ms": 41.303,
+        "p95_ms": 56.869,
+        "mean_ms": 39.513,
+        "peak_memory_kb": 124.94
       },
       {
         "n_rows": 1000,
         "guards_evaluated": 3,
-        "p50_ms": 28.304,
-        "p95_ms": 33.495,
-        "mean_ms": 29.49,
-        "peak_memory_kb": 270.74
+        "guard_names": [
+          "cost_curve",
+          "rf_convention",
+          "survivorship_audit"
+        ],
+        "skipped_guards": {
+          "adjustment_check": [
+            "actions"
+          ],
+          "ashare_rules": [
+            "bar",
+            "code",
+            "date"
+          ],
+          "assert_causal": [
+            "signal_fn",
+            "bars"
+          ],
+          "board_lot_feasibility": [
+            "capital",
+            "target_weights"
+          ],
+          "brinson_attribution": [
+            "panel or panels"
+          ],
+          "cash_drag": [
+            "idle_cash",
+            "total_capital"
+          ],
+          "contamination_probe": [
+            "cutoff",
+            "test_start",
+            "test_end"
+          ],
+          "continuous_contract": [
+            "stitched"
+          ],
+          "cost_plausibility": [
+            "cost_bps"
+          ],
+          "data_quality": [
+            "bars"
+          ],
+          "fold_leak_test": [
+            "run_fold",
+            "folds"
+          ],
+          "fx_conventions": [
+            "pair"
+          ],
+          "greeks_convention": [
+            "greeks",
+            "flag"
+          ],
+          "join_asof_sortedness": [
+            "left",
+            "right",
+            "on",
+            "by"
+          ],
+          "leveraged_reset": [
+            "index_returns",
+            "lev"
+          ],
+          "npv_zero": [
+            "eval_date",
+            "curve_ref",
+            "expiry"
+          ],
+          "paper_account_guard": [
+            "broker"
+          ],
+          "pit_fundamentals": [
+            "facts",
+            "as_of"
+          ],
+          "pit_universe": [
+            "universe or (members + rebalance_dates)"
+          ],
+          "pre_trade": [
+            "proposal",
+            "state"
+          ],
+          "purge_effect": [
+            "features",
+            "target",
+            "horizon"
+          ],
+          "qdii_premium": [
+            "code",
+            "price"
+          ],
+          "reconcile_sources": [
+            "other"
+          ],
+          "regime_coverage": [
+            "dates",
+            "underlying_returns",
+            "position",
+            "regime_labels"
+          ],
+          "regime_lookahead": [
+            "regime_labels",
+            "p_calm"
+          ],
+          "research_audit": [
+            "best_sharpe",
+            "n_obs",
+            "n_trials or ledger or sharpes"
+          ],
+          "result_manifest": [
+            "card"
+          ],
+          "safe_asof": [
+            "left",
+            "right",
+            "on"
+          ],
+          "spa_test": [
+            "benchmark_returns",
+            "model_returns"
+          ],
+          "synthesis_integrity": [
+            "timeline"
+          ],
+          "trial_ledger": [
+            "best_sharpe",
+            "n_obs",
+            "ledger or sharpes"
+          ],
+          "warmup_probe": [
+            "indicator"
+          ],
+          "weight_traps": [
+            "asset_returns"
+          ]
+        },
+        "rejected_guards": {},
+        "p50_ms": 33.773,
+        "p95_ms": 39.858,
+        "mean_ms": 34.8,
+        "peak_memory_kb": 305.3
       },
       {
         "n_rows": 5000,
         "guards_evaluated": 3,
-        "p50_ms": 35.962,
-        "p95_ms": 48.532,
-        "mean_ms": 38.882,
-        "peak_memory_kb": 831.45
+        "guard_names": [
+          "cost_curve",
+          "rf_convention",
+          "survivorship_audit"
+        ],
+        "skipped_guards": {
+          "adjustment_check": [
+            "actions"
+          ],
+          "ashare_rules": [
+            "bar",
+            "code",
+            "date"
+          ],
+          "assert_causal": [
+            "signal_fn",
+            "bars"
+          ],
+          "board_lot_feasibility": [
+            "capital",
+            "target_weights"
+          ],
+          "brinson_attribution": [
+            "panel or panels"
+          ],
+          "cash_drag": [
+            "idle_cash",
+            "total_capital"
+          ],
+          "contamination_probe": [
+            "cutoff",
+            "test_start",
+            "test_end"
+          ],
+          "continuous_contract": [
+            "stitched"
+          ],
+          "cost_plausibility": [
+            "cost_bps"
+          ],
+          "data_quality": [
+            "bars"
+          ],
+          "fold_leak_test": [
+            "run_fold",
+            "folds"
+          ],
+          "fx_conventions": [
+            "pair"
+          ],
+          "greeks_convention": [
+            "greeks",
+            "flag"
+          ],
+          "join_asof_sortedness": [
+            "left",
+            "right",
+            "on",
+            "by"
+          ],
+          "leveraged_reset": [
+            "index_returns",
+            "lev"
+          ],
+          "npv_zero": [
+            "eval_date",
+            "curve_ref",
+            "expiry"
+          ],
+          "paper_account_guard": [
+            "broker"
+          ],
+          "pit_fundamentals": [
+            "facts",
+            "as_of"
+          ],
+          "pit_universe": [
+            "universe or (members + rebalance_dates)"
+          ],
+          "pre_trade": [
+            "proposal",
+            "state"
+          ],
+          "purge_effect": [
+            "features",
+            "target",
+            "horizon"
+          ],
+          "qdii_premium": [
+            "code",
+            "price"
+          ],
+          "reconcile_sources": [
+            "other"
+          ],
+          "regime_coverage": [
+            "dates",
+            "underlying_returns",
+            "position",
+            "regime_labels"
+          ],
+          "regime_lookahead": [
+            "regime_labels",
+            "p_calm"
+          ],
+          "research_audit": [
+            "best_sharpe",
+            "n_obs",
+            "n_trials or ledger or sharpes"
+          ],
+          "result_manifest": [
+            "card"
+          ],
+          "safe_asof": [
+            "left",
+            "right",
+            "on"
+          ],
+          "spa_test": [
+            "benchmark_returns",
+            "model_returns"
+          ],
+          "synthesis_integrity": [
+            "timeline"
+          ],
+          "trial_ledger": [
+            "best_sharpe",
+            "n_obs",
+            "ledger or sharpes"
+          ],
+          "warmup_probe": [
+            "indicator"
+          ],
+          "weight_traps": [
+            "asset_returns"
+          ]
+        },
+        "rejected_guards": {},
+        "p50_ms": 32.309,
+        "p95_ms": 35.665,
+        "mean_ms": 31.395,
+        "peak_memory_kb": 1027.27
       },
       {
         "n_rows": 25000,
         "guards_evaluated": 3,
-        "p50_ms": 111.17,
-        "p95_ms": 137.507,
-        "mean_ms": 118.407,
-        "peak_memory_kb": 3751.03
+        "guard_names": [
+          "cost_curve",
+          "rf_convention",
+          "survivorship_audit"
+        ],
+        "skipped_guards": {
+          "adjustment_check": [
+            "actions"
+          ],
+          "ashare_rules": [
+            "bar",
+            "code",
+            "date"
+          ],
+          "assert_causal": [
+            "signal_fn",
+            "bars"
+          ],
+          "board_lot_feasibility": [
+            "capital",
+            "target_weights"
+          ],
+          "brinson_attribution": [
+            "panel or panels"
+          ],
+          "cash_drag": [
+            "idle_cash",
+            "total_capital"
+          ],
+          "contamination_probe": [
+            "cutoff",
+            "test_start",
+            "test_end"
+          ],
+          "continuous_contract": [
+            "stitched"
+          ],
+          "cost_plausibility": [
+            "cost_bps"
+          ],
+          "data_quality": [
+            "bars"
+          ],
+          "fold_leak_test": [
+            "run_fold",
+            "folds"
+          ],
+          "fx_conventions": [
+            "pair"
+          ],
+          "greeks_convention": [
+            "greeks",
+            "flag"
+          ],
+          "join_asof_sortedness": [
+            "left",
+            "right",
+            "on",
+            "by"
+          ],
+          "leveraged_reset": [
+            "index_returns",
+            "lev"
+          ],
+          "npv_zero": [
+            "eval_date",
+            "curve_ref",
+            "expiry"
+          ],
+          "paper_account_guard": [
+            "broker"
+          ],
+          "pit_fundamentals": [
+            "facts",
+            "as_of"
+          ],
+          "pit_universe": [
+            "universe or (members + rebalance_dates)"
+          ],
+          "pre_trade": [
+            "proposal",
+            "state"
+          ],
+          "purge_effect": [
+            "features",
+            "target",
+            "horizon"
+          ],
+          "qdii_premium": [
+            "code",
+            "price"
+          ],
+          "reconcile_sources": [
+            "other"
+          ],
+          "regime_coverage": [
+            "dates",
+            "underlying_returns",
+            "position",
+            "regime_labels"
+          ],
+          "regime_lookahead": [
+            "regime_labels",
+            "p_calm"
+          ],
+          "research_audit": [
+            "best_sharpe",
+            "n_obs",
+            "n_trials or ledger or sharpes"
+          ],
+          "result_manifest": [
+            "card"
+          ],
+          "safe_asof": [
+            "left",
+            "right",
+            "on"
+          ],
+          "spa_test": [
+            "benchmark_returns",
+            "model_returns"
+          ],
+          "synthesis_integrity": [
+            "timeline"
+          ],
+          "trial_ledger": [
+            "best_sharpe",
+            "n_obs",
+            "ledger or sharpes"
+          ],
+          "warmup_probe": [
+            "indicator"
+          ],
+          "weight_traps": [
+            "asset_returns"
+          ]
+        },
+        "rejected_guards": {},
+        "p50_ms": 117.8,
+        "p95_ms": 232.641,
+        "mean_ms": 148.359,
+        "peak_memory_kb": 4697.64
       }
     ],
-    "empirical_complexity_exponent_alpha": 0.2637,
-    "complexity_class": "Sub-linear / Linear O(N)",
+    "empirical_complexity_exponent_alpha": 0.2066,
+    "interpretation": "Descriptive log-log timing slope on this machine, not asymptotic complexity. Only listed guards ran.",
     "max_n_tested": 25000,
-    "p50_ms_at_25k_rows": 111.17
+    "p50_ms_at_25k_rows": 117.8
   }
 }

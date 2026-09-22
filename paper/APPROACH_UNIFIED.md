@@ -1,3 +1,5 @@
+> **Superseded 2026-09-21:** Historical planning record, not verified evidence. See [the revised study plan](STUDY_PLAN.md) and [claim evidence](evidence.json). The old scaffold did not execute guards; KOL predictive metrics were imported summaries; the theoretical ceiling, 84% reduction and asymptotic complexity claims are withdrawn/corrected. The historical text below is retained for traceability.
+
 # Unified Paper Blueprint: `fin-skills` & Counterfactual Integrity Auditing for Financial AI Agents
 
 > **Document Status**: Revised & Unified Single-Paper Blueprint (Howard & Shwai Consensus Draft)  

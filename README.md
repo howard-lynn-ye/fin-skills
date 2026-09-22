@@ -3,7 +3,19 @@
 [Research workflow](docs/RESEARCH_WORKFLOW.md) | [API compatibility](docs/API_COMPATIBILITY.md)
 
 [Strategies, decisions and algorithms](catalog/QUANT_METHODS.md) |
+[Method search API](docs/QUANT_METHODS.md) |
 [Model usage](docs/MODEL_USAGE.md) | [Native adapters](docs/UPSTREAM_METHODS.md)
+
+Method discovery includes sources and explicit implementation status.
+
+**Research evidence status (2026-09-21):** The revised [study plan](paper/STUDY_PLAN.md)
+separates historical pilot results, synthetic regression checks, and experiments still
+pending. The former E2 scaffold did not execute guards; it has been replaced with real
+artifact-bound checks and a four-condition runner. KOL prediction metrics in the shipped
+fixture are historical summaries, not end-to-end reproduction. See the
+[machine-derived evidence record](paper/evidence.json) before quoting research claims.
+Current changes, validation and Beacon jobs are listed in the
+[execution record](paper/IMPLEMENTATION_STATUS.md).
 
 <div align="center">
 
@@ -68,7 +80,7 @@ flowchart TD
     end
 
     subgraph TIER2 ["2. 🛡️ Executable Research Integrity Engine (fin_skills.api)"]
-        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["36 Executable Guards<br/>GuardResult + Diagnostic Summary"]
+        E1["Bundle Container<br/>166 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["36 Executable Guards<br/>GuardResult + Diagnostic Summary"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
@@ -93,7 +105,7 @@ flowchart TD
 | :--- | :--- | :--- |
 | **Knowledge Coverage** | **129 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
 | **Executable Code Guards** | **36 Unified Guards** (`fin_skills.api`)<br>**124 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. Features newly added Pre-Trade Defense guards: `qdii_premium`, `board_lot_feasibility`, and `cash_drag`. |
-| **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught (100%)**<br>**0 False Positives** on Clean Data | **Benchmark Verified** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,565-day synthetic world with delistings and splits; timings for this machine are recorded in the generated benchmark output. |
+| **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught**<br>**0 False Positives** on the clean fixture | **Development regression** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,825-day synthetic world with delistings and splits; timings are recorded in the generated benchmark output. These cases do not establish detection accuracy on unseen defects. |
 | **Agent Routing (`eval_blind`)** | **92/108 historical-label matches; 16/16 new-capability queries** | Independent listing-only evaluation on 2026-09-14. Old labels include superseded broad routes; the new set is a small smoke test. [Inputs, answers and limitations](evals/2026-09-14/README.md). |
 | **Test Suite & CI Rigor** | **Repository-wide default test suite** | Run `pytest -q`; current measured results are recorded in the [acceptance audit](docs/COMPLETION_AUDIT.md). Zero drift enforced between `SKILL.md` sources, `catalog/index.json`, README counts, and generated Python modules. |
 | **Ecosystem Federation** | **92 Third-Party Packs Federated**<br>(from 139 Repos / 4,851 Skills Audited) | **Curated & Commit-Pinned** ([`catalog/federation-notes.md`](catalog/federation-notes.md)). Official vendor packs (Alpaca, Kraken, OKX, Longbridge) and community repos integrated with SHA pinning. |
@@ -111,7 +123,7 @@ pip install git+https://github.com/howard-lynn-ye/fin-skills
 ```
 
 #### 1. Audit a Backtest Run with `Bundle` and `check()`
-The `Bundle` container holds the artefacts of a research run under a fixed 151-slot vocabulary. Calling `check(b)` automatically runs every guard whose required inputs are present:
+The `Bundle` container holds the artefacts of a research run under a fixed 166-slot vocabulary. Calling `check(b)` automatically runs every guard whose required inputs are present:
 
 ```python
 from fin_skills.api import Bundle, check, get, Suite, conventions as c
@@ -134,6 +146,10 @@ print(b.coverage().summary())
 report = check(b)
 print(report.summary())
 ```
+
+For a release decision, use `report.audit(["assert_causal", "cost_curve"])` with the
+checks required for that task. `PASS`, `FAIL` and `INCOMPLETE` are distinct outcomes.
+An empty run or rejected input cannot pass; skipped checks do not establish coverage.
 
 #### 2. Run Individual Look-Ahead & Integrity Guards
 ```python
@@ -168,6 +184,10 @@ fin_skills.find("survivorship", "universe")    # Search skills mentioning both t
 The library now includes real retrieval through `fin_skills.collect`: RSS/Atom, bounded static-page crawling, SEC Form 4 and 13F, House PTR PDFs, and public Bluesky posts. SQLite retains watch state, deduplicated revisions and pending alerts. Use the [collection guide](docs/COLLECTION.md) for Python, CLI and MCP commands. Continuous polling must be started explicitly; public filings carry disclosure delays.
 
 ### Algorithm selection and execution
+
+The [market strategy workflow](docs/MARKET_STRATEGY.md) adds causal market-state rules,
+multi-source news screening and next-bar strategy candidates. Run the offline example with
+`python examples/market_strategy.py`. Candidate rankings are policy, not validated profits.
 
 `fin_skills.algorithms` catalogs algorithms and their implementation backends, ranks them against
 data availability, sample size, objectives and constraints, and runs supported adapters through
@@ -237,23 +257,23 @@ Every fact below was verified against primary source code or regulatory filings 
 
 ### B. The Leak Detection Benchmark (`benchmarks/leak_bench.py`)
 
-We evaluate our executable guards against a 1,565-day synthetic market containing 36 equities (including 10 delistings and 16 stock splits) across **12 planted research defects**:
+The benchmark rerun uses 1,825 trading days and 60 equities, including 26 delistings and 26 splits, with **12 planted research defects**. These are synthetic regression cases, not an estimate of general detection accuracy.
 
-| Planted Research Defect | Severity | Corrupted Sharpe (vs 1.80 Clean) | Caught By Guard | Execution Time |
+| Planted Research Defect | Severity | Corrupted Sharpe (vs 0.61 Clean) | Caught By Guard | Execution Time |
 | :--- | :---: | :---: | :--- | :---: |
-| **`wrong_side_asof`** (Point-in-time timestamp leak) | High | `2.63` (+0.83 fake boost) | `safe_asof` | see RESULTS.md |
-| **`cost_too_low`** (Unrealistic 1bp execution assumption) | High | `2.09` (+0.29 fake boost) | `cost_plausibility` | see RESULTS.md |
-| **`lookahead_signal`** (Centered rolling window / shift(-1)) | Critical | `1.99` (+0.19 fake boost) | `assert_causal` | see RESULTS.md |
-| **`warmup_live_window`** (Indicator warm-up inside test window) | Medium | `1.83` (+0.03 distortion) | `warmup_probe` | see RESULTS.md |
-| **`survivor_only_universe`** (Omitting 10 delisted stocks) | High | `1.82` (+0.02 survivorship) | `survivorship_audit`, `pit_universe` | see RESULTS.md |
-| **`unpurged_cv`** (Overlapping labels across K-Fold splits) | High | `1.79` (leaked validation) | `purge_effect` | see RESULTS.md |
-| **`latest_vintage_fundamentals`** (Restated financial statements) | High | `1.78` (restatement leak) | `pit_fundamentals` | see RESULTS.md |
-| **`shared_scaler`** (`StandardScaler` fit on full train+test) | High | `1.76` (distribution leak) | `fold_leak_test` | see RESULTS.md |
-| **`forward_adjusted_qfq`** (Trading on forward-adjusted prices) | Medium | `1.71` (level distortion) | `adjustment_check` | see RESULTS.md |
-| **`llm_cutoff_overlap`** (Evaluating LLM inside training window) | Critical | `1.46` (memorization bias) | `contamination_probe` | see RESULTS.md |
-| **`unadjusted_split`** (Trading raw prices across stock splits) | High | `0.77` (-1.03 fake crash) | `adjustment_check` | see RESULTS.md |
-| **`single_calm_quarter`** (Cherry-picked low-vol regime window) | Medium | `0.77` (regime fragility) | `regime_coverage` | see RESULTS.md |
-| **Clean Baseline Data (False Alarm Test)** | — | **`1.80` (True Sharpe)** | **0 False Alarms (`ok` across all 13)** | — |
+| **`wrong_side_asof`** (Point-in-time timestamp leak) | High | `1.94` | `safe_asof` | see RESULTS.md |
+| **`cost_too_low`** (Unrealistic 1bp execution assumption) | High | `1.01` | `cost_plausibility` | see RESULTS.md |
+| **`lookahead_signal`** (Centered rolling window / shift(-1)) | Critical | `1.15` | `assert_causal` | see RESULTS.md |
+| **`warmup_live_window`** (Indicator warm-up inside test window) | Medium | `0.59` | `warmup_probe` | see RESULTS.md |
+| **`survivor_only_universe`** (Omitting 26 delisted stocks) | High | `0.66` | `survivorship_audit`, `pit_universe` | see RESULTS.md |
+| **`unpurged_cv`** (Overlapping labels across K-Fold splits) | High | `0.63` | `purge_effect` | see RESULTS.md |
+| **`latest_vintage_fundamentals`** (Restated financial statements) | High | `0.60` | `pit_fundamentals` | see RESULTS.md |
+| **`shared_scaler`** (`StandardScaler` fit on full train+test) | High | `0.62` | `fold_leak_test` | see RESULTS.md |
+| **`forward_adjusted_qfq`** (Trading on forward-adjusted prices) | Medium | `0.62` | `adjustment_check` | see RESULTS.md |
+| **`llm_cutoff_overlap`** (Evaluating LLM inside training window) | Critical | `1.42` | `contamination_probe` | see RESULTS.md |
+| **`unadjusted_split`** (Trading raw prices across stock splits) | High | `-0.19` | `adjustment_check` | see RESULTS.md |
+| **`single_calm_quarter`** (Cherry-picked low-vol regime window) | Medium | `3.70` | `regime_coverage` | see RESULTS.md |
+| **Clean Baseline Data (False Alarm Test)** | — | **`0.61` (Sample Sharpe)** | **0 False Alarms (`ok` across all 13)** | — |
 
 Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
 
