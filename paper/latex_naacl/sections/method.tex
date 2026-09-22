@@ -6,8 +6,8 @@
 
 A core methodological principle of our study is that \emph{an evaluation harness must never grade agent submissions using the same library guards given to the agent}. We construct an independent ground-truth \textbf{Seeded Market Generator} (\path{benchmarks/agent_study/}) spanning 60 equities over 2017--2023 with four planted shortcuts: (i) a news feed stamped with the session it describes, (ii) an LLM sentiment score trained through 2020-12-31, (iii) a listing table exposing future delisting dates, and (iv) unadjusted split prices.
 
-\paragraph{Honest Ceiling vs.\ Shortcut Inflation.}
-Because the data-generating process is known in closed form, we compute the exact theoretical ceiling: trading the generator's true latent drift with a strict 1-day lag earns \textbf{Net Sharpe $1.63$}. By contrast, joining same-session news earns \textbf{Net Sharpe $71.5$}. Across three multi-seed synthetic worlds ($s \in \{17, 29, 43\}$, 36 planted defects total), our guards achieve \textbf{100\% recall ($36/36$)} with \textbf{0 false alarms} across 400 clean control runs (where planted flaws inflate reported Sharpe from $-0.052 \pm 0.309$ to $+2.210 \pm 0.562$).
+\paragraph{Honest Ceiling vs.\ \texttt{FinGuardBench-180}.}
+Because the data-generating process is known in closed form, we compute the exact theoretical ceiling: trading the generator's true latent drift with a strict 1-day lag earns \textbf{Net Sharpe $1.63$}, whereas joining same-session news earns \textbf{Net Sharpe $71.5$}. Across \textbf{FinGuardBench-180} (\path{benchmarks/guard_bench_180.py}: 36 guards $\times$ 5 modalities covering standard/boundary clean at $\epsilon=-10^{-6}$, standard/boundary violations at $\epsilon=+10^{-6}$, and compound multi-trap pipelines), our guards achieve \textbf{100\% accuracy ($180/180$, $0$ false alarms)} in $1.89\text{ ms}$ median latency.
 
 \paragraph{Four Black-Box Counterfactual Perturbations.}
 Given any agent-submitted weight function $\mathbf{W} = f(\mathcal{D})$, our external oracle (\texttt{oracle.py}) measures four invariants without reading agent source code:
