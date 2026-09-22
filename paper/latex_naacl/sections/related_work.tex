@@ -1,0 +1,11 @@
+% ==============================================================================
+% sections/related_work.tex
+% ==============================================================================
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Financial LLMs \& Autonomous Agents.}
+Recent domain foundation models \citep{wu2023bloomberggpt,yang2023fingpt} and memory-augmented trading agents \citep{yu2024finmem} demonstrate strong capabilities in financial sentiment extraction and strategy synthesis. However, existing evaluations rely primarily on static historical splits that remain vulnerable to pre-training cutoff leakage, same-session timestamp alignment errors, and retail social echo-chambers.
+
+\paragraph{Backtest Overfitting \& Behavioral Verification.}
+Econometric controls for selection bias—including White's Reality Check \citep{white2000reality}, Hansen's SPA test \citep{hansen2005spa}, and the Deflated Sharpe Ratio \citep{bailey2014deflated,bailey2017pbo}—quantify multiple-testing inflation after honest returns are computed, but cannot detect mechanical code bugs or future-leaking table joins. Inspired by behavioral testing in NLP \citep{ribeiro2020checklist} and modular verification toolkits \citep{zhao2019pyod}, \texttt{fin-skills} pairs machine-verifiable domain specifications with black-box counterfactual perturbation oracles.

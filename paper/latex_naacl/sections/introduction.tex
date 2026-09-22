@@ -1,0 +1,28 @@
+% ==============================================================================
+% sections/introduction.tex
+% ==============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Equipped with code interpreters and financial data feeds, LLM agents can formulate hypotheses, engineer alpha signals, and report backtest performance in minutes \citep{wu2023bloomberggpt,yang2023fingpt,yu2024finmem}. Yet in quantitative finance, high backtest Sharpe ratios almost never survive live capital deployment \citep{bailey2014deflated,bailey2017pbo,lopezdeprado2018advances}. Through systematic auditing of LLM research trajectories, we show that agentic backtest inflation stems from two orthogonal failure classes:
+\begin{enumerate}
+    \item \textbf{Type I: Mechanical Research Shortcuts.} Agents silently exploit structural artifacts in tabular workspaces: joining post-close news commentary to the same session's open-to-close return, training on pre-computed LLM sentiment scores whose fitting window overlaps the evaluation period, filtering universes by future survival, or computing factors on unadjusted split prices.
+    \item \textbf{Type II: Empirical \& Microstructure Illusions.} Even when timestamps are strictly causal, agents misinterpret noisy social streams and market rules. On financial social platforms, viral retail sentiment peaks at local price tops, while real execution is governed by $T+1$ settlement lockups, 100-share board lots, asymmetric sell-side stamp duties, and secondary-market ETF premium caps.
+\end{enumerate}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.96\textwidth]{figs/fig_overview_compliance_and_kol.pdf}
+    \vspace{-0.22cm}
+    \caption{\textbf{Overview of our two core empirical discoveries.} \textbf{(a) The Agent Compliance Paradox (\S\ref{sec:experiment}):} Equipping a strong model (Claude Opus) with \texttt{fin-skills} reduces Sharpe reporting error by $84\%$ ($0.19 \to 0.03$), whereas giving a weak model (Claude Haiku) passive text documentation without mandatory runtime execution induces severe reporting distortion ($|\Delta\text{Sharpe}| = 11.95$) due to \emph{hallucinated guard citations}. \textbf{(b) The $3.96\times$ KOL Megaphone Bias (\S\ref{sec:realworld}):} Across $1{,}445$ verified A-share influencers, statistically confirmed contrarian indicators ($N=98$, 5-day Rank IC $-0.2130$) command $3.96\times$ more followers ($55.99\text{k}$) than Tier-1 Alpha researchers ($N=70$, $14.12\text{k}$ fans, Rank IC $+0.2158$), explaining why unweighted financial NLP loses money.}
+    \label{fig:overview}
+    \vspace{-0.24cm}
+\end{figure*}
+
+We present \textbf{\texttt{fin-skills}} paired with an external \textbf{Counterfactual \& Microstructure Audit Protocol}. Rather than claiming to manufacture market alpha, our framework enforces verifiable research integrity:
+\begin{itemize}
+    \item \textbf{The \texttt{fin-skills} Verification Library (\S\ref{sec:preliminaries}):} 129 source-verified skills, 36 executable guards (\texttt{Bundle.check()}), and 53 Model Context Protocol (MCP) tools validated by 3,086 unit tests, achieving $8/8$ numerical parity against \texttt{scipy}/\texttt{statsmodels} and $\mathcal{O}(N^{0.2637})$ sub-linear runtime scaling.
+    \item \textbf{External Counterfactual Auditing (\S\ref{sec:method}):} Four black-box perturbation operators and session-by-session clock replay that detect look-ahead and same-session leakage without inspecting agent code or using the library to grade itself.
+    \item \textbf{The Compliance Paradox (\S\ref{sec:experiment}):} Controlled 3-condition agent ablations proving that passive prompt guidelines induce weak models to hallucinate guard execution, whereas runtime provenance gating eliminates fabricated citations ($2/2 \to 0/3$).
+    \item \textbf{Real-World Bilingual KOL \& Microstructure Audit (\S\ref{sec:realworld}):} A self-contained reproducibility bundle over 1.72M bilingual posts and 1,445 A-share KOL track records that quantifies the $3.96\times$ follower asymmetry paradox and reverses negative NLP correlation ($\text{Rank IC}: -0.0318 \to +0.0104$).
+\end{itemize}
