@@ -106,13 +106,40 @@ python -m scripts.deploy_beacon_followup runs/beacon-followup-20260922-v1
 - 在 `.venv-professional` 的 Pandas 2.3.3 / NumPy 2.4.6 / SciPy 1.17.1 环境，
   上述四组 Agent 测试共 23 项通过；生成器还报告了一处旧 `Q` 日期频率警告。
 - v1 压缩包的 550 个源码文件逐一通过哈希核验，压缩包哈希也与 manifest 一致。
-  Bash 运行入口没有 CRLF 换行；本地没有提交回执。受支持环境的完整回归仍需另行记录。
+  Bash 运行入口没有 CRLF 换行；本地没有提交回执。
 - 部署入口离线核验仍得到同一 v1 压缩包哈希，550 个源码文件、12 个计划单元。
   新增部署检查与引擎检查共 21 项通过；这些是本地测试，不是远端运行证据。
 - 已修正引擎依赖检查中的标准库白名单，使其接受日期兼容逻辑使用的 `re`。
-  受支持环境的完整回归已启动，最后一次成功读取的日志进度为 81%，当时未显示失败。
-  后续读取运行回执的调用被自动安全审核拦截（无法确定安全状态），本次未取得结束
-  回执，不能宣称完整回归通过。日志为 `full-regression-supported.log`。
+  续接读取已确认受支持环境完整回归结束：**3,379 项通过、262 项跳过、51 项未选择、
+  25 条警告，耗时 362.37 秒**。日志为 `full-regression-supported.log`。这是该次提交前
+  源码在 Pandas 2.3.3 环境的库回归结果，不是 Jev 或 Beacon 模型实验成绩。
+
+## Jev 和果蝇配对对照的新增入口
+
+新增 [Jev 探测脚本](../scripts/run_jev_probe.py)，默认只保存请求计划；`--run` 最多发送
+两次托管请求，覆盖结构化选择、评分、是非概率和片段重排。每次使用新目录，记录请求
+哈希、实际模型、token 用量和耗时。失败时不重试、不生成替代答案。示例中的置信度
+阈值只是应用逻辑演示，没有经过校准。
+
+新增 [BM25 与 Jev 配对检索实验](../benchmarks/rag_jev/README.md)，分别执行冻结、推理、
+评分。两条件使用相同的候选片段、时间截断和上下文预算；评分命令才读取相关性标签。
+首个公开合成开发快照包含 6 个问题，保存在
+`runs/rag-jev-development-20260922-v1/prepared/`，状态为 `prepared_not_run`。
+标签由作者编写，尚不是独立人工标注的金融任务集；不能把它作为独立留出结果。
+当前运行环境未配置 `TYPESAFE_API_KEY`，因此没有真实 Jev 响应或性能结果。
+
+果蝇比较新增 `frozen_gated` 条件及 `--paired-gate`，直接比较相同风险门控下的学习记忆
+与冻结记忆。该模式要求已有行情快照，保持原来的种子、成本和时间窗口。专用
+[Beacon 入口](../benchmarks/fly_reuse/beacon_gate_control.sh)复用旧 RADFM 环境和数据，
+将新结果、临时文件和缓存写到不同的 RADFM 目录；尚未提交远端运行。
+
+新增入口与既有 Jev、RAG、Agent 接口的联合检查 **101 项通过、9 项跳过**。
+跳过的是缺少固定版本上游源码的果蝇集成检查；不能据此宣称真实果蝇组合已经运行。
+
+GitHub PR #4 的 [Ubuntu Python 3.11 日志](https://github.com/howard-lynn-ye/fin-skills/actions/runs/35793752490/job/106968101114)
+显示 Pandas 3.0.6 下四个 Agent 接口测试因生成器使用旧 `Q` 频率而报错。
+已改用显式 `QuarterEnd(startingMonth=12)`，并在 Pandas 2.3.3 下核对全部 27 个季度日期
+与原写法一致；联合检查中的四个接口测试已通过。跨平台 CI 仍须以新提交的检查为准。
 
 原失败日志保留在 `runs/beacon-followup-20260922-v1/full-regression.log`；受支持环境的
 Agent 测试日志为同目录的 `targeted-supported.log`。v1 保持冻结；任何后续源码修复

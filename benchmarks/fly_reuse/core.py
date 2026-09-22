@@ -171,7 +171,7 @@ class Compact:
                 "gated": bool(gated), "score": score}
 
     def receive(self, previous, reward, next_state, available_at, training):
-        if not training or self.kind == "frozen":
+        if not training or self.kind in ("frozen", "frozen_gated"):
             return
         self.batch.append({"previous": previous, "reward": float(reward),
                            "next": next_state, "available_at": available_at})
