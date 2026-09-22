@@ -50,7 +50,7 @@ def run_example(name: str) -> str:
 def test_examples_are_indexed():
     assert EXAMPLES == ["algorithm_selection.py", "audit_a_backtest.py", "futures_roll.py",
                         "market_strategy.py", "model_zoo.py", "point_in_time_fundamentals.py",
-                        "research_workflow.py"]
+                        "rag_pipeline.py", "research_workflow.py"]
     index = (EXAMPLES_DIR / "README.md").read_text(encoding="utf-8")
     for name in EXAMPLES:
         assert f"({name})" in index, f"examples/README.md does not link {name}"
@@ -61,6 +61,13 @@ def test_every_example_runs_and_prints_its_takeaway(name: str):
     out = run_example(name)
     takeaway = out.split("TAKEAWAY", 1)[1]
     assert len(takeaway.strip().splitlines()) >= 3, "the takeaway is one line of nothing"
+
+
+def test_rag_example_preserves_source_and_labels_mock_inference():
+    out = run_example("rag_pipeline.py")
+    assert "SOURCE: example/rag" in out
+    assert "CITATION LABEL CHECK: True" in out
+    assert "no live Jev inference" in out
 
 
 def test_audit_a_backtest_finds_two_defects_and_then_finds_none():

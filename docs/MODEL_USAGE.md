@@ -29,6 +29,7 @@ restored = load_model("ridge_zoo.zip", trusted=True)
 | `lstm_forecast`、`transformer_forecast`、`patchtst_forecast`、`nhits_forecast` | 训练、多步预测、保存加载 | NeuralForecast 原生模型；无预训练权重 |
 | `ppo`、`sac` | 环境训练、动作预测、保存加载 | Stable-Baselines3；用户提供 Gymnasium 环境 |
 | `fly_memory` | 记忆读出、经过检查的完整过程反馈更新、保存加载 | 单独安装 GPL 扩展，显式提供电路参数 |
+| `jev` | 结构化决策、概率评分、检索片段重排 | TypeSafe 托管 API；需要 API key；本库包含适配器，不分发权重 |
 | `kalman_filter` | 固定参数的前向状态滤波 | 基础依赖；不包含使用未来数据的平滑器 |
 | `ledoit_wolf_covariance`、`ewma_covariance`、`pca_covariance` | 协方差估计 | 基础依赖；传入小数收益 |
 | `nelson_siegel`、`svensson` | 期限结构拟合 | 基础依赖；横截面曲线拟合不是未来收益预测 |
@@ -104,6 +105,48 @@ result = memory.update(receipt, now=decision_time)
 和扣费账户净值的 `NavMark`。反馈必须严格早于 `now` 可用，负收益也更新；无效或未到达的
 反馈不改变记忆，同一回执只应用一次。独立账本仍需核对净值来源是否真实。
 本适配器暴露记忆组件，不把它宣称为完整自主交易策略，也不附带预训练金融权重。
+
+## JEV 结构化决策与检索重排
+
+JEV 与果蝇记忆使用同一个 `create_model` 入口，承担不同的流水线步骤。
+这里的 JEV 指 TypeSafe Jev；接口按 2026-09-22 的
+[官方 API 文档](https://docs.typesafe.ai/api)接入。它返回 `choice`、`score`、`noul`
+三种结构化答案，不生成自由文本。`score` 是各等级的概率加权值，`noul` 是肯定答案的概率。
+
+```python
+from fin_skills.model_zoo import create_model
+
+# 先在运行环境设置 TYPESAFE_API_KEY；本次调用会把 state/questions 发给 TypeSafe。
+jev = create_model("jev", model="jev-latest", allow_network=True, timeout=30)
+result = jev.predict(
+    {"question": "Which component should retrieve supporting documents?"},
+    questions={
+        "component": {
+            "type": "choice",
+            "instructions": "Choose the component responsible for document retrieval.",
+            "criteria": {"rag": "Document retrieval", "memory": "Feedback-driven memory"},
+        }
+    },
+)
+print(result["answers"]["component"])
+print(result["model"], result["usage"])
+```
+
+创建模型和导入库不会联网；实际托管调用需要显式 `allow_network=True`。
+也可传入 `transport(payload, *, timeout)` 回调，使用调用方自己的客户端或离线测试桩。
+自定义 transport 控制自己的联网行为，库不会把环境中的密钥传给它。
+没有自动安装、权重下载或请求重试；请求失败会报错，不会替换成模拟答案。
+模型卡的 `ready` 只表示适配器可用，不代表账户已获准访问服务。
+
+`jev.rerank(query, passages, top_k=3)` 接收带 `text` 字段的字典列表，保留原来源字段，
+在返回的 `passages` 中增加 `jev_relevance` 与 `jev_confidence`。
+空列表直接返回空结果，不发请求。相关性和置信度均不是事实正确性的证明。
+完整 RAG 组合见 [RAG 流水线](RAG_PIPELINE.md)。
+
+JSON/MCP 通过 `run_model` 调用同一接口，`data` 包含 `state` 和 `questions`，
+`parameters` 仅接受 `model`、`allow_network`、`timeout`。密钥来自服务端环境，
+不放在工具参数里。需要可复现版本时应指定供应商支持的固定模型 ID，
+并记录响应中的实际 `model`；`jev-latest` 是可变化的别名。
 
 ## 选择已有模型
 

@@ -61,7 +61,7 @@ def _cards():
             continue  # one canonical card; model: IDs remain accepted aliases
         # A numerical or signal adapter does not imply a complete trading strategy.
         cards.append(dict(id="model:" + model["id"], name=model.get("name", model["id"]),
-                          name_zh="", kind="algorithm", family=model["task"],
+                          name_zh="", kind=model.get("kind", "algorithm"), family=model["task"],
                           asset_classes=["input_dependent"],
                           required_data=list(model.get("inputs", [])), status="integrated",
                           availability=model["status"], model_id=model["id"],

@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "coverage": {
-    "total": 346,
+    "total": 347,
     "by_kind": {
       "strategy": 51,
-      "decision": 37,
+      "decision": 38,
       "algorithm": 258
     },
     "by_status": {
       "reference": 17,
       "external": 45,
-      "integrated": 284
+      "integrated": 285
     },
     "by_family": {
       "allocation": 21,
@@ -40,6 +40,7 @@
       "risk_control": 5,
       "signal": 7,
       "stat_arb": 1,
+      "structured_decision": 1,
       "supervised": 10,
       "technical": 158,
       "time_series": 12,
@@ -10558,6 +10559,40 @@
         "status": "native_engine_sample_verified",
         "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
       }
+    },
+    {
+      "id": "model:jev",
+      "name": "jev",
+      "name_zh": "",
+      "kind": "decision",
+      "family": "structured_decision",
+      "asset_classes": [
+        "input_dependent"
+      ],
+      "required_data": [
+        "state",
+        "questions"
+      ],
+      "status": "integrated",
+      "availability": "check_model_catalog_at_runtime",
+      "model_id": "jev",
+      "operations": [
+        "run",
+        "predict",
+        "rerank"
+      ],
+      "json_run": true,
+      "related_model_ids": [],
+      "caution": "Choice/Score/Noul decisions and passage reranking. No local weights, text generation or financial correctness guarantee. Ready describes the adapter, not API access.",
+      "sources": [
+        {
+          "location": "https://docs.typesafe.ai/api",
+          "verified_on": "2026-09-22",
+          "verification": "inherited adapter metadata"
+        }
+      ],
+      "evidence": "adapter_registered",
+      "performance_evidence": null
     },
     {
       "kind": "strategy",

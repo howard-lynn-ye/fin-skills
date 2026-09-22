@@ -42,6 +42,8 @@ from fin_skills.tools.models import FUNCTIONS as MODEL_FUNCTIONS
 from fin_skills.tools.models import definitions as model_definitions
 from fin_skills.tools.knowledge import FUNCTIONS as KNOWLEDGE_FUNCTIONS
 from fin_skills.tools.knowledge import definitions as knowledge_definitions
+from fin_skills.tools.rag import FUNCTIONS as RAG_FUNCTIONS
+from fin_skills.tools.rag import definitions as rag_definitions
 from fin_skills.tools.schema import Exported, exported, excluded, input_docs, input_kinds
 
 MAX_SKILL_CHARS = 200_000
@@ -396,6 +398,7 @@ _CATALOGUE = {
     **ALGORITHM_FUNCTIONS,
     **MODEL_FUNCTIONS,
     **KNOWLEDGE_FUNCTIONS,
+    **RAG_FUNCTIONS,
 }
 
 _TOOLS: list[dict[str, Any]] | None = None
@@ -411,7 +414,7 @@ def list_tools() -> list[dict[str, Any]]:
     global _TOOLS
     if _TOOLS is None:
         tools = (_catalogue_tools() + collection_definitions() + algorithm_definitions()
-                 + model_definitions() + knowledge_definitions())
+                 + model_definitions() + knowledge_definitions() + rag_definitions())
         for name in sorted(exported()):
             spec = exported()[name]
             tools.append({"name": spec.tool, "description": spec.description,

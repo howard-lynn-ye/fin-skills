@@ -19,6 +19,9 @@ def create_model(model_id, **parameters):
     if card["status"] != "ready":
         raise ImportError(f"{model_id}: {card['status']}; {card['install']}")
     family = card["adapter"]
+    if family == "decision":
+        from .jev import JevModel
+        return JevModel(**parameters)
     if family == "upstream":
         from .upstream import UpstreamModel
         return UpstreamModel(model_id, parameters)
@@ -34,8 +37,10 @@ def create_model(model_id, **parameters):
     if family == "rl":
         from .reinforcement import RLModel
         return RLModel(model_id, parameters)
-    from .fly import FlyMemory
-    return FlyMemory(**parameters)
+    if family == "fly":
+        from .fly import FlyMemory
+        return FlyMemory(**parameters)
+    raise ValueError(f"unknown model adapter: {family!r}")
 
 
 __all__ = ["model_catalog", "create_model", "load_model"]

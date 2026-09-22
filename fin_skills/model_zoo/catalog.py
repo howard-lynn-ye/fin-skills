@@ -73,6 +73,16 @@ def model_catalog(task=None):
             stage="experimental", source=source, caveat=caveat, json_run=False))
     from .upstream_catalog import upstream_cards
     cards.extend(upstream_cards(_available))
+    cards.append(dict(id="jev", kind="decision", task="structured_decision", adapter="decision",
+        inputs=["state", "questions"], operations=["run", "predict", "rerank"],
+        status="ready", library="TypeSafe Jev hosted API", pretrained=True,
+        weights_bundled=False, deployment="hosted_api", credentials="TYPESAFE_API_KEY",
+        install="Base dependencies; TYPESAFE_API_KEY and explicit allow_network=True for API calls",
+        license="Adapter MIT; hosted service terms apply", stage="adapter",
+        source="https://docs.typesafe.ai/api", verified_on="2026-09-22",
+        caveat="Choice/Score/Noul decisions and passage reranking. No local weights, text generation "
+               "or financial correctness guarantee. Ready describes the adapter, not API access.",
+        json_run=True))
     if task is not None and task not in {c["task"] for c in cards}:
         raise ValueError(f"unknown model task: {task!r}")
     return [c for c in cards if task is None or c["task"] == task]

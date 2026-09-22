@@ -15,6 +15,8 @@ SMOKE = r'''
 import json
 from pathlib import Path
 import fin_skills
+from fin_skills.rag import Document, RAGIndex, RAGPipeline
+from fin_skills.model_zoo import create_model, model_catalog
 from fin_skills.algorithms import auto_run, fit, load_model, research, catalog
 assert fin_skills.load('backtest-validation')
 assert len(catalog()) >= 1
@@ -27,6 +29,12 @@ path = model.save('model.zip')
 assert load_model(path, trusted=True).predict(horizon=1)[0] == 4
 r.save('research.json')
 assert json.loads(Path('research.json').read_text())['schema_version'] == 1
+index = RAGIndex.from_documents([Document('doc', 'RAG retrieves source documents.')])
+index.save('rag.json')
+assert RAGPipeline(RAGIndex.load('rag.json')).prepare('source')['citations'][0]['document_id'] == 'doc'
+assert RAGIndex.from_skills(['backtest-validation']).chunks
+assert create_model('jev').model_id == 'jev'
+assert {'jev', 'fly_memory'} <= {c['id'] for c in model_catalog()}
 print('INSTALLED_SMOKE_OK', fin_skills.__file__)
 '''
 
@@ -56,6 +64,9 @@ def main():
             names = archive.namelist()
             assert "fin_skills/algorithms/research.py" in names
             assert "fin_skills/_skills/index.json" in names
+            assert "fin_skills/rag/pipeline.py" in names
+            assert "fin_skills/model_zoo/jev.py" in names
+            assert not any(n.startswith("fin_skills_fly/") for n in names)
             assert not any(n.startswith(("tests/", ".venv", "benchmarks/")) for n in names)
         for i, artifact in enumerate(artifacts):
             env_dir = root / f"env{i}"
