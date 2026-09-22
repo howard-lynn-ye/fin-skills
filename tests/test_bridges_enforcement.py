@@ -138,7 +138,7 @@ def test_vectorbt_shifts_by_default_and_the_two_sharpes_differ(bars):
     g = V.from_vectorbt(guarded, sessions=252).returns
     r = raw.returns()
     assert conventions.annualize_sharpe(g, 252) != conventions.annualize_sharpe(r, 252)
-    fills = pd.DataFrame(guarded.order_records.records)
+    fills = pd.DataFrame(guarded.order_records)
     close = bars["close"].to_numpy()
     assert not any(np.isclose(float(row.price), close[int(row.idx)], atol=1e-12)
                    for row in fills.itertuples(index=False)), \

@@ -92,3 +92,8 @@ Beacon RADFM 上的适配器、目录、工具和复用工作流回归：**358 p
 原生引擎测试默认在缺少依赖时跳过。LEAN 需设置 `FIN_SKILLS_LEAN_CHECKOUT` 和
 `FIN_SKILLS_DOTNET`。测试、缓存及输出均在 `/beacon-projects/radfm/wy891/` 下，
 未在 Beacon HOME 安装或运行实验。
+
+合并前另外验证了原生 vectorbt 桥接（23 passed，2 个与当前安装状态相反的测试跳过）、
+全部示例（11 passed）和独立果蝇扩展（8 passed）。该环境使用 vectorbt 1.0.0、
+Plotly 6.9.0、skfolio 1.3.0；Plotly 7.1.0 删除的 `scattermapbox` 模板字段会使
+此版 vectorbt 导入失败，而 Plotly 5 又不满足此版 skfolio 的依赖声明。
