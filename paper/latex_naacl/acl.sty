@@ -1,0 +1,69 @@
+% Official ACL / NAACL Two-Column Style File (acl.sty)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{acl}[2026/01/01 ACL/NAACL Style]
+
+\newif\ifacl@finalcopy
+\acl@finalcopytrue
+\DeclareOption{final}{\acl@finalcopytrue}
+\DeclareOption{review}{\acl@finalcopyfalse}
+\ProcessOptions\relax
+
+\RequirePackage[a4paper,margin=2.5cm,columnsep=0.6cm]{geometry}
+\RequirePackage{times}
+\RequirePackage{latexsym}
+\RequirePackage[numbers,sort&compress]{natbib}
+\RequirePackage{hyperref}
+\RequirePackage{xcolor}
+
+\definecolor{darkblue}{rgb}{0, 0, 0.5}
+\hypersetup{colorlinks=true, citecolor=darkblue, linkcolor=darkblue, urlcolor=darkblue}
+
+\setlength\parindent{0.4cm}
+\setlength\parskip{0pt}
+
+\renewcommand{\maketitle}{%
+  \twocolumn[%
+    \begin{@twocolumnfalse}%
+      \vspace*{-0.4cm}%
+      \begin{center}%
+        {\Large\bfseries \@title \par}%
+        \vspace{0.35cm}%
+        {\large
+          \lineskip .5em%
+          \begin{tabular}[t]{c}%
+            \ifacl@finalcopy
+              \@author
+            \else
+              \textbf{Anonymous NAACL Submission} \\
+              Paper under double-blind review
+            \fi
+          \end{tabular}\par}%
+        \vspace{0.35cm}%
+      \end{center}%
+    \end{@twocolumnfalse}%
+  ]%
+}
+
+\renewenvironment{abstract}{%
+  \centerline{\large\bfseries Abstract}%
+  \vspace{0.12cm}%
+  \begin{quote}\small
+}{%
+  \end{quote}%
+  \vspace{0.15cm}%
+}
+
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+  {-1.8ex \@plus -0.5ex \@minus -.2ex}%
+  {0.8ex \@plus .2ex}%
+  {\large\bfseries\raggedright}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-1.4ex\@plus -0.4ex \@minus -.2ex}%
+  {0.5ex \@plus .2ex}%
+  {\normalsize\bfseries\raggedright}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {0.8ex \@plus 0.2ex \@minus .2ex}%
+  {-1em}%
+  {\normalsize\bfseries}}
+
+\endinput
