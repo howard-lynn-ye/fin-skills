@@ -4,8 +4,9 @@
 \section{Related Work}
 \label{sec:related}
 
-\paragraph{Financial LLMs \& Autonomous Agents.}
-Domain foundation models \citep{wu2023bloomberggpt,yang2023fingpt}, holistic benchmarks \citep{xie2024finben,li2024investorbench}, and tool-augmented trading agents \citep{yu2024finmem,zhang2024finagent} show strong capabilities in strategy synthesis. However, existing evaluations rely on static historical splits vulnerable to pre-training cutoff overlap, same-session timestamp joins, and retail social echo-chambers.
+\paragraph{Financial LLMs, Benchmarks \& Leakage.}
+Domain foundation models \citep{wu2023bloomberggpt,yang2023fingpt}, financial benchmarks \citep{xie2024finben,li2024investorbench,bigeard2025finance}, and tool-augmented trading agents \citep{yu2024finmem,zhang2024finagent,chen2025stockbench} show strong capabilities in strategy synthesis and sequential portfolio allocation. Recently, \emph{Profit Mirage} \citep{li2025profit} investigated information leakage in financial agents using counterfactual interventions. We extend this line of inquiry by separating static skill guidance, autonomous tool selection, and artifact-bound verification across both code-writing agents and timestamped social-signal pipelines.
 
-\paragraph{Backtest Overfitting \& Execution Self-Repair.}
-Econometric controls \citep{white2000reality,hansen2005spa,bailey2014deflated,bailey2017pbo} quantify multiple-testing bias after honest returns are computed, while code self-repair \citep{shinn2023reflexion,chen2023selfdebug} relies on runtime exceptions. Because future-leaking table joins execute with Python exit code $0$ and inflate Sharpe ratios, generic self-debugging fails in finance. Inspired by \citet{ribeiro2020checklist} and \citet{zhao2019pyod}, \texttt{fin-skills} pairs domain specifications with executable counterfactual guards.
+\paragraph{Backtest Overfitting, Execution Self-Repair \& Online Memory.}
+Econometric controls \citep{white2000reality,hansen2005spa,bailey2014deflated,bailey2017pbo} quantify multiple-testing bias after honest returns are computed, while code self-repair \citep{shinn2023reflexion,chen2023selfdebug} relies on runtime exceptions. Because future-leaking joins execute with Python exit code $0$, generic self-debugging fails in finance. Inspired by behavioral testing \citep{ribeiro2020checklist} and multi-timescale mushroom-body memory \citep{huang2024memory}, \texttt{fin-skills} binds domain specifications to executable counterfactual guards for both static code submission and online delayed-feedback learning.
+

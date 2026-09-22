@@ -4,21 +4,23 @@
 \section{Conclusion}
 \label{sec:conclusion}
 \vspace{-0.08cm}
-We introduced \textbf{\texttt{fin-skills}} alongside an external counterfactual and microstructure audit methodology for financial AI agents. Combining black-box perturbations, multi-round guard self-repair ($98.3\%$ \texttt{Pass@3} vs.\ $71.7\%$ Python \texttt{Self-Debug}), and bilingual Bayesian KOL calibration ($2{,}521$ KOLs) eliminates backtest shortcut illusions and bridges financial NLP with live execution.
+We presented \textbf{\texttt{fin-skills}} alongside an external counterfactual audit protocol and a checked delayed-feedback interface for financial AI agents. Unifying four empirical pillars---artifact-bound code self-repair ($98.3\%$ \texttt{Pass@3} on \texttt{FinGuardBench-60} after resolving Beacon \texttt{C0--C3} harness bottlenecks), progressive skill routing ($98.91\%$ token reduction and $64/64$ valid autonomous FX allocations), point-in-time credibility gating across \KOLPredRows{} timestamped predictions from \KOLTotalAccounts{} bilingual KOLs ($\Delta\text{Daily IC} = \KOLPairedDiffIC{}$), and 60-day rolling checked feedback for online mushroom-body memory ($\text{Daily IC } \KOLRollingDailyIC{}$)---demonstrates where and how executable financial verification eliminates backtest illusions and extracts statistically robust signal.
 
 \clearpage
 
 \section*{Limitations}
 \label{sec:limitations}
 \vspace{-0.14cm}
-We note three scope boundaries and extensions:
+We note four scope boundaries and extensions:
 \begin{enumerate}\setlength{\itemsep}{0.5pt}\setlength{\parskip}{0pt}\setlength{\topsep}{1.5pt}
-    \item \textbf{Bar/Session vs.\ Nanosecond L3 Granularity}: While \texttt{fin-skills} provides comprehensive verification and execution modeling across daily and intraday equity, ETF, and derivatives workflows ($T+1$ settlement, auction windows, board-lot rounding, and Almgren-Chriss impact), our current guard suite does not model nanosecond-level FPGA or Level-3 (L3) full limit-order-book queue dynamics, which remains an avenue for ultra-low-latency extensions.
-    \item \textbf{Repair Horizon on Compact Models}: While frontier generalist and reasoning models achieve $100.0\%$ ($60/60$) compliance within three guard-guided repair rounds (\texttt{Pass@3}), compact $8\text{B}$ models (\texttt{Small-Fast Tier}) reach $91.7\%$ ($55/60$) at \texttt{Pass@3} on deeply nested multi-table lineage tasks, suggesting that lightweight local agents benefit from a deeper repair budget (\texttt{Pass@5}) or AST patch templates.
-    \item \textbf{Rolling Calibration for Social Platforms}: Although our empirical Bayesian KOL credibility framework yields consistent cross-market gains across $2{,}521$ bilingual accounts on Xueqiu and StockTwits, evolving platform recommendation feeds and contributor cohorts motivate scheduled rolling-window prior updates in continuous production deployments.
+    \item \textbf{Host Sandboxing vs.\ Independent Scorer Isolation}: While the Beacon worker enforces Linux Landlock and seccomp filters to restrict filesystem access, network calls, and process creation, submitted Python code still executes within the check interpreter; formal adversarial holdout benchmarks require an independently isolated scoring process.
+    \item \textbf{Price-Only Series vs.\ Information Asymmetry}: As demonstrated in our 64-decision autonomous ECB FX study (\S\ref{sec:autonomous_pillar}), valid tool execution ($43/43$ calls) on efficient price-only reference series does not automatically generate excess return over passive controls; positive predictive gains require point-in-time filtering of noisy alternative data (\S\ref{sec:realworld}).
+    \item \textbf{Repair Horizon on Compact Models}: While frontier generalist and reasoning models achieve $100.0\%$ ($60/60$) compliance within three guard-guided repair rounds (\texttt{Pass@3}), compact $7\text{B}\text{--}8\text{B}$ models reach $91.7\%$ ($55/60$) at \texttt{Pass@3} on deeply nested multi-table lineage tasks, motivating deeper repair budgets (\texttt{Pass@5}) or AST patch templates.
+    \item \textbf{Online Memory Autonomy}: While our mushroom-body feedback interface (\S\ref{sec:fly_pillar}) validates complete-episode log-wealth targets $G=\log(W_T/W_0)$ and rolling 60-day calibration lifts cross-sectional IC to $\KOLRollingDailyIC{}$, end-to-end joint training of entry, holding-duration, and exit policies across non-biological and biological memory controllers remains an active extension.
 \end{enumerate}
 \vspace{-0.22cm}
 \section*{Ethics Statement}
 \vspace{-0.14cm}
-All 2,521 social author profiles ($1{,}445$ China Xueqiu and $1{,}076$ US StockTwits accounts) in our benchmark fixture are pseudonymized via one-way SHA-256 digests (\texttt{KOL\_<10-hex>}, \texttt{KOL\_US\_<10-hex>}) with handles and PII permanently stripped. Nothing herein constitutes investment advice or live execution; all broker-facing skills enforce strict paper-account sandboxing (\texttt{paper\_account\_guard}) and human-in-the-loop kill switches.
+All \KOLTotalAccounts{} social author profiles (\KOLCNCount{} China Xueqiu and \KOLUSCount{} US StockTwits accounts) in our benchmark fixture are pseudonymized via one-way SHA-256 digests (\texttt{KOL\_<10-hex>}, \texttt{KOL\_US\_<10-hex>}) with handles and PII permanently stripped. Nothing herein constitutes investment advice or live execution; all broker-facing skills enforce strict paper-account sandboxing (\texttt{paper\_account\_guard}) and human-in-the-loop kill switches.
 \vspace{-0.20cm}
+
