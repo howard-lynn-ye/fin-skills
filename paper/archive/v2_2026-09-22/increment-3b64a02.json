@@ -1,0 +1,137 @@
+{
+  "status": "ARCHIVED_UNVERIFIED_NOT_CURRENT_RESEARCH_EVIDENCE",
+  "source_commit": "3b64a02eb52e8743213d8e3735ec11cf9bb33da6",
+  "comparison_base": "a2644375ad9030cca0518af56dda02c334bc7788",
+  "scope": "All changed paths in the subsequent v2 commit. Overlay these source bytes on the a264437 snapshot and apply any deletions to reconstruct this increment. Not installed over the active study.",
+  "archive": "v2-increment-3b64a02.zip",
+  "archive_sha256": "94d4641ddd2e69a71bd4dfe2e5ae811ee5895de26668c45256b8e27388a64c11",
+  "archive_bytes": 2920962,
+  "entries": [
+    {
+      "status": "M",
+      "path": "benchmarks/AGENT_STUDY_RESULTS.json",
+      "sha256": "69246de1c3a79401d883eb56948474fb1143ebb86679cd96eab6966dcde64127",
+      "bytes": 123125
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/EXTENDED_ABLATIONS_E9_E12_RESULTS.json",
+      "sha256": "0cab434259bbb64b5e96d739729672bf197a77a495eca748c08121cb5f061f7a",
+      "bytes": 16149
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/REAL_WORLD_KOL_AUDIT_RESULTS.json",
+      "sha256": "0b4786fc682398b19e0e70b7bb9b2bbbe712cd7807fd402b6dd95f82fb2400cb",
+      "bytes": 19295
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/run_extended_ablations_e9_e12.py",
+      "sha256": "e1e88758c055a3d51503c6b696cfa484886de5ff4b011e244a3a35a363e0d350",
+      "bytes": 23487
+    },
+    {
+      "status": "M",
+      "path": "paper/NAACL_SHORT_PAPER.md",
+      "sha256": "092265da0427b6e25d1ca0e225f8738187bb2e4ee7eb943af462e78a64591b13",
+      "bytes": 16692
+    },
+    {
+      "status": "M",
+      "path": "paper/NAACL_SHORT_PAPER_ZH.md",
+      "sha256": "d65349398235a9301e093fc36c1650212ea69578f2c91554dac8c93d562639ea",
+      "bytes": 13335
+    },
+    {
+      "status": "M",
+      "path": "paper/generate_figures.py",
+      "sha256": "ea3277eeff2f44396e0ad08856eec787356b84f4187ece46b2cbd6344f3e49b0",
+      "bytes": 16836
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/FinSkills_NAACL_2026_Overleaf.zip",
+      "sha256": "1e3a0319f79ebcd334b68c0a30464f420a4d332ba2c4672d4dea18a22c649d53",
+      "bytes": 860948
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/figs/fig_domain_heatmap_and_model_scaling.pdf",
+      "sha256": "7e90f7dcafddb70ff6f5e1bb2d5e629e762d40f7df037b72a2d1467982406692",
+      "bytes": 41684
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_e9_e12_feedback_and_regime_ablation.pdf",
+      "sha256": "b4a967b384836306f4f984112dd810fac1e6a949a67d8aa5adf7b8da616cf187",
+      "bytes": 39368
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_e9_e12_feedback_and_regime_ablation.png",
+      "sha256": "bd270a55f4d33bb6807b9fdbf744c7a90921f82049acfa4673659e026cc8a26b",
+      "bytes": 153345
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/main.pdf",
+      "sha256": "accc0dc1803d5961c8bc512b63b9a53fb61fbf7644a69c80073f0cd8b2c4d915",
+      "bytes": 408149
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/sections/appendix.tex",
+      "sha256": "70b94b56d074fce06970f3d9e84390fe57368057306e1ca370826d24280d7f05",
+      "bytes": 17036
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/sections/experiment.tex",
+      "sha256": "e51af615d3d6b9ec5649837594f766085231b383b16dcc07a949fbd8969fd6b6",
+      "bytes": 8173
+    },
+    {
+      "status": "M",
+      "path": "paper/stock_prediction/FinSkills_NAACL_2026_Overleaf.zip",
+      "sha256": "1e3a0319f79ebcd334b68c0a30464f420a4d332ba2c4672d4dea18a22c649d53",
+      "bytes": 860948
+    },
+    {
+      "status": "M",
+      "path": "paper/stock_prediction/figs/fig_domain_heatmap_and_model_scaling.pdf",
+      "sha256": "7e90f7dcafddb70ff6f5e1bb2d5e629e762d40f7df037b72a2d1467982406692",
+      "bytes": 41684
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_e9_e12_feedback_and_regime_ablation.pdf",
+      "sha256": "b4a967b384836306f4f984112dd810fac1e6a949a67d8aa5adf7b8da616cf187",
+      "bytes": 39368
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_e9_e12_feedback_and_regime_ablation.png",
+      "sha256": "bd270a55f4d33bb6807b9fdbf744c7a90921f82049acfa4673659e026cc8a26b",
+      "bytes": 153345
+    },
+    {
+      "status": "M",
+      "path": "paper/stock_prediction/main.pdf",
+      "sha256": "accc0dc1803d5961c8bc512b63b9a53fb61fbf7644a69c80073f0cd8b2c4d915",
+      "bytes": 408149
+    },
+    {
+      "status": "M",
+      "path": "paper/stock_prediction/sections/appendix.tex",
+      "sha256": "70b94b56d074fce06970f3d9e84390fe57368057306e1ca370826d24280d7f05",
+      "bytes": 17036
+    },
+    {
+      "status": "M",
+      "path": "paper/stock_prediction/sections/experiment.tex",
+      "sha256": "e51af615d3d6b9ec5649837594f766085231b383b16dcc07a949fbd8969fd6b6",
+      "bytes": 8173
+    }
+  ]
+}
