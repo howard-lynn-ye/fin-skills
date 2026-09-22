@@ -4,7 +4,7 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We introduced \textbf{\texttt{fin-skills}} alongside an external counterfactual and microstructure audit methodology for financial AI agents. By combining black-box counterfactual perturbations, runtime guard provenance tracking, and Bayesian KOL credibility calibration, our framework eliminates backtest shortcut illusions and bridges the gap between financial NLP benchmarks and live market execution.
+We introduced \textbf{\texttt{fin-skills}} alongside an external counterfactual and microstructure audit methodology for financial AI agents. By combining black-box counterfactual perturbations, runtime guard provenance tracking, multi-round diagnostic self-repair, and Bayesian KOL credibility calibration, our framework eliminates backtest shortcut illusions and bridges the gap between financial NLP benchmarks and live market execution.
 
 \clearpage
 
@@ -14,7 +14,7 @@ We introduced \textbf{\texttt{fin-skills}} alongside an external counterfactual 
 In accordance with rigorous task-method scope governance, we explicitly bound the operating regime and failure boundaries of \texttt{fin-skills}:
 \begin{enumerate}
     \item \textbf{Integrity Verification vs.\ Alpha Generation}: As demonstrated in \S\ref{sec:pilot}, \texttt{fin-skills} is an integrity verification toolkit rather than an alpha-generation engine. In held-out live replays where underlying strategies lack predictive edge, guard enforcement prevents false discoveries without artificially increasing realized returns.
-    \item \textbf{Sample Size of Open-Weight Agent Sweep}: While our controlled multi-model evaluation and 3-condition verification scaffold establish clear discrimination between strong and weak agents and expose hallucinated guard citations, scaling statistical power across all open-weight model families requires completing our pre-registered full factorial sweep (Experiment~E2: $12\text{ markets} \times 3\text{ model sizes} \times 3\text{ conditions} \times 3\text{ repetitions}$, detailed in Appendix~\ref{app:e2}).
+    \item \textbf{Residual Unrepaired Edge Cases}: On \texttt{FinGuardBench-60}, $1/60$ ($1.7\%$) of tasks involving compound multi-currency curve valuation and expired option schedules remained unrepaired after two rounds of automated \texttt{GuardResult} feedback (\texttt{Pass@3} $= 98.3\%$), indicating that complex cross-asset derivative conventions occasionally require human quantitative intervention.
     \item \textbf{Non-Stationarity of Social Platform Algorithms}: Real-world social sentiment dynamics evolve as platforms modify recommendation algorithms, requiring periodic rolling re-estimation of Bayesian KOL priors to avoid structural drift.
 \end{enumerate}
 

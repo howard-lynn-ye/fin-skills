@@ -1,0 +1,1886 @@
+{
+  "experiment_id": "E1_FinGuardBench_180_Boundary_And_Compound_Suite",
+  "total_guards": 36,
+  "cases_per_guard": 5,
+  "total_cases_evaluated": 180,
+  "confusion_matrix": {
+    "true_positives_defects_caught": 108,
+    "true_negatives_clean_passed": 72,
+    "false_positives_false_alarms": 0,
+    "false_negatives_missed_defects": 0
+  },
+  "metrics": {
+    "true_positive_rate_recall": 1.0,
+    "true_negative_rate_specificity": 1.0,
+    "false_alarm_rate_fpr": 0.0,
+    "f1_score": 1.0,
+    "overall_accuracy": 1.0,
+    "median_guard_latency_ms": 1.889,
+    "mean_guard_latency_ms": 14.721
+  },
+  "modality_breakdown": {
+    "standard_compliant": {
+      "total": 36,
+      "correct": 36,
+      "accuracy": 1.0
+    },
+    "standard_violation": {
+      "total": 36,
+      "correct": 36,
+      "accuracy": 1.0
+    },
+    "boundary_compliant": {
+      "total": 36,
+      "correct": 36,
+      "accuracy": 1.0
+    },
+    "epsilon_edge_violation": {
+      "total": 36,
+      "correct": 36,
+      "accuracy": 1.0
+    },
+    "compound_multi_trap": {
+      "total": 36,
+      "correct": 36,
+      "accuracy": 1.0
+    }
+  },
+  "per_guard_results": [
+    {
+      "guard": "adjustment_check",
+      "skill": "market-data-sourcing",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 3.877,
+      "p95_runtime_ms": 9.545,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 11.334
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 1.791
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 2.388
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 2.335
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 1.54
+        }
+      ]
+    },
+    {
+      "guard": "ashare_rules",
+      "skill": "china-trading-stack",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.043,
+      "p95_runtime_ms": 0.071,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.078
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.042
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.029
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 0.039
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.025
+        }
+      ]
+    },
+    {
+      "guard": "assert_causal",
+      "skill": "signal-construction",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 7.307,
+      "p95_runtime_ms": 23.344,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 28.623
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 2.23
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 2.125
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 1.866
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 1.69
+        }
+      ]
+    },
+    {
+      "guard": "board_lot_feasibility",
+      "skill": "china-trading-stack",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.029,
+      "p95_runtime_ms": 0.053,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.059
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.031
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.022
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.018
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.016
+        }
+      ]
+    },
+    {
+      "guard": "brinson_attribution",
+      "skill": "portfolio-and-risk",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 5.266,
+      "p95_runtime_ms": 16.735,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 4.121
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.841
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 19.889
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.75
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.727
+        }
+      ]
+    },
+    {
+      "guard": "cash_drag",
+      "skill": "china-trading-stack",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.025,
+      "p95_runtime_ms": 0.052,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.058
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.025
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.017
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.014
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.013
+        }
+      ]
+    },
+    {
+      "guard": "contamination_probe",
+      "skill": "llm-finance-agents",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.03,
+      "p95_runtime_ms": 0.059,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.067
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.026
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.02
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.02
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.018
+        }
+      ]
+    },
+    {
+      "guard": "continuous_contract",
+      "skill": "futures-continuous-contracts",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 2.525,
+      "p95_runtime_ms": 6.265,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 6.304
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.076
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 6.111
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.083
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.05
+        }
+      ]
+    },
+    {
+      "guard": "cost_curve",
+      "skill": "backtest-validation",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 17.499,
+      "p95_runtime_ms": 21.348,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 19.493
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 15.418
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 21.811
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 15.294
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 15.481
+        }
+      ]
+    },
+    {
+      "guard": "cost_plausibility",
+      "skill": "execution-cost-analysis",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.148,
+      "p95_runtime_ms": 0.189,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.201
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.142
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.13
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 0.132
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.137
+        }
+      ]
+    },
+    {
+      "guard": "data_quality",
+      "skill": "data-quality-validation",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 13.834,
+      "p95_runtime_ms": 14.893,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 13,
+          "runtime_ms": 15.069
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 13,
+          "runtime_ms": 12.064
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 13,
+          "runtime_ms": 13.75
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 13,
+          "runtime_ms": 14.189
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 13,
+          "runtime_ms": 14.099
+        }
+      ]
+    },
+    {
+      "guard": "fold_leak_test",
+      "skill": "market-data-engineering",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 4.957,
+      "p95_runtime_ms": 7.93,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 8.662
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 3.969
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 5.0
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 4.92
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 2.234
+        }
+      ]
+    },
+    {
+      "guard": "fx_conventions",
+      "skill": "fx-markets",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.025,
+      "p95_runtime_ms": 0.055,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 0.064
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.021
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 0.021
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.01
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.01
+        }
+      ]
+    },
+    {
+      "guard": "greeks_convention",
+      "skill": "derivatives-pricing",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.037,
+      "p95_runtime_ms": 0.067,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.076
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.029
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.031
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.019
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.028
+        }
+      ]
+    },
+    {
+      "guard": "join_asof_sortedness",
+      "skill": "lib-polars",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 6.373,
+      "p95_runtime_ms": 11.296,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 12.868
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 5.005
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 4.619
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 4.66
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 4.715
+        }
+      ]
+    },
+    {
+      "guard": "leveraged_reset",
+      "skill": "etf-mechanics",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.066,
+      "p95_runtime_ms": 0.093,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.096
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.081
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.055
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.051
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.05
+        }
+      ]
+    },
+    {
+      "guard": "npv_zero",
+      "skill": "lib-quantlib",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 1.363,
+      "p95_runtime_ms": 4.868,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 6.02
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.258
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.237
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 0.057
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.243
+        }
+      ]
+    },
+    {
+      "guard": "paper_account_guard",
+      "skill": "broker-execution-apis",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.026,
+      "p95_runtime_ms": 0.046,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.035
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.022
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.012
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.049
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.011
+        }
+      ]
+    },
+    {
+      "guard": "pit_fundamentals",
+      "skill": "fundamental-and-macro-data",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 21.509,
+      "p95_runtime_ms": 21.887,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 20.675
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 21.851
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 21.896
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 21.548
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 3,
+          "runtime_ms": 21.575
+        }
+      ]
+    },
+    {
+      "guard": "pit_universe",
+      "skill": "research-integrity-guards",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 2.222,
+      "p95_runtime_ms": 4.148,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 2.072
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 4,
+          "runtime_ms": 1.462
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 4.667
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 4,
+          "runtime_ms": 1.367
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 4,
+          "runtime_ms": 1.544
+        }
+      ]
+    },
+    {
+      "guard": "pre_trade",
+      "skill": "pre-trade-checks",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 3.557,
+      "p95_runtime_ms": 8.329,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 7,
+          "runtime_ms": 9.784
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 11,
+          "runtime_ms": 1.918
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 7,
+          "runtime_ms": 1.876
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 7,
+          "runtime_ms": 1.695
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 7,
+          "runtime_ms": 2.511
+        }
+      ]
+    },
+    {
+      "guard": "purge_effect",
+      "skill": "lib-purgedcv",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 64.655,
+      "p95_runtime_ms": 75.904,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 75.529
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 6,
+          "runtime_ms": 65.804
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 75.998
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 6,
+          "runtime_ms": 54.554
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 6,
+          "runtime_ms": 51.391
+        }
+      ]
+    },
+    {
+      "guard": "qdii_premium",
+      "skill": "china-trading-stack",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.022,
+      "p95_runtime_ms": 0.045,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.051
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.021
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.014
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.011
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.01
+        }
+      ]
+    },
+    {
+      "guard": "reconcile_sources",
+      "skill": "market-data-sourcing",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 4.738,
+      "p95_runtime_ms": 7.873,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 2.955
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 8.712
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 3.038
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 4.516
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 4.471
+        }
+      ]
+    },
+    {
+      "guard": "regime_coverage",
+      "skill": "regime-detection",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 2.258,
+      "p95_runtime_ms": 2.93,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 3.06
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 2.054
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 2.41
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 1.901
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 1.866
+        }
+      ]
+    },
+    {
+      "guard": "regime_lookahead",
+      "skill": "regime-detection",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.572,
+      "p95_runtime_ms": 0.72,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.753
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 0.547
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.589
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 0.493
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 0.477
+        }
+      ]
+    },
+    {
+      "guard": "research_audit",
+      "skill": "backtest-overfitting",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 10.878,
+      "p95_runtime_ms": 28.184,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 4,
+          "runtime_ms": 33.793
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 5,
+          "runtime_ms": 5.746
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 4,
+          "runtime_ms": 5.083
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 5,
+          "runtime_ms": 5.256
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 5,
+          "runtime_ms": 4.509
+        }
+      ]
+    },
+    {
+      "guard": "result_manifest",
+      "skill": "research-integrity-guards",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.054,
+      "p95_runtime_ms": 0.096,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.108
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 10,
+          "runtime_ms": 0.049
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.049
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 10,
+          "runtime_ms": 0.035
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 10,
+          "runtime_ms": 0.029
+        }
+      ]
+    },
+    {
+      "guard": "rf_convention",
+      "skill": "lib-quantstats",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.442,
+      "p95_runtime_ms": 0.495,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.505
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.454
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.451
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.413
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.386
+        }
+      ]
+    },
+    {
+      "guard": "safe_asof",
+      "skill": "market-data-engineering",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 7.114,
+      "p95_runtime_ms": 12.514,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 14.242
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 5.604
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 5.179
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 5.081
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 5.465
+        }
+      ]
+    },
+    {
+      "guard": "spa_test",
+      "skill": "backtest-validation",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 32.324,
+      "p95_runtime_ms": 34.319,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 34.535
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 33.455
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 31.329
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 30.886
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 31.416
+        }
+      ]
+    },
+    {
+      "guard": "survivorship_audit",
+      "skill": "research-integrity-guards",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 85.503,
+      "p95_runtime_ms": 116.94,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 115.852
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 64.075
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 86.441
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 43.934
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 117.212
+        }
+      ]
+    },
+    {
+      "guard": "synthesis_integrity",
+      "skill": "combining-data-sources",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 0.146,
+      "p95_runtime_ms": 0.362,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.401
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.064
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.206
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.035
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 0.025
+        }
+      ]
+    },
+    {
+      "guard": "trial_ledger",
+      "skill": "backtest-validation",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 117.545,
+      "p95_runtime_ms": 206.819,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 11.688
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 212.744
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 11.591
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 168.584
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 2,
+          "runtime_ms": 183.118
+        }
+      ]
+    },
+    {
+      "guard": "warmup_probe",
+      "skill": "signal-construction",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 88.91,
+      "p95_runtime_ms": 101.787,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 84.038
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 105.095
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 88.554
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 83.912
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 82.953
+        }
+      ]
+    },
+    {
+      "guard": "weight_traps",
+      "skill": "lib-pyportfolioopt",
+      "cases_tested": 5,
+      "cases_correct": 5,
+      "accuracy": 1.0,
+      "mean_runtime_ms": 24.066,
+      "p95_runtime_ms": 28.087,
+      "modalities": [
+        {
+          "modality": "standard_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 29.219
+        },
+        {
+          "modality": "standard_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 22.398
+        },
+        {
+          "modality": "boundary_compliant",
+          "expected_passed": true,
+          "actual_passed": true,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 23.223
+        },
+        {
+          "modality": "epsilon_edge_violation",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 23.557
+        },
+        {
+          "modality": "compound_multi_trap",
+          "expected_passed": false,
+          "actual_passed": false,
+          "correct": true,
+          "findings_count": 1,
+          "runtime_ms": 21.932
+        }
+      ]
+    }
+  ]
+}

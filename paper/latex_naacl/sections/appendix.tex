@@ -7,79 +7,76 @@
     \centering
     \includegraphics[width=0.94\textwidth]{figs/fig_guard_scaling_and_clock_replay.pdf}
     \vspace{-0.15cm}
-    \captionof{figure}{\textbf{System scaling and counterfactual clock replay calibration.} \textbf{(a)} Across dataset sizes $N \in [250, 25000]$ rows, \texttt{Bundle.check()} scales sub-linearly as $\mathcal{O}(N^{0.2637})$, completing in $111.17\text{ ms}$ P50 with $3.66\text{ MB}$ peak memory at $N=25{,}000$ rows. \textbf{(b)} Static future-year holdout (\texttt{2023}) fails to punish same-session post-close joins ($\text{Sharpe} = 22.80$), whereas physical session-by-session clock replay (\texttt{live\_replay.py}) exposes the true live loss ($\text{Sharpe} = -0.58$).}
+    \captionof{figure}{\textbf{Guard runtime scaling and out-of-sample transaction cost sensitivity.} \textbf{(a)} Across dataset sizes $N \in [250, 100{,}000]$ rows, \texttt{Bundle.check()} scales sub-linearly as $\mathcal{O}(N^{0.3894})$, completing in $22.36\text{ ms}$ ($N=250$) to $218.97\text{ ms}$ P50 ($N=100{,}000$) with $14.73\text{ MB}$ peak RAM. \textbf{(b)} Across round-trip transaction costs of $\{5, 10, 20, 30\}\text{ bps}$ (2023--2026 OOS), our guarded Core-Satellite portfolio ($T+5$ horizon, 43 trades) sustains a net Sharpe of $1.98 \to 1.95$, whereas naive unfiltered social trading (363 trades across Tier-C noise stocks) degrades from $0.68 \to 0.52$.}
     \label{fig:scaling_replay}
-    \vspace{0.35cm}
+    \vspace{0.30cm}
 \end{@twocolumnfalse}
 }]
 
-\section{Experiment E1: Synthetic Defect Recall Across Random Seeds}
+\section{Experiment E1: \texttt{FinGuardBench-180}}
 \label{app:e1}
-In \path{benchmarks/guard_bench.py}, we evaluate guard recall across three independent synthetic market worlds generated with random seeds $s \in \{17, 29, 43\}$, each containing 12 planted research defects spanning look-ahead joins, unadjusted corporate splits, survivorship filtering, non-monotonic as-of merges, cost implausibility, and regime look-ahead. Across all three worlds, \texttt{fin-skills} achieved \textbf{100\% recall ($36/36$ total defects detected)}, \textbf{0 false alarms} across 400 clean control runs, and \textbf{0 runtime exceptions} (\path{benchmarks/GUARD_ROBUSTNESS.json}).
+In \path{benchmarks/guard_bench_180.py}, we evaluate all 36 guards across 5 modalities ($36 \times 5 = 180$ cases): \texttt{standard\_\allowbreak compliant}, \texttt{standard\_\allowbreak violation}, \texttt{boundary\_\allowbreak compliant}, \texttt{epsilon\_\allowbreak edge\_\allowbreak violation}, and \texttt{compound\_\allowbreak multi\_\allowbreak trap}. Across all 180 cases (\path{GUARD_BENCH_RESULTS.json}), \texttt{fin-skills} achieves \textbf{100\% recall ($108/108$)} and \textbf{100\% specificity ($72/72$)} at $1.89\text{ ms}$ median latency, plus $36/36$ recall across seeds $\{17,29,43\}$ (\path{GUARD_ROBUSTNESS.json}).
 
-\section{Experiment E2: Three-Condition Open-Weight Scaffold \& Compliance Auditor}
+\section{Experiment E2: \texttt{FinGuardBench-60}}
 \label{app:e2}
-To strictly isolate whether agent improvements stem from passive prompt documentation or active runtime execution, we implement \path{benchmarks/agent_study/open_agent_runner.py}, which evaluates any OpenAI-compatible open-weight server (\texttt{Qwen2.5-\allowbreak Coder-\allowbreak 32B-\allowbreak Instruct}, \texttt{DeepSeek-V3}, \texttt{Llama-3.3-\allowbreak 70B-\allowbreak Instruct}) across three isolated conditions:
-\begin{itemize}
-    \item \textbf{Condition A (\texttt{no\_library}):} Task prompt and raw market CSVs only.
-    \item \textbf{Condition B (\texttt{skills\_text\_only}):} Injects relevant \texttt{SKILL.md} guidance into context while physically blocking \texttt{fin\_skills.api} guard imports.
-    \item \textbf{Condition C (\texttt{skills\_plus\_guards}):} Provides both \texttt{SKILL.md} text and executable guard tools with immutable runtime provenance logs (\texttt{guard\_\allowbreak execution\_\allowbreak trace.json}).
-\end{itemize}
-Our \texttt{ComplianceAuditor} cross-checks every guard name cited in the agent's final report against the runtime provenance log, flagging any cited guard that was not actually invoked on the submission outputs (\path{SCAFFOLD_VERIFICATION_REPORT.json}).
+Across 60 tasks spanning all 10 plugin domains (\path{run_finguard_bench_60.py}): \textbf{Cond.\ A} passes $18/60$ ($30.0\%$); \textbf{Cond.\ B} passes $42/60$ ($70.0\%, p=1.19\times 10^{-7}$) with $53.3\%$ hallucinated citations; \textbf{Cond.\ C} progresses from $45/60$ (\texttt{Pass@1}: $75.0\%$) to $56/60$ (\texttt{Pass@2}: $93.3\%$) and $59/60$ (\texttt{Pass@3}: $\mathbf{98.3\%}, p=9.09\times 10^{-13}$ vs.\ A; $0\%$ hallucinated citations).
 
-\section{Experiment E3: Complete Numerical Parity \& Guard Scaling Tables}
+\section{Experiment E3: Parity \& $100\text{k}$ Scaling}
 \label{app:e3}
-Table~\ref{tab:e3_full} reports the exact numerical parity verification across all 8 financial and econometric primitives, alongside the full wall-clock timing and peak RAM profile of \texttt{Bundle.check()} across dataset scales (\path{benchmarks/PARITY_AND_COST_RESULTS.json}).
-
-\begin{table}[h]
+Table~\ref{tab:e3_full} verifies $13/13$ exact numerical parity and sub-linear $\mathcal{O}(N^{0.3894})$ guard scaling up to $N=100\text{k}$ rows (\path{PARITY_AND_COST_RESULTS.json}).
+\vspace{-0.12cm}
+\begin{table}[!h]
 \centering
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{llcc}
 \toprule
-\textbf{Primitive} & \textbf{Reference Benchmark} & \textbf{Max $|\Delta|$} & \textbf{Status} \\
+\textbf{Primitive (13 Total)} & \textbf{Reference Benchmark} & \textbf{Max $|\Delta|$} & \textbf{Status} \\
 \midrule
-Equal Weight & Exact closed form ($1/N$) & $0.00$ & PASS \\
-Inverse Vol.\ & Exact sample $\sigma_i^{-1}$ & $0.00$ & PASS \\
-Min-Var QP & \texttt{scipy} SLSQP convex QP & $1.14\times 10^{-8}$ & PASS \\
-Normal VaR/ES & \texttt{scipy.stats.norm} exact & $6.94\times 10^{-18}$ & PASS \\
-Hist.\ VaR/ES & Empirical quantile \& tail mean & $0.00$ & PASS \\
-Hist.\ Vol.\ & \texttt{pandas} sample std ($ddof=1$) & $0.00$ & PASS \\
-Frac.\ Diff.\ FFD & Closed-form binomial ($d=0.4$) & $1.11\times 10^{-16}$ & PASS \\
-ADF Unit Root & \texttt{statsmodels.adfuller} & $2.12\times 10^{-10}$ & PASS \\
+Equal Wt.\ / Inv.\ Vol.\ & Exact closed forms ($1/N, \sigma_i^{-1}$) & $0.00$ & PASS \\
+Min-Var Convex QP & \texttt{scipy} SLSQP convex QP & $1.14\times 10^{-8}$ & PASS \\
+Normal \& Hist.\ VaR/ES & \texttt{scipy.stats.norm} \& quantile & $6.94\times 10^{-18}$ & PASS \\
+Frac.\ Diff.\ FFD ($d=0.4$) & Closed-form binomial series & $1.11\times 10^{-16}$ & PASS \\
+ADF Unit Root $t$-stat & \texttt{statsmodels.adfuller} & $2.12\times 10^{-10}$ & PASS \\
+HRP \& Ledoit-Wolf Cov & Recursive bisection \& \texttt{sklearn} & $2.71\times 10^{-20}$ & PASS \\
+Almgren-Chriss \& A-S & Exact $\sinh$ \& HJB closed forms & $4.66\times 10^{-15}$ & PASS \\
+Brinson-Fachler Identity & Exact active-return decomposition & $1.73\times 10^{-18}$ & PASS \\
 \midrule
-\multicolumn{4}{l}{\textbf{Guard Suite Runtime Scaling ($\mathcal{O}(N^{0.2637})$ across 36 guards)}} \\
-$N=250$ rows & P50: $32.27\text{ ms}$ (P95: $36.02\text{ ms}$) & RAM: $0.14\text{ MB}$ & PASS \\
-$N=1{,}000$ rows & P50: $44.08\text{ ms}$ (P95: $47.91\text{ ms}$) & RAM: $0.24\text{ MB}$ & PASS \\
-$N=5{,}000$ rows & P50: $90.40\text{ ms}$ (P95: $96.85\text{ ms}$) & RAM: $0.79\text{ MB}$ & PASS \\
-$N=25{,}000$ rows & P50: $111.17\text{ ms}$ (P95: $118.42\text{ ms}$) & RAM: $3.66\text{ MB}$ & PASS \\
+\multicolumn{4}{l}{\textbf{Guard Suite Runtime Scaling ($\mathcal{O}(N^{0.3894})$, $N \in [250, 100{,}000]$)}} \\
+$N=250$ / $1{,}000$ rows & P50: $22.36\text{ ms}$ / $22.63\text{ ms}$ & RAM: $0.15$ / $0.27\text{ MB}$ & PASS \\
+$N=5{,}000$ / $25\text{k}$ rows & P50: $25.27\text{ ms}$ / $87.30\text{ ms}$ & RAM: $0.83$ / $3.75\text{ MB}$ & PASS \\
+$N=100{,}000$ rows & P50: $218.97\text{ ms}$ (P95: $225.27\text{ ms}$) & RAM: $14.73\text{ MB}$ & PASS \\
 \bottomrule
 \end{tabular}%
 }
-\vspace{-0.12cm}
-\caption{Complete E3 numerical parity ($8/8$ passed) and runtime scaling profile.}
+\vspace{-0.15cm}
+\caption{E3 parity ($13/13$ passed) and scaling up to $N=100\text{k}$ rows.}
 \label{tab:e3_full}
-\vspace{-0.12cm}
+\vspace{-0.18cm}
 \end{table}
 
-\section{Experiment E4: Linguistic Feature Shifts \& Standalone Reproducibility}
+\section{Experiment E4: Horizon \& Linguistics}
 \label{app:e4}
-Table~\ref{tab:linguistic} summarizes the pragmatic and lexical transformations achieved by LLM semantic distillation over $N=31{,}505$ noisy financial social posts (\path{benchmarks/real_world_kol_audit.py}). Every metric in \S\ref{sec:realworld} can be reproduced in $<1\text{s}$ on a single CPU core via \texttt{real\_\allowbreak world\_\allowbreak kol\_\allowbreak audit.py}.
-
-\begin{table}[h]
+Table~\ref{tab:linguistic} details the holding-horizon sensitivity ($T+1$ to $T+10$) and LLM semantic distillation feature shifts (\path{REAL_WORLD_KOL_AUDIT_RESULTS.json}).
+\vspace{-0.12cm}
+\begin{table}[!h]
 \centering
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
-\textbf{Linguistic Dimension} & \textbf{Raw Posts} & \textbf{Distilled} & \textbf{Shift} \\
+\textbf{Holding Horizon / Linguistic Metric} & \textbf{Win\% / Raw} & \textbf{CAGR / Dist.} & \textbf{Sharpe / Shift} \\
+\midrule
+Satellite Horizon $T+1$ / $T+3$ & $53.5\%$ / $65.1\%$ & $+12.9\%$ / $+14.0\%$ & $\text{SR } 1.67$ / $1.83$ \\
+\textbf{Satellite Horizon $T+5$ (Optimal)} & $\mathbf{72.09\%}$ & $\mathbf{+14.85\%}$ & $\mathbf{\text{SR } 1.97}$ ($\text{MDD }-4.41\%$) \\
+Satellite Horizon $T+10$ & $67.44\%$ & $+14.12\%$ & $\text{SR } 1.85$ ($\text{MDD }-4.85\%$) \\
 \midrule
 Quant.\ Fact Density (/100c) & $1.049$ & $1.078$ & $+2.8\%$ (Tok $+218\%$) \\
 Hype-to-Hedging Ratio & $4.85$ & $0.98$ & $-79.8\%$ \\
-Sarcasm / Polarity Error & $18.4\%$ & $3.1\%$ & $-83.2\%$ \\
-Ticker Attribution Prec.\ & $61.4\%$ & $96.2\%$ & $+34.8\text{ pp}$ \\
+Ticker Attribution Precision & $61.4\%$ & $96.2\%$ & $+34.8\text{ pp}$ \\
 \bottomrule
 \end{tabular}%
 }
-\vspace{-0.12cm}
-\caption{Linguistic feature transformation explaining the $2.21\times$ Rank IC improvement in Chinese RoBERTa.}
+\vspace{-0.15cm}
+\caption{Holding-horizon ablation and linguistic distillation shifts.}
 \label{tab:linguistic}
+\vspace{-0.15cm}
 \end{table}

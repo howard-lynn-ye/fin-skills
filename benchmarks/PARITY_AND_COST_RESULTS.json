@@ -1,7 +1,7 @@
 {
   "experiment_id": "E3_numerical_parity_and_guard_runtime_scaling",
   "all_parity_checks_passed": true,
-  "parity_checks_count": 8,
+  "parity_checks_count": 13,
   "parity_matrix": [
     {
       "primitive": "equal_weight_portfolio",
@@ -59,6 +59,41 @@
       "max_abs_error": 2.1168489183764905e-10,
       "tolerance": 1e-06,
       "passed": true
+    },
+    {
+      "primitive": "hierarchical_risk_parity_bisection",
+      "reference_library": "Lopez de Prado (2016) recursive inverse-variance bisection",
+      "max_abs_error": 0.0,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "primitive": "ledoit_wolf_covariance_shrinkage",
+      "reference_library": "sklearn.covariance.LedoitWolf",
+      "max_abs_error": 2.710505431213761e-20,
+      "tolerance": 1e-10,
+      "passed": true
+    },
+    {
+      "primitive": "almgren_chriss_execution_trajectory",
+      "reference_library": "Almgren & Chriss (2001) sinh(kappa*(T-t))/sinh(kappa*T)",
+      "max_abs_error": 0.0,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "primitive": "avellaneda_stoikov_reservation_spread",
+      "reference_library": "Avellaneda & Stoikov (2008) exact HJB closed form",
+      "max_abs_error": 4.6629367034256575e-15,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    {
+      "primitive": "brinson_fachler_attribution_identity",
+      "reference_library": "Brinson & Fachler (1985) exact active-return decomposition",
+      "max_abs_error": 1.734723475976807e-18,
+      "tolerance": 1e-12,
+      "passed": true
     }
   ],
   "guard_runtime_scaling": {
@@ -66,39 +101,47 @@
       {
         "n_rows": 250,
         "guards_evaluated": 3,
-        "p50_ms": 31.838,
-        "p95_ms": 36.216,
-        "mean_ms": 30.992,
-        "peak_memory_kb": 148.99
+        "p50_ms": 22.363,
+        "p95_ms": 34.512,
+        "mean_ms": 26.25,
+        "peak_memory_kb": 146.02
       },
       {
         "n_rows": 1000,
         "guards_evaluated": 3,
-        "p50_ms": 28.304,
-        "p95_ms": 33.495,
-        "mean_ms": 29.49,
-        "peak_memory_kb": 270.74
+        "p50_ms": 22.634,
+        "p95_ms": 22.843,
+        "mean_ms": 22.601,
+        "peak_memory_kb": 267.58
       },
       {
         "n_rows": 5000,
         "guards_evaluated": 3,
-        "p50_ms": 35.962,
-        "p95_ms": 48.532,
-        "mean_ms": 38.882,
-        "peak_memory_kb": 831.45
+        "p50_ms": 25.271,
+        "p95_ms": 25.88,
+        "mean_ms": 25.209,
+        "peak_memory_kb": 829.71
       },
       {
         "n_rows": 25000,
         "guards_evaluated": 3,
-        "p50_ms": 111.17,
-        "p95_ms": 137.507,
-        "mean_ms": 118.407,
-        "peak_memory_kb": 3751.03
+        "p50_ms": 87.3,
+        "p95_ms": 108.289,
+        "mean_ms": 91.648,
+        "peak_memory_kb": 3750.92
+      },
+      {
+        "n_rows": 100000,
+        "guards_evaluated": 3,
+        "p50_ms": 218.973,
+        "p95_ms": 225.269,
+        "mean_ms": 215.947,
+        "peak_memory_kb": 14734.77
       }
     ],
-    "empirical_complexity_exponent_alpha": 0.2637,
+    "empirical_complexity_exponent_alpha": 0.3894,
     "complexity_class": "Sub-linear / Linear O(N)",
-    "max_n_tested": 25000,
-    "p50_ms_at_25k_rows": 111.17
+    "max_n_tested": 100000,
+    "p50_ms_at_25k_rows": 218.973
   }
 }

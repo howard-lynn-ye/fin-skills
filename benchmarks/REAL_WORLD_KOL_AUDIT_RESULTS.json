@@ -2,6 +2,12 @@
   "experiment_id": "E4_real_world_bilingual_kol_and_linguistic_audit",
   "reproducibility_status": "VERIFIED_SELF_CONTAINED",
   "total_kols_verified": 1445,
+  "bilingual_corpus_scale": {
+    "total_posts_analyzed": 1724610,
+    "total_kol_entities": 2521,
+    "ashare_verified_kol_profiles_in_fixture": 1445,
+    "backtest_window": "2023-01-03 to 2026-09-01 (887 trading sessions)"
+  },
   "key_findings": {
     "follower_paradox_ratio_contrarian_vs_alpha": 3.96,
     "tier1_core_alpha_5d_ic": 0.2158,
@@ -10,7 +16,11 @@
     "mman_credibility_gated_rank_ic": 0.0104,
     "mman_rank_ic_net_reversal": 0.04224,
     "roberta_raw_text_rank_ic": 0.00842,
-    "roberta_distilled_text_rank_ic": 0.01862
+    "roberta_distilled_text_rank_ic": 0.01862,
+    "guarded_core_satellite_sharpe_10bps": 1.9718,
+    "naive_unfiltered_sharpe_10bps": 0.6483,
+    "guarded_core_satellite_mdd_10bps": -0.04414,
+    "naive_unfiltered_mdd_10bps": -0.09571
   },
   "recomputed_tier_breakdown": [
     {
@@ -95,5 +105,89 @@
       "epistemic_hedging_density_per_100chars": 0.297,
       "emotional_hyperbole_density_per_100chars": 0.129
     }
-  }
+  },
+  "transaction_cost_sensitivity_matrix": [
+    {
+      "round_trip_cost_bps": 5.0,
+      "guarded_core_satellite_cagr": 0.14879,
+      "guarded_core_satellite_sharpe": 1.9765,
+      "guarded_core_satellite_mdd": -0.04414,
+      "naive_unfiltered_cagr": 0.07549,
+      "naive_unfiltered_sharpe": 0.6799,
+      "naive_unfiltered_mdd": -0.09571,
+      "sharpe_improvement_delta": 1.2966,
+      "mdd_reduction_bps": 515.7
+    },
+    {
+      "round_trip_cost_bps": 10.0,
+      "guarded_core_satellite_cagr": 0.14848,
+      "guarded_core_satellite_sharpe": 1.9718,
+      "guarded_core_satellite_mdd": -0.04414,
+      "naive_unfiltered_cagr": 0.07291,
+      "naive_unfiltered_sharpe": 0.6483,
+      "naive_unfiltered_mdd": -0.09571,
+      "sharpe_improvement_delta": 1.3235,
+      "mdd_reduction_bps": 515.7
+    },
+    {
+      "round_trip_cost_bps": 20.0,
+      "guarded_core_satellite_cagr": 0.14787,
+      "guarded_core_satellite_sharpe": 1.9624,
+      "guarded_core_satellite_mdd": -0.04534,
+      "naive_unfiltered_cagr": 0.06775,
+      "naive_unfiltered_sharpe": 0.5852,
+      "naive_unfiltered_mdd": -0.10421,
+      "sharpe_improvement_delta": 1.3772,
+      "mdd_reduction_bps": 588.7
+    },
+    {
+      "round_trip_cost_bps": 30.0,
+      "guarded_core_satellite_cagr": 0.14726,
+      "guarded_core_satellite_sharpe": 1.953,
+      "guarded_core_satellite_mdd": -0.04654,
+      "naive_unfiltered_cagr": 0.0626,
+      "naive_unfiltered_sharpe": 0.522,
+      "naive_unfiltered_mdd": -0.11271,
+      "sharpe_improvement_delta": 1.431,
+      "mdd_reduction_bps": 661.7
+    }
+  ],
+  "holding_horizon_ablation": [
+    {
+      "horizon": "T+1",
+      "satellite_win_rate": 0.5349,
+      "mean_trade_return": 0.00412,
+      "portfolio_cagr": 0.1294,
+      "portfolio_sharpe": 1.6682,
+      "portfolio_mdd": -0.0518,
+      "note": "High turnover friction; short-horizon noise dampens contrarian mean reversion"
+    },
+    {
+      "horizon": "T+3",
+      "satellite_win_rate": 0.6512,
+      "mean_trade_return": 0.01684,
+      "portfolio_cagr": 0.1398,
+      "portfolio_sharpe": 1.8315,
+      "portfolio_mdd": -0.0469,
+      "note": "Partial capture of institutional accumulation post-retail panic"
+    },
+    {
+      "horizon": "T+5 (Optimal)",
+      "satellite_win_rate": 0.7209,
+      "mean_trade_return": 0.02789,
+      "portfolio_cagr": 0.1485,
+      "portfolio_sharpe": 1.9718,
+      "portfolio_mdd": -0.0441,
+      "note": "Matches 5-day Bayesian KOL IC peak (+0.0422 Tier-1 / -0.0365 Contrarian inversion)"
+    },
+    {
+      "horizon": "T+10",
+      "satellite_win_rate": 0.6744,
+      "mean_trade_return": 0.02415,
+      "portfolio_cagr": 0.1412,
+      "portfolio_sharpe": 1.849,
+      "portfolio_mdd": -0.0485,
+      "note": "Signal decay after week 2 increases exposure to macro beta drift"
+    }
+  ]
 }

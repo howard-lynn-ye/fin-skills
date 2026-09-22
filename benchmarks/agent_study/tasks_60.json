@@ -1,0 +1,482 @@
+[
+  {
+    "task_id": "T01",
+    "domain": "fin-core",
+    "title": "Point-in-Time Universe Construction",
+    "primary_guard": "pit_universe",
+    "owning_skill": "research-integrity-guards",
+    "base_sharpe_inflation_when_violated": 1.38
+  },
+  {
+    "task_id": "T02",
+    "domain": "fin-core",
+    "title": "Delisted Security Survivorship Audit",
+    "primary_guard": "survivorship_audit",
+    "owning_skill": "research-integrity-guards",
+    "base_sharpe_inflation_when_violated": 1.62
+  },
+  {
+    "task_id": "T03",
+    "domain": "fin-core",
+    "title": "Causal Signal Prefix Verification",
+    "primary_guard": "assert_causal",
+    "owning_skill": "signal-construction",
+    "base_sharpe_inflation_when_violated": 2.15
+  },
+  {
+    "task_id": "T04",
+    "domain": "fin-core",
+    "title": "Deflated Sharpe Ratio & Trial Ledger",
+    "primary_guard": "trial_ledger",
+    "owning_skill": "backtest-validation",
+    "base_sharpe_inflation_when_violated": 1.44
+  },
+  {
+    "task_id": "T05",
+    "domain": "fin-core",
+    "title": "Hansen SPA Multiple-Testing Gate",
+    "primary_guard": "spa_test",
+    "owning_skill": "backtest-validation",
+    "base_sharpe_inflation_when_violated": 1.19
+  },
+  {
+    "task_id": "T06",
+    "domain": "fin-core",
+    "title": "Pre-Trade Fat-Finger & Replay Kill-Switch",
+    "primary_guard": "pre_trade",
+    "owning_skill": "pre-trade-checks",
+    "base_sharpe_inflation_when_violated": 0.95
+  },
+  {
+    "task_id": "T07",
+    "domain": "fin-market-data",
+    "title": "Corporate Action Split/Dividend Adjustment",
+    "primary_guard": "adjustment_check",
+    "owning_skill": "market-data-sourcing",
+    "base_sharpe_inflation_when_violated": 1.74
+  },
+  {
+    "task_id": "T08",
+    "domain": "fin-market-data",
+    "title": "Causal Backward As-Of Join Alignment",
+    "primary_guard": "safe_asof",
+    "owning_skill": "market-data-engineering",
+    "base_sharpe_inflation_when_violated": 2.08
+  },
+  {
+    "task_id": "T09",
+    "domain": "fin-market-data",
+    "title": "Multi-Ticker As-Of Key Sortedness Check",
+    "primary_guard": "join_asof_sortedness",
+    "owning_skill": "lib-polars",
+    "base_sharpe_inflation_when_violated": 1.12
+  },
+  {
+    "task_id": "T10",
+    "domain": "fin-market-data",
+    "title": "SEC EDGAR Point-in-Time Fundamentals",
+    "primary_guard": "pit_fundamentals",
+    "owning_skill": "fundamental-and-macro-data",
+    "base_sharpe_inflation_when_violated": 1.56
+  },
+  {
+    "task_id": "T11",
+    "domain": "fin-market-data",
+    "title": "Dual-Vendor Close Price Reconciliation",
+    "primary_guard": "reconcile_sources",
+    "owning_skill": "market-data-sourcing",
+    "base_sharpe_inflation_when_violated": 0.88
+  },
+  {
+    "task_id": "T12",
+    "domain": "fin-market-data",
+    "title": "Missing Session & Trading Calendar Audit",
+    "primary_guard": "data_quality",
+    "owning_skill": "data-quality-validation",
+    "base_sharpe_inflation_when_violated": 0.92
+  },
+  {
+    "task_id": "T13",
+    "domain": "fin-ml",
+    "title": "Purged & Embargoed Cross-Validation Split",
+    "primary_guard": "purge_effect",
+    "owning_skill": "lib-purgedcv",
+    "base_sharpe_inflation_when_violated": 1.85
+  },
+  {
+    "task_id": "T14",
+    "domain": "fin-ml",
+    "title": "Cross-Fold Scaler & RNG Leakage Probe",
+    "primary_guard": "fold_leak_test",
+    "owning_skill": "market-data-engineering",
+    "base_sharpe_inflation_when_violated": 1.49
+  },
+  {
+    "task_id": "T15",
+    "domain": "fin-ml",
+    "title": "EMA/Recursive Indicator Warmup Truncation",
+    "primary_guard": "warmup_probe",
+    "owning_skill": "signal-construction",
+    "base_sharpe_inflation_when_violated": 1.21
+  },
+  {
+    "task_id": "T16",
+    "domain": "fin-ml",
+    "title": "Ex-Ante Markov Regime Filter vs Smoother",
+    "primary_guard": "regime_lookahead",
+    "owning_skill": "regime-detection",
+    "base_sharpe_inflation_when_violated": 1.94
+  },
+  {
+    "task_id": "T17",
+    "domain": "fin-ml",
+    "title": "Regime Episode & Sample Coverage Gate",
+    "primary_guard": "regime_coverage",
+    "owning_skill": "regime-detection",
+    "base_sharpe_inflation_when_violated": 1.05
+  },
+  {
+    "task_id": "T18",
+    "domain": "fin-ml",
+    "title": "CSCV Probability of Backtest Overfitting",
+    "primary_guard": "research_audit",
+    "owning_skill": "backtest-overfitting",
+    "base_sharpe_inflation_when_violated": 1.67
+  },
+  {
+    "task_id": "T19",
+    "domain": "fin-strategies",
+    "title": "Nonlinear Market Impact Cost Curve Sweep",
+    "primary_guard": "cost_curve",
+    "owning_skill": "backtest-validation",
+    "base_sharpe_inflation_when_violated": 1.52
+  },
+  {
+    "task_id": "T20",
+    "domain": "fin-strategies",
+    "title": "Almgren-Chriss Participation Cost Plausibility",
+    "primary_guard": "cost_plausibility",
+    "owning_skill": "execution-cost-analysis",
+    "base_sharpe_inflation_when_violated": 1.78
+  },
+  {
+    "task_id": "T21",
+    "domain": "fin-strategies",
+    "title": "Continuous Futures Roll Ratio Stitching",
+    "primary_guard": "continuous_contract",
+    "owning_skill": "futures-continuous-contracts",
+    "base_sharpe_inflation_when_violated": 1.34
+  },
+  {
+    "task_id": "T22",
+    "domain": "fin-strategies",
+    "title": "FX Quote & Pip Value Convention Check",
+    "primary_guard": "fx_conventions",
+    "owning_skill": "fx-markets",
+    "base_sharpe_inflation_when_violated": 0.84
+  },
+  {
+    "task_id": "T23",
+    "domain": "fin-strategies",
+    "title": "Annualized vs Per-Period Risk-Free Sharpe",
+    "primary_guard": "rf_convention",
+    "owning_skill": "lib-quantstats",
+    "base_sharpe_inflation_when_violated": 1.61
+  },
+  {
+    "task_id": "T24",
+    "domain": "fin-strategies",
+    "title": "Complete Strategy Result Manifest Audit",
+    "primary_guard": "result_manifest",
+    "owning_skill": "research-integrity-guards",
+    "base_sharpe_inflation_when_violated": 0.96
+  },
+  {
+    "task_id": "T25",
+    "domain": "fin-china",
+    "title": "China A-Share T+1 Same-Day Sell Lock",
+    "primary_guard": "ashare_rules",
+    "owning_skill": "china-trading-stack",
+    "base_sharpe_inflation_when_violated": 1.92
+  },
+  {
+    "task_id": "T26",
+    "domain": "fin-china",
+    "title": "STAR/ChiNext 20% Limit-Up Unfillable Order Gate",
+    "primary_guard": "ashare_rules",
+    "owning_skill": "china-trading-stack",
+    "base_sharpe_inflation_when_violated": 2.24
+  },
+  {
+    "task_id": "T27",
+    "domain": "fin-china",
+    "title": "A-Share 100-Share Board Lot Rounding Feasibility",
+    "primary_guard": "board_lot_feasibility",
+    "owning_skill": "china-trading-stack",
+    "base_sharpe_inflation_when_violated": 1.18
+  },
+  {
+    "task_id": "T28",
+    "domain": "fin-china",
+    "title": "QDII Cross-Border ETF NAV Premium Circuit Breaker",
+    "primary_guard": "qdii_premium",
+    "owning_skill": "china-trading-stack",
+    "base_sharpe_inflation_when_violated": 1.45
+  },
+  {
+    "task_id": "T29",
+    "domain": "fin-china",
+    "title": "Idle Cash Drag & GC001 Repo Sweep Audit",
+    "primary_guard": "cash_drag",
+    "owning_skill": "china-trading-stack",
+    "base_sharpe_inflation_when_violated": 0.89
+  },
+  {
+    "task_id": "T30",
+    "domain": "fin-china",
+    "title": "Bilingual KOL Bayesian Credibility Calibration",
+    "primary_guard": "research_audit",
+    "owning_skill": "backtest-overfitting",
+    "base_sharpe_inflation_when_violated": 1.58
+  },
+  {
+    "task_id": "T31",
+    "domain": "fin-alt-data",
+    "title": "SEC Form 13F 45-Day Acceptance Timestamp Lag",
+    "primary_guard": "synthesis_integrity",
+    "owning_skill": "combining-data-sources",
+    "base_sharpe_inflation_when_violated": 1.71
+  },
+  {
+    "task_id": "T32",
+    "domain": "fin-alt-data",
+    "title": "Insider Form 4 Transaction Code & Filing Clock",
+    "primary_guard": "synthesis_integrity",
+    "owning_skill": "combining-data-sources",
+    "base_sharpe_inflation_when_violated": 1.83
+  },
+  {
+    "task_id": "T33",
+    "domain": "fin-alt-data",
+    "title": "Congressional Disclosure-Date vs Trade-Date",
+    "primary_guard": "assert_causal",
+    "owning_skill": "signal-construction",
+    "base_sharpe_inflation_when_violated": 1.64
+  },
+  {
+    "task_id": "T34",
+    "domain": "fin-alt-data",
+    "title": "Post-Close News Feed Session Alignment",
+    "primary_guard": "safe_asof",
+    "owning_skill": "market-data-engineering",
+    "base_sharpe_inflation_when_violated": 2.02
+  },
+  {
+    "task_id": "T35",
+    "domain": "fin-alt-data",
+    "title": "Delisted Social Hype Ticker Survivorship",
+    "primary_guard": "survivorship_audit",
+    "owning_skill": "research-integrity-guards",
+    "base_sharpe_inflation_when_violated": 1.39
+  },
+  {
+    "task_id": "T36",
+    "domain": "fin-alt-data",
+    "title": "Restated Quarterly Revenue Vintage Lag",
+    "primary_guard": "pit_fundamentals",
+    "owning_skill": "fundamental-and-macro-data",
+    "base_sharpe_inflation_when_violated": 1.47
+  },
+  {
+    "task_id": "T37",
+    "domain": "fin-derivatives",
+    "title": "Black-Scholes Greeks Daily Theta & Vega Units",
+    "primary_guard": "greeks_convention",
+    "owning_skill": "derivatives-pricing",
+    "base_sharpe_inflation_when_violated": 1.14
+  },
+  {
+    "task_id": "T38",
+    "domain": "fin-derivatives",
+    "title": "Zero-NPV Yield Curve Valuation Date Match",
+    "primary_guard": "npv_zero",
+    "owning_skill": "lib-quantlib",
+    "base_sharpe_inflation_when_violated": 1.29
+  },
+  {
+    "task_id": "T39",
+    "domain": "fin-derivatives",
+    "title": "Expired Option Contract Valuation Gate",
+    "primary_guard": "npv_zero",
+    "owning_skill": "lib-quantlib",
+    "base_sharpe_inflation_when_violated": 1.08
+  },
+  {
+    "task_id": "T40",
+    "domain": "fin-derivatives",
+    "title": "3x Leveraged ETF Daily Volatility Decay Path",
+    "primary_guard": "leveraged_reset",
+    "owning_skill": "etf-mechanics",
+    "base_sharpe_inflation_when_violated": 1.76
+  },
+  {
+    "task_id": "T41",
+    "domain": "fin-derivatives",
+    "title": "Options Pin-Risk & Early Assignment Pre-Trade",
+    "primary_guard": "pre_trade",
+    "owning_skill": "pre-trade-checks",
+    "base_sharpe_inflation_when_violated": 1.22
+  },
+  {
+    "task_id": "T42",
+    "domain": "fin-derivatives",
+    "title": "Implied Volatility Surface Causal Interpolation",
+    "primary_guard": "assert_causal",
+    "owning_skill": "signal-construction",
+    "base_sharpe_inflation_when_violated": 1.51
+  },
+  {
+    "task_id": "T43",
+    "domain": "fin-portfolio",
+    "title": "Brinson-Fachler Multi-Sector Weight Completeness",
+    "primary_guard": "brinson_attribution",
+    "owning_skill": "portfolio-and-risk",
+    "base_sharpe_inflation_when_violated": 1.09
+  },
+  {
+    "task_id": "T44",
+    "domain": "fin-portfolio",
+    "title": "Optimizer Price-Instead-of-Return Input Trap",
+    "primary_guard": "weight_traps",
+    "owning_skill": "lib-pyportfolioopt",
+    "base_sharpe_inflation_when_violated": 1.88
+  },
+  {
+    "task_id": "T45",
+    "domain": "fin-portfolio",
+    "title": "Hierarchical Risk Parity Cluster Covariance",
+    "primary_guard": "weight_traps",
+    "owning_skill": "lib-pyportfolioopt",
+    "base_sharpe_inflation_when_violated": 1.15
+  },
+  {
+    "task_id": "T46",
+    "domain": "fin-portfolio",
+    "title": "Portfolio Turnover & ADV Capacity Ceiling",
+    "primary_guard": "cost_plausibility",
+    "owning_skill": "execution-cost-analysis",
+    "base_sharpe_inflation_when_violated": 1.43
+  },
+  {
+    "task_id": "T47",
+    "domain": "fin-portfolio",
+    "title": "Multi-Asset Benchmark Excess Return SPA",
+    "primary_guard": "spa_test",
+    "owning_skill": "backtest-validation",
+    "base_sharpe_inflation_when_violated": 1.26
+  },
+  {
+    "task_id": "T48",
+    "domain": "fin-portfolio",
+    "title": "Core-Satellite Idle Sleeve Cash-Drag Audit",
+    "primary_guard": "cash_drag",
+    "owning_skill": "china-trading-stack",
+    "base_sharpe_inflation_when_violated": 0.94
+  },
+  {
+    "task_id": "T49",
+    "domain": "fin-tax-accounting",
+    "title": "A-Share Seller-Only 5 bps Stamp Duty Modeling",
+    "primary_guard": "cost_curve",
+    "owning_skill": "backtest-validation",
+    "base_sharpe_inflation_when_violated": 1.31
+  },
+  {
+    "task_id": "T50",
+    "domain": "fin-tax-accounting",
+    "title": "Holding-Period Step-Function Dividend Tax",
+    "primary_guard": "cost_plausibility",
+    "owning_skill": "execution-cost-analysis",
+    "base_sharpe_inflation_when_violated": 1.04
+  },
+  {
+    "task_id": "T51",
+    "domain": "fin-tax-accounting",
+    "title": "Multi-Currency FX Translation Convention",
+    "primary_guard": "fx_conventions",
+    "owning_skill": "fx-markets",
+    "base_sharpe_inflation_when_violated": 0.87
+  },
+  {
+    "task_id": "T52",
+    "domain": "fin-tax-accounting",
+    "title": "Cross-Border Withholding Net Return Attribution",
+    "primary_guard": "brinson_attribution",
+    "owning_skill": "portfolio-and-risk",
+    "base_sharpe_inflation_when_violated": 1.02
+  },
+  {
+    "task_id": "T53",
+    "domain": "fin-tax-accounting",
+    "title": "Split-Adjusted Tax Lot Basis Reconciliation",
+    "primary_guard": "adjustment_check",
+    "owning_skill": "market-data-sourcing",
+    "base_sharpe_inflation_when_violated": 1.36
+  },
+  {
+    "task_id": "T54",
+    "domain": "fin-tax-accounting",
+    "title": "Accrued Interest Dirty-vs-Clean Curve Date",
+    "primary_guard": "npv_zero",
+    "owning_skill": "lib-quantlib",
+    "base_sharpe_inflation_when_violated": 1.11
+  },
+  {
+    "task_id": "T55",
+    "domain": "fin-llm",
+    "title": "LLM Pretraining Cutoff vs Backtest Window Probe",
+    "primary_guard": "contamination_probe",
+    "owning_skill": "llm-finance-agents",
+    "base_sharpe_inflation_when_violated": 2.31
+  },
+  {
+    "task_id": "T56",
+    "domain": "fin-llm",
+    "title": "Broker Live-vs-Paper Account Kill-Switch Guard",
+    "primary_guard": "paper_account_guard",
+    "owning_skill": "broker-execution-apis",
+    "base_sharpe_inflation_when_violated": 1.4
+  },
+  {
+    "task_id": "T57",
+    "domain": "fin-llm",
+    "title": "Alpaca Live Endpoint Paper-Flag Mismatch Guard",
+    "primary_guard": "paper_account_guard",
+    "owning_skill": "broker-execution-apis",
+    "base_sharpe_inflation_when_violated": 1.35
+  },
+  {
+    "task_id": "T58",
+    "domain": "fin-llm",
+    "title": "Multi-Source Fundamental + Price Clock Synthesis",
+    "primary_guard": "synthesis_integrity",
+    "owning_skill": "combining-data-sources",
+    "base_sharpe_inflation_when_violated": 1.68
+  },
+  {
+    "task_id": "T59",
+    "domain": "fin-llm",
+    "title": "LLM Sentiment Score Look-Ahead Lag Enforcement",
+    "primary_guard": "assert_causal",
+    "owning_skill": "signal-construction",
+    "base_sharpe_inflation_when_violated": 2.19
+  },
+  {
+    "task_id": "T60",
+    "domain": "fin-llm",
+    "title": "Tool Execution Provenance vs Cited Manifest",
+    "primary_guard": "result_manifest",
+    "owning_skill": "research-integrity-guards",
+    "base_sharpe_inflation_when_violated": 1.12
+  }
+]
