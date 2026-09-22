@@ -7,6 +7,18 @@ interfaces remain available. The additions are `research`, `profile_data`, `fit`
 
 ## Compatibility contract
 
+### Audit verdict tightening (2026-09-21)
+
+`RunReport.passed` is now false when no checks ran or an input was rejected. Skipped
+checks remain distinct from failed checks. For a release decision, call
+`report.audit(["assert_causal", ...])` with an explicit non-empty task policy. It returns
+`PASS`, `FAIL`, or `INCOMPLETE`, required-check coverage and missing/rejected guards.
+An ordinary passing subset is not a certificate of full research integrity. Existing
+callers relying on `all([]) == True` must handle incomplete input explicitly.
+
+The agent-study intervention now uses four conditions and real artifact adapters. The
+old three-condition scaffold receipt is historical test data, not a model experiment.
+
 - Preserve published names and required arguments within a minor release. Add optional
   keyword arguments or fields; document stricter validation when it rejects formerly wrong input.
 - Announce a removal with a changelog entry and `DeprecationWarning` before removing it in

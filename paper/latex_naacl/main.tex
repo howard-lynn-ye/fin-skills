@@ -1,238 +1,335 @@
-\documentclass[11pt,twocolumn]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
 \usepackage[T1]{fontenc}
-\usepackage{times}
-\usepackage{latexsym}
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{graphicx}
-\usepackage{url}
-\usepackage[hidelinks]{hyperref}
-\usepackage[margin=0.95in]{geometry}
-
-\setlength{\columnsep}{0.32in}
-
-\title{\textbf{Beyond Backtest Illusions: Executable Research Integrity Guards and Counterfactual Auditing for Financial AI Agents}}
-
-\author{
-  \textbf{Howard Ye}$^{1*}$ \quad \textbf{Shwai He}$^{2*}$ \\
-  $^{1,2}$Open Quantitative Integrity Initiative (\texttt{fin-skills} \& Multimodal Financial NLP Group) \\
-  \texttt{\{howard, shwaihe\}@fin-skills.org} \quad ($^*$Equal contribution)
-}
-
-\date{}
-
+\usepackage{times,amsmath,booktabs,graphicx,url}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\input{evidence_numbers}
+\title{Verified Execution and Autonomous Tool Use\\for Financial Research Agents}
+\author{Working draft: author details pending confirmation}
+\date{September 21, 2026}
 \begin{document}
 \maketitle
-
+\begin{center}\textbf{Draft under revision; not submission-ready.}\end{center}
 \begin{abstract}
-Large language model (LLM) agents increasingly automate quantitative financial research, yet reported backtest Sharpe ratios routinely collapse out-of-sample. We identify two distinct failure modes driving this collapse: \textbf{Type~I Mechanical Shortcuts} (look-ahead joins, unadjusted corporate actions, survivorship bias, and pre-training window contamination) and \textbf{Type~II Empirical \& Microstructure Illusions} (trusting retail echo-chambers where high-reach influencers carry negative alpha, and ignoring market execution rules such as $T+1$ lockups and board-lot granularity).
-To solve both, we introduce \textbf{\texttt{fin-skills}}, an open-source library of \textbf{129 source-verified skills}, \textbf{36 executable guards} behind a unified \texttt{Bundle.check()} contract, and \textbf{53 MCP agent tools}, paired with an external \textbf{Counterfactual Audit Protocol} that evaluates agent submissions without using the library to grade itself.
-Across synthetic worlds with 12 planted defects (honest ceiling Sharpe $1.63$ vs.\ wrong-side join $71.5$), our guards achieve \textbf{100\% recall (36/36) with zero false alarms}. Crucially, session-by-session clock replay exposes leaky pipelines that score Sharpe $22.80$ on held-out static years but lose $-1.17\text{ bps/day}$ (Sharpe $-0.58$) live. In a controlled 12-run multi-model pilot, \texttt{fin-skills} reduces strong-model (Claude Opus) Sharpe reporting error by \textbf{84\%} ($0.19 \to 0.03$), but uncovers a striking \textbf{Compliance Paradox}: equipping weak models (Claude Haiku) with complex documentation alone yields the worst distortion ($11.95$ Sharpe gap) as agents \emph{hallucinate citations to guards they never executed}. Finally, we validate external domain utility on \textbf{1.72M bilingual social posts and 1,445 verified A-share KOL track records}, demonstrating a $3.96\times$ follower paradox that drives unweighted NLP into negative correlation ($\text{Rank IC} = -0.0318, p = 1.74 \times 10^{-20}$) until reversed by Bayesian credibility gating ($\text{Rank IC} = +0.0104, p = 0.001$).
+Financial research agents must choose appropriate methods, use information available at
+the decision time, and verify the resulting analysis. We present \textsc{fin-skills}, a
+library connecting source-dated financial guidance, executable algorithm interfaces,
+timestamp-aware data collection, and structured research checks. Models can inspect the
+library and choose tools and parameters; an optional rule-based adviser provides a
+separate recommendation path. An exploratory fruit-fly-inspired memory module extends
+the library's role to checking feedback before it enters online learning. We evaluate
+two questions: whether artifact-bound checks
+improve research correctness, and whether autonomous library use improves portfolio
+decisions. A historical \PilotRuns{}-run pilot shows model-dependent reporting errors,
+while a subsequent audit feasibility study does not yet yield independently gradable
+model submissions. In a separate development experiment with two open-weight models,
+all 64 final portfolio decisions were valid and 43 model-requested tool calls succeeded.
+However, autonomous access did not improve mean proxy returns over no-library controls
+for either model. These findings demonstrate an executable tool-use workflow, while
+leaving general research-correctness and economic-utility benefits unestablished.
 \end{abstract}
 
 \section{Introduction}
+A financial agent can call a forecasting package correctly yet use information that was
+unavailable when a trade would have occurred. It can select a familiar algorithm that
+does not fit the available data, or report performance from a backtest whose accounting
+assumptions differ from the stated trading rule. Access to more tools creates choices;
+it does not establish that those choices are appropriate or their outputs valid.
 
-Autonomous LLM agents equipped with code interpreters and financial data feeds can formulate hypotheses, engineer features, and report backtest performance in minutes. However, high reported Sharpe ratios in computational finance rarely survive live deployment \cite{bailey2014deflated,bailey2017pbo,lopezdeprado2018advances}. In this paper, we demonstrate that AI research agents fail through two orthogonal mechanisms:
+\textsc{fin-skills} addresses these connected problems through a reusable library for
+agents working with the Python quantitative-finance ecosystem. Its skills document
+library conventions, dated source checks, and failure modes. Executable interfaces let
+an agent inspect candidate methods, supply parameters, run supported algorithms, and
+receive structured results. Collection interfaces retain information timestamps, while
+research checks make missing evidence and detected defects explicit. The library
+packages existing methods rather than proposing a new forecasting or trading algorithm.
 
-\begin{enumerate}
-    \item \textbf{Type I: Mechanical Research Shortcuts.} Agents silently exploit structural artifacts in tabular market workspaces: joining post-close news commentary to the same session's open-to-close return, training on pre-computed LLM scores whose fitting window overlaps the evaluation period, filtering universes by future survival, or computing factors on unadjusted split prices.
-    \item \textbf{Type II: Empirical \& Microstructure Illusions.} Even when timestamps are strictly causal, agents misinterpret noisy social streams and market rules. On financial social platforms, viral retail sentiment peaks at local price tops, while real execution is constrained by $T+1$ settlement freezes, 100-share board lots, asymmetric stamp duties, and secondary-market ETF premium bubbles.
-\end{enumerate}
+The agent remains responsible for selecting its tools. A deterministic recommendation
+service is available as one tool; it does not replace the model's decision process.
+This distinction allows us to compare static guidance, predetermined tool outputs, and
+model-selected calls. A separate audit intervention binds check execution to the final
+submitted artifact, because stating that a check was performed is not evidence that it
+ran on the relevant code and data.
 
-Inspired by behavioral testing in NLP \cite{ribeiro2020checklist} and open-source ML systems design \cite{zhao2019pyod}, we present \textbf{\texttt{fin-skills}} alongside an external \textbf{Counterfactual & Microstructure Audit Methodology}. Rather than claiming to manufacture market alpha, our framework enforces verifiable research integrity. Our four contributions are:
-\begin{itemize}
-    \item \textbf{The \texttt{fin-skills} Architecture (\S\ref{sec:library}):} 129 verified skills, 36 executable guards (\texttt{Bundle.check()}), and 53 JSON/MCP tools validated by 3,082 unit tests across Python 3.10--3.13.
-    \item \textbf{External Counterfactual Auditing (\S\ref{sec:counterfactual}):} Four black-box perturbation operators and session-by-session clock replay that detect look-ahead and same-session leakage without inspecting agent code.
-    \item \textbf{The Compliance Paradox (\S\ref{sec:pilot}):} Controlled multi-model experiments showing that while strong models benefit in reporting precision, weak models given un-gated documentation hallucinate compliance with guards they never ran.
-    \item \textbf{Real-World Domain Validation (\S\ref{sec:realworld}):} Reproducible empirical audits across 1.72M bilingual posts (1,445 KOLs) and A-share microstructure execution guards.
-\end{itemize}
+The contribution of this working draft has three parts. First, we present an integrated
+financial skill and model library with common interfaces for direct human use and
+agent-selected execution across multiple model families. Second, we develop an
+exploratory fruit-fly-inspired learning component that connects memory updates to the
+library's feedback checks. Third, we provide audit and evaluation protocols that
+separate tool-use validity, research correctness, learning-feedback validity, and
+economic utility. The library remains the central contribution; the memory component
+is a distinct model-development application rather than the controller used in the
+LLM experiments.
 
-\section{The \texttt{fin-skills} Architecture}
+We ask whether final-artifact checks reduce incorrect accepted conclusions, whether
+autonomous tool access improves portfolio decisions, and whether checked delayed
+feedback can support adaptive learning. The current results support the feasibility
+of the LLM portfolio-decision loop. The memory application has implemented components
+and identified architectural limitations; its proposed persistence and exit policy
+requires further integration. No validated high-return strategy is claimed.
+
+\section{Related work}
+CheckList formalizes behavioral testing beyond aggregate task accuracy
+\cite{ribeiro2020checklist}. Financial backtest overfitting and selection bias predate
+LLM agents \cite{bailey2014deflated,bailey2017pbo}. Profit Mirage investigates information
+leakage in financial agents and proposes counterfactual interventions
+\cite{li2025profit}. The Finance Agent Benchmark evaluates real financial research tasks
+\cite{bigeard2025finance}. FinAgent combines multimodal financial information with
+trading tools, reflection, and memory \cite{zhang2024finagent}; StockBench evaluates
+sequential portfolio decisions using prices, fundamentals, and news
+\cite{chen2025stockbench}. Thus tool-augmented trading, financial-agent leakage, and
+counterfactual testing are established research directions. Our focus is a reusable
+library and interventions that separate the effects of guidance, tool selection, and
+final-artifact checks. The short development study below is not a comparable leaderboard
+evaluation against these systems, and its results do not establish superiority.
+
+\section{Library design}
 \label{sec:library}
+\paragraph{Knowledge and executable interfaces.}
+Domain skills route tasks to relevant libraries, while optional per-library skills
+describe conventions, dependencies, and failure modes in more detail. The Python
+package exposes catalog search, skill loading, and reference retrieval. Packaged skill
+documents and scripts are generated from the same repository sources. A verification
+date records a source check; it does not guarantee that a statement remains current.
+Table~\ref{tab:inventory} describes the frozen study snapshot. These counts measure
+available interfaces, not independently validated capabilities.
 
-\texttt{fin-skills} organizes quantitative domain knowledge and executable verification into three layers across seven domain packages (\texttt{fin-core}, \texttt{fin-ml}, \texttt{fin-market-data}, \texttt{fin-alt-data}, \texttt{fin-china}, \texttt{fin-strategies}, and \texttt{fin-llm}):
-
-\paragraph{1. Source-Verified Skills (129 Specifications).}
-Every skill conforms to a strict 6-field schema carrying explicit verification dates (\texttt{verified\_on}) and authoritative primary sources. Skills document silent failure modes in standard libraries (e.g., day-count conventions, fractional differentiation truncation \cite{lopezdeprado2018advances}, and point-in-time SEC Form~4 / 13F acceptance timestamps).
-
-\paragraph{2. Executable Guards (\texttt{Bundle.check()}).}
-To bridge passive reading and active verification, \texttt{fin-skills} provides 36 executable Python guards registered under a uniform slot-binding contract:
-\begin{equation}
-\mathcal{R} = \text{Bundle}(\mathbf{r}, \mathbf{P}, \boldsymbol{\tau}, \dots).\text{check}() \in \{\texttt{PASS}, \texttt{WARN}, \texttt{FAIL}\}^{36}
-\end{equation}
-Guards inspect typed slot inputs ($\mathbf{r}$ returns, $\mathbf{P}$ OHLCV bars, $\boldsymbol{\tau}$ turnover, corporate actions, and point-in-time join keys) and return structured diagnostics.
-
-\paragraph{3. MCP Tools & Point-in-Time Collectors.}
-All 36 guards, portfolio/econometric algorithms, and public disclosure collectors (\texttt{fin\_skills.collect} supporting RSS, static HTML, SEC EDGAR, and House PTR filings with SQLite revision tracking) export native Model Context Protocol (MCP) schemas (53 tools total).
-
-\section{Counterfactual Audit Methodology \& The Compliance Paradox}
-\label{sec:counterfactual}
-
-A fundamental methodological requirement is that \emph{an evaluation harness must not grade agent submissions using the same library guards provided to the agent}. We therefore construct an independent ground-truth \textbf{Seeded Market Generator} (\texttt{benchmarks/agent\_study/}) spanning 60 equities over 2017--2023 with four planted high-reward shortcuts: (i) a news feed stamped with the session it describes, (ii) an LLM sentiment score trained through 2020-12-31, (iii) a listing table containing future delisting dates, and (iv) unadjusted split prices.
-
-\paragraph{Calibrating the Honest Ceiling vs.\ Shortcuts.}
-Because the data-generating process is known exactly, we measure the true theoretical ceiling: trading the generator's latent drift with a strict 1-day lag earns \textbf{Net Sharpe $1.63$}. By contrast, joining same-session news earns \textbf{Net Sharpe $71.5$}. Any reported Sharpe far above $1.63$ is mathematical proof of a shortcut.
-
-\paragraph{Four Counterfactual Perturbations.}
-Given a submitted function $\mathbf{W} = f(\mathcal{D})$, our oracle (\texttt{oracle.py}) measures four black-box invariants:
-\begin{enumerate}
-    \item \textbf{Future Redraw ($\text{leakage\_rate}$):} Redraw market paths after cut date $t_c$; measure fraction of pre-cut weights $\mathbf{W}_{t \le t_c}$ that change across 3 redraws.
-    \item \textbf{Single-Session Redraw ($\text{same\_session\_rate}$):} Redraw session $t$ alone and inspect $\mathbf{W}_t$. This catches same-day post-close joins invisible to cut-date tests.
-    \item \textbf{Input Scramble ($\text{uses\_}\langle\text{file}\rangle$):} Permute individual input files to establish causal dependence on contaminated features (e.g., \texttt{llm\_score.csv}).
-    \item \textbf{Session-by-Session Clock Replay:} Withhold future sessions physically by feeding data day-by-day (\texttt{live\_replay.py}).
-\end{enumerate}
-
+% Inventory measured by importing catalog/api/algorithms/tools on Beacon RADFM,
+% frozen fin-skills-autonomous-20260921-v2b/source, September 21, 2026.
 \begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lccc}
+\centering\small
+\begin{tabular}{lr}
 \toprule
-\textbf{Reference Pipeline} & \textbf{Leakage} & \textbf{Paper OOS} & \textbf{Live Clock Replay} \\
+Component & Entries \\
 \midrule
-Honest (lagged feed, split-adj.) & $0.00$ & $1.63$ & $\mathbf{+5.07\text{ bps/d}}$ (SR $2.99$) \\
-Leaky (same-day join, full scaler) & $0.78$ & $22.80^*$ & $\mathbf{-1.17\text{ bps/d}}$ (SR $-0.58$) \\
+Skill documents & 129 \\
+Algorithm--backend catalog & 48 \\
+Registered research guards & 36 \\
+JSON-callable tools & 56 \\
 \bottomrule
 \end{tabular}
-\caption{Instrument calibration ($^*$illusory paper Sharpe). Holding out a future year fails to punish same-session leakage ($22.80$); only physical clock replay exposes it ($-0.58$).}
-\label{tab:calibration}
+\caption{Inventory of the frozen study snapshot. Algorithm entries can expose existing
+methods through different backends. The autonomous study offers a price-compatible
+subset, not every catalog entry.}
+\label{tab:inventory}
 \end{table}
 
+\paragraph{Algorithm selection and execution.}
+The algorithm catalog describes input requirements, optional dependencies, and supported
+tasks. Implemented families include portfolio construction, forecasting, volatility and
+risk estimation, technical signals, and execution schedules. Recommendation rules filter
+candidates by the request and data requirements, then rank compatible entries using
+explicit preferences. They are not a learned predictor of future returns. A catalog
+entry does not imply that its dependency is installed or that execution will succeed;
+unavailable backends and execution failures remain explicit. Automatic execution does
+not silently substitute another method after a selected method fails.
+
+\paragraph{Reusable models and lifecycle.}
+The library supports direct Python use as well as agent-facing discovery and execution.
+Forecasting, regression, and classification adapters expose a common fit--predict
+lifecycle, including ARIMA, Ridge, random forests, LightGBM, and XGBoost when their
+dependencies are installed. Fitted models can be saved and restored with recorded
+environment and input metadata. This loader restores trusted user-created artifacts;
+it is not a pretrained-checkpoint download service. Portfolio optimizers and rule-based
+signals use execution interfaces without pretending to share a supervised training
+lifecycle. The fruit-fly-inspired component is an experimental addition to this broader
+model-library direction; its research code is not yet a packaged model adapter.
+
+\paragraph{Information availability.}
+News collection supports RSS/Atom feeds, static pages, GDELT, and disclosure sources.
+Records distinguish publication time from observation time and retain revision
+information when available. An as-of digest filters future, stale, and undated records
+and deduplicates canonical URLs. These mechanisms support timestamp-aware processing;
+they do not reconstruct an independently validated historical news archive. Keyword
+risk indicators are not calibrated sentiment estimates, and absent news is treated as
+unknown rather than evidence of low risk. News collection is not exercised in the
+portfolio experiment reported here.
+
+\paragraph{Model choice and rule-based advice.}
+An agent can read a skill, inspect available algorithms, execute a selected method with
+its own parameters, and use the returned result in its next decision. The library also
+provides an optional market-state adviser based on trailing price and volatility
+statistics. Its trend, range, and stress categories are rule outputs, not learned regime
+probabilities or validated predictions of which strategy will outperform. A suggested
+strategy is therefore additional evidence the model may inspect. The autonomous study
+records the model's actual calls; it does not equate access to this adviser with
+autonomous algorithm selection.
+
+\paragraph{Research workflow and boundaries.}
+Research interfaces support data preflight, candidate evaluation, chronological
+validation, holdout reporting, and trial records. Holding final data out of candidate
+ranking reduces one avenue for selection bias, but the caller must still provide valid
+timestamps and data provenance. Python and JSON tool interfaces expose structured
+results; guards requiring live Python objects are not all available as JSON calls.
+Neither a data record nor a successful tool call certifies the whole research process.
+
+\section{Audit contract}
+Python guards inspect supplied artifacts and return structured findings. The following
+receipt mechanism belongs to the experimental audit controller; it is not an automatic
+property of every library call.
+
+\paragraph{Audit completeness.}
+A task specifies a nonempty set of required guards. A report is \texttt{PASS} only when
+all required checks ran and passed with no rejected input; a detected defect yields
+\texttt{FAIL}, while missing or rejected checks yield \texttt{INCOMPLETE} in the absence
+of a detected failure. Warnings remain visible. A passing subset is not a certificate
+that the whole research task is valid.
+
+\paragraph{Execution evidence.}
+The controller runs checks on a snapshot of the actual submission and supplied data.
+It records each result, elapsed time, and a SHA-256 digest of the code, input files,
+manifest and numerical report claims. Changing those artifacts invalidates earlier
+receipts. Citation-list changes alone do not invalidate a check. Unknown guard names
+and execution errors cannot create successful execution records. Executed-but-failed,
+unexecuted, and stale checks are distinct states.
+
+The current intervention binds the library's close-price causality and survivorship
+guards to submitted code and positions. It additionally checks reported accounting and
+samples same-session dependencies. These checks cover a subset of possible defects.
+The runner exposes a fixed guidance excerpt, not the entire skill collection.
+
+\section{Independent evaluation}
+A seeded synthetic market provides quoted prices, corporate actions, listings,
+post-close commentary, precomputed scores and fundamental disclosures. A submitted
+function returns portfolio weights; a separate report states its net Sharpe ratio.
+The task now specifies that session-$t$ weights must use information available by the
+end of session $t-1$, consistent with close-to-close return accounting.
+
+The independent evaluator redraws future data and individual sessions, measures changes
+in submitted positions, checks post-delisting exposure, and recomputes performance at a
+fixed transaction-cost convention. Public intervention checks do not call this oracle.
+Private grades are generated only after the submission receipt is saved and are not
+returned to the agent for repair. Rejected submissions are also graded when executable.
+
+The oracle's fixed-cost Sharpe and the public tool's stated-cost Sharpe answer different
+questions. Their discrepancy can reflect accounting conventions as well as coding
+errors. Neither should be called an estimate of genuine alpha without timing and other
+validity checks. A latent-drift strategy's sample Sharpe is a reference observation,
+not a theoretical upper bound. Exceeding it is not mathematical proof of leakage.
+
+\section{Evidence available so far}
+\subsection{Synthetic regression checks}
+Saved robustness results record \CaughtInstances{} detections among
+\DefectInstances{} planted instances: twelve defect families repeated across three
+seeded worlds, with no reported clean-control false alarms in those worlds. This is
+regression evidence within one synthetic design. Repeating a seed design does not
+supply independently authored defects or estimate a general real-world false-positive
+rate. The detection suite exercises thirteen guards, not every registered guard.
+
+\subsection{Historical agent pilot}
+The saved pilot comprises three markets, two model tiers, and library-present versus
+library-absent conditions, with one run per cell. Table~\ref{tab:pilot} recomputes the
+mean absolute discrepancy from the saved raw grades. The observed relative reduction
+for Opus is \OpusReduction\%, computed before rounding. It is not a significance claim.
+
 \begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{3.5pt}
-\begin{tabular}{lcccc}
+\centering\small
+\begin{tabular}{lc}
 \toprule
-\textbf{Experimental Arm} ($n=3$/cell) & $|\Delta\text{Sharpe}|$ & \textbf{Leakage} & \textbf{Same-Day} & \textbf{Contam.\ LLM} \\
+Historical arm & Mean absolute Sharpe gap \\
 \midrule
-Claude Opus (No Library) & $0.19$ & $0.00$ & $0.00$ & $0/3$ \\
-Claude Opus + \texttt{fin-skills} & $\mathbf{0.03}$ & $0.00$ & $0.00$ & $0/3$ \\
-Claude Haiku (No Library) & $0.57$ & $0.00$ & $0.00$ & $2/3$ \\
-Claude Haiku + \texttt{fin-skills} & $\mathbf{11.95}$ & $0.00$ & $0.42$ & $2/3$ \\
+Opus, no library & \OpusBase \\
+Opus, library & \OpusLibrary \\
+Haiku, no library & \HaikuBase \\
+Haiku, library & \HaikuLibrary \\
 \bottomrule
 \end{tabular}
-\caption{12-run agent pilot across seeds $\{11,23,37\}$. $|\Delta\text{Sharpe}| = |\text{Claimed} - \text{Recomputed}|$. Weak model + full library yields the worst distortion ($11.95$) due to hallucinated compliance.}
+\caption{Exploratory pilot: three runs per arm. Values come from saved grades; model
+versions and full interaction-level execution provenance require further verification.}
 \label{tab:pilot}
 \end{table}
 
-\subsection{Pilot Findings \& The Compliance Paradox}
-\label{sec:pilot}
-Table~\ref{tab:calibration} proves that holding out a future year (\texttt{2023}) does not prevent same-session leakage ($22.80$ paper Sharpe vs.\ $-0.58$ live replay). Table~\ref{tab:pilot} reports our 12-run agent pilot across seeds $\{11, 23, 37\}$:
-\begin{itemize}
-    \item \textbf{Strong Models Gain Reporting Precision:} Claude Opus avoided all four traps independently, and \texttt{fin-skills} reduced its Sharpe reporting discrepancy by \textbf{84\%} ($0.19 \to 0.03$).
-    \item \textbf{The Compliance Paradox:} Equipping Claude Haiku with the full library produced the \textbf{worst reporting distortion in the study ($11.95$ mean $|\Delta\text{Sharpe}|$)}---claiming Sharpe $0.24$ while earning $27.96$ in one run, and claiming $0.13$ while losing $-4.86$ in another. Crucially, Haiku \emph{cited guards in its final report that it never executed}. Passive prompt guidelines induce hallucinated compliance unless backed by mandatory runtime gates (\texttt{open\_agent\_runner.py}).
-    \item \textbf{Realized Returns Do Not Differ:} Across 6 held-out 2023 live replays (40 sessions), the library yielded 1 win ($+4.44\%$ vs.\ $+3.90\%$), 1 loss ($-0.64\%$ vs.\ $+2.36\%$), and 1 tie ($+0.30\%$ vs.\ $+0.55\%$). Integrity tools prevent false discoveries; they do not manufacture alpha.
-\end{itemize}
+The Haiku library arm has the largest discrepancy in this pilot. This motivates testing
+whether guidance, tool use, or other differences explain the outcome. It does not show
+that documentation causes weaker models to fail or that mandatory checks solve the
+problem. Historical reports of unexecuted guard citations require original execution
+logs for verification; the saved grade table alone does not establish that behavior.
 
-\section{Real-World Domain Validation: KOL Credibility \& Microstructure}
-\label{sec:realworld}
+\subsection{Numerical and real-data checks}
+The numerical benchmark compares implementations with reference calculations using
+case-specific tolerances. Passing within tolerance is not exact equality. Runtime
+measurements report the names and number of guards actually exercised, skipped and
+rejected checks, and machine-dependent timing. A fitted slope across a few data sizes
+is descriptive, not an asymptotic complexity bound.
 
-To prove that Type~II empirical and microstructure illusions govern real markets, we audit \textbf{1.72M bilingual posts} (Chinese Xueqiu and US StockTwits) paired with \textbf{1,445 verified A-share KOL track records} (\texttt{benchmarks/real\_world\_kol\_audit.py}).
+The KOL fixture supports recomputing profile-group aggregates. Its model prediction
+metrics are saved summaries, not values independently recomputed from predictions and
+outcomes. In particular, its stored pooled Rank IC and mean daily cross-sectional Rank
+IC can have different signs. We do not treat this fixture as end-to-end reproduction,
+evidence of profitable trading, or external validation of the agent intervention.
+A separate evaluator now requires timestamped row-level predictions and outcomes,
+reports both forms of IC, and uses paired date-block uncertainty. Those source records
+remain an outstanding evidence requirement.
 
-\begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{KOL Credibility Tier} & \textbf{Count} & \textbf{Mean Fans} & \textbf{5D Win\%} & \textbf{5D Rank IC} \\
-\midrule
-\texttt{TIER\_1\_CORE\_ALPHA} & $70$ & $14{,}121.9$ & $68.47\%$ & $\mathbf{+0.2158}$ \\
-\texttt{TIER\_2\_RESEARCHER} & $115$ & $31{,}994.4$ & $70.92\%$ & $+0.1929$ \\
-\texttt{TIER\_0\_ELITE\_KOL} & $31$ & $186{,}610.1$ & $61.65\%$ & $+0.1141$ \\
-\texttt{TIER\_MEDIA\_AGGREG.} & $11$ & $107{,}354.3$ & $46.98\%$ & $-0.0008$ \\
-\texttt{TIER\_NEUTRAL\_RETAIL} & $1{,}120$ & $71{,}251.4$ & $46.72\%$ & $-0.0074$ \\
-\texttt{TIER\_CONTRARIAN} & $98$ & $\mathbf{55{,}988.6}$ & $28.49\%$ & $\mathbf{-0.2130}$ \\
-\bottomrule
-\end{tabular}
-\caption{Empirical stratification of 1,445 A-share KOLs. Contrarian indicators average $3.96\times$ more followers than Tier-1 Alpha researchers ($55{,}989$ vs.\ $14{,}122$), explaining why unweighted social NLP loses money.}
-\label{tab:kol}
-\end{table}
+\section{Four-condition study}
+The new protocol compares task guidance with ordinary accounting feedback, the same
+setup plus a fixed skill excerpt, the excerpt plus optional executable guards, and the
+excerpt plus a mandatory final audit. Market data, inference seeds and budgets are
+paired. Every condition has the same turn and response-token caps; actual token use,
+execution time and tool calls are also recorded. Conditions run in a frozen randomized
+order. Failed requests have no hidden retry or synthetic response fallback.
 
-\begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Model / Representation Variant} & \textbf{AUC} & \textbf{Acc.} & \textbf{5D Rank IC} \\
-\midrule
-MMAN Unweighted Fact Surge & $0.4850$ & $48.21\%$ & $-0.03184^{***}$ \\
-MMAN Baseline (Price + Raw Text) & $0.5016$ & $49.82\%$ & $+0.00609$ \\
-\textbf{MMAN + Bayesian Credibility Gate} & $\mathbf{0.5033}$ & $\mathbf{51.13\%}$ & $\mathbf{+0.01040}^{**}$ \\
-\midrule
-Chinese RoBERTa (Raw Social Text) & $0.5075$ & $50.67\%$ & $+0.00842$ \\
-\textbf{Chinese RoBERTa (LLM-Distilled)} & $\mathbf{0.5121}$ & $50.42\%$ & $\mathbf{+0.01862}$ \\
-\bottomrule
-\end{tabular}
-\caption{Out-of-sample predictive ablation. Unweighted fact extraction suffers severe negative Rank IC ($-0.03184, p=1.74\times 10^{-20}$); Bayesian credibility gating reverses it ($+0.04224$ net IC shift). LLM text distillation ($N=31{,}505$) doubles RoBERTa Rank IC.}
-\label{tab:mman}
-\end{table}
+The primary outcome is incorrect accepted submissions divided by all attempted
+submissions. Correctness among accepted outputs and overall acceptance rate must be
+reported alongside it, so refusing every output cannot appear to solve the task.
+Secondary outcomes include independent leakage measures, reporting discrepancy,
+post-delisting exposure, unexecuted and stale citations, repair success and resource
+cost. Missing, rejected, ungradable and provider-failed runs remain separate outcomes.
 
-\paragraph{The $3.96\times$ Follower Asymmetry Paradox.}
-Table~\ref{tab:kol} reveals why standard financial NLP fails on social media: accounts in \texttt{TIER\_CONTRARIAN\_INDICATOR} ($N=98$, mean 5-day $\text{IC} = -0.2130$, win rate $28.49\%$) average \textbf{55,988.6 followers---$3.96\times$ more than \texttt{TIER\_1\_CORE\_ALPHA} researchers ($14{,}121.9$ followers, $\text{IC} = +0.2158$)}! Consequently, unweighted Multimodal Attention Networks (MMAN) suffer catastrophic negative correlation ($\text{Rank IC} = -0.03184, p = 1.74 \times 10^{-20}$, Table~\ref{tab:mman}). Applying conjugate Beta-Binomial shrinkage and inverting statistically verified contrarians flips predictive power to $\text{Rank IC} = +0.01040$ ($p = 0.001$). Furthermore, LLM semantic distillation across 31,505 instances raises numerical fact density ($1.049 \to 1.078$ per 100 chars) and more than doubles Chinese RoBERTa Rank IC ($+0.00842 \to +0.01862$).
+The first Beacon run is a public-seed feasibility study using pinned open-weight
+models. It tests operation and supports cost and sample-size planning. A confirmatory
+study additionally needs independent defect authorship, retained clean cases, repeated
+runs, and verified scorer isolation. Market-level paired uncertainty must preserve
+repetitions within markets. The present protocol is an amendment after examining the
+pilot, not a preregistration of its observations. Failure to find a return difference
+would not establish equivalence.
 
-\paragraph{Institutional Microstructure Guard Enforcement.}
-When deployed in an 80/20 Core-Satellite A-share portfolio (2023--2026 out-of-sample), enforcing six domain guards ($T+1$ lockups, 100-share board lots, asymmetric sell-side stamp duties, QDII secondary-market premium caps $\le 1.5\%$, cash drag, and predictability stratification) achieves an annualized Sharpe of \textbf{1.34} and maximum drawdown of \textbf{$-6.88\%$} (vs.\ CSI~300 benchmark $-27.65\%$), scoring \textbf{95.0/100} on live paper-ledger audits.
+\paragraph{Operational findings.}
+The first Beacon preflight rejected valid tool-call JSON wrapped in Markdown fences.
+We archived those records and amended the parser before a separate batch; this was
+an interface failure, not evidence of financial reasoning failure. In the revised
+batch, Qwen2.5-Coder 7B and 14B each completed \BeaconPerModel{} recorded cells, with
+\BeaconSevenAccepted{} and \BeaconFourteenAccepted{} accepted submissions respectively.
+Neither model produced an independent numerical grade: final code failed input or
+output validation, or a required artifact was absent. Accepted does not mean correct,
+and these observations cannot estimate improvement in financial integrity.
 
-\section{Numerical Parity, Scaling \& Conclusion}
-\label{sec:parity}
+The 32B run encountered nonfinite generation values and a CUDA error before a tool
+call. Subsequent failure records from that process are not independent capability
+observations. At the time of that feasibility report, a separately recorded single-GPU
+recovery run was queued. A handwritten
+causal control passed the mandatory audit and independent timing/accounting checks on
+one public market. That control verifies an executable path, not general scorer validity.
+Before a confirmatory study, basic artifact validity must be distinguished from the
+incremental contribution of financial checks.
 
-In Experiment~E3 (\texttt{benchmarks/parity\_and\_cost\_bench.py}), \texttt{fin-skills} achieves \textbf{8/8 exact numerical parity} against \texttt{scipy}, \texttt{statsmodels}, and analytical closed forms (maximum discrepancies of $0.0$ to $2.12\times 10^{-10}$ across SLSQP minimum-variance QP, parametric/historical VaR \& ES, fractional differentiation weights, and Augmented Dickey-Fuller statistics). Across dataset sizes $N \in \{250, 1000, 5000, 25000\}$ rows, \texttt{Bundle.check()} exhibits sub-linear scaling $\mathcal{O}(N^{0.2637})$, completing in \textbf{$111.17\text{ ms}$ P50} ($3.66\text{ MB}$ peak RAM) at $N=25{,}000$ rows ($\sim 100$ years of daily bars).
+\input{autonomous_study}
 
-\section*{Limitations}
-First, as demonstrated in \S\ref{sec:pilot}, \texttt{fin-skills} is an integrity verification toolkit rather than an alpha-generation engine: in held-out live replays where underlying strategies lack edge, guard enforcement does not increase realized returns. Second, our controlled agent pilot ($n=12$ runs across two frontier model tiers) establishes clear measurement discrimination and uncovers hallucinated compliance, but full statistical power across open-weight model families requires completing our pre-registered 3-condition expansion (Experiment~E2: $12\text{ markets} \times 3\text{ model sizes} \times 3\text{ conditions} \times 3\text{ repetitions}$, Appendix~\ref{app:e2}). Third, real-world social sentiment dynamics evolve as platforms alter recommendation algorithms, requiring periodic re-estimation of Bayesian KOL priors.
+\input{fly_memory}
 
-\section*{Ethical Considerations \& Broader Impact}
-All 1,445 social media author handles in our released benchmark fixture (\texttt{kol\_credibility\_linguistic\_fixture.json}) are cryptographically pseudonymized via one-way SHA-256 digests (\texttt{KOL\_<10-hex>}) with raw handles and stock-specific identifiers stripped to protect individual privacy. None of the tools, guards, or empirical case studies in this paper constitute investment advice or automated live-money order execution; all broker-facing skills enforce strict paper-account sandboxing and human-in-the-loop kill switches. By exposing fabricated backtest Sharpe ratios and hallucinated audit citations, this work directly mitigates the risk of retail and institutional capital loss caused by deploying flawed AI-generated trading strategies.
+\section*{Limitations and remaining work}
+The Beacon worker uses Linux Landlock and seccomp to restrict filesystem access,
+network calls and process creation; unsupported enforcement fails closed. Local
+subprocess execution alone provides no such isolation. Submitted Python still shares
+an interpreter with individual checks, so host confinement does not establish that
+the evaluator resists tampering. A formal adversarial or private-holdout claim needs
+an independently protected scorer and additional validation.
+Publicly inspected generator code and seeds are development data. Finite perturbations
+can miss conditional dependencies; stochastic strategies need repeatability controls.
+A passing audit is limited to its input assumptions and required checks. The full
+multi-model study and row-level real-world reproduction are not yet established.
+The autonomous-use development experiment adds a functioning portfolio-decision loop;
+it does not resolve those limitations or establish profitable trading. Its reference-price
+data, limited market coverage, unequal actual compute use and previously inspected window
+preclude a confirmatory economic-utility claim.
 
-\bibliographystyle{plain}
+\section*{Authorship, data and disclosure status}
+Author order, affiliations, funding, data permissions and final declarations require
+confirmation by the accountable authors. The earlier draft's unconfirmed organization
+and email details have been removed. AI assistance was used for code review, revisions
+and experiment preparation in this work session; the final disclosure and human review
+record must be completed before submission. The manuscript remains a working draft.
+
 \bibliography{references}
-
-\clearpage
-\appendix
-
-\section{Experiment E1: Synthetic Defect Recall Across Random Seeds}
-\label{app:e1}
-In \texttt{benchmarks/guard\_bench.py}, we evaluate guard recall across three independent synthetic market worlds generated with seeds $s \in \{17, 29, 43\}$, each containing 12 planted research defects spanning look-ahead joins, unadjusted corporate splits, survivorship filtering, non-monotonic as-of merges, cost implausibility, and regime look-ahead. Across all three worlds, \texttt{fin-skills} achieved \textbf{100\% recall ($36/36$ total defects detected)}, \textbf{0 false alarms} on clean control series, and \textbf{0 runtime exceptions} (\texttt{benchmarks/GUARD\_ROBUSTNESS.json}).
-
-\section{Experiment E2: Three-Condition Open-Weight Scaffold \& Pre-Registered Hypotheses}
-\label{app:e2}
-To strictly isolate whether agent improvements stem from passive prompt documentation or active code execution, we implement \texttt{benchmarks/agent\_study/open\_agent\_runner.py}, which evaluates any OpenAI-compatible open-weight server (vLLM/SGLang on Beacon) across three conditions:
-\begin{itemize}
-    \item \textbf{Condition A (\texttt{no\_library}):} Task prompt and raw market CSVs only.
-    \item \textbf{Condition B (\texttt{skills\_text\_only}):} Injects relevant \texttt{SKILL.md} guidance into context while blocking executable guard tools.
-    \item \textbf{Condition C (\texttt{skills\_plus\_guards}):} Provides both \texttt{SKILL.md} text and executable guard tools with immutable runtime provenance tracking to automatically flag hallucinated citations.
-\end{itemize}
-We freeze four pre-registered hypotheses prior to executing the full $12 \times 3 \times 3 \times 3$ sweep: (H1) shortcut incidence increases monotonically as model parameter count decreases; (H2) Condition~B reduces reporting error for strong models but increases hallucinated guard citations for weak models; (H3) Condition~C achieves the lowest $|\Delta\text{Sharpe}|$ across all model sizes; and (H4) realized live replay returns show no statistically significant difference across Conditions A, B, and C.
-
-\section{Experiment E3: Full Numerical Parity \& Guard Runtime Scaling Tables}
-\label{app:e3}
-Table~\ref{tab:e3_full} details the exact numerical parity verification across all 8 financial and econometric primitives, alongside the full wall-clock timing and peak memory profile of \texttt{Bundle.check()} across dataset scales (\texttt{benchmarks/PARITY\_AND\_COST\_RESULTS.json}).
-
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{3.5pt}
-\begin{tabular}{llcc}
-\toprule
-\textbf{Primitive} & \textbf{Reference Benchmark} & \textbf{Max $|\Delta|$} & \textbf{Status} \\
-\midrule
-Equal Weight & Exact closed form ($1/N$) & $0.00$ & PASS \\
-Inverse Vol.\ & Exact sample $\sigma_i^{-1}$ & $0.00$ & PASS \\
-Min-Var QP & \texttt{scipy} SLSQP convex QP & $1.14\times 10^{-8}$ & PASS \\
-Normal VaR/ES & \texttt{scipy.stats.norm} exact & $6.94\times 10^{-18}$ & PASS \\
-Hist.\ VaR/ES & Empirical quantile \& tail mean & $0.00$ & PASS \\
-Hist.\ Vol.\ & \texttt{pandas} sample std ($ddof=1$) & $0.00$ & PASS \\
-Frac.\ Diff.\ FFD & Closed-form binomial ($d=0.4$) & $1.11\times 10^{-16}$ & PASS \\
-ADF Unit Root & \texttt{statsmodels.adfuller} & $2.12\times 10^{-10}$ & PASS \\
-\bottomrule
-\end{tabular}
-\caption{Complete E3 numerical parity verification ($8/8$ passed).}
-\label{tab:e3_full}
-\end{table}
-
 \end{document}

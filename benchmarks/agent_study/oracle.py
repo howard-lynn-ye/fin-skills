@@ -27,6 +27,8 @@ import shutil
 import sys
 import tempfile
 import time
+import types
+import os
 from pathlib import Path
 
 import numpy as np
@@ -46,11 +48,23 @@ PERTURB_SEEDS = (101, 202, 303)
 
 def load_positions(submission: Path, data_dir: Path, timeout_note: str = "") -> pd.DataFrame:
     """Import submission.py in a fresh module and call build_positions(data_dir)."""
-    spec = importlib.util.spec_from_file_location(
-        f"submission_{abs(hash((str(submission), str(data_dir), time.time())))}",
-        submission / "submission.py")
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
+    if os.environ.get("FIN_STUDY_REQUIRE_SANDBOX") == "1":
+        from benchmarks.agent_study.open_agent_runner import AgentWorkspaceSession
+        with tempfile.TemporaryDirectory(prefix="oracle-snapshot-") as td:
+            snapshot = Path(td)
+            shutil.copytree(data_dir, snapshot / "data")
+            shutil.copy2(submission / "submission.py", snapshot / "submission.py")
+            session = AgentWorkspaceSession(snapshot, "no_library")
+            result = session._worker("positions")
+            if result.get("status") != "EXECUTED":
+                raise RuntimeError(f"submission worker failed: {result}")
+            split = result["positions"]
+            return pd.DataFrame(split["data"], index=pd.to_datetime(split["index"]),
+                                columns=split["columns"])
+    source = submission / "submission.py"
+    mod = types.ModuleType("submission")
+    mod.__file__ = str(source)
+    exec(compile(source.read_bytes(), str(source), "exec"), mod.__dict__)
     pos = mod.build_positions(str(data_dir))
     pos = pd.DataFrame(pos).copy()
     pos.index = pd.to_datetime(pos.index)

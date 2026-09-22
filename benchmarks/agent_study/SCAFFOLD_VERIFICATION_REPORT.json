@@ -71,5 +71,7 @@
         "sharpe_gap": 2.0549908164825985
       }
     }
-  ]
+  ],
+  "evidence_status": "RETIRED_MOCK_SCAFFOLD_NOT_MODEL_EVIDENCE",
+  "correction_2026_09_21": "Original run_guard only recorded names; null recomputed_sharpe came from a wrong oracle key. Historical rows retained unchanged."
 }

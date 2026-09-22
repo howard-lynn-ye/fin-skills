@@ -2,6 +2,18 @@
 
 [Research workflow](docs/RESEARCH_WORKFLOW.md) | [API compatibility](docs/API_COMPATIBILITY.md)
 
+[Strategies, decisions and algorithms](catalog/QUANT_METHODS.md) |
+[Method search API](docs/QUANT_METHODS.md): sourced discovery with explicit implementation status.
+
+**Research evidence status (2026-09-21):** The revised [study plan](paper/STUDY_PLAN.md)
+separates historical pilot results, synthetic regression checks, and experiments still
+pending. The former E2 scaffold did not execute guards; it has been replaced with real
+artifact-bound checks and a four-condition runner. KOL prediction metrics in the shipped
+fixture are historical summaries, not end-to-end reproduction. See the
+[machine-derived evidence record](paper/evidence.json) before quoting research claims.
+Current changes, validation and Beacon jobs are listed in the
+[execution record](paper/IMPLEMENTATION_STATUS.md).
+
 <div align="center">
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/howard-lynn-ye/fin-skills/releases)
@@ -52,7 +64,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **53 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **61 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 
@@ -69,7 +81,7 @@ flowchart TD
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
-        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>53 Live Agent Inspection Tools"]
+        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>56 Live Agent Inspection Tools"]
     end
 
     D3 ==>|Compiled by build_package.py| E1
@@ -132,6 +144,10 @@ report = check(b)
 print(report.summary())
 ```
 
+For a release decision, use `report.audit(["assert_causal", "cost_curve"])` with the
+checks required for that task. `PASS`, `FAIL` and `INCOMPLETE` are distinct outcomes.
+An empty run or rejected input cannot pass; skipped checks do not establish coverage.
+
 #### 2. Run Individual Look-Ahead & Integrity Guards
 ```python
 # Perturb future bars after index k=250 and verify historical signals never change
@@ -166,6 +182,10 @@ The library now includes real retrieval through `fin_skills.collect`: RSS/Atom, 
 
 ### Algorithm selection and execution
 
+The [market strategy workflow](docs/MARKET_STRATEGY.md) adds causal market-state rules,
+multi-source news screening and next-bar strategy candidates. Run the offline example with
+`python examples/market_strategy.py`. Candidate rankings are policy, not validated profits.
+
 `fin_skills.algorithms` catalogs algorithms and their implementation backends, ranks them against
 data availability, sample size, objectives and constraints, and runs supported adapters through
 `auto_run(task, data, ...)`. Every selection includes reasons and exclusions. Optional dependencies
@@ -197,7 +217,7 @@ adapter coverage, input conventions and registration of additional libraries.
 
 ### Mode C: As an MCP Server or JSON Tool Suite for LLM Agents
 
-Give any LLM agent live execution access to the 53 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
+Give any LLM agent live execution access to the 61 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
 
 ```bash
 pip install "fin-skills[mcp]"
@@ -234,23 +254,23 @@ Every fact below was verified against primary source code or regulatory filings 
 
 ### B. The Leak Detection Benchmark (`benchmarks/leak_bench.py`)
 
-We evaluate our executable guards against a 1,565-day synthetic market containing 36 equities (including 10 delistings and 16 stock splits) across **12 planted research defects**:
+The benchmark rerun uses 1,825 trading days and 60 equities, including 26 delistings and 26 splits, with **12 planted research defects**. These are synthetic regression cases, not an estimate of general detection accuracy.
 
-| Planted Research Defect | Severity | Corrupted Sharpe (vs 1.80 Clean) | Caught By Guard | Execution Time |
+| Planted Research Defect | Severity | Corrupted Sharpe (vs 0.61 Clean) | Caught By Guard | Execution Time |
 | :--- | :---: | :---: | :--- | :---: |
-| **`wrong_side_asof`** (Point-in-time timestamp leak) | High | `2.63` (+0.83 fake boost) | `safe_asof` | see RESULTS.md |
-| **`cost_too_low`** (Unrealistic 1bp execution assumption) | High | `2.09` (+0.29 fake boost) | `cost_plausibility` | see RESULTS.md |
-| **`lookahead_signal`** (Centered rolling window / shift(-1)) | Critical | `1.99` (+0.19 fake boost) | `assert_causal` | see RESULTS.md |
-| **`warmup_live_window`** (Indicator warm-up inside test window) | Medium | `1.83` (+0.03 distortion) | `warmup_probe` | see RESULTS.md |
-| **`survivor_only_universe`** (Omitting 10 delisted stocks) | High | `1.82` (+0.02 survivorship) | `survivorship_audit`, `pit_universe` | see RESULTS.md |
-| **`unpurged_cv`** (Overlapping labels across K-Fold splits) | High | `1.79` (leaked validation) | `purge_effect` | see RESULTS.md |
-| **`latest_vintage_fundamentals`** (Restated financial statements) | High | `1.78` (restatement leak) | `pit_fundamentals` | see RESULTS.md |
-| **`shared_scaler`** (`StandardScaler` fit on full train+test) | High | `1.76` (distribution leak) | `fold_leak_test` | see RESULTS.md |
-| **`forward_adjusted_qfq`** (Trading on forward-adjusted prices) | Medium | `1.71` (level distortion) | `adjustment_check` | see RESULTS.md |
-| **`llm_cutoff_overlap`** (Evaluating LLM inside training window) | Critical | `1.46` (memorization bias) | `contamination_probe` | see RESULTS.md |
-| **`unadjusted_split`** (Trading raw prices across stock splits) | High | `0.77` (-1.03 fake crash) | `adjustment_check` | see RESULTS.md |
-| **`single_calm_quarter`** (Cherry-picked low-vol regime window) | Medium | `0.77` (regime fragility) | `regime_coverage` | see RESULTS.md |
-| **Clean Baseline Data (False Alarm Test)** | — | **`1.80` (True Sharpe)** | **0 False Alarms (`ok` across all 13)** | — |
+| **`wrong_side_asof`** (Point-in-time timestamp leak) | High | `1.94` | `safe_asof` | see RESULTS.md |
+| **`cost_too_low`** (Unrealistic 1bp execution assumption) | High | `1.01` | `cost_plausibility` | see RESULTS.md |
+| **`lookahead_signal`** (Centered rolling window / shift(-1)) | Critical | `1.15` | `assert_causal` | see RESULTS.md |
+| **`warmup_live_window`** (Indicator warm-up inside test window) | Medium | `0.59` | `warmup_probe` | see RESULTS.md |
+| **`survivor_only_universe`** (Omitting 26 delisted stocks) | High | `0.66` | `survivorship_audit`, `pit_universe` | see RESULTS.md |
+| **`unpurged_cv`** (Overlapping labels across K-Fold splits) | High | `0.63` | `purge_effect` | see RESULTS.md |
+| **`latest_vintage_fundamentals`** (Restated financial statements) | High | `0.60` | `pit_fundamentals` | see RESULTS.md |
+| **`shared_scaler`** (`StandardScaler` fit on full train+test) | High | `0.62` | `fold_leak_test` | see RESULTS.md |
+| **`forward_adjusted_qfq`** (Trading on forward-adjusted prices) | Medium | `0.62` | `adjustment_check` | see RESULTS.md |
+| **`llm_cutoff_overlap`** (Evaluating LLM inside training window) | Critical | `1.42` | `contamination_probe` | see RESULTS.md |
+| **`unadjusted_split`** (Trading raw prices across stock splits) | High | `-0.19` | `adjustment_check` | see RESULTS.md |
+| **`single_calm_quarter`** (Cherry-picked low-vol regime window) | Medium | `3.70` | `regime_coverage` | see RESULTS.md |
+| **Clean Baseline Data (False Alarm Test)** | — | **`0.61` (Sample Sharpe)** | **0 False Alarms (`ok` across all 13)** | — |
 
 Full reproducible benchmark output: [`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
 

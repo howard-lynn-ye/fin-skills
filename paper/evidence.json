@@ -1,0 +1,127 @@
+{
+  "status": "DRAFT_MACHINE_CHECKED_NOT_HUMAN_APPROVED",
+  "sources": [
+    {
+      "path": "benchmarks/agent_study/PILOT_RESULTS.json",
+      "sha256": "e91df12bc09d9a8757861a70a42b0878b2a56a39a262d4308f608bff7b02db7f"
+    },
+    {
+      "path": "benchmarks/GUARD_ROBUSTNESS.json",
+      "sha256": "452bafd76026c6400f980bb3e97ead789dafd21013397d42fe66f15f40c2b935"
+    },
+    {
+      "path": "benchmarks/PARITY_AND_COST_RESULTS.json",
+      "sha256": "dd7249365428d33ad5bdfee55b4a3e30fa1b0c40bb21f6cd1618ce3780ec3f76"
+    },
+    {
+      "path": "benchmarks/REAL_WORLD_KOL_AUDIT_RESULTS.json",
+      "sha256": "f1e064cbe21d583c77afae243aa9aa483a904b18506ada0eaf6c3fd7a16cd564"
+    },
+    {
+      "path": "benchmarks/agent_study/POSITIVE_CONTROL_RESULTS.json",
+      "sha256": "b17bc61f2bc9b857d4e8439ebb2690356491786ec495682dc9e2e6ad03a1eb8f"
+    },
+    {
+      "path": "benchmarks/agent_study/BEACON_FEASIBILITY_RESULTS.json",
+      "sha256": "077e2e633ecec1a2c05a0f7c98021e33456eef8df45d5dba983c5be789c52d65"
+    }
+  ],
+  "pilot": {
+    "unit": "agent run",
+    "n": 12,
+    "per_arm": {
+      "A": {
+        "n": 3,
+        "mean_absolute_sharpe_gap": 0.1882766896727368
+      },
+      "Ah": {
+        "n": 3,
+        "mean_absolute_sharpe_gap": 0.574372707765836
+      },
+      "B": {
+        "n": 3,
+        "mean_absolute_sharpe_gap": 0.03402516969220818
+      },
+      "Bh": {
+        "n": 3,
+        "mean_absolute_sharpe_gap": 11.948911042871087
+      }
+    },
+    "opus_relative_reduction_percent": 81.92810286214886,
+    "scope": "historical exploratory pilot; not a replicated causal estimate"
+  },
+  "defects": {
+    "worlds": 3,
+    "planted_instances": 36,
+    "caught_instances": 36,
+    "false_alarms": 0,
+    "scope": "fixed synthetic defect families; seed repetition is not independent defect discovery"
+  },
+  "parity": {
+    "passed": 8,
+    "count": 8,
+    "maximum_absolute_error": 1.1827553714205408e-08,
+    "scope": "within each case's stated tolerance; not exact equality"
+  },
+  "real_world": {
+    "status": "SUMMARY_FIXTURE_ONLY",
+    "prediction_reproduction": "NOT_RUN_MISSING_ROW_LEVEL_PREDICTIONS"
+  },
+  "positive_control": {
+    "accepted": true,
+    "grade": {
+      "task": "positive-control",
+      "submission": "positive-control",
+      "reported_sharpe": -5.459135972957182,
+      "honest_sharpe": -5.459135972957182,
+      "mean_daily_turnover": 1.069662707901674,
+      "stated_cost_bps_per_side": 10.0,
+      "leakage_rate": 0.0,
+      "leakage_max_abs": 0.0,
+      "runs": 3,
+      "post_delisting_mass": 0.0,
+      "delisted_names_traded": 23,
+      "delisted_names_total": 23,
+      "universe_coverage": 1.0,
+      "uses_close_quoted": true,
+      "uses_news_feed": false,
+      "uses_llm_score": false,
+      "uses_fundamentals": false,
+      "uses_volume": false,
+      "uses_listings": false,
+      "same_session_rate": 0.0,
+      "same_session_dates": 8,
+      "sharpe_gap": 0.0
+    },
+    "scope": "One public synthetic market. Tests executable causal accounting, not strategy profitability or unseen-agent performance."
+  },
+  "beacon_feasibility": {
+    "models": {
+      "Qwen/Qwen2.5-Coder-14B-Instruct": {
+        "recorded_cells": 12,
+        "accepted": 7,
+        "graded": 0
+      },
+      "Qwen/Qwen2.5-Coder-32B-Instruct": {
+        "recorded_cells": 12,
+        "accepted": 0,
+        "graded": 0
+      },
+      "Qwen/Qwen2.5-Coder-7B-Instruct": {
+        "recorded_cells": 12,
+        "accepted": 0,
+        "graded": 0
+      }
+    },
+    "status": "FEASIBILITY_ONLY_32B_RUNTIME_FAILED_SINGLE_GPU_RERUN_PENDING",
+    "scope": "No independent grades were produced. Accepted but ungradable submissions are not counted as correct. CUDA-failed 32B records are infrastructure failures, not financial capability evidence.",
+    "pending_job": "1613767"
+  },
+  "unresolved": [
+    "Accountable human source/claim verification",
+    "Independent holdout authorship and isolation",
+    "Full repeated multi-model study",
+    "KOL row-level predictions and timestamp provenance",
+    "Author order, affiliations, declarations and submission approval"
+  ]
+}

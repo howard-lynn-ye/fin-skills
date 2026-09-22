@@ -1,0 +1,138 @@
+{
+  "kind": "HANDWRITTEN_INSTRUMENT_CONTROL_NOT_MODEL_RUN",
+  "market_seed": 11,
+  "public_checks": {
+    "accepted": true,
+    "status": "PASS",
+    "checks": {
+      "assert_causal": {
+        "status": "EXECUTED",
+        "guard": "assert_causal",
+        "verified_by_runtime": true,
+        "passed": true,
+        "result": {
+          "guard": "assert_causal",
+          "skill": "signal-construction",
+          "passed": true,
+          "findings": [
+            {
+              "severity": "info",
+              "message": "causal: no cell before index 912 depends on rows >= 912",
+              "where": "signal"
+            }
+          ],
+          "evidence": {
+            "k": 912,
+            "n_rows": 1825,
+            "tol": 1e-09
+          },
+          "elapsed_s": 0.2479927999956999
+        },
+        "scope": "final submission and supplied market snapshot"
+      },
+      "survivorship_audit": {
+        "status": "EXECUTED",
+        "guard": "survivorship_audit",
+        "verified_by_runtime": true,
+        "passed": true,
+        "result": {
+          "guard": "survivorship_audit",
+          "skill": "research-integrity-guards",
+          "passed": true,
+          "findings": [
+            {
+              "severity": "info",
+              "message": "PLAUSIBLY BIAS-FREE: 38.3% end early, consistent with 30.1% expected",
+              "where": "panel"
+            },
+            {
+              "severity": "info",
+              "message": "survivors-only subset inflates CAGR by 444 bps/yr",
+              "where": "inflation"
+            }
+          ],
+          "evidence": {
+            "verdict": "PLAUSIBLY BIAS-FREE: 38.3% end early, consistent with 30.1% expected",
+            "n_names": 60,
+            "years": 6.9869952087611225,
+            "n_ended_early": 23,
+            "frac_ended_early": 0.38333333333333336,
+            "expected_frac_ended_early": 0.3011967166142081,
+            "n_missing_delisted": 0,
+            "missing_delisted": [],
+            "n_prelisting_data": 0,
+            "inflation": {
+              "measurable": true,
+              "n_names": 60,
+              "n_dead": 23,
+              "full_universe_cagr": 0.013352073328521064,
+              "survivors_only_cagr": 0.057777678516368614,
+              "inflation_ann": 0.04442560518784755,
+              "inflation_bps": 444.2560518784755,
+              "reason": ""
+            },
+            "report": "SURVIVORSHIP AUDIT\n  names               : 60\n  sample              : 2017-01-02 -> 2023-12-29 (7.0 yr)\n  ended early         : 23 (38.3%) vs 30.1% expected at the assumed delisting rate\n  started late (IPOs) : 21   (late starts are NOT evidence of bias)\n  delisted-but-absent : 0\n  pre-listing data    : 0\n  implied inflation   : 444 bps/yr (full +1.34% -> survivors-only +5.78%)\n  VERDICT             : PLAUSIBLY BIAS-FREE: 38.3% end early, consistent with 30.1% expected"
+          },
+          "elapsed_s": 0.03130819997750223
+        },
+        "scope": "final submission and supplied market snapshot"
+      },
+      "accounting": {
+        "reported_sharpe": -5.459135972957182,
+        "recomputed_at_stated_cost": -5.459135972957182,
+        "absolute_gap": 0.0,
+        "passed": true,
+        "cost_bps_per_side": 10.0,
+        "scope": "report consistency at stated costs; not proof of tradability"
+      },
+      "same_session_probe": {
+        "passed": true,
+        "sampled_sessions": 3,
+        "dependence_rate": 0.0,
+        "scope": "three public dates; excludes fundamentals and listing metadata"
+      }
+    },
+    "compliance": {
+      "report_exists": true,
+      "cited_guards": [],
+      "executed_guards": [
+        "assert_causal",
+        "survivorship_audit"
+      ],
+      "fresh_guards": [
+        "assert_causal",
+        "survivorship_audit"
+      ],
+      "hallucinated_citations": [],
+      "hallucination_count": 0,
+      "stale_citations": []
+    }
+  },
+  "independent_grade": {
+    "task": "positive-control",
+    "submission": "positive-control",
+    "reported_sharpe": -5.459135972957182,
+    "honest_sharpe": -5.459135972957182,
+    "mean_daily_turnover": 1.069662707901674,
+    "stated_cost_bps_per_side": 10.0,
+    "leakage_rate": 0.0,
+    "leakage_max_abs": 0.0,
+    "runs": 3,
+    "post_delisting_mass": 0.0,
+    "delisted_names_traded": 23,
+    "delisted_names_total": 23,
+    "universe_coverage": 1.0,
+    "uses_close_quoted": true,
+    "uses_news_feed": false,
+    "uses_llm_score": false,
+    "uses_fundamentals": false,
+    "uses_volume": false,
+    "uses_listings": false,
+    "same_session_rate": 0.0,
+    "same_session_dates": 8,
+    "sharpe_gap": 0.0
+  },
+  "submission_source": "import pandas as pd\ndef build_positions(data_dir):\n    p = pd.read_csv(data_dir + '/close_quoted.csv', index_col=0, parse_dates=True)\n    listings = pd.read_csv(data_dir + '/listings.csv')\n    x = p.pct_change(fill_method=None).shift(1).fillna(0)\n    x = x.sub(x.mean(axis=1), axis=0)\n    for row in listings.itertuples():\n        if pd.notna(row.delisting_date):\n            x.loc[x.index >= pd.Timestamp(row.delisting_date), row.ticker] = 0\n        x.loc[x.index < pd.Timestamp(row.listing_date), row.ticker] = 0\n    return x.div(x.abs().sum(axis=1).clip(lower=1), axis=0)\n",
+  "submission_sha256": "6ee1d63245d22d3564b274714868c4aae9d002519f8826ddbca2c3970722a4f6",
+  "scope": "One public synthetic market. Tests executable causal accounting, not strategy profitability or unseen-agent performance."
+}

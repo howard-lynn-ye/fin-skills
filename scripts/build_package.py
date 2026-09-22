@@ -49,7 +49,7 @@ HAND_WRITTEN = {"__init__.py"}          # kept as-is; everything else under fin_
 #   synthesis/ combining information of DIFFERENT kinds into one traceable research view
 # A new layer is added here in the SAME commit that creates it, or the next regeneration
 # deletes it. --check enforces this.
-HAND_WRITTEN_DIRS = ("algorithms/", "api/", "bridges/", "collect/", "data/", "discovery/", "engine/", "mcp/", "synthesis/", "tools/")
+HAND_WRITTEN_DIRS = ("algorithms/", "api/", "bridges/", "collect/", "data/", "discovery/", "engine/", "mcp/", "model_zoo/", "synthesis/", "tools/")
 
 
 def is_hand_written(rel: str) -> bool:

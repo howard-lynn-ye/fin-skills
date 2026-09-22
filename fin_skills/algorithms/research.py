@@ -110,15 +110,18 @@ def _slice(data, start, end):
             if k in history else v for k, v in data.items() if k != "X_predict"}
 
 
-def _portfolio_returns(weights, returns, cost_bps):
+def _portfolio_returns(weights, returns, cost_bps, *, allow_cash=False):
     """Daily target rebalancing, entry from cash and terminal liquidation; proportional fees."""
     w = np.asarray(weights, float)
     R = np.asarray(returns, float)
     if w.shape != (R.shape[1],) or not np.isfinite(w).all() or (w < -1e-8).any():
         raise ValueError("portfolio adapter must return finite long-only weights")
-    if abs(w.sum() - 1) > 2e-5:
+    if allow_cash and w.sum() > 1 + 2e-5:
+        raise ValueError("portfolio weights plus cash must not exceed one")
+    if not allow_cash and abs(w.sum() - 1) > 2e-5:
         raise ValueError("portfolio weights must sum to one")
-    w = w / w.sum()
+    if not allow_cash:
+        w = w / w.sum()
     held = np.zeros_like(w)
     net, turnover = [], []
     for row in R:
@@ -148,11 +151,13 @@ def _fold(registry, id, task, data, train_end, start, end, parameters, metric, c
         target = np.asarray(actual["y"])
     elif task == "portfolio":
         weights = registry.run(id, train, **parameters)
-        net, turnover = _portfolio_returns(weights, actual["asset_returns"], cost_bps)
+        net, turnover = _portfolio_returns(weights, actual["asset_returns"], cost_bps,
+                                           allow_cash=id == "cross_sectional_momentum")
         score = float(np.var(net)) if metric == "variance" else -float(np.mean(net))
         return score, {"weights": weights, "net_returns": net, "turnover": turnover}
     elif task == "signal":
-        if id not in ("momentum", "ma_crossover"):
+        from .technical import SIGNAL_DEFAULTS
+        if id not in ("momentum", "ma_crossover", *SIGNAL_DEFAULTS):
             raise ValueError("signal evaluation requires a verified prefix-causal built-in")
         # Each position is computed with a prefix; no later test row is ever supplied.
         positions = [float(registry.run(id, _slice(data, 0, t + 1), **parameters).iloc[-1])
@@ -359,7 +364,7 @@ def research(task, data, *, initial_train=None, horizon=1, gap=0, holdout=0,
             bundle = bundle.with_(returns=pd.Series(output["net_returns"], index=index))
         if guards is not None:
             report = bundle.check(guards=guards)
-            audit = {"status": "failed" if not report.passed or report.rejected else
+            audit = {"status": "failed" if any(not r.passed for r in report) or report.rejected else
                      "partial" if report.skipped or not report else "passed",
                      "report": report.summary(), "skipped": report.skipped, "rejected": report.rejected}
         else:

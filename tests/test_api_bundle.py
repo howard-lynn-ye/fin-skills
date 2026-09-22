@@ -129,15 +129,14 @@ def test_one_model_returns_panel_answers_two_different_search_questions(run):
     assert b.inputs_for("research_audit")["model_returns"] is panel
     assert b.inputs_for("research_audit")["n_trials"] == 20
 
-    # The count is the only other thing it needs. `missing_for` reads `required` directly,
-    # so an either/or requirement (research_audit's, and trial_ledger's) does not show up
-    # there; the refusal surfaces from run() and lands in report.rejected instead.
+    # Either/or requirements are visible before execution, just like ordinary slots.
     thin = b.without("n_trials")
-    assert thin.missing_for("research_audit") == []
+    assert thin.missing_for("research_audit") == ["n_trials or ledger or sharpes"]
     assert get("research_audit").missing(thin.slots()) == ["n_trials or ledger or sharpes"]
     thin_report = check(thin, guards=["research_audit"])
     assert thin_report.ran == []
-    assert "n_trials or ledger or sharpes" in thin_report.rejected["research_audit"]
+    assert thin_report.skipped["research_audit"] == ["n_trials or ledger or sharpes"]
+    assert thin_report.rejected == {}
     assert thin.with_(sharpes=list(sharpes.values)).coverage(["research_audit"]).ready
     with pytest.raises(TypeError, match="'n_trials' expects a number"):
         Bundle(n_trials="fifty")
@@ -220,9 +219,34 @@ def test_rejected_inputs_are_recorded_not_raised_unless_strict(run):
 
 def test_check_of_an_empty_bundle_runs_nothing_and_skips_everything():
     report = check(Bundle())
-    assert report.ran == [] and report.passed
-    assert set(report.skipped) == {c.name for c in registry() if c.required}
+    assert report.ran == [] and not report.passed
+    assert set(report.skipped) == {c.name for c in registry() if c().missing({})}
     assert "ran 0 guard(s)" in report.summary()
+
+
+def test_audit_requires_complete_task_policy(run):
+    report = check(Bundle(returns=run["returns"], rf=0.05), guards=["rf_convention"])
+    assert report.audit(["rf_convention"])["status"] == "PASS"
+    incomplete = report.audit(["rf_convention", "assert_causal"])
+    assert incomplete["status"] == "INCOMPLETE" and not incomplete["accepted"]
+    assert incomplete["coverage"] == 0.5
+    with pytest.raises(ValueError):
+        report.audit([])
+    with pytest.raises(ValueError):
+        report.audit(["invented_guard"])
+
+
+def test_rejected_inputs_cannot_pass_audit(run):
+    report = check(Bundle(returns=run["returns"], turnover="invalid", rf=0.05),
+                   guards=["cost_curve", "rf_convention"])
+    assert not report.passed
+    assert report.audit(["cost_curve", "rf_convention"])["status"] == "INCOMPLETE"
+
+
+def test_failed_guard_overrides_missing_coverage(run):
+    report = check(Bundle(bars=run["bars"], signal_fn=lambda d: d.close.shift(-1)),
+                   guards=["assert_causal"])
+    assert report.audit(["assert_causal", "rf_convention"])["status"] == "FAIL"
 
 
 # ------------------------------------------------------------------ Suite

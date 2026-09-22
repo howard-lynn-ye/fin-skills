@@ -44,3 +44,13 @@ research/production/wecom_card.json
 
 # agent_study task workspaces and grades (regenerate with build_task.py / oracle.py)
 runs/
+
+# Rebuildable LaTeX intermediates; manuscript source and reviewed PDF are tracked.
+paper/latex_naacl/*.aux
+paper/latex_naacl/*.bbl
+paper/latex_naacl/*.blg
+paper/latex_naacl/*.log
+paper/latex_naacl/*.out
+
+# Local recovery snapshots; source documents and intentional outline backups stay tracked.
+/_premerge_backup_*/

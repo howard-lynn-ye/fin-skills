@@ -46,15 +46,15 @@ MAGNITUDE is how far the reported number strays. Weigh it against the s.e. below
 defect                      sev        clean  corrupt   delta   caught by
 --------------------------------------------------------------------------------------
 single_calm_quarter         medium      0.61     3.70   +3.09   regm
-wrong_side_asof             high        0.61     1.94   +1.33   asof
+wrong_side_asof             high        0.61     1.94   +1.32   asof
 llm_cutoff_overlap          critical    0.61     1.42   +0.81   cont
 lookahead_signal            critical    0.61     1.15   +0.53   caus
 cost_too_low                high        0.61     1.01   +0.39   plau
 survivor_only_universe      high        0.61     0.66   +0.05   surv,univ
-shared_scaler               high        0.61     0.63   +0.02   fold
 unpurged_cv                 high        0.61     0.63   +0.01   purg
+shared_scaler               high        0.61     0.62   +0.01   fold
 forward_adjusted_qfq        medium      0.61     0.62   +0.01   adj
-latest_vintage_fundamentals high        0.61     0.61   -0.00   fund
+latest_vintage_fundamentals high        0.61     0.60   -0.01   fund
 warmup_live_window          medium      0.61     0.59   -0.02   warm
 unadjusted_split            high        0.61    -0.19   -0.80   adj
 --------------------------------------------------------------------------------------
@@ -79,17 +79,17 @@ Notes on the small / negative deltas (all are real defects, all caught above):
 ```
 guard                 target defect                  runtime_s
 --------------------------------------------------------------
-assert_causal         lookahead_signal                   0.009
-safe_asof             wrong_side_asof                    0.027
+assert_causal         lookahead_signal                   0.012
+safe_asof             wrong_side_asof                    0.040
 adjustment_check      unadjusted_split                   0.002
-survivorship_audit    survivor_only_universe             0.018
-pit_universe          survivor_only_universe             0.001
-warmup_probe          warmup_live_window                 0.069
-fold_leak_test        shared_scaler                      0.050
-purge_effect          unpurged_cv                        0.042
-pit_fundamentals      latest_vintage_fundamentals        0.030
+survivorship_audit    survivor_only_universe             0.021
+pit_universe          survivor_only_universe             0.002
+warmup_probe          warmup_live_window                 0.109
+fold_leak_test        shared_scaler                      0.076
+purge_effect          unpurged_cv                        0.084
+pit_fundamentals      latest_vintage_fundamentals        0.039
 contamination_probe   llm_cutoff_overlap                 0.000
-cost_curve            cost_too_low                       0.017
+cost_curve            cost_too_low                       0.018
 cost_plausibility     cost_too_low                       0.002
 regime_coverage       single_calm_quarter                0.001
 ```
@@ -105,7 +105,7 @@ was not crossed here - a limitation of the gate, not a missing script.
 ## SURPRISES  (reported honestly, not tuned away)
 
   MISS         cost_curve did not fire on cost_too_low: breakeven 45.9 bps vs 2.0 bps paid; net Sharpe 1.01 at that cost
-  CROSS-CATCH  cost_curve fired on unadjusted_split (outside its domain): breakeven 9.2 bps round-trip is at or below the 20.0
+  CROSS-CATCH  cost_curve fired on unadjusted_split (outside its domain): breakeven 9.3 bps round-trip is at or below the 20.0
 
   A cross-catch is a real signal, not a false alarm: the guard is right that
   something is wrong, but it is not the guard that DIAGNOSES the cause. e.g.
@@ -116,4 +116,4 @@ was not crossed here - a limitation of the gate, not a missing script.
 
   world      : 1825 days, 60 names, 26 delisted, 26 splits, turbulent share 0.26  (seed 20260908)
   defects    : 12/12 caught by >=1 guard; 0 false alarm(s) on clean; 0 gap(s)
-  guard time : 4.08s over 169 guard runs; total benchmark 25.2s
+  guard time : 5.69s over 169 guard runs; total benchmark 36.7s
