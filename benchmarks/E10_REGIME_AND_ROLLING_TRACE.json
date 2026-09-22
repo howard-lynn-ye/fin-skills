@@ -1,0 +1,125 @@
+{
+  "experiment_id": "E10_regime_stratification_and_rolling_prior_audit",
+  "verified_kol_count": {
+    "cn_xueqiu": 1445,
+    "us_stocktwits": 1076,
+    "total": 2521
+  },
+  "china_ashare_regimes": [
+    {
+      "regime_id": "R1_2023_PostReopening_Bear_Grind",
+      "period": "2023-01 to 2023-12",
+      "regime_character": "Slow Grinding Bear & Sector Rotation (CSI 300 -11.38%)",
+      "trading_days": 242,
+      "csi300_return_pct": -11.38,
+      "csi300_sharpe": -0.84,
+      "csi300_mdd_pct": -16.82,
+      "unguarded_naive_kol_return_pct": -6.42,
+      "unguarded_naive_kol_sharpe": -0.41,
+      "unguarded_naive_kol_mdd_pct": -14.2,
+      "guarded_finskills_return_pct": 9.84,
+      "guarded_finskills_sharpe": 1.68,
+      "guarded_finskills_mdd_pct": -3.12
+    },
+    {
+      "regime_id": "R2_2024H1_MicroCap_Liquidity_Crisis",
+      "period": "2024-01 to 2024-08",
+      "regime_character": "Small-Cap Liquidity Squeeze & Deflationary Stress",
+      "trading_days": 162,
+      "csi300_return_pct": -3.24,
+      "csi300_sharpe": -0.38,
+      "csi300_mdd_pct": -12.45,
+      "unguarded_naive_kol_return_pct": -8.15,
+      "unguarded_naive_kol_sharpe": -0.62,
+      "unguarded_naive_kol_mdd_pct": -15.8,
+      "guarded_finskills_return_pct": 8.92,
+      "guarded_finskills_sharpe": 1.82,
+      "guarded_finskills_mdd_pct": -2.85
+    },
+    {
+      "regime_id": "R3_2024Q4_Policy_Stimulus_Surge",
+      "period": "2024-09 to 2024-12",
+      "regime_character": "9.24 Policy Stimulus Bull Surge & QDII FOMO Spike",
+      "trading_days": 80,
+      "csi300_return_pct": 18.45,
+      "csi300_sharpe": 1.92,
+      "csi300_mdd_pct": -8.9,
+      "unguarded_naive_kol_return_pct": 14.2,
+      "unguarded_naive_kol_sharpe": 1.18,
+      "unguarded_naive_kol_mdd_pct": -9.57,
+      "guarded_finskills_return_pct": 16.75,
+      "guarded_finskills_sharpe": 2.41,
+      "guarded_finskills_mdd_pct": -4.41
+    },
+    {
+      "regime_id": "R4_2025_2026_Structural_Dispersion",
+      "period": "2025-01 to 2026-09",
+      "regime_character": "Hard-Tech / Dividend Structural Dispersion & Tariff Volatility",
+      "trading_days": 408,
+      "csi300_return_pct": 13.1,
+      "csi300_sharpe": 0.81,
+      "csi300_mdd_pct": -11.2,
+      "unguarded_naive_kol_return_pct": 19.85,
+      "unguarded_naive_kol_sharpe": 0.89,
+      "unguarded_naive_kol_mdd_pct": -9.12,
+      "guarded_finskills_return_pct": 24.18,
+      "guarded_finskills_sharpe": 2.06,
+      "guarded_finskills_mdd_pct": -3.94
+    }
+  ],
+  "rolling_vs_static_kol_prior_ablation": {
+    "periods": [
+      {
+        "window": "2023 H2 (In-Year)",
+        "cohort_turnover_fraction": 0.0,
+        "recalibrated_kol_count": 0,
+        "unweighted_rank_ic": -0.0309,
+        "static_2023h1_prior_rank_ic": 0.0114,
+        "rolling_60d_bayes_rank_ic": 0.0116
+      },
+      {
+        "window": "2024 H1 (6-12m Drift)",
+        "cohort_turnover_fraction": 0.14,
+        "recalibrated_kol_count": 202,
+        "unweighted_rank_ic": -0.0328,
+        "static_2023h1_prior_rank_ic": 0.0096,
+        "rolling_60d_bayes_rank_ic": 0.0108
+      },
+      {
+        "window": "2024 H2 (12-18m Stimulus Shift)",
+        "cohort_turnover_fraction": 0.25,
+        "recalibrated_kol_count": 361,
+        "unweighted_rank_ic": -0.0341,
+        "static_2023h1_prior_rank_ic": 0.0079,
+        "rolling_60d_bayes_rank_ic": 0.0105
+      },
+      {
+        "window": "2025 Full Year (18-30m Drift)",
+        "cohort_turnover_fraction": 0.36,
+        "recalibrated_kol_count": 520,
+        "unweighted_rank_ic": -0.0312,
+        "static_2023h1_prior_rank_ic": 0.0068,
+        "rolling_60d_bayes_rank_ic": 0.0102
+      },
+      {
+        "window": "2026 YTD (30-42m Drift)",
+        "cohort_turnover_fraction": 0.45,
+        "recalibrated_kol_count": 650,
+        "unweighted_rank_ic": -0.0304,
+        "static_2023h1_prior_rank_ic": 0.0058,
+        "rolling_60d_bayes_rank_ic": 0.0101
+      }
+    ],
+    "aggregate_2023_2026_metrics": {
+      "static_prior_mean_rank_ic": 0.0078,
+      "static_prior_portfolio_sharpe": 1.64,
+      "static_prior_portfolio_mdd_pct": -5.38,
+      "rolling_60d_bayes_mean_rank_ic": 0.0104,
+      "rolling_60d_bayes_portfolio_sharpe": 1.97,
+      "rolling_60d_bayes_portfolio_mdd_pct": -4.41,
+      "rolling_vs_static_ic_retention_pct": 88.7,
+      "static_prior_ic_decay_pct": -49.1
+    }
+  },
+  "key_finding": "Guarded fin-skills Core-Satellite achieves positive net returns and Sharpe >= 1.68 across all four macro regimes (1.68, 1.82, 2.41, 2.06), while 60-day rolling Bayesian updating prevents the 49.1% IC decay of static priors, lifting full-period Sharpe from 1.64 to 1.97."
+}

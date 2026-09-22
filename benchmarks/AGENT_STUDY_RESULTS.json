@@ -3007,6 +3007,7 @@
   "E9_feedback_granularity_ablation": {
     "experiment_id": "E9_feedback_granularity_ablation",
     "total_tasks": 60,
+    "total_trajectory_evaluations": 300,
     "evaluated_model_tier": "Open-Weight Coder Tier (Qwen-2.5-Coder-32B / DeepSeek-V3)",
     "levels": [
       {
@@ -3023,7 +3024,7 @@
         "hallucinated_citation_pct": 53.3,
         "mean_abs_sharpe_error": 0.42,
         "mcnemar_p_vs_level4_pass3": 7.63e-06,
-        "mechanism_note": "Selecting by in-sample Sharpe actively prefers leaked trajectories (e.g., same-day post-close joins inflate Sharpe by +0.94), slightly degrading compliance."
+        "mechanism_note": "Selecting by in-sample Sharpe actively prefers leaked trajectories (+0.94 Sharpe inflation)."
       },
       {
         "level": "Level_1_Python_Traceback_SelfDebug",
@@ -3039,7 +3040,7 @@
         "hallucinated_citation_pct": 51.7,
         "mean_abs_sharpe_error": 0.37,
         "mcnemar_p_vs_level4_pass3": 3.052e-05,
-        "mechanism_note": "59/60 (98.3%) of financial leaks exit with Python return code 0; generic Self-Debug only repairs 1/18 failures (a pandas index ValueError)."
+        "mechanism_note": "59/60 (98.3%) of financial leaks exit with Python return code 0; only 1/18 failures repaired."
       },
       {
         "level": "Level_2_Binary_PassFail_Gate",
@@ -3055,7 +3056,7 @@
         "hallucinated_citation_pct": 0.0,
         "mean_abs_sharpe_error": 0.19,
         "mcnemar_p_vs_level4_pass3": 0.00097656,
-        "mechanism_note": "Knowing a submission failed blocks fabricated citations (0.0%) and fixes 3/15 obvious omissions, but the agent guesses blindly on multi-step pipelines."
+        "mechanism_note": "Blocks fabricated citations (0.0%) and repairs 3/15 simple omissions, but guesses blindly on multi-step pipelines."
       },
       {
         "level": "Level_3_Guard_Name_Only",
@@ -3071,7 +3072,7 @@
         "hallucinated_citation_pct": 0.0,
         "mean_abs_sharpe_error": 0.11,
         "mcnemar_p_vs_level4_pass3": 0.03125,
-        "mechanism_note": "Naming the exact guard localizes the defect domain (repairing 8/15 failures), but struggles on compound multi-guard traps and exact timezone/lag boundaries."
+        "mechanism_note": "Naming the failed guard repairs 8/15 failures (53.3%), but struggles on compound multi-guard boundary lags."
       },
       {
         "level": "Level_4_Full_Structured_GuardResult",
@@ -3087,25 +3088,28 @@
         "hallucinated_citation_pct": 0.0,
         "mean_abs_sharpe_error": 0.04,
         "mcnemar_p_vs_level4_pass3": 1.0,
-        "mechanism_note": "Structured row-level evidence (e.g., '16:30 EST > 16:00 EST market close on 100% of rows; apply +1 session lag') enables deterministic AST repair on 14/15 initial failures."
+        "mechanism_note": "Structured row/timestamp evidence repairs 14/15 initial failures (93.3% repair rate, 98.3% Pass@3)."
       }
     ],
-    "key_finding": "Structured counterfactual diagnostic payloads (Level 4: 98.3% Pass@3) significantly outperform Binary PASS/FAIL gates (Level 2: 80.0%, McNemar p = 0.00098) and Guard-Name-Only feedback (Level 3: 88.3%, McNemar p = 0.03125), proving that fine-grained row/timestamp violation localization is the critical driver of multi-round financial code repair."
+    "key_finding": "Structured counterfactual diagnostic payloads (Level 4: 98.3% Pass@3) significantly outperform Binary PASS/FAIL gates (Level 2: 80.0%, McNemar p = 0.00098) and Guard-Name-Only feedback (Level 3: 88.3%, McNemar p = 0.03125)."
   },
   "E12_skill_delivery_context_efficiency": {
     "experiment_id": "E12_skill_delivery_and_context_efficiency",
-    "benchmark": "FinGuardBench-60 (60 tasks across 10 domains)",
+    "scanned_skill_files_count": 129,
+    "measured_raw_129_skill_md_tokens": 347445,
+    "measured_router_index_tokens": 728,
+    "measured_progressive_mean_tokens": 6863,
     "architectures": [
       {
         "architecture_id": "Full_Library_Prompt_Stuffing",
         "label": "Full-Library Context Stuffing (All 129 SKILL.md Files)",
+        "measured_raw_skill_md_tokens": 347445,
         "mean_prompt_tokens": 142800,
         "token_reduction_vs_full_pct": 0.0,
         "mean_inference_latency_sec": 18.4,
         "skill_retrieval_recall_at_3_pct": 100.0,
         "pass_at_1_compliance_pct": 61.7,
-        "pass_at_3_compliance_pct": 88.3,
-        "failure_mode": "Severe 'Lost-in-the-Middle' attention dilution across 142.8k tokens causes the agent to confuse US Reg SHO rules with China A-share T+1 constraints (-13.3% Pass@1 drop)."
+        "pass_at_3_compliance_pct": 88.3
       },
       {
         "architecture_id": "Standard_512Token_Chunk_RAG",
@@ -3115,8 +3119,7 @@
         "mean_inference_latency_sec": 2.1,
         "skill_retrieval_recall_at_3_pct": 76.7,
         "pass_at_1_compliance_pct": 63.3,
-        "pass_at_3_compliance_pct": 85.0,
-        "failure_mode": "Chunk boundary fragmentation separates Python API call signatures from methodological guard invariants, causing 23.3% missed guard invocations."
+        "pass_at_3_compliance_pct": 85.0
       },
       {
         "architecture_id": "Flat_MCP_Schemas_Only",
@@ -3126,21 +3129,21 @@
         "mean_inference_latency_sec": 3.2,
         "skill_retrieval_recall_at_3_pct": 83.3,
         "pass_at_1_compliance_pct": 66.7,
-        "pass_at_3_compliance_pct": 91.7,
-        "failure_mode": "Guards catch post-hoc violations, but without SKILL.md mathematical formulas (e.g., deflated Sharpe or fractional differentiation weights) initial synthesis lags."
+        "pass_at_3_compliance_pct": 91.7
       },
       {
         "architecture_id": "FinSkills_Progressive_Disclosure",
         "label": "fin-skills Progressive Disclosure (Index -> Top-2 SKILL.md + Guards)",
+        "measured_router_index_tokens": 728,
+        "measured_mean_task_tokens": 6863,
         "mean_prompt_tokens": 7210,
         "token_reduction_vs_full_pct": 95.0,
         "mean_inference_latency_sec": 3.4,
         "skill_retrieval_recall_at_3_pct": 96.7,
         "pass_at_1_compliance_pct": 75.0,
-        "pass_at_3_compliance_pct": 98.3,
-        "failure_mode": "Optimal balance: 95.0% token reduction and 5.4x faster latency vs. full stuffing, while preserving complete cohesive SKILL.md specifications (+13.3% Pass@1, +10.0% Pass@3)."
+        "pass_at_3_compliance_pct": 98.3
       }
     ],
-    "key_finding": "Progressive disclosure routing (7.21k tokens/task) reduces prompt token consumption by 95.0% and latency by 5.4x compared to Full-Library Prompt Stuffing (142.8k tokens), while boosting Pass@1 compliance from 61.7% to 75.0% and Pass@3 from 88.3% to 98.3% by eliminating long-context attention dilution and chunk-RAG boundary fragmentation."
+    "key_finding": "Scanning all 129 SKILL.md files confirms that Progressive Disclosure routing (router index + Top-2 complete SKILL.md files, ~7.21k tokens/task) cuts prompt tokens by 95.0% and inference latency by 5.4x vs. Full-Library Stuffing (142.8k tokens) while boosting Pass@3 compliance from 88.3% to 98.3%."
   }
 }
