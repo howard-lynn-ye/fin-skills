@@ -69,6 +69,7 @@ fin_skills = ["_skills/**/*.md", "_skills/*.json"]
 # claim the generated module fin_skills/core/fold_leak_test.py (its name matches the default
 # *_test.py pattern), which would break running that module's __main__ demo through runpy.
 minversion = "7.0"
+pythonpath = ["."]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-ra -m 'not slow'"

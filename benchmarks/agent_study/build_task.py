@@ -56,8 +56,9 @@ def restamp_feed(w, seed: int):
     z_today = logret.div(w.sigma, axis=1)
     z_mu = w.mu / (0.12 / 252)
     score = 1.0 * z_today + 0.35 * z_mu + rng.normal(0.0, 1.0, z_today.shape)
-    feed = (score.stack().rename("score").reset_index()
-            .rename(columns={"level_0": "feed_ts", "level_1": "ticker"}))
+    score.index.name = "feed_ts"
+    score.columns.name = "ticker"
+    feed = score.stack().rename("score").reset_index()
     return feed[["feed_ts", "ticker", "score"]].sort_values(["feed_ts", "ticker"]).reset_index(drop=True)
 
 # The agent sees history up to TRAIN_END for fitting, and reports over the evaluation window.
@@ -88,12 +89,14 @@ def export(seed: int, out: Path, data_end: str | None = None,
                     listings=_truncate_listings(w.listings, cut))
         feed = feed[feed["feed_ts"] <= cut]
 
-    w.raw_close.to_csv(data / "close_quoted.csv", float_format="%.2f")
-    w.volume.round(0).to_csv(data / "volume.csv", float_format="%.0f")
+    for frame in (w.raw_close, w.volume, w.llm):
+        frame.index.name = "date"
+    w.raw_close.to_csv(data / "close_quoted.csv", index_label="date", float_format="%.2f")
+    w.volume.round(0).to_csv(data / "volume.csv", index_label="date", float_format="%.0f")
     w.actions.to_csv(data / "corporate_actions.csv", index=False)
     w.listings.to_csv(data / "listings.csv", index=False)
     feed.to_csv(data / "news_feed.csv", index=False, float_format="%.6f")
-    w.llm.to_csv(data / "llm_score.csv", float_format="%.6f")
+    w.llm.to_csv(data / "llm_score.csv", index_label="date", float_format="%.6f")
 
     rows = []
     for ticker, facts in w.facts.items():
@@ -145,8 +148,8 @@ report what it earns over the evaluation window.
    def build_positions(data_dir: str) -> "pandas.DataFrame":
        \"\"\"Return dates x tickers portfolio weights.
 
-       Row t holds the weights you are IN over session t: they may use information
-       available strictly before the close of session t. Weights should be roughly
+       Row t holds weights over the previous-close to session-t-close return interval:
+       they may use information available by the end of session t-1. Weights should be roughly
        dollar-neutral and sum of absolute values <= 1 per row. Missing = 0.
        \"\"\"
    ```

@@ -26,8 +26,9 @@ import pandas as pd
 
 
 def _read_matrix(p: Path) -> pd.DataFrame:
-    df = pd.read_csv(p, index_col=0)
+    df = pd.read_csv(p, index_col=0).astype(float)
     df.index = pd.to_datetime(df.index)
+    df.index.name = "date"
     return df
 
 
@@ -62,7 +63,7 @@ def perturb_workspace(src: Path, dst: Path, cut: str, seed: int) -> Path:
         path = start * np.exp(np.nan_to_num(col, nan=0.0).cumsum())
         keep = close.loc[after, c].notna().to_numpy()
         close.loc[after, c] = np.where(keep, np.round(path, 2), np.nan)
-    close.to_csv(data / "close_quoted.csv", float_format="%.2f")
+    close.to_csv(data / "close_quoted.csv", index_label="date", float_format="%.2f")
 
     for name, fmt in (("volume.csv", "%.0f"), ("llm_score.csv", "%.6f")):
         m = _read_matrix(data / name)
@@ -73,7 +74,7 @@ def perturb_workspace(src: Path, dst: Path, cut: str, seed: int) -> Path:
             if finite.sum() > 1:
                 col[finite] = rng.permutation(col[finite])
             m.loc[aft, c] = col
-        m.to_csv(data / name, float_format=fmt)
+        m.to_csv(data / name, index_label="date", float_format=fmt)
 
     feed = pd.read_csv(data / "news_feed.csv", parse_dates=["feed_ts"])
     mask = feed["feed_ts"] > cut_ts

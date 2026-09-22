@@ -1,33 +1,34 @@
 {
-  "experiment_id": "E4_E7_real_world_bilingual_kol_and_linguistic_audit",
-  "reproducibility_status": "VERIFIED_SELF_CONTAINED_2521_BILINGUAL_KOLS",
-  "total_kols_verified": 2521,
+  "experiment_id": "E4_E7_real_world_bilingual_kol_and_prediction_audit",
+  "reproducibility_status": "RECOMPUTED_FROM_REAL_PROFILES_AND_TIMESTAMPED_PREDICTIONS",
+  "total_kols_verified": 2980,
   "bilingual_corpus_scale": {
-    "total_posts_analyzed": 1724610,
-    "total_kol_entities": 2521,
+    "total_kol_entities": 2980,
     "china_xueqiu_verified_kol_profiles": 1445,
-    "us_stocktwits_verified_kol_profiles": 1076,
-    "backtest_window": "2023-01-03 to 2026-09-01 (887 trading sessions)"
+    "us_stocktwits_verified_kol_profiles": 1535,
+    "timestamped_prediction_rows": 35772,
+    "paired_evaluation_dates": 799
   },
   "key_findings": {
     "follower_paradox_ratio_contrarian_vs_alpha": 3.96,
-    "us_follower_paradox_ratio_contrarian_vs_alpha": 3.15,
+    "us_follower_paradox_ratio_contrarian_vs_researcher": 1.54,
     "tier1_core_alpha_5d_ic": 0.2158,
     "contrarian_indicator_5d_ic": -0.213,
+    "us_tier0_oos_win_rate_5d": 0.742,
+    "us_tier1_oos_win_rate_5d": 0.6854,
+    "us_contrarian_oos_win_rate_5d": 0.2734,
+    "pit_prediction_audit_naive_daily_ic": -0.01153,
+    "pit_prediction_audit_gated_daily_ic": 0.02727,
+    "pit_prediction_audit_paired_diff": 0.0388,
+    "pit_prediction_audit_diff_ci95": [
+      0.00744,
+      0.07277
+    ],
     "mman_unweighted_rank_ic": -0.03184,
     "mman_credibility_gated_rank_ic": 0.0104,
     "mman_rank_ic_net_reversal": 0.04224,
-    "us_stocktwits_unweighted_rank_ic": -0.02184,
-    "us_stocktwits_credibility_gated_rank_ic": 0.00942,
-    "us_stocktwits_rank_ic_net_reversal": 0.03126,
     "roberta_raw_text_rank_ic": 0.00842,
-    "roberta_distilled_text_rank_ic": 0.01862,
-    "guarded_core_satellite_sharpe_10bps": 1.9718,
-    "naive_unfiltered_sharpe_10bps": 0.6483,
-    "guarded_core_satellite_mdd_10bps": -0.04414,
-    "naive_unfiltered_mdd_10bps": -0.09571,
-    "us_guarded_core_satellite_sharpe_10bps": 1.8412,
-    "us_naive_unfiltered_sharpe_10bps": 0.786
+    "roberta_distilled_text_rank_ic": 0.01862
   },
   "recomputed_tier_breakdown": [
     {
@@ -38,8 +39,8 @@
       "mean_win_rate_5d": 0.6165,
       "mean_bayesian_win_rate_5d": 0.5886,
       "mean_realized_return_5d": 0.01167,
-      "mean_ic_5d": 0.1141,
-      "median_payoff_ratio": 1.055
+      "median_payoff_ratio": 1.055,
+      "mean_ic_5d": 0.1141
     },
     {
       "tier": "TIER_1_CORE_ALPHA",
@@ -49,8 +50,8 @@
       "mean_win_rate_5d": 0.6847,
       "mean_bayesian_win_rate_5d": 0.6287,
       "mean_realized_return_5d": 0.02344,
-      "mean_ic_5d": 0.2158,
-      "median_payoff_ratio": 1.658
+      "median_payoff_ratio": 1.658,
+      "mean_ic_5d": 0.2158
     },
     {
       "tier": "TIER_2_SOLID_RESEARCHER",
@@ -60,8 +61,8 @@
       "mean_win_rate_5d": 0.7092,
       "mean_bayesian_win_rate_5d": 0.6125,
       "mean_realized_return_5d": 0.02643,
-      "mean_ic_5d": 0.1929,
-      "median_payoff_ratio": 1.423
+      "median_payoff_ratio": 1.423,
+      "mean_ic_5d": 0.1929
     },
     {
       "tier": "TIER_CONTRARIAN_INDICATOR",
@@ -71,8 +72,8 @@
       "mean_win_rate_5d": 0.2849,
       "mean_bayesian_win_rate_5d": 0.3477,
       "mean_realized_return_5d": -0.02545,
-      "mean_ic_5d": -0.213,
-      "median_payoff_ratio": 0.698
+      "median_payoff_ratio": 0.698,
+      "mean_ic_5d": -0.213
     },
     {
       "tier": "TIER_MEDIA_AGGREGATOR",
@@ -82,8 +83,8 @@
       "mean_win_rate_5d": 0.4698,
       "mean_bayesian_win_rate_5d": 0.4725,
       "mean_realized_return_5d": -0.00339,
-      "mean_ic_5d": -0.0008,
-      "median_payoff_ratio": 1.003
+      "median_payoff_ratio": 1.003,
+      "mean_ic_5d": -0.0008
     },
     {
       "tier": "TIER_NEUTRAL_RETAIL",
@@ -93,83 +94,93 @@
       "mean_win_rate_5d": 0.4672,
       "mean_bayesian_win_rate_5d": 0.4821,
       "mean_realized_return_5d": -0.00175,
-      "mean_ic_5d": -0.0074,
-      "median_payoff_ratio": 0.944
+      "median_payoff_ratio": 0.944,
+      "mean_ic_5d": -0.0074
     }
   ],
   "us_stocktwits_tier_breakdown": [
     {
       "tier": "TIER_0_ELITE_KOL",
-      "kol_count": 24,
-      "share_pct": 2.23,
-      "mean_fans": 164200.0,
-      "mean_win_rate_5d": 0.594,
-      "mean_bayesian_win_rate_5d": 0.4942,
-      "mean_realized_return_5d": 0.0125,
-      "mean_ic_5d": 0.0984,
-      "median_payoff_ratio": 1.393
+      "kol_count": 171,
+      "share_pct": 11.14,
+      "mean_fans": 1639.2,
+      "mean_win_rate_5d": 0.8508,
+      "mean_bayesian_win_rate_5d": 0.7152,
+      "mean_realized_return_5d": 0.04238,
+      "median_payoff_ratio": 2.061,
+      "mean_is_win_rate_5d": 0.7285,
+      "mean_oos_win_rate_5d": 0.742,
+      "mean_oos_return_5d": 0.02432
     },
     {
       "tier": "TIER_1_CORE_ALPHA",
-      "kol_count": 54,
-      "share_pct": 5.02,
-      "mean_fans": 18450.2,
-      "mean_win_rate_5d": 0.6612,
-      "mean_bayesian_win_rate_5d": 0.5446,
-      "mean_realized_return_5d": 0.0214,
-      "mean_ic_5d": 0.1842,
-      "median_payoff_ratio": 1.723
+      "kol_count": 187,
+      "share_pct": 12.18,
+      "mean_fans": 3791.2,
+      "mean_win_rate_5d": 0.7989,
+      "mean_bayesian_win_rate_5d": 0.6408,
+      "mean_realized_return_5d": 0.03033,
+      "median_payoff_ratio": 1.709,
+      "mean_is_win_rate_5d": 0.6836,
+      "mean_oos_win_rate_5d": 0.6854,
+      "mean_oos_return_5d": 0.01955
     },
     {
-      "tier": "TIER_2_RESEARCHER",
-      "kol_count": 88,
-      "share_pct": 8.18,
-      "mean_fans": 29810.5,
-      "mean_win_rate_5d": 0.6784,
-      "mean_bayesian_win_rate_5d": 0.5505,
-      "mean_realized_return_5d": 0.0189,
-      "mean_ic_5d": 0.1615,
-      "median_payoff_ratio": 1.579
+      "tier": "TIER_2_SOLID_RESEARCHER",
+      "kol_count": 182,
+      "share_pct": 11.86,
+      "mean_fans": 1135.2,
+      "mean_win_rate_5d": 0.7647,
+      "mean_bayesian_win_rate_5d": 0.6069,
+      "mean_realized_return_5d": 0.03515,
+      "median_payoff_ratio": 1.851,
+      "mean_is_win_rate_5d": 0.6762,
+      "mean_oos_win_rate_5d": 0.6372,
+      "mean_oos_return_5d": 0.01621
     },
     {
       "tier": "TIER_CONTRARIAN_INDICATOR",
-      "kol_count": 82,
-      "share_pct": 7.62,
-      "mean_fans": 58120.4,
-      "mean_win_rate_5d": 0.3108,
-      "mean_bayesian_win_rate_5d": 0.2929,
-      "mean_realized_return_5d": -0.0208,
-      "mean_ic_5d": -0.1764,
-      "median_payoff_ratio": 0.681
+      "kol_count": 154,
+      "share_pct": 10.03,
+      "mean_fans": 1748.3,
+      "mean_win_rate_5d": 0.19,
+      "mean_bayesian_win_rate_5d": 0.3229,
+      "mean_realized_return_5d": -0.03685,
+      "median_payoff_ratio": 0.545,
+      "mean_is_win_rate_5d": 0.3636,
+      "mean_oos_win_rate_5d": 0.2734,
+      "mean_oos_return_5d": -0.0251
     },
     {
       "tier": "TIER_MEDIA_AGGREGATOR",
-      "kol_count": 16,
-      "share_pct": 1.49,
-      "mean_fans": 112500.0,
-      "mean_win_rate_5d": 0.4815,
-      "mean_bayesian_win_rate_5d": 0.4217,
-      "mean_realized_return_5d": -0.0004,
-      "mean_ic_5d": -0.0021,
-      "median_payoff_ratio": 0.971
+      "kol_count": 50,
+      "share_pct": 3.26,
+      "mean_fans": 9782.3,
+      "mean_win_rate_5d": 0.6059,
+      "mean_bayesian_win_rate_5d": 0.5556,
+      "mean_realized_return_5d": 0.01143,
+      "median_payoff_ratio": 1.103,
+      "mean_is_win_rate_5d": 0.5904,
+      "mean_oos_win_rate_5d": 0.5168,
+      "mean_oos_return_5d": 0.00435
     },
     {
       "tier": "TIER_NEUTRAL_RETAIL",
-      "kol_count": 812,
-      "share_pct": 75.46,
-      "mean_fans": 49320.8,
-      "mean_win_rate_5d": 0.4738,
-      "mean_bayesian_win_rate_5d": 0.4083,
-      "mean_realized_return_5d": -0.0019,
-      "mean_ic_5d": -0.0068,
-      "median_payoff_ratio": 0.939
+      "kol_count": 791,
+      "share_pct": 51.53,
+      "mean_fans": 822.4,
+      "mean_win_rate_5d": 0.4536,
+      "mean_bayesian_win_rate_5d": 0.4771,
+      "mean_realized_return_5d": -0.00164,
+      "median_payoff_ratio": 0.904,
+      "mean_is_win_rate_5d": 0.4992,
+      "mean_oos_win_rate_5d": 0.4659,
+      "mean_oos_return_5d": -0.00273
     }
   ],
   "bilingual_cross_market_comparison": {
     "China_Xueqiu_AShare": {
       "verified_kol_count": 1445,
-      "posts_analyzed": 1042180,
-      "evaluation_samples": 334946,
       "tier1_core_alpha_kols": 70,
       "tier1_mean_fans": 14121.9,
       "tier1_5d_win_rate": 0.6847,
@@ -180,50 +191,94 @@
       "contrarian_5d_rank_ic": -0.213,
       "follower_paradox_ratio": 3.96,
       "unweighted_nlp_rank_ic": -0.03184,
-      "unweighted_p_value": 1.74e-20,
       "bayesian_gated_rank_ic": 0.0104,
-      "bayesian_gated_p_value": 0.001,
-      "net_ic_reversal_delta": 0.04224,
-      "primary_microstructure_guards": [
-        "ashare_rules (T+1 lockup & 10%/20% limit)",
-        "board_lot_feasibility (100-share rounding)",
-        "cost_curve (5 bps seller-only stamp duty)",
-        "qdii_premium (<=1.5% NAV cap)"
-      ],
-      "unguarded_satellite_sharpe": 0.6483,
-      "guarded_satellite_sharpe": 1.9718,
-      "unguarded_mdd": -0.09571,
-      "guarded_mdd": -0.04414
+      "net_ic_reversal_delta": 0.04224
     },
-    "US_StockTwits_Equities": {
-      "verified_kol_count": 1076,
-      "posts_analyzed": 682430,
-      "evaluation_samples": 214820,
-      "tier1_core_alpha_kols": 54,
-      "tier1_mean_fans": 18450.2,
-      "tier1_5d_win_rate": 0.6612,
-      "tier1_5d_rank_ic": 0.1842,
-      "contrarian_kols": 82,
-      "contrarian_mean_fans": 58120.4,
-      "contrarian_5d_win_rate": 0.3108,
-      "contrarian_5d_rank_ic": -0.1764,
-      "follower_paradox_ratio": 3.15,
-      "unweighted_nlp_rank_ic": -0.02184,
-      "unweighted_p_value": 3.42e-09,
-      "bayesian_gated_rank_ic": 0.00942,
-      "bayesian_gated_p_value": 0.0018,
-      "net_ic_reversal_delta": 0.03126,
-      "primary_microstructure_guards": [
-        "cost_plausibility (Reg SHO short-borrow fee & impact)",
-        "synthesis_integrity (SEC Form 4/13F acceptance timestamp)",
-        "pre_trade (PDT margin & participation cap)",
-        "leveraged_reset (3x daily ETF volatility decay)"
+    "US_StockTwits_Equities_Real_1535": {
+      "verified_kol_count": 1535,
+      "tier0_global_elite_kols": 171,
+      "tier0_is_win_rate_5d": 0.7285,
+      "tier0_oos_win_rate_5d": 0.742,
+      "tier0_oos_return_5d": 0.02432,
+      "tier1_core_alpha_kols": 187,
+      "tier1_mean_fans": 3791.2,
+      "tier1_is_win_rate_5d": 0.6836,
+      "tier1_oos_win_rate_5d": 0.6854,
+      "tier1_oos_return_5d": 0.01955,
+      "contrarian_kols": 154,
+      "contrarian_mean_fans": 1748.3,
+      "contrarian_is_win_rate_5d": 0.3636,
+      "contrarian_oos_win_rate_5d": 0.2734,
+      "contrarian_oos_return_5d": -0.0251,
+      "media_aggregator_mean_fans": 9782.3,
+      "media_aggregator_oos_win_rate_5d": 0.5168,
+      "follower_paradox_ratio_contrarian_vs_researcher": 1.54
+    },
+    "Point_In_Time_Prediction_Audit_35772_Rows": {
+      "status": "RECOMPUTED_FROM_PREDICTIONS",
+      "input_sha256": "efe68e408ab53b419cffd49c73adcf81a0f3a87f4163cc77297ddebce5e6fdd3",
+      "rows": 35772,
+      "paired_dates": 799,
+      "naive_mean_daily_rank_ic": -0.01153,
+      "naive_daily_ci95": [
+        -0.03546,
+        0.01438
       ],
-      "unguarded_satellite_sharpe": 0.786,
-      "guarded_satellite_sharpe": 1.8412,
-      "unguarded_mdd": -0.1342,
-      "guarded_mdd": -0.0568
+      "pit_gated_mean_daily_rank_ic": 0.02727,
+      "pit_gated_daily_ci95": [
+        0.00117,
+        0.05448
+      ],
+      "mean_daily_ic_difference": 0.0388,
+      "difference_block_ci95": [
+        0.00744,
+        0.07277
+      ]
     }
+  },
+  "prediction_audit_summary": {
+    "status": "RECOMPUTED_FROM_PREDICTIONS",
+    "input_sha256": "efe68e408ab53b419cffd49c73adcf81a0f3a87f4163cc77297ddebce5e6fdd3",
+    "rows": 35772,
+    "variants": {
+      "naive_follower_volume_weighted": {
+        "rows": 17886,
+        "valid_dates": 799,
+        "undefined_dates": [],
+        "pooled_rank_ic": 0.00014365458299525838,
+        "mean_daily_rank_ic": -0.011532803487891633,
+        "daily_mean_ci95": [
+          -0.035458730456207656,
+          0.014380401505533758
+        ]
+      },
+      "pit_kol_credibility_gated": {
+        "rows": 17886,
+        "valid_dates": 799,
+        "undefined_dates": [],
+        "pooled_rank_ic": 0.006468361657284962,
+        "mean_daily_rank_ic": 0.027268145458409627,
+        "daily_mean_ci95": [
+          0.0011743009411191352,
+          0.05447592568433983
+        ]
+      }
+    },
+    "paired_comparisons": {
+      "pit_kol_credibility_gated minus naive_follower_volume_weighted": {
+        "paired_dates": 799,
+        "mean_daily_ic_difference": 0.038800948946301254,
+        "ci95": [
+          0.007437764154422119,
+          0.07277126833431703
+        ]
+      }
+    },
+    "block_days": 5,
+    "horizon_days": 5,
+    "draws": 2000,
+    "seed": 20260921,
+    "limits": "Timestamp assertions are supplied metadata, not authenticated provenance. Prediction evaluation does not reproduce training or establish trading profitability."
   },
   "linguistic_contrast": {
     "raw_social_posts": {
@@ -240,288 +295,5 @@
       "epistemic_hedging_density_per_100chars": 0.297,
       "emotional_hyperbole_density_per_100chars": 0.129
     }
-  },
-  "transaction_cost_sensitivity_matrix": [
-    {
-      "round_trip_cost_bps": 5.0,
-      "guarded_core_satellite_cagr": 0.14879,
-      "guarded_core_satellite_sharpe": 1.9765,
-      "guarded_core_satellite_mdd": -0.04414,
-      "naive_unfiltered_cagr": 0.07549,
-      "naive_unfiltered_sharpe": 0.6799,
-      "naive_unfiltered_mdd": -0.09571,
-      "sharpe_improvement_delta": 1.2966,
-      "mdd_reduction_bps": 515.7
-    },
-    {
-      "round_trip_cost_bps": 10.0,
-      "guarded_core_satellite_cagr": 0.14848,
-      "guarded_core_satellite_sharpe": 1.9718,
-      "guarded_core_satellite_mdd": -0.04414,
-      "naive_unfiltered_cagr": 0.07291,
-      "naive_unfiltered_sharpe": 0.6483,
-      "naive_unfiltered_mdd": -0.09571,
-      "sharpe_improvement_delta": 1.3235,
-      "mdd_reduction_bps": 515.7
-    },
-    {
-      "round_trip_cost_bps": 20.0,
-      "guarded_core_satellite_cagr": 0.14787,
-      "guarded_core_satellite_sharpe": 1.9624,
-      "guarded_core_satellite_mdd": -0.04534,
-      "naive_unfiltered_cagr": 0.06775,
-      "naive_unfiltered_sharpe": 0.5852,
-      "naive_unfiltered_mdd": -0.10421,
-      "sharpe_improvement_delta": 1.3772,
-      "mdd_reduction_bps": 588.7
-    },
-    {
-      "round_trip_cost_bps": 30.0,
-      "guarded_core_satellite_cagr": 0.14726,
-      "guarded_core_satellite_sharpe": 1.953,
-      "guarded_core_satellite_mdd": -0.04654,
-      "naive_unfiltered_cagr": 0.0626,
-      "naive_unfiltered_sharpe": 0.522,
-      "naive_unfiltered_mdd": -0.11271,
-      "sharpe_improvement_delta": 1.431,
-      "mdd_reduction_bps": 661.7
-    }
-  ],
-  "holding_horizon_ablation": [
-    {
-      "horizon": "T+1",
-      "satellite_win_rate": 0.5349,
-      "mean_trade_return": 0.00412,
-      "portfolio_cagr": 0.1294,
-      "portfolio_sharpe": 1.6682,
-      "portfolio_mdd": -0.0518,
-      "note": "High turnover friction; short-horizon noise dampens contrarian mean reversion"
-    },
-    {
-      "horizon": "T+3",
-      "satellite_win_rate": 0.6512,
-      "mean_trade_return": 0.01684,
-      "portfolio_cagr": 0.1398,
-      "portfolio_sharpe": 1.8315,
-      "portfolio_mdd": -0.0469,
-      "note": "Partial capture of institutional accumulation post-retail panic"
-    },
-    {
-      "horizon": "T+5 (Optimal)",
-      "satellite_win_rate": 0.7209,
-      "mean_trade_return": 0.02789,
-      "portfolio_cagr": 0.1485,
-      "portfolio_sharpe": 1.9718,
-      "portfolio_mdd": -0.0441,
-      "note": "Matches 5-day Bayesian KOL IC peak (+0.0422 Tier-1 / -0.0365 Contrarian inversion)"
-    },
-    {
-      "horizon": "T+10",
-      "satellite_win_rate": 0.6744,
-      "mean_trade_return": 0.02415,
-      "portfolio_cagr": 0.1412,
-      "portfolio_sharpe": 1.849,
-      "portfolio_mdd": -0.0485,
-      "note": "Signal decay after week 2 increases exposure to macro beta drift"
-    }
-  ],
-  "E10_regime_and_rolling_prior_audit": {
-    "experiment_id": "E10_regime_stratification_and_rolling_prior_audit",
-    "verified_kol_count": {
-      "cn_xueqiu": 1445,
-      "us_stocktwits": 1076,
-      "total": 2521
-    },
-    "china_ashare_regimes": [
-      {
-        "regime_id": "R1_2023_PostReopening_Bear_Grind",
-        "period": "2023-01 to 2023-12",
-        "regime_character": "Slow Grinding Bear & Sector Rotation (CSI 300 -11.38%)",
-        "trading_days": 242,
-        "csi300_return_pct": -11.38,
-        "csi300_sharpe": -0.84,
-        "csi300_mdd_pct": -16.82,
-        "unguarded_naive_kol_return_pct": -6.42,
-        "unguarded_naive_kol_sharpe": -0.41,
-        "unguarded_naive_kol_mdd_pct": -14.2,
-        "guarded_finskills_return_pct": 9.84,
-        "guarded_finskills_sharpe": 1.68,
-        "guarded_finskills_mdd_pct": -3.12
-      },
-      {
-        "regime_id": "R2_2024H1_MicroCap_Liquidity_Crisis",
-        "period": "2024-01 to 2024-08",
-        "regime_character": "Small-Cap Liquidity Squeeze & Deflationary Stress",
-        "trading_days": 162,
-        "csi300_return_pct": -3.24,
-        "csi300_sharpe": -0.38,
-        "csi300_mdd_pct": -12.45,
-        "unguarded_naive_kol_return_pct": -8.15,
-        "unguarded_naive_kol_sharpe": -0.62,
-        "unguarded_naive_kol_mdd_pct": -15.8,
-        "guarded_finskills_return_pct": 8.92,
-        "guarded_finskills_sharpe": 1.82,
-        "guarded_finskills_mdd_pct": -2.85
-      },
-      {
-        "regime_id": "R3_2024Q4_Policy_Stimulus_Surge",
-        "period": "2024-09 to 2024-12",
-        "regime_character": "9.24 Policy Stimulus Bull Surge & QDII FOMO Spike",
-        "trading_days": 80,
-        "csi300_return_pct": 18.45,
-        "csi300_sharpe": 1.92,
-        "csi300_mdd_pct": -8.9,
-        "unguarded_naive_kol_return_pct": 14.2,
-        "unguarded_naive_kol_sharpe": 1.18,
-        "unguarded_naive_kol_mdd_pct": -9.57,
-        "guarded_finskills_return_pct": 16.75,
-        "guarded_finskills_sharpe": 2.41,
-        "guarded_finskills_mdd_pct": -4.41
-      },
-      {
-        "regime_id": "R4_2025_2026_Structural_Dispersion",
-        "period": "2025-01 to 2026-09",
-        "regime_character": "Hard-Tech / Dividend Structural Dispersion & Tariff Volatility",
-        "trading_days": 408,
-        "csi300_return_pct": 13.1,
-        "csi300_sharpe": 0.81,
-        "csi300_mdd_pct": -11.2,
-        "unguarded_naive_kol_return_pct": 19.85,
-        "unguarded_naive_kol_sharpe": 0.89,
-        "unguarded_naive_kol_mdd_pct": -9.12,
-        "guarded_finskills_return_pct": 24.18,
-        "guarded_finskills_sharpe": 2.06,
-        "guarded_finskills_mdd_pct": -3.94
-      }
-    ],
-    "rolling_vs_static_kol_prior_ablation": {
-      "periods": [
-        {
-          "window": "2023 H2 (In-Year)",
-          "cohort_turnover_fraction": 0.0,
-          "recalibrated_kol_count": 0,
-          "unweighted_rank_ic": -0.0309,
-          "static_2023h1_prior_rank_ic": 0.0114,
-          "rolling_60d_bayes_rank_ic": 0.0116
-        },
-        {
-          "window": "2024 H1 (6-12m Drift)",
-          "cohort_turnover_fraction": 0.14,
-          "recalibrated_kol_count": 202,
-          "unweighted_rank_ic": -0.0328,
-          "static_2023h1_prior_rank_ic": 0.0096,
-          "rolling_60d_bayes_rank_ic": 0.0108
-        },
-        {
-          "window": "2024 H2 (12-18m Stimulus Shift)",
-          "cohort_turnover_fraction": 0.25,
-          "recalibrated_kol_count": 361,
-          "unweighted_rank_ic": -0.0341,
-          "static_2023h1_prior_rank_ic": 0.0079,
-          "rolling_60d_bayes_rank_ic": 0.0105
-        },
-        {
-          "window": "2025 Full Year (18-30m Drift)",
-          "cohort_turnover_fraction": 0.36,
-          "recalibrated_kol_count": 520,
-          "unweighted_rank_ic": -0.0312,
-          "static_2023h1_prior_rank_ic": 0.0068,
-          "rolling_60d_bayes_rank_ic": 0.0102
-        },
-        {
-          "window": "2026 YTD (30-42m Drift)",
-          "cohort_turnover_fraction": 0.45,
-          "recalibrated_kol_count": 650,
-          "unweighted_rank_ic": -0.0304,
-          "static_2023h1_prior_rank_ic": 0.0058,
-          "rolling_60d_bayes_rank_ic": 0.0101
-        }
-      ],
-      "aggregate_2023_2026_metrics": {
-        "static_prior_mean_rank_ic": 0.0078,
-        "static_prior_portfolio_sharpe": 1.64,
-        "static_prior_portfolio_mdd_pct": -5.38,
-        "rolling_60d_bayes_mean_rank_ic": 0.0104,
-        "rolling_60d_bayes_portfolio_sharpe": 1.97,
-        "rolling_60d_bayes_portfolio_mdd_pct": -4.41,
-        "rolling_vs_static_ic_retention_pct": 88.7,
-        "static_prior_ic_decay_pct": -49.1
-      }
-    },
-    "key_finding": "Guarded fin-skills Core-Satellite achieves positive net returns and Sharpe >= 1.68 across all four macro regimes (1.68, 1.82, 2.41, 2.06), while 60-day rolling Bayesian updating prevents the 49.1% IC decay of static priors, lifting full-period Sharpe from 1.64 to 1.97."
-  },
-  "E11_leave_one_family_out_ablation": {
-    "experiment_id": "E11_leave_one_family_out_component_ablation",
-    "source_backtest_artifact": "/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/CORE_SATELLITE_PORTFOLIO_BACKTEST.json",
-    "period": "2023-01-01 to 2026-09-01 (Out-of-Sample Clock Replay, 10 bps cost)",
-    "variants": [
-      {
-        "variant_id": "Full_FinSkills_Guarded_Architecture",
-        "label": "Full fin-skills System (All 4 Subsystem Families Active)",
-        "cagr_pct": 16.12,
-        "annual_vol_pct": 7.18,
-        "net_sharpe": 1.97,
-        "delta_sharpe_vs_full": 0.0,
-        "max_drawdown_pct": -4.41,
-        "calmar_ratio": 3.66,
-        "satellite_win_rate_pct": 72.09
-      },
-      {
-        "variant_id": "Ablate_Bayesian_KOL_Credibility_Gate",
-        "label": "(-) w/o Bayesian KOL Credibility & Contrarian Inversion",
-        "cagr_pct": 9.14,
-        "annual_vol_pct": 6.38,
-        "net_sharpe": 1.12,
-        "delta_sharpe_vs_full": -0.85,
-        "max_drawdown_pct": -7.82,
-        "calmar_ratio": 1.17,
-        "satellite_win_rate_pct": 48.21
-      },
-      {
-        "variant_id": "Ablate_Predictability_Tier_Stratifier",
-        "label": "(-) w/o Stock Predictability Stratifier (Allows Tier-C Noise)",
-        "cagr_pct": 12.45,
-        "annual_vol_pct": 7.16,
-        "net_sharpe": 1.46,
-        "delta_sharpe_vs_full": -0.51,
-        "max_drawdown_pct": -6.94,
-        "calmar_ratio": 1.79,
-        "satellite_win_rate_pct": 58.4
-      },
-      {
-        "variant_id": "Ablate_Microstructure_And_QDII_Guards",
-        "label": "(-) w/o Microstructure & QDII Guards (T+1, Lots, QDII <=1.5%)",
-        "cagr_pct": 13.8,
-        "annual_vol_pct": 7.33,
-        "net_sharpe": 1.61,
-        "delta_sharpe_vs_full": -0.36,
-        "max_drawdown_pct": -6.45,
-        "calmar_ratio": 2.14,
-        "satellite_win_rate_pct": 66.15
-      },
-      {
-        "variant_id": "Ablate_Signal_Reconciler_And_Bond_Fallback",
-        "label": "(-) w/o Signal Conflict Reconciler & 511010 Bond Parking",
-        "cagr_pct": 14.52,
-        "annual_vol_pct": 7.2,
-        "net_sharpe": 1.74,
-        "delta_sharpe_vs_full": -0.23,
-        "max_drawdown_pct": -5.28,
-        "calmar_ratio": 2.75,
-        "satellite_win_rate_pct": 68.9
-      },
-      {
-        "variant_id": "Unguarded_Naive_KOL_Baseline",
-        "label": "Unguarded Naive KOL Baseline (No Guards or Calibration)",
-        "cagr_pct": 7.85,
-        "annual_vol_pct": 9.0,
-        "net_sharpe": 0.65,
-        "delta_sharpe_vs_full": -1.32,
-        "max_drawdown_pct": -9.57,
-        "calmar_ratio": 0.82,
-        "satellite_win_rate_pct": 46.72
-      }
-    ],
-    "key_finding": "Removing Bayesian KOL Credibility Calibration causes the largest Sharpe drop (-0.85, from 1.97 to 1.12), followed by Stock Predictability Tier Stratifier (-0.51), Exchange Microstructure & QDII Guards (-0.36), and Signal Conflict Reconciler (-0.23)."
   }
 }

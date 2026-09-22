@@ -1,0 +1,44 @@
+{
+  "status": "RECOMPUTED_FROM_PREDICTIONS",
+  "input_sha256": "efe68e408ab53b419cffd49c73adcf81a0f3a87f4163cc77297ddebce5e6fdd3",
+  "rows": 35772,
+  "variants": {
+    "naive_follower_volume_weighted": {
+      "rows": 17886,
+      "valid_dates": 799,
+      "undefined_dates": [],
+      "pooled_rank_ic": 0.00014365458299525838,
+      "mean_daily_rank_ic": -0.011532803487891633,
+      "daily_mean_ci95": [
+        -0.035458730456207656,
+        0.014380401505533758
+      ]
+    },
+    "pit_kol_credibility_gated": {
+      "rows": 17886,
+      "valid_dates": 799,
+      "undefined_dates": [],
+      "pooled_rank_ic": 0.006468361657284962,
+      "mean_daily_rank_ic": 0.027268145458409627,
+      "daily_mean_ci95": [
+        0.0011743009411191352,
+        0.05447592568433983
+      ]
+    }
+  },
+  "paired_comparisons": {
+    "pit_kol_credibility_gated minus naive_follower_volume_weighted": {
+      "paired_dates": 799,
+      "mean_daily_ic_difference": 0.038800948946301254,
+      "ci95": [
+        0.007437764154422119,
+        0.07277126833431703
+      ]
+    }
+  },
+  "block_days": 5,
+  "horizon_days": 5,
+  "draws": 2000,
+  "seed": 20260921,
+  "limits": "Timestamp assertions are supplied metadata, not authenticated provenance. Prediction evaluation does not reproduce training or establish trading profitability."
+}

@@ -190,75 +190,92 @@ def run_numerical_parity_suite(seed: int = 42) -> list[dict[str, Any]]:
         "passed": err_adf <= 1e-6,
     })
 
-    # 9. Hierarchical Risk Parity (HRP) Recursive Bisection Sum & Cluster Parity
+    # 9. Equal-Risk-Contribution Risk Parity (`fin_skills.models.optimizers.risk_parity` vs `scipy.optimize.minimize`)
+    from fin_skills.models.optimizers import ledoit_wolf_identity, risk_contributions, risk_parity
     cov_mat = asset_returns.cov().to_numpy()
-    diag_inv = (1.0 / np.diag(cov_mat))
-    hrp_weights = diag_inv / np.sum(diag_inv)
-    err_hrp = abs(float(np.sum(hrp_weights)) - 1.0)
+    rp_out = np.asarray(risk_parity(cov_mat))
+    rc_out = np.asarray(risk_contributions(rp_out, cov_mat))
+    rc_target = np.full(n_assets, float(np.sum(rc_out)) / n_assets)
+    err_rp = float(np.max(np.abs(rc_out - rc_target)))
     results.append({
-        "primitive": "hierarchical_risk_parity_bisection",
-        "reference_library": "Lopez de Prado (2016) recursive inverse-variance bisection",
-        "max_abs_error": err_hrp,
-        "tolerance": 1e-12,
-        "passed": err_hrp <= 1e-12,
+        "primitive": "equal_risk_contribution_risk_parity",
+        "fin_skills_function": "fin_skills.models.optimizers.risk_parity",
+        "reference_library": "exact equal risk contribution (RC_i = sigma_p / N)",
+        "max_abs_error": err_rp,
+        "tolerance": 1e-8,
+        "passed": err_rp <= 1e-8,
     })
 
-    # 10. Ledoit-Wolf Constant-Correlation / Identity Target Covariance Shrinkage
+    # 10. Ledoit-Wolf Identity Shrinkage (`fin_skills.models.optimizers.ledoit_wolf_identity` vs `sklearn.covariance.LedoitWolf`)
     from sklearn.covariance import LedoitWolf
     X_centered = asset_returns.to_numpy() - asset_returns.to_numpy().mean(axis=0, keepdims=True)
-    lw = LedoitWolf(store_precision=False).fit(X_centered)
-    emp_cov = (X_centered.T @ X_centered) / X_centered.shape[0]
-    mu_trace = np.trace(emp_cov) / emp_cov.shape[0]
-    shrunk_manual = (1.0 - lw.shrinkage_) * emp_cov + lw.shrinkage_ * mu_trace * np.eye(emp_cov.shape[0])
-    err_lw = float(np.max(np.abs(lw.covariance_ - shrunk_manual)))
+    lw_fs_cov, lw_fs_delta = ledoit_wolf_identity(X_centered)
+    lw_sk = LedoitWolf(store_precision=False, assume_centered=True).fit(X_centered)
+    err_lw = float(np.max(np.abs(lw_fs_cov - lw_sk.covariance_)))
     results.append({
         "primitive": "ledoit_wolf_covariance_shrinkage",
+        "fin_skills_function": "fin_skills.models.optimizers.ledoit_wolf_identity",
         "reference_library": "sklearn.covariance.LedoitWolf",
         "max_abs_error": err_lw,
-        "tolerance": 1e-10,
-        "passed": err_lw <= 1e-10,
+        "shrinkage_intensity_diff": abs(float(lw_fs_delta) - float(lw_sk.shrinkage_)),
+        "tolerance": 1e-6,
+        "passed": err_lw <= 1e-6,
     })
 
-    # 11. Almgren-Chriss Optimal Execution Trajectory (Hyperbolic Closed Form)
-    kappa, T_steps = 0.35, 10
-    t_grid = np.arange(T_steps + 1, dtype=float)
-    traj_ac = np.sinh(kappa * (T_steps - t_grid)) / np.sinh(kappa * T_steps)
-    # Verify boundary conditions x(0)=1, x(T)=0 and second-difference ODE
-    err_ac = max(abs(float(traj_ac[0]) - 1.0), abs(float(traj_ac[-1]) - 0.0))
+    # 11. Almgren-Chriss Optimal Execution Trajectory (`fin_skills.strategies.execution_algos.ac_trajectory`)
+    from fin_skills.strategies.execution_algos import ac_trajectory
+    kappa, T_horizon, N_steps, X_shares = 0.35, 1.0, 10, 10000.0
+    traj_fs, trades_fs = ac_trajectory(X=X_shares, T=T_horizon, N=N_steps, kappa=kappa)
+    t_grid = np.linspace(0.0, T_horizon, N_steps + 1)
+    traj_ref = X_shares * np.sinh(kappa * (T_horizon - t_grid)) / np.sinh(kappa * T_horizon)
+    err_ac = max(
+        float(np.max(np.abs(np.asarray(traj_fs) - traj_ref))),
+        float(np.max(np.abs(np.asarray(trades_fs) - (-np.diff(traj_ref))))),
+    )
     results.append({
         "primitive": "almgren_chriss_execution_trajectory",
-        "reference_library": "Almgren & Chriss (2001) sinh(kappa*(T-t))/sinh(kappa*T)",
+        "fin_skills_function": "fin_skills.strategies.execution_algos.ac_trajectory",
+        "reference_library": "Almgren & Chriss (2001) X*sinh(kappa*(T-t))/sinh(kappa*T)",
         "max_abs_error": err_ac,
-        "tolerance": 1e-12,
-        "passed": err_ac <= 1e-12,
+        "tolerance": 1e-10,
+        "passed": err_ac <= 1e-10,
     })
 
-    # 12. Avellaneda-Stoikov Market-Making Reservation Price & Optimal Spread
-    s_mid, q_inv, gamma_risk, sigma_mm, tau_rem, k_depth = 100.0, 3.0, 0.1, 0.02, 0.5, 1.5
-    r_price = s_mid - q_inv * gamma_risk * (sigma_mm ** 2) * tau_rem
-    opt_spread = gamma_risk * (sigma_mm ** 2) * tau_rem + (2.0 / gamma_risk) * np.log(1.0 + gamma_risk / k_depth)
-    bid_quote = r_price - 0.5 * opt_spread
-    ask_quote = r_price + 0.5 * opt_spread
-    err_as = abs((ask_quote - bid_quote) - opt_spread) + abs(0.5 * (ask_quote + bid_quote) - r_price)
+    # 12. Avellaneda-Stoikov Market-Making Quotes (`fin_skills.strategies.market_making`)
+    from fin_skills.strategies.market_making import optimal_spread, reservation_price
+    s_mid, q_inv, gamma_risk, sigma_mm, t_now, T_end, k_depth = 100.0, 3.0, 0.1, 0.02, 0.25, 0.75, 1.5
+    tau_rem = T_end - t_now
+    r_fs = float(reservation_price(s_mid, q_inv, gamma_risk, sigma_mm, t_now, T_end))
+    sp_fs = float(optimal_spread(gamma_risk, sigma_mm, t_now, T_end, k_depth))
+    r_ref = s_mid - q_inv * gamma_risk * (sigma_mm ** 2) * tau_rem
+    sp_ref = gamma_risk * (sigma_mm ** 2) * tau_rem + (2.0 / gamma_risk) * np.log(1.0 + gamma_risk / k_depth)
+    err_as = max(abs(r_fs - r_ref), abs(sp_fs - sp_ref))
     results.append({
         "primitive": "avellaneda_stoikov_reservation_spread",
+        "fin_skills_function": "fin_skills.strategies.market_making.{reservation_price,optimal_spread}",
         "reference_library": "Avellaneda & Stoikov (2008) exact HJB closed form",
         "max_abs_error": float(err_as),
         "tolerance": 1e-12,
         "passed": float(err_as) <= 1e-12,
     })
 
-    # 13. Triple-Barrier Volatility-Scaled First-Passage Labeling
-    from fin_skills.core.brinson_attribution import _demo_panels
+    # 13. Brinson-Fachler Attribution (`fin_skills.core.brinson_attribution.brinson_fachler`)
+    from fin_skills.core.brinson_attribution import _demo_panels, brinson_fachler
     p0 = _demo_panels()[0]
-    alloc = (p0["wp"] - p0["wb"]) * (p0["rb"] - float(np.sum(p0["wb"] * p0["rb"])))
-    sel = p0["wb"] * (p0["rp"] - p0["rb"])
-    inter = (p0["wp"] - p0["wb"]) * (p0["rp"] - p0["rb"])
-    active_ret = float(np.sum(p0["wp"] * p0["rp"]) - np.sum(p0["wb"] * p0["rb"]))
-    err_brinson = abs(float(np.sum(alloc + sel + inter)) - active_ret)
+    bf_df = brinson_fachler(p0)
+    bf_non_total = bf_df[bf_df.index != "TOTAL"] if "TOTAL" in bf_df.index else bf_df
+    alloc_ref = (p0["wp"] - p0["wb"]) * (p0["rb"] - float(np.sum(p0["wb"] * p0["rb"])))
+    sel_ref = p0["wb"] * (p0["rp"] - p0["rb"])
+    inter_ref = (p0["wp"] - p0["wb"]) * (p0["rp"] - p0["rb"])
+    err_brinson = max(
+        float(np.max(np.abs(bf_non_total["allocation"].to_numpy() - alloc_ref.to_numpy()))),
+        float(np.max(np.abs(bf_non_total["selection"].to_numpy() - sel_ref.to_numpy()))),
+        float(np.max(np.abs(bf_non_total["interaction"].to_numpy() - inter_ref.to_numpy()))),
+    )
     results.append({
         "primitive": "brinson_fachler_attribution_identity",
-        "reference_library": "Brinson & Fachler (1985) exact active-return decomposition",
+        "fin_skills_function": "fin_skills.core.brinson_attribution.brinson_fachler",
+        "reference_library": "Brinson & Fachler (1985) exact sector-by-sector decomposition",
         "max_abs_error": err_brinson,
         "tolerance": 1e-12,
         "passed": err_brinson <= 1e-12,

@@ -1,74 +1,46 @@
 {
-  "experiment_id": "E11_leave_one_family_out_component_ablation",
-  "source_backtest_artifact": "/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/CORE_SATELLITE_PORTFOLIO_BACKTEST.json",
-  "period": "2023-01-01 to 2026-09-01 (Out-of-Sample Clock Replay, 10 bps cost)",
-  "variants": [
+  "experiment_id": "E11_sequential_component_ablation_on_real_predictions",
+  "status": "RECOMPUTED_FROM_REAL_TIMESTAMPED_PREDICTIONS",
+  "stages": [
     {
-      "variant_id": "Full_FinSkills_Guarded_Architecture",
-      "label": "Full fin-skills System (All 4 Subsystem Families Active)",
-      "cagr_pct": 16.12,
-      "annual_vol_pct": 7.18,
-      "net_sharpe": 1.97,
-      "delta_sharpe_vs_full": 0.0,
-      "max_drawdown_pct": -4.41,
-      "calmar_ratio": 3.66,
-      "satellite_win_rate_pct": 72.09
+      "stage": "Stage0_Naive_Follower_Weighted",
+      "mean_daily_rank_ic": -0.01153,
+      "pooled_rank_ic": 0.00014,
+      "long_short_annualized_sharpe": -1.8739,
+      "max_drawdown": -0.32609,
+      "valid_dates": 799
     },
     {
-      "variant_id": "Ablate_Bayesian_KOL_Credibility_Gate",
-      "label": "(-) w/o Bayesian KOL Credibility & Contrarian Inversion",
-      "cagr_pct": 9.14,
-      "annual_vol_pct": 6.38,
-      "net_sharpe": 1.12,
-      "delta_sharpe_vs_full": -0.85,
-      "max_drawdown_pct": -7.82,
-      "calmar_ratio": 1.17,
-      "satellite_win_rate_pct": 48.21
+      "stage": "Stage1_Plus_DataQualityAuditor",
+      "mean_daily_rank_ic": -0.01161,
+      "pooled_rank_ic": 0.00013,
+      "long_short_annualized_sharpe": -1.3536,
+      "max_drawdown": -0.28034,
+      "valid_dates": 799
     },
     {
-      "variant_id": "Ablate_Predictability_Tier_Stratifier",
-      "label": "(-) w/o Stock Predictability Stratifier (Allows Tier-C Noise)",
-      "cagr_pct": 12.45,
-      "annual_vol_pct": 7.16,
-      "net_sharpe": 1.46,
-      "delta_sharpe_vs_full": -0.51,
-      "max_drawdown_pct": -6.94,
-      "calmar_ratio": 1.79,
-      "satellite_win_rate_pct": 58.4
+      "stage": "Stage2_Plus_StockPredictabilityStratifier",
+      "mean_daily_rank_ic": 0.01574,
+      "pooled_rank_ic": 0.02182,
+      "long_short_annualized_sharpe": -0.5563,
+      "max_drawdown": -0.17843,
+      "valid_dates": 799
     },
     {
-      "variant_id": "Ablate_Microstructure_And_QDII_Guards",
-      "label": "(-) w/o Microstructure & QDII Guards (T+1, Lots, QDII <=1.5%)",
-      "cagr_pct": 13.8,
-      "annual_vol_pct": 7.33,
-      "net_sharpe": 1.61,
-      "delta_sharpe_vs_full": -0.36,
-      "max_drawdown_pct": -6.45,
-      "calmar_ratio": 2.14,
-      "satellite_win_rate_pct": 66.15
+      "stage": "Stage3_Plus_PIT_KOLCredibilityRegistry",
+      "mean_daily_rank_ic": 0.02727,
+      "pooled_rank_ic": 0.00647,
+      "long_short_annualized_sharpe": -0.7481,
+      "max_drawdown": -0.1675,
+      "valid_dates": 799
     },
     {
-      "variant_id": "Ablate_Signal_Reconciler_And_Bond_Fallback",
-      "label": "(-) w/o Signal Conflict Reconciler & 511010 Bond Parking",
-      "cagr_pct": 14.52,
-      "annual_vol_pct": 7.2,
-      "net_sharpe": 1.74,
-      "delta_sharpe_vs_full": -0.23,
-      "max_drawdown_pct": -5.28,
-      "calmar_ratio": 2.75,
-      "satellite_win_rate_pct": 68.9
-    },
-    {
-      "variant_id": "Unguarded_Naive_KOL_Baseline",
-      "label": "Unguarded Naive KOL Baseline (No Guards or Calibration)",
-      "cagr_pct": 7.85,
-      "annual_vol_pct": 9.0,
-      "net_sharpe": 0.65,
-      "delta_sharpe_vs_full": -1.32,
-      "max_drawdown_pct": -9.57,
-      "calmar_ratio": 0.82,
-      "satellite_win_rate_pct": 46.72
+      "stage": "Stage4_Plus_VolatilityAndExecutionGuards",
+      "mean_daily_rank_ic": 0.02941,
+      "pooled_rank_ic": 0.01011,
+      "long_short_annualized_sharpe": -0.6382,
+      "max_drawdown": -0.19361,
+      "valid_dates": 799
     }
-  ],
-  "key_finding": "Removing Bayesian KOL Credibility Calibration causes the largest Sharpe drop (-0.85, from 1.97 to 1.12), followed by Stock Predictability Tier Stratifier (-0.51), Exchange Microstructure & QDII Guards (-0.36), and Signal Conflict Reconciler (-0.23)."
+  ]
 }

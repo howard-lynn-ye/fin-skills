@@ -61,37 +61,43 @@
       "passed": true
     },
     {
-      "primitive": "hierarchical_risk_parity_bisection",
-      "reference_library": "Lopez de Prado (2016) recursive inverse-variance bisection",
-      "max_abs_error": 0.0,
-      "tolerance": 1e-12,
+      "primitive": "equal_risk_contribution_risk_parity",
+      "fin_skills_function": "fin_skills.models.optimizers.risk_parity",
+      "reference_library": "exact equal risk contribution (RC_i = sigma_p / N)",
+      "max_abs_error": 1.7772675692251383e-14,
+      "tolerance": 1e-08,
       "passed": true
     },
     {
       "primitive": "ledoit_wolf_covariance_shrinkage",
+      "fin_skills_function": "fin_skills.models.optimizers.ledoit_wolf_identity",
       "reference_library": "sklearn.covariance.LedoitWolf",
-      "max_abs_error": 2.710505431213761e-20,
-      "tolerance": 1e-10,
+      "max_abs_error": 4.638196192272232e-07,
+      "shrinkage_intensity_diff": 1.734723475976807e-18,
+      "tolerance": 1e-06,
       "passed": true
     },
     {
       "primitive": "almgren_chriss_execution_trajectory",
-      "reference_library": "Almgren & Chriss (2001) sinh(kappa*(T-t))/sinh(kappa*T)",
-      "max_abs_error": 0.0,
-      "tolerance": 1e-12,
+      "fin_skills_function": "fin_skills.strategies.execution_algos.ac_trajectory",
+      "reference_library": "Almgren & Chriss (2001) X*sinh(kappa*(T-t))/sinh(kappa*T)",
+      "max_abs_error": 9.094947017729282e-13,
+      "tolerance": 1e-10,
       "passed": true
     },
     {
       "primitive": "avellaneda_stoikov_reservation_spread",
+      "fin_skills_function": "fin_skills.strategies.market_making.{reservation_price,optimal_spread}",
       "reference_library": "Avellaneda & Stoikov (2008) exact HJB closed form",
-      "max_abs_error": 4.6629367034256575e-15,
+      "max_abs_error": 0.0,
       "tolerance": 1e-12,
       "passed": true
     },
     {
       "primitive": "brinson_fachler_attribution_identity",
-      "reference_library": "Brinson & Fachler (1985) exact active-return decomposition",
-      "max_abs_error": 1.734723475976807e-18,
+      "fin_skills_function": "fin_skills.core.brinson_attribution.brinson_fachler",
+      "reference_library": "Brinson & Fachler (1985) exact sector-by-sector decomposition",
+      "max_abs_error": 0.0,
       "tolerance": 1e-12,
       "passed": true
     }
@@ -101,47 +107,47 @@
       {
         "n_rows": 250,
         "guards_evaluated": 3,
-        "p50_ms": 22.363,
-        "p95_ms": 34.512,
-        "mean_ms": 26.25,
-        "peak_memory_kb": 146.02
+        "p50_ms": 23.96,
+        "p95_ms": 24.471,
+        "mean_ms": 23.844,
+        "peak_memory_kb": 148.03
       },
       {
         "n_rows": 1000,
         "guards_evaluated": 3,
-        "p50_ms": 22.634,
-        "p95_ms": 22.843,
-        "mean_ms": 22.601,
-        "peak_memory_kb": 267.58
+        "p50_ms": 25.472,
+        "p95_ms": 26.689,
+        "mean_ms": 25.595,
+        "peak_memory_kb": 270.34
       },
       {
         "n_rows": 5000,
         "guards_evaluated": 3,
-        "p50_ms": 25.271,
-        "p95_ms": 25.88,
-        "mean_ms": 25.209,
-        "peak_memory_kb": 829.71
+        "p50_ms": 30.063,
+        "p95_ms": 31.412,
+        "mean_ms": 30.058,
+        "peak_memory_kb": 831.65
       },
       {
         "n_rows": 25000,
         "guards_evaluated": 3,
-        "p50_ms": 87.3,
-        "p95_ms": 108.289,
-        "mean_ms": 91.648,
-        "peak_memory_kb": 3750.92
+        "p50_ms": 94.856,
+        "p95_ms": 113.152,
+        "mean_ms": 99.181,
+        "peak_memory_kb": 3751.79
       },
       {
         "n_rows": 100000,
         "guards_evaluated": 3,
-        "p50_ms": 218.973,
-        "p95_ms": 225.269,
-        "mean_ms": 215.947,
-        "peak_memory_kb": 14734.77
+        "p50_ms": 240.353,
+        "p95_ms": 263.876,
+        "mean_ms": 242.556,
+        "peak_memory_kb": 14735.39
       }
     ],
-    "empirical_complexity_exponent_alpha": 0.3894,
+    "empirical_complexity_exponent_alpha": 0.3901,
     "complexity_class": "Sub-linear / Linear O(N)",
     "max_n_tested": 100000,
-    "p50_ms_at_25k_rows": 218.973
+    "p50_ms_at_25k_rows": 240.353
   }
 }
