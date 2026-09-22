@@ -67,7 +67,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **61 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **62 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 
@@ -84,7 +84,7 @@ flowchart TD
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
-        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>61 Live Agent Inspection Tools"]
+        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>62 Live Agent Inspection Tools"]
     end
 
     D3 ==>|Compiled by build_package.py| E1
@@ -196,6 +196,28 @@ and catalog-only entries are explicit. `walk_forward` compares forecast methods 
 validation folds. See the [algorithm guide](docs/ALGORITHMS.md) for Python and JSON/MCP examples,
 adapter coverage, input conventions and registration of additional libraries.
 
+### Built-in RAG and model components
+
+`fin_skills.rag` provides document chunking, BM25 retrieval, optional embedding-based cosine
+retrieval, source citations, JSON index persistence, and a generation callback for your pipeline.
+Use the packaged skills and references, your own document text, or both:
+
+```python
+from fin_skills.rag import RAGIndex, RAGPipeline
+
+index = RAGIndex.from_skills(["backtest-validation"])
+context = RAGPipeline(index).prepare("survivorship universe", top_k=3)
+print(context["context"])
+```
+
+The shared model factory includes `create_model("jev")` and `create_model("fly_memory", ...)`.
+Jev is a hosted decision adapter with explicit network access; its `rerank` method plugs directly
+into `RAGPipeline`. Fly memory remains an independently installed GPL extension with explicit
+circuit parameters. Neither component bundles pretrained weights. See the
+[RAG pipeline guide](docs/RAG_PIPELINE.md), [model guide](docs/MODEL_USAGE.md), and the
+[offline composition example](examples/rag_pipeline.py). JSON/MCP agents use `retrieve_context`
+for cited retrieval and `run_model` for explicitly enabled Jev requests.
+
 ### Mode B: In Claude Code / Coding Agents (Skill Plugins)
 
 ```bash
@@ -220,7 +242,7 @@ adapter coverage, input conventions and registration of additional libraries.
 
 ### Mode C: As an MCP Server or JSON Tool Suite for LLM Agents
 
-Give any LLM agent live execution access to the 61 JSON-callable tools (`list_skills`, `read_skill`, `check_backtest`, and `check_<guard>`):
+Give any LLM agent live execution access to the registered JSON-callable tools (`list_skills`, `read_skill`, `retrieve_context`, `check_backtest`, and `check_<guard>`):
 
 ```bash
 pip install "fin-skills[mcp]"

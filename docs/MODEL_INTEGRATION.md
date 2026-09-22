@@ -13,6 +13,7 @@
 | 既有预测、回归、分类与组合方法 | 原 `fin_skills.algorithms` 注册表和对应后端 | 复用原接口，增加模型卡和统一生命周期 |
 | Kalman、协方差、期限结构、信用与 SVI | 仓库既有 `fin_skills.models` 数值模块 | 参数与维度检查、结果接口；没有重写方程 |
 | 果蝇记忆 | 既有 GPL `benchmarks/fly_paper` 实现 | 独立安装包、显式参数、成熟反馈与重复更新检查 |
+| JEV 结构化决策 | TypeSafe Jev 托管 API | 显式联网、请求与响应校验、概率输出和来源保留的检索重排；不包含模型权重 |
 
 深度模型没有在本库重写网络。NeuralForecast 的模型与原生保存加载文档是适配依据：
 [LSTM](https://nixtlaverse.nixtla.io/neuralforecast/models.lstm.html)、

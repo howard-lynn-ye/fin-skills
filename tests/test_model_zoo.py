@@ -16,7 +16,9 @@ def test_discovery_is_unique_and_operations_are_explicit():
     assert len({c["id"] for c in cards}) == len(cards)
     json.dumps(cards, allow_nan=False)
     assert "update" in next(c for c in cards if c["id"] == "fly_memory")["operations"]
-    assert all(c["pretrained"] is False for c in cards)
+    assert all(c["pretrained"] is False for c in cards if c["id"] != "jev")
+    jev = next(c for c in cards if c["id"] == "jev")
+    assert jev["pretrained"] is True and jev["weights_bundled"] is False
     with pytest.raises(ValueError, match="unknown"):
         model_catalog("typo")
     with pytest.raises(KeyError, match="unknown"):

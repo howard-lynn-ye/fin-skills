@@ -13,6 +13,7 @@ python examples/futures_roll.py
 python examples/algorithm_selection.py
 python examples/market_strategy.py
 python examples/model_zoo.py
+python examples/rag_pipeline.py
 ```
 
 `tests/test_examples.py` runs each example in a subprocess and asserts its **conclusions**, not
@@ -28,6 +29,7 @@ job.
 | [`algorithm_selection.py`](algorithm_selection.py) | Automatic algorithm selection, portfolio weights, execution schedules and chronological forecast comparison | Offline |
 | [`market_strategy.py`](market_strategy.py) | Causal market-state rules, news screening and next-bar strategy candidates | Offline |
 | [`model_zoo.py`](model_zoo.py) | Model discovery, fitted forecast and covariance through one API | Offline |
+| [`rag_pipeline.py`](rag_pipeline.py) | Built-in retrieval, source citations, JSON persistence, and Jev reranking with explicitly offline callbacks | Offline |
 
 ## 1. `audit_a_backtest.py`
 
