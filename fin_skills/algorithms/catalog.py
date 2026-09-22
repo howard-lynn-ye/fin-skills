@@ -6,6 +6,8 @@ Existing skill texts carry the fuller implementation and licence caveats.
 from .core import Algorithm, Registry
 from . import runtime as r
 from . import extended as e
+from . import technical as t
+from . import strategy as s
 
 SOURCES = {
     "PyPortfolioOpt": "https://pyportfolioopt.readthedocs.io/en/latest/OtherOptimizers.html",
@@ -30,13 +32,15 @@ def default_registry() -> Registry:
 
     def add(id, name, task, inputs, objectives, *, handler=None, library="fin-skills",
             module=None, tags=(), capabilities=(), complexity="low", minimum=0,
-            priority=0, skill="", source="", caveat="Validate on later, unseen data."):
+            priority=0, skill="", source="", caveat="Validate on later, unseen data.",
+            check=None, verified_on="2026-09-14"):
         registry.register(Algorithm(
             id=id, name=name, task=task, library=library, inputs=tuple(inputs.split()),
             objectives=tuple(objectives.split()), tags=tuple(tags), capabilities=tuple(capabilities),
             complexity=complexity, min_observations=minimum, priority=priority,
             module=module, skill=skill, source=source or SOURCES.get(library, f"skill:{skill}"),
-            caveat=caveat), handler, preflight=r.preflight(id, task) if handler else None)
+            caveat=caveat, verified_on=verified_on), handler,
+            preflight=check or (r.preflight(id, task) if handler else None))
 
     portfolio = dict(task="portfolio", inputs="asset_returns", skill="portfolio-optimizers",
                      capabilities=("long_only",))
@@ -165,4 +169,27 @@ def default_registry() -> Registry:
         module="ruptures", handler=e.change_points,
         library="ruptures", minimum=30, complexity="medium", tags=("structural_breaks",),
         skill="regime-detection", caveat="Offline PELT L2 break detection is retrospective.")
+    for method, name, objective, skill in (
+        ("donchian_breakout", "Close-channel breakout", "trend_signal", "trend-following-models"),
+        ("bollinger_reversion", "Bollinger mean reversion", "reversion_signal", "trend-following-models"),
+        ("rsi_reversion", "Simple rolling RSI reversion", "reversion_signal", "trend-following-models"),
+        ("macd", "MACD signal-line crossover", "trend_signal", "trend-following-models"),
+        ("vol_target_momentum", "Volatility-targeted momentum", "trend_signal", "trend-following-models"),
+    ):
+        add(method, name, "signal", "prices", objective, handler=t.signal(method),
+            check=t.signal_check(method), minimum=t.warmup(method, t.SIGNAL_DEFAULTS[method]) + 1,
+            tags=("mean_reversion",) if objective == "reversion_signal" else ("trend",),
+            capabilities=("lagged",), skill=skill, verified_on="2026-09-21",
+            source="fin_skills/algorithms/technical.py",
+            caveat="Local baseline definition; one-bar lag, explicit warmup, no costs or fills modeled.")
+    add("cross_sectional_momentum", "Positive-momentum top-k allocation", "portfolio", "asset_returns",
+        "allocation momentum", handler=t.cross_sectional_momentum, check=t.cross_sectional_check,
+        minimum=60, tags=("trend",), capabilities=("long_only",), skill="trend-following-models",
+        source="fin_skills/algorithms/technical.py", verified_on="2026-09-21",
+        caveat="Apply weights to later returns; unallocated balance is cash. Requires a point-in-time universe.")
+    add("rolling_market_state", "Causal rolling market state", "regime", "prices", "regime",
+        handler=s.regime_adapter, check=lambda data, p: s.regime_settings(p), minimum=1,
+        tags=("causal",), skill="regime-detection", source="fin_skills/algorithms/strategy.py",
+        verified_on="2026-09-21",
+        caveat="Unknown during warmup; heuristic labels at close t, usable for decisions after t only.")
     return registry

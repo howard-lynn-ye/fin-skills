@@ -48,7 +48,7 @@ def world(seed: int = SEED) -> tuple[pd.DataFrame, pd.DataFrame]:
     rng = np.random.default_rng(seed)
     dates = pd.bdate_range("2021-01-04", periods=756)
     names = [f"N{i:02d}" for i in range(N_NAMES)]
-    quarter_ends = [d for d in pd.date_range(dates[0], dates[-1], freq="QE")
+    quarter_ends = [d for d in pd.date_range(dates[0], dates[-1], freq="Q")
                     if d <= dates[-1] - pd.Timedelta(days=AMEND_LAG + 5)]
 
     rows, drift = [], pd.DataFrame(0.0, index=dates, columns=names)

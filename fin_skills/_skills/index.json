@@ -329,7 +329,7 @@
       "license": "MIT",
       "version": "0.1.0",
       "verified_on": "2026-09-03",
-      "body_chars": 18769,
+      "body_chars": 18768,
       "approx_body_tokens": 4692,
       "references": [
         "_engine-matrix.md",

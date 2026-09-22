@@ -19,8 +19,10 @@ from .model import Batch, Event, Watch
 from .parsers import form4, holdings_changes, house_transactions, thirteen_f
 from .runtime import Collector, configure, sources
 from .store import Store
+from .news import collect_news, news_digest, news_watches
 
 __all__ = [
+           'collect_news', 'news_digest', 'news_watches',
            'Batch',
            'Collector',
            'Event',

@@ -343,7 +343,7 @@ def _synthetic_index(n_names: int = 150, years: int = 8, seed: int = 5
 
 if __name__ == "__main__":
     prices, members = _synthetic_index()
-    rebals = pd.bdate_range(prices.index[0], prices.index[-1], freq="BQE")
+    rebals = pd.bdate_range(prices.index[0], prices.index[-1], freq="BQ")
 
     # A. the honest universe: whoever was a member on each rebalance date
     pit = rebalance_universe(rebals, members)

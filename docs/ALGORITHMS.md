@@ -4,6 +4,9 @@
 选择器先检查数据、样本数、目标、依赖和约束，再按明确规则排序，并返回每个选择或排除的原因。
 这些排序分数是本库的策略规则，不是收益预测、准确率或经过实证验证的算法优劣。
 
+市场状态驱动的候选推荐、新闻风险提示和新增信号见[市场与策略流程](MARKET_STRATEGY.md)。
+多种模型的直接调用、训练、预测和保存加载见[模型使用指南](MODEL_USAGE.md)。
+
 ## 快速开始
 
 ```python
@@ -49,16 +52,16 @@ classification / execution / pricing / stat_arb / regime`，也支持对应中�
 
 | 任务 | 已有执行适配器 | 目录中记录、尚未接执行适配器 |
 |---|---|---|
-| 组合配置 | 等权、逆波动率、最小方差、HRP；PyPortfolioOpt/skfolio/Riskfolio 的 HRP 与最小方差桥接 | — |
+| 组合配置 | 等权、逆波动率、最小方差、HRP、横截面动量；PyPortfolioOpt/skfolio/Riskfolio 的 HRP 与最小方差桥接 | — |
 | 时间序列预测 | naive、mean、drift、seasonal naive、statsmodels ARIMA(1,1,0)、StatsForecast AutoARIMA | — |
 | 波动率 | 历史波动率、EWMA、arch GARCH、EGARCH | — |
 | 尾部风险 | 历史法与正态法 VaR/ES | — |
-| 趋势信号 | 时间序列动量、均线交叉 | — |
+| 交易信号 | 时间序列动量、均线交叉、收盘通道突破、布林回归、RSI 回归、MACD、波动率目标动量 | — |
 | 回归与分类 | scikit-learn Ridge、LogisticRegression、随机森林；LightGBM、XGBoost；Qlib 线性模型 | — |
 | 执行计划 | TWAP、基于预测成交量的 VWAP | — |
 | 期权定价 | 欧式 Black-Scholes-Merton、美式 CRR、QuantLib Heston | — |
 | 统计套利 | statsmodels Engle-Granger | — |
-| 状态识别 | hmmlearn HMM、ruptures 变点检测 | — |
+| 状态识别 | 因果滚动市场状态；hmmlearn HMM、ruptures 离线变点检测 | — |
 
 第三方能力条目在 2026-09-14 对照官方文档核查。来源保存在每条记录的 `source` 中；
 例如组合算法见 [PyPortfolioOpt](https://pyportfolioopt.readthedocs.io/en/latest/OtherOptimizers.html)、
@@ -81,7 +84,8 @@ classification / execution / pricing / stat_arb / regime`，也支持对应中�
 复杂度上限、`allowed_libraries`、`required_capabilities` 和目标都是硬筛选条件。
 `preferences` 是软偏好；分数为 `priority + 10 × 匹配偏好数 - 复杂度等级`，并用算法 ID 打破平局。
 提供实际数据时会依据可用字段和样本量筛选；期权还会依据 `exercise` 选择美式或欧式方法。
-不自动推断牛熊市、收益机会或潜在市场状态。
+通用 `recommend` 不自动推断牛熊市、收益机会或潜在市场状态。
+`market_state` 和 `recommend_strategy` 另行提供因果滚动状态及规则驱动的策略候选。
 
 ## 输入和参数
 

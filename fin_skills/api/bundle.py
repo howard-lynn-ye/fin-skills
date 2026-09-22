@@ -315,7 +315,8 @@ class Bundle:
     def missing_for(self, guard: Guard | str) -> list[str]:
         """Required slots this bundle lacks for `guard`, in slot names."""
         g = get(guard) if isinstance(guard, str) else guard
-        return [_slot_of(g.name, k) for k in g.required if _slot_of(g.name, k) not in self._slots]
+        # Respect guards with either/or requirements as well as positional aliases.
+        return [_slot_of(g.name, k) for k in g.missing(self.inputs_for(g))]
 
     def inputs_for(self, guard: Guard | str) -> dict[str, Any]:
         """The keyword arguments guard.run() takes from this bundle (aliases resolved)."""

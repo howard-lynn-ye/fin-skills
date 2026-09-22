@@ -62,24 +62,3 @@
 运行真实检索和模型调用，记录检索命中、token、耗时及独立评分；预填结果表不能替代。
 
 Memory／fly 是另一研究线，不是完成 FACT 主实验的前置条件。
-
----
-
-## v2 与 master 对齐验证记录（2026-09-22 已执行落盘）
-
-针对上述全部 4 项审查要求，`v2` 分支已逐项完成代码修复、真实数据重算与 `pytest` 端到端回归测试：
-
-1. **Priority 1 修复（`benchmarks/agent_study/` 四大阻塞项修复与独立单元测试）**：
-   - **CSV 日期列与 `TASK.md`**：修复 `build_task.py:export()` 与 `perturb.py`，统一为 `close_quoted.csv`、`volume.csv`、`llm_score.csv` 写入显式 `index_label="date"`，并在 `export()` 内自动生成 `TASK.md`。
-   - **持仓索引规范化（`_normalize_positions_frame`）**：修复 `submission_audit.py:positions()` 与 `oracle.py:load_positions()`，在调用 `pd.to_datetime(result.index)` 前自动识别并提升 `"date"` / `"Unnamed: 0"` 列，避免 `RangeIndex(0, N)` 被误转为 `1970-01-01` 纳秒时间戳，并统一重索引至完整 `close.index × close.columns`。
-   - **缺失报告容错与 `volume.csv` 整型溢出修复**：修复 `oracle.py:grade()` 在缺失 `report.json` 时仍完整输出 `honest_sharpe`、`leakage_rate`、`same_session_rate`、`post_delisting_mass`（确保 `summarize_matrix.py` 中 `ungradable_accepted == 0`）；同时修复 `submission_audit.py:same_session_probe()` 对 `int64` 的 `volume.csv` 乘以浮点冲击触发 `LossySetitemError` 导致 `skills_enforced_guards` 被误拒的缺陷，并在 `run_guard("survivorship_audit")` 中同步检查 `post_delisting_mass <= 1e-12`。
-   - **32B 多卡推理稳定性**：在 `transformers_chat.py` 中使用 `input_device = next(self.model.parameters()).device`、`low_cpu_mem_usage=True`，并增加 `bfloat16` 下 `temperature=0.1` 采样溢出至贪婪解码（`do_sample=False`）的容错回退。
-   - **验证入口**：`pytest tests/test_agent_study_priority1_fixes.py`（全部通过）。
-
-2. **真实双语 KOL 画像（2,980 账号）与逐条时间戳预测重算（`prediction_audit.py`）**：
-   - 移除 `benchmarks/real_world_kol_audit.py` 中全部 `rng.normal` 合成回退代码，直接加载 `/usr/local/google/home/shwaihe/stock_prediction/data/benchmark/STOCKTWITS_OVERSEAS_KOL_PROFILES.csv`（`1,535` 个真实海外 StockTwits 账号，含显式 In-Sample 与 Out-of-Sample 胜率／收益拆分）与 `XUEQIU_KOL_ALPHA_PROFILES.csv`（`1,445` 个真实雪球账号，合计 `2,980` 个真实账号）。
-   - 新增 `benchmarks/build_real_prediction_ledger.py`，从 `interaction_matrix.csv`、`user_features.csv` 与 `item_daily_features_cleaned.csv` 构建严格时点（`credibility_updated_at <= fit_end <= feature_available_at <= prediction_time < label_end`）的逐日资产预测表 `benchmarks/data/real_timestamped_predictions.csv`（`35,772` 行，`799` 个有效截面交易日），并通过 `benchmarks/prediction_audit.py` 审计生成 `benchmarks/PREDICTION_AUDIT_RESULTS.json`（`status = "RECOMPUTED_FROM_PREDICTIONS"`，5 日块自举 95% CI：`naive_follower_volume_weighted` 日均 Rank IC `-0.01153` vs. `pit_kol_credibility_gated` `+0.02727`，配对差值 `+0.03880`，95% CI `[+0.00744, +0.07277]`）。
-
-3. **Parity 基准库函数直调与 E9–E12 真实重算**：
-   - 更新 `benchmarks/parity_and_cost_bench.py` 第 9–13 项，全部直接调用 `fin_skills.models.optimizers.{risk_parity, ledoit_wolf_identity}`、`fin_skills.strategies.execution_algos.ac_trajectory`、`fin_skills.strategies.market_making.{reservation_price, optimal_spread}` 与 `fin_skills.core.brinson_attribution.brinson_fachler` 并与外部 `scipy`／`sklearn` 对齐（`13/13` 全部通过）。
-   - 重写 `benchmarks/run_extended_ablations_e9_e12.py`，移除所有硬编码字典，全部由真实时间戳预测表（E10、E11）、全量 `SKILL.md` 语料上的 `TfidfVectorizer` 检索与 `time.perf_counter()` 延迟测量（E12：全拼接 `369,315` tokens vs. Top-3 RAG `9,042` tokens / `71.67%` 召回率 vs. 渐进路由 `4,039` tokens / `100.0%` 召回率）及注册表守卫实测（E9）动态计算生成。

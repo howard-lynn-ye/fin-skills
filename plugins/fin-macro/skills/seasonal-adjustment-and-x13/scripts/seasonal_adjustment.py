@@ -319,11 +319,16 @@ def accuracy(P: np.ndarray, truth_sa: np.ndarray, start: int) -> dict:
 def x13_status() -> dict:
     """Is statsmodels' X-13 wrapper usable here? Report exactly what it says if not."""
     try:
-        from statsmodels.tsa.x13 import BINARY_NAMES, _find_x12
+        from importlib import import_module
+        x13 = import_module("statsmodels.tsa.x13")
+        # statsmodels 0.14.6 uses _binary_names; older wrappers expose BINARY_NAMES.
+        binary_names = getattr(x13, "BINARY_NAMES", getattr(x13, "_binary_names", None))
+        if binary_names is None:
+            raise RuntimeError("unrecognized statsmodels X-13 binary-name interface")
     except Exception as exc:                                     # pragma: no cover
         return {"statsmodels": False, "detail": f"{type(exc).__name__}: {exc}"}
-    found = _find_x12()
-    out = {"statsmodels": True, "binary_names": list(BINARY_NAMES),
+    found = x13._find_x12()
+    out = {"statsmodels": True, "binary_names": list(binary_names),
            "binary_found": bool(found), "detail": str(found) if found else ""}
     if not found:
         try:

@@ -1,0 +1,15 @@
+{
+  "upstream": "https://github.com/paappraiser/stonkfly-lab",
+  "commit": "09e4529e2e1a135083838abd00ccacfd95c63a29",
+  "kind": "offline_function_probe_not_market_return",
+  "positive_feedback": {
+    "score_before": 0.008066767375974953,
+    "score_after": 0.8595266268999628
+  },
+  "flat_price_post_fill_reference": {
+    "deadband_override": 0,
+    "reward": 0.0008,
+    "raw_delta": 0.008,
+    "limitation": "Default deadband may suppress this small amount; this isolates arithmetic."
+  }
+}

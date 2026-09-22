@@ -1,0 +1,75 @@
+{
+  "status": "draft_integrity_checked_human_verification_pending",
+  "checked_on": "2026-09-21",
+  "document_integrity": {
+    "status": "pass",
+    "sources": 24,
+    "claims": 25,
+    "checks": [
+      "unique source and claim IDs",
+      "claim text SHA-256 hashes",
+      "claim-to-evidence mappings",
+      "relative local links",
+      "human verification not falsely marked complete"
+    ]
+  },
+  "source_schema": {
+    "status": "pass",
+    "human_verification_required": false
+  },
+  "reference_identifier_syntax": {
+    "status": "pass",
+    "network_validation": false
+  },
+  "strict_manuscript_audit": {
+    "status": "fail",
+    "issue_counts": {
+      "CLAIM_NOT_VERIFIED": 25,
+      "UNTAGGED_NUMERIC_CONTENT": 32,
+      "UNVERIFIED_CITATION_MARKER": 31,
+      "UNVERIFIED_CLAIM_EVIDENCE": 31
+    },
+    "explanation": "This is a research memo, not a submission-ready manuscript. Human verification remains pending. Numeric heuristics also flag planned formulas, list numbering and reference URLs; no claim of a passed manuscript audit.",
+    "numeric_flag_lines": [
+      108,
+      110,
+      113,
+      115,
+      125,
+      132,
+      232,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      3
+    ],
+    "numeric_flag_review": "Reviewed as planned equations, list numbering, date, path and reference definitions; this does not complete human evidence verification."
+  },
+  "submission_ready": false,
+  "repository_checks": {
+    "build_index.py": "pass",
+    "build_package.py": "pass",
+    "validate.py": "pass: OK, 129 skills, one existing fin-libraries discovery-budget warning"
+  }
+}

@@ -119,7 +119,7 @@ def full():
                costs=Costs(commission_bps=0.5, spread_bps=1.0, slippage=square_root_impact(),
                            borrow_bps_annual=50.0, cash_rate=0.05),
                sizing=rank_long_short(quantile=0.25),
-               universe=Universe(rebalance="ME", adv_lookback=21, members=p.listings),
+               universe=Universe(rebalance="M", adv_lookback=21, members=p.listings),
                capital=10_000_000.0, benchmark=bench, strict=True)
 
 
@@ -131,7 +131,7 @@ def test_engine_is_causal():
 
     def engine_weights(close: pd.DataFrame) -> pd.DataFrame:
         return run(rebuild(base, close), momentum, sizing=rank_long_short(),
-                   universe=Universe(rebalance="ME", max_names=4), strict=False).weights
+                   universe=Universe(rebalance="M", max_names=4), strict=False).weights
 
     engine_weights.__name__ = "run(panel, momentum).weights"
     res = get("assert_causal").run(fn=engine_weights, df=base.close, k=len(base.close) // 2)
@@ -244,7 +244,7 @@ def test_delisting_closes_out():
     p = build_panel("back")
     end = pd.Timestamp(p.listings.set_index("ticker").loc[DEAD, "end_date"])
     kw = dict(sizing=equal_weight(long_only=False),
-              universe=Universe(rebalance="ME", members=p.listings), strict=True)
+              universe=Universe(rebalance="M", members=p.listings), strict=True)
     at_last = run(p, momentum, execution=Execution(on_delist="close_at_last"), **kw)
     at_zero = run(p, momentum, execution=Execution(on_delist="zero_recovery"), **kw)
 
@@ -284,7 +284,7 @@ def test_on_delist_raise_refuses_to_guess_a_recovery():
 # ================================================================== I6  point-in-time
 def test_universe_is_point_in_time():
     base = build_panel("raw", split=False)
-    uni = Universe(rebalance="ME", adv_lookback=21, max_names=4, members=base.listings)
+    uni = Universe(rebalance="M", adv_lookback=21, max_names=4, members=base.listings)
     k = len(base.close) // 2
     bumped = base.close.copy()
     bumped.iloc[k:, 1] *= 12.0          # one name only: a uniform bump cannot change a ranking
@@ -435,7 +435,7 @@ def test_cash_is_a_position_and_earns_the_declared_rate(full):
 # ================================================================== I12 determinism
 def test_engine_is_deterministic():
     p = build_panel("back")
-    kw = dict(sizing=rank_long_short(), universe=Universe(rebalance="ME", members=p.listings))
+    kw = dict(sizing=rank_long_short(), universe=Universe(rebalance="M", members=p.listings))
     a, b = run(p, momentum, **kw), run(p, momentum, **kw)
     pd.testing.assert_frame_equal(a.weights, b.weights)
     pd.testing.assert_frame_equal(a.positions, b.positions)

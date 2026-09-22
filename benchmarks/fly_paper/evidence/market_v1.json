@@ -1,0 +1,559 @@
+{
+  "recorded_on": "2026-09-21",
+  "research_status": "exploratory; directed literature and implementation audit, not completed comprehensive research",
+  "result": {
+    "status": "complete",
+    "rows": [
+      {
+        "arm": "fly_actor_critic",
+        "seed": 11,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": -0.04418736025044834,
+            "annualized_vol": 0.028726240396558574,
+            "sharpe_zero_cash_rate": -0.14057617290865615,
+            "max_drawdown": -0.08211729783114807,
+            "total_turnover": 198.0,
+            "mean_risky_exposure": 0.3442751074638531,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.13427967845228372,
+            "annualized_vol": 0.02884619531501723,
+            "sharpe_zero_cash_rate": -0.4778276354188564,
+            "max_drawdown": -0.13724793875274732,
+            "total_turnover": 197.95052473763118,
+            "mean_risky_exposure": 0.3442751074638531,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.3567320330333418,
+            "annualized_vol": 0.030120579460299945,
+            "sharpe_zero_cash_rate": -1.4272598357716813,
+            "max_drawdown": -0.3567320330333418,
+            "total_turnover": 197.80239520958085,
+            "mean_risky_exposure": 0.3442751074638531,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 1.0436096431476471e-14,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 435,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.09019331844806784,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "fly_actor_critic",
+        "seed": 23,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": 0.00510899407541654,
+            "annualized_vol": 0.028960381766535155,
+            "sharpe_zero_cash_rate": 0.03180122403193434,
+            "max_drawdown": -0.08487238853707257,
+            "total_turnover": 174.0,
+            "mean_risky_exposure": 0.3849159828057835,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.07863961319603541,
+            "annualized_vol": 0.02896762048103441,
+            "sharpe_zero_cash_rate": -0.2639526399735687,
+            "max_drawdown": -0.11546373015913192,
+            "total_turnover": 173.95652173913044,
+            "mean_risky_exposure": 0.3849159828057835,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.29029399811481693,
+            "annualized_vol": 0.029802843586652614,
+            "sharpe_zero_cash_rate": -1.1180680850571587,
+            "max_drawdown": -0.29029399811481693,
+            "total_turnover": 173.82634730538922,
+            "mean_risky_exposure": 0.3849159828057835,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 1.199040866595169e-14,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 382,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.08485746097057595,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "fly_actor_critic",
+        "seed": 37,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": -0.006441860912341113,
+            "annualized_vol": 0.02890362155405697,
+            "sharpe_zero_cash_rate": -0.007569896598272396,
+            "max_drawdown": -0.08576804303825414,
+            "total_turnover": 166.0,
+            "mean_risky_exposure": 0.36537710042985544,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.08557763318552403,
+            "annualized_vol": 0.028977528870765216,
+            "sharpe_zero_cash_rate": -0.2895343374614125,
+            "max_drawdown": -0.11646176780770268,
+            "total_turnover": 165.9585207396302,
+            "mean_risky_exposure": 0.36537710042985544,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.2871349462481676,
+            "annualized_vol": 0.029971508115464302,
+            "sharpe_zero_cash_rate": -1.0970120936975685,
+            "max_drawdown": -0.2878613304231875,
+            "total_turnover": 165.83433133732535,
+            "mean_risky_exposure": 0.36537710042985544,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 7.66053886991358e-15,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 375,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.0804520684462995,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "fly_actor_critic",
+        "seed": 53,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": -0.018129897882543267,
+            "annualized_vol": 0.029347797720053085,
+            "sharpe_zero_cash_rate": -0.04672779715151039,
+            "max_drawdown": -0.10990448705593259,
+            "total_turnover": 186.0,
+            "mean_risky_exposure": 0.4044548651817116,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.10532635174917115,
+            "annualized_vol": 0.029320297395750084,
+            "sharpe_zero_cash_rate": -0.3591428159387854,
+            "max_drawdown": -0.1553758897649058,
+            "total_turnover": 185.95352323838082,
+            "mean_risky_exposure": 0.4044548651817116,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.323144015219087,
+            "annualized_vol": 0.030095187396271303,
+            "sharpe_zero_cash_rate": -1.2619697666436767,
+            "max_drawdown": -0.32657586827251484,
+            "total_turnover": 185.81437125748505,
+            "mean_risky_exposure": 0.4044548651817116,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 1.199040866595169e-14,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 404,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.08859090114648618,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "fly_actor_critic",
+        "seed": 71,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": -0.05649528909377777,
+            "annualized_vol": 0.026509797420054455,
+            "sharpe_zero_cash_rate": -0.20277635930219343,
+            "max_drawdown": -0.08338846613968853,
+            "total_turnover": 266.0,
+            "mean_risky_exposure": 0.3048065650644783,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.17399457051630063,
+            "annualized_vol": 0.02656928382965781,
+            "sharpe_zero_cash_rate": -0.6951868879127405,
+            "max_drawdown": -0.1779808504524918,
+            "total_turnover": 265.93353323338334,
+            "mean_risky_exposure": 0.3048065650644783,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.44575842454923364,
+            "annualized_vol": 0.028029976294826855,
+            "sharpe_zero_cash_rate": -2.0591025780523244,
+            "max_drawdown": -0.44575842454923364,
+            "total_turnover": 265.7345309381238,
+            "mean_risky_exposure": 0.3048065650644783,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 1.3655743202889425e-14,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 451,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.12300764054918661,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "ordinary_mc_value",
+        "seed": 11,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": -0.004518104086357777,
+            "annualized_vol": 0.023819179326904794,
+            "sharpe_zero_cash_rate": -0.006814885254259891,
+            "max_drawdown": -0.06473462118699613,
+            "total_turnover": 124.0,
+            "mean_risky_exposure": 0.23642047674872999,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.06436360675453279,
+            "annualized_vol": 0.02393887442239958,
+            "sharpe_zero_cash_rate": -0.26170313836249776,
+            "max_drawdown": -0.08869957816221996,
+            "total_turnover": 123.96901549225387,
+            "mean_risky_exposure": 0.23642047674872999,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.2231660610442614,
+            "annualized_vol": 0.02499974806503386,
+            "sharpe_zero_cash_rate": -0.9821806380020481,
+            "max_drawdown": -0.2271197228378785,
+            "total_turnover": 123.87624750499002,
+            "mean_risky_exposure": 0.23642047674872999,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 7.771561172376096e-15,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 347,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.05962543587229343,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "ordinary_mc_value",
+        "seed": 23,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": 5.417488338688159e-05,
+            "annualized_vol": 0.020974486078606056,
+            "sharpe_zero_cash_rate": 0.010733262489253024,
+            "max_drawdown": -0.04655314221238238,
+            "total_turnover": 136.0,
+            "mean_risky_exposure": 0.19929660023446658,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.06568891826499357,
+            "annualized_vol": 0.021068321767531165,
+            "sharpe_zero_cash_rate": -0.3070559868779583,
+            "max_drawdown": -0.08132854497213782,
+            "total_turnover": 135.96601699150426,
+            "mean_risky_exposure": 0.19929660023446658,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.23810474185912534,
+            "annualized_vol": 0.022218638744135082,
+            "sharpe_zero_cash_rate": -1.1941304167401554,
+            "max_drawdown": -0.24169125574150419,
+            "total_turnover": 135.86427145708583,
+            "mean_risky_exposure": 0.19929660023446658,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 8.326672684688674e-15,
+        "audit": {
+          "updates": 1062,
+          "early_updates": 0,
+          "negative_targets": 335,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.0667514244947248,
+          "unconsumed_end_receipts": 1
+        }
+      },
+      {
+        "arm": "ordinary_mc_value",
+        "seed": 37,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": 0.023994927711393554,
+            "annualized_vol": 0.02006702397395695,
+            "sharpe_zero_cash_rate": 0.1263932598399761,
+            "max_drawdown": -0.044270348668171144,
+            "total_turnover": 162.0,
+            "mean_risky_exposure": 0.19343493552168817,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.0556783439674331,
+            "annualized_vol": 0.02009763255407525,
+            "sharpe_zero_cash_rate": -0.2706554021504852,
+            "max_drawdown": -0.059440340791511614,
+            "total_turnover": 161.95952023988008,
+            "mean_risky_exposure": 0.19343493552168817,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.25939574027887,
+            "annualized_vol": 0.021268584194800922,
+            "sharpe_zero_cash_rate": -1.3796532378858297,
+            "max_drawdown": -0.25939574027887,
+            "total_turnover": 161.83832335329342,
+            "mean_risky_exposure": 0.19343493552168817,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 8.326672684688674e-15,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 350,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.0787587677334742,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "ordinary_mc_value",
+        "seed": 53,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": -0.09715334163498479,
+            "annualized_vol": 0.020806064046798353,
+            "sharpe_zero_cash_rate": -0.47330781402394445,
+            "max_drawdown": -0.10902901938178156,
+            "total_turnover": 128.0,
+            "mean_risky_exposure": 0.16451738960531456,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.15312532516066057,
+            "annualized_vol": 0.02095026933571459,
+            "sharpe_zero_cash_rate": -0.7707187346728663,
+            "max_drawdown": -0.15670920345238126,
+            "total_turnover": 127.968015992004,
+            "mean_risky_exposure": 0.16451738960531456,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.30106874894494484,
+            "annualized_vol": 0.02221248010734123,
+            "sharpe_zero_cash_rate": -1.5768111953363044,
+            "max_drawdown": -0.30106874894494484,
+            "total_turnover": 127.87225548902195,
+            "mean_risky_exposure": 0.16451738960531456,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 6.5503158452884236e-15,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 291,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.060214146464872484,
+          "unconsumed_end_receipts": 2
+        }
+      },
+      {
+        "arm": "ordinary_mc_value",
+        "seed": 71,
+        "metrics_by_cost": {
+          "0": {
+            "total_return": 0.03728465080735832,
+            "annualized_vol": 0.021469007438781714,
+            "sharpe_zero_cash_rate": 0.17863049058865518,
+            "max_drawdown": -0.03860670107801778,
+            "total_turnover": 146.0,
+            "mean_risky_exposure": 0.19734271199687378,
+            "observations": 2559
+          },
+          "5": {
+            "total_return": -0.03573933350237146,
+            "annualized_vol": 0.021490295930810865,
+            "sharpe_zero_cash_rate": -0.156035287843769,
+            "max_drawdown": -0.05501075683515366,
+            "total_turnover": 145.96351824087955,
+            "mean_risky_exposure": 0.19734271199687378,
+            "observations": 2559
+          },
+          "20": {
+            "total_return": -0.22538876151170206,
+            "annualized_vol": 0.022476142290719613,
+            "sharpe_zero_cash_rate": -1.1076866876501958,
+            "max_drawdown": -0.22538876151170206,
+            "total_turnover": 145.85429141716568,
+            "mean_risky_exposure": 0.19734271199687378,
+            "observations": 2559
+          }
+        },
+        "max_nav_gap": 8.43769498715119e-15,
+        "audit": {
+          "updates": 1061,
+          "early_updates": 0,
+          "negative_targets": 347,
+          "duplicate_updates": 0,
+          "forced_exits": 0,
+          "actual_fees": 0.0704900400689515,
+          "unconsumed_end_receipts": 2
+        }
+      }
+    ],
+    "summary": [
+      {
+        "arm": "fly_actor_critic",
+        "mean_total_return": -0.11556356941986298,
+        "min_total_return": -0.17399457051630063,
+        "max_total_return": -0.07863961319603541
+      },
+      {
+        "arm": "ordinary_mc_value",
+        "mean_total_return": -0.0749191055299983,
+        "min_total_return": -0.15312532516066057,
+        "max_total_return": -0.03573933350237146
+      }
+    ],
+    "baselines": {
+      "cash": {
+        "total_return": 0.0,
+        "annualized_vol": 0.0,
+        "sharpe_zero_cash_rate": null,
+        "max_drawdown": 0.0,
+        "total_turnover": 0.0,
+        "mean_risky_exposure": 0.0,
+        "observations": 2559
+      },
+      "buy_hold_equal": {
+        "total_return": -0.09031073096575581,
+        "annualized_vol": 0.047222835977424917,
+        "sharpe_zero_cash_rate": -0.1737792052244786,
+        "max_drawdown": -0.11272136613671835,
+        "total_turnover": 1.9995002498750625,
+        "mean_risky_exposure": 0.9988276670574443,
+        "observations": 2559
+      }
+    }
+  },
+  "evaluation": {
+    "evaluation_start": "2016-01-04 20:00:00+00:00",
+    "evaluation_end": "2025-12-31 20:00:00+00:00",
+    "cost_bps": 5,
+    "cost_replays_bps": [
+      0,
+      5,
+      20
+    ],
+    "seeds": [
+      11,
+      23,
+      37,
+      53,
+      71
+    ],
+    "arms": [
+      "fly_actor_critic",
+      "ordinary_mc_value"
+    ],
+    "training": "one chronological online pass; pre-2016 warmup, then online learning continues",
+    "reward": "unclipped complete entry-to-exit log-NAV suffix credit, gamma=1",
+    "actions": "wait/hold versus equal-basket entry/full exit; next-observation fill",
+    "state": "fixed [-.2,.2] bins of mean normalized 5/20/60 trends, holding, age//20 capped at 3",
+    "return_label": "EUR-denominated indicative FX price-only proxy, not executable total return",
+    "limitations": [
+      "already inspected development data, not unseen holdout",
+      "no FX carry, funding, bid/ask quotes or real fills",
+      "single historical path",
+      "biological assay clock does not equal market elapsed time",
+      "v3 had eight actions and different features: historical context, not controlled ablation",
+      "control task actor transferred with fixed state bins and 60-observation exit rule",
+      "cost sweeps replay fixed primary-cost actions without retraining"
+    ],
+    "provenance": {
+      "source": "European Central Bank",
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
+      "terms_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+      "attribution": "Source: European Central Bank. Reference rates are freely available from the ECB.",
+      "transformations": "Selected Date/USD/JPY/GBP/CHF and 2005-2025 inclusive; sorted ascending; values not adjusted.",
+      "units": "foreign currency units per euro; reference rates, not executable quotes",
+      "retrieved_at": "2026-09-14T16:57:16.876277+00:00",
+      "upstream_zip_sha256": "c6ee4f5975b2663a5379a78b6bd106b3ab73bdbb09b6565a7db6cbe49e69113f",
+      "fixture_sha256": "c1125d6df0c6eb3253e0889114945919cc0727d41983697d6563e1b1c519e899",
+      "rows": 5376,
+      "start": "2005-01-03",
+      "end": "2025-12-31"
+    },
+    "parameter_sha256": "cb7b555026f97b59678adf8902b9f4a02975413a7eed9d6e03f2e2864821915d",
+    "exploration_probability": 0.2,
+    "critic_or_value_rate": 0.1,
+    "reward_scale": 0.01,
+    "max_hold_observations": 60,
+    "decision_every_observations": 5
+  },
+  "beacon_job_id": "1616977",
+  "beacon_output_location": "RADFM; no experiment outputs in HOME",
+  "archive_sha256": "c36686d0bb1ab69cc4fdc6b484c67ecf05788e2487381cafa2272b7942f37263",
+  "source_artifacts": {
+    "market_results": {
+      "retained_local_path": "runs/fly-paper-reproduction-20260921/market/results/results.json",
+      "sha256": "85befaa247df0314309a7181aaffffc7fb99c9346c0f3959b2b9ebff640aa848",
+      "included_in_this_commit": false
+    },
+    "market_protocol": {
+      "retained_local_path": "runs/fly-paper-reproduction-20260921/market/results/protocol.json",
+      "sha256": "aaa1275dcbb980e88ff595ccc71851a0a1a21d3b81e17c31dbe16b510aeb314f",
+      "included_in_this_commit": false
+    },
+    "bridge_results": {
+      "retained_local_path": "runs/fly-paper-reproduction-20260921/bridge_results.json",
+      "sha256": "c6024279fe920d2b8249a79e69deedcd9aa3b7a600916781f83c44c44acf5e54",
+      "included_in_this_commit": false
+    },
+    "control_results": {
+      "retained_local_path": "runs/fly-paper-reproduction-20260921/control_results.json",
+      "sha256": "c3c684bdebcd0c2373a8a3071e22f86d53149a817dd3ed3e2e82d5719435396b",
+      "included_in_this_commit": false
+    },
+    "reproduction_results": {
+      "retained_local_path": "runs/fly-paper-reproduction-20260921/reproduction/port3/results/results.json",
+      "sha256": "3f2286c93e1f1fcd12d90cc6c009f5206ed45112e7d9eca1469e3f33783c0d08",
+      "included_in_this_commit": false
+    }
+  },
+  "publication_scope": "Research record and machine-readable market summary only; full code/protocol/trajectories retained outside this documentation commit."
+}

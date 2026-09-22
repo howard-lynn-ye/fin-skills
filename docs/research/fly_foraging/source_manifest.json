@@ -1,0 +1,554 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "evidence_id": "E001",
+      "source_type": "journal_article",
+      "title": "Internal states drive nutrient homeostasis by modulating exploration-exploitation trade-off",
+      "authors": [
+        "V. M. Corrales-Carvajal",
+        "A. A. Faisal",
+        "C. Ribeiro"
+      ],
+      "year": 2016,
+      "identifiers": {
+        "doi": "10.7554/eLife.19920",
+        "url": "https://elifesciences.org/articles/19920"
+      },
+      "locator": "Results on encounter/stopping/leaving; Figure 3; feeding validation with flyPAD",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E002",
+      "source_type": "journal_article",
+      "title": "A Neural Circuit Arbitrates between Persistence and Withdrawal in Hungry Drosophila",
+      "authors": [
+        "S. Sayin",
+        "et al."
+      ],
+      "year": 2019,
+      "identifiers": {
+        "doi": "10.1016/j.neuron.2019.07.028",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6839618/"
+      },
+      "locator": "Summary; Results on MBON/Dop1R2 persistence and VPM3/VPM4 activation versus output inhibition",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E003",
+      "source_type": "journal_article",
+      "title": "A neural circuit mechanism integrating motivational state with memory expression in Drosophila",
+      "authors": [
+        "M. J. Krashes",
+        "S. DasGupta",
+        "et al."
+      ],
+      "year": 2009,
+      "identifiers": {
+        "doi": "10.1016/j.cell.2009.08.035",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2780032/"
+      },
+      "locator": "Results: dNPF stimulation mimics food-deprivation; post-training feeding; Figure 1 and retrieval-specific interventions",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E004",
+      "source_type": "journal_article",
+      "title": "Sweet Taste and Nutrient Value Subdivide Rewarding Dopaminergic Neurons in Drosophila",
+      "authors": [
+        "W. Huetteroth",
+        "E. Perisse",
+        "S. Lin",
+        "M. Klappenbach",
+        "C. Burke",
+        "S. Waddell"
+      ],
+      "year": 2015,
+      "identifiers": {
+        "doi": "10.1016/j.cub.2015.01.036",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4372253/"
+      },
+      "locator": "Summary; Results and Figures 1–2 on OAMB/octopamine, nutrient reinforcement and physiological constraints",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E005",
+      "source_type": "journal_article",
+      "title": "Distinct dopamine receptor pathways underlie the temporal sensitivity of associative learning",
+      "authors": [
+        "A. Handler",
+        "T. G. W. Graham",
+        "et al."
+      ],
+      "year": 2019,
+      "identifiers": {
+        "doi": "10.1016/j.cell.2019.05.040",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9012144/"
+      },
+      "locator": "Summary; introduction and experiment description; Discussion on DopR1/DopR2 timing and bidirectional plasticity",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E006",
+      "source_type": "journal_article",
+      "title": "Integration of Parallel Opposing Memories Underlies Memory Extinction",
+      "authors": [
+        "J. Felsenberg",
+        "P. F. Jacob",
+        "et al."
+      ],
+      "year": 2018,
+      "identifiers": {
+        "doi": "10.1016/j.cell.2018.08.021",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6198041/"
+      },
+      "locator": "Summary and main-text description of opposing aversive/extinction traces and MBON integration",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E007",
+      "source_type": "journal_article",
+      "title": "Dopamine-mediated interactions between short- and long-term memory dynamics",
+      "authors": [
+        "C. Huang",
+        "J. Luo",
+        "S. J. Woo",
+        "et al."
+      ],
+      "year": 2024,
+      "identifiers": {
+        "doi": "10.1038/s41586-024-07819-w",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11525173/"
+      },
+      "locator": "Summary; Results: modelling gamma1, alpha2, alpha3 modules; Figure 5; Discussion and model limitations",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E008",
+      "source_type": "journal_article",
+      "title": "An incentive circuit for memory dynamics in the mushroom body of Drosophila melanogaster",
+      "authors": [
+        "E. Gkanias",
+        "L. Y. McCurdy",
+        "M. N. Nitabach",
+        "B. Webb"
+      ],
+      "year": 2022,
+      "identifiers": {
+        "doi": "10.7554/eLife.75611",
+        "url": "https://elifesciences.org/articles/75611"
+      },
+      "locator": "Plasticity rule and Table 1; RPE-rule substitution comparison; Discussion; Box 1 predictions",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E009",
+      "source_type": "journal_article",
+      "title": "Learning with reinforcement prediction errors in a model of the Drosophila mushroom body",
+      "authors": [
+        "J. E. M. Bennett",
+        "A. Philippides",
+        "T. Nowotny"
+      ],
+      "year": 2021,
+      "identifiers": {
+        "doi": "10.1038/s41467-021-22592-4",
+        "url": "https://www.nature.com/articles/s41467-021-22592-4"
+      },
+      "locator": "Reduced model/objective; VS magnitude bound; mixed-valence rule Eq. 8; multiple-alternative choice and Figure 4; Code availability",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E010",
+      "source_type": "journal_article",
+      "title": "Models of heterogeneous dopamine signaling in an insect learning and memory center",
+      "authors": [
+        "L. Jiang",
+        "A. Litwin-Kumar"
+      ],
+      "year": 2021,
+      "identifiers": {
+        "doi": "10.1371/journal.pcbi.1009205",
+        "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009205"
+      },
+      "locator": "Results: navigation and S6 Fig caveat; Discussion: relationship to other models, outer-loop optimization and heterogeneous dopamine",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E011",
+      "source_type": "journal_article",
+      "title": "A Drosophila computational brain model reveals sensorimotor processing",
+      "authors": [
+        "Shiu",
+        "et al."
+      ],
+      "year": 2024,
+      "identifiers": {
+        "doi": "10.1038/s41586-024-07763-9",
+        "url": "https://www.nature.com/articles/s41586-024-07763-9"
+      },
+      "locator": "Sensorimotor prediction/experimental-validation results; Methods: Computational modelling limitations",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E012",
+      "source_type": "journal_article",
+      "title": "Recent experience and internal state shape local search strategies in flies",
+      "authors": [
+        "D. Goldschmidt",
+        "Y. Guo",
+        "S. S. Chitnis",
+        "C. Christoforou",
+        "D. B. Turner-Evans",
+        "C. Ribeiro",
+        "A. M. Hermundstad",
+        "V. Jayaraman",
+        "H. Haberkern"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.1016/j.cub.2026.02.037",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41856102/"
+      },
+      "locator": "Official bibliographic record and abstract only; full methods not read",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E013",
+      "source_type": "journal_article",
+      "title": "Drosophila re-zero their path integrator at the center of a fictive food patch",
+      "authors": [
+        "A. H. Behbahani",
+        "E. H. Palmer",
+        "R. A. Corfas",
+        "M. H. Dickinson"
+      ],
+      "year": 2021,
+      "identifiers": {
+        "doi": "10.1016/j.cub.2021.08.006",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8551043/"
+      },
+      "locator": "Summary; annular-channel optogenetic paradigm and state-transition-model rationale",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E014",
+      "source_type": "preprint",
+      "title": "Exploration-exploitation trade-off is regulated by metabolic state and taste value in Drosophila",
+      "authors": [
+        "S. C. Whitehead",
+        "S. Y. Sahai",
+        "J. Stonemetz",
+        "N. Yapici"
+      ],
+      "year": 2024,
+      "identifiers": {
+        "doi": "10.1101/2024.05.13.594045",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11118379/"
+      },
+      "locator": "Version/publication notice; Results/Discussion on feeding volume, taste and local exploitation; supplementary evidence only",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E015",
+      "source_type": "journal_article",
+      "title": "Mushroom body output neurons encode valence and guide memory-based action selection in Drosophila",
+      "authors": [
+        "Y. Aso",
+        "et al."
+      ],
+      "year": 2014,
+      "identifiers": {
+        "doi": "10.7554/eLife.04580",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4273436/"
+      },
+      "locator": "Abstract; MBON optogenetic experiments; Discussion: ensemble valence versus stereotyped motor program",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E016",
+      "source_type": "journal_article",
+      "title": "Between MDPs and semi-MDPs: A framework for temporal abstraction in reinforcement learning",
+      "authors": [
+        "R. S. Sutton",
+        "D. Precup",
+        "S. Singh"
+      ],
+      "year": 1999,
+      "identifiers": {
+        "doi": "10.1016/S0004-3702(99)00052-1",
+        "url": "https://people.cs.umass.edu/~barto/courses/cs687/Sutton-Precup-Singh-AIJ99.pdf"
+      },
+      "locator": "Options definition, printed pp. 186–188; SMDP Q-learning, printed p. 195 / PDF p. 15",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E017",
+      "source_type": "journal_article",
+      "title": "Learning to trade via direct reinforcement",
+      "authors": [
+        "J. Moody",
+        "M. Saffell"
+      ],
+      "year": 2001,
+      "identifiers": {
+        "doi": "10.1109/72.935097",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18249919/"
+      },
+      "locator": "Official record and abstract only: recurrent direct reinforcement with transaction costs",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E018",
+      "source_type": "journal_article",
+      "title": "Life-inspired interoceptive artificial intelligence for autonomous and adaptive agents",
+      "authors": [
+        "S. Lee",
+        "Y. Oh",
+        "H. An",
+        "H. Yoon",
+        "K. J. Friston",
+        "S. J. Hong",
+        "C.-W. Woo"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.1038/s42256-026-01296-8",
+        "url": "https://www.nature.com/articles/s42256-026-01296-8"
+      },
+      "locator": "Publisher abstract and article metadata: Perspective, 26 August 2026; subscription body not read",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E019",
+      "source_type": "software",
+      "title": "FlyAlpha",
+      "authors": [
+        "TanaeemDar"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "url": "https://github.com/TanaeemDar/FlyAlpha/tree/350d60ad2062464a36b50f8e1db9e68dfffb57f2"
+      },
+      "locator": "README: architecture, engineering bridge, synthetic sample and controls; git ls-remote HEAD recorded; no execution or independent result audit",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E020",
+      "source_type": "software",
+      "title": "fin-skills engine and data interfaces at the research-record baseline",
+      "authors": [
+        "fin-skills project"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "url": "https://github.com/howard-lynn-ye/fin-skills/tree/3efd3d3fa319c03b0808cb61b6c64cff1ec2128f"
+      },
+      "locator": "fin_skills/engine/execute.py:35–58,150–179; sizing.py:16–23; spec.py; costs.py; data/safe_asof.py; api/guards/trial_ledger.py",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E021",
+      "source_type": "dataset",
+      "title": "Recorded exploratory fly-trading market_v1 result summary",
+      "authors": [
+        "fin-skills project"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "url": "https://github.com/howard-lynn-ye/fin-skills/blob/3efd3d3fa319c03b0808cb61b6c64cff1ec2128f/benchmarks/fly_paper/evidence/market_v1.json"
+      },
+      "locator": "result.rows[*].arm,seed,metrics_by_cost; evaluation and publication_scope; means recomputed locally in this research pass",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E022",
+      "source_type": "software",
+      "title": "Bennett et al. author code: paper_RPEs_in_drosophila_mb",
+      "authors": [
+        "J. E. M. Bennett",
+        "A. Philippides",
+        "T. Nowotny"
+      ],
+      "year": 2021,
+      "identifiers": {
+        "url": "https://github.com/BrainsOnBoard/paper_RPEs_in_drosophila_mb/tree/7ec52afb9bd7bb748d94d60dea9f483645a2ce8e"
+      },
+      "locator": "README dependencies/license; mb_mv_a.m:87–104,118–143,167–188; Eq. 8 default; no genetic interventions for local delta-rule derivation",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E023",
+      "source_type": "software",
+      "title": "Gkanias et al. author code: IncentiveCircuit",
+      "authors": [
+        "InsectRobotics"
+      ],
+      "year": 2022,
+      "identifiers": {
+        "url": "https://github.com/InsectRobotics/IncentiveCircuit/tree/1610c80072fe8bb59bd397e7a61f716393a509b9"
+      },
+      "locator": "README dependencies/license and examples; src/incentive/circuit.py:22–33 constructor and scope; source inspected, not executed",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    },
+    {
+      "evidence_id": "E024",
+      "source_type": "software",
+      "title": "Jiang and Litwin-Kumar author code: jiang_litwin-kumar_mb_rnn",
+      "authors": [
+        "L. Jiang",
+        "A. Litwin-Kumar"
+      ],
+      "year": 2021,
+      "identifiers": {
+        "url": "https://github.com/alitwinkumar/jiang_litwin-kumar_mb_rnn/tree/a16f86a3e9e476eff6860c3c0e0e1bbe729d7f85"
+      },
+      "locator": "README; train.py:45,58–66: PyTorch optimizer, task loss, backward and update; source inspected, not executed",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": true,
+        "verified_by": null,
+        "verified_on": null
+      }
+    }
+  ]
+}

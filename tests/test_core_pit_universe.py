@@ -61,7 +61,7 @@ def test_rebalance_universe_matches_universe_on_per_date(members):
 
 
 def test_stability_audit_flags_a_universe_that_never_loses_a_name():
-    dates = pd.bdate_range("2016-01-01", periods=8, freq="BQE")
+    dates = pd.bdate_range("2016-01-01", periods=8, freq="BQ")
     growing = {d: [f"S{i}" for i in range(10 + k)] for k, d in enumerate(dates)}
     a = audit_universe_stability(growing)
     assert a.never_loses_a_name and a.monotonic_growth
@@ -72,7 +72,7 @@ def test_stability_audit_flags_a_universe_that_never_loses_a_name():
 
 
 def test_stability_audit_accepts_a_universe_with_deletions():
-    dates = pd.bdate_range("2016-01-01", periods=6, freq="BQE")
+    dates = pd.bdate_range("2016-01-01", periods=6, freq="BQ")
     names = [f"S{i}" for i in range(50)]
     uni = {d: names[k:k + 40] for k, d in enumerate(dates)}      # rotate one in, one out
     a = audit_universe_stability(uni)
@@ -97,7 +97,7 @@ def test_survivor_screen_inflates_the_synthetic_index():
     prices, members = _synthetic_index()
     again, _ = _synthetic_index()
     pd.testing.assert_frame_equal(prices, again)                  # seeded
-    rebals = pd.bdate_range(prices.index[0], prices.index[-1], freq="BQE")
+    rebals = pd.bdate_range(prices.index[0], prices.index[-1], freq="BQ")
     pit = rebalance_universe(rebals, members)
     today = sorted(members.loc[members["end_date"].isna(), "ticker"])
     snap = {pd.Timestamp(d): [t for t in today if pd.notna(prices[t].asof(pd.Timestamp(d)))]

@@ -89,24 +89,46 @@ def fetch_market_data(source, symbols, start, end, interval='1d', tz=None):
             'content_is_untrusted': True}
 
 
+def search_news(query=None, feeds=None):
+    from fin_skills.collect import collect_news
+    return collect_news(query=query, **({"feeds": feeds} if feeds is not None else {}))
+
+
+def summarize_news(events, as_of, keywords=(), max_age_hours=72, risk_terms=None):
+    from fin_skills.collect import news_digest
+    return news_digest(events, as_of=as_of, keywords=keywords, max_age_hours=max_age_hours,
+                       risk_terms=risk_terms)
+
+
 FUNCTIONS = {f.__name__: f for f in (collection_sources, collection_configure, collect_once,
              collection_events, collection_status, collection_acknowledge, compare_holdings,
-             search_data, fetch_market_data)}
+             search_data, fetch_market_data, search_news, summarize_news)}
 
 
 def definitions():
     string = {'type': 'string'}
     database = {'type': 'string', 'description': 'Local SQLite path; never a URL. Created by configure.'}
     watch = {'type': 'object', 'properties': {
-        'id': string, 'source': {'type': 'string', 'enum': ['rss', 'page', 'sec', 'house', 'bluesky']},
+        'id': string, 'source': {'type': 'string', 'enum': ['rss', 'page', 'sec', 'house', 'bluesky', 'gdelt']},
         'target': {'type': 'string', 'description': 'Feed/page URL, SEC CIK, House surname, or Bluesky handle'},
         'interval_seconds': {'type': 'number', 'minimum': 1},
         'enabled': {'type': 'boolean'},
         'options': {'type': 'object', 'description': 'house: year, first_name, since. sec: forms, since, until, '
                    'max_filings, include_archives, owner_name, value_units. page: max_pages. '
-                   'bluesky: max_pages. No passwords, tokens or API keys.', 'additionalProperties': True}},
+                   'bluesky: max_pages. gdelt: timespan, max_records; target is the search query. '
+                   'No passwords, tokens or API keys.', 'additionalProperties': True}},
         'required': ['id', 'source', 'target'], 'additionalProperties': False}
     specs = [
+        ('search_news', 'Explicit bounded news collection from Fed/ECB RSS and optional GDELT search. '
+         'Returns per-source failures and untrusted records; no background process.',
+         {'query': string, 'feeds': {'type': 'array', 'items': {'type': 'string', 'enum': ['fed', 'ecb']},
+                                   'uniqueItems': True}}, []),
+        ('summarize_news', 'Point-in-time news filtering, exact URL deduplication and keyword risk screening. '
+         'Unknown dates and future observations are excluded; keywords do not prove an event occurred.',
+         {'events': {'type': 'array', 'items': {'type': 'object'}, 'maxItems': 1000}, 'as_of': string,
+          'keywords': {'type': 'array', 'items': string},
+          'risk_terms': {'type': 'array', 'items': string},
+          'max_age_hours': {'type': 'number', 'exclusiveMinimum': 0}}, ['events', 'as_of']),
         ('collection_sources', 'List implemented public collectors and their configuration requirements.', {}, []),
         ('collection_configure', 'Save or enable/disable local watches. Does not fetch or start a background process.',
          {'database': database, 'watches': {'type': 'array', 'items': watch, 'maxItems': 100}}, ['database', 'watches']),
