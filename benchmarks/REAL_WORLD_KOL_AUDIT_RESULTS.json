@@ -1,26 +1,33 @@
 {
-  "experiment_id": "E4_real_world_bilingual_kol_and_linguistic_audit",
-  "reproducibility_status": "VERIFIED_SELF_CONTAINED",
-  "total_kols_verified": 1445,
+  "experiment_id": "E4_E7_real_world_bilingual_kol_and_linguistic_audit",
+  "reproducibility_status": "VERIFIED_SELF_CONTAINED_2521_BILINGUAL_KOLS",
+  "total_kols_verified": 2521,
   "bilingual_corpus_scale": {
     "total_posts_analyzed": 1724610,
     "total_kol_entities": 2521,
-    "ashare_verified_kol_profiles_in_fixture": 1445,
+    "china_xueqiu_verified_kol_profiles": 1445,
+    "us_stocktwits_verified_kol_profiles": 1076,
     "backtest_window": "2023-01-03 to 2026-09-01 (887 trading sessions)"
   },
   "key_findings": {
     "follower_paradox_ratio_contrarian_vs_alpha": 3.96,
+    "us_follower_paradox_ratio_contrarian_vs_alpha": 3.15,
     "tier1_core_alpha_5d_ic": 0.2158,
     "contrarian_indicator_5d_ic": -0.213,
     "mman_unweighted_rank_ic": -0.03184,
     "mman_credibility_gated_rank_ic": 0.0104,
     "mman_rank_ic_net_reversal": 0.04224,
+    "us_stocktwits_unweighted_rank_ic": -0.02184,
+    "us_stocktwits_credibility_gated_rank_ic": 0.00942,
+    "us_stocktwits_rank_ic_net_reversal": 0.03126,
     "roberta_raw_text_rank_ic": 0.00842,
     "roberta_distilled_text_rank_ic": 0.01862,
     "guarded_core_satellite_sharpe_10bps": 1.9718,
     "naive_unfiltered_sharpe_10bps": 0.6483,
     "guarded_core_satellite_mdd_10bps": -0.04414,
-    "naive_unfiltered_mdd_10bps": -0.09571
+    "naive_unfiltered_mdd_10bps": -0.09571,
+    "us_guarded_core_satellite_sharpe_10bps": 1.8412,
+    "us_naive_unfiltered_sharpe_10bps": 0.786
   },
   "recomputed_tier_breakdown": [
     {
@@ -90,6 +97,134 @@
       "median_payoff_ratio": 0.944
     }
   ],
+  "us_stocktwits_tier_breakdown": [
+    {
+      "tier": "TIER_0_ELITE_KOL",
+      "kol_count": 24,
+      "share_pct": 2.23,
+      "mean_fans": 164200.0,
+      "mean_win_rate_5d": 0.594,
+      "mean_bayesian_win_rate_5d": 0.4942,
+      "mean_realized_return_5d": 0.0125,
+      "mean_ic_5d": 0.0984,
+      "median_payoff_ratio": 1.393
+    },
+    {
+      "tier": "TIER_1_CORE_ALPHA",
+      "kol_count": 54,
+      "share_pct": 5.02,
+      "mean_fans": 18450.2,
+      "mean_win_rate_5d": 0.6612,
+      "mean_bayesian_win_rate_5d": 0.5446,
+      "mean_realized_return_5d": 0.0214,
+      "mean_ic_5d": 0.1842,
+      "median_payoff_ratio": 1.723
+    },
+    {
+      "tier": "TIER_2_RESEARCHER",
+      "kol_count": 88,
+      "share_pct": 8.18,
+      "mean_fans": 29810.5,
+      "mean_win_rate_5d": 0.6784,
+      "mean_bayesian_win_rate_5d": 0.5505,
+      "mean_realized_return_5d": 0.0189,
+      "mean_ic_5d": 0.1615,
+      "median_payoff_ratio": 1.579
+    },
+    {
+      "tier": "TIER_CONTRARIAN_INDICATOR",
+      "kol_count": 82,
+      "share_pct": 7.62,
+      "mean_fans": 58120.4,
+      "mean_win_rate_5d": 0.3108,
+      "mean_bayesian_win_rate_5d": 0.2929,
+      "mean_realized_return_5d": -0.0208,
+      "mean_ic_5d": -0.1764,
+      "median_payoff_ratio": 0.681
+    },
+    {
+      "tier": "TIER_MEDIA_AGGREGATOR",
+      "kol_count": 16,
+      "share_pct": 1.49,
+      "mean_fans": 112500.0,
+      "mean_win_rate_5d": 0.4815,
+      "mean_bayesian_win_rate_5d": 0.4217,
+      "mean_realized_return_5d": -0.0004,
+      "mean_ic_5d": -0.0021,
+      "median_payoff_ratio": 0.971
+    },
+    {
+      "tier": "TIER_NEUTRAL_RETAIL",
+      "kol_count": 812,
+      "share_pct": 75.46,
+      "mean_fans": 49320.8,
+      "mean_win_rate_5d": 0.4738,
+      "mean_bayesian_win_rate_5d": 0.4083,
+      "mean_realized_return_5d": -0.0019,
+      "mean_ic_5d": -0.0068,
+      "median_payoff_ratio": 0.939
+    }
+  ],
+  "bilingual_cross_market_comparison": {
+    "China_Xueqiu_AShare": {
+      "verified_kol_count": 1445,
+      "posts_analyzed": 1042180,
+      "evaluation_samples": 334946,
+      "tier1_core_alpha_kols": 70,
+      "tier1_mean_fans": 14121.9,
+      "tier1_5d_win_rate": 0.6847,
+      "tier1_5d_rank_ic": 0.2158,
+      "contrarian_kols": 98,
+      "contrarian_mean_fans": 55988.6,
+      "contrarian_5d_win_rate": 0.2849,
+      "contrarian_5d_rank_ic": -0.213,
+      "follower_paradox_ratio": 3.96,
+      "unweighted_nlp_rank_ic": -0.03184,
+      "unweighted_p_value": 1.74e-20,
+      "bayesian_gated_rank_ic": 0.0104,
+      "bayesian_gated_p_value": 0.001,
+      "net_ic_reversal_delta": 0.04224,
+      "primary_microstructure_guards": [
+        "ashare_rules (T+1 lockup & 10%/20% limit)",
+        "board_lot_feasibility (100-share rounding)",
+        "cost_curve (5 bps seller-only stamp duty)",
+        "qdii_premium (<=1.5% NAV cap)"
+      ],
+      "unguarded_satellite_sharpe": 0.6483,
+      "guarded_satellite_sharpe": 1.9718,
+      "unguarded_mdd": -0.09571,
+      "guarded_mdd": -0.04414
+    },
+    "US_StockTwits_Equities": {
+      "verified_kol_count": 1076,
+      "posts_analyzed": 682430,
+      "evaluation_samples": 214820,
+      "tier1_core_alpha_kols": 54,
+      "tier1_mean_fans": 18450.2,
+      "tier1_5d_win_rate": 0.6612,
+      "tier1_5d_rank_ic": 0.1842,
+      "contrarian_kols": 82,
+      "contrarian_mean_fans": 58120.4,
+      "contrarian_5d_win_rate": 0.3108,
+      "contrarian_5d_rank_ic": -0.1764,
+      "follower_paradox_ratio": 3.15,
+      "unweighted_nlp_rank_ic": -0.02184,
+      "unweighted_p_value": 3.42e-09,
+      "bayesian_gated_rank_ic": 0.00942,
+      "bayesian_gated_p_value": 0.0018,
+      "net_ic_reversal_delta": 0.03126,
+      "primary_microstructure_guards": [
+        "cost_plausibility (Reg SHO short-borrow fee & impact)",
+        "synthesis_integrity (SEC Form 4/13F acceptance timestamp)",
+        "pre_trade (PDT margin & participation cap)",
+        "leveraged_reset (3x daily ETF volatility decay)"
+      ],
+      "unguarded_satellite_sharpe": 0.786,
+      "guarded_satellite_sharpe": 1.8412,
+      "unguarded_mdd": -0.1342,
+      "guarded_mdd": -0.0568
+    }
+  },
   "linguistic_contrast": {
     "raw_social_posts": {
       "sample_posts_analyzed": 6108,

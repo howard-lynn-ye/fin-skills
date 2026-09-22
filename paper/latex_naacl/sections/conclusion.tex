@@ -3,20 +3,20 @@
 % ==============================================================================
 \section{Conclusion}
 \label{sec:conclusion}
-
-We introduced \textbf{\texttt{fin-skills}} alongside an external counterfactual and microstructure audit methodology for financial AI agents. By combining black-box counterfactual perturbations, runtime guard provenance tracking, multi-round diagnostic self-repair, and Bayesian KOL credibility calibration, our framework eliminates backtest shortcut illusions and bridges the gap between financial NLP benchmarks and live market execution.
+\vspace{-0.08cm}
+We introduced \textbf{\texttt{fin-skills}} alongside an external counterfactual and microstructure audit methodology for financial AI agents. Combining black-box perturbations, multi-round guard self-repair ($98.3\%$ \texttt{Pass@3} vs.\ $71.7\%$ Python \texttt{Self-Debug}), and bilingual Bayesian KOL calibration ($2{,}521$ KOLs) eliminates backtest shortcut illusions and bridges financial NLP with live execution.
 
 \clearpage
 
 \section*{Limitations}
 \label{sec:limitations}
 
-In accordance with rigorous task-method scope governance, we explicitly bound the operating regime and failure boundaries of \texttt{fin-skills}:
+We explicitly bound the operating regime and failure boundaries of \texttt{fin-skills}:
 \begin{enumerate}
-    \item \textbf{Integrity Verification vs.\ Alpha Generation}: As demonstrated in \S\ref{sec:pilot}, \texttt{fin-skills} is an integrity verification toolkit rather than an alpha-generation engine. In held-out live replays where underlying strategies lack predictive edge, guard enforcement prevents false discoveries without artificially increasing realized returns.
-    \item \textbf{Residual Unrepaired Edge Cases}: On \texttt{FinGuardBench-60}, $1/60$ ($1.7\%$) of tasks involving compound multi-currency curve valuation and expired option schedules remained unrepaired after two rounds of automated \texttt{GuardResult} feedback (\texttt{Pass@3} $= 98.3\%$), indicating that complex cross-asset derivative conventions occasionally require human quantitative intervention.
-    \item \textbf{Non-Stationarity of Social Platform Algorithms}: Real-world social sentiment dynamics evolve as platforms modify recommendation algorithms, requiring periodic rolling re-estimation of Bayesian KOL priors to avoid structural drift.
+    \item \textbf{Verification vs.\ Alpha Generation}: As shown in \S\ref{sec:pilot}, \texttt{fin-skills} is an integrity verification toolkit rather than an alpha generator: when underlying strategies lack edge, guards prevent false discoveries without inflating realized returns.
+    \item \textbf{Residual Edge Cases}: On \texttt{FinGuardBench-60}, $1/60$ ($1.7\%$) of tasks (\texttt{T60}, nested multi-artifact provenance reconciliation) remained unrepaired at \texttt{Pass@3} ($98.3\%$) on the open-coder tier, requiring frontier reasoning models ($100.0\%$) or human review.
+    \item \textbf{Platform Drift}: Social recommendation algorithms evolve over time, requiring periodic rolling re-estimation of Bayesian KOL priors to prevent structural drift.
 \end{enumerate}
 
 \section*{Ethics Statement}
-All 1,445 social media author profiles in our released benchmark fixture (\path{benchmarks/data/kol_credibility_linguistic_fixture.json}) are cryptographically pseudonymized via one-way SHA-256 digests (\texttt{KOL\_<10-hex>}) with raw author handles, URLs, and personally identifiable attributes permanently stripped to protect individual privacy. None of the skills, guards, or empirical analyses in this work constitute investment advice or automated live-money order execution; all broker-facing skills enforce strict paper-account sandboxing (\texttt{paper\_account\_guard}) and human-in-the-loop pre-trade kill switches. By exposing fabricated backtest Sharpe ratios and hallucinated audit compliance, our work directly protects retail and institutional participants from deploying leaky AI-generated trading strategies.
+All 2,521 social media author profiles ($1{,}445$ China Xueqiu and $1{,}076$ US StockTwits accounts) in our benchmark fixture (\path{benchmarks/data/kol_credibility_linguistic_fixture.json}) are cryptographically pseudonymized via one-way SHA-256 digests (\texttt{KOL\_<10-hex>}, \texttt{KOL\_US\_<10-hex>}) with raw handles, URLs, and PII permanently stripped. Nothing in this work constitutes investment advice or automated live-money execution; all broker-facing skills enforce strict paper-account sandboxing (\texttt{paper\_account\_guard}) and human-in-the-loop kill switches.

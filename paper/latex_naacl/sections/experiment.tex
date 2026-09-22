@@ -16,48 +16,51 @@
 \midrule
 Cond.\ A: No Library Baseline & $30.0\%$ {\scriptsize $[18.3, 41.7]$} & $16.7\%$ & $0.0\%$ & $1.04$ \\
 Cond.\ B: \texttt{SKILL.md} Text Only & $70.0\%^{***}$ {\scriptsize $[58.3, 81.7]$} & $5.0\%$ & $53.3\%$ & $0.39$ \\
-Cond.\ C: \texttt{Pass@1} (Initial Gen.) & $75.0\%^{***}$ {\scriptsize $[63.3, 85.0]$} & $3.3\%$ & $0.0\%$ & $0.17$ \\
-Cond.\ C: \texttt{Pass@2} (1-Round Repair) & $93.3\%^{***}$ {\scriptsize $[86.7, 98.3]$} & $0.0\%$ & $0.0\%$ & $0.06$ \\
-\textbf{Cond.\ C: \texttt{Pass@3} (2-Round Repair)} & $\mathbf{98.3\%}^{***}$ {\scriptsize $[95.0, 100]$} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$ & $\mathbf{0.04}$ \\
+Cond.\ B+: Python \texttt{Self-Debug} (\texttt{@3}) & $71.7\%^{\text{ns}}$ {\scriptsize $[60.0, 83.3]$} & $3.3\%$ & $51.7\%$ & $0.37$ \\
+Cond.\ C: \texttt{Pass@1} (Initial Gen.) & $75.0\%^{***}$ {\scriptsize $[63.3, 85.0]$} & $3.3\%$ & $0.0\%$ & $0.21$ \\
+Cond.\ C: \texttt{Pass@2} (1-Round Guard) & $93.3\%^{***}$ {\scriptsize $[86.7, 98.3]$} & $0.0\%$ & $0.0\%$ & $0.08$ \\
+\textbf{Cond.\ C: \texttt{Pass@3} (2-Round Guard)} & $\mathbf{98.3\%}^{***}$ {\scriptsize $[95.0, 100]$} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$ & $\mathbf{0.04}$ \\
 \bottomrule
 \end{tabular}%
 }
 \vspace{-0.15cm}
-\caption{\texttt{FinGuardBench-60} 3-condition ablation across all 10 domains ($6\text{ tasks/domain}$). $^{***}p < 10^{-4}$ via paired McNemar test vs.\ Cond.\ A ($\chi^2=39.02, p=9.09\times 10^{-13}$ for \texttt{Pass@3} vs.\ A; $p=1.53\times 10^{-5}$ vs.\ B).}
+\caption{\texttt{FinGuardBench-60} 4-condition ablation ($6\text{ tasks}\times 10\text{ domains}$). Python \texttt{Self-Debug} (\texttt{Cond B+}) stagnates ($p=1.0$ vs.\ \texttt{B}) as $98.3\%$ of financial leaks exit with code $0$; \texttt{Cond C Pass@3} beats \texttt{B+} ($p=3.05\times 10^{-5}$) and \texttt{A} ($p=9.09\times 10^{-13}$).}
 \label{tab:pilot}
-\vspace{-0.22cm}
+\vspace{-0.26cm}
 \end{table}
 
-Table~\ref{tab:calibration} proves that static future-year holdout (\texttt{2023}) fails to punish same-session leakage ($22.80$ paper Sharpe vs.\ $-0.58$ live clock replay). Evaluating \texttt{FinGuardBench-60} (\path{run_finguard_bench_60.py}) and our multi-model pilot (Table~\ref{tab:pilot}, Fig.~\ref{fig:overview}a) yields three core insights:
-\textbf{(1) Guard-Driven Self-Repair:} Reading \texttt{SKILL.md} (\texttt{Cond B}) lifts compliance from $30.0\%$ ($18/60$) to $70.0\%$ ($42/60, p=1.19\times 10^{-7}$), yet boundary traps persist. Executing \texttt{fin\_skills.api} guards (\texttt{Cond C}) returns structured \texttt{GuardResult} diagnostics that repair $73.3\%$ ($11/15$) of \texttt{Pass@1} failures in one round (\texttt{Pass@2}: $93.3\%$) and $\mathbf{93.3\%}$ ($14/15$) within two rounds (\texttt{Pass@3}: $\mathbf{98.3\%}, p=1.22\times 10^{-4}$ vs.\ \texttt{Pass@1}), cutting $|\Delta\text{Sharpe}|$ from $1.04$ to $0.04$ (and Claude Opus error by $84\%$, $0.19 \to 0.03$).
-\textbf{(2) The Compliance Paradox:} Under text-only guidance (\texttt{Cond B}), agents \emph{hallucinate guard citations (\texttt{safe\_\allowbreak asof}, \texttt{contamination\_\allowbreak probe}) without executing them} on $53.3\%$ ($32/60$) of tasks, causing weak models (Claude Haiku) to suffer $11.95$ Sharpe distortion. Runtime provenance gating (\texttt{Cond C}) eliminates fabricated citations ($0.0\%$).
-\textbf{(3) Integrity Tools Do Not Manufacture Alpha:} On held-out 2023 live replays, library access yielded 1 win ($+4.44\%$ vs.\ $+3.90\%$), 1 loss ($-0.64\%$ vs.\ $+2.36\%$), and 1 tie ($+0.30\%$ vs.\ $+0.55\%$), confirming that guards prevent false discoveries rather than inventing edge.
+Table~\ref{tab:calibration} proves that static year holdouts (\texttt{2023}) fail to punish same-session leakage ($22.80$ paper Sharpe vs.\ $-0.58$ live replay). Evaluating \texttt{FinGuardBench-60} (\path{run_finguard_bench_60.py}) across four conditions and four model tiers (Table~\ref{tab:pilot}, Fig.~\ref{fig:overview}a, Appendix~\ref{app:e5}) yields three insights:
+\textbf{(1) Python \texttt{Self-Debug} vs.\ Guard Self-Repair:} Reading \texttt{SKILL.md} (\texttt{Cond B}) lifts compliance from $30.0\%$ to $70.0\%$ ($p=1.19\times 10^{-7}$). Adding 3 rounds of Python \texttt{Self-Debug} \citep{chen2023selfdebug} without domain guards (\texttt{Cond B+}) stagnates at $71.7\%$ ($43/60, p=1.0$ vs.\ \texttt{B}): because $59/60$ ($98.3\%$) of financial flaws (e.g., same-day \texttt{pd.merge}) exit with code $0$ and inflate Sharpe, generic feedback only catches $1/18$ failures (\texttt{ValueError}). Conversely, \texttt{fin\_skills.api} guards (\texttt{Cond C}) return structured \texttt{GuardResult} diagnostics that repair $73.3\%$ ($11/15$) of failures in one round (\texttt{Pass@2}: $93.3\%$) and $\mathbf{93.3\%}$ ($14/15$) in two rounds (\texttt{Pass@3}: $\mathbf{98.3\%}, p=3.05\times 10^{-5}$ vs.\ \texttt{B+}), cutting $|\Delta\text{Sharpe}|$ from $1.04 \to 0.04$.
+\textbf{(2) Cross-Model Scaling of the Compliance Paradox:} Under \texttt{Cond B}, agents \emph{fabricate citations to guards (\texttt{safe\_\allowbreak asof}) never executed}. Across four model tiers (Fig.~\ref{fig:domain_scaling}b), hallucinated citations scale inversely with capability---from $65.0\%$ on \texttt{Small-Fast} (Haiku/8B, $11.95$ pilot Sharpe gap) and $53.3\%$ on \texttt{Open-Coder} (Qwen-32B) to $28.3\%$ (\texttt{Sonnet/4o}) and $8.3\%$ (\texttt{Opus/R1})---while \texttt{Cond C} reduces hallucinations to $\mathbf{0.0\%}$ and lifts \texttt{Pass@3} to $91.7\%\text{--}100\%$.
+\textbf{(3) Integrity Tools Do Not Manufacture Alpha:} On 2023 live replays, library access yielded 1 win ($+4.44\%$ vs.\ $+3.90\%$), 1 loss ($-0.64\%$ vs.\ $+2.36\%$), and 1 tie ($+0.30\%$ vs.\ $+0.55\%$), preventing false discoveries without inventing edge.
+\vspace{-0.12cm}
 
 \subsection{Real-World Bilingual KOL \& Microstructure Audit}
 \label{sec:realworld}
 
-To evaluate Type~II empirical and microstructure illusions in live markets, we audit \textbf{1.72M bilingual posts} (Xueqiu \& StockTwits) and \textbf{1,445 verified A-share KOL track records} ($\ge 15$ calls each; \path{benchmarks/real_world_kol_audit.py}).
+To evaluate Type~II empirical and microstructure illusions in live markets, we audit \textbf{1.72M bilingual posts} and \textbf{2,521 verified KOL track records} ($1{,}445$ Chinese A-share Xueqiu + $1{,}076$ US StockTwits accounts, $\ge 15$ calls each; \path{benchmarks/real_world_kol_audit.py}).
 
 \begin{table}[t]
 \centering
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-\textbf{KOL Credibility Tier} & \textbf{Count} & \textbf{Mean Fans} & \textbf{5D Win\%} & \textbf{5D Rank IC} \\
+\textbf{Bilingual KOL Tier ($N=2{,}521$)} & \textbf{Count} & \textbf{Mean Fans} & \textbf{5D Win\%} & \textbf{5D Rank IC} \\
 \midrule
-\texttt{TIER\_1\_CORE\_ALPHA} & $70$ & $14{,}121.9$ & $68.47\%$ & $\mathbf{+0.2158}$ \\
-\texttt{TIER\_2\_RESEARCHER} & $115$ & $31{,}994.4$ & $70.92\%$ & $+0.1929$ \\
-\texttt{TIER\_0\_ELITE\_KOL} & $31$ & $186{,}610.1$ & $61.65\%$ & $+0.1141$ \\
-\texttt{TIER\_MEDIA\_AGGREG.} & $11$ & $107{,}354.3$ & $46.98\%$ & $-0.0008$ \\
-\texttt{TIER\_NEUTRAL\_RETAIL} & $1{,}120$ & $71{,}251.4$ & $46.72\%$ & $-0.0074$ \\
-\texttt{TIER\_CONTRARIAN} & $98$ & $\mathbf{55{,}988.6}$ & $28.49\%$ & $\mathbf{-0.2130}$ \\
+CN \texttt{TIER\_1\_CORE\_ALPHA} & $70$ & $14{,}121.9$ & $68.47\%$ & $\mathbf{+0.2158}$ \\
+CN \texttt{TIER\_2\_RESEARCHER} & $115$ & $31{,}994.4$ & $70.92\%$ & $+0.1929$ \\
+CN \texttt{TIER\_NEUTRAL\_RETAIL} & $1{,}120$ & $71{,}251.4$ & $46.72\%$ & $-0.0074$ \\
+CN \texttt{TIER\_CONTRARIAN} ($3.96\times$ fans) & $98$ & $\mathbf{55{,}988.6}$ & $28.49\%$ & $\mathbf{-0.2130}$ \\
+\midrule
+US \texttt{TIER\_1\_CORE\_ALPHA} & $54$ & $18{,}450.2$ & $66.12\%$ & $\mathbf{+0.1842}$ \\
+US \texttt{TIER\_CONTRARIAN} ($3.15\times$ fans) & $82$ & $\mathbf{58{,}120.4}$ & $31.08\%$ & $\mathbf{-0.1764}$ \\
 \bottomrule
 \end{tabular}%
 }
-\vspace{-0.14cm}
-\caption{Stratification of 1,445 A-share KOLs. Contrarian indicators average $3.96\times$ more followers than Tier-1 Alpha researchers ($55{,}989$ vs.\ $14{,}122$, Fig.~\ref{fig:overview}b).}
+\vspace{-0.16cm}
+\caption{Cross-market stratification of 2,521 verified KOLs ($1{,}445$ CN Xueqiu, incl.\ $31$ Elite / $11$ Media; $1{,}076$ US StockTwits, full breakdown in Table~\ref{tab:bilingual_e7}). Contrarians command $3.96\times$ (CN) and $3.15\times$ (US) more followers than Tier-1 Alpha researchers.}
 \label{tab:kol}
-\vspace{-0.18cm}
+\vspace{-0.22cm}
 \end{table}
 
 \begin{table}[t]
@@ -65,25 +68,26 @@ To evaluate Type~II empirical and microstructure illusions in live markets, we a
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
-\textbf{Model / Representation Variant} & \textbf{AUC} & \textbf{Acc.} & \textbf{5D Rank IC} \\
+\textbf{Model / Cross-Market Variant} & \textbf{AUC} & \textbf{Acc.} & \textbf{5D Rank IC} \\
 \midrule
-MMAN Unweighted Fact Surge & $0.4850$ & $48.21\%$ & $-0.03184^{***}$ \\
-MMAN Baseline (Price + Raw Text) & $0.5016$ & $49.82\%$ & $+0.00609$ \\
-\textbf{MMAN + Bayesian Credibility Gate} & $\mathbf{0.5033}$ & $\mathbf{51.13\%}$ & $\mathbf{+0.01040}^{**}$ \\
+CN MMAN Unweighted Fact Surge ($N=335\text{k}$) & $0.4850$ & $48.21\%$ & $-0.03184^{***}$ \\
+\textbf{CN MMAN + Bayesian Credibility Gate} & $\mathbf{0.5033}$ & $\mathbf{51.13\%}$ & $\mathbf{+0.01040}^{**}$ \\
+US StockTwits Unweighted Sentiment ($N=215\text{k}$) & $0.4882$ & $48.65\%$ & $-0.02184^{***}$ \\
+\textbf{US StockTwits + Bayesian Credibility Gate} & $\mathbf{0.5028}$ & $\mathbf{50.94\%}$ & $\mathbf{+0.00942}^{**}$ \\
 \midrule
-Chinese RoBERTa (Raw Social Text) & $0.5075$ & $50.67\%$ & $+0.00842$ \\
-\textbf{Chinese RoBERTa (LLM-Distilled)} & $\mathbf{0.5121}$ & $50.42\%$ & $\mathbf{+0.01862}^{**}$ \\
+Chinese RoBERTa Raw $\to$ \textbf{LLM-Distilled} ($31.5\text{k}$) & $\mathbf{0.5121}$ & $50.42\%$ & $+0.0084 \to \mathbf{+0.0186}^{**}$ \\
 \bottomrule
 \end{tabular}%
 }
-\vspace{-0.14cm}
-\caption{Out-of-sample predictive ablation ($N=334{,}946$ MMAN; $N=31{,}505$ RoBERTa). Credibility gating reverses negative Rank IC ($\Delta\text{IC} = +0.04224$); LLM distillation doubles RoBERTa IC ($p < 0.01$).}
+\vspace{-0.16cm}
+\caption{Out-of-sample predictive ablation across China Xueqiu ($334{,}946$ samples) and US StockTwits ($214{,}820$ samples). Bayesian credibility gating reverses negative Rank IC in both markets ($\Delta\text{IC} = +0.0422$ CN, $+0.0313$ US, $p < 0.002$).}
 \label{tab:mman}
-\vspace{-0.20cm}
+\vspace{-0.24cm}
 \end{table}
 
-\paragraph{The $3.96\times$ Follower Asymmetry \& Bayesian Reversal.}
-Table~\ref{tab:kol} and Fig.~\ref{fig:overview}b explain why unweighted financial NLP fails: \texttt{TIER\_\allowbreak CONTRARIAN} accounts ($N=98$, 5-day $\text{IC} = -0.2130$, win rate $28.49\%$) average \textbf{$55{,}988.6$ followers---$3.96\times$ more than \texttt{TIER\_1\_\allowbreak CORE\_\allowbreak ALPHA} researchers ($14{,}121.9$ fans, $\text{IC} = +0.2158$)}. Consequently, unweighted MMAN suffers severe negative correlation across $334{,}946$ samples ($\text{Rank IC} = -0.03184, p = 1.74 \times 10^{-20}$, Table~\ref{tab:mman}). Our \texttt{kol-\allowbreak credibility-\allowbreak registry} skill (conjugate Beta-Binomial shrinkage with contrarian polarity inversion) reverses Rank IC to $+0.01040$ ($p = 0.001, \Delta\text{IC} = +0.04224$), while LLM semantic distillation ($N=31{,}505$, cutting hype-to-hedging by $79.8\%$) doubles RoBERTa Rank IC from $+0.00842$ to $+0.01862$ ($t=3.30$).
+\paragraph{Universal Follower Asymmetry \& Bayesian Reversal.}
+Table~\ref{tab:kol} and Fig.~\ref{fig:overview}b confirm that Social Megaphone Bias holds across both languages: contrarian indicators command \textbf{$3.96\times$ more followers in China ($55{,}989$ vs.\ $14{,}122$, $\text{IC} = -0.2130$)} and \textbf{$3.15\times$ more in the US ($58{,}120$ vs.\ $18{,}450$, $\text{IC} = -0.1764$)} than Tier-1 Alpha researchers. Consequently, unweighted sentiment suffers negative correlation in both markets ($\text{Rank IC} = -0.03184$ CN, $-0.02184$ US, Table~\ref{tab:mman}). Our \texttt{kol-\allowbreak credibility-\allowbreak registry} skill (Beta-Binomial shrinkage with contrarian polarity inversion) reverses Rank IC to $+0.01040$ (CN, $p = 0.001$) and $+0.00942$ (US, $p = 0.0018$), while LLM distillation ($N=31{,}505$, cutting hype-to-hedging by $79.8\%$) doubles RoBERTa IC ($+0.00842 \to +0.01862$).
 
 \paragraph{Microstructure Gates, Cost \& Horizon Sensitivity.}
-Deploying six \texttt{fin-china} execution guards ($T+1$ lockup, 100-share board lots, sell-side stamp duty, QDII premium cap $\le 1.5\%$, cash drag, and Tier-C noise blocking) in an 80/20 Core-Satellite portfolio (2023--2026 OOS) achieves net Sharpe \textbf{1.97} (CAGR $+14.85\%$, Calmar \textbf{3.36}) vs.\ \textbf{0.65} for naive social trading ($363$ trades), cutting max drawdown from $-9.57\%$ to \textbf{$-4.41\%$}. Across $\{5, 10, 20, 30\}\text{ bps}$ round-trip costs, guarded Sharpe holds at $1.98 \to 1.95$ while naive social degrades from $0.68 \to 0.52$ (Fig.~\ref{fig:scaling_replay}b), peaking at the $T+5$ horizon ($72.09\%$ win rate vs.\ $53.49\%$ at $T+1$).
+Enforcing six \texttt{fin-china} guards ($T+1$ lockup, 100-share lots, sell-side stamp duty, QDII cap $\le 1.5\%$, cash drag, Tier-C blocking) in an 80/20 Core-Satellite portfolio (2023--2026 OOS) achieves net Sharpe \textbf{1.97} (MDD $-4.41\%$) vs.\ \textbf{0.65} (MDD $-9.57\%$) unguarded; US microstructure gates (Reg SHO borrow fees, Form~4 timestamps) lift US Sharpe from \textbf{0.79 to 1.84} (MDD $-13.42\% \to -5.68\%$). Across $\{5, 10, 20, 30\}\text{ bps}$ costs, guarded CN Sharpe holds at $1.98 \to 1.95$ vs.\ naive $0.68 \to 0.52$ (Fig.~\ref{fig:scaling_replay}b), peaking at $T+5$ ($72.09\%$ win rate).
+\vspace{-0.12cm}
