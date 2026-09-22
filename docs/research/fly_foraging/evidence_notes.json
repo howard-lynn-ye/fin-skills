@@ -1,0 +1,298 @@
+{
+  "recorded_on": "2026-09-21",
+  "timezone": "America/New_York",
+  "document_status": "research memo; not submission-ready",
+  "verification_policy": "Assistant reading is recorded separately from accountable human verification. No source is marked human-verified.",
+  "scope": "Purposeful mechanism/model comparison, not an exhaustive systematic review; selected relevant sections rather than every supplement.",
+  "integrity_check": "Q05 searched correction leads for three central models. No separate correction notice was identified in returned results; this is not a complete retraction/correction audit.",
+  "sources": [
+    {
+      "evidence_id": "E001",
+      "evidence_type": "adult_fly_behavior",
+      "read_scope": "selected full-text Results and figure descriptions",
+      "access_route": "eLife via web",
+      "support": "Nutritional/reproductive state; food encounters, stopping, residence/leaving.",
+      "caveat": "Frequent-encounter assay does not establish a long-range search policy; no blanket increase in yeast encounters.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E002",
+      "evidence_type": "adult_fly_intervention",
+      "read_scope": "selected full-text Results and Summary",
+      "access_route": "PMC via browser after web access challenge",
+      "support": "Hungry flies tracking unrewarded odor on a ball; persistence circuitry and VPM activation/inhibition.",
+      "caveat": "Activation sufficiency differs from necessity; output inhibition had no tracking effect in this assay; persistence is not financial optimality.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E003",
+      "evidence_type": "adult_fly_intervention",
+      "read_scope": "retrieval manipulation sections and Figure 1",
+      "access_route": "PMC browser",
+      "support": "Training before state manipulation; feeding, dNPF and dopaminergic gating of memory expression.",
+      "caveat": "Does not rule out separate effects of state on acquisition or storage.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E004",
+      "evidence_type": "adult_fly_intervention",
+      "read_scope": "Summary and relevant Results, Figures 1–2",
+      "access_route": "PMC browser",
+      "support": "Sweet-only versus nutritive reinforcement; distinct dopamine populations and state constraints.",
+      "caveat": "Not a one-to-one immediate-versus-delayed-money distinction; some nutrient-dependent performance appears promptly.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E005",
+      "evidence_type": "adult_fly_intervention",
+      "read_scope": "Summary, paradigm and relevant Discussion",
+      "access_route": "PMC browser plus primary indexed full-text excerpts",
+      "support": "Relative odor/reinforcement order; receptor-dependent bidirectional plasticity.",
+      "caveat": "Does not supply market-time scaling; no raw physiology reanalysis.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E006",
+      "evidence_type": "adult_fly_intervention",
+      "read_scope": "Summary and main-text mechanistic account",
+      "access_route": "PMC browser",
+      "support": "Aversive extinction, opposing memory traces and their MBON integration.",
+      "caveat": "Task-specific coexisting traces do not prove all forgetting preserves retrievable memory.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E007",
+      "evidence_type": "adult_fly_physiology_and_model",
+      "read_scope": "model Results, Figure 5, Discussion; previous-turn model audit retained",
+      "access_route": "PMC browser and primary full-text access",
+      "support": "Connectome-constrained gamma1/alpha2/alpha3 subcircuit; subsequent-training plasticity gating.",
+      "caveat": "Appetitive modules omitted from this reduced model; bidirectionality must not be misreported as negative-only learning. Not STM copying.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E008",
+      "evidence_type": "computational_model",
+      "read_scope": "equation/connection evidence table, RPE comparison, Discussion and Box 1",
+      "access_route": "eLife web",
+      "support": "Dopaminergic plasticity and interacting memory compartments; modeled attraction/avoidance.",
+      "caveat": "Functional assignments remain partly predictions; model-specific RPE substitution is not a disproof of every RPE circuit. Paper archive revision differs from current HEAD.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E009",
+      "evidence_type": "computational_model",
+      "read_scope": "Results through multiple-alternative choice; limitations and Code availability",
+      "access_route": "Nature browser after web redirect failure",
+      "support": "VS magnitude limitation; expanded mixed-valence model, Eq. 8 and chosen-cue learning.",
+      "caveat": "Extra connections/plasticity are model hypotheses; forced choices are not continuous portfolio control.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E010",
+      "evidence_type": "optimized_computational_model",
+      "read_scope": "Results navigation caveat and Discussion/meta-learning sections",
+      "access_route": "PLOS web and browser",
+      "support": "Outer-loop optimization and dopamine-gated inner plasticity; heterogeneous teaching signals.",
+      "caveat": "Retrained no-navigation-plasticity networks can perform similarly; disabling a trained module is not necessity proof.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E011",
+      "evidence_type": "connectome_sensorimotor_model",
+      "read_scope": "sensorimotor Results and modelling-limitations section",
+      "access_route": "Nature web",
+      "support": "LIF connectome model and specific experimental sensorimotor predictions.",
+      "caveat": "Ignores neuromodulation/neuropeptides, morphology and receptor dynamics; no ready-made financial learning interface.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E012",
+      "evidence_type": "adult_fly_behavior_and_intervention",
+      "read_scope": "official abstract and metadata ONLY",
+      "access_route": "PubMed; lab abstract; Elsevier browser reached CAPTCHA, not completed",
+      "support": "Real-food search expansion, virtual-sugar difference and hygrosensation result.",
+      "caveat": "Full methods, power, perturbation controls and individual figures not read. No general claim against compass/path integration.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E013",
+      "evidence_type": "adult_fly_behavior_and_model",
+      "read_scope": "Summary and annular-arena/model-rationale sections",
+      "access_route": "PMC browser",
+      "support": "Optogenetic fictive-food search in ring geometry; path-integration explanation.",
+      "caveat": "Different task from real-food open-arena searches; not navigation in price coordinates.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E014",
+      "evidence_type": "preprint_adult_fly_behavior",
+      "read_scope": "version notice; selected Results/Discussion",
+      "access_route": "PMC primary page/indexed text and browser",
+      "support": "Continuous feeding-volume/locomotion assay; state and taste associations.",
+      "caveat": "Version 1 is explicitly a preprint. Publication-version searches did not resolve a later formal version; absence not proved. Supplemental only.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E015",
+      "evidence_type": "adult_fly_intervention",
+      "read_scope": "Abstract, optogenetic Results and ensemble-valence Discussion",
+      "access_route": "PMC indexed full text; previous-turn eLife reading",
+      "support": "MBON combinations bias approach/avoidance and memory-guided selection.",
+      "caveat": "Not a calibrated Q value or a fixed BUY/SELL motor channel; eLife browser did not return usable article body on recheck.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E016",
+      "evidence_type": "engineering_theory",
+      "read_scope": "options definition and SMDP update, printed pp. 186–188 and 195",
+      "access_route": "author-hosted PDF via web",
+      "support": "Temporally extended policies and continuation value.",
+      "caveat": "Engineering framework, not biological evidence; changing discount changes the objective.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E017",
+      "evidence_type": "engineering_prior_art",
+      "read_scope": "official abstract and metadata ONLY",
+      "access_route": "PubMed browser",
+      "support": "Direct/recurrent reinforcement trading with transaction costs.",
+      "caveat": "No new audit of original experiments or performance comparisons.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E018",
+      "evidence_type": "theoretical_perspective",
+      "read_scope": "publisher metadata and abstract ONLY",
+      "access_route": "Nature browser",
+      "support": "Published Perspective, 2026-08-26; internal/external state factorization.",
+      "caveat": "Subscription body not read; not an empirical fruit-fly trading result. Earlier arXiv version used only for discovery.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E019",
+      "evidence_type": "public_software_prior_art",
+      "read_scope": "repository README; HEAD identity",
+      "access_route": "GitHub web and git ls-remote",
+      "support": "Existing fly-inspired market-learning scaffold; synthetic demo explicitly bounded.",
+      "caveat": "No execution or independent validation; current repository head can move. No profitability endorsement.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E020",
+      "evidence_type": "local_source_audit",
+      "read_scope": "selected engine/data/guard functions",
+      "access_route": "local isolated worktree at 3efd3d3fa319c03b0808cb61b6c64cff1ec2128f",
+      "support": "Signal batch evaluation; causal sizing history; target versus actual position; cost and calendar definitions.",
+      "caveat": "Does not certify full engine correctness or provide a ready online RL API.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E021",
+      "evidence_type": "existing_exploratory_result",
+      "read_scope": "committed summary rows and evaluation metadata; recomputed means",
+      "access_route": "local JSON",
+      "support": "Five seeds per learner, cost replay, cumulative-return means.",
+      "caveat": "Development history, not independent market samples or executable FX total returns; no rerun.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E022",
+      "evidence_type": "author_source_code",
+      "read_scope": "README and selected mb_mv_a.m lines",
+      "access_route": "GitHub web, public raw-file read at recorded HEAD",
+      "support": "Nonnegative DAN/weight updates and paired readout; MATLAB; GPL-3.0.",
+      "caveat": "No execution. Delta-rule equivalence is a new algebraic observation limited to inactive clipping and no intervention.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E023",
+      "evidence_type": "author_source_code",
+      "read_scope": "README, tree and constructor/scope lines in circuit.py",
+      "access_route": "GitHub web, public API/raw-file read at recorded HEAD",
+      "support": "Python IncentiveCircuit; optional circuit components; GPL-3.0.",
+      "caveat": "No execution or complete code audit; not a validated full satiety/foraging agent.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    },
+    {
+      "evidence_id": "E024",
+      "evidence_type": "author_source_code",
+      "read_scope": "README and train.py optimizer/update lines",
+      "access_route": "GitHub web, public API/raw-file read at recorded HEAD",
+      "support": "PyTorch RMSprop outer-loop training and backward update.",
+      "caveat": "No execution or dependency reproduction; source is not an alternative to paper task limits.",
+      "assistant_read_on": "2026-09-21",
+      "human_review": "pending"
+    }
+  ],
+  "code_versions": [
+    {
+      "repository": "https://github.com/BrainsOnBoard/paper_RPEs_in_drosophila_mb.git",
+      "head": "7ec52afb9bd7bb748d94d60dea9f483645a2ce8e",
+      "method": "git ls-remote HEAD; read-only",
+      "execution": "not run"
+    },
+    {
+      "repository": "https://github.com/InsectRobotics/IncentiveCircuit.git",
+      "head": "1610c80072fe8bb59bd397e7a61f716393a509b9",
+      "method": "git ls-remote HEAD; read-only",
+      "execution": "not run"
+    },
+    {
+      "repository": "https://github.com/alitwinkumar/jiang_litwin-kumar_mb_rnn.git",
+      "head": "a16f86a3e9e476eff6860c3c0e0e1bbe729d7f85",
+      "method": "git ls-remote HEAD; read-only",
+      "execution": "not run"
+    },
+    {
+      "repository": "https://github.com/philshiu/Drosophila_brain_model.git",
+      "head": "91bdd1e7dcf193f3e7ca5a8933497fcef63b7960",
+      "method": "git ls-remote HEAD; read-only",
+      "execution": "not run"
+    },
+    {
+      "repository": "https://github.com/TanaeemDar/FlyAlpha.git",
+      "head": "350d60ad2062464a36b50f8e1db9e68dfffb57f2",
+      "method": "git ls-remote HEAD; read-only",
+      "execution": "not run"
+    }
+  ],
+  "derivation_check": {
+    "source": "E022",
+    "claim": "C017",
+    "method": "Algebra from default code, supplemented by a local arithmetic identity check; no author model run",
+    "conditions": [
+      "No genetic intervention",
+      "DAN rectification inactive",
+      "Both weight updates remain nonnegative",
+      "Same cue k before and after update"
+    ],
+    "status": "passed one fixed interior-point arithmetic check",
+    "observed_q_after": 0.5049999999999999,
+    "expected_q_after": 0.505,
+    "absolute_error": 1.1102230246251565e-16,
+    "limitation": "A sanity check of algebra, not an empirical equivalence study or a model reproduction."
+  }
+}
