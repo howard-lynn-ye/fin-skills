@@ -1,0 +1,11 @@
+% ==============================================================================
+% sections/related_work.tex
+% ==============================================================================
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Financial LLMs \& Autonomous Agents.}
+Domain foundation models \citep{wu2023bloomberggpt,yang2023fingpt}, holistic benchmarks \citep{xie2024finben,li2024investorbench}, and tool-augmented trading agents \citep{yu2024finmem,zhang2024finagent} show strong capabilities in strategy synthesis. However, existing evaluations rely on static historical splits vulnerable to pre-training cutoff overlap, same-session timestamp joins, and retail social echo-chambers.
+
+\paragraph{Backtest Overfitting \& Execution Self-Repair.}
+Econometric controls \citep{white2000reality,hansen2005spa,bailey2014deflated,bailey2017pbo} quantify multiple-testing bias after honest returns are computed, while code self-repair \citep{shinn2023reflexion,chen2023selfdebug} relies on runtime exceptions. Because future-leaking table joins execute with Python exit code $0$ and inflate Sharpe ratios, generic self-debugging fails in finance. Inspired by \citet{ribeiro2020checklist} and \citet{zhao2019pyod}, \texttt{fin-skills} pairs domain specifications with executable counterfactual guards.

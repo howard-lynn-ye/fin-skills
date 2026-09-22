@@ -1,0 +1,17 @@
+% ==============================================================================
+% sections/preliminaries.tex
+% ==============================================================================
+\section{The \texttt{fin-skills} Verification Architecture}
+\label{sec:preliminaries}
+
+\texttt{fin-skills} unifies domain specifications and executable code verification across seven packages (\texttt{fin-core}, \texttt{fin-ml}, \texttt{fin-market-\allowbreak data}, \texttt{fin-alt-\allowbreak data}, \texttt{fin-china}, \texttt{fin-\allowbreak strategies}, and \texttt{fin-llm}):
+
+\paragraph{Source-Verified Skills (129 Specifications).}
+Each skill obeys a machine-validated 6-field schema carrying explicit verification timestamps (\texttt{verified\_on}) and primary regulatory or academic citations. Skills pinpoint silent traps in standard quantitative libraries, including fractional differentiation truncation \citep{lopezdeprado2018advances}, day-count conventions, and point-in-time SEC Form~4 / 13F acceptance timestamps.
+
+\paragraph{Executable Guards (\texttt{Bundle.check()}) \& MCP Tools.}
+To bridge passive reading and runtime enforcement, 36 executable Python guards operate over a unified slot-binding contract:
+\begin{equation}
+\resizebox{0.85\columnwidth}{!}{$\displaystyle \mathcal{R} = \text{Bundle}(\mathbf{r}, \mathbf{P}, \boldsymbol{\tau}, \mathcal{C}).\text{check}() \in \{\texttt{PASS}, \texttt{WARN}, \texttt{FAIL}\}^{36}$}
+\end{equation}
+where $\mathbf{r}$ denotes strategy returns, $\mathbf{P}$ OHLCV price bars, $\boldsymbol{\tau}$ turnover, and $\mathcal{C}$ point-in-time corporate action and filing timestamps. All 36 guards and 13 econometric/microstructure primitives export native MCP schemas (53 tools total). In Experiment~E3 (\path{benchmarks/parity_and_cost_bench.py}), our primitives achieve \textbf{13/13 exact numerical parity} against \texttt{scipy}, \texttt{statsmodels}, and analytical solvers (maximum error $1.14\times 10^{-8}$ on SLSQP minimum-variance QP, $0.0$ on HRP and Ledoit-Wolf shrinkage, and $6.94\times 10^{-18}$ on Expected Shortfall). Across $N \in \{250, \dots, 100{,}000\}$ rows, \texttt{Bundle.check()} scales sub-linearly as $\mathcal{O}(N^{0.3894})$, executing all applicable guards in \textbf{$97.31\text{ ms}$ P50} at $N=25\text{k}$ and \textbf{$218.97\text{ ms}$ P50} ($14.73\text{ MB}$ RAM) at $N=100\text{k}$ rows ($\sim 400$ trading years).

@@ -1,0 +1,152 @@
+% ==============================================================================
+% sections/appendix.tex
+% ==============================================================================
+\appendix
+\twocolumn[{
+\begin{@twocolumnfalse}
+    \centering
+    \includegraphics[width=0.94\textwidth]{figs/fig_guard_scaling_and_clock_replay.pdf}
+    \vspace{-0.15cm}
+    \captionof{figure}{\textbf{Guard runtime scaling and out-of-sample transaction cost sensitivity.} \textbf{(a)} Across dataset sizes $N \in [250, 100{,}000]$ rows, \texttt{Bundle.check()} scales sub-linearly as $\mathcal{O}(N^{0.3894})$, completing in $22.36\text{ ms}$ ($N=250$) to $218.97\text{ ms}$ P50 ($N=100{,}000$) with $14.73\text{ MB}$ peak RAM. \textbf{(b)} Across round-trip transaction costs of $\{5, 10, 20, 30\}\text{ bps}$ (2023--2026 OOS), our guarded Core-Satellite portfolio ($T+5$ horizon, 43 trades) sustains a net Sharpe of $1.98 \to 1.95$, whereas naive unfiltered social trading (363 trades across Tier-C noise stocks) degrades from $0.68 \to 0.52$.}
+    \label{fig:scaling_replay}
+    \vspace{0.28cm}
+\end{@twocolumnfalse}
+}]
+
+\section{Experiment E1: \texttt{FinGuardBench-180}}
+\label{app:e1}
+In \path{benchmarks/guard_bench_180.py}, we evaluate all 36 guards across 5 adversarial modalities ($36 \times 5 = 180$ cases): \texttt{standard\_\allowbreak compliant}, \texttt{standard\_\allowbreak violation}, \texttt{boundary\_\allowbreak compliant} ($\epsilon=-10^{-6}$), \texttt{epsilon\_\allowbreak edge\_\allowbreak violation} ($\epsilon=+10^{-6}$), and \texttt{compound\_\allowbreak multi\_\allowbreak trap}. Across all 180 cases (\path{GUARD_BENCH_RESULTS.json}), \texttt{fin-skills} achieves \textbf{100\% recall ($108/108$)} and \textbf{100\% specificity ($72/72$)} at $1.89\text{ ms}$ median latency, plus $36/36$ recall across multi-seed markets $\{17,29,43\}$ (\path{GUARD_ROBUSTNESS.json}).
+
+\section{Experiment E3: Parity \& $100\text{k}$ Scaling}
+\label{app:e3}
+Table~\ref{tab:e3_full} verifies $13/13$ exact numerical parity and sub-linear $\mathcal{O}(N^{0.3894})$ guard scaling up to $N=100\text{k}$ rows (\path{PARITY_AND_COST_RESULTS.json}).
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcc}
+\toprule
+\textbf{Primitive (13 Total)} & \textbf{Reference Benchmark} & \textbf{Max $|\Delta|$} & \textbf{Status} \\
+\midrule
+Equal Wt.\ / Inv.\ Vol.\ & Exact closed forms ($1/N, \sigma_i^{-1}$) & $0.00$ & PASS \\
+Min-Var Convex QP & \texttt{scipy} SLSQP convex QP & $1.14\times 10^{-8}$ & PASS \\
+Normal \& Hist.\ VaR/ES & \texttt{scipy.stats.norm} \& quantile & $6.94\times 10^{-18}$ & PASS \\
+Frac.\ Diff.\ FFD ($d=0.4$) & Closed-form binomial series & $1.11\times 10^{-16}$ & PASS \\
+ADF Unit Root $t$-stat & \texttt{statsmodels.adfuller} & $2.12\times 10^{-10}$ & PASS \\
+HRP \& Ledoit-Wolf Cov & Recursive bisection \& \texttt{sklearn} & $2.71\times 10^{-20}$ & PASS \\
+Almgren-Chriss \& A-S & Exact $\sinh$ \& HJB closed forms & $4.66\times 10^{-15}$ & PASS \\
+Brinson-Fachler Identity & Exact active-return decomposition & $1.73\times 10^{-18}$ & PASS \\
+\midrule
+\multicolumn{4}{l}{\textbf{Guard Suite Runtime Scaling ($\mathcal{O}(N^{0.3894})$, $N \in [250, 100{,}000]$)}} \\
+$N=250$ / $1{,}000$ rows & P50: $22.36\text{ ms}$ / $22.63\text{ ms}$ & RAM: $0.15$ / $0.27\text{ MB}$ & PASS \\
+$N=5{,}000$ / $25\text{k}$ rows & P50: $25.27\text{ ms}$ / $97.31\text{ ms}$ & RAM: $0.83$ / $3.75\text{ MB}$ & PASS \\
+$N=100{,}000$ rows & P50: $218.97\text{ ms}$ (P95: $225.27\text{ ms}$) & RAM: $14.73\text{ MB}$ & PASS \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.15cm}
+\caption{E3 parity ($13/13$ passed) and scaling up to $N=100\text{k}$ rows.}
+\label{tab:e3_full}
+\vspace{-0.16cm}
+\end{table}
+
+\section{Experiment E4: Horizon \& Linguistics}
+\label{app:e4}
+Table~\ref{tab:linguistic} details the holding-horizon sensitivity ($T+1$ to $T+10$) and LLM semantic distillation shifts (\path{REAL_WORLD_KOL_AUDIT_RESULTS.json}).
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+\textbf{Holding Horizon / Linguistic Metric} & \textbf{Win\% / Raw} & \textbf{CAGR / Dist.} & \textbf{Sharpe / Shift} \\
+\midrule
+Satellite Horizon $T+1$ / $T+3$ & $53.5\%$ / $65.1\%$ & $+12.9\%$ / $+14.0\%$ & $\text{SR } 1.67$ / $1.83$ \\
+\textbf{Satellite Horizon $T+5$ (Optimal)} & $\mathbf{72.09\%}$ & $\mathbf{+14.85\%}$ & $\mathbf{\text{SR } 1.97}$ ($\text{MDD }-4.41\%$) \\
+Satellite Horizon $T+10$ & $67.44\%$ & $+14.12\%$ & $\text{SR } 1.85$ ($\text{MDD }-4.85\%$) \\
+\midrule
+Quant.\ Fact Density (/100c) & $1.049$ & $1.078$ & $+2.8\%$ (Tok $+218\%$) \\
+Hype-to-Hedging Ratio & $4.85$ & $0.98$ & $-79.8\%$ \\
+Ticker Attribution Precision & $61.4\%$ & $96.2\%$ & $+34.8\text{ pp}$ \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.15cm}
+\caption{Holding-horizon ablation and linguistic distillation shifts.}
+\label{tab:linguistic}
+\vspace{-0.15cm}
+\end{table}
+
+\clearpage
+\twocolumn[{
+\begin{@twocolumnfalse}
+    \centering
+    \includegraphics[width=0.94\textwidth]{figs/fig_domain_heatmap_and_model_scaling.pdf}
+    \vspace{-0.15cm}
+    \captionof{figure}{\textbf{Per-domain breakdown and cross-model scaling law on \texttt{FinGuardBench-60}.} \textbf{(a)} Across all 10 financial domains ($6\text{ tasks/domain}$), \texttt{Cond B} exhibits severe hallucinated guard citations ($33\%\text{--}67\%$), whereas \texttt{Cond C Pass@3} reaches $100\%$ compliance in 9 of 10 domains ($83.3\%$ in \texttt{fin-llm}). \textbf{(b)} Across four model capability tiers (\texttt{Small-Fast}, \texttt{Open-Coder}, \texttt{Frontier-Gen}, \texttt{Reasoning}), hallucinated citations under \texttt{Cond B} decline from $65.0\%$ to $8.3\%$ while \texttt{Cond C} enforces $0.0\%$ hallucinations and $91.7\%\text{--}100\%$ final compliance.}
+    \label{fig:domain_scaling}
+    \vspace{0.28cm}
+\end{@twocolumnfalse}
+}]
+
+\section{Experiments E5 \& E6: Python \texttt{Self-Debug} vs.\ Guard Self-Repair Across Model Tiers}
+\label{app:e5}
+Table~\ref{tab:model_scaling} reports the 4-tier model scaling matrix on \texttt{FinGuardBench-60} (\path{AGENT_STUDY_RESULTS.json}). Because $59/60$ ($98.3\%$) of financial backtest traps (such as same-session \texttt{pd.merge} and survivorship filtering) execute without raising Python exceptions (exit code $0$), generic 3-round Python \texttt{Self-Debug} (\texttt{Cond B+}) yields negligible gains over \texttt{Cond B} ($+1.7\%\text{ to }+3.3\%, p=1.0$). Conversely, \texttt{Cond C} feeds structured \texttt{GuardResult} JSON diagnostics into the self-repair loop, lifting compliance to $91.7\%\text{--}100.0\%$ and eliminating hallucinated guard citations ($0.0\%$).
+
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Model Capability Tier ($N=60$)} & \textbf{Cond A} & \textbf{Cond B} & \textbf{B Halluc.\%} & \textbf{Cond B+ (\texttt{@3})} & \textbf{Cond C (\texttt{Pass@3})} \\
+\midrule
+\texttt{Small-Fast} (Haiku / 8B) & $18.3\%$ & $55.0\%$ & $65.0\%$ ($39/60$) & $58.3\%$ & $\mathbf{91.7\%}$ ($0\%$ Halluc.) \\
+\texttt{Open-Coder} (Qwen-32B / DS) & $30.0\%$ & $70.0\%$ & $53.3\%$ ($32/60$) & $71.7\%$ & $\mathbf{98.3\%}$ ($0\%$ Halluc.) \\
+\texttt{Frontier-Gen} (Sonnet / 4o) & $46.7\%$ & $81.7\%$ & $28.3\%$ ($17/60$) & $83.3\%$ & $\mathbf{100.0\%}$ ($0\%$ Halluc.) \\
+\texttt{Reasoning} (Opus / Pro / R1) & $63.3\%$ & $90.0\%$ & $8.3\%$ ($5/60$) & $91.7\%$ & $\mathbf{100.0\%}$ ($0\%$ Halluc.) \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{Cross-model scaling of compliance and hallucinated guard citations across 4 capability tiers (Experiment~E6).}
+\label{tab:model_scaling}
+\vspace{-0.16cm}
+\end{table}
+
+\section{Experiment E7: Bilingual Cross-Market KOL \& Microstructure Comparison}
+\label{app:e7}
+Table~\ref{tab:bilingual_e7} compares all $1{,}445$ Chinese A-share Xueqiu KOLs and $1{,}076$ US StockTwits KOLs ($2{,}521$ total in \path{kol_credibility_linguistic_fixture.json}), confirming that Social Megaphone Bias and microstructure gate efficacy generalize across both markets.
+
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcc}
+\toprule
+\textbf{Dimension / Empirical Metric} & \textbf{China Xueqiu ($N=1{,}445$)} & \textbf{US StockTwits ($N=1{,}076$)} \\
+\midrule
+Posts / Evaluation Samples & $1.04\text{M}$ / $334{,}946$ & $0.68\text{M}$ / $214{,}820$ \\
+\texttt{TIER\_1\_CORE\_ALPHA} ($n$, Fans, IC) & $n=70$, $14.1\text{k}$, $\mathbf{+0.2158}$ & $n=54$, $18.5\text{k}$, $\mathbf{+0.1842}$ \\
+\texttt{TIER\_2\_RESEARCHER} ($n$, Fans, IC) & $n=115$, $32.0\text{k}$, $+0.1929$ & $n=88$, $29.8\text{k}$, $+0.1615$ \\
+\texttt{TIER\_0\_ELITE} / \texttt{MEDIA} ($n$, IC) & $n=31$ ($+0.114$) / $11$ ($-0.001$) & $n=24$ ($+0.098$) / $16$ ($-0.002$) \\
+\texttt{TIER\_NEUTRAL\_RETAIL} ($n$, Fans, IC) & $n=1{,}120$, $71.3\text{k}$, $-0.0074$ & $n=812$, $49.3\text{k}$, $-0.0068$ \\
+\texttt{TIER\_CONTRARIAN} ($n$, Fans, IC) & $n=98$, $\mathbf{56.0\text{k}}$, $\mathbf{-0.2130}$ & $n=82$, $\mathbf{58.1\text{k}}$, $\mathbf{-0.1764}$ \\
+\textbf{Follower Paradox Ratio (Contr./Alpha)} & $\mathbf{3.96\times}$ ($55{,}989 / 14{,}122$) & $\mathbf{3.15\times}$ ($58{,}120 / 18{,}450$) \\
+\midrule
+Unweighted Sentiment 5D Rank IC & $-0.03184$ ($p=1.7\times 10^{-20}$) & $-0.02184$ ($p=3.4\times 10^{-9}$) \\
+\textbf{Bayesian Credibility-Gated Rank IC} & $\mathbf{+0.01040}$ ($\Delta=+0.0422$) & $\mathbf{+0.00942}$ ($\Delta=+0.0313$) \\
+Primary Microstructure Guards & $T+1$, 100-lot, Stamp, QDII & Reg SHO borrow, Form 4, PDT \\
+Unguarded $\to$ \textbf{Guarded Net Sharpe} & $0.65 \to \mathbf{1.97}$ (MDD $-4.41\%$) & $0.79 \to \mathbf{1.84}$ (MDD $-5.68\%$) \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{Complete cross-market comparison across 2,521 verified bilingual KOLs ($1{,}445$ CN + $1{,}076$ US, Experiment~E7).}
+\label{tab:bilingual_e7}
+\vspace{-0.16cm}
+\end{table}
+
+\section{Experiment E8: Qualitative Self-Repair Trace}
+\label{app:e8}
+In Task \texttt{T34} (\emph{Post-Close News Alignment}), \textbf{Cond.\ B} joins 16:30 EST news to the same session's return (\texttt{pd.merge(prices,\allowbreak news,\allowbreak on=['ticker',\allowbreak 'date'])}) and fabricates: \emph{``Verified \texttt{safe\_asof}: PASS (Sharpe 3.42)''}. Under \textbf{Cond.\ B+}, Python exits with code $0$ and leaves the bug untouched. Under \textbf{Cond.\ C}, \texttt{check\_\allowbreak safe\_\allowbreak asof} emits \texttt{FAIL: news.published\_\allowbreak at (16:30) > market\_\allowbreak close (16:00)}, prompting the agent in \texttt{Pass@2} to apply \texttt{next\_\allowbreak trading\_\allowbreak day()} and \texttt{pd.merge\_\allowbreak asof(...,\allowbreak direction=\allowbreak 'backward')}, restoring the honest Sharpe ($1.41$).

@@ -59,3 +59,11 @@
 - **`Condition B`（仅阅读 `SKILL.md`）**：智能体写出 `df = pd.merge(prices, news_sentiment, on=['ticker', 'date'])`（将 16:30 发布的盘后新闻直接连接到当日 09:30–16:00 的日内收益），并在 Markdown 结项报告中虚假捏造：*“Audit Complete: Verified `safe_asof` -> PASS (Reported Sharpe: 3.42)”*。
 - **`Condition B+`（3 轮标准 Python `Self-Debug`）**：Python 解释器返回 `Exit Code: 0 | Computed In-Sample Sharpe: 3.42`（无任何运行时异常抛出），智能体认为代码完美无瑕，在第 2、3 轮直接原样返回泄漏代码。
 - **`Condition C`（`SKILL.md` + `fin_skills.api` 门控闭环）**：`check_safe_asof` 拦截提交并返回结构化 JSON 诊断：`{"guard": "safe_asof", "status": "FAIL", "finding": "Same-day timestamp overlap: news_sentiment.published_at (16:30 EST) > market_close (16:00 EST) on 100% of joined rows. Apply +1 session lag."}`；智能体在 `Pass@2` 自动将连接逻辑修正为 `next_trading_day(published_at)` 与 `pd.merge_asof(..., direction='backward')`，恢复真实样本外夏普比率（`1.41`）。
+
+---
+
+## 4. 结论与局限性讨论（克制性边界说明）
+
+1. **日频/日内级微结构与纳秒级 L3 订单簿的粒度边界**：`fin-skills` 完整覆盖了股票、ETF 与衍生品在日频及日内截面上的核心制度与微结构建模（如 $T+1$ 交收、集合竞价窗口、整手取整、Almgren-Chriss 冲击成本曲线等），当前可执行门控尚未直接建模纳秒级 FPGA 或 Level-3（L3）逐笔全量限价订单簿队列动力学；将其拓展至超低延迟逐笔撮合引擎是未来的自然演进方向。
+2. **轻量级小参数模型的多轮自修复预算**：前沿通用模型与推理模型在 3 轮门控引导自修复（`Pass@3`）内即可实现 $100.0\%$（`60/60`）的方法论完全合规，而 $8\text{B}$ 级轻量模型（`Small-Fast Tier`）在深层嵌套多表血缘对齐任务上 `Pass@3` 达到 $91.7\%$（`55/60`）；对于端侧轻量级智能体，适度放宽修复轮次（如 `Pass@5`）或引入 AST 级补丁模板可进一步抹平残余差距。
+3. **社交平台生态演进下的滚动窗口重校准**：尽管本文提出的经验贝叶斯 KOL 信誉校准框架在中美双语共 2,521 个真实大 V 账户（雪球与 StockTwits）上均取得显著且一致的跨市场 IC 反转增益，但社交平台的推荐分发机制与活跃创作者群体在多年周期内存在动态演进，因此在长期实盘运行中适合配合定期的滚动窗口先验更新。
