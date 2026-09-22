@@ -207,7 +207,7 @@ def test_new_neuralforecast_models_fit_predict(id_):
     assert np.isfinite(prediction.drop(columns=["unique_id", "ds"]).to_numpy()).all()
 
 
-def test_integrated_catalog_deduplicates_and_json_native_call():
+def test_integrated_catalog_deduplicates():
     from fin_skills.algorithms import get_method, method_coverage
     from fin_skills.tools import call_tool
     from fin_skills.tools.payloads import decode
@@ -215,6 +215,11 @@ def test_integrated_catalog_deduplicates_and_json_native_call():
     assert card["status"] == "integrated" and card["model_id"] == "ta_atr"
     assert get_method("model:ta_atr")["id"] == "ta_atr"
     assert get_method("cointegration_pairs")["status"] == "external"
+
+
+def test_json_native_talib_call():
+    pytest.importorskip("talib")
+    from fin_skills.tools import call_tool
     result = call_tool("run_model", {"model_id": "talib_sma", "parameters": {"timeperiod": 3},
         "data": {"inputs": {"close": list(range(1, 20))}}})
     assert result["result"]["lookback"] == 2
