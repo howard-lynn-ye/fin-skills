@@ -12,16 +12,15 @@ Because the data-generating process is known in closed form, we compute the exac
 \paragraph{Four Black-Box Counterfactual Perturbations.}
 Given any agent-submitted weight function $\mathbf{W} = f(\mathcal{D})$, our external oracle (\texttt{oracle.py}) measures four invariants without reading agent source code:
 \begin{enumerate}
-    \item \textbf{Future Redraw ($\text{leakage\_rate}$):} Redraw market paths after cut date $t_c$; compute the fraction of pre-cut weights $\mathbf{W}_{t \le t_c}$ that change across 3 redraws.
-    \item \textbf{Single-Session Redraw ($\text{same\_session\_rate}$):} Redraw session $t$ alone and inspect $\mathbf{W}_t$, catching same-day post-close joins invisible to cut-date holdouts.
-    \item \textbf{Input Scramble ($\text{uses\_}\langle\text{file}\rangle$):} Permute individual input tables to test causal reliance on contaminated features (\texttt{llm\_score.csv}).
-    \item \textbf{Physical Clock Replay:} Withhold future sessions physically by feeding data day-by-day (\texttt{live\_replay.py}).
+    \item \textbf{Future Redraw (\texttt{leakage\_\allowbreak rate}):} Redraw market paths after cut date $t_c$; compute the fraction of pre-cut weights $\mathbf{W}_{t \le t_c}$ that change across 3 redraws.
+    \item \textbf{Single-Session Redraw (\texttt{same\_\allowbreak session\_\allowbreak rate}):} Redraw session $t$ alone and inspect $\mathbf{W}_t$, catching same-day post-close joins invisible to cut-date holdouts.
+    \item \textbf{Input Scramble (\texttt{uses\_}$\langle\text{file}\rangle$):} Permute individual input tables to test causal reliance on contaminated features (\texttt{llm\_\allowbreak score.csv}).
+    \item \textbf{Physical Clock Replay:} Withhold future sessions physically by feeding data day-by-day (\texttt{live\_\allowbreak replay.py}).
 \end{enumerate}
 
 \begin{table}[t]
 \centering
-\small
-\setlength{\tabcolsep}{3.6pt}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
 \textbf{Reference Pipeline} & \textbf{Leakage} & \textbf{Paper OOS} & \textbf{Live Clock Replay} \\
@@ -29,7 +28,8 @@ Given any agent-submitted weight function $\mathbf{W} = f(\mathcal{D})$, our ext
 Honest (lagged feed, split-adj.) & $0.00$ & $1.63$ & $\mathbf{+5.07\text{ bps/d}}$ (SR $2.99$) \\
 Leaky (same-day join, full scaler) & $0.78$ & $22.80^*$ & $\mathbf{-1.17\text{ bps/d}}$ (SR $-0.58$) \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \vspace{-0.12cm}
 \caption{Instrument calibration ($^*$illusory paper Sharpe). Static year holdout (\texttt{2023}) fails to punish same-session leakage ($22.80$); physical clock replay exposes it ($-0.58$).}
 \label{tab:calibration}
