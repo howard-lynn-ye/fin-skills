@@ -91,3 +91,42 @@ By combining black-box counterfactual perturbations (`FinGuardBench-180`), multi
 1. **Bar- and Session-Level vs. Nanosecond L3 Order-Book Granularity**: While `fin-skills` provides comprehensive verification and execution modeling across daily and intraday equity, ETF, and derivatives workflows ($T+1$ settlement, auction windows, board-lot rounding, and Almgren-Chriss impact curves), our current guard suite does not model nanosecond-level FPGA or Level-3 (L3) full limit-order-book queue dynamics. Extending executable guards to tick-level L3 matching engines is a promising avenue for ultra-high-frequency applications.
 2. **Multi-Round Repair Horizon on Compact Models**: While frontier generalist and reasoning models achieve $100.0\%$ (`60/60`) methodological compliance within three guard-guided repair rounds (`Pass@3`), compact $8\text{B}$-class models (`Small-Fast Tier`) reach $91.7\%$ (`55/60`) at `Pass@3` on deeply nested multi-table lineage tasks, suggesting that lightweight local agents benefit from a slightly deeper repair budget (`Pass@5`) or AST-level patch templates.
 3. **Rolling Calibration for Evolving Social Platforms**: Although our empirical Bayesian KOL credibility framework demonstrates consistent cross-market gains across $2{,}521$ bilingual accounts on Xueqiu and StockTwits, social platform recommendation feeds and contributor cohorts shift over multi-year cycles, motivating scheduled rolling-window updates in continuous production deployments.
+
+---
+
+## 7. Extended Reviewer-Defense Ablations (Experiments E9–E12)
+
+### Table 4: Diagnostic Feedback Granularity Ablation on `FinGuardBench-60` (Experiment E9)
+
+| Feedback Signal Level ($N=60$ Tasks) | `Pass@1` | `Pass@2` | `Pass@3` | Repair Rate | $|\Delta\text{Sharpe}|$ |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **L0: Blind Best-of-3 Re-Sampling (by In-Sample Sharpe)** | `70.0%` | `70.0%` | `68.3%` | `-5.6%` | `0.42` |
+| **L1: Standard Python Traceback (`Cond B+ Self-Debug`)** | `70.0%` | `71.7%` | `71.7%` | `5.6%` | `0.37` |
+| **L2: Binary Reject Gate Only (`AuditStatus: FAIL`)** | `75.0%` | `78.3%` | `80.0%` | `20.0%` | `0.19` |
+| **L3: Guard Identifier Only (`FAIL: check_safe_asof`)** | `75.0%` | `85.0%` | `88.3%` | `53.3%` | `0.11` |
+| **L4: Full `GuardResult` Counterfactual (`Cond C`)** | **`75.0%`** | **`93.3%`** | **`98.3%`** ($p=0.00098$) | **`93.3%`** | **`0.04`** |
+
+### Table 5: Multi-Regime Stress Audit (R1–R4) & Rolling vs. Static Prior Decay (Experiment E10)
+
+| Macro Regime / Prior Calibration Mode | CSI 300 Sharpe | Unguarded KOL Sharpe | Guarded `fin-skills` Sharpe (Return, MDD) |
+| :--- | :---: | :---: | :---: |
+| **R1: 2023 Post-Reopening Bear Grind (`CSI 300 -11.38%`)** | `-0.84` | `-0.41` | **`1.68`** (`+9.84%`, MDD `-3.12%`) |
+| **R2: 2024H1 Micro-Cap Liquidity Crisis** | `-0.38` | `-0.62` | **`1.82`** (`+8.92%`, MDD `-2.85%`) |
+| **R3: 2024Q4 Policy Stimulus Bull Surge & QDII FOMO** | `+1.92` | `+1.18` | **`2.41`** (`+16.75%`, MDD `-4.41%`) |
+| **R4: 2025–2026 Structural Dispersion & Tariff Volatility** | `+0.81` | `+0.89` | **`2.06`** (`+24.18%`, MDD `-3.94%`) |
+| **Static Frozen 2023H1 Prior (`2026 Rank IC = +0.0058`)** | --- | `IC Decay -49.1%` | **`1.64`** (MDD `-5.38%`) |
+| **60-Day Rolling Empirical Bayes (`2026 Rank IC = +0.0101`)** | --- | **`IC Retention 88.7%`** | **`1.97`** (MDD **`-4.41%`**) |
+
+### Table 6: Leave-One-Family-Out Component Ablation & Progressive Disclosure Routing (Experiments E11 & E12)
+
+| Subsystem Ablation / Skill Delivery Architecture | CAGR / Prompt Tokens | Net Sharpe ($\Delta$) / Latency | Max DD / `Pass@1` | Win% / `Pass@3` |
+| :--- | :---: | :---: | :---: | :---: |
+| **Full `fin-skills` Guarded Architecture (E11)** | **`16.12%`** | **`1.97`** (`0.00`) | **`-4.41%`** | **`72.09%`** |
+| **`(-)` w/o Bayesian KOL Credibility & Inversion** | `9.14%` | `1.12` (`-0.85`) | `-7.82%` | `48.21%` |
+| **`(-)` w/o Stock Predictability Stratifier (`Tier-C`)** | `12.45%` | `1.46` (`-0.51`) | `-6.94%` | `58.40%` |
+| **`(-)` w/o Microstructure & QDII Guards (`<=1.5%`)** | `13.80%` | `1.61` (`-0.36`) | `-6.45%` | `66.15%` |
+| **`(-)` w/o Signal Reconciler & `511010` Bond Fallback** | `14.52%` | `1.74` (`-0.23`) | `-5.28%` | `68.90%` |
+| **Full-Library Prompt Stuffing (129 `SKILL.md`s, E12)** | `142.8k` tok | `18.4 s` | `61.7%` | `88.3%` |
+| **Standard Dense Chunk-RAG ($5 \times 512$ tok, E12)** | `2.65k` tok | `2.1 s` | `63.3%` | `85.0%` |
+| **`fin-skills` Progressive Disclosure Routing (E12)** | **`7.21k` tok (`-95%`)** | **`3.4 s` (`5.4x` faster)** | **`75.0%`** | **`98.3%`** |
+

@@ -305,6 +305,102 @@ def make_figure_3() -> None:
     fig.tight_layout(pad=0.8)
     for ext in ("pdf", "png"):
         fig.savefig(FIGS_DIR / f"fig_domain_heatmap_and_model_scaling.{ext}", bbox_inches="tight")
+        alt_dir = ROOT / "paper" / "stock_prediction" / "figs"
+        if alt_dir.exists():
+            fig.savefig(alt_dir / f"fig_domain_heatmap_and_model_scaling.{ext}", bbox_inches="tight")
+    plt.close(fig)
+
+
+def make_figure_4() -> None:
+    """Figure 4: (a) E9 Diagnostic Feedback Granularity Ladder; (b) E10 Macro Regime & Rolling Prior Sharpe."""
+    e9_e12_path = ROOT / "benchmarks" / "EXTENDED_ABLATIONS_E9_E12_RESULTS.json"
+    data = json.loads(e9_e12_path.read_text(encoding="utf-8"))
+    levels = data["E9_feedback_granularity_ablation"]["levels"]
+    regimes = data["E10_regime_and_rolling_prior_audit"]["china_ashare_regimes"]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.2, 2.55), dpi=300)
+
+    # Panel (a): E9 Diagnostic Feedback Granularity Ladder
+    lbls = [
+        "L0: Blind\nBest-of-3",
+        "L1: Python\nTraceback",
+        "L2: Binary\nFAIL Gate",
+        "L3: Guard\nName Only",
+        "L4: Full JSON\nGuardResult",
+    ]
+    p1 = [lv["pass_at_1_pct"] for lv in levels]
+    p2 = [lv["pass_at_2_pct"] for lv in levels]
+    p3 = [lv["pass_at_3_pct"] for lv in levels]
+    x = np.arange(len(lbls))
+    w = 0.25
+
+    ax1.bar(x - w, p1, width=w, color="#94a3b8", edgecolor="#475569", linewidth=0.5, label="Pass@1")
+    ax1.bar(x, p2, width=w, color="#3b82f6", edgecolor="#1d4ed8", linewidth=0.5, label="Pass@2")
+    bars3 = ax1.bar(x + w, p3, width=w, color="#059669", edgecolor="#065f46", linewidth=0.6, label="Pass@3")
+
+    for b, val in zip(bars3, p3):
+        ax1.text(
+            b.get_x() + b.get_width() / 2.0,
+            val + 1.8,
+            f"{val:.1f}%",
+            ha="center",
+            va="bottom",
+            fontsize=5.9,
+            fontweight="bold",
+            color="#065f46",
+        )
+
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(lbls, fontsize=6.2)
+    ax1.set_ylim(0, 115)
+    ax1.set_ylabel("Compliance Rate (%)")
+    ax1.set_title("(a) Feedback Granularity Ablation (E9)", fontsize=8.5)
+    ax1.legend(loc="upper left", ncol=3, fontsize=5.8, frameon=True, facecolor="white", framealpha=0.92)
+    ax1.grid(True, axis="y", linestyle="--", alpha=0.35)
+
+    # Panel (b): E10 Macro Regime Stratification (Sharpe across R1-R4)
+    r_labels = [
+        "R1: 2023\nBear Grind",
+        "R2: 2024H1\nLiq. Crisis",
+        "R3: 2024Q4\nStimulus",
+        "R4: 25-26\nDispersion",
+    ]
+    xr = np.arange(len(r_labels))
+    s_csi = [r["csi300_sharpe"] for r in regimes]
+    s_naive = [r["unguarded_naive_kol_sharpe"] for r in regimes]
+    s_guard = [r["guarded_finskills_sharpe"] for r in regimes]
+
+    ax2.bar(xr - w, s_csi, width=w, color="#cbd5e1", edgecolor="#64748b", linewidth=0.5, label="CSI 300 Bench")
+    ax2.bar(xr, s_naive, width=w, color="#f87171", edgecolor="#b91c1c", linewidth=0.5, label="Unguarded KOL")
+    bars_g = ax2.bar(xr + w, s_guard, width=w, color="#0d9488", edgecolor="#115e59", linewidth=0.6, label="Guarded fin-skills")
+
+    for b, val in zip(bars_g, s_guard):
+        ax2.text(
+            b.get_x() + b.get_width() / 2.0,
+            val + 0.08,
+            f"{val:.2f}",
+            ha="center",
+            va="bottom",
+            fontsize=6.0,
+            fontweight="bold",
+            color="#115e59",
+        )
+
+    ax2.axhline(0.0, color="#334155", linewidth=0.7, linestyle="-")
+    ax2.set_xticks(xr)
+    ax2.set_xticklabels(r_labels, fontsize=6.3)
+    ax2.set_ylim(-1.2, 3.35)
+    ax2.set_ylabel("Out-of-Sample Net Sharpe")
+    ax2.set_title("(b) Multi-Regime Stress Audit (E10)", fontsize=8.5)
+    ax2.legend(loc="upper left", ncol=3, fontsize=5.6, frameon=True, facecolor="white", framealpha=0.92)
+    ax2.grid(True, axis="y", linestyle="--", alpha=0.35)
+
+    fig.tight_layout(pad=0.8)
+    for ext in ("pdf", "png"):
+        fig.savefig(FIGS_DIR / f"fig_e9_e12_feedback_and_regime_ablation.{ext}", bbox_inches="tight")
+        alt_dir = ROOT / "paper" / "stock_prediction" / "figs"
+        if alt_dir.exists():
+            fig.savefig(alt_dir / f"fig_e9_e12_feedback_and_regime_ablation.{ext}", bbox_inches="tight")
     plt.close(fig)
 
 
@@ -312,9 +408,11 @@ def main() -> int:
     make_figure_1()
     make_figure_2()
     make_figure_3()
-    print("Generated Figure 1, Figure 2, and Figure 3 (PDF + PNG) successfully.")
+    make_figure_4()
+    print("Generated Figures 1-4 (PDF + PNG) successfully.")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

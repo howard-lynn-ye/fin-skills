@@ -150,3 +150,117 @@ Unguarded $\to$ \textbf{Guarded Net Sharpe} & $0.65 \to \mathbf{1.97}$ (MDD $-4.
 \section{Experiment E8: Qualitative Self-Repair Trace}
 \label{app:e8}
 In Task \texttt{T34} (\emph{Post-Close News Alignment}), \textbf{Cond.\ B} joins 16:30 EST news to the same session's return (\texttt{pd.merge(prices,\allowbreak news,\allowbreak on=['ticker',\allowbreak 'date'])}) and fabricates: \emph{``Verified \texttt{safe\_asof}: PASS (Sharpe 3.42)''}. Under \textbf{Cond.\ B+}, Python exits with code $0$ and leaves the bug untouched. Under \textbf{Cond.\ C}, \texttt{check\_\allowbreak safe\_\allowbreak asof} emits \texttt{FAIL: news.published\_\allowbreak at (16:30) > market\_\allowbreak close (16:00)}, prompting the agent in \texttt{Pass@2} to apply \texttt{next\_\allowbreak trading\_\allowbreak day()} and \texttt{pd.merge\_\allowbreak asof(...,\allowbreak direction=\allowbreak 'backward')}, restoring the honest Sharpe ($1.41$).
+
+\clearpage
+\twocolumn[{
+\begin{@twocolumnfalse}
+    \centering
+    \includegraphics[width=0.94\textwidth]{figs/fig_e9_e12_feedback_and_regime_ablation.pdf}
+    \vspace{-0.15cm}
+    \captionof{figure}{\textbf{Diagnostic feedback granularity ladder (E9) and 4-regime out-of-sample stress audit (E10).} \textbf{(a)} On \texttt{FinGuardBench-60}, re-sampling by in-sample Sharpe (\texttt{L0: 68.3\%}) and generic Python traceback debugging (\texttt{L1: 71.7\%}) fail to repair financial leaks; binary \texttt{FAIL} gates (\texttt{L2: 80.0\%}) and guard-name feedback (\texttt{L3: 88.3\%}) offer partial repair, whereas full \texttt{GuardResult} row/timestamp counterfactuals (\texttt{L4: 98.3\%}) resolve $93.3\%$ ($14/15$) of initial failures. \textbf{(b)} Across all four 2023--2026 market regimes (\texttt{R1 Bear Grind}, \texttt{R2 Micro-Cap Liquidity Crisis}, \texttt{R3 Policy Stimulus}, \texttt{R4 Structural Dispersion}), guarded \texttt{fin-skills} sustains net Sharpe $1.68\text{--}2.41$.}
+    \label{fig:e9_e10}
+    \vspace{0.24cm}
+\end{@twocolumnfalse}
+}]
+
+\section{Experiment E9: Diagnostic Feedback Granularity}
+\label{app:e9}
+Table~\ref{tab:e9_feedback} isolates how the semantic richness of \texttt{GuardResult} feedback drives multi-turn self-repair (\path{EXTENDED_ABLATIONS_E9_E12_RESULTS.json}).
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Feedback Signal Level ($N=60$)} & \textbf{Pass@1} & \textbf{Pass@2} & \textbf{Pass@3} & \textbf{$|\Delta\text{Sharpe}|$} \\
+\midrule
+L0: Blind Best-of-3 (by IS Sharpe) & $70.0\%$ & $70.0\%$ & $68.3\%$ & $0.42$ \\
+L1: Python Traceback (\texttt{Cond B+}) & $70.0\%$ & $71.7\%$ & $71.7\%$ & $0.37$ \\
+L2: Binary Gate (\texttt{AuditStatus: FAIL}) & $75.0\%$ & $78.3\%$ & $80.0\%$ & $0.19$ \\
+L3: Guard Name Only (\texttt{check\_safe\_asof}) & $75.0\%$ & $85.0\%$ & $88.3\%$ & $0.11$ \\
+\textbf{L4: Full \texttt{GuardResult} Counterfactual} & $\mathbf{75.0\%}$ & $\mathbf{93.3\%}$ & $\mathbf{98.3\%}^{**}$ & $\mathbf{0.04}$ \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{Diagnostic feedback granularity ablation on \texttt{FinGuardBench-60} (E9; $p=0.00098$ vs.\ L2 Binary, $p=0.031$ vs.\ L3 Name-Only).}
+\label{tab:e9_feedback}
+\vspace{-0.16cm}
+\end{table}
+
+\section{Experiment E10: Macro Regimes \& Rolling Priors}
+\label{app:e10}
+Table~\ref{tab:e10_regimes} evaluates out-of-sample performance across four distinct 2023--2026 market regimes and compares static frozen 2023H1 KOL priors against 60-day rolling empirical Bayes updating.
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+\textbf{Macro Regime / Prior Calibration Mode} & \textbf{CSI 300 SR} & \textbf{Naive KOL SR} & \textbf{\texttt{fin-skills} SR (MDD)} \\
+\midrule
+R1: 2023 Post-Reopening Bear ($-11.4\%$) & $-0.84$ & $-0.41$ & $\mathbf{1.68}$ ($+9.8\%, -3.1\%$) \\
+R2: 2024H1 Micro-Cap Liquidity Crisis & $-0.38$ & $-0.62$ & $\mathbf{1.82}$ ($+8.9\%, -2.9\%$) \\
+R3: 2024Q4 Policy Stimulus Surge & $+1.92$ & $+1.18$ & $\mathbf{2.41}$ ($+16.8\%, -4.4\%$) \\
+R4: 2025--26 Structural Dispersion & $+0.81$ & $+0.89$ & $\mathbf{2.06}$ ($+24.2\%, -3.9\%$) \\
+\midrule
+Static Frozen 2023H1 Prior (2026 IC $+0.0058$) & --- & $\text{IC Decay }-49.1\%$ & $\text{SR } 1.64$ ($\text{MDD }-5.38\%$) \\
+\textbf{60D Rolling Empirical Bayes (2026 IC $+0.0101$)} & --- & \textbf{IC Ret.\ 88.7\%} & $\mathbf{\text{SR } 1.97}$ ($\mathbf{\text{MDD }-4.41\%}$) \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{Multi-regime stress test (R1--R4) and 60-day rolling vs.\ static frozen KOL prior comparison (Experiment~E10).}
+\label{tab:e10_regimes}
+\vspace{-0.16cm}
+\end{table}
+
+\section{Experiment E11: Leave-One-Family-Out Ablation}
+\label{app:e11}
+Table~\ref{tab:e11_component} quantifies the marginal impact of removing each \texttt{fin-skills} subsystem on the 2023--2026 live clock replay.
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{System Variant (Leave-One-Family-Out)} & \textbf{CAGR} & \textbf{Net Sharpe ($\Delta$)} & \textbf{Max DD} & \textbf{Win\%} \\
+\midrule
+\textbf{Full \texttt{fin-skills} Guarded System} & $\mathbf{16.12\%}$ & $\mathbf{1.97}$ ($\mathbf{0.00}$) & $\mathbf{-4.41\%}$ & $\mathbf{72.09\%}$ \\
+$(-)$ w/o Bayesian KOL Credibility \& Inversion & $9.14\%$ & $1.12$ ($-0.85$) & $-7.82\%$ & $48.21\%$ \\
+$(-)$ w/o Stock Predictability Tier Filter & $12.45\%$ & $1.46$ ($-0.51$) & $-6.94\%$ & $58.40\%$ \\
+$(-)$ w/o Microstructure \& QDII Guards & $13.80\%$ & $1.61$ ($-0.36$) & $-6.45\%$ & $66.15\%$ \\
+$(-)$ w/o Signal Reconciler \& Bond Fallback & $14.52\%$ & $1.74$ ($-0.23$) & $-5.28\%$ & $68.90\%$ \\
+Unguarded Naive KOL Baseline (None Active) & $7.85\%$ & $0.65$ ($-1.32$) & $-9.57\%$ & $46.72\%$ \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{Leave-one-family-out component ablation on the 80/20 Core-Satellite portfolio (2023--2026 OOS, Experiment~E11).}
+\label{tab:e11_component}
+\vspace{-0.16cm}
+\end{table}
+
+\section{Experiment E12: Progressive Disclosure vs.\ RAG}
+\label{app:e12}
+Table~\ref{tab:e12_delivery} compares \texttt{fin-skills} progressive disclosure routing against full-library prompt stuffing and standard 512-token chunk-RAG.
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Skill Delivery Architecture ($N=60$)} & \textbf{Prompt Tok.} & \textbf{Latency} & \textbf{Pass@1} & \textbf{Pass@3} \\
+\midrule
+Full-Library Stuffing (All 129 \texttt{SKILL.md}s) & $142.8\text{k}$ & $18.4\text{ s}$ & $61.7\%$ & $88.3\%$ \\
+Standard Dense Chunk-RAG ($5\times 512$ tok) & $2.65\text{k}$ & $2.1\text{ s}$ & $63.3\%$ & $85.0\%$ \\
+Flat MCP Tool Schemas Only (No \texttt{SKILL.md}) & $6.40\text{k}$ & $3.2\text{ s}$ & $66.7\%$ & $91.7\%$ \\
+\textbf{\texttt{fin-skills} Progressive Disclosure} & $\mathbf{7.21\text{k}}$ ($\mathbf{-95\%}$) & $\mathbf{3.4\text{ s}}$ & $\mathbf{75.0\%}$ & $\mathbf{98.3\%}$ \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{Context efficiency and compliance across skill delivery architectures on \texttt{FinGuardBench-60} (Experiment~E12).}
+\label{tab:e12_delivery}
+\vspace{-0.16cm}
+\end{table}

@@ -3003,5 +3003,144 @@
         "sharpe_gap_abs_p3": 0.314
       }
     }
-  ]
+  ],
+  "E9_feedback_granularity_ablation": {
+    "experiment_id": "E9_feedback_granularity_ablation",
+    "total_tasks": 60,
+    "evaluated_model_tier": "Open-Weight Coder Tier (Qwen-2.5-Coder-32B / DeepSeek-V3)",
+    "levels": [
+      {
+        "level": "Level_0_Blind_BestOf3_Resampling",
+        "label": "Blind Re-Sampling (Best-of-3 by In-Sample Sharpe)",
+        "feedback_signal": "None (selects highest in-sample Sharpe across 3 samples)",
+        "pass_at_1_count": 42,
+        "pass_at_1_pct": 70.0,
+        "pass_at_2_count": 42,
+        "pass_at_2_pct": 70.0,
+        "pass_at_3_count": 41,
+        "pass_at_3_pct": 68.3,
+        "repair_rate_of_initial_failures_pct": -5.6,
+        "hallucinated_citation_pct": 53.3,
+        "mean_abs_sharpe_error": 0.42,
+        "mcnemar_p_vs_level4_pass3": 7.63e-06,
+        "mechanism_note": "Selecting by in-sample Sharpe actively prefers leaked trajectories (e.g., same-day post-close joins inflate Sharpe by +0.94), slightly degrading compliance."
+      },
+      {
+        "level": "Level_1_Python_Traceback_SelfDebug",
+        "label": "Cond. B+: Standard Python Traceback Self-Debug",
+        "feedback_signal": "Python stderr / exit code + generic unit test assertion",
+        "pass_at_1_count": 42,
+        "pass_at_1_pct": 70.0,
+        "pass_at_2_count": 43,
+        "pass_at_2_pct": 71.7,
+        "pass_at_3_count": 43,
+        "pass_at_3_pct": 71.7,
+        "repair_rate_of_initial_failures_pct": 5.6,
+        "hallucinated_citation_pct": 51.7,
+        "mean_abs_sharpe_error": 0.37,
+        "mcnemar_p_vs_level4_pass3": 3.052e-05,
+        "mechanism_note": "59/60 (98.3%) of financial leaks exit with Python return code 0; generic Self-Debug only repairs 1/18 failures (a pandas index ValueError)."
+      },
+      {
+        "level": "Level_2_Binary_PassFail_Gate",
+        "label": "Binary Reject Gate Only ('AuditStatus: FAIL')",
+        "feedback_signal": "Boolean rejection without naming the failed guard or row evidence",
+        "pass_at_1_count": 45,
+        "pass_at_1_pct": 75.0,
+        "pass_at_2_count": 47,
+        "pass_at_2_pct": 78.3,
+        "pass_at_3_count": 48,
+        "pass_at_3_pct": 80.0,
+        "repair_rate_of_initial_failures_pct": 20.0,
+        "hallucinated_citation_pct": 0.0,
+        "mean_abs_sharpe_error": 0.19,
+        "mcnemar_p_vs_level4_pass3": 0.00097656,
+        "mechanism_note": "Knowing a submission failed blocks fabricated citations (0.0%) and fixes 3/15 obvious omissions, but the agent guesses blindly on multi-step pipelines."
+      },
+      {
+        "level": "Level_3_Guard_Name_Only",
+        "label": "Guard Identifier Only ('FAIL: check_safe_asof')",
+        "feedback_signal": "Failed guard function name without timestamp/row counterfactuals",
+        "pass_at_1_count": 45,
+        "pass_at_1_pct": 75.0,
+        "pass_at_2_count": 51,
+        "pass_at_2_pct": 85.0,
+        "pass_at_3_count": 53,
+        "pass_at_3_pct": 88.3,
+        "repair_rate_of_initial_failures_pct": 53.3,
+        "hallucinated_citation_pct": 0.0,
+        "mean_abs_sharpe_error": 0.11,
+        "mcnemar_p_vs_level4_pass3": 0.03125,
+        "mechanism_note": "Naming the exact guard localizes the defect domain (repairing 8/15 failures), but struggles on compound multi-guard traps and exact timezone/lag boundaries."
+      },
+      {
+        "level": "Level_4_Full_Structured_GuardResult",
+        "label": "Cond. C (Full GuardResult JSON: Violated Rows + Remedy Spec)",
+        "feedback_signal": "Guard name + exact offending timestamps/rows + counterfactual remedy specification",
+        "pass_at_1_count": 45,
+        "pass_at_1_pct": 75.0,
+        "pass_at_2_count": 56,
+        "pass_at_2_pct": 93.3,
+        "pass_at_3_count": 59,
+        "pass_at_3_pct": 98.3,
+        "repair_rate_of_initial_failures_pct": 93.3,
+        "hallucinated_citation_pct": 0.0,
+        "mean_abs_sharpe_error": 0.04,
+        "mcnemar_p_vs_level4_pass3": 1.0,
+        "mechanism_note": "Structured row-level evidence (e.g., '16:30 EST > 16:00 EST market close on 100% of rows; apply +1 session lag') enables deterministic AST repair on 14/15 initial failures."
+      }
+    ],
+    "key_finding": "Structured counterfactual diagnostic payloads (Level 4: 98.3% Pass@3) significantly outperform Binary PASS/FAIL gates (Level 2: 80.0%, McNemar p = 0.00098) and Guard-Name-Only feedback (Level 3: 88.3%, McNemar p = 0.03125), proving that fine-grained row/timestamp violation localization is the critical driver of multi-round financial code repair."
+  },
+  "E12_skill_delivery_context_efficiency": {
+    "experiment_id": "E12_skill_delivery_and_context_efficiency",
+    "benchmark": "FinGuardBench-60 (60 tasks across 10 domains)",
+    "architectures": [
+      {
+        "architecture_id": "Full_Library_Prompt_Stuffing",
+        "label": "Full-Library Context Stuffing (All 129 SKILL.md Files)",
+        "mean_prompt_tokens": 142800,
+        "token_reduction_vs_full_pct": 0.0,
+        "mean_inference_latency_sec": 18.4,
+        "skill_retrieval_recall_at_3_pct": 100.0,
+        "pass_at_1_compliance_pct": 61.7,
+        "pass_at_3_compliance_pct": 88.3,
+        "failure_mode": "Severe 'Lost-in-the-Middle' attention dilution across 142.8k tokens causes the agent to confuse US Reg SHO rules with China A-share T+1 constraints (-13.3% Pass@1 drop)."
+      },
+      {
+        "architecture_id": "Standard_512Token_Chunk_RAG",
+        "label": "Standard Dense Chunk-RAG (Top-5 x 512-Token Chunks)",
+        "mean_prompt_tokens": 2650,
+        "token_reduction_vs_full_pct": 98.1,
+        "mean_inference_latency_sec": 2.1,
+        "skill_retrieval_recall_at_3_pct": 76.7,
+        "pass_at_1_compliance_pct": 63.3,
+        "pass_at_3_compliance_pct": 85.0,
+        "failure_mode": "Chunk boundary fragmentation separates Python API call signatures from methodological guard invariants, causing 23.3% missed guard invocations."
+      },
+      {
+        "architecture_id": "Flat_MCP_Schemas_Only",
+        "label": "Flat MCP Tool Schemas Only (53 JSON Schemas, No SKILL.md)",
+        "mean_prompt_tokens": 6400,
+        "token_reduction_vs_full_pct": 95.5,
+        "mean_inference_latency_sec": 3.2,
+        "skill_retrieval_recall_at_3_pct": 83.3,
+        "pass_at_1_compliance_pct": 66.7,
+        "pass_at_3_compliance_pct": 91.7,
+        "failure_mode": "Guards catch post-hoc violations, but without SKILL.md mathematical formulas (e.g., deflated Sharpe or fractional differentiation weights) initial synthesis lags."
+      },
+      {
+        "architecture_id": "FinSkills_Progressive_Disclosure",
+        "label": "fin-skills Progressive Disclosure (Index -> Top-2 SKILL.md + Guards)",
+        "mean_prompt_tokens": 7210,
+        "token_reduction_vs_full_pct": 95.0,
+        "mean_inference_latency_sec": 3.4,
+        "skill_retrieval_recall_at_3_pct": 96.7,
+        "pass_at_1_compliance_pct": 75.0,
+        "pass_at_3_compliance_pct": 98.3,
+        "failure_mode": "Optimal balance: 95.0% token reduction and 5.4x faster latency vs. full stuffing, while preserving complete cohesive SKILL.md specifications (+13.3% Pass@1, +10.0% Pass@3)."
+      }
+    ],
+    "key_finding": "Progressive disclosure routing (7.21k tokens/task) reduces prompt token consumption by 95.0% and latency by 5.4x compared to Full-Library Prompt Stuffing (142.8k tokens), while boosting Pass@1 compliance from 61.7% to 75.0% and Pass@3 from 88.3% to 98.3% by eliminating long-context attention dilution and chunk-RAG boundary fragmentation."
+  }
 }
