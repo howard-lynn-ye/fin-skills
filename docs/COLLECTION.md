@@ -1,5 +1,9 @@
 # Public information collection
 
+Multi-source news search, point-in-time deduplication and strategy integration are documented
+in [Market state, news and strategy](MARKET_STRATEGY.md). `gdelt` watches add bounded news
+discovery; `collect_news` provides Fed/ECB RSS presets and isolated source health reports.
+
 `fin_skills.collect` downloads public records into a local SQLite database. It includes RSS
 and Atom feeds, static pages with bounded same-origin crawling, SEC Form 4/13F filings, US
 House PTR PDFs and public Bluesky author posts. Imports do not start networking or a daemon.

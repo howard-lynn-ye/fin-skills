@@ -86,9 +86,16 @@ def research_algorithms(task, data, evaluation=None, parameters=None, constraint
     return _encode(result.to_dict())
 
 
+def recommend_trading_strategy(prices, as_of, news=None, constraints=None):
+    from fin_skills.algorithms import recommend_strategy
+    return _encode(recommend_strategy(payloads.decode(prices, "prices"), as_of=as_of,
+                                      news=news, **dict(constraints or {})))
+
+
 FUNCTIONS = {f.__name__: f for f in (list_algorithms, recommend_algorithms, run_algorithm,
                                    auto_algorithm, compare_forecast_algorithms,
-                                   profile_algorithm_data, research_algorithms)}
+                                   profile_algorithm_data, research_algorithms,
+                                   recommend_trading_strategy)}
 
 
 def definitions():
@@ -113,6 +120,18 @@ def definitions():
                   "HRP requires linkage; forecasts accept horizon; signals accept windows.",
                   "additionalProperties": True}
     rows = [
+        ("recommend_trading_strategy", "Infer causal market state and propose next-bar research "
+         "strategy targets with evidence and news risk screening. Requires timestamped prices. "
+         "No live orders; rankings are explicit rules, not measured profitability.",
+         {"prices": {"type": "object", "description": "Series payload with timezone-aware close timestamps"},
+          "as_of": {"type": "string", "description": "Decision timestamp with timezone"},
+          "news": {"type": "array", "items": {"type": "object"}, "maxItems": 1000},
+          "constraints": {"type": "object", "additionalProperties": False, "properties": {
+              "allow_short": {"type": "boolean"}, "target_vol": {"type": "number", "exclusiveMinimum": 0},
+              "max_exposure": {"type": "number", "exclusiveMinimum": 0},
+              "max_price_age_days": {"type": "number", "exclusiveMinimum": 0},
+              "regime_parameters": {"type": "object"}, "news_keywords": strings, "risk_terms": strings}}},
+         ["prices", "as_of"]),
         ("list_algorithms", "List algorithms, backends, inputs, objectives and execution status. "
          "Catalog-only entries have no execution adapter.", {"task": task}, []),
         ("recommend_algorithms", "Rank algorithms using explicit suitability rules and return "

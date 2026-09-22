@@ -11,6 +11,8 @@ python examples/audit_a_backtest.py
 python examples/point_in_time_fundamentals.py
 python examples/futures_roll.py
 python examples/algorithm_selection.py
+python examples/market_strategy.py
+python examples/model_zoo.py
 ```
 
 `tests/test_examples.py` runs each example in a subprocess and asserts its **conclusions**, not

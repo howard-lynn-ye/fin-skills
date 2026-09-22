@@ -87,7 +87,10 @@ def test_optional_inputs_that_cannot_cross_are_dropped_and_declared():
 def test_tool_count_and_naming():
     from fin_skills.tools.collection import definitions
     from fin_skills.tools.algorithms import definitions as algorithm_definitions
-    assert len(TOOLS) == 7 + len(definitions()) + len(algorithm_definitions()) + len(EXPORTED)
+    from fin_skills.tools.models import definitions as model_definitions
+    from fin_skills.tools.knowledge import definitions as knowledge_definitions
+    assert len(TOOLS) == (7 + len(definitions()) + len(algorithm_definitions())
+                          + len(model_definitions()) + len(knowledge_definitions()) + len(EXPORTED))
     assert len(tool_names()) == len(set(tool_names()))
     for name in tool_names():
         # MCP 2026-07-28: 1-128 chars, ASCII letters, digits, _ - . only.

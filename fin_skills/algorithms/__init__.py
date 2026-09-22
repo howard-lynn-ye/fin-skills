@@ -21,7 +21,10 @@ from .evaluation import walk_forward
 from .models import FittedModel, fit, load_model
 from .research import ResearchResult, profile_data, research
 from .diagnostics import doctor
+from .strategy import market_state, recommend_strategy
+from .knowledge import get_method, method_coverage, search_methods
 
 __all__ = ["Algorithm", "Candidate", "Registry", "Request", "Selection", "TASKS",
            "auto_run", "catalog", "default_registry", "recommend", "run", "walk_forward",
-           "FittedModel", "fit", "load_model", "ResearchResult", "profile_data", "research", "doctor"]
+           "FittedModel", "fit", "load_model", "ResearchResult", "profile_data", "research", "doctor",
+           "market_state", "recommend_strategy", "get_method", "method_coverage", "search_methods"]
