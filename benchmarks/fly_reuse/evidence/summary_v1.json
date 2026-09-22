@@ -1,0 +1,195 @@
+[
+  {
+    "input_sha256": "d229ddd0f4ed6bbd69b762777cbf55ccdf235d444dab98627e42986051a7c45d",
+    "data_sha256": "c0c402ebb49f5530238eb15752a93ab0c5bbf845270621377415180b214a9eef",
+    "mode": "compact",
+    "windows": {
+      "train": {
+        "start": 21,
+        "end_exclusive": 440,
+        "first_day": 1729641600,
+        "last_day": 1765756800
+      },
+      "validation": {
+        "start": 440,
+        "end_exclusive": 580,
+        "first_day": 1765843200,
+        "last_day": 1777852800
+      },
+      "test": {
+        "start": 580,
+        "end_exclusive": 720,
+        "first_day": 1777939200,
+        "last_day": 1789948800
+      }
+    },
+    "test_table": {
+      "fly": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 0.8744338866310407,
+        "min_net_return_pct": -8.699842076880005,
+        "max_net_return_pct": 6.731657857200002,
+        "seed_returns_pct": {
+          "11": -8.699842076880005,
+          "23": 0.0,
+          "37": 6.731657857200002,
+          "53": 0.0,
+          "71": 6.340353652835207
+        },
+        "mean_fills": 13.2,
+        "mean_fees": 0.091617724256896,
+        "mean_gated_decisions": 0
+      },
+      "fly_gated": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 2.326094621303838,
+        "min_net_return_pct": 0.0,
+        "max_net_return_pct": 5.468128480033596,
+        "seed_returns_pct": {
+          "11": 0.694216146451998,
+          "23": 0.0,
+          "37": 5.468128480033596,
+          "53": 0.0,
+          "71": 5.468128480033596
+        },
+        "mean_fills": 4,
+        "mean_fees": 0.029563178089616,
+        "mean_gated_decisions": 11
+      },
+      "frozen": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 2.2865199670447978,
+        "min_net_return_pct": -11.2778361086608,
+        "max_net_return_pct": 13.784322749920808,
+        "seed_returns_pct": {
+          "11": -1.9440010508312122,
+          "23": 12.550595844484791,
+          "37": -11.2778361086608,
+          "53": 13.784322749920808,
+          "71": -1.6804815996895983
+        },
+        "mean_fills": 44.6,
+        "mean_fees": 0.30980499393552,
+        "mean_gated_decisions": 0
+      },
+      "shuffled": {
+        "n_seeds": 5,
+        "mean_net_return_pct": -0.1076532236521599,
+        "min_net_return_pct": -7.269923975460801,
+        "max_net_return_pct": 6.731657857200002,
+        "seed_returns_pct": {
+          "11": -7.269923975460801,
+          "23": 6.731657857200002,
+          "37": 0.0,
+          "53": 0.0,
+          "71": 0.0
+        },
+        "mean_fills": 2.8,
+        "mean_fees": 0.018225699405215998,
+        "mean_gated_decisions": 0
+      },
+      "ordinary": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 6.062712760870719,
+        "min_net_return_pct": 0.0,
+        "max_net_return_pct": 15.390810088157592,
+        "seed_returns_pct": {
+          "11": 8.191095858996,
+          "23": 0.0,
+          "37": 6.731657857200002,
+          "53": 0.0,
+          "71": 15.390810088157592
+        },
+        "mean_fills": 20,
+        "mean_fees": 0.14859671475292802,
+        "mean_gated_decisions": 0
+      },
+      "ordinary_gated": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 4.6799862220256,
+        "min_net_return_pct": -0.5972660637440064,
+        "max_net_return_pct": 18.52906869383841,
+        "seed_returns_pct": {
+          "11": -0.5972660637440064,
+          "23": 0.0,
+          "37": 5.468128480033596,
+          "53": 0.0,
+          "71": 18.52906869383841
+        },
+        "mean_fills": 14.6,
+        "mean_fees": 0.10890768715744,
+        "mean_gated_decisions": 11
+      }
+    },
+    "paired_mean_difference_percentage_points": {
+      "fly_gated_minus_fly": 1.4516607346727972,
+      "ordinary_gated_minus_ordinary": -1.3827265388451186,
+      "fly_gated_minus_ordinary_gated": -2.3538916007217625,
+      "fly_minus_ordinary": -5.1882788742396775
+    },
+    "benchmarks_test_return_pct": {
+      "cash_test": 0.0,
+      "buy_hold_same_guard_test": 6.731657857200002
+    },
+    "integrity_checks": "pass",
+    "interpretation": "Seed variation on one public development path, not independent markets or a confidence interval."
+  },
+  {
+    "input_sha256": "cac574a3293b498a6a28c31deff94919f9bc20974ce32be05660c707309bac87",
+    "data_sha256": "c0c402ebb49f5530238eb15752a93ab0c5bbf845270621377415180b214a9eef",
+    "mode": "full",
+    "windows": {
+      "train": {
+        "start": 21,
+        "end_exclusive": 129,
+        "first_day": 1774483200,
+        "last_day": 1783728000
+      },
+      "validation": {
+        "start": 129,
+        "end_exclusive": 165,
+        "first_day": 1783814400,
+        "last_day": 1786838400
+      },
+      "test": {
+        "start": 165,
+        "end_exclusive": 201,
+        "first_day": 1786924800,
+        "last_day": 1789948800
+      }
+    },
+    "test_table": {
+      "full_plastic": {
+        "n_seeds": 1,
+        "mean_net_return_pct": 3.083069124087201,
+        "min_net_return_pct": 3.083069124087201,
+        "max_net_return_pct": 3.083069124087201,
+        "seed_returns_pct": {
+          "0": 3.083069124087201
+        },
+        "mean_fills": 2,
+        "mean_fees": 0.01579965819128,
+        "mean_gated_decisions": 0
+      },
+      "full_frozen": {
+        "n_seeds": 1,
+        "mean_net_return_pct": 27.123273366409606,
+        "min_net_return_pct": 27.123273366409606,
+        "max_net_return_pct": 27.123273366409606,
+        "seed_returns_pct": {
+          "0": 27.123273366409606
+        },
+        "mean_fills": 5,
+        "mean_fees": 0.03300824405904,
+        "mean_gated_decisions": 0
+      }
+    },
+    "paired_mean_difference_percentage_points": {},
+    "benchmarks_test_return_pct": {
+      "cash_test": 0.0,
+      "buy_hold_same_guard_test": 33.32494703173441
+    },
+    "integrity_checks": "pass",
+    "interpretation": "Seed variation on one public development path, not independent markets or a confidence interval."
+  }
+]

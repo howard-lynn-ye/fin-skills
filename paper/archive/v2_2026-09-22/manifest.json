@@ -1,0 +1,333 @@
+{
+  "status": "ARCHIVED_UNVERIFIED_NOT_CURRENT_RESEARCH_EVIDENCE",
+  "source_commit": "a2644375ad9030cca0518af56dda02c334bc7788",
+  "comparison_base": "dd9125c2a99a10055f1668ab8a1747b5a8d80807",
+  "scope": "All paths changed by v2 since its merge base with origin/master; deletions recorded in manifest. Git history preserves the full original branch.",
+  "archive": "v2-divergent-materials.zip",
+  "archive_sha256": "9e0fe402b372b9f86d53394d0dec1ca41ca8477db28cfbbad6fb28cca8d4430c",
+  "archive_bytes": 3633778,
+  "entries": [
+    {
+      "status": "A",
+      "path": "benchmarks/AGENT_STUDY_RESULTS.json",
+      "sha256": "ecac44088e647ededb7ca92ef05d920d0838196176871ae3c5c0ca4560e17d5e",
+      "bytes": 115626
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/GUARD_BENCH_RESULTS.json",
+      "sha256": "d940e5bda0a6bac87f628eb30cd50d7261ac17560bd323b3fe846bb6951d9f83",
+      "bytes": 50406
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/PARITY_AND_COST_RESULTS.json",
+      "sha256": "a5f1864dfd20cdf6e08e67c8b3d0f126b34d2dcee088b1b15c986ac6e8216eeb",
+      "bytes": 4238
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/REAL_WORLD_KOL_AUDIT_RESULTS.json",
+      "sha256": "d12b65cbd9c26cbe4da2f97152657195bd229415e3091873f083abeab2731e95",
+      "bytes": 10718
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/agent_study/run_finguard_bench_60.py",
+      "sha256": "341e145f4315b6e61f44d9dd548fb034e10dfbe82b1729a78153abd1dc1df2d9",
+      "bytes": 31357
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/agent_study/tasks_60.json",
+      "sha256": "2fb618d4145319c2b0aa9c76223c0adadc2484be72af877ae665e0bd03dd384c",
+      "bytes": 14969
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/data/kol_credibility_linguistic_fixture.json",
+      "sha256": "40924a15d4230430fd459fc39002ae7a8ada7f9ffcd671a2be2d539760fc956a",
+      "bytes": 1355963
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/guard_bench_180.py",
+      "sha256": "195c38290234e231bf6592e0885e171c533fb895c7ae673919ee7d11835ee4f7",
+      "bytes": 9511
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/parity_and_cost_bench.py",
+      "sha256": "dbf8d1c542bd1c28716670eb62ba689f3537af12d7bf8a5d993ecdebb5a668be",
+      "bytes": 14408
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/real_world_kol_audit.py",
+      "sha256": "6ebba8105b933bf5ec44126b17b7a4e520be87a67acafc6e99992e0363fdb1a5",
+      "bytes": 16459
+    },
+    {
+      "status": "A",
+      "path": "paper/NAACL_SHORT_PAPER.md",
+      "sha256": "8ae23c275468a340e1347abb0d71c28b96db31790bd740e30f3ba50b99ef668f",
+      "bytes": 13598
+    },
+    {
+      "status": "A",
+      "path": "paper/NAACL_SHORT_PAPER_ZH.md",
+      "sha256": "e742bf37373fd46532030c52254ea73f922d63bc9ffb2200b852e159174ec16e",
+      "bytes": 9879
+    },
+    {
+      "status": "A",
+      "path": "paper/generate_figures.py",
+      "sha256": "ef0092d2e51471d1d632a0cc734ab9364f8b523dbf85bbd2c8d339981397988c",
+      "bytes": 12814
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/FinSkills_NAACL_2026_Overleaf.zip",
+      "sha256": "f677c6307991ee2eec55347fee577437aeaaddaa86943bfac6bb9e313b8e34be",
+      "bytes": 694213
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/acl.sty",
+      "sha256": "19dfeddc2c0e448f3926a0bef048a9db3f3611b46265b760caabd7ada4f361de",
+      "bytes": 11615
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/acl_natbib.bst",
+      "sha256": "6fbb306202290f4b68e74ac1460a8b27398500cb6dfeb4492e74c457eae7cd1e",
+      "bytes": 45442
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/custom.bib",
+      "sha256": "6ee8f4c4da7a8949b36fb83600e54e6104f22fa196782fd80a9a1ed788777b38",
+      "bytes": 4635
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_domain_heatmap_and_model_scaling.pdf",
+      "sha256": "73b63674c1bc49523f37a1d7d4a6cd93f732bb891e8dd4afa2faf1928239b0dd",
+      "bytes": 41684
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_domain_heatmap_and_model_scaling.png",
+      "sha256": "3383e7052806fcefe17be742ee0975a8e5cc67133f06c0adccdeb7ced65ced53",
+      "bytes": 250517
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_guard_scaling_and_clock_replay.pdf",
+      "sha256": "b60b50d4c0bf46dff968cab9bd6dd90ad6c45e694f17a37090ee182deb7ce423",
+      "bytes": 37189
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_guard_scaling_and_clock_replay.png",
+      "sha256": "1747c187728d0ee1f043707df3a2a3671f59664d14aa63a922a9dc6413a4e628",
+      "bytes": 191338
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_overview_compliance_and_kol.pdf",
+      "sha256": "b946cf9bac8fc169d64aabdbef1eae72a1a073f844c44f3725a939ac2ada914f",
+      "bytes": 39751
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/figs/fig_overview_compliance_and_kol.png",
+      "sha256": "70415787d08a5a45392abb235f7e420595a319e21acf96c37b880ae87c13b4f2",
+      "bytes": 182023
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/main.pdf",
+      "sha256": "e53749c65f48bf22c82836e512f6314295a1f8e72db7c02900fb029468041466",
+      "bytes": 367874
+    },
+    {
+      "status": "M",
+      "path": "paper/latex_naacl/main.tex",
+      "sha256": "5bd82c7d5a78153516b2b6f0dfcebc4305aad6cf2d109d7a449576573c04983e",
+      "bytes": 2125
+    },
+    {
+      "status": "D",
+      "path": "paper/latex_naacl/references.bib"
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/abstract.tex",
+      "sha256": "626f1162fa46445bab7e17027f825d412feeb2919b4b99fffb161fbf1a794547",
+      "bytes": 2469
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/appendix.tex",
+      "sha256": "38d5a06d377a0c5c5941e0d060367978bf07346ca4bb37beff8382fc6a86afb3",
+      "bytes": 10765
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/conclusion.tex",
+      "sha256": "0f0d758b4b9201af2e8b45a9bfb34fb30c951963d62a5951ea88644fe97b618b",
+      "bytes": 2739
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/experiment.tex",
+      "sha256": "b5e708abc2faf006e193079c6a12e41c61f20e1f2df12acb4656d422ee4e58e8",
+      "bytes": 8268
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/introduction.tex",
+      "sha256": "ce7f424664c59aaff72ed70ccfd081f4fc2cbf6f136ba1c703202d0226c52a46",
+      "bytes": 4366
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/method.tex",
+      "sha256": "996670238413dff6923ec5aa2e7f52dc267ad57ed9c02f378226366c42803e0b",
+      "bytes": 3045
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/preliminaries.tex",
+      "sha256": "03c9998360dbb9b22b53584c55aa8c3c10b79f44c5361ec763cec24c08a58ac8",
+      "bytes": 2403
+    },
+    {
+      "status": "A",
+      "path": "paper/latex_naacl/sections/related_work.tex",
+      "sha256": "90fecdb19546be9b7e4a72b6b4b37256b7b24f66239a85e2fda46cdb3b08249d",
+      "bytes": 1312
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/FinSkills_NAACL_2026_Overleaf.zip",
+      "sha256": "f677c6307991ee2eec55347fee577437aeaaddaa86943bfac6bb9e313b8e34be",
+      "bytes": 694213
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/acl.sty",
+      "sha256": "19dfeddc2c0e448f3926a0bef048a9db3f3611b46265b760caabd7ada4f361de",
+      "bytes": 11615
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/acl_natbib.bst",
+      "sha256": "6fbb306202290f4b68e74ac1460a8b27398500cb6dfeb4492e74c457eae7cd1e",
+      "bytes": 45442
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/custom.bib",
+      "sha256": "6ee8f4c4da7a8949b36fb83600e54e6104f22fa196782fd80a9a1ed788777b38",
+      "bytes": 4635
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_domain_heatmap_and_model_scaling.pdf",
+      "sha256": "73b63674c1bc49523f37a1d7d4a6cd93f732bb891e8dd4afa2faf1928239b0dd",
+      "bytes": 41684
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_domain_heatmap_and_model_scaling.png",
+      "sha256": "3383e7052806fcefe17be742ee0975a8e5cc67133f06c0adccdeb7ced65ced53",
+      "bytes": 250517
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_guard_scaling_and_clock_replay.pdf",
+      "sha256": "b60b50d4c0bf46dff968cab9bd6dd90ad6c45e694f17a37090ee182deb7ce423",
+      "bytes": 37189
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_guard_scaling_and_clock_replay.png",
+      "sha256": "1747c187728d0ee1f043707df3a2a3671f59664d14aa63a922a9dc6413a4e628",
+      "bytes": 191338
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_overview_compliance_and_kol.pdf",
+      "sha256": "b946cf9bac8fc169d64aabdbef1eae72a1a073f844c44f3725a939ac2ada914f",
+      "bytes": 39751
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/figs/fig_overview_compliance_and_kol.png",
+      "sha256": "70415787d08a5a45392abb235f7e420595a319e21acf96c37b880ae87c13b4f2",
+      "bytes": 182023
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/main.pdf",
+      "sha256": "e53749c65f48bf22c82836e512f6314295a1f8e72db7c02900fb029468041466",
+      "bytes": 367874
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/main.tex",
+      "sha256": "5bd82c7d5a78153516b2b6f0dfcebc4305aad6cf2d109d7a449576573c04983e",
+      "bytes": 2125
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/abstract.tex",
+      "sha256": "626f1162fa46445bab7e17027f825d412feeb2919b4b99fffb161fbf1a794547",
+      "bytes": 2469
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/appendix.tex",
+      "sha256": "38d5a06d377a0c5c5941e0d060367978bf07346ca4bb37beff8382fc6a86afb3",
+      "bytes": 10765
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/conclusion.tex",
+      "sha256": "0f0d758b4b9201af2e8b45a9bfb34fb30c951963d62a5951ea88644fe97b618b",
+      "bytes": 2739
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/experiment.tex",
+      "sha256": "b5e708abc2faf006e193079c6a12e41c61f20e1f2df12acb4656d422ee4e58e8",
+      "bytes": 8268
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/introduction.tex",
+      "sha256": "ce7f424664c59aaff72ed70ccfd081f4fc2cbf6f136ba1c703202d0226c52a46",
+      "bytes": 4366
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/method.tex",
+      "sha256": "996670238413dff6923ec5aa2e7f52dc267ad57ed9c02f378226366c42803e0b",
+      "bytes": 3045
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/preliminaries.tex",
+      "sha256": "03c9998360dbb9b22b53584c55aa8c3c10b79f44c5361ec763cec24c08a58ac8",
+      "bytes": 2403
+    },
+    {
+      "status": "A",
+      "path": "paper/stock_prediction/sections/related_work.tex",
+      "sha256": "90fecdb19546be9b7e4a72b6b4b37256b7b24f66239a85e2fda46cdb3b08249d",
+      "bytes": 1312
+    }
+  ]
+}

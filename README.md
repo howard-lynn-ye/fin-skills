@@ -3,7 +3,10 @@
 [Research workflow](docs/RESEARCH_WORKFLOW.md) | [API compatibility](docs/API_COMPATIBILITY.md)
 
 [Strategies, decisions and algorithms](catalog/QUANT_METHODS.md) |
-[Method search API](docs/QUANT_METHODS.md): sourced discovery with explicit implementation status.
+[Method search API](docs/QUANT_METHODS.md) |
+[Model usage](docs/MODEL_USAGE.md) | [Native adapters](docs/UPSTREAM_METHODS.md)
+
+Method discovery includes sources and explicit implementation status.
 
 **Research evidence status (2026-09-21):** The revised [study plan](paper/STUDY_PLAN.md)
 separates historical pilot results, synthetic regression checks, and experiments still
@@ -77,11 +80,11 @@ flowchart TD
     end
 
     subgraph TIER2 ["2. 🛡️ Executable Research Integrity Engine (fin_skills.api)"]
-        E1["Bundle Container<br/>151 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["36 Executable Guards<br/>GuardResult + Diagnostic Summary"]
+        E1["Bundle Container<br/>166 Typed Artefact Slots"] --> E2["check(bundle) Unified Runner<br/>Auto-Selects Ready Guards"] --> E3["36 Executable Guards<br/>GuardResult + Diagnostic Summary"]
     end
 
     subgraph TIER3 ["3. 🤖 Agent & Workflow Integration Interfaces"]
-        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>56 Live Agent Inspection Tools"]
+        I1["Claude Code / Jetski Plugins<br/>Auto-Triggered via SKILL.md"] --> I2["Python SDK (pip install)<br/>Importable Modules & Conventions"] --> I3["MCP Server & JSON Tools<br/>61 Live Agent Inspection Tools"]
     end
 
     D3 ==>|Compiled by build_package.py| E1
@@ -102,7 +105,7 @@ flowchart TD
 | :--- | :--- | :--- |
 | **Knowledge Coverage** | **129 Agent Skills** across **17 Plugins** | **100% Validated** against the portable 6-field Agent Skills specification (`scripts/validate.py`). Covers Equities, A-Shares, Crypto, Options, Fixed Income, Credit, Macro, Microstructure, ML, and Tax. |
 | **Executable Code Guards** | **36 Unified Guards** (`fin_skills.api`)<br>**124 Standalone Scripts** | **Callable and tested.** Every guard returns a structured `GuardResult(passed, summary, metrics)`. Features newly added Pre-Trade Defense guards: `qdii_premium`, `board_lot_feasibility`, and `cash_drag`. |
-| **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught (100%)**<br>**0 False Positives** on Clean Data | **Benchmark Verified** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,565-day synthetic world with delistings and splits; timings for this machine are recorded in the generated benchmark output. |
+| **Empirical Leak Benchmark (`leak_bench`)** | **12 / 12 Planted Defects Caught**<br>**0 False Positives** on the clean fixture | **Development regression** ([`benchmarks/RESULTS.md`](benchmarks/RESULTS.md)). Tested on a 1,825-day synthetic world with delistings and splits; timings are recorded in the generated benchmark output. These cases do not establish detection accuracy on unseen defects. |
 | **Agent Routing (`eval_blind`)** | **92/108 historical-label matches; 16/16 new-capability queries** | Independent listing-only evaluation on 2026-09-14. Old labels include superseded broad routes; the new set is a small smoke test. [Inputs, answers and limitations](evals/2026-09-14/README.md). |
 | **Test Suite & CI Rigor** | **Repository-wide default test suite** | Run `pytest -q`; current measured results are recorded in the [acceptance audit](docs/COMPLETION_AUDIT.md). Zero drift enforced between `SKILL.md` sources, `catalog/index.json`, README counts, and generated Python modules. |
 | **Ecosystem Federation** | **92 Third-Party Packs Federated**<br>(from 139 Repos / 4,851 Skills Audited) | **Curated & Commit-Pinned** ([`catalog/federation-notes.md`](catalog/federation-notes.md)). Official vendor packs (Alpaca, Kraken, OKX, Longbridge) and community repos integrated with SHA pinning. |
@@ -120,7 +123,7 @@ pip install git+https://github.com/howard-lynn-ye/fin-skills
 ```
 
 #### 1. Audit a Backtest Run with `Bundle` and `check()`
-The `Bundle` container holds the artefacts of a research run under a fixed 151-slot vocabulary. Calling `check(b)` automatically runs every guard whose required inputs are present:
+The `Bundle` container holds the artefacts of a research run under a fixed 166-slot vocabulary. Calling `check(b)` automatically runs every guard whose required inputs are present:
 
 ```python
 from fin_skills.api import Bundle, check, get, Suite, conventions as c

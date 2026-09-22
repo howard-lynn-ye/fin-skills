@@ -1,4 +1,4 @@
-# Published mushroom-body model reproduction
+# Published mushroom-body model reproduction and optional memory extension
 
 This standalone research directory reproduces numerical outputs from Huang, Luo,
 Woo et al., *Nature* (2024), DOI `10.1038/s41586-024-07819-w`.
@@ -10,11 +10,30 @@ Pinned commit: `5d7c08a9a88f923169a0c3008aca68af421e9a7f`.
 
 The upstream model and the translations/derived harnesses here are
 **GPL-3.0-or-later**, copyright 2024 Junjie Luo, Cheng Huang, Mark J. Schnitzer
-for the original model. Python translation and execution harnesses were added
-2026-09-21. See `COPYING.txt`. This directory is outside the MIT `fin_skills`
-package and is not imported or distributed by that package. No upstream source
-or data is vendored into the package. A local pinned checkout is in ignored
+for the original model. Python translation, causal adaptation and execution
+harnesses were added 2026-09-21. See `COPYING.txt` and module provenance.
+This GPL extension is installed and distributed separately from the MIT
+`fin_skills` core package. The optional `fly_memory` adapter imports it when
+explicitly created; no upstream source or data is vendored into the core package.
+A local pinned checkout is in ignored
 `runs/fly-paper-reproduction-20260921/upstream`.
+
+## Optional installation and reuse
+
+From the repository root, install separately with
+`pip install ./benchmarks/fly_paper`, then use
+`fin_skills.model_zoo.create_model("fly_memory", circuit_parameters=...)`.
+Supply explicit parameter matrices or use `fin_skills_fly.load_parameters()` with
+a trusted published parameter file. No pretrained parameters are bundled.
+
+`model.py` preserves the offline published simulator. `online.py` changes the clock
+to use observed conditioning events and provides a non-mutating readout. Financial
+reinforcement and biological-time scaling are engineering hypotheses, not a claim
+of biological or trading validation. `fin_skills.model_zoo` requires matured,
+single-use feedback receipts before updating the memory. See the
+[model usage guide](../../docs/MODEL_USAGE.md) and
+[integration record](../../docs/MODEL_INTEGRATION.md) for the reusable interface;
+the numerical reproduction and separate development assays are described below.
 
 ## Frozen numerical scope
 
@@ -66,11 +85,13 @@ combined job completed native work but failed on missing `openpyxl`; a separate
 comparison attempt found missing `matplotlib`, then an Octave metadata-format
 issue. The successful attempt and all failures are listed in `RESULTS.md`.
 
-Run the narrow local numerical guardrails with:
+Run the narrow numerical and online-interface guardrails with:
 
 ```powershell
-python -m pytest -q benchmarks/fly_paper/test_model.py
+python -m pytest -q benchmarks/fly_paper/test_model.py benchmarks/fly_paper/test_online.py
 ```
+
+These tests do not establish profitable trading or independent paper replication.
 
 After native execution, run:
 

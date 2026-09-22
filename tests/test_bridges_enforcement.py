@@ -8,6 +8,7 @@ The optimizer, QuantLib and reporting bridges are in test_bridges_analytics.py.
 from __future__ import annotations
 
 import warnings
+from contextlib import nullcontext
 
 import numpy as np
 import pandas as pd
@@ -58,14 +59,15 @@ def test_vectorbt_already_lagged_is_verified_not_believed(bars):
 
 
 def test_vectorbt_already_lagged_accepts_a_genuinely_lagged_signal(bars):
-    """The same claim, honestly made, gets past the proof and fails only on the import."""
+    """A valid lag proof runs natively when installed, or reaches the dependency error."""
     b = Bundle(bars=bars, close=bars["close"])
     entries = (bars[["close"]] > bars[["close"]].rolling(20).mean()).shift(1, fill_value=False)
-    with pytest.raises(_lazy.MissingLibrary if not has_module("vectorbt")
-                       else AssertionError):
-        V.to_vectorbt(b, entries=entries, exits=~entries, price="open",
+    installed = has_module("vectorbt")
+    with nullcontext() if installed else pytest.raises(_lazy.MissingLibrary):
+        result = V.to_vectorbt(b, entries=entries, exits=~entries, price="open",
                       already_lagged=True,
                       signal_fn=lambda d: d["close"].rolling(20).mean().shift(1))
+        assert result.returns().index.equals(bars.index)
 
 
 def test_vectorbt_refuses_an_untestable_lag_claim(bars):
@@ -136,7 +138,7 @@ def test_vectorbt_shifts_by_default_and_the_two_sharpes_differ(bars):
     g = V.from_vectorbt(guarded, sessions=252).returns
     r = raw.returns()
     assert conventions.annualize_sharpe(g, 252) != conventions.annualize_sharpe(r, 252)
-    fills = pd.DataFrame(guarded.order_records.records)
+    fills = pd.DataFrame(guarded.order_records)
     close = bars["close"].to_numpy()
     assert not any(np.isclose(float(row.price), close[int(row.idx)], atol=1e-12)
                    for row in fills.itertuples(index=False)), \

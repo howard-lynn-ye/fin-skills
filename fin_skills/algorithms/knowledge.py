@@ -11,7 +11,7 @@ from ._knowledge_data import ASSET_OVERRIDES, GAPS, GROUPS, RELATED_MODELS, SOUR
 
 SCOPE = ("Living inventory; not an exhaustive enumeration or evidence of profit. "
          "Counts are catalog entries, including backend variants, not distinct economic ideas. "
-         "External means an upstream implementation is documented, not callable here. "
+         "External means no complete model adapter; a native engine bridge may be available. "
          "Related models are components, not implementations of the full strategy.")
 KINDS = ("strategy", "decision", "algorithm")
 STATUSES = ("integrated", "external", "reference")
@@ -37,6 +37,18 @@ def _cards():
                                 evidence="method_existence", performance_evidence=None))
             if id_ in ASSET_OVERRIDES:
                 cards[-1]["asset_classes"] = list(ASSET_OVERRIDES[id_])
+            if source_id in ("qc", "options", "execution", "controls"):
+                cards[-1]["engine_bridge"] = dict(
+                    entrypoint="fin_skills.bridges.lean.LeanBacktest",
+                    status="native_engine_sample_verified",
+                    limitation="Caller supplies algorithm and data; this specific strategy is not verified.")
+            if source_id in ("hummingbot", "avellaneda", "amm", "basis", "funding"):
+                cards[-1]["engine_bridge"] = dict(
+                    entrypoint="fin_skills.bridges.hummingbot." + (
+                        "funding_strategy" if source_id == "funding" else "native_strategy"),
+                    status="native_paper_quotes_verified" if id_ == "pure_market_making"
+                           else "factory_registered_not_end_to_end_verified",
+                    limitation="Requires caller-owned native runtime; no live connector acceptance test.")
             if id_ in models:
                 model = models[id_]
                 cards[-1].update(status="integrated", availability=model["status"],

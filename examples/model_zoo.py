@@ -12,6 +12,10 @@ def main():
     returns = np.random.default_rng(7).normal(0, .01, (100, 3))
     risk = create_model("ledoit_wolf_covariance").run({"asset_returns": returns})
     print("covariance", risk["covariance"])
+    print("TAKEAWAY")
+    print("Discovery reports optional dependencies without installing them.")
+    print("Forecast adapters fit history; numerical adapters run explicit inputs.")
+    print("Interface output alone does not establish trading profitability.")
 
 
 if __name__ == "__main__":

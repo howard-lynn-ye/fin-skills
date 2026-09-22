@@ -74,7 +74,7 @@
       "Crypto: staking and liquidation policies; integrated funding and basis execution",
       "Evaluation: purged combinatorial validation and deflated performance statistics"
     ],
-    "scope": "Living inventory; not an exhaustive enumeration or evidence of profit. Counts are catalog entries, including backend variants, not distinct economic ideas. External means an upstream implementation is documented, not callable here. Related models are components, not implementations of the full strategy."
+    "scope": "Living inventory; not an exhaustive enumeration or evidence of profit. Counts are catalog entries, including backend variants, not distinct economic ideas. External means no complete model adapter; a native engine bridge may be available. Related models are components, not implementations of the full strategy."
   },
   "methods": [
     {
@@ -10205,7 +10205,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10240,7 +10245,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10275,7 +10285,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10312,7 +10327,12 @@
         "vwap"
       ],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10376,7 +10396,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10410,7 +10435,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10444,7 +10474,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10478,7 +10513,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "decision",
@@ -10512,7 +10552,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10545,7 +10590,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.hummingbot.native_strategy",
+        "status": "factory_registered_not_end_to_end_verified",
+        "limitation": "Requires caller-owned native runtime; no live connector acceptance test."
+      }
     },
     {
       "kind": "strategy",
@@ -10578,7 +10628,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.hummingbot.funding_strategy",
+        "status": "factory_registered_not_end_to_end_verified",
+        "limitation": "Requires caller-owned native runtime; no live connector acceptance test."
+      }
     },
     {
       "kind": "strategy",
@@ -10611,7 +10666,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.hummingbot.native_strategy",
+        "status": "factory_registered_not_end_to_end_verified",
+        "limitation": "Requires caller-owned native runtime; no live connector acceptance test."
+      }
     },
     {
       "kind": "strategy",
@@ -10743,7 +10803,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10775,7 +10840,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10807,7 +10877,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10839,7 +10914,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10871,7 +10951,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10903,7 +10988,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -10935,7 +11025,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11356,7 +11451,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.hummingbot.native_strategy",
+        "status": "factory_registered_not_end_to_end_verified",
+        "limitation": "Requires caller-owned native runtime; no live connector acceptance test."
+      }
     },
     {
       "kind": "strategy",
@@ -11388,7 +11488,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.hummingbot.native_strategy",
+        "status": "factory_registered_not_end_to_end_verified",
+        "limitation": "Requires caller-owned native runtime; no live connector acceptance test."
+      }
     },
     {
       "kind": "strategy",
@@ -11420,7 +11525,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.hummingbot.native_strategy",
+        "status": "native_paper_quotes_verified",
+        "limitation": "Requires caller-owned native runtime; no live connector acceptance test."
+      }
     },
     {
       "kind": "strategy",
@@ -11453,7 +11563,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11486,7 +11601,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11519,7 +11639,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11552,7 +11677,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11585,7 +11715,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11618,7 +11753,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11653,7 +11793,12 @@
         "black_scholes"
       ],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11686,7 +11831,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11722,7 +11872,12 @@
         "quantlib_heston"
       ],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11755,7 +11910,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11788,7 +11948,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11821,7 +11986,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11857,7 +12027,12 @@
         "engle_granger"
       ],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11891,7 +12066,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11925,7 +12105,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11957,7 +12142,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -11991,7 +12181,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -12025,7 +12220,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -12059,7 +12259,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -12096,7 +12301,12 @@
         "momentum"
       ],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -12130,7 +12340,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",
@@ -12164,7 +12379,12 @@
       "operations": [],
       "related_model_ids": [],
       "evidence": "method_existence",
-      "performance_evidence": null
+      "performance_evidence": null,
+      "engine_bridge": {
+        "entrypoint": "fin_skills.bridges.lean.LeanBacktest",
+        "status": "native_engine_sample_verified",
+        "limitation": "Caller supplies algorithm and data; this specific strategy is not verified."
+      }
     },
     {
       "kind": "strategy",

@@ -1,10 +1,21 @@
 """Real upstream integration tests; replayed agent responses are transport fixtures."""
 import asyncio
 import json
+from importlib.metadata import PackageNotFoundError, version
 
 import numpy as np
 import pandas as pd
 import pytest
+
+
+def _require_finrl():
+    pytest.importorskip("stable_baselines3")
+    try:
+        installed = version("finrl")
+    except PackageNotFoundError:
+        pytest.skip("optional FinRL distribution is not installed")
+    if installed != "0.3.7":
+        pytest.skip("FinRL bridge requires version 0.3.7")
 
 
 def _market(n=6):
@@ -14,7 +25,7 @@ def _market(n=6):
 
 
 def test_finrl_next_open_cost_ledger_and_future_isolation():
-    pytest.importorskip("stable_baselines3")
+    _require_finrl()
     from fin_skills.bridges.finrl import make_finrl_env
     original = _market()
     future = original.copy()
@@ -41,6 +52,7 @@ def test_finrl_next_open_cost_ledger_and_future_isolation():
 
 
 def test_finrl_executes_at_next_open_and_rejects_bad_data():
+    _require_finrl()
     from fin_skills.bridges.finrl import make_finrl_env
     data = _market()
     data.loc[(data.date == data.date.unique()[1]) & (data.tic == "AAA"), "open"] = 12.
@@ -58,7 +70,7 @@ def test_finrl_executes_at_next_open_and_rejects_bad_data():
 
 @pytest.mark.parametrize("name", ["ppo", "sac"])
 def test_real_rl_policy_trains_in_finrl(name):
-    pytest.importorskip("stable_baselines3")
+    _require_finrl()
     from fin_skills.bridges.finrl import make_finrl_env
     from fin_skills.model_zoo import create_model
     env = make_finrl_env(_market(), initial_cash=1000)
@@ -195,6 +207,7 @@ def test_autogen_bad_call_is_feedback_not_execution():
 
 
 def test_model_session_rl_rollout_budget_and_bound_environment():
+    _require_finrl()
     from fin_skills.tools.agent import ModelSession
     from fin_skills.bridges.finrl import make_finrl_env
     session = ModelSession(environment_factories={"market": lambda: make_finrl_env(_market())},

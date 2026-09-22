@@ -1,0 +1,95 @@
+{
+  "recorded_on": "2026-09-21",
+  "timezone": "America/New_York",
+  "tool": "web search, direct primary-source reading, browser fallback, read-only author-code inspection",
+  "product_service": "No separate Deep Research product/tool invoked",
+  "selection": "Purposeful primary-source comparison of adult foraging behavior, memory mechanisms, competing models and engineering prior art. Related larval or non-Drosophila evidence not generalized to adult flies.",
+  "queries": [
+    {
+      "id": "Q01",
+      "queries": [
+        "Drosophila mushroom body computational model incentive circuit memory dynamics Gkanias 2022",
+        "Drosophila computational models heterogeneous dopamine signaling Jiang Litwin Kumar 2021",
+        "Drosophila exploration exploitation metabolic state taste value Whitehead Sahai Stonemetz Yapici published",
+        "Drosophila foraging local search food quality humidity Goldschmidt 2026"
+      ],
+      "purpose": "Identify competing computational models and newer foraging evidence"
+    },
+    {
+      "id": "Q02",
+      "queries": [
+        "\"Exploration-exploitation trade-off is regulated by metabolic state and taste value\" -site:pmc.ncbi.nlm.nih.gov",
+        "\"Goldschmidt\" \"2026\" \"search\" \"Drosophila\" food",
+        "\"Drosophila\" \"state\" \"memory expression\" Krashes 2009",
+        "\"Distinct dopamine receptor pathways underlie the temporal sensitivity\" 2019"
+      ],
+      "purpose": "Resolve publication versions and sensory/internal-state/timing mechanisms"
+    },
+    {
+      "id": "Q03",
+      "queries": [
+        "\"Goldschmidt\" \"10.1016/j.cub.2026.02.037\"",
+        "\"Exploration-exploitation trade-off is regulated by metabolic state and taste value in Drosophila\" \"journal\"",
+        "\"Drosophila\" \"FlyAlpha\" github",
+        "\"Exploration-exploitation trade-off\" \"Whitehead\" publication 2025 2026"
+      ],
+      "purpose": "Publication-version check, real-versus-virtual-food counterevidence, exploratory prior-art discovery"
+    },
+    {
+      "id": "Q04",
+      "queries": [
+        "\"Learning with reinforcement prediction errors\" \"Bennett\" PMC",
+        "\"Life-inspired interoceptive artificial intelligence\"",
+        "\"Drosophila\" \"Behbahani\" \"2021\" \"search\"",
+        "\"FlyAlpha\" \"github\""
+      ],
+      "purpose": "Locate accessible model full text, resolve recent interoceptive-AI prior art and local-search metadata, identify trading code lead"
+    },
+    {
+      "id": "Q05",
+      "queries": [
+        "\"Mushroom body output neurons encode valence\" PMC",
+        "\"Dopamine-mediated interactions\" correction",
+        "\"An incentive circuit for memory dynamics\" correction",
+        "\"Learning with reinforcement prediction errors\" correction"
+      ],
+      "purpose": "Resolve MBON primary full text and check correction leads for three central candidate models; not an exhaustive integrity audit"
+    }
+  ],
+  "direct_source_access": "See source_manifest.json URLs and evidence_notes.json access routes/read scopes. This log records query batches and source access outcomes, not full third-party text or search ranking/counts.",
+  "leads": [
+    {
+      "title": "Larval recurrent architecture and learned/innate convergence studies",
+      "decision": "Discovery only; not used as adult-specific circuit evidence"
+    },
+    {
+      "title": "Generic marginal value theorem literature",
+      "decision": "Not used to claim that Drosophila implements an optimal patch-leaving theorem, or that financial opportunities deplete when traded"
+    },
+    {
+      "title": "FlyAlpha community post",
+      "url": "https://www.reddit.com/r/ai_trading/comments/1wifiea/can_a_fruitfly_nervous_system_learn_from/",
+      "decision": "Discovery route to author's public repository only; comments and performance anecdotes not evidence"
+    },
+    {
+      "title": "Interoceptive AI, earlier arXiv version",
+      "url": "https://arxiv.org/abs/2309.05999",
+      "decision": "Discovery only; formal 2026 publisher abstract used and labelled Perspective"
+    }
+  ],
+  "access_limits": [
+    {
+      "evidence_id": "E012",
+      "status": "Publisher browser asks for CAPTCHA; not solved. Primary official abstract used with explicit limitation."
+    },
+    {
+      "evidence_id": "E018",
+      "status": "Formal publisher page has a subscription body; abstract/metadata used only."
+    },
+    {
+      "evidence_id": "E014",
+      "status": "Observed PMC version is preprint v1. Search did not resolve later formal publication; no claim of exhaustive version coverage."
+    }
+  ],
+  "stopping_rule": "Stop this pass when a bounded architecture decision, competing explanations, explicit source limits and falsification plan are documented. No claim of search saturation or financial novelty proof."
+}

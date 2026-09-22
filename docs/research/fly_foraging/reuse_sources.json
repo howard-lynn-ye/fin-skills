@@ -1,0 +1,298 @@
+{
+  "checked_on": "2026-09-21",
+  "timezone": "America/New_York",
+  "scope": "bounded existing-implementation review, not a systematic review or market-performance reproduction",
+  "search_queries": [
+    "\"fruit fly\" trading github StonkFly",
+    "\"Drosophila\" trading agent github",
+    "\"FlyAlpha\" github",
+    "\"Drosophila\" foraging reinforcement learning github model"
+  ],
+  "discovery_only": [
+    "https://github.com/townie/awesome-fruit-fly"
+  ],
+  "sources": [
+    {
+      "id": "stonkfly",
+      "repository": "https://github.com/nftechie/stonkfly",
+      "commit": "78ef3e05ab0fa086032098558d893667068944a0",
+      "license": "MIT; LICENSE text read",
+      "assistant_access": "README, LICENSE and targeted excerpts of listed source files and documentation; not an exhaustive audit",
+      "human_verification": "pending",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "e364bcbcc04a53d011d43c2103ddfcbe5ccbf2821c795fddd64adcec89582c71",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/README.md"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "484b339d0a9ae8c3607eb8704346ef86d2e52960d93e3b75d2ecc26d576706c7",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/LICENSE"
+        },
+        {
+          "path": "docs/model.md",
+          "sha256": "4594326a06784b49d24cd994b0ac15d16d18919b3d6eadc245018b83a2f2e0a9",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/docs/model.md"
+        },
+        {
+          "path": "docs/validation.md",
+          "sha256": "4709e547201189c7155c9964038661000ca7e8b8b741cac3fe1a32383d9439f5",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/docs/validation.md"
+        },
+        {
+          "path": "stonkfly/neural/rule.py",
+          "sha256": "45303a523edc73165de1716f79924561e3b5fb55043c65575a4192ee66d16f45",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/stonkfly/neural/rule.py"
+        },
+        {
+          "path": "stonkfly/neural/controller.py",
+          "sha256": "8d5b4a78a0d581303557553e96174045dbcfe1cd661254e3c63501a8389dbff7",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/stonkfly/neural/controller.py"
+        },
+        {
+          "path": "tests/test_neural.py",
+          "sha256": "d0fab07547214f2647451b1c577f3c8a38aff4f676a7a7bd7460e954dc67afe8",
+          "url": "https://github.com/nftechie/stonkfly/blob/78ef3e05ab0fa086032098558d893667068944a0/tests/test_neural.py"
+        }
+      ]
+    },
+    {
+      "id": "stonkfly-lab",
+      "repository": "https://github.com/paappraiser/stonkfly-lab",
+      "commit": "09e4529e2e1a135083838abd00ccacfd95c63a29",
+      "license": "MIT; LICENSE text read",
+      "assistant_access": "README, LICENSE and targeted excerpts of listed source files and documentation; not an exhaustive audit",
+      "human_verification": "pending",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "6513b02ead0ba455b9d0613ca40bd5964a8d98af9563b44b96c5a581cb1d7ab0",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/README.md"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "8114163252f1f3174855d79749985a8181eb6802b355e3c582dd323572fe1ebe",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/LICENSE"
+        },
+        {
+          "path": "flylab/mb.py",
+          "sha256": "a1349dbb527e82355c7d4a32b8f99f3b20f8ebac7327406384266b0e56fbe2bd",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/flylab/mb.py"
+        },
+        {
+          "path": "flylab/engine.py",
+          "sha256": "6df4e187181491f71b9cbc0aabe686770891af3b10ca4e641130cfb1510f371e",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/flylab/engine.py"
+        },
+        {
+          "path": "flylab/reinforcement.py",
+          "sha256": "ba93025f51c3ccf8e94e61d5aeceacd13d931efe3d909be677dcc8518d94ac74",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/flylab/reinforcement.py"
+        },
+        {
+          "path": "flylab/colony.py",
+          "sha256": "2030bd5501a52b9a32dce5388a016c6ecbaacbbd42eefe5cc6008d30b45c2959",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/flylab/colony.py"
+        },
+        {
+          "path": "flylab/config.py",
+          "sha256": "f220d14bc322810316d97a3dda5825b4e0eb67f715509df3b3bf33916ea5b71f",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/flylab/config.py"
+        },
+        {
+          "path": "tests/test_stage0.py",
+          "sha256": "ea93e2fabd7b8929a1c6ef59f2097db4c3260fdfa10cec17892540f8d6c500f8",
+          "url": "https://github.com/paappraiser/stonkfly-lab/blob/09e4529e2e1a135083838abd00ccacfd95c63a29/tests/test_stage0.py"
+        }
+      ]
+    },
+    {
+      "id": "fruit-fly-fund",
+      "repository": "https://github.com/armanbabazadeh6/fruit-fly-fund",
+      "commit": "56f01f6426a4d6d6293a4e06afcf4a035133a968",
+      "license": "MIT; LICENSE text read",
+      "assistant_access": "README, LICENSE and targeted excerpts of listed source files and documentation; not an exhaustive audit",
+      "human_verification": "pending",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "3df44428c69a76bb3c82d4ed0b1c5242936a36a0d5ce4df9bfb5ff551600e2fa",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/README.md"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "2a33aaacf7d9c972d43eb58278bb838f0fb8e30a8872d6bb2ead3f04a858710f",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/LICENSE"
+        },
+        {
+          "path": "UPSTREAM.md",
+          "sha256": "c0e76c0c904c7de84481f923fbd19c8463dab8bd22da77de5f2668f2deb031ad",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/UPSTREAM.md"
+        },
+        {
+          "path": "flyvsly/backends/neural.py",
+          "sha256": "4f1e954d597cfb1b0e158329fe4b0e5439df33ce9d7cb3ec56e94a963589167d",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/flyvsly/backends/neural.py"
+        },
+        {
+          "path": "flyvsly/starting.py",
+          "sha256": "299022e149edf96447c6b385e40a78788bff124dd4c8eece185a66fcad482c4e",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/flyvsly/starting.py"
+        },
+        {
+          "path": "flyvsly/market.py",
+          "sha256": "fc9cf76a5b48bbc7e278cd6992de9877d026bf591c1370887ab73ddda7e8a623",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/flyvsly/market.py"
+        },
+        {
+          "path": "scripts/experiment.sh",
+          "sha256": "e8c0cffa897f7dd56de0afbe5f57fc8cc647cf3de529351d5b157fd89438f1d7",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/scripts/experiment.sh"
+        },
+        {
+          "path": "tests/test_fairness.py",
+          "sha256": "03ed861024f79ed7abfec97b93fb7e297284453bef686600b22e4e21f5fd780f",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/tests/test_fairness.py"
+        },
+        {
+          "path": "tests/test_recording_accounting.py",
+          "sha256": "93c5409091d43bb960bef6954116a343fcc1dd1c5f59f127c8ee3baf57987ebb",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/tests/test_recording_accounting.py"
+        },
+        {
+          "path": "tests/test_starting.py",
+          "sha256": "f5fc7239d0500eb2e342668f8abf9b6dd347e702cb656ee16f6e1b5d9b32962f",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/tests/test_starting.py"
+        },
+        {
+          "path": "tests/test_market_seasons.py",
+          "sha256": "add4735868eb529ec0cd304903dd01d7a5582101180d8e68424606e470e117d8",
+          "url": "https://github.com/armanbabazadeh6/fruit-fly-fund/blob/56f01f6426a4d6d6293a4e06afcf4a035133a968/tests/test_market_seasons.py"
+        }
+      ]
+    },
+    {
+      "id": "openfly",
+      "repository": "https://github.com/marketcalls/openfly",
+      "commit": "fd4b06ba0d32fa76965672777e5811da7d9171eb",
+      "license": "MIT; LICENSE text read",
+      "assistant_access": "README, LICENSE and targeted excerpts of listed source files and documentation; not an exhaustive audit",
+      "human_verification": "pending",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "ba6e1fbeece65e8e3450820f6352a4e66e4b675b4e24f454265a37549ce260c6",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/README.md"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "37a51b0c52d6084a73ef5280a318b8bce667d8025dbee247a3e0c2f02c6acb3f",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/LICENSE"
+        },
+        {
+          "path": "docs/experiments.md",
+          "sha256": "c76ecc1b1c74dfc869b30f2a6b4b0f822db65b59a846fa3a631d5a331d1a0a1b",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/docs/experiments.md"
+        },
+        {
+          "path": "openfly/interfaces.py",
+          "sha256": "3a81fb4490b0f05b435dfbbb5e7298075ece85c8517a53f9b77fbe2188e6e3a5",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/openfly/interfaces.py"
+        },
+        {
+          "path": "openfly/experiments/runner.py",
+          "sha256": "da6d11284907a0939a4fb95aa157f666f8dc0501cd58ecb177cc22e20f804617",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/openfly/experiments/runner.py"
+        },
+        {
+          "path": "openfly/experiments/reward.py",
+          "sha256": "b68dbe97cbf8c0b8a7a642b7db163942173f7aab840b339ca0d973d842edde38",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/openfly/experiments/reward.py"
+        },
+        {
+          "path": "openfly/experiments/features.py",
+          "sha256": "daf67d65fd3e3c7888ac1ee5d8c89e9bda5f5cbbdcea381e801f3c4a84fa3c5d",
+          "url": "https://github.com/marketcalls/openfly/blob/fd4b06ba0d32fa76965672777e5811da7d9171eb/openfly/experiments/features.py"
+        }
+      ]
+    },
+    {
+      "id": "FlyAlpha",
+      "repository": "https://github.com/TanaeemDar/FlyAlpha",
+      "commit": "350d60ad2062464a36b50f8e1db9e68dfffb57f2",
+      "assistant_access": "README and repository metadata only",
+      "license": "MIT according to GitHub metadata; not selected for reuse",
+      "human_verification": "pending",
+      "tests": "not run"
+    },
+    {
+      "id": "TraderFly",
+      "repository": "https://github.com/SotoAlt/traderfly-brain",
+      "commit": "05a61a7dad295369c0ded8f030422047d8f2dca8",
+      "assistant_access": "README and repository metadata only",
+      "license": "README all rights reserved; not selected for reuse",
+      "human_verification": "pending",
+      "tests": "not run"
+    },
+    {
+      "id": "FlyTV",
+      "url": "https://www.tradingview.com/script/nmnHkA02-FlyTV-a-real-fruit-fly-connectome-trading-on-your-chart/",
+      "assistant_access": "author publication description, not an independent code audit",
+      "license": "reuse terms not established in this review; not selected for code reuse",
+      "human_verification": "pending",
+      "tests": "not run"
+    }
+  ],
+  "local_environment": {
+    "python": "3.11.7",
+    "numpy": "1.26.4",
+    "pandas": "2.1.4",
+    "pytest": "9.0.3",
+    "warning": "Selected tests only; dependencies do not match the complete pinned Stonkfly environment."
+  },
+  "tests": [
+    {
+      "repo": "stonkfly",
+      "command": "python -m pytest tests/test_neural.py -q",
+      "observed_summary": "6 passed, 1 skipped in 0.80s",
+      "full_connectome": false
+    },
+    {
+      "repo": "stonkfly-lab",
+      "command": "python -m pytest -q",
+      "observed_summary": "5 passed in 9.44s",
+      "full_connectome": false
+    },
+    {
+      "repo": "fruit-fly-fund",
+      "environment": {
+        "PYTHONPATH": "<checkout>/vendor"
+      },
+      "command": "python -m pytest tests/test_fairness.py tests/test_recording_accounting.py tests/test_starting.py tests/test_market_seasons.py -q",
+      "observed_summary": "47 passed in 0.72s",
+      "full_connectome": false
+    },
+    {
+      "repo": "fin-skills",
+      "command": "python benchmarks/fly_paper/reuse_probe.py --lab-root runs/fly_reuse/stonkfly-lab --output docs/research/fly_foraging/reuse_probe_result.json",
+      "output": "reuse_probe_result.json",
+      "kind": "offline function probe; not market return"
+    }
+  ],
+  "decision": {
+    "engineering_base": "fruit-fly-fund",
+    "full_graph_baseline": "its vendored Stonkfly",
+    "compact_candidate": "Stonkfly Lab odors.py and mb.py, with separately tested feedback adapter",
+    "implemented_adapter": false
+  },
+  "formal_compute_root": "/beacon-projects/radfm/wy891/",
+  "beacon_jobs_started_this_review": false,
+  "new_market_returns": false,
+  "prior_report": "RESEARCH_REPORT.md remains the earlier biological evidence review; implementation priority is updated by EXISTING_IMPLEMENTATIONS.md. audit_status.json applies to that earlier report, not this software memo.",
+  "repository_checks": {
+    "build_index.py": "pass",
+    "build_package.py": "pass",
+    "validate.py": "OK - 129 skills; one existing discovery-budget warning"
+  }
+}
