@@ -9,8 +9,10 @@ from .disclosures import HouseSource, SECSource
 from .feeds import BlueskySource, PageSource, RSSSource
 from .http import HttpClient
 from .model import Watch
+from .news import GDELTSource
 
 SOURCES = {
+    'gdelt': (GDELTSource, 'GDELT DOC news search; target=query, options=timespan/max_records; metadata only'),
     'rss': (RSSSource, 'RSS/Atom news feeds; conditional GET; public source timestamps'),
     'page': (PageSource, 'Static public HTML and bounded same-origin crawling; robots.txt respected'),
     'sec': (SECSource, 'Form 4 transaction XML and 13F holdings by CIK; SEC_IDENTITY required'),

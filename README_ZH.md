@@ -2,10 +2,13 @@
 
 [Research workflow](docs/RESEARCH_WORKFLOW.md) | [API compatibility](docs/API_COMPATIBILITY.md)
 
+[策略、决策与算法总目录](catalog/QUANT_METHODS.md) ·
+[模型调用指南](docs/MODEL_USAGE.md) · [原生实现接入与验证](docs/UPSTREAM_METHODS.md)
+
 新增 `fin_skills.algorithms`：统一登记算法及实现库，根据数据、样本数、目标和约束选择并运行，
 返回选择理由；支持按时间窗口比较预测算法和注册新算法库。详见[算法选择与运行指南](docs/ALGORITHMS.md)。
 
-> 2026-09-17 更新：现有 129 个技能、36 个统一检查模块、53 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
+> 2026-09-17 更新：现有 129 个技能、36 个统一检查模块、61 个 JSON/MCP 工具。已加入真实 RSS/网页采集、SEC Form 4/13F、众议院 PTR 和 Bluesky 公开信息跟踪。使用方法见[采集指南](docs/COLLECTION.md)，逐项验收与尚需配置的内容见[完成审计](docs/COMPLETION_AUDIT.md)。持续采集需要显式启动，披露记录有其发布时间延迟。
 
 <div align="center">
 
@@ -66,7 +69,7 @@ python3 research/production/web_dashboard.py --port 8088
    - 每一条结论均标注了**验证日期 (`verified_on`)** 与可信度溯源标记：`✅ 一手源码/交易所规则实测验证` · `⚠️ 二手文献` · `❓ 暂无法验证`。凡是可以通过安装库并运行代码实测对比的结论（如 QuantLib 与 vollib 希腊字母量纲相差 100 倍），均附带可复现脚本。
 2. **第二层：可执行的回测防伪审计引擎 (`fin_skills.api` & MCP Tools)**
    - **读文档只能改变大模型“怎么说”，运行代码守卫才能决定投研流水线“允许报告什么结果”。**
-   - 我们将 **36 个返回 `GuardResult` 的可执行守卫函数**封装在统一的 **`Bundle` 容器与 `check()` 接口**之后，并导出了 **53 个 JSON 工具 (`fin_skills.tools`)**，支持 Agent 在生成回测报告前自动运行全套防伪体检。
+   - 我们将 **36 个返回 `GuardResult` 的可执行守卫函数**封装在统一的 **`Bundle` 容器与 `check()` 接口**之后，并导出了 **61 个 JSON 工具 (`fin_skills.tools`)**，支持 Agent 在生成回测报告前自动运行全套防伪体检。
 
 ---
 
@@ -83,7 +86,7 @@ flowchart TD
     end
 
     subgraph TIER3 ["3. 🤖 Agent 与投研工程接入层"]
-        I1["Claude Code / Jetski 插件<br/>按 SKILL.md 触发词自动激活"] --> I2["Python SDK (pip install)<br/>可导入防伪模块与市场惯例库"] --> I3["MCP Server 与 JSON 工具集<br/>53 个供大模型实时调用的审计工具"]
+        I1["Claude Code / Jetski 插件<br/>按 SKILL.md 触发词自动激活"] --> I2["Python SDK (pip install)<br/>可导入防伪模块与市场惯例库"] --> I3["MCP Server 与 JSON 工具集<br/>61 个供大模型实时调用的审计工具"]
     end
 
     D3 ==>|由 build_package.py 自动编译同步| E1
@@ -218,7 +221,7 @@ python3 research/production/live_advisor_bot.py --webhook "https://open.feishu.c
 
 ### 模式 C：作为 MCP Server 或 JSON 工具集挂载给任意大模型 Agent
 
-将全部 **53 个 JSON 可调用工具**（7 个目录工具 + 30 个检查工具 + 9 个采集与数据工具 + 7 个算法工具）挂载给任意支持 MCP 或 Function Calling 的 Agent 框架：
+将全部 **61 个 JSON 可调用工具**（7 个目录工具 + 30 个检查工具 + 11 个采集与数据工具 + 8 个算法工具 + 2 个模型工具 + 3 个方法检索工具）挂载给任意支持 MCP 或 Function Calling 的 Agent 框架：
 
 ```bash
 pip install "fin-skills[mcp]"

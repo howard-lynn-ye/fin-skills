@@ -49,7 +49,8 @@ def run_example(name: str) -> str:
 
 def test_examples_are_indexed():
     assert EXAMPLES == ["algorithm_selection.py", "audit_a_backtest.py", "futures_roll.py",
-                        "point_in_time_fundamentals.py", "research_workflow.py"]
+                        "market_strategy.py", "model_zoo.py", "point_in_time_fundamentals.py",
+                        "research_workflow.py"]
     index = (EXAMPLES_DIR / "README.md").read_text(encoding="utf-8")
     for name in EXAMPLES:
         assert f"({name})" in index, f"examples/README.md does not link {name}"

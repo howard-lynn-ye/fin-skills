@@ -11,6 +11,8 @@ python examples/audit_a_backtest.py
 python examples/point_in_time_fundamentals.py
 python examples/futures_roll.py
 python examples/algorithm_selection.py
+python examples/market_strategy.py
+python examples/model_zoo.py
 ```
 
 `tests/test_examples.py` runs each example in a subprocess and asserts its **conclusions**, not
@@ -24,6 +26,8 @@ job.
 | [`point_in_time_fundamentals.py`](point_in_time_fundamentals.py) | The same fundamentals joined to the same prices two ways — latest vintage on an exact stamp, versus filed-date vintage on a backward as-of with a tolerance — and what the difference is worth in Sharpe | ~4 s |
 | [`futures_roll.py`](futures_roll.py) | One futures chain stitched three ways, which return operator reproduces true dollar P&L, and the back-adjusted series walking through zero into negative prices under backwardation | ~1 s |
 | [`algorithm_selection.py`](algorithm_selection.py) | Automatic algorithm selection, portfolio weights, execution schedules and chronological forecast comparison | Offline |
+| [`market_strategy.py`](market_strategy.py) | Causal market-state rules, news screening and next-bar strategy candidates | Offline |
+| [`model_zoo.py`](model_zoo.py) | Model discovery, fitted forecast and covariance through one API | Offline |
 
 ## 1. `audit_a_backtest.py`
 

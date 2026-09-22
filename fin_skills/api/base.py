@@ -264,7 +264,33 @@ class RunReport(list):
 
     @property
     def passed(self) -> bool:
-        return all(r.passed for r in self)
+        """At least one check ran, none failed, and no supplied input was rejected.
+
+        Skips are still reported separately. Use audit(required) for a release gate:
+        a passing subset does not establish that a task was sufficiently audited.
+        """
+        return bool(self) and not self.rejected and all(r.passed for r in self)
+
+    def audit(self, required: list[str] | tuple[str, ...]) -> dict[str, Any]:
+        """Fail closed against an explicit, non-empty task policy.
+
+        INCOMPLETE means missing/rejected checks; FAIL means an observed failed check.
+        A warning is retained in the result and does not silently become an error.
+        """
+        names = tuple(dict.fromkeys(required))
+        if not names or any(not isinstance(n, str) or not n for n in names):
+            raise ValueError("required must contain at least one guard name")
+        known = {cls.name for cls in registry()}
+        unknown = set(names) - known
+        if unknown:
+            raise ValueError(f"unknown required guards: {sorted(unknown)}")
+        missing = sorted(set(names) - set(self.ran))
+        failed = sorted({r.guard for r in self.failed})
+        rejected = dict(self.rejected)
+        status = "FAIL" if failed else "INCOMPLETE" if missing or rejected else "PASS"
+        return {"status": status, "accepted": status == "PASS", "required": list(names),
+                "missing": missing, "failed": failed, "rejected": rejected,
+                "coverage": (len(names) - len(missing)) / len(names)}
 
     @property
     def failed(self) -> list[GuardResult]:
