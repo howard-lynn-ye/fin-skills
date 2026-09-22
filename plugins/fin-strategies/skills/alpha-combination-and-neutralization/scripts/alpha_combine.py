@@ -199,7 +199,7 @@ def icir(ic: pd.Series, periods_per_year: int = PERIODS_PER_YEAR) -> float:
     """mean(IC)/std(IC), annualised. The information ratio of the IC series itself."""
     ic = pd.Series(ic).dropna()
     sd = ic.std(ddof=1)
-    return float(ic.mean() / sd * np.sqrt(periods_per_year)) if sd > 0 else np.nan
+    return float(ic.mean() / sd * np.sqrt(periods_per_year)) if sd > 1e-12 else np.nan
 
 
 def plain_tstat(x) -> float:
@@ -341,7 +341,7 @@ def net_of_cost(gross_pnl: pd.Series, weights: pd.DataFrame, bps: float) -> pd.S
 def sharpe(r, periods_per_year: int = PERIODS_PER_YEAR) -> float:
     r = pd.Series(r).dropna()
     sd = r.std(ddof=1)
-    return float(r.mean() / sd * np.sqrt(periods_per_year)) if sd > 0 else np.nan
+    return float(r.mean() / sd * np.sqrt(periods_per_year)) if sd > 1e-12 else np.nan
 
 
 # ------------------------------------------------------------------------------ combination

@@ -1,6 +1,6 @@
 # Paper outline / 论文大纲
 
-Working title: **FACT: A Financial Agent Causal Tester and Verified Execution Engine**
+Working title: **FAST: A Financial Agent Skill Tester and Verified Execution Engine**
 (Former working title: Verified Execution and Autonomous Tool Use for Financial Research Agents)
 
 Updated: 2026-09-21. Working Resource/Benchmark outline for an AI/NLP conference
@@ -15,7 +15,7 @@ Shared manuscript: https://www.overleaf.com/project/6aad9a03f27c3c07a182965d
 execution and financial checks, as well as whether its code runs.** A program can produce
 positions and a plausible Sharpe ratio while using information unavailable at the decision
 time, excluding historical failures, or reporting performance inconsistent with its positions.
-FACT makes these discrepancies observable through domain guidance, executable checks and
+FAST makes these discrepancies observable through domain guidance, executable checks and
 independent evaluation of the final research artifact. [S1] [S3]
 
 Packaged as `fin-skills`, the framework connects a source-dated knowledge resource with a
@@ -26,7 +26,7 @@ completion. The contribution combines a reusable resource, an execution mechanis
 controlled benchmark; its empirical value is assessed through the comparisons below. [S1] [S2]
 
 **中文主线：金融 Agent 能生成代码和收益数字，还需要证明这些数字经得起检查。**
-FACT 将领域知识、实际执行的检查和独立评测连接起来，使研究者能够发现时间使用错误、
+FAST 将领域知识、实际执行的检查和独立评测连接起来，使研究者能够发现时间使用错误、
 历史股票池偏差和报告与账本不一致等问题。论文进一步研究：相比只提供知识或允许模型自行
 调用工具，要求最终研究结果附带有效执行证据，能否减少被接受的错误结论，同时保留正确完成
 任务的能力。这里的研究对象是 Agent 完成金融研究的过程及结果，贡献不只在于技能或工具数量。
@@ -50,7 +50,7 @@ FACT 将领域知识、实际执行的检查和独立评测连接起来，使研
 
 ## Contributions / 贡献定位
 
-1. **The FACT Knowledge Base (Agent Skills).** The recorded resource contains 129 skills
+1. **The FAST Knowledge Base (Agent Skills).** The recorded resource contains 129 skills
    across 17 plugins, connecting task and library selection with dated sources, conventions,
    failure modes and executable examples. Skills are documents with different scopes;
    their count is not a count of distinct defects. [S2]
@@ -61,7 +61,7 @@ FACT 将领域知识、实际执行的检查和独立评测连接起来，使研
    to the submitted artifact and distinguish failed checks from incomplete evidence. [S2] [S3]
    **可执行审计机制：** 将领域要求变成可以运行的检查，记录检查针对哪个版本的代码和数据执行，
    避免把“提到了检查”或“旧版本曾通过”当成最终结果已经验证。
-3. **The FACT Leak Detection Benchmark & Empirical Audit.** The benchmark separates
+3. **The FAST Leak Detection Benchmark & Empirical Audit.** The benchmark separates
    controlled defect detection from agent-generated research. Four paired conditions
    compare knowledge guidance, optional checks and enforced final verification using an
    independent evaluator and explicit completion and correctness outcomes. [S1] [S3]
@@ -83,12 +83,12 @@ to that session's positions because its timestamp names the session it describes
 program still runs, but its result uses information unavailable when the decision was made.
 The benchmark supplies this timing distinction explicitly. [S3]
 
-FACT addresses the gap at three stages: guidance before implementation, checks during
+FAST addresses the gap at three stages: guidance before implementation, checks during
 research, and verification of the final submission. The introduction connects these stages
 to the three contributions and asks whether they improve correct task completion under
 matched budgets. The magnitude and prevalence of agent errors belong in the results.
 
-*引言从一个能直接理解的研究错误展开，再介绍 FACT 如何帮助 Agent 避免、发现并修复错误，
+*引言从一个能直接理解的研究错误展开，再介绍 FAST 如何帮助 Agent 避免、发现并修复错误，
 最后落到“正确完成研究”的评价目标。*
 
 ### 2. Related Work / 相关工作
@@ -99,7 +99,7 @@ in financial agents and introduces FinLake-Bench and the counterfactual FactFin 
 Finance Agent Benchmark evaluates financial research using SEC filings and an agent tool
 harness. These works motivate a comparison of evaluation targets and mechanisms. [R1] [R2] [R3]
 
-FACT's proposed distinction is the combination of reusable financial guidance, checks bound
+FAST's proposed distinction is the combination of reusable financial guidance, checks bound
 to final research artifacts, and experiments separating text, voluntary checking and final
 enforcement. The related-work comparison considers what each system evaluates, which evidence
 supports acceptance, and whether the intervention is separated from final scoring. It avoids
@@ -107,7 +107,7 @@ assuming that all other evaluators test only syntax or that financial leakage is
 
 *相关工作围绕“评什么、如何检查、什么证据决定结果可信”展开；创新点落在具体机制及其受控比较。*
 
-### 3. The FACT Framework (`fin-skills`) / 框架设计
+### 3. The FAST Framework (`fin-skills`) / 框架设计
 
 #### 3.1 Source-Verified Knowledge Layer / 带来源的知识层
 
@@ -270,7 +270,7 @@ record; it is not pooled with the revised four-condition protocol. Subsequent re
 be reported regardless of whether guidance or enforcement improves outcomes. [S3] [S5]
 
 *本节的核心是“知识、工具和强制检查分别改变了什么”。当前先导记录和正式比较分开，
-不预先写成“大模型表现显著下降”或“FACT 显著提升正确率”。*
+不预先写成“大模型表现显著下降”或“FAST 显著提升正确率”。*
 
 ### 6. Discussion and Limitations / 讨论与局限
 
@@ -288,13 +288,13 @@ validation. [S1] [S3] [S5]
 
 ### 7. Conclusion / 结论
 
-FACT connects financial knowledge, executable checks and benchmark evaluation around the
+FAST connects financial knowledge, executable checks and benchmark evaluation around the
 research artifact an agent actually submits. This enables analysis of both successful task
 completion and the evidence supporting its conclusions. The empirical comparison determines
 whether optional tools or required final verification improve that combination, and at what
 cost, within the tested setting.
 
-*FACT 将“研究结果是否经得起检查”纳入 Agent 的任务目标与评测。最终结论围绕实测的正确性、
+*FAST 将“研究结果是否经得起检查”纳入 Agent 的任务目标与评测。最终结论围绕实测的正确性、
 完成率和成本展开，说明哪些机制有效、适用范围是什么。*
 
 ---

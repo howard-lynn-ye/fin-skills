@@ -176,7 +176,7 @@ from fin_skills.engine import Sessions, Panel, Universe, Execution, Costs, run, 
 
 res = run(panel, momentum, execution=Execution(fill_at="next_open", signal_lag=1),
           costs=Costs(commission_bps=0.5, spread_bps=1.0, cash_rate=0.05),
-          universe=Universe(rebalance="ME", min_adv=1e6), benchmark=spy)
+          universe=Universe(rebalance="M", min_adv=1e6), benchmark=spy)
 print(check(res.to_bundle()).summary())
 ```
 

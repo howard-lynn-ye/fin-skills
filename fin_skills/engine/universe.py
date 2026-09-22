@@ -13,7 +13,7 @@ from fin_skills.engine.panel import Panel
 class Universe:
     """The point-in-time membership rule.
 
-    rebalance    : a pandas offset alias ("ME", "QE", "W-FRI") resolved to the LAST session
+    rebalance    : a pandas offset alias ("M", "Q", "W-FRI") resolved to the LAST session
                    of each period, or an explicit DatetimeIndex snapped back to sessions.
     min_adv      : trailing dollar-ADV floor, measured over a window ENDING at the
                    rebalance - the screen everyone writes with today's ADV by accident.
@@ -21,7 +21,7 @@ class Universe:
                    absent, the panel's own `alive()` is, which is weaker and says so.
     """
 
-    def __init__(self, rebalance: str | pd.DatetimeIndex = "ME", min_adv: float = 0.0,
+    def __init__(self, rebalance: str | pd.DatetimeIndex = "M", min_adv: float = 0.0,
                  adv_lookback: int = 21, max_names: int | None = None,
                  members: pd.DataFrame | None = None) -> None:
         self.rebalance = rebalance

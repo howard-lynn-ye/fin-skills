@@ -446,7 +446,7 @@ if __name__ == "__main__":
     fac = pd.DataFrame({"Mkt-RF": [1.5, -0.7, 2.1, 0.3, -1.2, 0.8]}, index=stamps)
     naive = fac.copy()
     naive.index = pd.to_datetime(pd.Index(stamps).astype(str), format="%Y%m")
-    strat = pd.Series(np.arange(6) / 100.0, index=pd.date_range("2026-01-31", periods=6, freq="ME"))
+    strat = pd.Series(np.arange(6) / 100.0, index=pd.date_range("2026-01-31", periods=6, freq="M"))
     joined_naive = pd.concat([strat.rename("strategy"), naive], axis=1, join="inner")
     fac_p = fac.copy()
     fac_p.index = french_period_index(stamps, "monthly")

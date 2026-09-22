@@ -192,7 +192,7 @@ def make_world(seed: int = SEED) -> World:
     # --- quarterly fundamentals with amendments. The original 10-Q is a noisy read of the
     # quarter's drift; the amendment 30 days later adds what the company learned since.
     facts: dict[str, list[dict]] = {}
-    qends = pd.date_range(START, END, freq="QE")
+    qends = pd.date_range(START, END, freq="Q")
     mu_df = pd.DataFrame(mu, index=dates, columns=tickers)
     for j, c in enumerate(tickers):
         rows = []

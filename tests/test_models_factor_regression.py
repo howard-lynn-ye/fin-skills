@@ -223,7 +223,7 @@ def test_french_stamps_join_on_the_period_not_on_a_timestamp():
     stamps = [202601, 202602, 202603, 202604, 202605, 202606]
     fac = pd.DataFrame({"Mkt-RF": [1.5, -0.7, 2.1, 0.3, -1.2, 0.8]}, index=stamps)
     strat = pd.Series(np.arange(6) / 100.0,
-                      index=pd.date_range("2026-01-31", periods=6, freq="ME"))
+                      index=pd.date_range("2026-01-31", periods=6, freq="M"))
     naive = fac.copy()
     naive.index = pd.to_datetime(pd.Index(stamps).astype(str), format="%Y%m")
     assert naive.index[0] == pd.Timestamp("2026-01-01")          # first of month, not month end

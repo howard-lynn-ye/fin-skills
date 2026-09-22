@@ -11,19 +11,19 @@
     },
     {
       "path": "benchmarks/PARITY_AND_COST_RESULTS.json",
-      "sha256": "dd7249365428d33ad5bdfee55b4a3e30fa1b0c40bb21f6cd1618ce3780ec3f76"
+      "sha256": "89d43872d5a38faef7f542eb687592157211c1fcc4bee149a25b536cf6ceb61a"
     },
     {
       "path": "benchmarks/REAL_WORLD_KOL_AUDIT_RESULTS.json",
-      "sha256": "f1e064cbe21d583c77afae243aa9aa483a904b18506ada0eaf6c3fd7a16cd564"
+      "sha256": "e4bdf036a84002c35b0d1db90019836d2954bcbf0cbcdb2a73263ea013df41ec"
     },
     {
       "path": "benchmarks/agent_study/POSITIVE_CONTROL_RESULTS.json",
-      "sha256": "b17bc61f2bc9b857d4e8439ebb2690356491786ec495682dc9e2e6ad03a1eb8f"
+      "sha256": "944b7f23041123eb98e09f16c580cbf77100ff4fdede88049b511e24cebe9681"
     },
     {
       "path": "benchmarks/agent_study/BEACON_FEASIBILITY_RESULTS.json",
-      "sha256": "077e2e633ecec1a2c05a0f7c98021e33456eef8df45d5dba983c5be789c52d65"
+      "sha256": "d8e4726228f5517a8094c555a54fbc57bd9cbe9134a0f66bebe64bb0faf55e29"
     }
   ],
   "pilot": {
