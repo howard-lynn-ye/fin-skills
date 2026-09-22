@@ -1,0 +1,865 @@
+{
+  "groups": [
+    {
+      "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+      "condition": "no_library",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 3,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 1.0,
+      "correct_among_accepted": 0.0,
+      "cells": [
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.5902858059853315,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.21345999863692855,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.000180297539672822
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.5578676510194782,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.19691521521287947,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.91365402599331,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.23739223843696622,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0002631730539196257
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+      "condition": "skills_enforced_guards",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 0,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.0,
+      "correct_among_accepted": 1.0,
+      "cells": [
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 16.89774765999755,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 14,
+          "wall_seconds": 34.3803354119882,
+          "tokens": 39244,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 21.372926643991377,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+      "condition": "skills_optional_guards",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 1,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.3333333333333333,
+      "correct_among_accepted": 0.6666666666666666,
+      "cells": [
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 6.0359126269759145,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 6.239446939987829,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 5.267238721018657,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+      "condition": "skills_text_only",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 2,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.6666666666666666,
+      "correct_among_accepted": 0.3333333333333333,
+      "cells": [
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.4724967760266736,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        },
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.7198320559982676,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.000180297539672822
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.8253238710167352,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "condition": "no_library",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 2,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.6666666666666666,
+      "correct_among_accepted": 0.3333333333333333,
+      "cells": [
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.5565002039948013,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.000180297539672822
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.682990030007204,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.6127891069918405,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "condition": "skills_enforced_guards",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 0,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.0,
+      "correct_among_accepted": 1.0,
+      "cells": [
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 19.970415162999416,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 14,
+          "wall_seconds": 28.73531870098668,
+          "tokens": 39244,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 15.08913192700129,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "condition": "skills_optional_guards",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 0,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.0,
+      "correct_among_accepted": 1.0,
+      "cells": [
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 7.662788969028043,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 5.686225530982483,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 6.117260812985478,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "condition": "skills_text_only",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 1,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.3333333333333333,
+      "correct_among_accepted": 0.6666666666666666,
+      "cells": [
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.6855531559849624,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        },
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.8324402319849469,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.9642412289977074,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "condition": "no_library",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 3,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 1.0,
+      "correct_among_accepted": 0.0,
+      "cells": [
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.5257088530051988,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.21345999863692855,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.000180297539672822
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.7270848050247878,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.19691521521287947,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "no_library",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.6804579909949098,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.23739223843696622,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0002631730539196257
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "condition": "skills_enforced_guards",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 0,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.0,
+      "correct_among_accepted": 1.0,
+      "cells": [
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 14.933183285989799,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 14,
+          "wall_seconds": 27.20778604998486,
+          "tokens": 39244,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_enforced_guards",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 15.27807284600567,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "condition": "skills_optional_guards",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 2,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 0.6666666666666666,
+      "correct_among_accepted": 0.3333333333333333,
+      "cells": [
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": true,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 5.126602255011676,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0
+          }
+        },
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 5.023257441993337,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.000180297539672822
+          }
+        },
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_optional_guards",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 8,
+          "wall_seconds": 5.175991890981095,
+          "tokens": 16447,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        }
+      ]
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "condition": "skills_text_only",
+      "planned": 3,
+      "completed": 3,
+      "accepted": 3,
+      "incorrect_accepted": 3,
+      "ungradable_accepted": 0,
+      "acceptance_rate": 1.0,
+      "incorrect_accepted_per_attempt": 1.0,
+      "correct_among_accepted": 0.0,
+      "cells": [
+        {
+          "market_seed": 37,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.585197551001329,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0006137510154163334
+          }
+        },
+        {
+          "market_seed": 23,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.5418978939997032,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.000180297539672822
+          }
+        },
+        {
+          "market_seed": 11,
+          "repetition": 0,
+          "condition": "skills_text_only",
+          "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+          "completed": true,
+          "accepted": true,
+          "correct": false,
+          "status": "accepted",
+          "turns": 6,
+          "wall_seconds": 1.5862298129941337,
+          "tokens": 11245,
+          "grade": {
+            "sharpe_gap": 0.0,
+            "leakage_rate": 0.0,
+            "same_session_rate": 0.0,
+            "post_delisting_mass": 0.0002631730539196257
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "public development cells; descriptive results only",
+  "all_planned_cells_completed": true,
+  "attempt_status": "POST_FIX_CONFIRMATORY_HARNESS_VERIFIED_ZERO_UNGRADABLE",
+  "priority1_fixes_applied": [
+    "build_task.py & perturb.py: explicit index_label='date' on close_quoted.csv, volume.csv, llm_score.csv and TASK.md export",
+    "submission_audit.py & oracle.py: _normalize_positions_frame() promotes 'date'/'Unnamed: 0' columns before pd.to_datetime",
+    "submission_audit.py: same_session_probe() casts volume.csv to float64 before multiplying by np.linspace(0.7, 1.3), fixing int64 LossySetitemError under C3",
+    "transformers_chat.py: self.input_device multi-GPU sharding fix and bfloat16 greedy fallback for 32B"
+  ]
+}

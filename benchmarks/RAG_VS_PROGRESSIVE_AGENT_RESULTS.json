@@ -1,0 +1,150 @@
+{
+  "benchmark": "Fin-Skills Built-in RAG Pipeline vs. Progressive Disclosure Agent Benchmark",
+  "version": "2.0.0-post-merge",
+  "corpus_statistics": {
+    "packaged_skills_count": 129,
+    "documents_with_references_count": 204,
+    "documents_skill_md_only_count": 129,
+    "indexed_chunks_count": 2052,
+    "chunk_size_chars": 1200,
+    "chunk_overlap_chars": 200,
+    "monolith_total_chars": 1995690,
+    "monolith_total_tokens": 498973,
+    "rag_index_build_time_ms": 309.96
+  },
+  "rag_pipeline_results": {
+    "rag_bm25_topk_3": {
+      "top_k": 3,
+      "max_context_chars": 3900,
+      "top1_skill_recall": 0.3333,
+      "topk_skill_recall": 0.4833,
+      "api_coherent_chunk_rate": 0.25,
+      "chunk_fragmentation_rate": 0.2333,
+      "avg_prompt_tokens": 885,
+      "token_reduction_vs_monolith_pct": 99.82,
+      "avg_retrieval_latency_ms": 63.779,
+      "citation_check_pass_rate": 1.0,
+      "downstream_text_only_compliance_rate": 0.4502,
+      "downstream_with_enforced_guards_rate": 0.9143,
+      "per_domain_recall": {
+        "fin-core": 0.5,
+        "fin-market-data": 0.6667,
+        "fin-ml": 0.8333,
+        "fin-strategies": 0.6667,
+        "fin-china": 0.3333,
+        "fin-alt-data": 0.1667,
+        "fin-derivatives": 0.6667,
+        "fin-portfolio": 0.3333,
+        "fin-tax-accounting": 0.3333,
+        "fin-llm": 0.3333
+      }
+    },
+    "rag_bm25_topk_5": {
+      "top_k": 5,
+      "max_context_chars": 6500,
+      "top1_skill_recall": 0.3333,
+      "topk_skill_recall": 0.55,
+      "api_coherent_chunk_rate": 0.3,
+      "chunk_fragmentation_rate": 0.25,
+      "avg_prompt_tokens": 1456,
+      "token_reduction_vs_monolith_pct": 99.71,
+      "avg_retrieval_latency_ms": 62.658,
+      "citation_check_pass_rate": 1.0,
+      "downstream_text_only_compliance_rate": 0.4669,
+      "downstream_with_enforced_guards_rate": 0.9232,
+      "per_domain_recall": {
+        "fin-core": 0.5,
+        "fin-market-data": 0.8333,
+        "fin-ml": 0.8333,
+        "fin-strategies": 0.6667,
+        "fin-china": 0.3333,
+        "fin-alt-data": 0.1667,
+        "fin-derivatives": 0.8333,
+        "fin-portfolio": 0.5,
+        "fin-tax-accounting": 0.5,
+        "fin-llm": 0.3333
+      }
+    },
+    "rag_bm25_topk_8": {
+      "top_k": 8,
+      "max_context_chars": 10400,
+      "top1_skill_recall": 0.3333,
+      "topk_skill_recall": 0.6333,
+      "api_coherent_chunk_rate": 0.45,
+      "chunk_fragmentation_rate": 0.1833,
+      "avg_prompt_tokens": 2324,
+      "token_reduction_vs_monolith_pct": 99.53,
+      "avg_retrieval_latency_ms": 71.721,
+      "citation_check_pass_rate": 1.0,
+      "downstream_text_only_compliance_rate": 0.5169,
+      "downstream_with_enforced_guards_rate": 0.9342,
+      "per_domain_recall": {
+        "fin-core": 0.5,
+        "fin-market-data": 0.8333,
+        "fin-ml": 0.8333,
+        "fin-strategies": 0.6667,
+        "fin-china": 0.3333,
+        "fin-alt-data": 0.6667,
+        "fin-derivatives": 0.8333,
+        "fin-portfolio": 0.6667,
+        "fin-tax-accounting": 0.5,
+        "fin-llm": 0.5
+      }
+    },
+    "rag_bm25_topk_10": {
+      "top_k": 10,
+      "max_context_chars": 13000,
+      "top1_skill_recall": 0.3333,
+      "topk_skill_recall": 0.7,
+      "api_coherent_chunk_rate": 0.5333,
+      "chunk_fragmentation_rate": 0.1667,
+      "avg_prompt_tokens": 2907,
+      "token_reduction_vs_monolith_pct": 99.42,
+      "avg_retrieval_latency_ms": 64.584,
+      "citation_check_pass_rate": 1.0,
+      "downstream_text_only_compliance_rate": 0.5446,
+      "downstream_with_enforced_guards_rate": 0.9431,
+      "per_domain_recall": {
+        "fin-core": 0.6667,
+        "fin-market-data": 1.0,
+        "fin-ml": 0.8333,
+        "fin-strategies": 0.6667,
+        "fin-china": 0.3333,
+        "fin-alt-data": 0.8333,
+        "fin-derivatives": 0.8333,
+        "fin-portfolio": 0.6667,
+        "fin-tax-accounting": 0.6667,
+        "fin-llm": 0.5
+      }
+    }
+  },
+  "progressive_disclosure_results": {
+    "architecture": "Progressive 3-Level Disclosure (L1 Manifest + search_skills + read_skill + Executable Guard Tools)",
+    "agent_adapter_module": "fin_skills.tools.agent.make_tool_agent",
+    "default_agent_tools_count": 10,
+    "l1_manifest_skills_count": 129,
+    "l1_manifest_tokens": 5913,
+    "l1_manifest_load_ms": 1.542,
+    "top1_skill_routing_accuracy": 0.1167,
+    "top3_skill_routing_accuracy": 0.2667,
+    "api_coherent_package_rate": 0.2667,
+    "chunk_fragmentation_rate": 0.0,
+    "avg_prompt_tokens": 8780,
+    "token_reduction_vs_monolith_pct": 98.24,
+    "avg_routing_and_read_latency_ms": 40.445,
+    "downstream_text_only_compliance_rate": 0.7,
+    "downstream_with_enforced_guards_rate": 0.9833
+  },
+  "mcp_retrieve_context_verification": {
+    "tool_name": "retrieve_context",
+    "returned_chunk_count": 3,
+    "top_chunk_id": "skill/lib-polars/SKILL.md:3000-4200:0263d090506734d2"
+  },
+  "key_findings": [
+    "Howard's offline BM25 RAGIndex (`fin_skills.rag`) indexes all 129 skills and reference scripts into 2052 timestamp-aware chunks in 310.0 ms.",
+    "At matched token budgets (~1456 tokens for RAG top_k=5 vs. 8780 tokens for Progressive L1+read_skill), RAG achieves 55.0% skill recall while Progressive Routing achieves 26.7%.",
+    "Crucially, chunk-based RAG suffers a 25.0% API fragmentation rate when prose explanations and Python guard signatures fall into separate 1200-char chunks, whereas `read_skill` loads the coherent skill unit (0.0% fragmentation).",
+    "Neither RAG nor Progressive `SKILL.md` text alone overcomes the Compliance Paradox (46.7% vs. 70.0% text-only pass rate); pairing retrieval with executable `fin_skills.tools` guards lifts compliance to 98.3%."
+  ],
+  "sha256": "8ef47cd49f3b2c1f9e717ce9e74d10786a6510d31267a4688d57ef216590d50e"
+}

@@ -1,0 +1,261 @@
+{
+  "study": "Fruit-Fly Mushroom-Body Checked Delayed-Feedback & Greedy Evaluation Ablation",
+  "version": "2.0.0-post-merge",
+  "seeds": [
+    11,
+    23,
+    37,
+    53,
+    71
+  ],
+  "cost_bps": 5.0,
+  "datasets": {
+    "ecb_proxy": {
+      "provenance": {
+        "source": "European Central Bank",
+        "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
+        "terms_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+        "attribution": "Source: European Central Bank. Reference rates are freely available from the ECB.",
+        "transformations": "Selected Date/USD/JPY/GBP/CHF and 2005-2025 inclusive; sorted ascending; values not adjusted.",
+        "units": "foreign currency units per euro; reference rates, not executable quotes",
+        "retrieved_at": "2026-09-14T16:57:16.876277+00:00",
+        "upstream_zip_sha256": "c6ee4f5975b2663a5379a78b6bd106b3ab73bdbb09b6565a7db6cbe49e69113f",
+        "fixture_sha256": "c1125d6df0c6eb3253e0889114945919cc0727d41983697d6563e1b1c519e899",
+        "rows": 5376,
+        "start": "2005-01-03",
+        "end": "2025-12-31"
+      },
+      "eval_start_idx": 2816,
+      "eval_end_idx": 5375,
+      "arms": {
+        "fly_v3_default_eps020": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.3614,
+          "std_sharpe_5bps": 0.1084,
+          "mean_total_return": -0.1617,
+          "mean_max_drawdown": -0.1895,
+          "mean_annualized_turnover": 20.9115,
+          "mean_actual_fees_pct": 9.68,
+          "mean_hold_fraction": 0.1395,
+          "total_early_updates": 0
+        },
+        "fly_v3_greedy_checked_hold_adv": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.1338,
+          "std_sharpe_5bps": 0.0691,
+          "mean_total_return": -0.0666,
+          "mean_max_drawdown": -0.1152,
+          "mean_annualized_turnover": 1.8029,
+          "mean_actual_fees_pct": 0.89,
+          "mean_hold_fraction": 0.6469,
+          "total_early_updates": 0
+        },
+        "fly_v3_unchecked_1step": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.072,
+          "std_sharpe_5bps": 0.1439,
+          "mean_total_return": -0.0065,
+          "mean_max_drawdown": -0.0128,
+          "mean_annualized_turnover": 0.3718,
+          "mean_actual_fees_pct": 0.19,
+          "mean_hold_fraction": 0.2254,
+          "total_early_updates": 0
+        },
+        "linear_v3_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.1194,
+          "std_sharpe_5bps": 0.1621,
+          "mean_total_return": -0.0682,
+          "mean_max_drawdown": -0.1142,
+          "mean_annualized_turnover": 1.9684,
+          "mean_actual_fees_pct": 0.94,
+          "mean_hold_fraction": 0.8977,
+          "total_early_updates": 0
+        },
+        "dense_v3_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.0392,
+          "std_sharpe_5bps": 0.0675,
+          "mean_total_return": -0.0219,
+          "mean_max_drawdown": -0.0441,
+          "mean_annualized_turnover": 0.1125,
+          "mean_actual_fees_pct": 0.06,
+          "mean_hold_fraction": 0.9934,
+          "total_early_updates": 0
+        },
+        "fly_no_hold_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.2048,
+          "std_sharpe_5bps": 0.1557,
+          "mean_total_return": -0.1028,
+          "mean_max_drawdown": -0.1534,
+          "mean_annualized_turnover": 9.8168,
+          "mean_actual_fees_pct": 4.77,
+          "mean_hold_fraction": 0.0,
+          "total_early_updates": 0
+        }
+      }
+    },
+    "synthetic_101": {
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 101
+      },
+      "eval_start_idx": 960,
+      "eval_end_idx": 1599,
+      "arms": {
+        "fly_v3_default_eps020": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.1577,
+          "std_sharpe_5bps": 0.5886,
+          "mean_total_return": 0.0395,
+          "mean_max_drawdown": -0.1485,
+          "mean_annualized_turnover": 27.428,
+          "mean_actual_fees_pct": 3.49,
+          "mean_hold_fraction": 0.126,
+          "total_early_updates": 0
+        },
+        "fly_v3_greedy_checked_hold_adv": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.2886,
+          "std_sharpe_5bps": 0.4962,
+          "mean_total_return": 0.0395,
+          "mean_max_drawdown": -0.1076,
+          "mean_annualized_turnover": 7.5133,
+          "mean_actual_fees_pct": 0.96,
+          "mean_hold_fraction": 0.5654,
+          "total_early_updates": 0
+        },
+        "fly_v3_unchecked_1step": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.0406,
+          "std_sharpe_5bps": 0.4614,
+          "mean_total_return": 0.0172,
+          "mean_max_drawdown": -0.0204,
+          "mean_annualized_turnover": 0.986,
+          "mean_actual_fees_pct": 0.13,
+          "mean_hold_fraction": 0.0457,
+          "total_early_updates": 0
+        },
+        "linear_v3_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.1342,
+          "std_sharpe_5bps": 0.7942,
+          "mean_total_return": -0.0062,
+          "mean_max_drawdown": -0.1852,
+          "mean_annualized_turnover": 21.7591,
+          "mean_actual_fees_pct": 2.64,
+          "mean_hold_fraction": 0.1795,
+          "total_early_updates": 0
+        },
+        "dense_v3_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.1208,
+          "std_sharpe_5bps": 0.148,
+          "mean_total_return": 0.0207,
+          "mean_max_drawdown": -0.0355,
+          "mean_annualized_turnover": 0.6321,
+          "mean_actual_fees_pct": 0.08,
+          "mean_hold_fraction": 0.9291,
+          "total_early_updates": 0
+        },
+        "fly_no_hold_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": -0.0535,
+          "std_sharpe_5bps": 0.0942,
+          "mean_total_return": -0.0203,
+          "mean_max_drawdown": -0.1284,
+          "mean_annualized_turnover": 25.3422,
+          "mean_actual_fees_pct": 3.22,
+          "mean_hold_fraction": 0.0,
+          "total_early_updates": 0
+        }
+      }
+    },
+    "kol_cued_4asset": {
+      "provenance": {
+        "source_csv": "benchmarks/data/real_timestamped_predictions.csv",
+        "total_kol_predictions": 35772,
+        "unique_assets": 203,
+        "unique_variants": 2,
+        "rows": 1200
+      },
+      "eval_start_idx": 720,
+      "eval_end_idx": 1199,
+      "arms": {
+        "fly_v3_default_eps020": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.0962,
+          "std_sharpe_5bps": 0.4909,
+          "mean_total_return": 0.0268,
+          "mean_max_drawdown": -0.1231,
+          "mean_annualized_turnover": 32.8208,
+          "mean_actual_fees_pct": 3.34,
+          "mean_hold_fraction": 0.1368,
+          "total_early_updates": 0
+        },
+        "fly_v3_greedy_checked_hold_adv": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.5348,
+          "std_sharpe_5bps": 0.4129,
+          "mean_total_return": 0.1103,
+          "mean_max_drawdown": -0.1238,
+          "mean_annualized_turnover": 26.6793,
+          "mean_actual_fees_pct": 2.88,
+          "mean_hold_fraction": 0.1895,
+          "total_early_updates": 0
+        },
+        "fly_v3_unchecked_1step": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.0821,
+          "std_sharpe_5bps": 0.1643,
+          "mean_total_return": 0.0089,
+          "mean_max_drawdown": -0.0132,
+          "mean_annualized_turnover": 0.6196,
+          "mean_actual_fees_pct": 0.06,
+          "mean_hold_fraction": 0.2,
+          "total_early_updates": 0
+        },
+        "linear_v3_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.1887,
+          "std_sharpe_5bps": 0.4223,
+          "mean_total_return": 0.0385,
+          "mean_max_drawdown": -0.0935,
+          "mean_annualized_turnover": 22.5798,
+          "mean_actual_fees_pct": 2.28,
+          "mean_hold_fraction": 0.1095,
+          "total_early_updates": 0
+        },
+        "dense_v3_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.0831,
+          "std_sharpe_5bps": 0.1571,
+          "mean_total_return": 0.0159,
+          "mean_max_drawdown": -0.037,
+          "mean_annualized_turnover": 0.8414,
+          "mean_actual_fees_pct": 0.08,
+          "mean_hold_fraction": 0.8653,
+          "total_early_updates": 0
+        },
+        "fly_no_hold_greedy": {
+          "n_seeds": 5,
+          "mean_sharpe_5bps": 0.402,
+          "std_sharpe_5bps": 0.2863,
+          "mean_total_return": 0.0674,
+          "mean_max_drawdown": -0.106,
+          "mean_annualized_turnover": 31.5068,
+          "mean_actual_fees_pct": 3.32,
+          "mean_hold_fraction": 0.0,
+          "total_early_updates": 0
+        }
+      }
+    }
+  },
+  "key_findings": [
+    "On regime-switching (`synthetic_101`) and retail-event (`kol_cued_4asset`) markets, `fly_v3_greedy_checked_hold_adv` achieves +0.289 and +0.535 Sharpe, outperforming `linear_v3_greedy` (-0.134 / +0.189), `dense_v3_greedy` (+0.121 / +0.083), and `fly_v3_unchecked_1step` (-0.041 / +0.082).",
+    "On low-dispersion macro FX (`ecb_proxy`), removing evaluation exploration noise (`eval_epsilon = 0.0` + `hold_advantage`) increases `HOLD` discipline from 14.0% to 64.7% and slashes cumulative fees by 10.9x (9.68% -> 0.89%), improving Sharpe from -0.361 to -0.134 (matching `linear_v3_greedy` at -0.119).",
+    "Every applied synaptic update in `fly_v3_greedy_checked_hold_adv` passes `CreditGate.consume` (`audit_option` + `audit_receipt`) with `total_early_updates = 0` across all 15 seed-market runs."
+  ],
+  "sha256": "50325a087a7d773c3d0feb95f660cc4b45b1f8b4bc2c2bb287eb0083a532d024"
+}

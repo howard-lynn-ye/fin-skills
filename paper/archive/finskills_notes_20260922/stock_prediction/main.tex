@@ -1,0 +1,82 @@
+% ==============================================================================
+% Official NAACL / *ACL Manuscript (acl.sty + acl_natbib.bst)
+% Anonymized with \usepackage[preprint]{acl} for clean two-column typography.
+% ==============================================================================
+\documentclass[11pt]{article}
+\usepackage[preprint]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{courier}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{url}
+\usepackage{caption}
+
+% Prevent long monospace identifiers from overflowing column margins
+\setlength{\emergencystretch}{1.5em}
+
+% Tighten float placement fractions to prevent figures drifting into References
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{6}
+\setcounter{dbltopnumber}{3}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\dblfloatpagefraction}{0.85}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\title{When Financial Agents Hallucinate Alpha: Auditing Backtest Leakage, Compliance Paradoxes, and Social Megaphone Bias with Executable Guards}
+
+\author{
+  \textbf{Anonymous ACL submission}
+}
+
+\input{evidence_numbers}
+
+\begin{document}
+\maketitle
+
+% 0. Abstract
+\input{sections/abstract}
+
+% 1. Introduction
+\input{sections/introduction}
+
+% 2. Related Work
+\input{sections/related_work}
+
+% 3. Preliminaries & The fin-skills Architecture
+\input{sections/preliminaries}
+
+% 4. Methodology: Counterfactual Audit Protocol
+\input{sections/method}
+
+% 5. Experiments: Agent Compliance Paradox & Real-World KOL Audit
+\input{sections/experiment}
+
+% 6. Conclusion, Limitations & Ethics Statement
+\input{sections/conclusion}
+
+% Bibliography
+{\small\setlength{\bibsep}{1pt}
+\bibliography{custom}}
+
+% Appendix
+\input{sections/appendix}
+
+\end{document}

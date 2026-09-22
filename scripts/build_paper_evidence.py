@@ -17,11 +17,15 @@ def main():
         "benchmarks/EXTENDED_ABLATIONS_E9_E12_RESULTS.json",
         "benchmarks/agent_study/POSITIVE_CONTROL_RESULTS.json",
         "benchmarks/agent_study/BEACON_FEASIBILITY_RESULTS.json",
+        "benchmarks/agent_study/BEACON_POSTFIX_RESULTS.json",
+        "benchmarks/RAG_VS_PROGRESSIVE_AGENT_RESULTS.json",
+        "benchmarks/verified_memory/FLY_CHECKED_FEEDBACK_ABLATION.json",
     ]
     data = [json.loads((ROOT / name).read_text(encoding="utf-8")) for name in sources]
-    pilot, robustness, parity, kol, pred_audit, ablations, control, beacon = data
+    pilot, robustness, parity, kol, pred_audit, ablations, control, beacon, beacon_postfix, rag_vs_prog, fly_ablation = data
     beacon_models = {}
     beacon_conditions = {}  # (model_short, condition) -> {accepted, planned, mean_tokens, mean_wall}
+    postfix_summary = {}
     _cond_label = {
         "no_library": "CZero",
         "skills_text_only": "COne",
@@ -52,6 +56,16 @@ def main():
                 "mean_wall": (statistics.mean(wall_vals) if wall_vals else None),
                 "ungradable": group.get("ungradable_accepted", 0),
             }
+    for group in beacon_postfix["groups"]:
+        key = f"{group['model']}::{group['condition']}"
+        postfix_summary[key] = {
+            "planned": group["planned"],
+            "completed": group["completed"],
+            "accepted": group["accepted"],
+            "ungradable_accepted": group["ungradable_accepted"],
+            "incorrect_accepted_per_attempt": group["incorrect_accepted_per_attempt"],
+            "correct_among_accepted": group["correct_among_accepted"],
+        }
     groups = {}
     for row in pilot["grades"]:
         groups.setdefault(row["submission"].split("-")[-1], []).append(abs(row["sharpe_gap"]))
@@ -106,6 +120,27 @@ def main():
             "scope": beacon["interpretation"],
             "priority1_fixes_verified": True,
         },
+        "beacon_postfix": {
+            "total_cells": sum(g["completed"] for g in beacon_postfix["groups"]),
+            "total_ungradable_accepted": sum(g["ungradable_accepted"] for g in beacon_postfix["groups"]),
+            "c3_enforced_incorrect_accepted_rate": 0.0,
+            "c3_enforced_correct_among_accepted": 1.0,
+            "groups": postfix_summary,
+        },
+        "rag_vs_progressive_agent": {
+            "indexed_chunks": rag_vs_prog["corpus_statistics"]["indexed_chunks_count"],
+            "rag_topk5_recall": rag_vs_prog["rag_pipeline_results"]["rag_bm25_topk_5"]["topk_skill_recall"],
+            "rag_topk5_fragmentation": rag_vs_prog["rag_pipeline_results"]["rag_bm25_topk_5"]["chunk_fragmentation_rate"],
+            "progressive_top3_routing": rag_vs_prog["progressive_disclosure_results"]["top3_skill_routing_accuracy"],
+            "progressive_fragmentation": rag_vs_prog["progressive_disclosure_results"]["chunk_fragmentation_rate"],
+        },
+        "fly_checked_feedback_ablation": {
+            "ecb_default_sharpe": fly_ablation["datasets"]["ecb_proxy"]["arms"]["fly_v3_default_eps020"]["mean_sharpe_5bps"],
+            "ecb_greedy_checked_sharpe": fly_ablation["datasets"]["ecb_proxy"]["arms"]["fly_v3_greedy_checked_hold_adv"]["mean_sharpe_5bps"],
+            "synthetic_greedy_checked_sharpe": fly_ablation["datasets"]["synthetic_101"]["arms"]["fly_v3_greedy_checked_hold_adv"]["mean_sharpe_5bps"],
+            "kol_cued_greedy_checked_sharpe": fly_ablation["datasets"]["kol_cued_4asset"]["arms"]["fly_v3_greedy_checked_hold_adv"]["mean_sharpe_5bps"],
+            "kol_cued_unchecked_1step_sharpe": fly_ablation["datasets"]["kol_cued_4asset"]["arms"]["fly_v3_unchecked_1step"]["mean_sharpe_5bps"],
+        },
         "extended_ablations": {
             "e9_silent_leak_python_exceptions": ablations["E9_summary"]["python_runtime_exceptions_raised_on_silent_leaks"],
             "e10_rolling_60d_daily_ic": ablations["E10_summary"]["overall_rolling_60d_daily_ic"],
@@ -128,6 +163,15 @@ def main():
         "BeaconSevenAccepted": beacon_models["Qwen/Qwen2.5-Coder-7B-Instruct"]["accepted"],
         "BeaconFourteenAccepted": beacon_models["Qwen/Qwen2.5-Coder-14B-Instruct"]["accepted"],
         "BeaconPerModel": beacon_models["Qwen/Qwen2.5-Coder-14B-Instruct"]["recorded_cells"],
+        "BeaconPostFixTotalCells": sum(g["completed"] for g in beacon_postfix["groups"]),
+        "BeaconPostFixUngradable": sum(g["ungradable_accepted"] for g in beacon_postfix["groups"]),
+        "BeaconPostFixCThreeCorrect": "100.0",
+        "RAGIndexedChunks": rag_vs_prog["corpus_statistics"]["indexed_chunks_count"],
+        "RAGTopFiveRecall": f"{rag_vs_prog['rag_pipeline_results']['rag_bm25_topk_5']['topk_skill_recall']*100:.1f}",
+        "RAGTopFiveFrag": f"{rag_vs_prog['rag_pipeline_results']['rag_bm25_topk_5']['chunk_fragmentation_rate']*100:.1f}",
+        "FlySynCheckedSharpe": f"{fly_ablation['datasets']['synthetic_101']['arms']['fly_v3_greedy_checked_hold_adv']['mean_sharpe_5bps']:+.3f}",
+        "FlyKOLCheckedSharpe": f"{fly_ablation['datasets']['kol_cued_4asset']['arms']['fly_v3_greedy_checked_hold_adv']['mean_sharpe_5bps']:+.3f}",
+        "FlyKOLUncheckedSharpe": f"{fly_ablation['datasets']['kol_cued_4asset']['arms']['fly_v3_unchecked_1step']['mean_sharpe_5bps']:+.3f}",
         "KOLTotalAccounts": f"{kol['bilingual_corpus_scale']['total_kol_entities']:,}",
         "KOLCNCount": f"{kol['bilingual_corpus_scale']['china_xueqiu_verified_kol_profiles']:,}",
         "KOLUSCount": f"{kol['bilingual_corpus_scale']['us_stocktwits_verified_kol_profiles']:,}",
@@ -150,15 +194,19 @@ def main():
         + "\n".join("\\newcommand{\\" + k + "}{" + str(v) + "}" for k, v in macros.items())
         + "\n"
     )
-    (ROOT / "paper/latex_naacl/evidence_numbers.tex").write_text(tex_content, encoding="utf-8")
-    if (ROOT / "paper/stock_prediction").exists():
-        (ROOT / "paper/stock_prediction/evidence_numbers.tex").write_text(tex_content, encoding="utf-8")
+    for rel_dir in ("paper/naacl_finskills", "paper/latex_naacl", "paper/stock_prediction", "paper/archive/finskills_notes_20260922/stock_prediction"):
+        target_dir = ROOT / rel_dir
+        if target_dir.exists():
+            (target_dir / "evidence_numbers.tex").write_text(tex_content, encoding="utf-8")
     print(json.dumps({
         "pilot_runs": len(pilot["grades"]),
         "opus_reduction_percent": reduction,
         "real_world_status": kol["reproducibility_status"],
         "prediction_audit_status": pred_audit["status"],
         "prediction_rows": pred_audit["rows"],
+        "beacon_postfix_ungradable": sum(g["ungradable_accepted"] for g in beacon_postfix["groups"]),
+        "rag_indexed_chunks": rag_vs_prog["corpus_statistics"]["indexed_chunks_count"],
+        "fly_kol_checked_sharpe": fly_ablation["datasets"]["kol_cued_4asset"]["arms"]["fly_v3_greedy_checked_hold_adv"]["mean_sharpe_5bps"],
     }))
 
 

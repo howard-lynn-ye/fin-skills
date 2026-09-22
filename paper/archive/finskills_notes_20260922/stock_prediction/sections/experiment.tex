@@ -1,0 +1,127 @@
+% ==============================================================================
+% sections/experiment.tex
+% ==============================================================================
+\section{Experiments}
+\label{sec:experiment}
+
+We evaluate \texttt{fin-skills} across four interlocking experimental pillars designed so that each study answers the causal limitation exposed by the preceding one: \textbf{(I)} artifact-bound code verification and multi-round self-repair (\S\ref{sec:pilot}), \textbf{(II)} progressive skill routing and autonomous tool execution (\S\ref{sec:autonomous_pillar}), \textbf{(III)} point-in-time credibility gating on timestamped social predictions (\S\ref{sec:realworld}), and \textbf{(IV)} checked delayed-outcome feedback for online mushroom-body memory (\S\ref{sec:fly_pillar}).
+
+\subsection{Pillar I: From Pilot \& Beacon \texttt{C0--C3} to \texttt{FinGuardBench-60} Self-Repair}
+\label{sec:pilot}
+
+\paragraph{The \PilotRuns{}-Run Opus/Haiku Pilot \& Beacon \texttt{C0--C3} Diagnosis.}
+In an initial \PilotRuns{}-run exploratory pilot (\path{PILOT_RESULTS.json}), providing \texttt{fin-skills} reduced Claude Opus's mean absolute Sharpe reporting discrepancy by \textbf{\OpusReduction{}\%} ($\OpusBase{} \to \OpusLibrary{}$), whereas Claude Haiku's discrepancy expanded from $\HaikuBase{} \to \HaikuLibrary{}$ while citing unexecuted guards. To separate static guidance from executable checks on open-weight models (\texttt{Qwen2.5-Coder 7B/14B/32B}), we ran a 4-condition Beacon feasibility study (\texttt{C0 no\_library}, \texttt{C1 skills\_text\_only}, \texttt{C2 skills\_optional\_guards}, \texttt{C3 skills\_enforced\_guards}; \path{BEACON_FEASIBILITY_RESULTS.json}). In that initial batch (Appendix Table~\ref{tab:beacon_feasibility}), 14B achieved $2/3$ (\texttt{C0}), $2/3$ (\texttt{C1}), and $3/3$ (\texttt{C2}) acceptance ($\BeaconFourteenCTwoMeanTokens{}$ mean tokens), but $0/3$ under enforced audit \texttt{C3} ($\BeaconFourteenCThreeMeanTokens{}$ tokens) with $7$ ungradable submissions. Auditing those exact failure traces revealed four harness/interface defects rather than model reasoning impossibility: (i) \texttt{same\_session\_probe} multiplied \texttt{int64} \texttt{volume.csv} by float perturbations $\text{linspace}(0.7,1.3)$, throwing \texttt{LossySetitemError} inside \texttt{C3}; (ii) \texttt{oracle.py} called \texttt{pd.to\_datetime(result.index)} before promoting \texttt{"date"} columns, mapping \texttt{RangeIndex} to \texttt{1970-01-01}; (iii) \texttt{build\_task.py} omitted explicit index labels; and (iv) 32B \texttt{bfloat16} multinomial sampling overflowed across dual GPUs.
+
+\begin{table}[t]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Evaluation Condition ($N=60$ Tasks)} & \textbf{Compliance [95\% CI]} & \textbf{Leak\%} & \textbf{Halluc.\%} & $|\Delta\text{Sharpe}|$ \\
+\midrule
+Cond.\ A (\texttt{C0}): No Library Baseline & $30.0\%$ {\scriptsize $[18.3, 41.7]$} & $16.7\%$ & $0.0\%$ & $1.04$ \\
+Cond.\ B (\texttt{C1}): \texttt{SKILL.md} Text Only & $70.0\%^{***}$ {\scriptsize $[58.3, 81.7]$} & $5.0\%$ & $53.3\%$ & $0.39$ \\
+Cond.\ B+: Python \texttt{Self-Debug} (\texttt{@3}) & $71.7\%^{\text{ns}}$ {\scriptsize $[60.0, 83.3]$} & $3.3\%$ & $51.7\%$ & $0.37$ \\
+Cond.\ C (\texttt{C3}): \texttt{Pass@1} (Initial Gen.) & $75.0\%^{***}$ {\scriptsize $[63.3, 85.0]$} & $3.3\%$ & $0.0\%$ & $0.21$ \\
+Cond.\ C (\texttt{C3}): \texttt{Pass@2} (1-Round Guard) & $93.3\%^{***}$ {\scriptsize $[86.7, 98.3]$} & $0.0\%$ & $0.0\%$ & $0.08$ \\
+\textbf{Cond.\ C (\texttt{C3}): \texttt{Pass@3} (2-Round Guard)} & $\mathbf{98.3\%}^{***}$ {\scriptsize $[95.0, 100]$} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$ & $\mathbf{0.04}$ \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.15cm}
+\caption{\texttt{FinGuardBench-60} evaluation after Priority-1 harness repairs ($6\text{ tasks}\times 10\text{ domains}$). Because $60/60$ ($100\%$) of silent financial leaks exit with Python code $0$ (E9), generic Python \texttt{Self-Debug} (\texttt{Cond B+}) stagnates ($p=1.0$ vs.\ \texttt{B}), whereas enforced guard repair (\texttt{Cond C Pass@3}) reaches $98.3\%$ ($p=3.05\times 10^{-5}$ vs.\ \texttt{B+}).}
+\label{tab:pilot}
+\vspace{-0.22cm}
+\end{table}
+
+\paragraph{Post-Fix \texttt{FinGuardBench-60} \& Feedback Granularity (E5, E6, E9).}
+Resolving those four harness defects (\path{tests/test_agent_study_priority1_fixes.py}) yields $0$ ungradable outputs across \texttt{FinGuardBench-60} (Table~\ref{tab:pilot}). Reading \texttt{SKILL.md} (\texttt{Cond B}) lifts compliance from $30.0\%$ to $70.0\%$ ($p=1.19\times 10^{-7}$), but adding 3 rounds of generic Python \texttt{Self-Debug} \citep{chen2023selfdebug} (\texttt{Cond B+}) stagnates at $71.7\%$ ($p=1.0$) because \textbf{$60/60$ ($100\%$) of silent financial leaks execute with Python exit code $0$} (\path{EXTENDED_ABLATIONS_E9_E12_RESULTS.json}). Conversely, binding \texttt{Bundle.check()} to the submission loop (\texttt{Cond C}) drives multi-round repair to $\mathbf{98.3\%}$ (\texttt{Pass@3}, $p=3.05\times 10^{-5}$ vs.\ \texttt{B+}), eliminating hallucinated citations ($0.0\%$) across all four model tiers (Fig.~\ref{fig:domain_scaling}b).
+
+\subsection{Pillar II: Progressive Routing (E12) \& 64-Decision Autonomous Study}
+\label{sec:autonomous_pillar}
+
+A natural question is whether open-weight agents can autonomously discover and invoke \texttt{fin-skills} tools during sequential portfolio decision-making without prompt overflow. In Experiment~E12 (\path{run_extended_ablations_e9_e12.py}), concatenating all 129 \texttt{SKILL.md} files consumes $369{,}315$ prompt tokens and Top-3 TF-IDF chunk RAG ($9{,}042$ tokens) loses $28.3\%$ of required guards ($71.67\%$ recall), whereas our progressive manifest routing (\texttt{list\_algorithms} $\to$ \texttt{read\_skill} $\to$ \texttt{run\_algorithm}) requires only \textbf{$4{,}039$ tokens ($-98.91\%$, $0.007\text{ ms}$)} while preserving \textbf{100.0\% guard recall}.
+
+\begin{table}[t]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Autonomous FX Study Condition ($N=64$)} & \textbf{7B Ret.\ (\%)} & \textbf{14B Ret.\ (\%)} & \textbf{Valid Dec.} & \textbf{Tool Calls} \\
+\midrule
+No Library Control (Prices \& Summary Only) & $+0.100\%$ & $-3.324\%$ & $16/16$ & $0$ \\
+Fixed \texttt{SKILL.md} Excerpt Only & $-2.930\%$ & $-4.567\%$ & $16/16$ & $0$ \\
+Excerpts + Predetermined Tool Outputs & $-3.075\%$ & $-3.030\%$ & $16/16$ & Fixed \\
+\textbf{Autonomous \texttt{fin-skills} Tool Selection} & $-3.984\%$ & $-3.783\%$ & $\mathbf{16/16}$ & $\mathbf{43/43}$ ($100\%$) \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.15cm}
+\caption{64-decision autonomous portfolio study on 2025 ECB FX reference rates (\texttt{USD, JPY, GBP, CHF}; 5 bps cost, seeds 11 \& 23, Appendix~\ref{app:autonomous}). Progressive discovery achieves $64/64$ valid allocations and $43/43$ successful tool calls ($13$ by 7B, $30$ by 14B), while showing that price-only technical algorithms do not generate positive alpha over passive controls.}
+\label{tab:autonomous}
+\vspace{-0.22cm}
+\end{table}
+
+Deploying this progressive action loop across 16 trials ($64$ sequential decisions on 2025 ECB FX reference rates; Table~\ref{tab:autonomous} and Appendix~\ref{app:autonomous}), Qwen2.5-Coder 7B and 14B completed \textbf{64/64 (100\%) valid final allocations} and executed \textbf{43/43 (100\%) model-selected tool calls} ($13$ by 7B across cross-sectional and volatility-targeted momentum; $30$ by 14B across Bollinger reversion and trend-following skills) with zero call errors. Crucially, Table~\ref{tab:autonomous} establishes an essential scientific boundary: on efficient, price-only FX reference series without external information asymmetry, calling standard price-based algorithms does not outperform no-library controls ($-3.984\%$ vs.\ $+0.100\%$ for 7B; $-3.783\%$ vs.\ $-3.324\%$ for 14B). This negative price-only finding directly motivates Pillar~III: \emph{where does \texttt{fin-skills}'s timestamp and credibility verification produce genuine predictive edge?}
+
+\subsection{Pillar III: \KOLPredRows{}-Row Point-in-Time Bilingual KOL Audit}
+\label{sec:realworld}
+
+To test whether \texttt{fin-skills} generates statistically significant cross-sectional edge when filtering noisy alternative data, we audit \textbf{\KOLTotalAccounts{} verified real-world KOL track records} (\KOLCNCount{} Chinese A-share Xueqiu + \KOLUSCount{} US StockTwits accounts; \path{real_world_kol_audit.py}) and construct a \textbf{\KOLPredRows{}-row timestamped prediction ledger} across \textbf{\KOLTradingDates{} trading dates} (\path{real_timestamped_predictions.csv}), evaluated directly by \path{benchmarks/prediction_audit.py} (\path{PREDICTION_AUDIT_RESULTS.json}).
+
+\begin{table}[t]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Bilingual KOL Tier / Audit Variant ($N=\KOLTotalAccounts{}$)} & \textbf{Accounts / Rows} & \textbf{Mean Fans} & \textbf{5D Win\%} & \textbf{5D Rank IC [95\% CI]} \\
+\midrule
+CN \texttt{TIER\_1\_CORE\_ALPHA} & $70$ KOLs & $14{,}121.9$ & $68.47\%$ & $\mathbf{+0.2158}$ \\
+CN \texttt{TIER\_CONTRARIAN} ($3.96\times$ fans) & $98$ KOLs & $\mathbf{55{,}988.6}$ & $28.49\%$ & $\mathbf{-0.2130}$ \\
+US \texttt{TIER\_0\_ELITE\_KOL} (OOS) & $24$ KOLs & $34{,}210.5$ & $74.20\%$ & $\mathbf{+0.1912}$ \\
+US \texttt{TIER\_CONTRARIAN} ($1.54\times$ fans) & $108$ KOLs & $\mathbf{52{,}640.8}$ & $27.34\%$ & $\mathbf{-0.1764}$ \\
+\midrule
+\texttt{naive\_follower\_volume\_weighted} & $17{,}886$ rows & \multicolumn{2}{c}{799 Paired Dates} & $\KOLNaiveDailyIC{}$ {\scriptsize $[-0.0355, +0.0144]$} \\
+\textbf{\texttt{pit\_kol\_credibility\_gated} (Ours)} & $\mathbf{17{,}886}\text{ rows}$ & \multicolumn{2}{c}{\textbf{799 Paired Dates}} & $\mathbf{\KOLGatedDailyIC{}}$ {\scriptsize $[\mathbf{+0.0012, +0.0545}]$} \\
+\textbf{Paired Gain ($\text{Gated} - \text{Naive}$, 5D Block CI)} & $\mathbf{\KOLPredRows{}}\text{ total}$ & \multicolumn{2}{c}{\textbf{2,000 Draws}} & $\mathbf{\KOLPairedDiffIC{}}^*$ {\scriptsize $[\mathbf{+0.0074, +0.0728}]$} \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.15cm}
+\caption{Cross-market stratification of \KOLTotalAccounts{} real KOLs (\KOLCNCount{} CN + \KOLUSCount{} US) and row-level timestamped evaluation by \texttt{prediction\_audit.py} (\KOLPredRows{} rows, \KOLTradingDates{} dates). Point-in-time credibility gating reverses negative mean daily cross-sectional Rank IC ($\Delta=\KOLPairedDiffIC{}$, 95\% block-bootstrap CI excludes zero).}
+\label{tab:kol}
+\vspace{-0.22cm}
+\end{table}
+
+\paragraph{Row-Level Timestamped Reversal \& Progressive Component Ablation (E11).}
+Table~\ref{tab:kol} confirms that retail follower counts inversely track predictive skill in both markets ($3.96\times$ contrarian fan ratio in China, $1.54\times$ in the US). When evaluated across all \KOLTradingDates{} paired trading dates with strict \texttt{pred\_time $\le$ avail\_time $<$ open\_time} enforcement, \texttt{naive\_\allowbreak follower\_\allowbreak volume\_\allowbreak weighted} aggregation yields a negative mean daily cross-sectional Rank IC of \textbf{\KOLNaiveDailyIC{}}, whereas \texttt{pit\_\allowbreak kol\_\allowbreak credibility\_\allowbreak gated} achieves \textbf{\KOLGatedDailyIC{}}, establishing a statistically significant paired daily IC improvement of \textbf{\KOLPairedDiffIC{}} (5-day block-bootstrap 95\% CI $[+0.0074, +0.0728]$). Progressive component ablation on this exact \KOLPredRows{}-row ledger (Experiment~E11, Table~\ref{tab:e11_component}) shows monotonic gains across all five stages: from \texttt{Stage 0 Naive} ($\text{Daily IC } -0.0115$, $\text{MDD } -32.61\%$) and \texttt{Stage 1 DataQualityAuditor} ($\text{MDD } -28.03\%$), to \texttt{Stage 2 StockPredictabilityStratifier} ($\text{Daily IC } +0.0157$, $\text{MDD } -17.84\%$), \texttt{Stage 3 PIT KOLCredibilityRegistry} ($\text{Daily IC } +0.0273$, $\text{MDD } -16.75\%$), and \texttt{Stage 4 VolatilityAndExecutionGuards} ($\text{Daily IC } \mathbf{+0.0294}$).
+
+\subsection{Pillar IV: Checked Delayed Feedback, Fruit-Fly Memory \& Regime Calibration (E10)}
+\label{sec:fly_pillar}
+
+Finally, we connect \texttt{fin-skills} to online learning by gating delayed episode outcomes before they update a fruit-fly mushroom-body memory architecture \citep{huang2024memory} (\path{benchmarks/verified_memory/}, Appendix~\ref{app:fly}). Rather than feeding raw one-step returns that suffer from clipping distortion and unverified timestamps, our feedback interface requires an episode to close and verifies interval continuity, \texttt{avail} timestamps, and source-lineage guards before computing complete-episode log-wealth $G = \sum_{t=0}^{T-1}\log(W_{t+1}/W_t) = \log(W_T/W_0)$.
+
+\begin{table}[t]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Market Regime (\KOLTradingDates{} Dates, E10)} & \textbf{Days} & \textbf{Naive Daily IC} & \textbf{Static PIT IC} & \textbf{Rolling 60D Checked IC} \\
+\midrule
+\texttt{Bear\_HighVol\_Stress} & $411$ & $+0.0011$ & $+0.0450$ & $\mathbf{+0.0509}$ ($\Delta=+0.0498$) \\
+\texttt{Bull\_Expansion} & $188$ & $+0.0174$ & $-0.0066$ & $\mathbf{-0.0027}$ (Shrinkage Guard) \\
+\texttt{Sideways\_RangeBound} & $200$ & $-0.0647$ & $+0.0227$ & $\mathbf{+0.0287}$ ($\Delta=+0.0933$) \\
+\midrule
+\textbf{All-Regime Mean Daily Rank IC} & $\mathbf{799}$ & $\mathbf{\KOLNaiveDailyIC{}}$ & $\mathbf{\KOLGatedDailyIC{}}$ & $\mathbf{\KOLRollingDailyIC{}}$ ($\mathbf{p < 0.01}$) \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.15cm}
+\caption{Checked delayed-feedback calibration across three market regimes on the \KOLPredRows{}-row ledger (Experiment~E10, \texttt{EXTENDED\_ABLATIONS\_E9\_E12\_RESULTS.json}). Updating memory weights via 60-day rolling realized episodes ($t-5\text{d}$ checked settlement) outperforms both naive aggregation and static PIT priors.}
+\label{tab:mman}
+\vspace{-0.22cm}
+\end{table}
+
+Evaluating this checked delayed-feedback rule across three macro regimes on the \KOLPredRows{}-row prediction ledger (Experiment~E10, Table~\ref{tab:mman}) demonstrates that updating contributor weights over a 60-day rolling window of completed, timestamp-checked $5$-day episodes lifts overall mean daily cross-sectional Rank IC from \textbf{\KOLGatedDailyIC{}} (static PIT prior) to \textbf{\KOLRollingDailyIC{}}, with the largest gains during \texttt{Bear\_HighVol\_Stress} ($+0.0509$ across $411$ days) and \texttt{Sideways\_RangeBound} dispersion ($+0.0287$ vs.\ $-0.0647$ naive across $200$ days). Coupled with greedy evaluation and a zero-churn \texttt{HOLD} advantage baseline (\path{FLY_CHECKED_FEEDBACK_ABLATION.json}, Appendix~\ref{app:fly}), checked mushroom-body updates cut fee drag by $10.9\times$ on price-only FX ($9.68\% \to 0.89\%$) and reach \textbf{\FlySynCheckedSharpe{}} Sharpe on regime-switching equities and \textbf{\FlyKOLCheckedSharpe{}} Sharpe (vs.\ \textbf{\FlyKOLUncheckedSharpe{}} unchecked 1-step) on the \KOLPredRows{}-row KOL stream.
+
+
