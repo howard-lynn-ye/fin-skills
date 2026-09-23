@@ -41,6 +41,7 @@ def test_missing_artifacts_cannot_pass_final_gate(tmp_path, monkeypatch):
     assert session.finish()["accepted"] is False
 
 
+@pytest.mark.filterwarnings("error:Setting an item of incompatible dtype is deprecated:FutureWarning")
 def test_starter_is_executable_but_detectably_wrong(tmp_path):
     from benchmarks.agent_study.build_task import export
     from benchmarks.agent_study.feedback_ablation import STARTER

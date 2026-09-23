@@ -135,7 +135,8 @@ def same_session_probe(task: Path) -> dict:
             shutil.copytree(task, copied)
             for file in ("close_quoted.csv", "llm_score.csv", "volume.csv"):
                 path = copied / "data" / file
-                frame = pd.read_csv(path, index_col=0, parse_dates=True)
+                # Fractional shocks also apply to integer-valued volume columns.
+                frame = pd.read_csv(path, index_col=0, parse_dates=True).astype(float)
                 frame.loc[day] *= np.linspace(0.7, 1.3, len(frame.columns))
                 frame.to_csv(path)
             path = copied / "data/news_feed.csv"
