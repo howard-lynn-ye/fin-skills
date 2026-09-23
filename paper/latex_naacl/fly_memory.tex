@@ -1,6 +1,7 @@
 % Working-draft evidence: benchmarks/verified_memory/FORAGING_RESEARCH.md;
 % ARCHITECTURE_AUDIT.md; episode_credit.py; benchmarks/fly_paper/online.py,
 % run_bridge.py and README.md. Human source review remains pending.
+% Matched risk-gate control: benchmarks/fly_reuse/README.md and core.py.
 \section{Fruit-fly-inspired learning with checked feedback}
 \label{sec:fly}
 This application extends the library from assisting fixed models to checking the
@@ -17,8 +18,9 @@ adaptation. The adaptation advances its retention clock using observed condition
 events and reads memory without changing its state. Mapping signed financial returns
 to reinforcement and interpreting neuronal readouts as preferences are engineering
 choices. They are not validated biological correspondences, and the readout is not a
-calibrated expected return. The reproduction and derived model code remain in a
-separate research directory from the core library.
+calibrated expected return. The reproduction and derived model code are distributed
+as a separately installed GPL-3.0-or-later extension. The core library provides its
+adapter and model-card interface without bundling the extension or circuit parameters.
 
 \paragraph{Connection to the library.}
 The implemented feedback interface treats an entry and its subsequent holding periods
@@ -45,6 +47,12 @@ Those findings concern the tested implementations, not the suitability of mushro
 models in general. The newer memory interface uses supplied outcomes in controlled
 learning cases; it does not yet autonomously choose entry, holding duration, or exit.
 It is separate from the LLM tool-use experiment in the preceding section.
+
+The compact-memory benchmark now includes a frozen-memory control with the same
+volatility gate as the learned-memory arm, using identical data, costs, chronological
+splits and seeds. This separates the contribution of learning from that of the risk
+gate. No result for the newly added control has been recorded. The volatility gate
+controls exposure; it is distinct from the delayed-feedback checks described above.
 
 The proposed comparison will hold information, actions, costs, and learning targets
 constant across controllers with and without feedback checks. Linear and dense

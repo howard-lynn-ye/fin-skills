@@ -1,0 +1,53 @@
+% Merge provenance: local manuscript; Overleaf FinSkills and HiSTrim task taxonomy.
+\section{Problem and framework overview}
+\label{sec:framework}
+We distinguish three operations in a sequential research process. Context selection
+determines which available observations a model can attend to. Tool execution produces
+an analysis artifact and a record of the checks actually run on it. Learning uses a
+subsequent outcome to change persistent model state. A method can improve one operation
+while leaving the others unchanged or making the final decision worse.
+
+Let $\mathcal{D}_{\le t}$ contain records whose availability times are no later than
+decision time $t$. A context selector produces $C_t$ from those records and the task
+constraints. A fixed model chooses tools and an action from $C_t$, producing artifact
+$A_t$. An audit examines the relevant original inputs and $A_t$, not only the selected
+context. If a later outcome becomes available and passes the feedback checks, a learner
+may consume that outcome once. Retaining original records outside the model context
+allows an audit to inspect evidence that the selector omitted.
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{p{0.16\textwidth}p{0.25\textwidth}p{0.24\textwidth}p{0.25\textwidth}}
+\toprule
+Component & Input and operation & Output to evaluate & Present evidence \\
+\midrule
+HiSTrim context selection & Historical item representations; protect instructions and
+select retained KV entries & Task-label accuracy, teacher agreement, retained KV and
+measured latency & Recommendation manuscript results; financial integration untested \\
+\textsc{fin-skills} execution & Available data, chosen algorithms and submitted artifacts;
+execute tools and required checks & Executed-call validity, audit completeness and
+independent research correctness & Financial regression checks and development studies \\
+Checked persistent memory & Completed episodes with available, cost-inclusive outcomes;
+validate feedback before updating & Update validity, adaptation and net decision
+performance & Implemented interface; joint decision-policy evaluation pending \\
+\bottomrule
+\end{tabular}
+\caption{Complementary operations and their evidence. The rows do not describe a single
+already deployed or jointly evaluated pipeline. KV context and learned persistent memory
+are different objects; none of the listed proxies alone establishes economic utility.}
+\label{tab:framework}
+\end{table*}
+
+Two failure classes motivate the checks. Mechanical defects include unavailable inputs,
+future-survival filters and accounting mismatches. Interpretation defects arise when an
+agent treats a tool's output, a popular source, or agreement with a reference model as
+proof of task validity. The source manuscript's concrete failure examples motivate this
+distinction; their prevalence is not established by the current studies.
+
+Table~\ref{tab:framework} specifies what each component changes. The implemented
+financial experiments exercise library access and audit enforcement. HiSTrim operates
+inside a backbone's attention computation and requires access to its internal KV state;
+it cannot be assumed to work through an arbitrary hosted text-generation API. The
+persistent memory adapter has its own numerical backend. Connecting these interfaces
+requires a compatible execution backend and a new experiment.

@@ -1,0 +1,87 @@
+% Source: Overleaf sections/method.tex and preliminaries.tex, preserved before merge.
+% Mathematical statements narrowed to their actual conditions; raw runs not available.
+\section{Selective context with HiSTrim}
+\label{sec:histrim}
+HiSTrim contributes a concrete mechanism for selecting historical context while
+retaining task constraints. The source study uses chronological interaction items
+for recommendation. A financial application would instead need to define meaningful
+record spans and preserve timestamps, asset identifiers and task requirements. This
+mapping is a proposed application; it is not part of the completed financial runs.
+
+\subsection{Protected, sign-preserving selection}
+Let $\mathcal{H}_{\ell-1}$ be the historical items surviving before pruning layer
+$\ell$, and let $\mathcal{P}$ be a disjoint set of protected token positions. For an
+item representation $h_m$, the dual router computes
+\begin{align}
+ g_m &= w_g^\top h_m+b_g, & u_m &= w_u^\top h_m+b_u,\\
+ r_m &= \sigma(g_m)u_m, & \sigma(g)&=(1+e^{-g})^{-1}.
+\end{align}
+For finite real logits, $\sigma(g_m)>0$, so $\operatorname{sign}(r_m)=
+\operatorname{sign}(u_m)$; holding $g_m$ fixed gives
+$\partial r_m/\partial u_m=\sigma(g_m)>0$. By contrast,
+$\operatorname{SiLU}(g_m)u_m$ is positive when both logits are negative. The sigmoid
+form removes this algebraic sign reversal. It does not prove that the utility score
+is correct or that thresholding will retain every useful item.
+
+The router standardizes scores within a sequence and applies a learned threshold:
+\begin{align}
+ z_m &= (r_m-\mu_\ell)/(s_\ell+\epsilon),\\
+ \mathcal{H}_\ell &= \{m\in\mathcal{H}_{\ell-1}:z_m\ge\tau_\ell\},\\
+ \mathcal{T}_\ell &= \mathcal{P}\;\cup\!\bigcup_{m\in\mathcal{H}_\ell}\mathcal{I}_m.
+\end{align}
+Here $\mathcal{I}_m$ contains item $m$'s token positions. This separates item indices
+from token indices and ensures $\mathcal{H}_\ell\subseteq\mathcal{H}_{\ell-1}$.
+Protected positions remain in $\mathcal{T}_\ell$. Their retention prevents literal
+deletion, but changes in surrounding history can still change their hidden states
+and the model's answer. No equality of mutual information follows from masking alone.
+
+\subsection{Router fitting and physical compaction}
+The source method initializes routers from ridge-regression directions fitted on
+calibration data, normalizes each direction, and normalizes their weighted average.
+For nonzero fitted directions $v_s$, nonnegative weights summing to one, and a nonzero
+average, this gives
+\begin{equation}
+ w_0=\frac{\sum_s\alpha_s v_s/\|v_s\|_2}
+ {\left\|\sum_s\alpha_s v_s/\|v_s\|_2\right\|_2}.
+\end{equation}
+This construction fixes the norm; variance reduction needs additional distributional
+assumptions. A zero direction or cancelling average requires explicit handling.
+Forward-only refinement evaluates paired perturbations and updates directions in the
+tangent space, using $g_\perp=(I-ww^\top)g$ for unit $w$, followed by normalization.
+Thresholds are updated separately. These operations describe an optimization procedure,
+not a guarantee of convergence or avoidance of threshold collapse. Fixed numerical
+stabilizers also limit exact scale invariance of standardized scores.
+
+At inference, HiSTrim-VarLen gathers retained entries into packed buffers with
+sequence offsets. Physical gathering distinguishes a smaller cache from a mask that
+leaves all entries allocated. Real memory and latency depend on the backend, sequence
+lengths, beam sharing, packing overhead and retained fraction; they must be measured
+for the model executing the financial task.
+
+\subsection{Attention compensation and its limits}
+Eviction changes attention normalization. For a fixed query, let $s_0$ be a sink
+logit and let $\mathcal{E}$ contain the removed positions, excluding the sink.
+Replacing its exponential mass by the sink plus the removed mass would require
+\begin{equation}
+ \Delta^*=\log\left(1+\sum_{j\in\mathcal{E}}e^{s_j-s_0}\right).
+\label{eq:exact_sink}
+\end{equation}
+Then $e^{s_0+\Delta^*}=e^{s_0}+\sum_{j\in\mathcal{E}}e^{s_j}$ exactly for these
+fixed logits. Even this identity preserves only the denominator: preserving the
+attention output also requires the corresponding value-weighted contribution.
+
+The source's practical offset $\beta\log(|\mathcal{E}|+1)$ approximates the missing
+mass using only a count. Equality with Equation~\ref{eq:exact_sink} requires a
+specific relation between removed logits and the sink; it is not an unconditional
+conservation theorem. We therefore retain it as an attention-compensation heuristic
+whose effect must be measured, together with protected spans and sign-preserving
+routing. These qualifications preserve the method without attributing guarantees
+that the stated assumptions do not establish.
+
+\paragraph{Evidence and transfer.}
+The recommendation study separates semantic-ID generation, rating prediction and
+hybrid ranking. Appendix~\ref{app:histrim_evidence} preserves its reported results
+and their provenance. Teacher agreement and label accuracy answer different questions;
+neither directly measures financial research correctness. A joint test must compare
+the same financial model with and without context selection under matched information
+and audit access, rather than transfer a recommendation gain to a return claim.

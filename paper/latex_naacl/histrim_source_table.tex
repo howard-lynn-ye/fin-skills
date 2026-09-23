@@ -1,0 +1,28 @@
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Method & Hist. KV (\%) & Ad & Product & Video & Label-cond. & Interactive \\
+\midrule
+1.7B & Full Dense & 100.0 & 3.24 & 7.81 & 5.16 & 1.25 & 11.95 \\
+1.7B & TokenDrop-50 & 50.0 & 3.08 & 7.72 & 4.89 & 1.29 & 11.70 \\
+1.7B & H2O & 54.6 & 3.98 & 7.51 & 7.77 & 1.25 & 11.72 \\
+1.7B & SnapKV & 54.6 & 3.85 & 7.75 & 7.36 & 1.30 & 11.85 \\
+1.7B & Router-Tuning & 45.7 & 4.00 & 7.27 & 3.30 & 1.18 & 11.24 \\
+1.7B & HiSTrim & 47.5 & 4.10 & 8.09 & 6.43 & 1.50 & 12.08 \\
+\midrule
+8B & Full Dense & 100.0 & 4.56 & 8.22 & 7.67 & 1.41 & 18.25 \\
+8B & TokenDrop-50 & 50.0 & 4.22 & 7.89 & 7.12 & 1.32 & 17.40 \\
+8B & H2O & 54.6 & 5.06 & 8.28 & 8.94 & 1.37 & 18.95 \\
+8B & SnapKV & 54.6 & 5.02 & 8.25 & 8.54 & 1.72 & 18.70 \\
+8B & Router-Tuning & 46.2 & 4.12 & 7.95 & 6.84 & 1.34 & 17.65 \\
+8B & HiSTrim & 49.5 & 5.25 & 8.54 & 7.96 & 1.47 & 19.21 \\
+\bottomrule
+\end{tabular}
+\caption{Author-reported generative recommendation results retained from the
+Overleaf source table: MRR@32 multiplied by 100, with the source reporting
+1,000 users per task and 32 beams. Historical KV retention excludes protected
+tokens. These manuscript values have not been reproduced from predictions;
+source significance markers are omitted pending the underlying paired records.}
+\label{tab:histrim_source_mrr}
+\end{table*}

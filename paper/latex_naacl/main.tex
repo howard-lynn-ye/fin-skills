@@ -1,33 +1,35 @@
 \documentclass[11pt]{article}
 \usepackage[review]{acl}
 \usepackage[T1]{fontenc}
-\usepackage{times,amsmath,booktabs,graphicx,url,multirow}
+\usepackage{times,amsmath,amssymb,booktabs,graphicx,url,multirow,array}
 \usepackage{hyperref}
 \hypersetup{hidelinks}
 \input{evidence_numbers}
-\title{Verified Execution and Autonomous Tool Use\\for Financial Research Agents}
+\input{merge_numbers}
+\title{Verified Execution and Selective Memory\\for Financial Research Agents}
 \author{Working draft: author details pending confirmation}
-\date{September 21, 2026}
+\date{September 22, 2026}
 \begin{document}
 \maketitle
+\nolinenumbers
 \begin{center}\textbf{Draft under revision; not submission-ready.}\end{center}
 \begin{abstract}
-Financial research agents must choose appropriate methods, use information available at
-the decision time, and verify the resulting analysis. We present \textsc{fin-skills}, a
-library connecting source-dated financial guidance, executable algorithm interfaces,
-timestamp-aware data collection, and structured research checks. Models can inspect the
-library and choose tools and parameters; an optional rule-based adviser provides a
-separate recommendation path. An exploratory fruit-fly-inspired memory module extends
-the library's role to checking feedback before it enters online learning. We evaluate
-two questions: whether artifact-bound checks
-improve research correctness, and whether autonomous library use improves portfolio
-decisions. A historical \PilotRuns{}-run pilot shows model-dependent reporting errors,
-while a subsequent audit feasibility study does not yet yield independently gradable
-model submissions. In a separate development experiment with two open-weight models,
-all 64 final portfolio decisions were valid and 43 model-requested tool calls succeeded.
-However, autonomous access did not improve mean proxy returns over no-library controls
-for either model. These findings demonstrate an executable tool-use workflow, while
-leaving general research-correctness and economic-utility benefits unestablished.
+Financial research agents must retain relevant information, execute appropriate tools,
+and learn from outcomes that were actually available, yet success at one of these steps
+does not establish the validity of the final decision.
+We present \textsc{fin-skills}, a library for dated financial guidance, executable models
+and artifact-bound checks, and examine complementary mechanisms for selective memory:
+HiSTrim's protected, sign-preserving context routing and an exploratory fruit-fly-inspired
+learner whose delayed feedback is checked before updating memory.
+The available financial evidence comprises a \PilotRuns{}-run historical pilot, an audit
+feasibility study without independently gradable model submissions, and an autonomous-use
+development experiment in which two open-weight models produced 64 valid portfolio
+decisions and 43 successful tool calls, without improving mean proxy returns over
+no-library controls for either model.
+We separately retain the recommendation study's reported HiSTrim comparisons and
+distinguish task accuracy, teacher agreement and resource use; these records motivate
+testing selective context within financial agents but do not establish a jointly
+evaluated system or a general economic benefit.
 \end{abstract}
 
 \section{Introduction}
@@ -52,15 +54,20 @@ model-selected calls. A separate audit intervention binds check execution to the
 submitted artifact, because stating that a check was performed is not evidence that it
 ran on the relevant code and data.
 
-The contribution of this working draft has three parts. First, we present an integrated
-financial skill and model library with common interfaces for direct human use and
-agent-selected execution across multiple model families. Second, we develop an
-exploratory fruit-fly-inspired learning component that connects memory updates to the
-library's feedback checks. Third, we provide audit and evaluation protocols that
-separate tool-use validity, research correctness, learning-feedback validity, and
-economic utility. The library remains the central contribution; the memory component
-is a distinct model-development application rather than the controller used in the
-LLM experiments.
+Selective memory raises a related question: what information should remain available
+to a decision maker? HiSTrim addresses this within a model's context by retaining
+selected historical items while protecting task instructions. The fruit-fly-inspired
+component instead updates a persistent learned state from delayed outcomes. Neither
+operation validates a financial claim by itself. Our organizing principle is to keep
+information selection, execution evidence and feedback validity distinct, and to test
+their interaction rather than infer it from separate successes.
+
+This working draft contributes a financial skill and model library, an artifact-bound
+audit protocol, and a formulation connecting protected context selection with checked
+learning feedback. The library supports direct human use and agent-selected execution;
+the two memory mechanisms operate at different stages and have different evidence.
+The HiSTrim recommendation study and the financial-agent studies are evaluated
+separately. Their combination is a research design, not an already tested controller.
 
 We ask whether final-artifact checks reduce incorrect accepted conclusions, whether
 autonomous tool access improves portfolio decisions, and whether checked delayed
@@ -83,6 +90,8 @@ counterfactual testing are established research directions. Our focus is a reusa
 library and interventions that separate the effects of guidance, tool selection, and
 final-artifact checks. The short development study below is not a comparable leaderboard
 evaluation against these systems, and its results do not establish superiority.
+
+\input{framework_overview}
 
 \section{Library design}
 \label{sec:library}
@@ -111,7 +120,8 @@ JSON-callable tools & 56 \\
 \end{tabular}
 \caption{Inventory of the frozen study snapshot. Algorithm entries can expose existing
 methods through different backends. The autonomous study offers a price-compatible
-subset, not every catalog entry.}
+subset, not every catalog entry. This snapshot predates the September 22 RAG and Jev
+additions described below.}
 \label{tab:inventory}
 \end{table}
 
@@ -133,11 +143,38 @@ dependencies are installed. Fitted models can be saved and restored with recorde
 environment and input metadata. This loader restores trusted user-created artifacts;
 it is not a pretrained-checkpoint download service. Portfolio optimizers and rule-based
 signals use execution interfaces without pretending to share a supervised training
-lifecycle. The fruit-fly-inspired component is an experimental addition to this broader
-model-library direction; its research code is not yet a packaged model adapter.
+lifecycle. The current model registry also exposes an experimental fruit-fly memory
+adapter through \texttt{create\_model("fly\_memory")}. Its numerical backend is the
+separately installed GPL-3.0-or-later \texttt{fin-skills-fly} extension and requires
+caller-supplied circuit parameters. It supports prediction, checked feedback updates
+and persistence; it does not implement a complete autonomous trading policy.
+
+% Implementation scope: docs/RAG_PIPELINE.md and docs/MODEL_USAGE.md,
+% added after the frozen September 21 autonomous-study snapshot.
+\paragraph{Built-in retrieval and model composition.}
+The RAG interface chunks packaged skills or caller-supplied documents and retrieves
+passages using local BM25. Callers may supply embedding, reranking and text-generation
+functions. Passages retain their document identifiers, source offsets and availability
+timestamps; as-of retrieval excludes documents unavailable at the requested time.
+The index resides in memory and can be persisted as versioned JSON. Citation checks
+validate references to retrieved passage labels, not whether a passage supports a claim.
+
+The shared model registry includes a hosted TypeSafe Jev adapter for structured
+decisions and passage reranking. It requires service access and explicit network
+permission; no Jev weights are distributed with the library. The adapter can serve as
+a RAG reranker while a caller-selected model generates the answer. These September 22
+additions have interface tests, including mock Jev transports. Live-service inference,
+retrieval quality and reranking gains were not evaluated in the earlier studies.
+A paired development runner now freezes BM25 candidates, the time cutoff and context
+budget before Jev inference, with relevance scoring performed separately on saved
+outputs. Its public synthetic fixtures test this workflow. A quality comparison still
+requires independently annotated retrieval tasks and an unchanged answering model.
 
 \paragraph{Information availability.}
 News collection supports RSS/Atom feeds, static pages, GDELT, and disclosure sources.
+SQLite stores collection records, revisions, polling checkpoints and pending alerts;
+the operator explicitly starts collection. The package does not ship a populated
+financial dataset, and this record store is separate from the RAG index.
 Records distinguish publication time from observation time and retain revision
 information when available. An as-of digest filters future, stale, and undated records
 and deduplicates canonical URLs. These mechanisms support timestamp-aware processing;
@@ -163,6 +200,8 @@ ranking reduces one avenue for selection bias, but the caller must still provide
 timestamps and data provenance. Python and JSON tool interfaces expose structured
 results; guards requiring live Python objects are not all available as JSON calls.
 Neither a data record nor a successful tool call certifies the whole research process.
+
+\input{selective_context}
 
 \section{Audit contract}
 Python guards inspect supplied artifacts and return structured findings. The following
@@ -304,7 +343,7 @@ indicating substantially greater iteration before the turn limit was hit. All ac
 submissions were ungradable; the primary outcome---incorrect accepted submissions per
 attempt---cannot be estimated from this batch.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering\small
 \begin{tabular}{llccc}
 \toprule
@@ -331,7 +370,7 @@ Values come from \texttt{BEACON\_FEASIBILITY\_RESULTS.json};
 numbers in \texttt{evidence\_numbers.tex} are generated by
 \texttt{scripts/build\_paper\_evidence.py}.}
 \label{tab:beacon_feasibility}
-\end{table}
+\end{table*}
 
 
 
@@ -348,6 +387,25 @@ incremental contribution of financial checks.
 
 \input{fly_memory}
 
+\section{Discussion and conclusion}
+The studies expose different gaps between a plausible decision and a supported result.
+The financial-agent loop demonstrates that models can choose and execute tools, but
+successful execution did not improve the primary proxy-return comparison. Audit
+receipts make the scope of executed checks explicit, while the feasibility study shows
+that artifact validity must be established before financial correctness can be measured.
+The recommendation study supplies a concrete context-selection mechanism and reported
+task-specific comparisons, with its evidence status recorded in
+Appendix~\ref{app:histrim_evidence}. Checked episode feedback addresses a further issue:
+whether a learning update uses an outcome available at the time it is consumed.
+
+A joint evaluation should cross context selection with audit access while holding
+the backbone, information cutoff, action space and compute budget fixed. Feedback
+validation requires a separate matched learning ablation. Such a design can distinguish
+context savings, correct execution and adaptation from changes in risk exposure or
+available information. The present contribution is a library and a testable account
+of these interfaces, supported by separate development studies rather than a claim
+that the complete combination improves financial returns.
+
 \section*{Limitations and remaining work}
 The Beacon worker uses Linux Landlock and seccomp to restrict filesystem access,
 network calls and process creation; unsupported enforcement fails closed. Local
@@ -363,6 +421,11 @@ The autonomous-use development experiment adds a functioning portfolio-decision 
 it does not resolve those limitations or establish profitable trading. Its reference-price
 data, limited market coverage, unequal actual compute use and previously inspected window
 preclude a confirmatory economic-utility claim.
+HiSTrim's underlying recommendation run records were not available for this merge;
+its retained results are explicitly author-reported. Context compaction can discard
+necessary evidence even when protected tokens survive, and the proposed connection
+to financial agents has not been evaluated. Resource savings alone do not establish
+lower energy use or a better research decision.
 
 \section*{Authorship, data and disclosure status}
 Author order, affiliations, funding, data permissions and final declarations require
@@ -372,4 +435,7 @@ and experiment preparation in this work session; the final disclosure and human 
 record must be completed before submission. The manuscript remains a working draft.
 
 \bibliography{references}
+\clearpage
+\appendix
+\input{histrim_evidence}
 \end{document}
