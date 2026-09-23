@@ -1,0 +1,58 @@
+{
+  "phase": "during_batch",
+  "repeat": 0,
+  "passed": true,
+  "returncode": -9,
+  "barrier": "BARRIER:during_batch",
+  "stderr": "",
+  "after": {
+    "integrity": "ok",
+    "counts": {
+      "events": 1,
+      "latest": 1,
+      "alerts": 1
+    },
+    "state": {
+      "cursor": 0
+    },
+    "pending": [
+      {
+        "seq": 1,
+        "watch_id": "recovery-study",
+        "actor": "",
+        "data": {
+          "revision": 0,
+          "value": 0
+        },
+        "id": "0",
+        "kind": "report",
+        "observed_at": "2026-01-02T00:00:00+00:00",
+        "published_at": null,
+        "source": "fixture",
+        "symbol": "",
+        "title": "cash",
+        "url": "https://example.invalid/report"
+      }
+    ],
+    "latest": [
+      {
+        "seq": 1,
+        "watch_id": "recovery-study",
+        "actor": "",
+        "data": {
+          "revision": 0,
+          "value": 0
+        },
+        "id": "0",
+        "kind": "report",
+        "observed_at": "2026-01-02T00:00:00+00:00",
+        "published_at": null,
+        "source": "fixture",
+        "symbol": "",
+        "title": "cash",
+        "url": "https://example.invalid/report"
+      }
+    ],
+    "open_and_check_seconds": 0.06979950284585357
+  }
+}

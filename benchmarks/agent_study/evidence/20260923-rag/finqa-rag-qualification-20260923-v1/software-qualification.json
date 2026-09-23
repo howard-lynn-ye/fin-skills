@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "actual_bm25s": true,
+  "matched_contexts": true,
+  "actual_react": true,
+  "actual_rag_pipeline_gate": true,
+  "unknown_label_rejected": true,
+  "scripted_only": true,
+  "versions": {
+    "bm25s": "0.3.11",
+    "llama-index-core": "0.14.25",
+    "torch": "2.13.0+cu130"
+  }
+}

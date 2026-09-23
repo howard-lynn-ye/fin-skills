@@ -1,0 +1,22 @@
+{
+  "status": "submission_in_progress",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=angliece",
+    "--partition=beacon",
+    "--qos=medium",
+    "--nodes=1",
+    "--ntasks=1",
+    "--cpus-per-task=4",
+    "--mem=8G",
+    "--time=00:10:00",
+    "--job-name=fin-rag-qualify",
+    "--chdir=/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-qualification-20260923-v1",
+    "--output=/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-qualification-20260923-v1/logs/slurm-%j.out",
+    "--error=/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-qualification-20260923-v1/logs/slurm-%j.err",
+    "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-qualification-20260923-v1/job.sh",
+    "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-qualification-20260923-v1"
+  ],
+  "started_utc": "2026-09-23T06:18:26.985515+00:00"
+}

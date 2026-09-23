@@ -1,0 +1,6 @@
+{
+  "job_id": "1654299",
+  "prior_state": "PENDING",
+  "action": "cancelled_unstarted",
+  "reason": "Combine Qwen/Mistral in one allocation after confirmed association submission-limit rejection; frozen source unchanged"
+}

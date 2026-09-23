@@ -1,0 +1,138 @@
+{
+  "verified": true,
+  "cases": [
+    {
+      "case": "0-after_commit",
+      "counts": {
+        "events": 3,
+        "latest": 3,
+        "alerts": 3
+      },
+      "state": {
+        "cursor": 2
+      }
+    },
+    {
+      "case": "0-before_commit",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "0-before_save",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "0-during_batch",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "1-after_commit",
+      "counts": {
+        "events": 3,
+        "latest": 3,
+        "alerts": 3
+      },
+      "state": {
+        "cursor": 2
+      }
+    },
+    {
+      "case": "1-before_commit",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "1-before_save",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "1-during_batch",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "2-after_commit",
+      "counts": {
+        "events": 3,
+        "latest": 3,
+        "alerts": 3
+      },
+      "state": {
+        "cursor": 2
+      }
+    },
+    {
+      "case": "2-before_commit",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "2-before_save",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    },
+    {
+      "case": "2-during_batch",
+      "counts": {
+        "events": 1,
+        "latest": 1,
+        "alerts": 1
+      },
+      "state": {
+        "cursor": 0
+      }
+    }
+  ],
+  "source_manifest_sha256": "c365ac373b8fc26166efcf642632b6bdd86c7530dd3f97455be4f8081b2d17d8"
+}

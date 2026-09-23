@@ -1,0 +1,25 @@
+{
+  "plan": {
+    "remote_root": "/beacon-projects/radfm/wy891/fin-skills-campaign-storage-recovery-20260923-v1",
+    "name": "fin-storage-recovery",
+    "gpu": false,
+    "memory": "8G",
+    "time": "00:20:00"
+  },
+  "sha256": {
+    "source/storage_recovery.py": "60cb7455d9073567a609e587b7f7f99c8ba8edb09d7e18443b014ed3a656cdab",
+    "source/fin_skills/__init__.py": "1bc097811d4658cf4b2ba523f8310a944dce430990bffbaf3b77c8b0f2a4e93c",
+    "source/fin_skills/collect/disclosures.py": "56e267b272fa8e5fa8b96cf64aab45eb150dda63490a7a31a6d4086aaba7921f",
+    "source/fin_skills/collect/feeds.py": "3d11c45fc4e1f70dfcabe88719a47890ade8ae3505d523c7fcd3154af0a1a42f",
+    "source/fin_skills/collect/http.py": "addb259f10cb6aeaea1fe5e8e4711d73e58cd83f70dea4f2be5b2a9abec8f971",
+    "source/fin_skills/collect/model.py": "3ef8bfa33ecc3ea95c431a8a45355ccf2426d2edc6e74912b304516c00678b55",
+    "source/fin_skills/collect/news.py": "2821c55a97a5029404d9208c5e7a51c13886a184115628770a4c87e6d6f9e751",
+    "source/fin_skills/collect/parsers.py": "9c0193168b05de1d954856ae94deaef4a88f8aebb0641a46533bbe7df295c7a8",
+    "source/fin_skills/collect/runtime.py": "ce6d2c7d1c0fabe4477fc44fcbc88492b1c9495cfff5a7bc03a3c91d1a91e3d4",
+    "source/fin_skills/collect/store.py": "35c6cdfe2b392cdad31c5ba5ad09663041cc2ac44eae2e8a7ab51a29eaae2ee7",
+    "source/fin_skills/collect/__init__.py": "af56ee3f9f95993189932824d84c2e4681e98403c6ad651eecaaa43bacb075f7",
+    "source/fin_skills/collect/__main__.py": "90816519c97e177cae09494c657cf3ca9225e4f2a49b625994e9edf1f8a4e733",
+    "job.sh": "9399d49ec1a0e7bcc7392359baca8e17813d65459547ca76442b9ede91a9223d",
+    "source/submit_model_followup.py": "3ee6b4538a49e00b285dc23c6decda8ea5b9c499ca3998ee411f21bacb3f051f"
+  }
+}

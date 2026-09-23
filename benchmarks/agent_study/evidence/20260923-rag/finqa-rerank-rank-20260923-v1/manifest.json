@@ -1,0 +1,22 @@
+{
+  "plan": {
+    "remote_root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-rank-20260923-v1",
+    "name": "fin-rerank-rank",
+    "gpu": true,
+    "memory": "64G",
+    "time": "04:00:00",
+    "afterok": "1654259"
+  },
+  "sha256": {
+    "source/finqa_rag_ablation.py": "c085ebd4eecb9cab2d7abd0f11b22bc2f53c1e4e086903e37f6a2511c15007f0",
+    "source/finqa_rerank_transfer.py": "ead1fed413c78b1f40565645f506e92138916fedde913aedd63f7379391e31e7",
+    "source/finqa_reuse.py": "8219143eee4e883d3440a1bc260476d496270902055d2a0e6f6104e7a7db29aa",
+    "source/kev-config.json": "d30f40069e054bdf4ba7a1c8410fe45f872a6fb04e3a49c200daf9f137c3130b",
+    "source/library.tar.gz": "ea98ccebaf73227f91625989d72fc24f51c59977492d7b22854d3f7b6e0fa222",
+    "source/protocol.md": "e54a76a482cbf5921014bd0baaf0ccdda95920b5d144f6c6433f74b5783815cf",
+    "source/skill.md": "9b3f09c267a777247a4c2cae5947fe8e04de872c69a361d62a2c7d93725f12e2",
+    "source/transformers_chat.py": "a184bbdc169509ff416eab749ab8d18c12004b331de726e89d40efa5f5dc4889",
+    "job.sh": "982146cb69d94755a5aa9c005f02f5dacbc71ed986fe820da53e7d860729c1a7",
+    "source/submit_model_followup.py": "3ee6b4538a49e00b285dc23c6decda8ea5b9c499ca3998ee411f21bacb3f051f"
+  }
+}
