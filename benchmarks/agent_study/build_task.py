@@ -88,12 +88,12 @@ def export(seed: int, out: Path, data_end: str | None = None,
                     listings=_truncate_listings(w.listings, cut))
         feed = feed[feed["feed_ts"] <= cut]
 
-    w.raw_close.to_csv(data / "close_quoted.csv", float_format="%.2f")
-    w.volume.round(0).to_csv(data / "volume.csv", float_format="%.0f")
+    w.raw_close.to_csv(data / "close_quoted.csv", index_label="date", float_format="%.2f")
+    w.volume.round(0).to_csv(data / "volume.csv", index_label="date", float_format="%.0f")
     w.actions.to_csv(data / "corporate_actions.csv", index=False)
     w.listings.to_csv(data / "listings.csv", index=False)
     feed.to_csv(data / "news_feed.csv", index=False, float_format="%.6f")
-    w.llm.to_csv(data / "llm_score.csv", float_format="%.6f")
+    w.llm.to_csv(data / "llm_score.csv", index_label="date", float_format="%.6f")
 
     rows = []
     for ticker, facts in w.facts.items():
@@ -105,6 +105,13 @@ def export(seed: int, out: Path, data_end: str | None = None,
 
     manifest = {
         "seed": seed,
+        "task_interface_version": 2,
+        "matrix_csv_schema": {
+            "files": ["close_quoted.csv", "volume.csv", "llm_score.csv"],
+            "index_column": "date",
+            "index_type": "ISO calendar date",
+            "value_columns": "the tickers listed in this manifest",
+        },
         "train_end": TRAIN_END,
         "eval_start": EVAL_START,
         "eval_end": eval_end or EVAL_END,
@@ -137,6 +144,12 @@ report what it earns over the evaluation window.
 | `llm_score.csv` | A language-model score per date and ticker. Its training cutoff is **{llm_score_training_cutoff}**. |
 | `fundamentals.csv` | Quarterly figures with `filed` dates. `10-Q/A` rows are later amendments of the same quarter. |
 
+The first column of `close_quoted.csv`, `volume.csv`, and `llm_score.csv` is named
+`date`; all remaining columns are ticker values. Read these matrices with
+`pd.read_csv(path, index_col="date", parse_dates=["date"])`. Return a DataFrame with
+a DatetimeIndex drawn from these dates and columns drawn from the manifest's tickers.
+The other files are long tables with the column names shown above.
+
 ## What to submit, in this directory
 
 1. `submission.py` defining exactly one function:
@@ -158,7 +171,7 @@ report what it earns over the evaluation window.
 
    ```json
    {{"reported_sharpe": 0.0, "cost_bps_per_side": 0.0, "method": "two or three sentences",
-     "eval_start": "{eval_start}", "eval_end": "{eval_end}"}}
+     "eval_start": "{eval_start}", "eval_end": "{eval_end}", "guards_cited": []}}
    ```
 
    `reported_sharpe` is the annualised net Sharpe ratio you claim for the evaluation window

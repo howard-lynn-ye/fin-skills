@@ -69,7 +69,7 @@ def check_combined_clock(claimed, available_ats) -> None:
 def quarter_ends(sessions: pd.DatetimeIndex) -> pd.DatetimeIndex:
     """Calendar quarter ends spanning the panel, plus one before it starts."""
     lo = sessions.min() - pd.Timedelta(days=200)
-    return pd.date_range(lo, sessions.max(), freq="Q")
+    return pd.date_range(lo, sessions.max(), freq="QE")
 
 
 def build_panel(seed: int = SEED) -> dict:

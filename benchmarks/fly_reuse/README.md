@@ -76,9 +76,25 @@ actor, though its financial critic can update. This is a risk-budget proxy. It i
 claim that cash, loss or volatility is literally hunger. The threshold is fitted on the
 training window and is not an online estimate during training.
 
-Arms: fly, fly with gate, frozen fly, shuffled feedback, ordinary actor, ordinary actor with
-gate; seeds 11, 23, 37, 53 and 71. Cash and buy-and-hold use the same paper execution guard.
+Arms: fly, fly with gate, frozen fly, frozen fly with gate, shuffled feedback, ordinary actor,
+ordinary actor with gate; seeds 11, 23, 37, 53 and 71. Cash and buy-and-hold use the same paper execution guard.
 Five seeds describe algorithmic variability on one path, not five independent market samples.
+
+The frozen-with-gate control was added on 2026-09-22; it is absent from the archived v1 results.
+It keeps initial actor and critic weights unchanged while applying the same volatility gate
+as the learned arm. `--paired-gate` runs only `fly_gated` and `frozen_gated`, using the same
+seeds, costs and chronological splits, and requires an existing market snapshot. Neither
+validation nor test updates weights in either arm. No result for this new comparison has
+been recorded yet.
+
+`beacon_gate_control.sh NEW_RADFM_ROOT PRIOR_RADFM_ROOT` is the dedicated scheduled-job
+entry point. Stage the current source under `NEW_RADFM_ROOT/source` first. It reuses the
+prior pinned upstream checkouts, Python environment and `data/kraken-daily.json`, verifies
+the two upstream commit IDs, and puts new results and caches under the new root. Both roots
+must be distinct direct `fin-skills-fly-*` children of `/beacon-projects/radfm/wy891`.
+Submit with absolute `--chdir`, `--output` and `--error` paths under the new root; no job has
+been submitted by adding this entry point. The script runs the real upstream integration
+checks before the paired comparison, so local skipped tests are not a remote pass.
 
 ## Full graph pilot
 

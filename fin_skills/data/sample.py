@@ -176,7 +176,7 @@ def fundamentals(*, n_entities: int = 3, quarters: int = 16,
     """
     rng = np.random.default_rng(seed + 1)
     entities = [f"000000{i}" for i in range(int(n_entities))]
-    ends = pd.date_range("2019-03-31", periods=int(quarters), freq="Q")
+    ends = pd.date_range("2019-03-31", periods=int(quarters), freq="QE")
 
     rows: list[dict] = []
     for e_i, eid in enumerate(entities):

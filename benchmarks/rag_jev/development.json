@@ -1,0 +1,21 @@
+{
+  "scope": "public_development",
+  "documents": [
+    {"id":"clock","text":"In this example pipeline, a historical join may use a report only after its publication timestamp. The report's fiscal period end does not establish when a decision could have used it. Filter by available_at before joining reports to decisions.","source":"synthetic:rag-jev/clock","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"retrieval","text":"In this example pipeline, BM25 retrieves document passages by lexical relevance. A reranker receives the same candidate passages and changes their order before the answering model receives its bounded context.","source":"synthetic:rag-jev/retrieval","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"routing","text":"In this example pipeline, a structured choice selects one tool from the allowed tool descriptions. The application validates that choice, then calls the selected tool. A low-confidence selection is sent for further review.","source":"synthetic:rag-jev/routing","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"feedback","text":"In this example pipeline, the memory component learns from delayed feedback after the recorded outcome becomes available. Frozen memory uses the same predictions interface but does not update its learned weights.","source":"synthetic:rag-jev/feedback","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"citation","text":"In this example pipeline, checking that a citation label names a retrieved source establishes only label validity. Whether that source actually supports the answer requires a separate content-support assessment.","source":"synthetic:rag-jev/citation","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"gate","text":"In this example pipeline, a deterministic risk gate rejects proposed orders that exceed a fixed exposure limit. Both the learned-memory and frozen-memory arms use the same risk gate, transaction costs and chronological input data.","source":"synthetic:rag-jev/gate","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"format","text":"In this example pipeline, the formatting component sets heading fonts and text alignment in the report. Formatting a report does not determine its retrieval ranking, tool selection or factual correctness.","source":"synthetic:rag-jev/format","available_at":"2026-09-01T00:00:00Z"},
+    {"id":"future","text":"Future report publication timestamps, BM25 retrieval ranking, structured tool selection, delayed memory feedback, citation support and fixed risk gates are discussed in this later document. This text must not influence an earlier query's candidate set or BM25 statistics.","source":"synthetic:rag-jev/future","available_at":"2026-10-01T00:00:00Z"}
+  ],
+  "queries": [
+    {"id":"q-clock","query":"Which timestamp determines whether a historical decision may use a report?","as_of":"2026-09-22T00:00:00Z"},
+    {"id":"q-retrieval","query":"How does a reranker change retrieved passages before answering?","as_of":"2026-09-22T00:00:00Z"},
+    {"id":"q-routing","query":"How should the pipeline choose one tool from a fixed allowed set?","as_of":"2026-09-22T00:00:00Z"},
+    {"id":"q-feedback","query":"When can memory learn from a delayed outcome?","as_of":"2026-09-22T00:00:00Z"},
+    {"id":"q-citation","query":"Does a valid citation label prove that the source supports the answer?","as_of":"2026-09-22T00:00:00Z"},
+    {"id":"q-gate","query":"What must be held fixed when comparing learned and frozen memory under risk limits?","as_of":"2026-09-22T00:00:00Z"}
+  ]
+}

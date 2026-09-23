@@ -21,8 +21,16 @@ from benchmarks.fly_reuse.core import activate, Compact, FullGraph, run_window
 PINS = {"fruit-fly-fund": "56f01f6426a4d6d6293a4e06afcf4a035133a968",
         "stonkfly-lab": "09e4529e2e1a135083838abd00ccacfd95c63a29",
         "vendored_stonkfly": "78ef3e05ab0fa086032098558d893667068944a0"}
-ARMS = ("fly", "fly_gated", "frozen", "shuffled", "ordinary", "ordinary_gated")
+ARMS = ("fly", "fly_gated", "frozen", "frozen_gated", "shuffled", "ordinary", "ordinary_gated")
 SEEDS = (11, 23, 37, 53, 71)
+
+
+def selected_arms(mode, paired_gate):
+    if paired_gate:
+        if mode != "compact":
+            raise ValueError("paired gate control requires compact mode")
+        return ("fly_gated", "frozen_gated")
+    return ARMS if mode == "compact" else ("full_plastic", "full_frozen")
 
 
 def snapshot(path):
@@ -59,7 +67,12 @@ def main():
     parser.add_argument("--mode", choices=("compact", "full"), default="compact")
     parser.add_argument("--connectome", type=Path)
     parser.add_argument("--pilot-bars", type=int, default=180)
+    parser.add_argument("--paired-gate", action="store_true",
+                        help="Only compare learned and frozen memory with the same risk gate")
     args = parser.parse_args()
+    arms = selected_arms(args.mode, args.paired_gate)
+    if args.paired_gate and not args.data.is_file():
+        raise SystemExit("Paired comparison requires the existing frozen market snapshot")
     activate(args.upstream)
     if args.output.exists():
         raise SystemExit("Refusing to overwrite a run")
@@ -76,6 +89,7 @@ def main():
     vol = np.log(bars.close).diff().rolling(20).std(ddof=0)
     threshold = float(vol.iloc[21:train_end].quantile(.8))
     protocol = {"pins": PINS, "mode": args.mode, "data_sha256": data_hash,
+                "arms": list(arms), "paired_gate_control": args.paired_gate,
                 "rows": n, "windows": {k: {"start": a, "end_exclusive": b,
                     "first_day": int(bars.t.iloc[a]), "last_day": int(bars.t.iloc[b-1])}
                     for k, (a, b) in windows.items()},
@@ -103,8 +117,8 @@ def main():
             a, b = windows[window]
             result["benchmarks"][name+"_"+window] = run_window(
                 bars, a, b, None, args.output/name/window, constant=action)
-    jobs = [(arm, seed) for seed in SEEDS for arm in ARMS] if args.mode == "compact" else [
-        ("full_plastic", 0), ("full_frozen", 0)]
+    jobs = [(arm, seed) for seed in SEEDS for arm in arms] if args.mode == "compact" else [
+        (arm, 0) for arm in arms]
     for arm, seed in jobs:
         policy = Compact(arm, seed, threshold) if args.mode == "compact" else FullGraph(
             arm == "full_plastic", str(args.connectome))

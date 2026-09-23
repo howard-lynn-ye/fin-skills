@@ -1,0 +1,107 @@
+\section{Supporting audit and validation studies}
+\label{app:audit}
+This appendix details the execution and feedback validation checks, defect recall
+benchmarks, and empirical audits across model tiers.
+
+\subsection{Independent evaluation environment}
+We evaluate agent portfolio decisions in a synthetic market environment with full ground-truth
+transparency, providing quoted prices, corporate split actions, delisting events, and
+fundamental disclosures. A submitted strategy script returns portfolio weights, alongside
+a written report stating its expected Sharpe ratio. Session-$t$ portfolio weights must use
+only information available by the close of session $t-1$.
+
+An independent oracle evaluator verifies submissions by perturbing future data, checking
+for post-delisting exposure, and recalculating performance under fixed transaction costs.
+Oracle grades are generated after the submission receipt is saved and are never exposed
+to the agent during its decision turns.
+
+This oracle separates genuine investment skill from data leakage. In this environment, an
+honest strategy trading strictly lagged features achieves an empirical ceiling Sharpe of
+1.63. In contrast, look-ahead joins (e.g., using current-day closing prices before the
+close) produce inflated paper Sharpe ratios up to 71.5. Abnormally high backtest performance
+thus serves as an unambiguous signature of look-ahead leakage.
+
+\subsection{Validation benchmarks}
+\paragraph{Defect detection benchmark.}
+We evaluate 13 core research guards against 12 planted quantitative defect families,
+including look-ahead feature joins, unadjusted stock split prices, future earnings
+disclosure leaks, and survivorship bias. Across three seeded synthetic market worlds, the
+guards achieve 100\% recall (\CaughtInstances{}/\DefectInstances{} planted defects caught)
+with zero false alarms on clean reference code.
+
+\paragraph{Reporting discrepancy and compliance paradox.}
+Table~\ref{tab:pilot} measures reporting discrepancy: the absolute difference between the
+Sharpe ratio claimed by the agent in its written report and the ground-truth Sharpe ratio
+computed by the oracle evaluator.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lc}
+\toprule
+Model and condition & Mean absolute Sharpe gap \\
+\midrule
+Opus, no library & \OpusBase \\
+Opus, with library & \OpusLibrary \\
+Haiku, no library & \HaikuBase \\
+Haiku, with library & \HaikuLibrary \\
+\bottomrule
+\end{tabular}
+\caption{Reporting discrepancy between agent-claimed Sharpe ratios and ground-truth oracle evaluations.}
+\label{tab:pilot}
+\end{table}
+
+Without tools, Opus exhibited a reporting gap of \OpusBase, which decreased to \OpusLibrary{}
+when given execution guards (\OpusReduction\% reduction). In contrast, Haiku displayed a
+compliance paradox: when provided with the library, it frequently wrote in its text rationale
+that it had verified its strategy with risk guards, but never actually invoked the guards in
+its code execution trace. This superficial compliance inflated its discrepancy to \HaikuLibrary,
+demonstrating that smaller models require automated code execution verification rather than
+relying on self-reported compliance.
+
+\paragraph{Social sentiment verification.}
+On 1.72 million financial posts across 2,521 social media accounts, raw uncalibrated sentiment
+scores exhibited negative out-of-sample rank correlation with subsequent asset returns
+($\text{Rank IC} = -0.0318$): blindly following social media sentiment lost money.
+By evaluating each account's historical prediction accuracy and applying Bayesian credibility
+weighting (including inverting signals from consistently inaccurate accounts), the out-of-sample
+correlation flipped to $+0.0104$. This demonstrates that unstructured text signals require
+empirical track-record verification before driving investment decisions.
+
+\subsection{Four-condition audit feasibility}
+We evaluated models under four audit conditions: unassisted baseline (C0), text guidance
+only (C1), optional executable guards (C2), and mandatory automated audit (C3).
+
+\paragraph{Operational findings.}
+Table~\ref{tab:beacon_feasibility} presents results for Qwen2.5-Coder 14B under automated audit
+constraints. The acceptance rate was 67\% under C0 and C1, 100\% under C2 (optional guards),
+and 0\% under C3 (mandatory audit), where runs reached the turn limit while attempting to fix
+all detected code defects. Mean token consumption under C3 was \BeaconFourteenCThreeMeanTokens{}
+compared to \BeaconFourteenCTwoMeanTokens{} under C2, showing that automated verification
+compels the agent to engage in substantially deeper code debugging before finalizing allocations.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{llccc}
+\toprule
+Model & Condition & Accepted/Planned & Mean tokens & Primary status \\
+\midrule
+\multirow{4}{*}{14B}
+  & C0: unassisted            & \BeaconFourteenCZeroAccepted/\BeaconFourteenCZeroPlanned
+      & \BeaconFourteenCZeroMeanTokens   & 1$\times$ turn limit \\
+  & C1: text guidance only    & \BeaconFourteenCOneAccepted/\BeaconFourteenCOnePlanned
+      & \BeaconFourteenCOneMeanTokens    & 1$\times$ turn limit \\
+  & C2: optional guards       & \BeaconFourteenCTwoAccepted/\BeaconFourteenCTwoPlanned
+      & \BeaconFourteenCTwoMeanTokens    & all accepted \\
+  & C3: mandatory audit       & \BeaconFourteenCThreeAccepted/\BeaconFourteenCThreePlanned
+      & \BeaconFourteenCThreeMeanTokens  & 3$\times$ turn limit \\
+\midrule
+7B  & all (12 cells)          & 0/12 & --- & turn limit / syntax error \\
+32B & all (12 cells)          & 0/12 & 0   & environment error \\
+\bottomrule
+\end{tabular}
+\caption{Audit feasibility results across open-weight models under automated verification constraints.}
+\label{tab:beacon_feasibility}
+\end{table*}
+
+A reference quantitative script passed all verification and timing checks on the market
+benchmark, confirming the end-to-end viability of the automated verification pipeline.

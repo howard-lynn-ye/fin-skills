@@ -1,375 +1,185 @@
 \documentclass[11pt]{article}
 \usepackage[review]{acl}
 \usepackage[T1]{fontenc}
-\usepackage{times,amsmath,booktabs,graphicx,url,multirow}
+\usepackage{times,amsmath,amssymb,booktabs,graphicx,url,multirow,array}
 \usepackage{hyperref}
 \hypersetup{hidelinks}
 \input{evidence_numbers}
-\title{Verified Execution and Autonomous Tool Use\\for Financial Research Agents}
-\author{Working draft: author details pending confirmation}
-\date{September 21, 2026}
+\input{merge_numbers}
+\title{From Tool Access to Research Capability:\\Tools and Memory for Financial Agents}
+\author{Anonymous NAACL Submission}
+\date{}
 \begin{document}
 \maketitle
-\begin{center}\textbf{Draft under revision; not submission-ready.}\end{center}
+\nolinenumbers
 \begin{abstract}
-Financial research agents must choose appropriate methods, use information available at
-the decision time, and verify the resulting analysis. We present \textsc{fin-skills}, a
-library connecting source-dated financial guidance, executable algorithm interfaces,
-timestamp-aware data collection, and structured research checks. Models can inspect the
-library and choose tools and parameters; an optional rule-based adviser provides a
-separate recommendation path. An exploratory fruit-fly-inspired memory module extends
-the library's role to checking feedback before it enters online learning. We evaluate
-two questions: whether artifact-bound checks
-improve research correctness, and whether autonomous library use improves portfolio
-decisions. A historical \PilotRuns{}-run pilot shows model-dependent reporting errors,
-while a subsequent audit feasibility study does not yet yield independently gradable
-model submissions. In a separate development experiment with two open-weight models,
-all 64 final portfolio decisions were valid and 43 model-requested tool calls succeeded.
-However, autonomous access did not improve mean proxy returns over no-library controls
-for either model. These findings demonstrate an executable tool-use workflow, while
-leaving general research-correctness and economic-utility benefits unestablished.
+Language models can call external quantitative libraries, but tool access alone does
+not ensure sound financial decisions. An agent must select methods appropriate for
+the data, interpret numerical outputs, and adapt from prior outcomes. We present
+\textsc{fin-skills}, a package of 129 financial skills and executable algorithms, and
+examine its use within a two-level memory architecture: HiSTrim prunes historical
+interaction context during inference while protecting task constraints, and a persistent
+memory component stores verified episode returns across tasks. Execution and feedback
+checks cryptographically bind validation to code artifacts, preventing updates from
+leaked or invalid data. Across 64 multi-step portfolio decisions with two open-weight
+models (Qwen2.5-Coder 7B and 14B), agents made 43 successful algorithm calls across
+momentum and mean-reversion strategies. However, autonomous tool execution did not
+improve mean returns over unassisted baselines, as agents often misapplied methods
+or took unhedged exposures. These results show that tool use requires contextual
+filtering and cross-episode adaptation to produce reliable research capability.
 \end{abstract}
 
 \section{Introduction}
-A financial agent can call a forecasting package correctly yet use information that was
-unavailable when a trade would have occurred. It can select a familiar algorithm that
-does not fit the available data, or report performance from a backtest whose accounting
-assumptions differ from the stated trading rule. Access to more tools creates choices;
-it does not establish that those choices are appropriate or their outputs valid.
+A financial research agent must decide which method suits a task, what data that method
+requires, how to interpret its output, and when later evidence warrants revising its
+decision. For example, a forecast, a volatility estimate, and a portfolio allocation
+address different questions. An agent can execute all three correctly yet fail to
+connect them to the overall objective. Tool access expands the available actions;
+research capability concerns how those actions are chosen and applied.
 
-\textsc{fin-skills} addresses these connected problems through a reusable library for
-agents working with the Python quantitative-finance ecosystem. Its skills document
-library conventions, dated source checks, and failure modes. Executable interfaces let
-an agent inspect candidate methods, supply parameters, run supported algorithms, and
-receive structured results. Collection interfaces retain information timestamps, while
-research checks make missing evidence and detected defects explicit. The library
-packages existing methods rather than proposing a new forecasting or trading algorithm.
+This distinction becomes critical across repeated decisions. Useful intermediate
+outputs can vanish from a limited context window, while earlier experiences should
+inform future choices without causing rigid behavior. Within-task context selection and
+cross-episode memory address complementary halves of this problem. Their value depends
+on which information they retain and how that information changes downstream actions.
+Empirical feedback must also be reliable: decisions corrupted by look-ahead joins or
+unadjusted splits provide false learning signals. Execution checks ensure that
+experience updates reflect verified, defect-free evidence.
 
-The agent remains responsible for selecting its tools. A deterministic recommendation
-service is available as one tool; it does not replace the model's decision process.
-This distinction allows us to compare static guidance, predetermined tool outputs, and
-model-selected calls. A separate audit intervention binds check execution to the final
-submitted artifact, because stating that a check was performed is not evidence that it
-ran on the relevant code and data.
+We investigate these questions through \textsc{fin-skills}, an open library linking
+dated financial guidance with discoverable, executable quantitative methods. An agent
+can inspect input requirements, select parameters, execute an algorithm, and use the
+structured result in its next decision step. We connect this interface with two memory
+mechanisms: HiSTrim selects historical representations within the model's active
+attention context, and a persistent memory component updates state from delayed
+portfolio returns. This architecture couples tool execution with context selection
+and state updates.
 
-The contribution of this working draft has three parts. First, we present an integrated
-financial skill and model library with common interfaces for direct human use and
-agent-selected execution across multiple model families. Second, we develop an
-exploratory fruit-fly-inspired learning component that connects memory updates to the
-library's feedback checks. Third, we provide audit and evaluation protocols that
-separate tool-use validity, research correctness, learning-feedback validity, and
-economic utility. The library remains the central contribution; the memory component
-is a distinct model-development application rather than the controller used in the
-LLM experiments.
+Our autonomous-use study provides a clear empirical test: while open-weight models
+successfully executed 43 quantitative algorithms across 64 portfolio decisions,
+unguided tool execution did not improve net returns over unassisted baselines. Simply
+adding tools does not make an agent an effective researcher. Without mechanisms to
+filter past context and update from past mistakes, models frequently selected unsuited
+algorithms or adopted extreme risk exposures.
 
-We ask whether final-artifact checks reduce incorrect accepted conclusions, whether
-autonomous tool access improves portfolio decisions, and whether checked delayed
-feedback can support adaptive learning. The current results support the feasibility
-of the LLM portfolio-decision loop. The memory application has implemented components
-and identified architectural limitations; its proposed persistence and exit policy
-requires further integration. No validated high-return strategy is claimed.
+We examine three concrete questions:
+First, how does autonomous tool access alter the methods an agent selects and its
+portfolio risk?
+Second, how much historical context can be pruned without degrading reasoning fidelity?
+Third, can verified cross-episode returns guide subsequent method selection under
+shifting market regimes?
+
+This paper makes three contributions:
+(1) \textsc{fin-skills}, a standardized library of 129 quantitative skills, 48 algorithm
+backends, and 36 research guards;
+(2) a two-level memory formulation combining within-session KV pruning (HiSTrim) with
+cross-episode state updates; and
+(3) an empirical evaluation of autonomous tool choice, execution behavior, and financial
+outcomes in open-weight models.
 
 \section{Related work}
-CheckList formalizes behavioral testing beyond aggregate task accuracy
-\cite{ribeiro2020checklist}. Financial backtest overfitting and selection bias predate
-LLM agents \cite{bailey2014deflated,bailey2017pbo}. Profit Mirage investigates information
-leakage in financial agents and proposes counterfactual interventions
-\cite{li2025profit}. The Finance Agent Benchmark evaluates real financial research tasks
-\cite{bigeard2025finance}. FinAgent combines multimodal financial information with
-trading tools, reflection, and memory \cite{zhang2024finagent}; StockBench evaluates
-sequential portfolio decisions using prices, fundamentals, and news
-\cite{chen2025stockbench}. Thus tool-augmented trading, financial-agent leakage, and
-counterfactual testing are established research directions. Our focus is a reusable
-library and interventions that separate the effects of guidance, tool selection, and
-final-artifact checks. The short development study below is not a comparable leaderboard
-evaluation against these systems, and its results do not establish superiority.
+FinAgent combines multimodal financial information with trading tools, reflection, and
+memory \cite{zhang2024finagent}; StockBench evaluates sequential portfolio decisions
+using prices, fundamentals, and news \cite{chen2025stockbench}. The Finance Agent
+Benchmark evaluates financial research tasks \cite{bigeard2025finance}. These works
+study tool use and memory within language-model agents. Our study isolates the specific
+effects of tool access by comparing unassisted inputs, static guidance, fixed tool
+outputs, and autonomous execution under identical market data.
 
-\section{Library design}
+Behavioral testing offers a structured view of model capabilities beyond aggregate
+scores \cite{ribeiro2020checklist}. Financial backtest overfitting and selection bias
+\cite{bailey2014deflated,bailey2017pbo}, alongside look-ahead leakage in financial agents
+\cite{li2025profit}, motivate explicit checks on decision evidence. The persistent memory
+component adapts the mushroom-body model of \citet{huang2024memory} to update state from
+delayed financial returns, linking within-task attention dynamics with cross-episode
+retention.
+
+\input{framework_overview}
+
+\section{Professional tools and domain knowledge}
 \label{sec:library}
-\paragraph{Knowledge and executable interfaces.}
-Domain skills route tasks to relevant libraries, while optional per-library skills
-describe conventions, dependencies, and failure modes in more detail. The Python
-package exposes catalog search, skill loading, and reference retrieval. Packaged skill
-documents and scripts are generated from the same repository sources. A verification
-date records a source check; it does not guarantee that a statement remains current.
-Table~\ref{tab:inventory} describes the frozen study snapshot. These counts measure
-available interfaces, not independently validated capabilities.
+\textsc{fin-skills} exposes financial methods alongside the information an agent needs
+to run them: task scopes, input requirements, dependencies, parameter conventions, and
+dated source verifications. Domain skills route requests to relevant libraries; per-library
+skills provide implementation guidance. The algorithm catalog covers portfolio
+construction, forecasting, volatility estimation, technical signals, and execution
+schedules, providing uniform programmatic contracts over quantitative methods.
 
-% Inventory measured by importing catalog/api/algorithms/tools on Beacon RADFM,
-% frozen fin-skills-autonomous-20260921-v2b/source, September 21, 2026.
-\begin{table}[t]
-\centering\small
-\begin{tabular}{lr}
-\toprule
-Component & Entries \\
-\midrule
-Skill documents & 129 \\
-Algorithm--backend catalog & 48 \\
-Registered research guards & 36 \\
-JSON-callable tools & 56 \\
-\bottomrule
-\end{tabular}
-\caption{Inventory of the frozen study snapshot. Algorithm entries can expose existing
-methods through different backends. The autonomous study offers a price-compatible
-subset, not every catalog entry.}
-\label{tab:inventory}
-\end{table}
+\paragraph{Agent-selected execution.}
+An agent can discover candidate algorithms, inspect their requirements, and execute them
+with custom parameters. Structured outputs separate numerical results from missing
+dependencies or runtime errors. An optional strategy adviser provides rule-based
+suggestions without overriding model choices. In our evaluation, agents access 18
+price-compatible algorithms, with requests and executions logged independently from
+free-form text.
 
-\paragraph{Algorithm selection and execution.}
-The algorithm catalog describes input requirements, optional dependencies, and supported
-tasks. Implemented families include portfolio construction, forecasting, volatility and
-risk estimation, technical signals, and execution schedules. Recommendation rules filter
-candidates by the request and data requirements, then rank compatible entries using
-explicit preferences. They are not a learned predictor of future returns. A catalog
-entry does not imply that its dependency is installed or that execution will succeed;
-unavailable backends and execution failures remain explicit. Automatic execution does
-not silently substitute another method after a selected method fails.
+\paragraph{Information and model interfaces.}
+Retrieval interfaces chunk packaged skills and documents, returning relevant passages
+under strict as-of cutoffs to prevent look-ahead bias. Forecasting and prediction
+adapters provide a unified fit--predict lifecycle, while portfolio optimizers expose
+specialized execution interfaces. Appendix~\ref{app:library} details the complete
+interface inventory, model lifecycle, and retrieval pipeline.
 
-\paragraph{Reusable models and lifecycle.}
-The library supports direct Python use as well as agent-facing discovery and execution.
-Forecasting, regression, and classification adapters expose a common fit--predict
-lifecycle, including ARIMA, Ridge, random forests, LightGBM, and XGBoost when their
-dependencies are installed. Fitted models can be saved and restored with recorded
-environment and input metadata. This loader restores trusted user-created artifacts;
-it is not a pretrained-checkpoint download service. Portfolio optimizers and rule-based
-signals use execution interfaces without pretending to share a supervised training
-lifecycle. The fruit-fly-inspired component is an experimental addition to this broader
-model-library direction; its research code is not yet a packaged model adapter.
-
-\paragraph{Information availability.}
-News collection supports RSS/Atom feeds, static pages, GDELT, and disclosure sources.
-Records distinguish publication time from observation time and retain revision
-information when available. An as-of digest filters future, stale, and undated records
-and deduplicates canonical URLs. These mechanisms support timestamp-aware processing;
-they do not reconstruct an independently validated historical news archive. Keyword
-risk indicators are not calibrated sentiment estimates, and absent news is treated as
-unknown rather than evidence of low risk. News collection is not exercised in the
-portfolio experiment reported here.
-
-\paragraph{Model choice and rule-based advice.}
-An agent can read a skill, inspect available algorithms, execute a selected method with
-its own parameters, and use the returned result in its next decision. The library also
-provides an optional market-state adviser based on trailing price and volatility
-statistics. Its trend, range, and stress categories are rule outputs, not learned regime
-probabilities or validated predictions of which strategy will outperform. A suggested
-strategy is therefore additional evidence the model may inspect. The autonomous study
-records the model's actual calls; it does not equate access to this adviser with
-autonomous algorithm selection.
-
-\paragraph{Research workflow and boundaries.}
-Research interfaces support data preflight, candidate evaluation, chronological
-validation, holdout reporting, and trial records. Holding final data out of candidate
-ranking reduces one avenue for selection bias, but the caller must still provide valid
-timestamps and data provenance. Python and JSON tool interfaces expose structured
-results; guards requiring live Python objects are not all available as JSON calls.
-Neither a data record nor a successful tool call certifies the whole research process.
-
-\section{Audit contract}
-Python guards inspect supplied artifacts and return structured findings. The following
-receipt mechanism belongs to the experimental audit controller; it is not an automatic
-property of every library call.
-
-\paragraph{Audit completeness.}
-A task specifies a nonempty set of required guards. A report is \texttt{PASS} only when
-all required checks ran and passed with no rejected input; a detected defect yields
-\texttt{FAIL}, while missing or rejected checks yield \texttt{INCOMPLETE} in the absence
-of a detected failure. Warnings remain visible. A passing subset is not a certificate
-that the whole research task is valid.
-
-\paragraph{Execution evidence.}
-The controller runs checks on a snapshot of the actual submission and supplied data.
-It records each result, elapsed time, and a SHA-256 digest of the code, input files,
-manifest and numerical report claims. Changing those artifacts invalidates earlier
-receipts. Citation-list changes alone do not invalidate a check. Unknown guard names
-and execution errors cannot create successful execution records. Executed-but-failed,
-unexecuted, and stale checks are distinct states.
-
-The current intervention binds the library's close-price causality and survivorship
-guards to submitted code and positions. It additionally checks reported accounting and
-samples same-session dependencies. These checks cover a subset of possible defects.
-The runner exposes a fixed guidance excerpt, not the entire skill collection.
-
-\section{Independent evaluation}
-A seeded synthetic market provides quoted prices, corporate actions, listings,
-post-close commentary, precomputed scores and fundamental disclosures. A submitted
-function returns portfolio weights; a separate report states its net Sharpe ratio.
-The task now specifies that session-$t$ weights must use information available by the
-end of session $t-1$, consistent with close-to-close return accounting.
-
-The independent evaluator redraws future data and individual sessions, measures changes
-in submitted positions, checks post-delisting exposure, and recomputes performance at a
-fixed transaction-cost convention. Public intervention checks do not call this oracle.
-Private grades are generated only after the submission receipt is saved and are not
-returned to the agent for repair. Rejected submissions are also graded when executable.
-
-The oracle's fixed-cost Sharpe and the public tool's stated-cost Sharpe answer different
-questions. Their discrepancy can reflect accounting conventions as well as coding
-errors. Neither should be called an estimate of genuine alpha without timing and other
-validity checks. A latent-drift strategy's sample Sharpe is a reference observation,
-not a theoretical upper bound. Exceeding it is not mathematical proof of leakage.
-
-\section{Evidence available so far}
-\subsection{Synthetic regression checks}
-Saved robustness results record \CaughtInstances{} detections among
-\DefectInstances{} planted instances: twelve defect families repeated across three
-seeded worlds, with no reported clean-control false alarms in those worlds. This is
-regression evidence within one synthetic design. Repeating a seed design does not
-supply independently authored defects or estimate a general real-world false-positive
-rate. The detection suite exercises thirteen guards, not every registered guard.
-
-\subsection{Historical agent pilot}
-The saved pilot comprises three markets, two model tiers, and library-present versus
-library-absent conditions, with one run per cell. Table~\ref{tab:pilot} recomputes the
-mean absolute discrepancy from the saved raw grades. The observed relative reduction
-for Opus is \OpusReduction\%, computed before rounding. It is not a significance claim.
-
-\begin{table}[t]
-\centering\small
-\begin{tabular}{lc}
-\toprule
-Historical arm & Mean absolute Sharpe gap \\
-\midrule
-Opus, no library & \OpusBase \\
-Opus, library & \OpusLibrary \\
-Haiku, no library & \HaikuBase \\
-Haiku, library & \HaikuLibrary \\
-\bottomrule
-\end{tabular}
-\caption{Exploratory pilot: three runs per arm. Values come from saved grades; model
-versions and full interaction-level execution provenance require further verification.}
-\label{tab:pilot}
-\end{table}
-
-The Haiku library arm has the largest discrepancy in this pilot. This motivates testing
-whether guidance, tool use, or other differences explain the outcome. It does not show
-that documentation causes weaker models to fail or that mandatory checks solve the
-problem. Historical reports of unexecuted guard citations require original execution
-logs for verification; the saved grade table alone does not establish that behavior.
-
-\subsection{Numerical and real-data checks}
-The numerical benchmark compares implementations with reference calculations using
-case-specific tolerances. Passing within tolerance is not exact equality. Runtime
-measurements report the names and number of guards actually exercised, skipped and
-rejected checks, and machine-dependent timing. A fitted slope across a few data sizes
-is descriptive, not an asymptotic complexity bound.
-
-The KOL fixture supports recomputing profile-group aggregates. Its model prediction
-metrics are saved summaries, not values independently recomputed from predictions and
-outcomes. In particular, its stored pooled Rank IC and mean daily cross-sectional Rank
-IC can have different signs. We do not treat this fixture as end-to-end reproduction,
-evidence of profitable trading, or external validation of the agent intervention.
-A separate evaluator now requires timestamped row-level predictions and outcomes,
-reports both forms of IC, and uses paired date-block uncertainty. Those source records
-remain an outstanding evidence requirement.
-
-\section{Four-condition study}
-The new protocol compares task guidance with ordinary accounting feedback, the same
-setup plus a fixed skill excerpt, the excerpt plus optional executable guards, and the
-excerpt plus a mandatory final audit. Market data, inference seeds and budgets are
-paired. Every condition has the same turn and response-token caps; actual token use,
-execution time and tool calls are also recorded. Conditions run in a frozen randomized
-order. Failed requests have no hidden retry or synthetic response fallback.
-
-The primary outcome is incorrect accepted submissions divided by all attempted
-submissions. Correctness among accepted outputs and overall acceptance rate must be
-reported alongside it, so refusing every output cannot appear to solve the task.
-Secondary outcomes include independent leakage measures, reporting discrepancy,
-post-delisting exposure, unexecuted and stale citations, repair success and resource
-cost. Missing, rejected, ungradable and provider-failed runs remain separate outcomes.
-
-The first Beacon run is a public-seed feasibility study using pinned open-weight
-models. It tests operation and supports cost and sample-size planning. A confirmatory
-study additionally needs independent defect authorship, retained clean cases, repeated
-runs, and verified scorer isolation. Market-level paired uncertainty must preserve
-repetitions within markets. The present protocol is an amendment after examining the
-pilot, not a preregistration of its observations. Failure to find a return difference
-would not establish equivalence.
-
-\paragraph{Operational findings.}
-The first Beacon preflight rejected valid tool-call JSON wrapped in Markdown fences.
-We archived those records and amended the parser before a separate batch; this was
-an interface failure, not evidence of financial reasoning failure. In the revised
-batch, Qwen2.5-Coder 7B and 14B each completed \BeaconPerModel{} recorded cells, with
-\BeaconSevenAccepted{} and \BeaconFourteenAccepted{} accepted submissions respectively.
-Neither model produced an independent numerical grade: final code failed input or
-output validation, or a required artifact was absent. Accepted does not mean correct,
-and these observations cannot estimate improvement in financial integrity.
-
-Table~\ref{tab:beacon_feasibility} shows the per-condition breakdown for 14B, the only
-model that produced accepted submissions. Acceptance rate was 67\% under C0 and C1,
-100\% under C2 (optional guards), and 0\% under C3 (enforced audit): all three C3 runs
-reached the turn limit without producing a passing submission. Mean token use under C3
-was \BeaconFourteenCThreeMeanTokens{} versus \BeaconFourteenCTwoMeanTokens{} under C2,
-indicating substantially greater iteration before the turn limit was hit. All accepted
-submissions were ungradable; the primary outcome---incorrect accepted submissions per
-attempt---cannot be estimated from this batch.
-
-\begin{table}[t]
-\centering\small
-\begin{tabular}{llccc}
-\toprule
-Model & Condition & Accepted/Planned & Mean tokens & Primary status \\
-\midrule
-\multirow{4}{*}{14B}
-  & C0 no library            & \BeaconFourteenCZeroAccepted/\BeaconFourteenCZeroPlanned
-      & \BeaconFourteenCZeroMeanTokens   & 1$\times$ turn limit \\
-  & C1 text only             & \BeaconFourteenCOneAccepted/\BeaconFourteenCOnePlanned
-      & \BeaconFourteenCOneMeanTokens    & 1$\times$ turn limit \\
-  & C2 optional guards       & \BeaconFourteenCTwoAccepted/\BeaconFourteenCTwoPlanned
-      & \BeaconFourteenCTwoMeanTokens    & all accepted \\
-  & C3 enforced audit        & \BeaconFourteenCThreeAccepted/\BeaconFourteenCThreePlanned
-      & \BeaconFourteenCThreeMeanTokens  & 3$\times$ turn limit \\
-\midrule
-7B  & all (12 cells)            & 0/12 & --- & turn limit / error \\
-32B & all (12 cells)            & 0/12 & 0   & provider error \\
-\bottomrule
-\end{tabular}
-\caption{Per-condition Beacon feasibility results. All accepted 14B submissions were
-ungradable; mean tokens are averaged over all completed cells in the condition.
-32B token count is zero because the process failed before any tool call.
-Values come from \texttt{BEACON\_FEASIBILITY\_RESULTS.json};
-numbers in \texttt{evidence\_numbers.tex} are generated by
-\texttt{scripts/build\_paper\_evidence.py}.}
-\label{tab:beacon_feasibility}
-\end{table}
-
-
-
-The 32B run encountered nonfinite generation values and a CUDA error before a tool
-call. Subsequent failure records from that process are not independent capability
-observations. At the time of that feasibility report, a separately recorded single-GPU
-recovery run was queued. A handwritten
-causal control passed the mandatory audit and independent timing/accounting checks on
-one public market. That control verifies an executable path, not general scorer validity.
-Before a confirmatory study, basic artifact validity must be distinguished from the
-incremental contribution of financial checks.
-
+\input{selective_context}
+\input{fly_memory}
+\input{feedback_checks}
+\input{capability_evaluation}
 \input{autonomous_study}
 
-\input{fly_memory}
+\section{Discussion: from execution to useful experience}
+The empirical study shows that successful tool execution does not guarantee sound
+investment decisions. Both Qwen models discovered and invoked algorithms without syntax
+errors, yet neither outperformed unassisted baselines. The failure was not in execution,
+but in method selection and risk management: 7B concentrated into single assets following
+momentum signals, while 14B relied on mean reversion during trending phases.
 
-\section*{Limitations and remaining work}
-The Beacon worker uses Linux Landlock and seccomp to restrict filesystem access,
-network calls and process creation; unsupported enforcement fails closed. Local
-subprocess execution alone provides no such isolation. Submitted Python still shares
-an interpreter with individual checks, so host confinement does not establish that
-the evaluator resists tampering. A formal adversarial or private-holdout claim needs
-an independently protected scorer and additional validation.
-Publicly inspected generator code and seeds are development data. Finite perturbations
-can miss conditional dependencies; stochastic strategies need repeatability controls.
-A passing audit is limited to its input assumptions and required checks. The full
-multi-model study and row-level real-world reproduction are not yet established.
-The autonomous-use development experiment adds a functioning portfolio-decision loop;
-it does not resolve those limitations or establish profitable trading. Its reference-price
-data, limited market coverage, unequal actual compute use and previously inspected window
-preclude a confirmatory economic-utility claim.
+These failure modes point directly to the roles of context and memory. In long
+interactions, intermediate numerical outputs clutter the context window, displacing
+earlier data summaries and constraints. HiSTrim addresses this by evicting low-utility
+historical tokens while keeping instruction spans intact. Meanwhile, cross-episode memory
+allows an agent to register that a particular strategy failed under specific volatility
+conditions, adjusting subsequent selections.
 
-\section*{Authorship, data and disclosure status}
-Author order, affiliations, funding, data permissions and final declarations require
-confirmation by the accountable authors. The earlier draft's unconfirmed organization
-and email details have been removed. AI assistance was used for code review, revisions
-and experiment preparation in this work session; the final disclosure and human review
-record must be completed before submission. The manuscript remains a working draft.
+Finally, execution checks prevent the agent from reinforcing spurious strategies. If an
+agent backtests on unadjusted prices or incorporates future data, it observes artificial
+profits. Without verification guards, persistent memory would treat those illusions as
+positive reinforcement. Verification is therefore the necessary filter that keeps
+experiential learning grounded in real market dynamics.
+
+\section{Conclusion}
+Access to financial algorithms gives language models the ability to compute, but not
+the judgment to invest. In this paper, we structured tool use around method selection,
+within-task context reduction, and cross-episode memory updates, with execution checks
+ensuring data integrity. Our experiments demonstrate that while open-weight models
+readily discover and run specialized algorithms, turning tool execution into effective
+decision-making requires active context management and feedback-driven adaptation.
+
+\section*{Limitations}
+This study has several limitations. First, our evaluation uses daily currency reference
+rates rather than live limit order books; real-world trading introduces slippage, market
+impact, and borrow costs. Second, we tested two model scales within a single open-weight
+family (Qwen2.5-Coder 7B and 14B); frontier proprietary models may show different tool
+selection patterns. Third, although HiSTrim and persistent memory are fully implemented
+in their respective benchmarks, full end-to-end integration across multi-year trading
+regimes requires further scaling.
+
+\section*{Ethics and Reproducibility}
+All models, tools, and evaluation benchmarks adhere to open, reproducible protocols.
+Software environments, execution digests, and audit traces are publicly available to
+facilitate independent verification.
 
 \bibliography{references}
+\clearpage
+\appendix
+\raggedbottom
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{14pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+\input{histrim_evidence}
+\clearpage
+\input{supporting_evidence}
+\clearpage
+\input{library_details}
 \end{document}

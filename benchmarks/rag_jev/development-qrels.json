@@ -1,0 +1,8 @@
+{
+  "q-clock":{"clock":2,"retrieval":0,"routing":0,"feedback":0,"citation":0,"gate":0,"format":0},
+  "q-retrieval":{"clock":0,"retrieval":2,"routing":0,"feedback":0,"citation":0,"gate":0,"format":0},
+  "q-routing":{"clock":0,"retrieval":0,"routing":2,"feedback":0,"citation":0,"gate":0,"format":0},
+  "q-feedback":{"clock":0,"retrieval":0,"routing":0,"feedback":2,"citation":0,"gate":0,"format":0},
+  "q-citation":{"clock":0,"retrieval":0,"routing":0,"feedback":0,"citation":2,"gate":0,"format":0},
+  "q-gate":{"clock":0,"retrieval":0,"routing":0,"feedback":1,"citation":0,"gate":2,"format":0}
+}

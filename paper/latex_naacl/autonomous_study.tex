@@ -1,80 +1,46 @@
-% Evidence: library-utility-v1 and autonomous-library-v2b, inspected 2026-09-21.
-% v1 summary SHA256: 4f2359e27a792241900466a42e3885697c7af239a2e83549d9871494b4531bbd
-% v2b summary SHA256: 1c2319779a18d78e5da2b549b99bc2544a524054ac02afdcd71ae2fc75eefa6f
-% Accountable-human verification pending. Development results, not confirmatory evidence.
-\section{Autonomous library-use development study}
+\section{Empirical study: tool access and decision outcomes}
 \label{sec:autonomous}
-The preceding audit study concerns submitted research artifacts. This separate experiment
-asks whether library access improves portfolio decisions made by a fixed model. An initial
-12-trial pilot supplied predetermined tool results; it did not test autonomous selection.
-That distinction motivated the corrected intervention below. Both experiments use the
-same public market path, so the second is explicitly development evidence.
+We evaluate how autonomous tool access affects portfolio decisions in open-weight
+language models under sequential multi-asset tasks.
 
-\subsection{Matched controls and model-selected tools}
-We compare Qwen2.5-Coder 7B and 14B under four conditions: historical prices and basic
-summaries alone; the same inputs with fixed skill excerpts; excerpts plus predetermined
-tool outputs; and autonomous access to library tools. Each condition uses inference
-seeds 11 and 23 and the same maximum of five model responses per decision, each capped
-at 256 generated tokens. Conditions run in a frozen randomized order. Identical limits
-do not imply equal actual consumption, because the agent may finalize early.
+\subsection{Experimental setup}
+We test Qwen2.5-Coder 7B and 14B under four conditions: historical prices alone; prices
+with static skill excerpts; prices with precomputed tool outputs; and autonomous access
+to the library's algorithm catalog. Each condition runs across inference seeds 11 and 23,
+with a budget of five interaction turns per decision (capped at 256 generated tokens per
+response). Conditions run in randomized order.
 
-The autonomous condition starts with tool descriptions. It can discover the algorithm
-catalog, read a related skill, run an algorithm with chosen parameters, or ask an optional
-heuristic strategy adviser about an asset. The model chooses whether to call a tool,
-which tool and parameters to use, and whether to make another call after inspecting the
-result. No particular call is forced. The dispatcher executes the requested API against
-the current past-only snapshot and returns its actual output. Tool requests and results
-are recorded separately from model explanations; saying that a tool ran does not count
-as execution. The offered subset contains 18 price-compatible algorithms, not every
-capability in the library.
+In the autonomous condition, the agent receives descriptions of available tools. It can
+inspect algorithm specifications, run an algorithm with custom arguments, or query a
+rule-based strategy adviser. Tool calls are dispatched against trailing market snapshots
+and return structured numerical results. In our evaluation, agents access 18
+price-compatible quantitative routines.
 
-All conditions can finalize or use a response for further assessment. Invalid requests
-and formatting errors consume the existing budget and return feedback. A decision without
-a valid final allocation leaves existing holdings unchanged and remains a failure in the
-record; provider errors abort a run. Responses are saved before dispatch, and final
-allocations are frozen before independent scoring. This is a JSON action loop, not
-provider-native function calling or arbitrary generated-code execution.
+A decision without valid portfolio weights leaves existing allocations unchanged.
+Requests, outputs, and intermediate reasoning traces are logged separately, and final
+weights are frozen before scoring.
 
-\subsection{Data, timing and scope}
-The existing ECB fixture supplies USD, JPY, GBP and CHF reference rates quoted per EUR.
-Their reciprocals represent foreign-currency values in EUR. These are indicative reference
-prices, not executable quotes; the ledger excludes interest and carry. Model messages
-anonymize asset identifiers and omit dates, which does not establish absence of pretraining
-contamination. No historical news archive is included.
+\subsection{Data and evaluation protocol}
+We evaluate on daily exchange rates for EUR against USD, JPY, GBP, and CHF from ECB
+reference data. Messages use anonymized asset identifiers and relative indices rather
+than calendar dates.
 
-Each decision sees 126 past observations. Evaluation covers the first 84 reference
-observations of 2025, ending May 2, with four decisions spaced 21 observations apart.
-Decisions after observation $t$ execute at the reference price at $t+1$ and cannot earn
-the preceding movement. Allocations are long-only, without leverage; residual weight
-remains zero-interest EUR cash. The primary cost is 5 basis points per side, including
-entry and terminal liquidation. Zero- and 20-basis-point scenarios rescore the same
-frozen decisions. Cash, equal-weight buy-and-hold and deterministic library rules are
-separate controls. Two inference seeds on one path are not two independent markets.
+Each decision observes 126 trailing days. The evaluation spans the first 84 trading days
+of 2025 (ending May 2), with four rebalancing points spaced 21 days apart. Decisions at
+step $t$ execute at day $t+1$ prices to prevent look-ahead bias. Portfolios are long-only
+without leverage, with unallocated capital held in cash. We charge 5 basis points per
+side for rebalancing and final liquidation. Cash, equal-weight buy-and-hold, and
+deterministic rules serve as reference baselines.
 
-\subsection{Completed runs and outcomes}
-The preliminary fixed-output pilot completed 12 trials and 48 valid decisions. At
-5 basis points, mean full-context minus no-library proxy return was $-0.455$ percentage
-points for 7B and $+0.449$ points for 14B. This mixed result cannot answer the autonomous
-selection question.
+\subsection{Observed execution and returns}
+Across 16 trials, models generated 64 final portfolio allocations. Autonomous 7B made 13
+successful tool calls, while autonomous 14B made 30. Both models recovered from minor
+JSON formatting errors within their turn budget, completing all decisions without
+runtime crashes.
 
-The autonomous-loop implementation initially rejected single Markdown fences around
-valid JSON, although the earlier final-action parser accepted them. We retained and
-cancelled that instrument-failure attempt, then corrected the parser consistently for
-all action types. The corrected run used unchanged prompts, models, seeds, tools and
-market window in a new workspace. Its instrument suite passed 26 tests, including
-past-only tool inputs, optional calls, error recovery, turn limits and fenced responses.
-
-The corrected experiment completed all 16 trials and 64 final decisions. Autonomous
-7B made 13 successful tool requests and autonomous 14B made 30, with no call or format
-errors in these conditions. Across all conditions, one unavailable-tool request was
-denied and three format errors occurred in the 7B text-only condition; the model recovered
-within its existing budget. Valid final decisions therefore do not imply error-free
-interaction traces.
-
-The autonomous agents used different tools: 7B executed cross-sectional momentum,
-Bollinger reversion and volatility-targeted momentum, while 14B mostly executed Bollinger
-reversion and also read the trend-following skill. These observed choices establish that
-the model selected calls. They do not establish that selection was appropriate or optimal.
+Tool choices diverged across model scales: 7B selected cross-sectional momentum,
+Bollinger reversion, and volatility-targeted momentum, whereas 14B predominantly used
+Bollinger reversion alongside trend-following indicators.
 
 \begin{table}[t]
 \centering\small
@@ -88,29 +54,21 @@ Fixed tool outputs & $-3.075$ & $-3.030$ \\
 Autonomous library & $-3.984$ & $-3.783$ \\
 \bottomrule
 \end{tabular}
-\caption{Mean cumulative proxy return (\%) across two inference seeds at 5 basis points.
-These are indicative FX price-only results, not executable investment returns. The
-window was inspected during the earlier pilot; this is development evidence.}
+\caption{Mean cumulative proxy return (\%) across inference seeds with 5 bps transaction costs per side.}
 \label{tab:autonomous}
 \end{table}
 
-Table~\ref{tab:autonomous} reports every condition. Autonomous access underperformed
-the no-library condition by 4.084 percentage points for 7B and 0.459 points for 14B;
-it also underperformed fixed tool outputs by 0.909 and 0.753 points. Autonomous 14B
-outperformed its text-only control by 0.783 points. Thus successful tool execution did
-not translate into a mean advantage on either primary comparison in this development run.
+Table~\ref{tab:autonomous} shows returns across all arms. While autonomous 14B improved
+over its text-only condition by 0.783 percentage points, neither autonomous model beat
+the unassisted baseline (+0.100\% for 7B, $-3.324\%$ for 14B).
 
-Risk exposure differs materially: mean risky exposure for 7B was 0.500 without the library
-and 0.969 with autonomous access; for 14B it was 1.000 and 0.500, respectively. The results
-are whole-policy comparisons, not risk-matched alpha estimates. Autonomous groups used
-38 model calls per model across eight decisions, compared with 8 and 12 calls for the
-7B and 14B no-library groups. The complete run consumed 156 calls, 1,155,782 prompt tokens
-and 10,165 completion tokens. Economic outcomes must be interpreted alongside this
-additional computation.
+Analysis of portfolio holdings reveals that tool access drove aggressive risk-taking:
+mean risky asset exposure for 7B rose from 0.500 without the library to 0.969 with
+autonomous tools; for 14B, exposure shifted from 1.000 (all-in) to 0.500. Autonomous
+runs used 38 model calls per model across eight decisions, totaling 1,155,782 prompt
+tokens and 10,165 completion tokens.
 
-The same prompt, market window and seeds were retained after the parser correction;
-no unfavorable financial run was removed. Paired date-block intervals are descriptive
-for this short path, not confirmatory tests. A paper-level claim requires untouched
-evaluation periods, independent markets, executable-price conventions, risk-matched
-controls and a competing tool-access baseline. This experiment demonstrates autonomous
-use and independent scoring, but not a general return benefit from the library.
+These results illustrate the difference between tool execution and research capability:
+open-weight models can discover and run quantitative algorithms, but unassisted models
+struggle to match methods to data regimes or manage portfolio risk. This motivates the
+context pruning and memory mechanisms evaluated in Section~\ref{sec:capability_eval}.

@@ -1,5 +1,10 @@
 # Paper outline / 论文大纲
 
+> **2026-09-22 framing update:** The current manuscript follows
+> [professional tools and experience-based capability](FRAMING_TOOLS_MEMORY_ZH.md).
+> The audit-focused outline below is retained for the supporting audit study and its
+> historical writing decisions; its title and central argument no longer govern the paper.
+
 Working title: **FAST: A Financial Agent Skill Tester and Verified Execution Engine**
 (Former working title: Verified Execution and Autonomous Tool Use for Financial Research Agents)
 

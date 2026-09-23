@@ -1,0 +1,343 @@
+{
+  "status": "WORKING_DRAFT_NOT_HUMAN_APPROVED",
+  "overleaf_project": "https://www.overleaf.com/project/6aad9a03f27c3c07a182965d",
+  "source_history": "Shwai He upload, September 22, 2026, 19:05 (UI display)",
+  "sources": [
+    {
+      "path": "overleaf_before/main.tex",
+      "sha256": "fd382149f8c8f6875cd162a7f2b86b4c40cd64c34bf1203d3ff50b12819f8f1b",
+      "status": "author_manuscript_read; underlying runs not accessed"
+    },
+    {
+      "path": "overleaf_before/sections/method.tex",
+      "sha256": "80fecf0cc5f051dd2e491e22bf63f3e56f61c8072faa23cb5c8ccbaf1a8790ac",
+      "status": "author_manuscript_read; underlying runs not accessed"
+    },
+    {
+      "path": "overleaf_before/sections/experiment.tex",
+      "sha256": "68bdc675479f9184b179eb6dadbc5d243d9917d24d2ccd4cbba31efd9c8619be",
+      "status": "author_manuscript_read; underlying runs not accessed"
+    },
+    {
+      "path": "overleaf_before/sections/appendix.tex",
+      "sha256": "bd9fd04addb65affc822e988df4698c2f9e0ce44640d0f79f84d3ba48ac45cfc",
+      "status": "author_manuscript_read; underlying runs not accessed"
+    },
+    {
+      "path": "overleaf_before/sections/abstract.tex",
+      "sha256": "9e6afc0138f2df79dc18c1d4d6647511a8eadabd071d80e75d74eb68a3564890",
+      "status": "author_manuscript_read; underlying runs not accessed"
+    },
+    {
+      "path": "overleaf_before/PAPER_WRITING_IMPROVEMENTS_AND_GUIDELINES.md",
+      "sha256": "9fc542588b02cf3dfa2ebd669cd03771913bedbbe00b175fc8e01f4158162aa2",
+      "status": "author_manuscript_read; underlying runs not accessed"
+    }
+  ],
+  "seed_rows": [
+    {
+      "seed": 1,
+      "source_run_id": "291731648",
+      "kv_percent": 50.07,
+      "pass32_percent": 19.2,
+      "mrr32_times100": 4.1
+    },
+    {
+      "seed": 2,
+      "source_run_id": "292123105",
+      "kv_percent": 49.75,
+      "pass32_percent": 18.8,
+      "mrr32_times100": 3.68
+    },
+    {
+      "seed": 3,
+      "source_run_id": "292119930",
+      "kv_percent": 50.45,
+      "pass32_percent": 19.5,
+      "mrr32_times100": 3.75
+    },
+    {
+      "seed": 4,
+      "source_run_id": "292123155",
+      "kv_percent": 50.01,
+      "pass32_percent": 17.6,
+      "mrr32_times100": 3.63
+    },
+    {
+      "seed": 5,
+      "source_run_id": "292119947",
+      "kv_percent": 49.9,
+      "pass32_percent": 18.8,
+      "mrr32_times100": 3.88
+    }
+  ],
+  "seed_aggregates": {
+    "kv_percent": {
+      "mean": 50.036,
+      "sample_sd": 0.261495697861362
+    },
+    "pass32_percent": {
+      "mean": 18.78,
+      "sample_sd": 0.7224956747275371
+    },
+    "mrr32_times100": {
+      "mean": 3.808,
+      "sample_sd": 0.1883348082538115
+    }
+  },
+  "generative_results": [
+    {
+      "model": "1.7B",
+      "method": "Full Dense",
+      "kv_percent": 100.0,
+      "pass32": [
+        16.8,
+        26.2,
+        14.5,
+        4.4,
+        29.9
+      ],
+      "mrr32_times100": [
+        3.24,
+        7.81,
+        5.16,
+        1.25,
+        11.95
+      ],
+      "mean_task_relative_mrr_percent": 100.0
+    },
+    {
+      "model": "1.7B",
+      "method": "TokenDrop-50",
+      "kv_percent": 50.0,
+      "pass32": [
+        15.4,
+        26.7,
+        13.8,
+        3.8,
+        29.4
+      ],
+      "mrr32_times100": [
+        3.08,
+        7.72,
+        4.89,
+        1.29,
+        11.7
+      ],
+      "mean_task_relative_mrr_percent": 97.95695025766385
+    },
+    {
+      "model": "1.7B",
+      "method": "H2O",
+      "kv_percent": 54.6,
+      "pass32": [
+        18.6,
+        27.0,
+        17.0,
+        4.2,
+        29.8
+      ],
+      "mrr32_times100": [
+        3.98,
+        7.51,
+        7.77,
+        1.25,
+        11.72
+      ],
+      "mean_task_relative_mrr_percent": 113.53099722717324
+    },
+    {
+      "model": "1.7B",
+      "method": "SnapKV",
+      "kv_percent": 54.6,
+      "pass32": [
+        17.8,
+        26.7,
+        17.1,
+        4.2,
+        30.1
+      ],
+      "mrr32_times100": [
+        3.85,
+        7.75,
+        7.36,
+        1.3,
+        11.85
+      ],
+      "mean_task_relative_mrr_percent": 112.7715506972411
+    },
+    {
+      "model": "1.7B",
+      "method": "Router-Tuning",
+      "kv_percent": 45.7,
+      "pass32": [
+        17.7,
+        27.3,
+        9.4,
+        3.9,
+        28.6
+      ],
+      "mrr32_times100": [
+        4.0,
+        7.27,
+        3.3,
+        1.18,
+        11.24
+      ],
+      "mean_task_relative_mrr_percent": 93.79092867067844
+    },
+    {
+      "model": "1.7B",
+      "method": "HiSTrim",
+      "kv_percent": 47.5,
+      "pass32": [
+        19.2,
+        27.9,
+        15.4,
+        5.0,
+        30.0
+      ],
+      "mrr32_times100": [
+        4.1,
+        8.09,
+        6.43,
+        1.5,
+        12.08
+      ],
+      "mean_task_relative_mrr_percent": 115.16572526664481
+    },
+    {
+      "model": "8B",
+      "method": "Full Dense",
+      "kv_percent": 100.0,
+      "pass32": [
+        20.9,
+        28.9,
+        15.1,
+        5.0,
+        35.1
+      ],
+      "mrr32_times100": [
+        4.56,
+        8.22,
+        7.67,
+        1.41,
+        18.25
+      ],
+      "mean_task_relative_mrr_percent": 100.0
+    },
+    {
+      "model": "8B",
+      "method": "TokenDrop-50",
+      "kv_percent": 50.0,
+      "pass32": [
+        19.8,
+        27.8,
+        14.2,
+        4.5,
+        33.8
+      ],
+      "mrr32_times100": [
+        4.22,
+        7.89,
+        7.12,
+        1.32,
+        17.4
+      ],
+      "mean_task_relative_mrr_percent": 94.06359056652174
+    },
+    {
+      "model": "8B",
+      "method": "H2O",
+      "kv_percent": 54.6,
+      "pass32": [
+        22.8,
+        29.7,
+        20.3,
+        4.6,
+        35.5
+      ],
+      "mrr32_times100": [
+        5.06,
+        8.28,
+        8.94,
+        1.37,
+        18.95
+      ],
+      "mean_task_relative_mrr_percent": 105.85031890933331
+    },
+    {
+      "model": "8B",
+      "method": "SnapKV",
+      "kv_percent": 54.6,
+      "pass32": [
+        23.3,
+        29.7,
+        20.5,
+        4.9,
+        36.1
+      ],
+      "mrr32_times100": [
+        5.02,
+        8.25,
+        8.54,
+        1.72,
+        18.7
+      ],
+      "mean_task_relative_mrr_percent": 109.2494292446263
+    },
+    {
+      "model": "8B",
+      "method": "Router-Tuning",
+      "kv_percent": 46.2,
+      "pass32": [
+        21.1,
+        28.1,
+        13.6,
+        4.6,
+        34.0
+      ],
+      "mrr32_times100": [
+        4.12,
+        7.95,
+        6.84,
+        1.34,
+        17.65
+      ],
+      "mean_task_relative_mrr_percent": 93.59852268246883
+    },
+    {
+      "model": "8B",
+      "method": "HiSTrim",
+      "kv_percent": 49.5,
+      "pass32": [
+        23.7,
+        30.2,
+        16.0,
+        5.3,
+        37.8
+      ],
+      "mrr32_times100": [
+        5.25,
+        8.54,
+        7.96,
+        1.47,
+        19.21
+      ],
+      "mean_task_relative_mrr_percent": 106.46421618115015
+    }
+  ],
+  "arithmetic_scope": "Recomputed from rounded manuscript rows; no raw predictions or significance test",
+  "sink_counterexample": {
+    "target_mass": 3.0,
+    "exact_delta": 1.0986122886681098,
+    "heuristic_mass": 1.1791476456813665
+  },
+  "unresolved": [
+    "HiSTrim training/evaluation code and original run receipts",
+    "User-level predictions, uncertainty and dataset permissions",
+    "Conflicting source caption configurations",
+    "Joint fin-skills/HiSTrim/online-memory experiment",
+    "Accountable human review of sources and scientific decisions"
+  ]
+}

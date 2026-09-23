@@ -1,0 +1,56 @@
+{
+  "recorded_at_utc": "2026-09-23T01:22:16.7252362Z",
+  "overleaf_project": "https://www.overleaf.com/project/6aad9a03f27c3c07a182965d",
+  "history_label": "Merged local + Overleaf — 2026-09-22",
+  "history_upload_display": "22nd September, 9:20 pm",
+  "source_files_uploaded": [
+    "main.tex",
+    "references.bib",
+    "evidence_numbers.tex",
+    "autonomous_study.tex",
+    "fly_memory.tex",
+    "framework_overview.tex",
+    "selective_context.tex",
+    "histrim_evidence.tex",
+    "histrim_source_table.tex",
+    "merge_numbers.tex",
+    "main_histrim_before_merge.tex",
+    "main.pdf",
+    "MERGE_REVIEW.md"
+  ],
+  "uploaded_local_sha256": {
+    "main.tex": "725e80407cfbbfdb32764e05e386e16d62f4adbb9323ee5e56abaa34d35f4322",
+    "references.bib": "67bbe6777ad80dde5c24715bf4dd3812da20436e99e540471138d5979bfa9db8",
+    "evidence_numbers.tex": "389df712c75f74d79c74dd880521192d099f52384a16e44101e9bc1876c03f48",
+    "autonomous_study.tex": "f54bb932fe2d264c8da328a0acd53f30afaddca75dba74d1b2dc87a8f9083156",
+    "fly_memory.tex": "75c52eaab98501e9d0231f7ce7989c4d8f45d11da0a9ce368800d256efc5c6dd",
+    "framework_overview.tex": "ebd8d5490e9aa2e0bcec529cea489ed2d0fc07c4d392b30600e6078c3b73245f",
+    "selective_context.tex": "e9309b65ff05f80b60fc094cbc11fe03caa5554d64f7963ca8ebda28ac1c6cc0",
+    "histrim_evidence.tex": "e058c4f318c07b24afc272fe52178849988712efcdf112e0855bd311fe828c62",
+    "histrim_source_table.tex": "be70e18f8ecbb5a7e2f912750b32adf59d33d1c56ead573bf0cdbc3dc4670151",
+    "merge_numbers.tex": "c9f236ad74b3191b89bafff9775a0259b5106d6ddd4d9aacf942981aa272faae",
+    "main_histrim_before_merge.tex": "fd382149f8c8f6875cd162a7f2b86b4c40cd64c34bf1203d3ff50b12819f8f1b",
+    "main.pdf": "72e94bb3de9b2f7541d76df965eb38340ed6bc0f67efc8fb46bfb2c49f58826d",
+    "MERGE_REVIEW.md": "f882ec68d30ee982c48f0abd5b77c78c6701c505f01a3742bedaf8833acff097"
+  },
+  "remote_main_readback_sha256": "725e80407cfbbfdb32764e05e386e16d62f4adbb9323ee5e56abaa34d35f4322",
+  "remote_main_matched_local": true,
+  "before_upload_remote_main_matched_snapshot": true,
+  "remote_compile": {
+    "success": true,
+    "pages": 13,
+    "typesetting": "Underfull-box notices remain",
+    "warnings": 0,
+    "errors": 0
+  },
+  "local_compile": {
+    "success": true,
+    "pages": 13,
+    "all_pages_visually_reviewed": true,
+    "compiler": "pdfLaTeX and BibTeX, clean staging directory"
+  },
+  "repository_validation": "build_index.py, build_package.py, validate.py passed; 129 skills; existing discovery budget warning",
+  "github_pushed": false,
+  "source_provenance": "HiSTrim tables are author-reported; original experiment jobs and predictions were not independently accessed",
+  "preservation": "Complete local and online snapshots; online main_histrim_before_merge.tex and original sections/figs/custom.bib retained"
+}
