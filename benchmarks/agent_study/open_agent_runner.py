@@ -67,6 +67,9 @@ class AgentWorkspaceSession:
                   "Tools: read_file(path, offset=0, limit=6000); write_file(path, content) "
                   "for submission.py or report.json only; inspect_submission(); finish(). "
                   "inspect_submission recomputes accounting at your stated costs. "
+                  "Write both submission.py and report.json before inspecting; you can "
+                  "then revise either file. Follow the CSV schema in TASK.md and the "
+                  "manifest; return date-indexed weights with ticker columns. "
                   "Use only files within data_dir, no network. Weights for session t "
                   "use information available by session t-1. All conditions have the "
                   "same turn and response-token budgets.")

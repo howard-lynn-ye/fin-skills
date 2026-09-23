@@ -1,0 +1,68 @@
+\section{Library implementation and interface scope}
+\label{app:library}
+\paragraph{Knowledge and executable interfaces.}
+Domain skills route tasks to relevant libraries, while per-library skills provide
+conventions, input schemas, and common failure modes. The Python package exposes
+catalog search, skill loading, and reference retrieval. Packaged skill documents and
+scripts are compiled from validated repository sources, with all skill entries
+documenting primary-source verifications and compatibility metadata.
+Table~\ref{tab:inventory} summarizes the core library components.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lr}
+\toprule
+Component & Entries \\
+\midrule
+Skill documents & 129 \\
+Algorithm--backend catalog & 48 \\
+Registered research guards & 36 \\
+JSON-callable tools & 56 \\
+\bottomrule
+\end{tabular}
+\caption{Inventory of quantitative research library interfaces.}
+\label{tab:inventory}
+\end{table}
+
+\paragraph{Algorithm selection and execution.}
+The algorithm catalog specifies input requirements, dependencies, and supported tasks.
+Implemented families include portfolio construction, forecasting, volatility and risk
+estimation, technical signals, and execution schedules. Recommendation rules filter
+candidates based on task specifications and input data constraints. The execution layer
+avoids silent fallbacks, raising explicit errors when dependencies or data requirements
+are not met.
+
+\paragraph{Reusable models and lifecycle.}
+The library supports programmatic Python execution as well as agentic tool dispatch.
+Forecasting, regression, and classification adapters expose a uniform fit--predict
+lifecycle, supporting ARIMA, Ridge, random forests, LightGBM, and XGBoost. Fitted models
+and estimators can be serialized and restored alongside environment metadata. The model
+registry additionally provides an adapter for the bio-inspired memory architecture via
+\texttt{create\_model("fly\_memory")}, supporting prediction, verified feedback updating,
+and state serialization.
+
+\paragraph{Built-in retrieval and model composition.}
+The RAG interface chunks packaged skills or external documents and retrieves passages
+using BM25 and neural rerankers. Passages retain document identifiers, source offsets,
+and availability timestamps; point-in-time retrieval excludes documents unavailable at
+the requested decision cutoff. Citation checks validate references against retrieved
+passage identifiers. The pipeline freezes candidates, temporal cutoffs, and context
+budgets prior to neural reranking.
+
+\paragraph{Information availability and point-in-time processing.}
+News and disclosure collection supports RSS/Atom feeds, static pages, GDELT, and official
+regulatory sources. Collection records distinguish publication time from observation
+time and retain revision histories. Point-in-time digests filter future, stale, and
+undated records while deduplicating canonical URLs.
+
+\paragraph{Model choice and rule-based advice.}
+An agent can inspect skills, discover candidate algorithms, execute chosen methods with
+custom parameters, and incorporate numerical outputs into its decision logic.
+Market-state categorization provides heuristic regime indicators (trend, range,
+stress) that agents can inspect as additional evidence alongside price tables.
+
+\paragraph{Research workflow and audit boundaries.}
+Research interfaces enforce chronological validation splits, out-of-sample holdout
+reporting, and standardized trial records. Python and JSON tool interfaces return
+structured dictionary outputs, ensuring that all intermediate calculations can be logged
+and audited.

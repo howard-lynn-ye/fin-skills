@@ -1,0 +1,71 @@
+\section{Within-task context selection with HiSTrim}
+\label{sec:histrim}
+Financial agents frequently execute quantitative tools that return verbose tables of
+historical prices, factor loadings, and optimization logs. Over multi-turn interactions,
+these intermediate outputs quickly fill the model's context window and slow down
+generation. Within-task context selection determines which interaction records should
+remain in active attention and which can be pruned.
+
+HiSTrim prunes intermediate interaction turns while strictly preserving task
+instructions, problem constraints, and asset identifiers.
+
+\subsection{Protected, sign-preserving routing}
+We partition the context into two sets: protected tokens $\mathcal{P}$ (containing system
+prompts, task instructions, and the current query) that are never evicted, and historical
+interaction turns $\mathcal{H}_{\ell-1}$ (such as past tool outputs and intermediate code
+traces) eligible for pruning at layer $\ell$.
+
+For each interaction turn representation $h_m$, a dual-head router computes a gating logit
+$g_m$ and a utility logit $u_m$:
+\begin{align}
+ g_m &= w_g^\top h_m+b_g, & u_m &= w_u^\top h_m+b_u,\\
+ r_m &= \sigma(g_m)u_m, & \sigma(g)&=(1+e^{-g})^{-1}.
+\end{align}
+Here $\sigma(g_m)\in(0,1)$ modulates the utility magnitude. Because $\sigma(g_m)>0$,
+$\operatorname{sign}(r_m)=\operatorname{sign}(u_m)$. Using the sigmoid gate ensures that
+positive utility logits always produce positive routing scores, avoiding the sign
+reversals that occur with activation functions like $\operatorname{SiLU}$ when both
+logits are negative.
+
+Scores are standardized across the sequence and filtered with a learned threshold $\tau_\ell$:
+\begin{align}
+ z_m &= (r_m-\mu_\ell)/(s_\ell+\epsilon),\\
+ \mathcal{H}_\ell &= \{m\in\mathcal{H}_{\ell-1}:z_m\ge\tau_\ell\},\\
+ \mathcal{T}_\ell &= \mathcal{P}\;\cup\!\bigcup_{m\in\mathcal{H}_\ell}\mathcal{I}_m,
+\end{align}
+where $\mathcal{I}_m$ denotes the token positions belonging to turn $m$. This guarantees
+that protected instruction tokens $\mathcal{P}$ remain in the active set $\mathcal{T}_\ell$
+at all layers.
+
+\subsection{Forward-only calibration and buffer compaction}
+Because fine-tuning the full LLM backbone on every task is computationally expensive,
+the router direction $w$ is calibrated using forward-only finite differences on the unit
+sphere:
+\begin{equation}
+ w_0=\frac{\sum_s\alpha_s v_s/\|v_s\|_2}
+ {\left\|\sum_s\alpha_s v_s/\|v_s\|_2\right\|_2}.
+\end{equation}
+Weights are updated in the tangent space $g_\perp=(I-ww^\top)g$ followed by normalization,
+allowing the router to adapt without full backpropagation through the LLM.
+
+At inference time, rather than retaining evicted tokens with an attention mask, HiSTrim
+physically gathers surviving entries into a contiguous packed KV-cache buffer. This
+reduces active memory bandwidth and accelerates token decoding.
+
+\subsection{Attention sink compensation}
+Transformer attention concentrates heavily on initial prefix tokens (attention sinks;
+\citealp{xiao2023streamingllm}). Evicting intermediate tokens reduces the softmax
+denominator, which can distort attention probabilities over surviving tokens.
+To maintain calibrated attention distributions, we add an offset to the sink logit $s_0$:
+\begin{equation}
+ \Delta^*=\log\left(1+\sum_{j\in\mathcal{E}}e^{s_j-s_0}\right),
+\label{eq:exact_sink}
+\end{equation}
+where $\mathcal{E}$ is the set of evicted token indices. In practice, the lightweight count
+heuristic $\beta\log(|\mathcal{E}|+1)$ absorbs the removed probability mass without
+requiring full exponent recomputation.
+
+\paragraph{Empirical performance.}
+On sequential recommendation tasks (Appendix~\ref{app:histrim_evidence}), HiSTrim achieves
+up to $2.82\times$ inference speedups while retaining under 50\% of historical KV tokens,
+without degrading generation quality.

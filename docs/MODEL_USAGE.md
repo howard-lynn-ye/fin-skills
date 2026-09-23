@@ -148,6 +148,15 @@ JSON/MCP 通过 `run_model` 调用同一接口，`data` 包含 `state` 和 `ques
 不放在工具参数里。需要可复现版本时应指定供应商支持的固定模型 ID，
 并记录响应中的实际 `model`；`jev-latest` 是可变化的别名。
 
+仓库提供 `python scripts/run_jev_probe.py --output runs/jev-probe-plan`，默认只保存两次
+公开合成输入的探测计划，不联网。配置环境中的 `TYPESAFE_API_KEY` 后，使用 `--run`
+和一个新的输出目录才会调用真实服务；错误、实际模型 ID、用量和耗时分别留存。
+该探测只核对连接和接口，不证明检索质量或置信度校准。
+
+需要比较检索增益时，使用 [BM25／Jev 配对实验](../benchmarks/rag_jev/README.md)。
+它冻结同一候选集合和上下文预算，在保存推理结果后单独读取相关性标签评分。
+内置问题只是公开合成开发样例；正式论文仍需要独立标注的问题集和下游任务评估。
+
 ## 选择已有模型
 
 ```python

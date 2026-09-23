@@ -118,3 +118,20 @@ def test_encoder_uses_market_time(monkeypatch):
     monkeypatch.setattr(flylab.odors, "session_bin", lambda: 3)
     b = state(Compact("fly", 11, .1))
     assert np.array_equal(a["kc"], b["kc"])
+
+
+def test_frozen_gated_keeps_initial_weights_and_uses_the_same_risk_rule():
+    learned = Compact("fly_gated", 11, -.1, batch_size=1)
+    frozen = Compact("frozen_gated", 11, -.1, batch_size=1)
+    assert learned.weights_hash() == frozen.weights_hash()
+    a, b = state(learned), state(frozen)
+    previous = frozen.decide(b, True)
+    assert learned.decide(a, True)["gated"] == previous["gated"]
+    assert previous["action"] == 0
+    before = frozen.weights_hash()
+    frozen.receive(previous, -.02, b, 5, True)
+    frozen.flush(5)
+    assert frozen.weights_hash() == before
+    assert frozen.updates == 0 and not frozen.batch
+    copied = frozen.frozen_copy()
+    assert copied.kind == "frozen_gated" and copied.risk_threshold == frozen.risk_threshold

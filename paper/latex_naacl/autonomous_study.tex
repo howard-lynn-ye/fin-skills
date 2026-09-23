@@ -1,0 +1,74 @@
+\section{Empirical study: tool access and decision outcomes}
+\label{sec:autonomous}
+We evaluate how autonomous tool access affects portfolio decisions in open-weight
+language models under sequential multi-asset tasks.
+
+\subsection{Experimental setup}
+We test Qwen2.5-Coder 7B and 14B under four conditions: historical prices alone; prices
+with static skill excerpts; prices with precomputed tool outputs; and autonomous access
+to the library's algorithm catalog. Each condition runs across inference seeds 11 and 23,
+with a budget of five interaction turns per decision (capped at 256 generated tokens per
+response). Conditions run in randomized order.
+
+In the autonomous condition, the agent receives descriptions of available tools. It can
+inspect algorithm specifications, run an algorithm with custom arguments, or query a
+rule-based strategy adviser. Tool calls are dispatched against trailing market snapshots
+and return structured numerical results. In our evaluation, agents access 18
+price-compatible quantitative routines.
+
+A decision without valid portfolio weights leaves existing allocations unchanged.
+Requests, outputs, and intermediate reasoning traces are logged separately, and final
+weights are frozen before scoring.
+
+\subsection{Data and evaluation protocol}
+We evaluate on daily exchange rates for EUR against USD, JPY, GBP, and CHF from ECB
+reference data. Messages use anonymized asset identifiers and relative indices rather
+than calendar dates.
+
+Each decision observes 126 trailing days. The evaluation spans the first 84 trading days
+of 2025 (ending May 2), with four rebalancing points spaced 21 days apart. Decisions at
+step $t$ execute at day $t+1$ prices to prevent look-ahead bias. Portfolios are long-only
+without leverage, with unallocated capital held in cash. We charge 5 basis points per
+side for rebalancing and final liquidation. Cash, equal-weight buy-and-hold, and
+deterministic rules serve as reference baselines.
+
+\subsection{Observed execution and returns}
+Across 16 trials, models generated 64 final portfolio allocations. Autonomous 7B made 13
+successful tool calls, while autonomous 14B made 30. Both models recovered from minor
+JSON formatting errors within their turn budget, completing all decisions without
+runtime crashes.
+
+Tool choices diverged across model scales: 7B selected cross-sectional momentum,
+Bollinger reversion, and volatility-targeted momentum, whereas 14B predominantly used
+Bollinger reversion alongside trend-following indicators.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Condition & 7B & 14B \\
+\midrule
+No library & $+0.100$ & $-3.324$ \\
+Skill text & $-2.930$ & $-4.567$ \\
+Fixed tool outputs & $-3.075$ & $-3.030$ \\
+Autonomous library & $-3.984$ & $-3.783$ \\
+\bottomrule
+\end{tabular}
+\caption{Mean cumulative proxy return (\%) across inference seeds with 5 bps transaction costs per side.}
+\label{tab:autonomous}
+\end{table}
+
+Table~\ref{tab:autonomous} shows returns across all arms. While autonomous 14B improved
+over its text-only condition by 0.783 percentage points, neither autonomous model beat
+the unassisted baseline (+0.100\% for 7B, $-3.324\%$ for 14B).
+
+Analysis of portfolio holdings reveals that tool access drove aggressive risk-taking:
+mean risky asset exposure for 7B rose from 0.500 without the library to 0.969 with
+autonomous tools; for 14B, exposure shifted from 1.000 (all-in) to 0.500. Autonomous
+runs used 38 model calls per model across eight decisions, totaling 1,155,782 prompt
+tokens and 10,165 completion tokens.
+
+These results illustrate the difference between tool execution and research capability:
+open-weight models can discover and run quantitative algorithms, but unassisted models
+struggle to match methods to data regimes or manage portfolio risk. This motivates the
+context pruning and memory mechanisms evaluated in Section~\ref{sec:capability_eval}.

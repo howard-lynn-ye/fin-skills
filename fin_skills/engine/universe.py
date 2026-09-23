@@ -5,6 +5,8 @@ flags a current-snapshot screen can be run on the engine's own membership with n
 """
 from __future__ import annotations
 
+import re
+
 import pandas as pd
 
 from fin_skills.engine.panel import Panel
@@ -13,8 +15,9 @@ from fin_skills.engine.panel import Panel
 class Universe:
     """The point-in-time membership rule.
 
-    rebalance    : a pandas offset alias ("M", "Q", "W-FRI") resolved to the LAST session
+    rebalance    : a pandas offset alias ("ME", "QE", "W-FRI") resolved to the LAST session
                    of each period, or an explicit DatetimeIndex snapped back to sessions.
+                   Legacy month/quarter-end aliases ("M", "BM", "Q", "BQ") remain accepted.
     min_adv      : trailing dollar-ADV floor, measured over a window ENDING at the
                    rebalance - the screen everyone writes with today's ADV by accident.
     members      : ticker / start_date / end_date. Supplied, it is the membership truth;
@@ -33,7 +36,10 @@ class Universe:
     def dates(self, sessions) -> pd.DatetimeIndex:
         idx = sessions.index
         if isinstance(self.rebalance, str):
-            last = pd.Series(idx, index=idx).resample(self.rebalance).last().dropna()
+            # Pandas 3 removed these offset aliases. Preserve multipliers and fiscal anchors,
+            # while leaving month/quarter-start aliases and the caller's configuration intact.
+            freq = re.sub(r"^(\d*)(B?[MQ])(?=-|$)", r"\1\2E", self.rebalance)
+            last = pd.Series(idx, index=idx).resample(freq).last().dropna()
             return pd.DatetimeIndex(sorted(set(last)))
         want = pd.DatetimeIndex(self.rebalance)
         pos = idx.searchsorted(want, "right") - 1

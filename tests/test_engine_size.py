@@ -77,7 +77,7 @@ def test_the_engine_imports_numpy_and_pandas_and_nothing_new():
                 root = stripped.split()[1].split(".")[0]
                 third_party.add(root)
     allowed = {"numpy", "pandas", "fin_skills", "__future__", "dataclasses", "typing",
-               "hashlib"}
+               "hashlib", "re"}
     assert third_party <= allowed, sorted(third_party - allowed)
 
 

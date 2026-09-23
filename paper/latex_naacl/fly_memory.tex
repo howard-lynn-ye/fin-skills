@@ -1,0 +1,44 @@
+\section{Cross-episode experience and persistent memory}
+\label{sec:fly}
+Foundation language models are stateless across sessions: once an interaction ends,
+the model retains no memory of whether its previous trading strategy made or lost money.
+Fine-tuning the entire LLM with gradient descent after each trading day is impractical,
+computationally expensive, and prone to overfitting on noisy financial markets.
+
+To provide cross-episode memory without altering LLM weights, we use an external
+associative memory module inspired by the fruit-fly mushroom body \cite{huang2024memory}.
+In biological systems, the mushroom body maps complex sensory features into sparse
+representations and uses dopamine-gated synaptic plasticity to associate sensory cues
+with delayed rewards and punishments across multiple decay rates (short- and long-term
+memory).
+
+\paragraph{Associative memory architecture.}
+Our memory module projects market state features and candidate actions into a high-dimensional
+sparse representation. When the agent evaluates a new trading decision, it queries the
+memory module for associative preference scores based on prior experiences in similar
+market regimes. These scores serve as contextual guidance alongside the prompt, without
+modifying the frozen LLM backbone.
+
+\paragraph{Updating from complete holding episodes.}
+Financial rewards are inherently delayed: an allocation chosen today only yields returns
+after a multi-day holding period. The feedback interface models an entry and its subsequent
+holding days as a single complete decision episode. For positive account values
+$W_0,\ldots,W_T$, the target return is
+\begin{equation}
+G = \sum_{t=0}^{T-1}\log(W_{t+1}/W_t)
+  = \log(W_T/W_0).
+\end{equation}
+This return accounts for transaction fees, daily price fluctuations, and final liquidation.
+Memory updates fire only after the position is fully closed and settlement clears.
+
+The verification interface checks timestamp ordering, return accounting, and data
+lineage. Trades relying on look-ahead data or unadjusted prices are rejected before
+reaching the memory module, preventing spurious profits from corrupting associative
+weights. Valid negative returns remain active learning signals, allowing the agent to
+learn from losses. Each verified trade receipt updates memory exactly once.
+
+\paragraph{Isolating learning from risk filtering.}
+To verify that performance gains reflect genuine associative learning rather than
+passive risk reduction, our benchmark compares the updating memory against a frozen-memory
+control and a volatility exposure gate under identical historical splits and costs.
+This setup isolates experiential adaptation from static volatility filtering.

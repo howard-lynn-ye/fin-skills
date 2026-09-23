@@ -97,7 +97,7 @@ def build_survivorship_audit() -> dict:
 def build_pit_universe() -> dict:
     from fin_skills.core.pit_universe import _synthetic_index, rebalance_universe
     prices, members = _synthetic_index()
-    rebals = pd.bdate_range(prices.index[0], prices.index[-1], freq="BQ")
+    rebals = pd.bdate_range(prices.index[0], prices.index[-1], freq="BQE")
     today = sorted(members.loc[members["end_date"].isna(), "ticker"])
     snapshot = {pd.Timestamp(d): [t for t in today if pd.notna(prices[t].asof(pd.Timestamp(d)))]
                 for d in rebals}

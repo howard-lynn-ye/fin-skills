@@ -298,6 +298,48 @@ def test_universe_is_point_in_time():
     assert report[0].evidence["total_removals"] > 0
 
 
+@pytest.mark.parametrize("frequency, expected", [
+    (None, ["2024-01-31", "2024-02-28", "2024-03-28", "2024-04-30", "2024-05-07"]),
+    ("M", ["2024-01-31", "2024-02-28", "2024-03-28", "2024-04-30", "2024-05-07"]),
+    ("ME", ["2024-01-31", "2024-02-28", "2024-03-28", "2024-04-30", "2024-05-07"]),
+    ("BM", ["2024-01-31", "2024-02-28", "2024-03-28", "2024-04-30", "2024-05-07"]),
+    ("BME", ["2024-01-31", "2024-02-28", "2024-03-28", "2024-04-30", "2024-05-07"]),
+    ("Q", ["2024-03-28", "2024-05-07"]),
+    ("QE", ["2024-03-28", "2024-05-07"]),
+    ("BQ", ["2024-03-28", "2024-05-07"]),
+    ("BQE", ["2024-03-28", "2024-05-07"]),
+    ("Q-FEB", ["2024-02-28", "2024-05-07"]),
+    ("QE-FEB", ["2024-02-28", "2024-05-07"]),
+    ("BQ-FEB", ["2024-02-28", "2024-05-07"]),
+    ("BQE-FEB", ["2024-02-28", "2024-05-07"]),
+    ("2M", ["2024-01-31", "2024-03-28", "2024-05-07"]),
+    ("2ME", ["2024-01-31", "2024-03-28", "2024-05-07"]),
+    ("2Q-FEB", ["2024-02-28", "2024-05-07"]),
+    ("2QE-FEB", ["2024-02-28", "2024-05-07"]),
+])
+def test_universe_offset_aliases_keep_the_last_actual_session(frequency, expected):
+    # Missing month-end sessions and a partial final period exercise the trading calendar.
+    idx = pd.bdate_range("2024-01-25", "2024-05-07").difference(
+        pd.DatetimeIndex(["2024-02-29", "2024-03-29"]))
+    calendar = Sessions.from_index(idx, tz=TZ, periods_per_year=PPY, name="synthetic")
+    universe = Universe() if frequency is None else Universe(rebalance=frequency)
+    pd.testing.assert_index_equal(universe.dates(calendar), pd.DatetimeIndex(expected))
+
+
+def test_universe_weekly_and_explicit_dates_still_snap_to_sessions():
+    calendar = sessions(10)
+    pd.testing.assert_index_equal(Universe("W-FRI").dates(calendar),
+                                  pd.DatetimeIndex(["2021-01-08", "2021-01-15"]))
+    requested = pd.DatetimeIndex(["2021-01-10", "2020-12-31", "2021-01-08", "2021-01-16"])
+    pd.testing.assert_index_equal(Universe(requested).dates(calendar),
+                                  pd.DatetimeIndex(["2021-01-08", "2021-01-15"]))
+
+
+def test_universe_invalid_offset_is_rejected():
+    with pytest.raises(ValueError):
+        Universe("Q-INVALID").dates(sessions())
+
+
 # ================================================================== I7  turnover
 def test_turnover_identity(full):
     want = full.weights.diff().abs().sum(axis=1)

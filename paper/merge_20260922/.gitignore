@@ -1,0 +1,9 @@
+overleaf_before/
+overleaf_finskills/
+local_before/
+qa/
+upload/
+*.zip
+reframe_before/
+reframe_build/
+reframe_qa/
