@@ -91,3 +91,49 @@ FinQA memory and FinanceBench/BGE jobs remain separate; they were not redeployed
 Still distinct from these experiments: independent pipeline-building tasks, real historical
 publication/revision timestamps with supported answers, semantic citation entailment, and
 human development-time measurements. No result here fills those gaps by relabeling fixtures.
+
+
+## Status update: 2026-09-23 12:55 UTC
+
+The dated running/queued entries above are superseded by this update. Both report-QA
+jobs completed: Qwen 1654284 in 00:45:39 and Mistral 1654286 in 01:46:56. Each retained
+all 128 generation episodes. The separate read-only auditor verified every original
+numerical/program grade, calculator receipt, output hash and paired gate decision.
+Evidence is in `benchmarks/agent_study/evidence/20260923-rag-completion/`.
+
+| Reported condition | Qwen correct / 32 | Qwen incorrect accepted / 32 | Mistral correct / 32 |
+|---|---:|---:|---:|
+| components | 3 | 5 | 0 |
+| skills | 2 | 1 | 0 |
+| rag_api | 2 | 0 | 0 |
+| rag_gate (same frozen answers) | 2 | 0 | 0 |
+| full_report | 1 | 5 | 0 |
+
+Mistral accepted one incorrect component answer and none in its other conditions.
+Format failures were frequent. These results do not establish an overall library
+accuracy advantage; fewer wrong acceptances must be considered alongside rejection and
+low correct completion. The gate added no outcome change to these frozen API answers.
+
+Ranking job 1654297 completed in 00:01:14. All 32 BGE and 32 Kev ranking records exist,
+with zero recorded per-row ranking errors. This is not a downstream-answer score.
+Combined answer job 1654323 failed before either model started: the parent bound hashes
+of locally serialized CRLF manifests while the remote dispatcher had written LF bytes.
+The JSON objects and all scientific-source hashes are identical. No model episodes or
+shared-allocation markers existed in either child root before repair.
+
+A v2 wrapper bound the exact previously archived remote manifest bytes, but its submission
+was rejected with `Job dependency problem` for the old completed ranking job. That rejection
+is retained without a job ID. The v3 wrapper removes only the obsolete scheduler dependency;
+ranking completion and every ranking receipt are still checked by the child workers.
+No scientific code, model, input, prompt, scorer or inference budget changed.
+
+Replacement **1660691** was accepted at 12:54:22 UTC and is **PENDING (AssocMaxJobsLimit)**
+at this check. Wrapper root: `finqa-rerank-answers-20260923-v3`; the two original per-model
+answer roots remain. There are still 64 planned Qwen and 64 planned Mistral answers.
+The completed QA timings suggest roughly 1–1.5 hours of serial computation for these
+half-sized answer batches; this is an estimate, excludes queue time and assumes no new
+execution failure. The experiment is not yet fully complete.
+
+The existing FinQA memory jobs 1653915/1653932 and FinanceBench retrieval/reranking jobs
+1653482/1653602 also report COMPLETED 0:0. Memory completion auditors already exist and
+were not rerun. Their task units overlap this study and must not be counted again.

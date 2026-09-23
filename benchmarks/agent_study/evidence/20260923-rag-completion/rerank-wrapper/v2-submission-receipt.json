@@ -1,0 +1,7 @@
+{
+  "status": "submission_failed",
+  "exit_code": 1,
+  "scheduler_error": "sbatch: error: Batch job submission failed: Job dependency problem\n",
+  "finished_utc": "2026-09-23T12:53:54.416827+00:00",
+  "interpretation": "Submission is not evidence of job execution or completion."
+}
