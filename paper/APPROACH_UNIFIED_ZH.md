@@ -1,5 +1,8 @@
 > **Superseded 2026-09-21:** Historical planning record, not verified evidence. See [the revised study plan](STUDY_PLAN.md) and [claim evidence](evidence.json). The old scaffold did not execute guards; KOL predictive metrics were imported summaries; the theoretical ceiling, 84% reduction and asymptotic complexity claims are withdrawn/corrected. The historical text below is retained for traceability.
 
+> **当前定位（2026-09-22）：** 已改为[专业工具使用与经验学习](FRAMING_TOOLS_MEMORY_ZH.md)。
+> 下文保留为历史记录；其中已撤回的数字、因果推断与投稿判断不因定位调整而恢复。
+
 # 论文统一写作蓝图：`fin-skills` 与金融 AI Agent 反事实研究完整性审计框架
 
 > **文档状态**：Howard 与 Shwai 联合共识修订版（单篇大一统论文方案）  

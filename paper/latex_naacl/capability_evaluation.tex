@@ -1,0 +1,39 @@
+\section{Evaluating use, retention and adaptation}
+\label{sec:capability_eval}
+The current development study measures autonomous tool use and portfolio outcomes.
+The broader framework requires comparisons at three stages. The following design
+specifies those comparisons; it does not report completed memory or context ablations.
+
+\paragraph{Method selection and task quality.}
+Tasks should expose method requirements and allow an agent to choose tools, parameters
+and stopping points. A method can be appropriate without being uniquely optimal.
+Selection can be assessed against task-specific eligibility and suitability criteria
+defined independently of the agent output, alongside the quality of the resulting
+forecast, allocation or analysis. Outcome-only rankings risk rewarding a lucky choice.
+Matched controls distinguish basic inputs, skill guidance, fixed tool outputs and
+agent-selected calls. A competing tool-access baseline is needed to isolate the
+library's contribution from access to executable methods in general.
+
+\paragraph{Context retention.}
+With the backbone, available information and tools fixed, compare full context,
+simple budget-matched retention and HiSTrim. Measure task quality, retention of
+required evidence, allocated KV memory and wall-clock latency together. A smaller
+context or higher confidence alone is not an improvement. This comparison also
+requires defining financial record spans and protected task information before testing.
+
+\paragraph{Experience and adaptation.}
+With context and tool access fixed, compare no persistent memory, frozen memory,
+an updating non-biological baseline and the proposed memory component. Matched
+controllers should receive the same eligible feedback and action opportunities.
+Track how choices change after feedback, performance on later unexamined tasks,
+adaptation after shifts, turnover and cost. A separate feedback-check ablation tests
+update eligibility; a matched exposure control separates learning from a risk gate.
+Context-by-memory comparisons are necessary to assess their interaction rather than
+attribute separate gains to the full system.
+
+The primary measures should reflect the task: forecast accuracy or calibration,
+decision utility, or the supported quality of an analysis. Report valid completion,
+ineligible information use and execution failures as constraints on interpretation.
+Freeze outputs before independent scoring, preserve failed attempts, and use new tasks
+or chronological periods for evaluation. Report actual calls, tokens and latency,
+and compare matched budgets; portfolio claims additionally need cost and risk controls.

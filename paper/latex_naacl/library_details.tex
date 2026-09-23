@@ -1,0 +1,109 @@
+\section{Library implementation and interface scope}
+
+\label{app:library}
+\paragraph{Knowledge and executable interfaces.}
+Domain skills route tasks to relevant libraries, while optional per-library skills
+describe conventions, dependencies, and failure modes in more detail. The Python
+package exposes catalog search, skill loading, and reference retrieval. Packaged skill
+documents and scripts are generated from the same repository sources. A verification
+date records a source check; it does not guarantee that a statement remains current.
+Table~\ref{tab:inventory} describes the frozen study snapshot. These counts measure
+available interfaces, not independently validated capabilities.
+
+% Inventory measured by importing catalog/api/algorithms/tools on Beacon RADFM,
+% frozen fin-skills-autonomous-20260921-v2b/source, September 21, 2026.
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lr}
+\toprule
+Component & Entries \\
+\midrule
+Skill documents & 129 \\
+Algorithm--backend catalog & 48 \\
+Registered research guards & 36 \\
+JSON-callable tools & 56 \\
+\bottomrule
+\end{tabular}
+\caption{Inventory of the frozen study snapshot. Algorithm entries can expose existing
+methods through different backends. The autonomous study offers a price-compatible
+subset, not every catalog entry. This snapshot predates the September 22 RAG and Jev
+additions described below.}
+\label{tab:inventory}
+\end{table}
+
+\paragraph{Algorithm selection and execution.}
+The algorithm catalog describes input requirements, optional dependencies, and supported
+tasks. Implemented families include portfolio construction, forecasting, volatility and
+risk estimation, technical signals, and execution schedules. Recommendation rules filter
+candidates by the request and data requirements, then rank compatible entries using
+explicit preferences. They are not a learned predictor of future returns. A catalog
+entry does not imply that its dependency is installed or that execution will succeed;
+unavailable backends and execution failures remain explicit. Automatic execution does
+not silently substitute another method after a selected method fails.
+
+\paragraph{Reusable models and lifecycle.}
+The library supports direct Python use as well as agent-facing discovery and execution.
+Forecasting, regression, and classification adapters expose a common fit--predict
+lifecycle, including ARIMA, Ridge, random forests, LightGBM, and XGBoost when their
+dependencies are installed. Fitted models can be saved and restored with recorded
+environment and input metadata. This loader restores trusted user-created artifacts;
+it is not a pretrained-checkpoint download service. Portfolio optimizers and rule-based
+signals use execution interfaces without pretending to share a supervised training
+lifecycle. The current model registry also exposes an experimental fruit-fly memory
+adapter through \texttt{create\_model("fly\_memory")}. Its numerical backend is the
+separately installed GPL-3.0-or-later \texttt{fin-skills-fly} extension and requires
+caller-supplied circuit parameters. It supports prediction, checked feedback updates
+and persistence; it does not implement a complete autonomous trading policy.
+
+% Implementation scope: docs/RAG_PIPELINE.md and docs/MODEL_USAGE.md,
+% added after the frozen September 21 autonomous-study snapshot.
+\paragraph{Built-in retrieval and model composition.}
+The RAG interface chunks packaged skills or caller-supplied documents and retrieves
+passages using local BM25. Callers may supply embedding, reranking and text-generation
+functions. Passages retain their document identifiers, source offsets and availability
+timestamps; as-of retrieval excludes documents unavailable at the requested time.
+The index resides in memory and can be persisted as versioned JSON. Citation checks
+validate references to retrieved passage labels, not whether a passage supports a claim.
+
+The shared model registry includes a hosted TypeSafe Jev adapter for structured
+decisions and passage reranking. It requires service access and explicit network
+permission; no Jev weights are distributed with the library. The adapter can serve as
+a RAG reranker while a caller-selected model generates the answer. These September 22
+additions have interface tests, including mock Jev transports. Live-service inference,
+retrieval quality and reranking gains were not evaluated in the earlier studies.
+A paired development runner now freezes BM25 candidates, the time cutoff and context
+budget before Jev inference, with relevance scoring performed separately on saved
+outputs. Its public synthetic fixtures test this workflow. A quality comparison still
+requires independently annotated retrieval tasks and an unchanged answering model.
+
+\paragraph{Information availability.}
+News collection supports RSS/Atom feeds, static pages, GDELT, and disclosure sources.
+SQLite stores collection records, revisions, polling checkpoints and pending alerts;
+the operator explicitly starts collection. The package does not ship a populated
+financial dataset, and this record store is separate from the RAG index.
+Records distinguish publication time from observation time and retain revision
+information when available. An as-of digest filters future, stale, and undated records
+and deduplicates canonical URLs. These mechanisms support timestamp-aware processing;
+they do not reconstruct an independently validated historical news archive. Keyword
+risk indicators are not calibrated sentiment estimates, and absent news is treated as
+unknown rather than evidence of low risk. News collection is not exercised in the
+portfolio experiment reported here.
+
+\paragraph{Model choice and rule-based advice.}
+An agent can read a skill, inspect available algorithms, execute a selected method with
+its own parameters, and use the returned result in its next decision. The library also
+provides an optional market-state adviser based on trailing price and volatility
+statistics. Its trend, range, and stress categories are rule outputs, not learned regime
+probabilities or validated predictions of which strategy will outperform. A suggested
+strategy is therefore additional evidence the model may inspect. The autonomous study
+records the model's actual calls; it does not equate access to this adviser with
+autonomous algorithm selection.
+
+\paragraph{Research workflow and boundaries.}
+Research interfaces support data preflight, candidate evaluation, chronological
+validation, holdout reporting, and trial records. Holding final data out of candidate
+ranking reduces one avenue for selection bias, but the caller must still provide valid
+timestamps and data provenance. Python and JSON tool interfaces expose structured
+results; guards requiring live Python objects are not all available as JSON calls.
+Neither a data record nor a successful tool call certifies the whole research process.
+

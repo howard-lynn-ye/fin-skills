@@ -1,0 +1,43 @@
+{
+  "recorded_at_utc": "2026-09-23T01:43:58.6064448Z",
+  "title": "From Tool Access to Research Capability: Tools and Memory for Financial Agents",
+  "project": "https://www.overleaf.com/project/6aad9a03f27c3c07a182965d",
+  "source_base_commit": "758c618",
+  "uploaded_local_sha256": {
+    "main.tex": "abae78a96e15ff24dc9070ed081da23668522d17a178077d02e11bdeca94eb00",
+    "framework_overview.tex": "0233f42df670119174994f45183756f32c50c062b706c2c236c03d42870bb458",
+    "selective_context.tex": "e344faa0cda3a3c4d6ebac5c34002adeac6774d931bb521caebf2330f7b3b2ef",
+    "fly_memory.tex": "95323b961f03e5593ee7f351b6cc5231987b59681b425859dc2ee74b7ac74388",
+    "autonomous_study.tex": "d338c37bd9c8129b387e578ebb9297f7b790a9fea18780c55f354b4f775aaeae",
+    "feedback_checks.tex": "e13ac050f4a273d4c79c5a6bbeb4f8ede9e0e0a1978311c8c0f36d0f42d5cc09",
+    "capability_evaluation.tex": "e1773ccd1bdf27f8e1e624be2fffe5354278a375c77c69ad1402ef9f867c779d",
+    "library_details.tex": "213e65a11509181a12714a8538fd18896c31bc3f1540c2865f38ada3e8c19f20",
+    "supporting_evidence.tex": "0eacd330d423cd90b92b5d619a8f070313e79cb062d80e5259041f9125c563bf",
+    "main.pdf": "8a28df008313039271e27b512b911f7ff4e044c922c747da0f6535a97bab7ef7",
+    "FRAMING_TOOLS_MEMORY_ZH.md": "8687c02f23c072f28e02db0af83833135ad33473d6a31d1d6d8c6ad761a5b87e",
+    "REFRAMING_REVIEW.md": "b31bec446fa55109357039bbfb2a028f4a9696588cc061dd8142de366f131315"
+  },
+  "remote_main_normalized_sha256": "6e7d011dced212bd25a1b9ba15e999e71a92f3bd2d346f7ae46fb9bfc31fd482",
+  "remote_main_matches_local": true,
+  "remote_pre_upload_main_matches_base": true,
+  "remote_compile": {
+    "warnings": 0,
+    "success": true,
+    "errors": 0,
+    "pages": 16,
+    "typesetting": "underfull notices"
+  },
+  "local_build": {
+    "all_pages_visually_reviewed": true,
+    "conclusion_page": 8,
+    "pages": 16,
+    "undefined_references": 0,
+    "overfull_boxes": 0,
+    "success": true
+  },
+  "experiment_change": "None; numeric sequence in autonomous_study.tex is unchanged",
+  "repository_checks": "build_index.py -> build_package.py -> validate.py passed (129 skills; one existing discovery-budget warning)",
+  "github_pushed": false,
+  "history_upload_time": "22nd September, 9:42 pm",
+  "history_label": "Tools and memory capability framing — 2026-09-22"
+}

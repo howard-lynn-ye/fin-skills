@@ -2,10 +2,11 @@
 % ARCHITECTURE_AUDIT.md; episode_credit.py; benchmarks/fly_paper/online.py,
 % run_bridge.py and README.md. Human source review remains pending.
 % Matched risk-gate control: benchmarks/fly_reuse/README.md and core.py.
-\section{Fruit-fly-inspired learning with checked feedback}
+\section{Cross-episode experience and persistent memory}
 \label{sec:fly}
-This application extends the library from assisting fixed models to checking the
-experience used by an online learner. Its research question is whether memory operating
+Persistent memory changes what a decision maker carries from one episode to the
+next. The library exposes an exploratory fruit-fly-inspired component for studying
+how delayed outcomes can update that state. Its research question is whether memory operating
 over different timescales, updated from checked delayed outcomes, can support decisions
 to enter, persist, exit, and revisit opportunities under changing conditions and
 transaction costs. These policy capabilities remain development objectives.
@@ -46,7 +47,7 @@ can change preference ordering, and impaired adaptation under repeated reward re
 Those findings concern the tested implementations, not the suitability of mushroom-body
 models in general. The newer memory interface uses supplied outcomes in controlled
 learning cases; it does not yet autonomously choose entry, holding duration, or exit.
-It is separate from the LLM tool-use experiment in the preceding section.
+The LLM tool-use study in Section~\ref{sec:autonomous} does not use this memory adapter.
 
 The compact-memory benchmark now includes a frozen-memory control with the same
 volatility gate as the learned-memory arm, using identical data, costs, chronological
@@ -59,6 +60,6 @@ constant across controllers with and without feedback checks. Linear and dense
 controllers, non-biological models with matched memory timescales, and ablations of
 memory interactions are needed to distinguish the contributions of feedback validation
 and memory structure. Evaluation must measure adaptation, exit behavior, turnover, and
-net performance on untouched periods. This model-development contribution is therefore
-an implemented research direction with explicit tests still required, not evidence
-that biological inspiration or library access yields higher returns.
+net performance on untouched periods. These comparisons would test which retained experience changes later decisions
+and whether that change improves adaptation. Connecting the numerical readout to
+LLM tool choice remains a separate integration step.

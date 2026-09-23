@@ -4,3 +4,6 @@ local_before/
 qa/
 upload/
 *.zip
+reframe_before/
+reframe_build/
+reframe_qa/

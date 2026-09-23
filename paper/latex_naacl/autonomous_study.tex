@@ -2,10 +2,11 @@
 % v1 summary SHA256: 4f2359e27a792241900466a42e3885697c7af239a2e83549d9871494b4531bbd
 % v2b summary SHA256: 1c2319779a18d78e5da2b549b99bc2544a524054ac02afdcd71ae2fc75eefa6f
 % Accountable-human verification pending. Development results, not confirmatory evidence.
-\section{Autonomous library-use development study}
+\section{Development study: tool access and decision outcomes}
 \label{sec:autonomous}
-The preceding audit study concerns submitted research artifacts. This separate experiment
-asks whether library access improves portfolio decisions made by a fixed model. An initial
+This experiment examines the first part of the capability question: whether
+a fixed language model chooses professional tools and how access changes its
+portfolio decisions. HiSTrim and persistent memory are not used in these runs. An initial
 12-trial pilot supplied predetermined tool results; it did not test autonomous selection.
 That distinction motivated the corrected intervention below. Both experiments use the
 same public market path, so the second is explicitly development evidence.
@@ -61,8 +62,7 @@ The autonomous-loop implementation initially rejected single Markdown fences aro
 valid JSON, although the earlier final-action parser accepted them. We retained and
 cancelled that instrument-failure attempt, then corrected the parser consistently for
 all action types. The corrected run used unchanged prompts, models, seeds, tools and
-market window in a new workspace. Its instrument suite passed 26 tests, including
-past-only tool inputs, optional calls, error recovery, turn limits and fenced responses.
+market window in a new workspace. Its instrument suite passed 26 tests covering input timing and action handling.
 
 The corrected experiment completed all 16 trials and 64 final decisions. Autonomous
 7B made 13 successful tool requests and autonomous 14B made 30, with no call or format
@@ -112,5 +112,8 @@ The same prompt, market window and seeds were retained after the parser correcti
 no unfavorable financial run was removed. Paired date-block intervals are descriptive
 for this short path, not confirmatory tests. A paper-level claim requires untouched
 evaluation periods, independent markets, executable-price conventions, risk-matched
-controls and a competing tool-access baseline. This experiment demonstrates autonomous
-use and independent scoring, but not a general return benefit from the library.
+controls and a competing tool-access baseline. The result motivates studying the
+connection between method choice, output
+interpretation and later adaptation. It does not establish which of these explains
+the observed returns; that requires the matched comparisons in
+Section~\ref{sec:capability_eval}.

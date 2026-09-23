@@ -1,0 +1,21 @@
+\section{Checks supporting execution and experience}
+\label{sec:checks}
+Tool use and learning need records of what happened. The execution controller binds
+checks to the submitted code, inputs and numerical claims, recording their digests
+and results. Changed artifacts invalidate earlier receipts. A required-check policy
+reports \texttt{PASS} when all required checks ran and passed, \texttt{FAIL} for a
+detected defect, and otherwise \texttt{INCOMPLETE} for missing or rejected evidence.
+This mechanism establishes the scope of execution evidence; it does not choose the
+best method for the task.
+
+For learning, availability and accounting checks constrain which delayed outcomes
+can be consumed. Pending feedback waits and invalid feedback is rejected; valid
+negative outcomes remain eligible. The purpose is to support interpretable experience
+updates, not to retain only profitable episodes. Passing these checks does not prove
+that supplied records are authentic or that the original choice was optimal.
+
+The supporting audit study contrasts guidance, optional checking and required final
+checking. Its accepted model submissions were not independently gradable, so it does
+not establish an improvement in decision quality. Appendix~\ref{app:audit} retains
+the protocol, historical pilot, instrument failures and regression evidence. Those
+records define the current checking scope separately from the capability study.

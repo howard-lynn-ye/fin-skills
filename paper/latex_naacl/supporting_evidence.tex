@@ -1,0 +1,163 @@
+\section{Supporting audit and validation studies}
+\label{app:audit}
+These studies characterize the execution and feedback checks used by the research
+framework. Their outcomes are distinct from method selection, decision quality and
+learning. They are retained to document what the checking infrastructure can measure
+and where the current instruments remain incomplete.
+
+\subsection{Independent evaluation}
+
+A seeded synthetic market provides quoted prices, corporate actions, listings,
+post-close commentary, precomputed scores and fundamental disclosures. A submitted
+function returns portfolio weights; a separate report states its net Sharpe ratio.
+The task now specifies that session-$t$ weights must use information available by the
+end of session $t-1$, consistent with close-to-close return accounting.
+
+The independent evaluator redraws future data and individual sessions, measures changes
+in submitted positions, checks post-delisting exposure, and recomputes performance at a
+fixed transaction-cost convention. Public intervention checks do not call this oracle.
+Private grades are generated only after the submission receipt is saved and are not
+returned to the agent for repair. Rejected submissions are also graded when executable.
+
+The oracle's fixed-cost Sharpe and the public tool's stated-cost Sharpe answer different
+questions. Their discrepancy can reflect accounting conventions as well as coding
+errors. Neither should be called an estimate of genuine alpha without timing and other
+validity checks. A latent-drift strategy's sample Sharpe is a reference observation,
+not a theoretical upper bound. Exceeding it is not mathematical proof of leakage.
+
+\subsection{Supporting validation records}
+\paragraph{Synthetic regression checks.}
+Saved robustness results record \CaughtInstances{} detections among
+\DefectInstances{} planted instances: twelve defect families repeated across three
+seeded worlds, with no reported clean-control false alarms in those worlds. This is
+regression evidence within one synthetic design. Repeating a seed design does not
+supply independently authored defects or estimate a general real-world false-positive
+rate. The detection suite exercises thirteen guards, not every registered guard.
+
+\paragraph{Historical agent pilot.}
+The saved pilot comprises three markets, two model tiers, and library-present versus
+library-absent conditions, with one run per cell. Table~\ref{tab:pilot} recomputes the
+mean absolute discrepancy from the saved raw grades. The observed relative reduction
+for Opus is \OpusReduction\%, computed before rounding. It is not a significance claim.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lc}
+\toprule
+Historical arm & Mean absolute Sharpe gap \\
+\midrule
+Opus, no library & \OpusBase \\
+Opus, library & \OpusLibrary \\
+Haiku, no library & \HaikuBase \\
+Haiku, library & \HaikuLibrary \\
+\bottomrule
+\end{tabular}
+\caption{Exploratory pilot: three runs per arm. Values come from saved grades; model
+versions and full interaction-level execution provenance require further verification.}
+\label{tab:pilot}
+\end{table}
+
+The Haiku library arm has the largest discrepancy in this pilot. This motivates testing
+whether guidance, tool use, or other differences explain the outcome. It does not show
+that documentation causes weaker models to fail or that mandatory checks solve the
+problem. Historical reports of unexecuted guard citations require original execution
+logs for verification; the saved grade table alone does not establish that behavior.
+
+\paragraph{Numerical and real-data checks.}
+The numerical benchmark compares implementations with reference calculations using
+case-specific tolerances. Passing within tolerance is not exact equality. Runtime
+measurements report the names and number of guards actually exercised, skipped and
+rejected checks, and machine-dependent timing. A fitted slope across a few data sizes
+is descriptive, not an asymptotic complexity bound.
+
+The KOL fixture supports recomputing profile-group aggregates. Its model prediction
+metrics are saved summaries, not values independently recomputed from predictions and
+outcomes. In particular, its stored pooled Rank IC and mean daily cross-sectional Rank
+IC can have different signs. We do not treat this fixture as end-to-end reproduction,
+evidence of profitable trading, or external validation of the agent intervention.
+A separate evaluator now requires timestamped row-level predictions and outcomes,
+reports both forms of IC, and uses paired date-block uncertainty. Those source records
+remain an outstanding evidence requirement.
+
+\subsection{Four-condition audit study}
+The new protocol compares task guidance with ordinary accounting feedback, the same
+setup plus a fixed skill excerpt, the excerpt plus optional executable guards, and the
+excerpt plus a mandatory final audit. Market data, inference seeds and budgets are
+paired. Every condition has the same turn and response-token caps; actual token use,
+execution time and tool calls are also recorded. Conditions run in a frozen randomized
+order. Failed requests have no hidden retry or synthetic response fallback.
+
+The primary outcome of this audit study is incorrect accepted submissions divided by all attempted
+submissions. Correctness among accepted outputs and overall acceptance rate must be
+reported alongside it, so refusing every output cannot appear to solve the task.
+Secondary outcomes include independent leakage measures, reporting discrepancy,
+post-delisting exposure, unexecuted and stale citations, repair success and resource
+cost. Missing, rejected, ungradable and provider-failed runs remain separate outcomes.
+
+The first Beacon run is a public-seed feasibility study using pinned open-weight
+models. It tests operation and supports cost and sample-size planning. A confirmatory
+study additionally needs independent defect authorship, retained clean cases, repeated
+runs, and verified scorer isolation. Market-level paired uncertainty must preserve
+repetitions within markets. The present protocol is an amendment after examining the
+pilot, not a preregistration of its observations. Failure to find a return difference
+would not establish equivalence.
+
+\paragraph{Operational findings.}
+The first Beacon preflight rejected valid tool-call JSON wrapped in Markdown fences.
+We archived those records and amended the parser before a separate batch; this was
+an interface failure, not evidence of financial reasoning failure. In the revised
+batch, Qwen2.5-Coder 7B and 14B each completed \BeaconPerModel{} recorded cells, with
+\BeaconSevenAccepted{} and \BeaconFourteenAccepted{} accepted submissions respectively.
+Neither model produced an independent numerical grade: final code failed input or
+output validation, or a required artifact was absent. Accepted does not mean correct,
+and these observations cannot estimate improvement in financial integrity.
+
+Table~\ref{tab:beacon_feasibility} shows the per-condition breakdown for 14B, the only
+model that produced accepted submissions. Acceptance rate was 67\% under C0 and C1,
+100\% under C2 (optional guards), and 0\% under C3 (enforced audit): all three C3 runs
+reached the turn limit without producing a passing submission. Mean token use under C3
+was \BeaconFourteenCThreeMeanTokens{} versus \BeaconFourteenCTwoMeanTokens{} under C2,
+indicating substantially greater iteration before the turn limit was hit. All accepted
+submissions were ungradable; the primary outcome---incorrect accepted submissions per
+attempt---cannot be estimated from this batch.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{llccc}
+\toprule
+Model & Condition & Accepted/Planned & Mean tokens & Primary status \\
+\midrule
+\multirow{4}{*}{14B}
+  & C0 no library            & \BeaconFourteenCZeroAccepted/\BeaconFourteenCZeroPlanned
+      & \BeaconFourteenCZeroMeanTokens   & 1$\times$ turn limit \\
+  & C1 text only             & \BeaconFourteenCOneAccepted/\BeaconFourteenCOnePlanned
+      & \BeaconFourteenCOneMeanTokens    & 1$\times$ turn limit \\
+  & C2 optional guards       & \BeaconFourteenCTwoAccepted/\BeaconFourteenCTwoPlanned
+      & \BeaconFourteenCTwoMeanTokens    & all accepted \\
+  & C3 enforced audit        & \BeaconFourteenCThreeAccepted/\BeaconFourteenCThreePlanned
+      & \BeaconFourteenCThreeMeanTokens  & 3$\times$ turn limit \\
+\midrule
+7B  & all (12 cells)            & 0/12 & --- & turn limit / error \\
+32B & all (12 cells)            & 0/12 & 0   & provider error \\
+\bottomrule
+\end{tabular}
+\caption{Per-condition Beacon feasibility results. All accepted 14B submissions were
+ungradable; mean tokens are averaged over all completed cells in the condition.
+32B token count is zero because the process failed before any tool call.
+Values come from \texttt{BEACON\_FEASIBILITY\_RESULTS.json};
+numbers in \texttt{evidence\_numbers.tex} are generated by
+\texttt{scripts/build\_paper\_evidence.py}.}
+\label{tab:beacon_feasibility}
+\end{table*}
+
+
+
+The 32B run encountered nonfinite generation values and a CUDA error before a tool
+call. Subsequent failure records from that process are not independent capability
+observations. At the time of that feasibility report, a separately recorded single-GPU
+recovery run was queued. A handwritten
+causal control passed the mandatory audit and independent timing/accounting checks on
+one public market. That control verifies an executable path, not general scorer validity.
+Before a confirmatory study, basic artifact validity must be distinguished from the
+incremental contribution of financial checks.
+

@@ -1,53 +1,63 @@
-% Merge provenance: local manuscript; Overleaf FinSkills and HiSTrim task taxonomy.
-\section{Problem and framework overview}
+% Framing approved in the user discussion; integrated experiments remain proposed.
+\section{Research capability across tools and memory}
 \label{sec:framework}
-We distinguish three operations in a sequential research process. Context selection
-determines which available observations a model can attend to. Tool execution produces
-an analysis artifact and a record of the checks actually run on it. Learning uses a
-subsequent outcome to change persistent model state. A method can improve one operation
-while leaving the others unchanged or making the final decision worse.
+We use research capability to mean selecting methods suited to a task, producing
+useful decisions or analyses, and adapting later choices using available experience.
+This is an evaluation target, not a property inferred from the number of tools or
+successful calls. The framework separates the available methods, information retained
+for the current task, and state carried across episodes.
 
-Let $\mathcal{D}_{\le t}$ contain records whose availability times are no later than
-decision time $t$. A context selector produces $C_t$ from those records and the task
-constraints. A fixed model chooses tools and an action from $C_t$, producing artifact
-$A_t$. An audit examines the relevant original inputs and $A_t$, not only the selected
-context. If a later outcome becomes available and passes the feedback checks, a learner
-may consume that outcome once. Retaining original records outside the model context
-allows an audit to inspect evidence that the selector omitted.
+\paragraph{A decision and learning cycle.}
+Let $q_t$ describe the task, $\mathcal{D}_{\le t}$ the records available by time $t$,
+and $M_t$ the persistent state. A context mechanism selects or encodes information
+from the task history. A policy uses that context and a memory readout to choose a
+tool and its parameters, inspect its output, and eventually produce a decision.
+Once the episode ends, an eligible outcome may update $M_t$. These are conceptual
+interfaces for the combined agent; the current studies implement and test subsets.
 
 \begin{table*}[t]
 \centering\small
 \setlength{\tabcolsep}{5pt}
-\begin{tabular}{p{0.16\textwidth}p{0.25\textwidth}p{0.24\textwidth}p{0.25\textwidth}}
+\begin{tabular}{p{0.16\textwidth}p{0.26\textwidth}p{0.25\textwidth}p{0.23\textwidth}}
 \toprule
-Component & Input and operation & Output to evaluate & Present evidence \\
+Component & Role in the research process & Capability question & Present evidence \\
 \midrule
-HiSTrim context selection & Historical item representations; protect instructions and
-select retained KV entries & Task-label accuracy, teacher agreement, retained KV and
-measured latency & Recommendation manuscript results; financial integration untested \\
-\textsc{fin-skills} execution & Available data, chosen algorithms and submitted artifacts;
-execute tools and required checks & Executed-call validity, audit completeness and
-independent research correctness & Financial regression checks and development studies \\
-Checked persistent memory & Completed episodes with available, cost-inclusive outcomes;
-validate feedback before updating & Update validity, adaptation and net decision
-performance & Implemented interface; joint decision-policy evaluation pending \\
+\textsc{fin-skills} & Expose guidance, method requirements and executable tools &
+Which methods does the agent choose, and how does it use their outputs? &
+Financial library and autonomous-use development study \\
+HiSTrim & Select historical representations while protecting task constraints &
+Which context can be removed while preserving decision quality? &
+Reported recommendation comparisons; financial integration untested \\
+Persistent memory & Read and update state using completed experiences &
+Does experience change subsequent choices and improve adaptation? &
+Numerical adapter and feedback interface; combined policy untested \\
+Execution and feedback checks & Record actual execution and test feedback eligibility &
+Which outputs and outcomes can support analysis or an update? &
+Regression checks and an audit feasibility study \\
 \bottomrule
 \end{tabular}
-\caption{Complementary operations and their evidence. The rows do not describe a single
-already deployed or jointly evaluated pipeline. KV context and learned persistent memory
-are different objects; none of the listed proxies alone establishes economic utility.}
+\caption{Roles and evidence within the proposed financial-agent framework. The rows
+describe complementary components, not an already evaluated integrated system.}
 \label{tab:framework}
 \end{table*}
 
-Two failure classes motivate the checks. Mechanical defects include unavailable inputs,
-future-survival filters and accounting mismatches. Interpretation defects arise when an
-agent treats a tool's output, a popular source, or agreement with a reference model as
-proof of task validity. The source manuscript's concrete failure examples motivate this
-distinction; their prevalence is not established by the current studies.
+\paragraph{Two distinct forms of memory.}
+HiSTrim changes which historical representations survive within a model's attention
+computation. Persistent memory changes learned state across episodes. Both can affect
+future choices, but they require different interventions: a context ablation changes
+what the current decision can attend to, while a memory ablation changes what previous
+outcomes contribute. Neither should silently alter the information cutoff or available
+tool catalog.
 
-Table~\ref{tab:framework} specifies what each component changes. The implemented
-financial experiments exercise library access and audit enforcement. HiSTrim operates
-inside a backbone's attention computation and requires access to its internal KV state;
-it cannot be assumed to work through an arbitrary hosted text-generation API. The
-persistent memory adapter has its own numerical backend. Connecting these interfaces
-requires a compatible execution backend and a new experiment.
+\paragraph{Experience as a connection to later action.}
+The combined design would associate task conditions and tool outputs with a completed
+outcome, then expose a memory readout at a later choice. An update counts as useful
+only through its effect on subsequent tasks. A valid loss can be informative; a gain
+based on unavailable information should not be treated as successful experience.
+Checks test selected conditions for using feedback, while decision quality remains
+an independent evaluation outcome.
+
+Original records remain available to the checking infrastructure even if a context
+selector omits them. HiSTrim requires access to a backbone's internal representations
+and KV state, whereas the numerical memory adapter has a separate backend. Connecting
+both to LLM tool selection requires an explicit implementation and common task suite.

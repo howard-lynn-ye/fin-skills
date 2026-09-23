@@ -95,6 +95,22 @@ local/remote verification are under `paper/merge_20260922/`.
 This supersedes the earlier browser-write blocker for Overleaf synchronization. It does
 not establish GitHub delivery: no GitHub push was performed during this merge.
 
+## Tools and memory framing revision on 2026-09-22
+
+The user subsequently selected professional tool use and experience-based capability
+as the main research direction. The updated title is **From Tool Access to Research
+Capability: Tools and Memory for Financial Agents**. The revision moves audit and
+interface detail into supporting appendices while retaining all reported outcomes.
+
+Twelve files were uploaded to the same Overleaf project at the displayed 9:42 pm time.
+The normalized root `main.tex` SHA-256 read back from the editor matched the local file:
+`6e7d011dced212bd25a1b9ba15e999e71a92f3bd2d346f7ae46fb9bfc31fd482`.
+Local and online builds produced 16 total pages, with the conclusion on page 8 locally.
+The online log reported Errors 0 and Warnings 0, with underfull typesetting notices.
+The framing document and revision rationale are included in the Overleaf project.
+Detailed hashes and verification are in `merge_20260922/reframe_delivery.json`.
+This revision remains a working draft and was not pushed to GitHub.
+
 ## Primary documentation
 
 - [Overleaf Git integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git-integration)

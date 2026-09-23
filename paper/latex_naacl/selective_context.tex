@@ -1,9 +1,10 @@
 % Source: Overleaf sections/method.tex and preliminaries.tex, preserved before merge.
 % Mathematical statements narrowed to their actual conditions; raw runs not available.
-\section{Selective context with HiSTrim}
+\section{Within-task context selection with HiSTrim}
 \label{sec:histrim}
-HiSTrim contributes a concrete mechanism for selecting historical context while
-retaining task constraints. The source study uses chronological interaction items
+A tool-using agent accumulates observations and intermediate outputs. Context
+selection determines which remain available for a later choice. HiSTrim provides
+a mechanism for selecting historical representations while retaining task constraints. The source study uses chronological interaction items
 for recommendation. A financial application would instead need to define meaningful
 record spans and preserve timestamps, asset identifiers and task requirements. This
 mapping is a proposed application; it is not part of the completed financial runs.
@@ -75,8 +76,7 @@ mass using only a count. Equality with Equation~\ref{eq:exact_sink} requires a
 specific relation between removed logits and the sink; it is not an unconditional
 conservation theorem. We therefore retain it as an attention-compensation heuristic
 whose effect must be measured, together with protected spans and sign-preserving
-routing. These qualifications preserve the method without attributing guarantees
-that the stated assumptions do not establish.
+routing. Its utility is therefore evaluated through task quality and measured resource use.
 
 \paragraph{Evidence and transfer.}
 The recommendation study separates semantic-ID generation, rating prediction and
