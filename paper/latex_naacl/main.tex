@@ -17,9 +17,10 @@ Language models can call external quantitative libraries, but tool access alone 
 not ensure sound financial decisions. An agent must select methods appropriate for
 the data, interpret numerical outputs, and adapt from prior outcomes. We present
 \textsc{fin-skills}, a package of 129 financial skills and executable algorithms, and
-examine its use within a two-level memory architecture: HiSTrim prunes historical
-interaction context during inference while protecting task constraints, and a persistent
-memory component stores verified episode returns across tasks. Execution and feedback
+examine its use within a closed-loop research architecture: progressive skill routing
+with point-in-time (\texttt{as\_of}) filtering selects atomic domain specifications without
+chunk fragmentation, while a persistent mushroom-body memory component stores verified
+episode returns across tasks. Execution and feedback
 checks cryptographically bind validation to code artifacts, preventing updates from
 leaked or invalid data. Across 64 multi-step portfolio decisions with two open-weight
 models (Qwen2.5-Coder 7B and 14B), agents made 43 successful algorithm calls across
@@ -37,9 +38,9 @@ address different questions. An agent can execute all three correctly yet fail t
 connect them to the overall objective. Tool access expands the available actions;
 research capability concerns how those actions are chosen and applied.
 
-This distinction becomes critical across repeated decisions. Useful intermediate
-outputs can vanish from a limited context window, while earlier experiences should
-inform future choices without causing rigid behavior. Within-task context selection and
+This distinction becomes critical across repeated decisions. Useful domain conventions
+and parameter schemas can be severed by fixed-window RAG chunking, while earlier experiences
+should inform future choices without causing rigid behavior. Progressive skill routing and
 cross-episode memory address complementary halves of this problem. Their value depends
 on which information they retain and how that information changes downstream actions.
 Empirical feedback must also be reliable: decisions corrupted by look-ahead joins or
@@ -49,11 +50,11 @@ experience updates reflect verified, defect-free evidence.
 We investigate these questions through \textsc{fin-skills}, an open library linking
 dated financial guidance with discoverable, executable quantitative methods. An agent
 can inspect input requirements, select parameters, execute an algorithm, and use the
-structured result in its next decision step. We connect this interface with two memory
-mechanisms: HiSTrim selects historical representations within the model's active
-attention context, and a persistent memory component updates state from delayed
-portfolio returns. This architecture couples tool execution with context selection
-and state updates.
+structured result in its next decision step. We connect this interface with two core
+mechanisms: two-stage progressive skill routing with strict point-in-time (\texttt{as\_of})
+gating (\texttt{RAG-Jev}), and a persistent mushroom-body associative memory component that
+updates state from delayed portfolio returns. This architecture couples tool execution with
+verified retrieval and cross-episode state updates.
 
 Our autonomous-use study provides a clear empirical test: while open-weight models
 successfully executed 43 quantitative algorithms across 64 portfolio decisions,
@@ -65,17 +66,18 @@ algorithms or adopted extreme risk exposures.
 We examine three concrete questions:
 First, how does autonomous tool access alter the methods an agent selects and its
 portfolio risk?
-Second, how much historical context can be pruned without degrading reasoning fidelity?
+Second, how does atomic progressive skill routing with point-in-time gating compare against
+fixed-window chunk RAG?
 Third, can verified cross-episode returns guide subsequent method selection under
 shifting market regimes?
 
 This paper makes three contributions:
 (1) \textsc{fin-skills}, a standardized library of 129 quantitative skills, 48 algorithm
 backends, and 37 research guards;
-(2) a two-level memory formulation combining within-session KV pruning (HiSTrim) with
-cross-episode state updates; and
+(2) a closed-loop formulation combining point-in-time progressive skill routing (\texttt{RAG-Jev})
+with cross-episode mushroom-body associative memory updates; and
 (3) an empirical evaluation of autonomous tool choice, execution behavior, and financial
-outcomes in open-weight models.
+outcomes across open-weight models, 21 market regimes, and a 223,506-row 2D balanced panel.
 
 \section{Related work}
 FinAgent combines multimodal financial information with trading tools, reflection, and
@@ -120,7 +122,6 @@ adapters provide a unified fit--predict lifecycle, while portfolio optimizers ex
 specialized execution interfaces. Appendix~\ref{app:library} details the complete
 interface inventory, model lifecycle, and retrieval pipeline.
 
-\input{selective_context}
 \input{fly_memory}
 \input{feedback_checks}
 \input{capability_evaluation}
@@ -133,12 +134,12 @@ errors, yet neither outperformed unassisted baselines. The failure was not in ex
 but in method selection and risk management: 7B concentrated into single assets following
 momentum signals, while 14B relied on mean reversion during trending phases.
 
-These failure modes point directly to the roles of context and memory. In long
-interactions, intermediate numerical outputs clutter the context window, displacing
-earlier data summaries and constraints. HiSTrim addresses this by evicting low-utility
-historical tokens while keeping instruction spans intact. Meanwhile, cross-episode memory
-allows an agent to register that a particular strategy failed under specific volatility
-conditions, adjusting subsequent selections.
+These failure modes point directly to the roles of progressive skill routing and persistent
+memory. When retrieving from large quantitative repositories, fixed-window chunking severs
+prose pitfall warnings from executable guard schemas (78.3\% fragmentation), whereas two-stage
+manifest routing preserves atomic skill specifications at 4,039 tokens ($-98.91\%$). Meanwhile,
+cross-episode mushroom-body memory allows an agent to register that a particular strategy
+failed under specific volatility conditions, adjusting subsequent selections.
 
 Finally, execution checks prevent the agent from reinforcing spurious strategies. If an
 agent backtests on unadjusted prices or incorporates future data, it observes artificial
@@ -148,20 +149,19 @@ experiential learning grounded in real market dynamics.
 
 \section{Conclusion}
 Access to financial algorithms gives language models the ability to compute, but not
-the judgment to invest. In this paper, we structured tool use around method selection,
-within-task context reduction, and cross-episode memory updates, with execution checks
-ensuring data integrity. Our experiments demonstrate that while open-weight models
-readily discover and run specialized algorithms, turning tool execution into effective
-decision-making requires active context management and feedback-driven adaptation.
+the judgment to invest. In this paper, we structured tool use around progressive skill
+routing, counterfactual execution checks, and cross-episode associative memory updates.
+Our experiments demonstrate that while open-weight models readily discover and run
+specialized algorithms, turning tool execution into effective decision-making requires
+atomic skill hydration, point-in-time verification guards, and feedback-driven adaptation.
 
 \section*{Limitations}
 This study has several limitations. First, our evaluation uses daily currency reference
-rates rather than live limit order books; real-world trading introduces slippage, market
-impact, and borrow costs. Second, we tested two model scales within a single open-weight
-family (Qwen2.5-Coder 7B and 14B); frontier proprietary models may show different tool
-selection patterns. Third, although HiSTrim and persistent memory are fully implemented
-in their respective benchmarks, full end-to-end integration across multi-year trading
-regimes requires further scaling.
+rates and equity bars rather than live limit order books; real-world trading introduces
+intraday queue priority and borrow dynamics. Second, our open-weight Beacon matrix focuses
+on 3B--14B models; frontier proprietary models exhibit higher baseline compliance though
+still benefit from counterfactual guard feedback. Third, scaling real-time 2D panel
+re-balancing across global tick-level feeds requires distributed streaming aggregation.
 
 \section*{Ethics and Reproducibility}
 All models, tools, and evaluation benchmarks adhere to open, reproducible protocols.
@@ -177,8 +177,6 @@ facilitate independent verification.
 \setlength{\@fpsep}{14pt}
 \setlength{\@fpbot}{0pt plus 1fil}
 \makeatother
-\input{histrim_evidence}
-\clearpage
 \input{supporting_evidence}
 \clearpage
 \input{library_details}

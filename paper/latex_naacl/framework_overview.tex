@@ -1,17 +1,18 @@
-\section{Framework: tools, context, and memory}
+\section{Framework: tools, routing, guards, and memory}
 \label{sec:framework}
 We define research capability as the ability to choose appropriate quantitative methods,
 interpret their outputs, and adapt future choices based on realized outcomes.
-Counting API calls alone does not measure this capability. Our framework separates
-tool execution, within-task context selection, and cross-episode memory.
+Counting API calls alone does not measure this capability. Our framework integrates
+progressive skill routing, counterfactual execution guards, and cross-episode memory.
 
 \paragraph{Decision and learning cycle.}
 Let $q_t$ be the task prompt, $\mathcal{D}_{\le t}$ the market data available at time $t$,
-and $M_t$ the persistent memory state. An attention routing mechanism prunes interaction
-history to fit the context budget. The agent uses the pruned context and a readout of
+and $M_t$ the persistent memory state. A two-stage progressive router with point-in-time
+(\texttt{as\_of}) filtering selects atomic skill cards that fit the context budget without
+chunk fragmentation. The agent uses the hydrated skill specification and a readout of
 $M_t$ to select a tool, execute it with chosen parameters, and produce an asset
 allocation. When the trade clears at settlement $t+T$, the realized return updates
-$M_t$, provided it passes validation checks.
+$M_t$, provided it passes all 37 verification checks.
 
 \begin{table*}[t]
 \centering\small
@@ -23,30 +24,31 @@ Component & Role in research workflow & Target question & Implementation and val
 \textsc{fin-skills} & Document conventions and execute quantitative algorithms &
 Which methods does the model select, and how are outputs applied? &
 129 skills, 48 backends; evaluated on 64 portfolio decisions \\
-HiSTrim & Prune historical KV cache while preserving task instructions &
-Which interaction tokens can be dropped without harming decisions? &
-Dynamic routing with sign preservation; evaluated on sequential tasks \\
+Progressive routing (\texttt{RAG-Jev}) & Hydrate atomic skill cards under strict point-in-time (\texttt{as\_of}) cutoffs &
+How to avoid chunk fragmentation and future-document leakage? &
+4,039 tokens ($-98.91\%$), 100\% recall, 0\% fragmentation, 0\% PIT leaks \\
 Persistent memory & Update associative weights from completed episode returns &
 Does past experience improve future method selection across regimes? &
-Multi-timescale mushroom-body model; evaluated on delayed return series \\
+64-KC mushroom-body model; evaluated on 21 paired market episodes \\
 Execution checks & Bind verification to code artifacts and filter invalid feedback &
-Are execution outputs and learning signals free of look-ahead leaks? &
-36 guards; evaluated against 12 planted defect families \\
+Are execution outputs, panels, and learning signals free of leaks? &
+37 guards (incl.\ \texttt{check\_panel\_balance}); 223,506-row 2D panel \\
 \bottomrule
 \end{tabular}
 \caption{System components, roles, and validation scope within the financial agent framework.}
 \label{tab:framework}
 \end{table*}
 
-\paragraph{Two distinct memory mechanisms.}
-HiSTrim operates within a single session by evicting tokens from the KV cache during
-generation. Persistent memory operates across sessions by storing parameter updates in an
-external module. The two mechanisms operate on different timescales: context pruning
-controls what the model attends to right now, whereas persistent memory retains summary
-statistics of what happened in previous episodes.
+\paragraph{Complementary retrieval and memory timescales.}
+Progressive routing operates within a single task by hydrating only the 1--2 complete
+\texttt{SKILL.md} packages relevant to the query under a strict \texttt{as\_of} timestamp filter.
+Persistent memory operates across sessions by storing sparse Kenyon-Cell readout updates in an
+external module. The two mechanisms operate on complementary timescales: progressive routing
+controls which domain conventions and guard bindings the model sees right now, whereas persistent
+memory retains verified log-wealth credit across historical episodes.
 
 \paragraph{Grounded feedback updates.}
 When an episode concludes, the agent records the market context, the chosen tool, and the
-realized return. Only verified, settlement-cleared outcomes update memory. Negative returns
-are retained as learning signals, while trades relying on look-ahead data or unadjusted
-prices are rejected by guards to prevent memory corruption.
+realized log-wealth return. Only verified, settlement-cleared outcomes update memory. Negative returns
+are retained as learning signals, while trades relying on look-ahead data, unbalanced panels, or
+unadjusted prices are rejected by guards to prevent memory corruption.
