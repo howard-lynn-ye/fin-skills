@@ -1,0 +1,17 @@
+{
+  "mistral/completion.json": "6e6e02d1bde0e6c5351deb7f80e410b8b1991015bbd56d1de229e9bf17f39e2b",
+  "mistral/inference-receipt.json": "670ea54a94f367d8c94844b93dfc2b83469ee3f77ee9e30f0bdcc6fa6b001a4d",
+  "mistral/rag-verified-summary.json": "5c7f047344f4368271b40ce1739bc0c25788fbe001b45667dec609878a68fc9a",
+  "mistral/scores.json": "255438af02d4ac57adb8e97c2fc5aa05f27fca8446df2b2cc0cafbb6afe492bf",
+  "qwen/completion.json": "a051f5e41b980f7330fb3d71ea9a85ac7c5c0b0504877458a9b9f61ee384a7bd",
+  "qwen/inference-receipt.json": "cfbf697d9d1387be54d4f451f9889d7a4340f75df3733ef6bdf200a20f347226",
+  "qwen/rag-verified-summary.json": "4de021248cdc12fa9256e803e964cbc12cef57463f08c5aab71d6210ebe55b6b",
+  "qwen/scores.json": "f788c1210234781991a52c7805df6cde8db342d146c8a595929030b3e99e1c6a",
+  "rerank-wrapper/v1-manifest.json": "cc54189f9263bf9a3a2f532d7ba237d0f725a6696ad20fda0f18f60fef15f506",
+  "rerank-wrapper/v1-slurm-error.txt": "225968ff5c693c3c7a8214c17b7aa66fb7f23e63f3c1d2d377432cc1d4829b27",
+  "rerank-wrapper/v1-submission-receipt.json": "8668635502daeaa0caf9f505ab90f07f88adc625ecc65f0722f8f739d8300175",
+  "rerank-wrapper/v2-manifest.json": "d3248615784fd86cd072aa267b0f6243a7435fb010128bc827d1cbe3a988e6be",
+  "rerank-wrapper/v2-submission-receipt.json": "4f3f3dfccda7ce7b8a06cbe316d814a6999e52b50b3a31681091f051e70cf557",
+  "rerank-wrapper/v3-manifest.json": "516593190fb095d12f2087f4431b527a0f7688b008ec69b8a9f844687c5750ef",
+  "rerank-wrapper/v3-submission-receipt.json": "cd8eef2621778f7a795c6460c40b81c99bbbaa90cb99bb546dee44870e11da93"
+}
