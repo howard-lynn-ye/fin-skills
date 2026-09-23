@@ -1,8 +1,8 @@
 {
   "benchmark": "Company x Year 2D Stratified Panel Balance Ablation (2018-2026)",
-  "generated_at": "2026-09-23T02:15:01Z",
-  "elapsed_seconds": 17.4,
-  "balanced_panel_total_rows": 215478,
+  "generated_at": "2026-09-23T03:46:24Z",
+  "elapsed_seconds": 16.39,
+  "balanced_panel_total_rows": 223506,
   "evaluated_return_observations": 107999,
   "stage1_audit_snapshot": {
     "announcements": {
@@ -15,21 +15,21 @@
       "balanced_max_to_median_ratio": 3.12
     },
     "eastmoney_guba": {
-      "total_files": 235,
-      "raw_company_gini": 0.4492,
-      "balanced_company_gini": 0.189,
-      "raw_year_gini_2018_2025": 0.1102,
-      "balanced_year_gini_2018_2025": 0.0636,
-      "raw_max_to_median_ratio": 4.08,
+      "total_files": 273,
+      "raw_company_gini": 0.4909,
+      "balanced_company_gini": 0.1864,
+      "raw_year_gini_2018_2025": 0.1117,
+      "balanced_year_gini_2018_2025": 0.0727,
+      "raw_max_to_median_ratio": 4.9,
       "balanced_max_to_median_ratio": 1.29
     },
     "stocktwits": {
       "total_files": 81,
-      "raw_company_gini": 0.2731,
+      "raw_company_gini": 0.2732,
       "balanced_company_gini": 0.2212,
-      "raw_year_gini_2018_2025": 0.4328,
+      "raw_year_gini_2018_2025": 0.4334,
       "balanced_year_gini_2018_2025": 0.1341,
-      "raw_max_to_median_ratio": 2.83,
+      "raw_max_to_median_ratio": 2.8,
       "balanced_max_to_median_ratio": 1.12
     },
     "xueqiu_unified": {
@@ -57,7 +57,7 @@
         "2022": -0.04963,
         "2023": -0.05987,
         "2024": -0.03537,
-        "2025": -0.04645,
+        "2025": -0.04646,
         "2026": -0.01126
       },
       "cross_year_ic_std": 0.01531,
@@ -72,7 +72,7 @@
       },
       "cross_board_ic_std": 0.02973,
       "annualized_net_sharpe": -1.999,
-      "max_drawdown": -0.8081,
+      "max_drawdown": -0.8082,
       "evaluated_dates": 585
     },
     "B_Company_Balanced_Only": {
@@ -89,7 +89,7 @@
         "2022": 0.00468,
         "2023": -0.00458,
         "2024": 0.00777,
-        "2025": -0.00144,
+        "2025": -0.00145,
         "2026": 0.02474
       },
       "cross_year_ic_std": 0.01064,
@@ -149,7 +149,7 @@
         "2018": 0.031,
         "2019": 0.0178,
         "2020": 0.02568,
-        "2021": 0.03419,
+        "2021": 0.03418,
         "2022": 0.03746,
         "2023": 0.02921,
         "2024": 0.02585,
@@ -178,5 +178,5 @@
     "cross_board_ic_std_reduction_pct": 56.1,
     "delta_annualized_sharpe": 3.087
   },
-  "sha256": "fb50bfd950067d55"
+  "sha256": "80d4e22390ab470e"
 }

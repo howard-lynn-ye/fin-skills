@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Debian) (preloaded format=pdflatex 2026.9.17)  23 SEP 2026 02:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Debian) (preloaded format=pdflatex 2026.9.17)  23 SEP 2026 03:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1492,7 +1492,7 @@ n/10.95 (+20) . Ta-ble [][]14[][] eval-u-ates all four
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 271--272
-\T1/ptm/m/n/10.95 (+20) panel-conditioning poli-cies across 215,478
+\T1/ptm/m/n/10.95 (+20) panel-conditioning poli-cies across 223,506
  []
 
 
@@ -1524,10 +1524,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 4541804198ED617FF4744B968E799106;5536.
  ) 
 Here is how much of TeX's memory you used:
- 16114 strings out of 469158
- 253879 string characters out of 5460577
- 719924 words of memory out of 5000000
- 44313 multiletter control sequences out of 15000+600000
+ 16125 strings out of 469158
+ 254073 string characters out of 5460577
+ 719994 words of memory out of 5000000
+ 44324 multiletter control sequences out of 15000+600000
  704516 words of font info for 421 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  89i,15n,93p,3244b,657s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1550,7 +1550,7 @@ nts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
 /courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8
 a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (13 pages, 454674 bytes).
+Output written on main.pdf (13 pages, 454672 bytes).
 PDF statistics:
  890 PDF objects out of 1000 (max. 8388607)
  414 compressed objects within 5 object streams

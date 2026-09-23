@@ -105,3 +105,43 @@ Model & Condition & Accepted/Planned & Mean tokens & Primary status \\
 
 A reference quantitative script passed all verification and timing checks on the market
 benchmark, confirming the end-to-end viability of the automated verification pipeline.
+Resolving the four harness bottlenecks in Task Interface v2 (\texttt{BEACON\_POSTFIX\_RESULTS.json} and
+\texttt{FOLLOWUP\_V2\_BUNDLE\_MANIFEST.json}: explicit \texttt{"date"} index headers across all matrix CSVs,
+integer-rounded \texttt{volume.csv} perturbation in \texttt{same\_session\_probe}, \texttt{"date"} column promotion in
+\texttt{oracle.py}, and \texttt{bfloat16} sampling) eliminated all ungradable outputs (\texttt{ungradable\_accepted}
+$= \mathbf{\BeaconPostFixUngradable{}}$ across all \BeaconPostFixTotalCells{} post-fix cells) and demonstrated that
+mandatory audit (\texttt{C3}) achieves $0.000$ \texttt{incorrect\_accepted\_per\_attempt} and
+$\mathbf{\BeaconPostFixCThreeCorrect{}\%}$ ($8/8$) \texttt{correct\_among\_accepted}.
+
+\subsection{Two-dimensional company$\times$year panel balance (\texttt{check\_panel\_balance})}
+Raw financial text crawls exhibit severe two-dimensional concentration: mega-cap tickers dominate
+cross-sectional volume ($\text{Company Gini} = 0.449\text{--}0.490$, $\text{Max/Median} = 20.2\times$) while
+recent years ($2024\text{--}2026$) overshadow earlier market regimes ($2018\text{--}2021$). Our 37th research
+guard, \texttt{check\_panel\_balance} (\texttt{fin\_skills/api/guards/panel\_balance.py}), audits both
+$(\text{Company Gini}, \text{Year Gini})$ and enforces a stratified cell quota $q_{c,y} = \min(n_{c,y}, Q)$.
+Table~\ref{tab:panel_balance_latex_naacl} evaluates all four panel-conditioning policies across
+\PanelBalancedRows{} aligned multi-source rows ($2018\text{--}2026$, $7$ market boards: \texttt{SH600},
+\texttt{SH601\_603}, \texttt{SH688}, \texttt{SZ000}, \texttt{SZ002}, \texttt{SZ300}, \texttt{US\_Equities}).
+Combining two-dimensional company$\times$year balancing with point-in-time credibility gating (\texttt{Cond.\ D})
+lifts Mean Daily Rank IC from $\PanelUnbalDailyIC{}$ to $\mathbf{\PanelBalDailyIC{}}$
+($\Delta = \mathbf{\PanelDeltaDailyIC{}}$), reduces Cross-Year IC dispersion by $\mathbf{\PanelYrStdRedPct{}\%}$
+($0.01531 \to 0.00845$) and Cross-Board dispersion by $\mathbf{\PanelBoardStdRedPct{}\%}$
+($0.02973 \to 0.01304$), and improves net annualized Sharpe from $-1.999$ to $\mathbf{\PanelBalSharpe{}}$
+($\text{Max DD} = -10.82\%$).
+
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{lccccc}
+\toprule
+Panel conditioning policy (\PanelBalancedRows{} rows, 2018--2026) & Daily Rank IC & Year IC Std & Board IC Std & Net Sharpe & Max DD \\
+\midrule
+A: Unbalanced raw panel ($\text{Gini}_C=0.490$) & $\PanelUnbalDailyIC{}$ & $0.01531$ & $0.02973$ & $-1.999$ & $-80.81\%$ \\
+B: Company-balanced only ($q_c \le Q_c$) & $+0.00509$ & $0.01064$ & $0.00906$ & $-0.159$ & $-18.79\%$ \\
+C: Year-balanced only ($q_y \le Q_y$) & $+0.00861$ & $0.00896$ & $0.01320$ & $+0.181$ & $-26.40\%$ \\
+\textbf{D: 2D Company$\times$Year balanced + PIT (\texttt{check\_panel\_balance})} & $\mathbf{\PanelBalDailyIC{}}$ & $\mathbf{0.00845}$ ($\downarrow\mathbf{\PanelYrStdRedPct{}\%}$) & $\mathbf{0.01304}$ ($\downarrow\mathbf{\PanelBoardStdRedPct{}\%}$) & $\mathbf{\PanelBalSharpe{}}$ & $\mathbf{-10.82\%}$ \\
+\bottomrule
+\end{tabular}
+\caption{Two-dimensional company$\times$year panel balance ablation across $2018\text{--}2026$ and $7$ equity boards.}
+\label{tab:panel_balance_latex_naacl}
+\end{table*}
+

@@ -16,8 +16,8 @@ Component & Entries \\
 \midrule
 Skill documents & 129 \\
 Algorithm--backend catalog & 48 \\
-Registered research guards & 36 \\
-JSON-callable tools & 56 \\
+Registered research guards & 37 \\
+JSON-callable tools & 63 \\
 \bottomrule
 \end{tabular}
 \caption{Inventory of quantitative research library interfaces.}
@@ -47,7 +47,14 @@ using BM25 and neural rerankers. Passages retain document identifiers, source of
 and availability timestamps; point-in-time retrieval excludes documents unavailable at
 the requested decision cutoff. Citation checks validate references against retrieved
 passage identifiers. The pipeline freezes candidates, temporal cutoffs, and context
-budgets prior to neural reranking.
+budgets prior to neural reranking. On the temporal retrieval benchmark (\texttt{RAG\_JEV\_RESULTS.json}),
+point-in-time \texttt{as\_of} filtering records \RAGJevFutureLeaks{} future-document leaks while lifting
+\texttt{Recall@3} / \texttt{nDCG@3} from \RAGJevFixedRecall\% / \RAGJevFixedNDCG\% (fixed skill headers)
+to \RAGJevDevRecall\% / \RAGJevDevNDCG\% under two-stage BM25 + semantic reranking. Across all $129$ skills
+(\RAGIndexedChunks{} chunks) on $60$ evaluation tasks, two-stage progressive manifest routing achieves
+$100.0\%$ skill recall with $0.0\%$ code-vs.-guidance fragmentation and $98.3\%$ \texttt{Pass@3} at
+$4{,}039$ mean tokens ($-98.9\%$ vs.\ full-library concatenation), compared to $\RAGTopFiveRecall\%$ recall
+and $\RAGTopFiveFrag\%$ fragmentation ($75.0\%$ \texttt{Pass@3}) for fixed-chunk BM25 (\texttt{top\_k=5}).
 
 \paragraph{Information availability and point-in-time processing.}
 News and disclosure collection supports RSS/Atom feeds, static pages, GDELT, and official

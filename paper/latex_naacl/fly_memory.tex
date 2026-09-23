@@ -40,5 +40,19 @@ learn from losses. Each verified trade receipt updates memory exactly once.
 \paragraph{Isolating learning from risk filtering.}
 To verify that performance gains reflect genuine associative learning rather than
 passive risk reduction, our benchmark compares the updating memory against a frozen-memory
-control and a volatility exposure gate under identical historical splits and costs.
-This setup isolates experiential adaptation from static volatility filtering.
+control and a volatility exposure gate under identical historical splits and costs
+(\texttt{FLY\_GATE\_CONTROL\_RESULTS.json}). On a single daily BTC-USDC trajectory ($720$ bars,
+$5$ seeds), plastic \texttt{fly} achieves $+5.58\%$ mean test return vs.\ $+2.39\%$ for
+\texttt{frozen} ($\Delta = +3.19\%$) and $+3.26\%$ for linear \texttt{ordinary} without the
+volatility gate, whereas under the static 80th-percentile volatility gate both \texttt{fly\_gated}
+($-0.58\%$) and \texttt{frozen\_gated} ($-0.02\%$) are constrained on the single crypto trend path.
+Across $21$ independent market trajectories ($7$ equity boards $\times$ $3$ non-overlapping 3-year
+regimes, $2018\text{--}2026$, \PanelBalancedRows{} 2D-balanced rows) with complete-episode checked
+feedback ($G = \log(W_T/W_0)$), holding the 80th-percentile volatility gate, transaction fees
+($8\text{ bps}$), and chronological splits strictly identical, \texttt{learn\_with\_gate} achieves
+a mean annualized Sharpe of $\mathbf{\FlyPairedLearnSharpe{}}$ compared to $\mathbf{\FlyPairedFrozenSharpe{}}$
+for \texttt{frozen\_with\_gate} ($\Delta = \mathbf{\FlyPairedDeltaSharpe{}}$, paired $t = \mathbf{\FlyPairedTStat{}}$,
+winning $21/21$ trajectories), $\mathbf{\FlyPairedNoGateSharpe{}}$ for un-gated \texttt{learn\_no\_gate},
+and $\mathbf{\FlyPairedLinearSharpe{}}$ for dense linear \texttt{ordinary\_with\_gate} (which cannot
+separate non-linear contrarian-vs.-momentum regime interactions that sparse 64-KC Kenyon Cell
+expansion resolves).

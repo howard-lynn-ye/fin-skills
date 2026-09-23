@@ -20,9 +20,11 @@ def main():
         "benchmarks/agent_study/BEACON_POSTFIX_RESULTS.json",
         "benchmarks/RAG_VS_PROGRESSIVE_AGENT_RESULTS.json",
         "benchmarks/verified_memory/FLY_CHECKED_FEEDBACK_ABLATION.json",
+        "benchmarks/fly_reuse/FLY_GATE_CONTROL_RESULTS.json",
+        "benchmarks/rag_jev/RAG_JEV_RESULTS.json",
     ]
     data = [json.loads((ROOT / name).read_text(encoding="utf-8")) for name in sources]
-    pilot, robustness, parity, kol, pred_audit, ablations, control, beacon, beacon_postfix, rag_vs_prog, fly_ablation = data
+    pilot, robustness, parity, kol, pred_audit, ablations, control, beacon, beacon_postfix, rag_vs_prog, fly_ablation, fly_gate_ctrl, rag_jev = data
     beacon_models = {}
     beacon_conditions = {}  # (model_short, condition) -> {accepted, planned, mean_tokens, mean_wall}
     postfix_summary = {}
@@ -174,6 +176,17 @@ def main():
         "FlySynCheckedSharpe": f"{fly_ablation['datasets']['synthetic_101']['arms']['fly_v3_greedy_checked_hold_adv']['mean_sharpe_5bps']:+.3f}",
         "FlyKOLCheckedSharpe": f"{fly_ablation['datasets']['kol_cued_4asset']['arms']['fly_v3_greedy_checked_hold_adv']['mean_sharpe_5bps']:+.3f}",
         "FlyKOLUncheckedSharpe": f"{fly_ablation['datasets']['kol_cued_4asset']['arms']['fly_v3_unchecked_1step']['mean_sharpe_5bps']:+.3f}",
+        "FlyPairedLearnSharpe": f"{fly_gate_ctrl['multi_market_2d_panel_21_episodes']['arms_summary']['learn_with_gate']['mean_annualized_sharpe']:+.2f}",
+        "FlyPairedFrozenSharpe": f"{fly_gate_ctrl['multi_market_2d_panel_21_episodes']['arms_summary']['frozen_with_gate']['mean_annualized_sharpe']:+.2f}",
+        "FlyPairedNoGateSharpe": f"{fly_gate_ctrl['multi_market_2d_panel_21_episodes']['arms_summary']['learn_no_gate']['mean_annualized_sharpe']:+.2f}",
+        "FlyPairedLinearSharpe": f"{fly_gate_ctrl['multi_market_2d_panel_21_episodes']['arms_summary']['ordinary_with_gate']['mean_annualized_sharpe']:+.2f}",
+        "FlyPairedDeltaSharpe": f"{fly_gate_ctrl['multi_market_2d_panel_21_episodes']['paired_gate_comparison_learn_vs_frozen_with_same_gate']['mean_delta_annualized_sharpe']:+.2f}",
+        "FlyPairedTStat": f"{fly_gate_ctrl['multi_market_2d_panel_21_episodes']['paired_gate_comparison_learn_vs_frozen_with_same_gate']['paired_t_stat_sharpe']:.2f}",
+        "RAGJevDevRecall": f"{rag_jev['development_qrels_evaluation']['arms']['bm25_plus_reranker']['mean_recall_at_3']*100:.1f}",
+        "RAGJevDevNDCG": f"{rag_jev['development_qrels_evaluation']['arms']['bm25_plus_reranker']['mean_ndcg_at_3']*100:.1f}",
+        "RAGJevFixedRecall": f"{rag_jev['development_qrels_evaluation']['arms']['fixed_skill_text']['mean_recall_at_3']*100:.1f}",
+        "RAGJevFixedNDCG": f"{rag_jev['development_qrels_evaluation']['arms']['fixed_skill_text']['mean_ndcg_at_3']*100:.1f}",
+        "RAGJevFutureLeaks": rag_jev["development_qrels_evaluation"]["future_document_leakage_count"],
         "PanelBalancedRows": f"{panel_ablation['balanced_panel_total_rows']:,}",
         "PanelUnbalDailyIC": f"{panel_ablation['conditions']['A_Unbalanced_Raw_Panel']['mean_daily_rank_ic']:+.4f}",
         "PanelBalDailyIC": f"{panel_ablation['conditions']['D_2D_Company_Year_Balanced_PIT_Gated']['mean_daily_rank_ic']:+.4f}",

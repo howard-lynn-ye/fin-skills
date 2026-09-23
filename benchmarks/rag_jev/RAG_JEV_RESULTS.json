@@ -1,0 +1,180 @@
+{
+  "benchmark": "RAG_JEV_AND_PROGRESSIVE_ROUTING_EVALUATION",
+  "version": "2026.09.23-v2",
+  "prepared_snapshot_receipt": {
+    "status": "prepared_not_run",
+    "queries": 6,
+    "snapshot_sha256": "9a938cc8b04725adc434cbae3f195dd6da633c12a0c409022ad244543e516c14"
+  },
+  "jev_probe_contract_receipt": {
+    "status": "dry_run",
+    "planned_requests": 2,
+    "operations_sha256": "eeb1e623ae6ce83da71114b96b96bfdd055caf27fe114b518f5ba5825315a64c"
+  },
+  "development_qrels_evaluation": {
+    "queries_count": 6,
+    "top_k": 3,
+    "fetch_k": 8,
+    "future_document_leakage_count": 0,
+    "arms": {
+      "fixed_skill_text": {
+        "mean_recall_at_3": 0.5,
+        "mean_ndcg_at_3": 0.3552
+      },
+      "bm25_lexical": {
+        "mean_recall_at_3": 1.0,
+        "mean_ndcg_at_3": 1.0
+      },
+      "bm25_plus_reranker": {
+        "mean_recall_at_3": 1.0,
+        "mean_ndcg_at_3": 1.0
+      }
+    },
+    "paired_rerank_vs_bm25_delta_ndcg": 0.0,
+    "cases": [
+      {
+        "id": "q-clock",
+        "query": "Which timestamp determines whether a historical decision may use a report?",
+        "as_of": "2026-09-22T00:00:00Z",
+        "future_doc_excluded": true,
+        "fixed_text_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_plus_rerank_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "top1_bm25_doc": "clock",
+        "top1_rerank_doc": "clock"
+      },
+      {
+        "id": "q-retrieval",
+        "query": "How does a reranker change retrieved passages before answering?",
+        "as_of": "2026-09-22T00:00:00Z",
+        "future_doc_excluded": true,
+        "fixed_text_top3": {
+          "recall": 1.0,
+          "ndcg": 0.6309297535714574,
+          "answerable": true
+        },
+        "bm25_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_plus_rerank_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "top1_bm25_doc": "retrieval",
+        "top1_rerank_doc": "retrieval"
+      },
+      {
+        "id": "q-routing",
+        "query": "How should the pipeline choose one tool from a fixed allowed set?",
+        "as_of": "2026-09-22T00:00:00Z",
+        "future_doc_excluded": true,
+        "fixed_text_top3": {
+          "recall": 1.0,
+          "ndcg": 0.5,
+          "answerable": true
+        },
+        "bm25_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_plus_rerank_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "top1_bm25_doc": "routing",
+        "top1_rerank_doc": "routing"
+      },
+      {
+        "id": "q-feedback",
+        "query": "When can memory learn from a delayed outcome?",
+        "as_of": "2026-09-22T00:00:00Z",
+        "future_doc_excluded": true,
+        "fixed_text_top3": {
+          "recall": 0.0,
+          "ndcg": 0.0,
+          "answerable": true
+        },
+        "bm25_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_plus_rerank_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "top1_bm25_doc": "feedback",
+        "top1_rerank_doc": "feedback"
+      },
+      {
+        "id": "q-citation",
+        "query": "Does a valid citation label prove that the source supports the answer?",
+        "as_of": "2026-09-22T00:00:00Z",
+        "future_doc_excluded": true,
+        "fixed_text_top3": {
+          "recall": 0.0,
+          "ndcg": 0.0,
+          "answerable": true
+        },
+        "bm25_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_plus_rerank_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "top1_bm25_doc": "citation",
+        "top1_rerank_doc": "citation"
+      },
+      {
+        "id": "q-gate",
+        "query": "What must be held fixed when comparing learned and frozen memory under risk limits?",
+        "as_of": "2026-09-22T00:00:00Z",
+        "future_doc_excluded": true,
+        "fixed_text_top3": {
+          "recall": 0.0,
+          "ndcg": 0.0,
+          "answerable": true
+        },
+        "bm25_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "bm25_plus_rerank_top3": {
+          "recall": 1.0,
+          "ndcg": 1.0,
+          "answerable": true
+        },
+        "top1_bm25_doc": "gate",
+        "top1_rerank_doc": "gate"
+      }
+    ]
+  },
+  "full_library_129_skills_60_tasks_comparison": {
+    "indexed_skills": 129,
+    "indexed_chunks": 2052,
+    "architectures": {}
+  }
+}

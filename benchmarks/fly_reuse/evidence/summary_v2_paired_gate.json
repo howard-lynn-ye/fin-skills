@@ -1,0 +1,153 @@
+[
+  {
+    "input_sha256": "4cd8cc19713f6ff7fdab0f5596cc1a6748ef84b98ac17cde563358e683610154",
+    "data_sha256": "abca16b2cd61b096f4a48dfeaf4c95f60683c456d24ad6575f3a063106ede1ca",
+    "mode": "compact",
+    "windows": {
+      "train": {
+        "start": 21,
+        "end_exclusive": 440,
+        "first_day": 1729728000,
+        "last_day": 1765843200
+      },
+      "validation": {
+        "start": 440,
+        "end_exclusive": 580,
+        "first_day": 1765929600,
+        "last_day": 1777939200
+      },
+      "test": {
+        "start": 580,
+        "end_exclusive": 720,
+        "first_day": 1778025600,
+        "last_day": 1790035200
+      }
+    },
+    "test_table": {
+      "fly": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 5.582473263910395,
+        "min_net_return_pct": -2.758642411173595,
+        "max_net_return_pct": 12.425501353874392,
+        "seed_returns_pct": {
+          "11": -2.758642411173595,
+          "23": 6.728148485002405,
+          "37": 5.577597376556787,
+          "53": 5.939761515291986,
+          "71": 12.425501353874392
+        },
+        "mean_fills": 24.8,
+        "mean_fees": 0.18616244244896,
+        "mean_gated_decisions": 0
+      },
+      "fly_gated": {
+        "n_seeds": 5,
+        "mean_net_return_pct": -0.5822876050148776,
+        "min_net_return_pct": -8.039083445988805,
+        "max_net_return_pct": 10.661963655207195,
+        "seed_returns_pct": {
+          "11": -7.213676412746395,
+          "23": -4.393947337926396,
+          "37": 10.661963655207195,
+          "53": -8.039083445988805,
+          "71": 6.073305516380012
+        },
+        "mean_fills": 31.6,
+        "mean_fees": 0.226984938721488,
+        "mean_gated_decisions": 11
+      },
+      "frozen": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 2.388147660842237,
+        "min_net_return_pct": -12.337515890115203,
+        "max_net_return_pct": 12.538097013930404,
+        "seed_returns_pct": {
+          "11": -0.314133426508012,
+          "23": 12.40296402204799,
+          "37": -12.337515890115203,
+          "53": 12.538097013930404,
+          "71": -0.3486734151439963
+        },
+        "mean_fills": 44.4,
+        "mean_fees": 0.309157156955776,
+        "mean_gated_decisions": 0
+      },
+      "frozen_gated": {
+        "n_seeds": 5,
+        "mean_net_return_pct": -0.022775117369600296,
+        "min_net_return_pct": -13.305295372540794,
+        "max_net_return_pct": 11.487198280391997,
+        "seed_returns_pct": {
+          "11": -0.606184552057587,
+          "23": 6.863287819970387,
+          "37": -13.305295372540794,
+          "53": 11.487198280391997,
+          "71": -4.552881762612005
+        },
+        "mean_fills": 43.2,
+        "mean_fees": 0.29943093561696,
+        "mean_gated_decisions": 11
+      },
+      "shuffled": {
+        "n_seeds": 5,
+        "mean_net_return_pct": -0.005416508644802143,
+        "min_net_return_pct": -4.340611229757596,
+        "max_net_return_pct": 5.577597376556787,
+        "seed_returns_pct": {
+          "11": 0.0,
+          "23": -4.340611229757596,
+          "37": 5.577597376556787,
+          "53": 0.3043690694727985,
+          "71": -1.5684377594959997
+        },
+        "mean_fills": 31.4,
+        "mean_fees": 0.21606340798447998,
+        "mean_gated_decisions": 0
+      },
+      "ordinary": {
+        "n_seeds": 5,
+        "mean_net_return_pct": 3.257811101047199,
+        "min_net_return_pct": -0.5583732968431954,
+        "max_net_return_pct": 6.943667497738404,
+        "seed_returns_pct": {
+          "11": 3.1539452428239967,
+          "23": -0.5583732968431954,
+          "37": 5.577597376556787,
+          "53": 6.943667497738404,
+          "71": 1.1722186849600025
+        },
+        "mean_fills": 44.2,
+        "mean_fees": 0.31306773063528,
+        "mean_gated_decisions": 0
+      },
+      "ordinary_gated": {
+        "n_seeds": 5,
+        "mean_net_return_pct": -0.39144578146655923,
+        "min_net_return_pct": -9.216836606308798,
+        "max_net_return_pct": 14.087161855934394,
+        "seed_returns_pct": {
+          "11": -7.477556883441605,
+          "23": -9.216836606308798,
+          "37": 14.087161855934394,
+          "53": -7.472114354390391,
+          "71": 8.122117080873604
+        },
+        "mean_fills": 46.8,
+        "mean_fees": 0.328807371106656,
+        "mean_gated_decisions": 11
+      }
+    },
+    "paired_mean_difference_percentage_points": {
+      "fly_gated_minus_fly": -6.164760868925272,
+      "ordinary_gated_minus_ordinary": -3.6492568825137583,
+      "fly_gated_minus_ordinary_gated": -0.1908418235483184,
+      "fly_minus_ordinary": 2.324662162863196
+    },
+    "benchmarks_test_return_pct": {
+      "cash_test": 0.0,
+      "buy_hold_same_guard_test": 5.577597376556787
+    },
+    "integrity_checks": "pass",
+    "interpretation": "Seed variation on one public development path, not independent markets or a confidence interval."
+  }
+]
