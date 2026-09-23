@@ -83,6 +83,26 @@ def model_catalog(task=None):
         caveat="Choice/Score/Noul decisions and passage reranking. No local weights, text generation "
                "or financial correctness guarantee. Ready describes the adapter, not API access.",
         json_run=True))
+    cards.append(dict(id="laya", kind="decision", task="structured_decision", adapter="local_decision",
+        inputs=["local_checkpoint", "state", "questions"], operations=["predict", "run", "rerank"],
+        status="ready" if _available("laya") else "missing_dependency", library="laya",
+        pretrained=True, weights_bundled=False, deployment="local", credentials=None,
+        install="Install upstream laya separately; supply a local checkpoint and its revision",
+        license="Adapter MIT; upstream code/weights declare Apache-2.0", stage="experimental",
+        source="https://github.com/NandhaKishorM/laya", verified_on="2026-09-23",
+        caveat="Local typed decisions; rejects truncation, preserves raw rounded probabilities. "
+               "No automatic downloads; Python lifecycle only. Confidence is not financial verification.",
+        json_run=False))
+    cards.append(dict(id="kev", kind="decision", task="structured_decision", adapter="local_decision",
+        inputs=["local_checkpoint", "local_base_checkpoint", "state", "questions"],
+        operations=["predict", "run", "rerank"],
+        status="ready" if _available("kev") else "missing_dependency", library="kev",
+        pretrained=True, weights_bundled=False, deployment="local", credentials=None,
+        install="Install pinned upstream Kev in an isolated environment; supply local adapter and base weights",
+        license="Adapter MIT; upstream code/weights declare Apache-2.0", stage="experimental",
+        source="https://github.com/jaredpalmer/kev", verified_on="2026-09-23",
+        caveat="Local typed decisions; needs trusted head.pt and matching base revision. "
+               "No automatic downloads or date preprocessing; Python lifecycle only.", json_run=False))
     if task is not None and task not in {c["task"] for c in cards}:
         raise ValueError(f"unknown model task: {task!r}")
     return [c for c in cards if task is None or c["task"] == task]

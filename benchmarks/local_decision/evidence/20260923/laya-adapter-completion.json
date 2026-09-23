@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "predictions": 6,
+  "models": 2,
+  "oversized_requests_rejected": 2,
+  "reranking_responses": 8,
+  "rag_pipelines": 2,
+  "prior_diagnostic_sha256": "d00990f683b77f0edb3c37ccdae674ac03b4248b45aff351a07cdf51f2562ad3",
+  "limits": "Authored smoke and integration cases only; no measured financial advantage."
+}

@@ -1,0 +1,40 @@
+{
+  "cases": [
+    {
+      "id": "english-retrieval",
+      "state": "Please find the annual report passage describing revenue. No rush."
+    },
+    {
+      "id": "english-calculation",
+      "state": "Urgent: calculate 100 minus 40 immediately."
+    },
+    {
+      "id": "chinese-retrieval",
+      "state": "请查找年报中解释营业收入的原文，不着急。"
+    }
+  ],
+  "questions": {
+    "route": {
+      "type": "choice",
+      "instructions": "Which task is requested?",
+      "criteria": {
+        "retrieve": "Find evidence in documents",
+        "calculate": "Calculate a numerical result"
+      }
+    },
+    "urgent": {
+      "type": "noul",
+      "instructions": "Is the request explicitly urgent?"
+    },
+    "priority": {
+      "type": "score",
+      "instructions": "How urgent is the request?",
+      "criteria": [
+        "No urgency stated",
+        "Soon",
+        "Immediately"
+      ]
+    }
+  },
+  "purpose": "Public authored smoke cases; no generalization or quality score."
+}

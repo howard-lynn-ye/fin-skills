@@ -1,0 +1,2 @@
+# Receipts hash the exact bytes used on Beacon, including original line endings.
+* -text whitespace=cr-at-eol

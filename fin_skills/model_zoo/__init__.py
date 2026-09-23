@@ -19,6 +19,12 @@ def create_model(model_id, **parameters):
     if card["status"] != "ready":
         raise ImportError(f"{model_id}: {card['status']}; {card['install']}")
     family = card["adapter"]
+    if family == "local_decision":
+        if model_id == "kev":
+            from .kev import KevModel
+            return KevModel(**parameters)
+        from .laya import LayaModel
+        return LayaModel(**parameters)
     if family == "decision":
         from .jev import JevModel
         return JevModel(**parameters)

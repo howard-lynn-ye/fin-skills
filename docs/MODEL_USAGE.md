@@ -30,6 +30,8 @@ restored = load_model("ridge_zoo.zip", trusted=True)
 | `ppo`、`sac` | 环境训练、动作预测、保存加载 | Stable-Baselines3；用户提供 Gymnasium 环境 |
 | `fly_memory` | 记忆读出、经过检查的完整过程反馈更新、保存加载 | 单独安装 GPL 扩展，显式提供电路参数 |
 | `jev` | 结构化决策、概率评分、检索片段重排 | TypeSafe 托管 API；需要 API key；本库包含适配器，不分发权重 |
+| `laya` | 本地结构化决策、片段重排 | 单独安装 Laya，提供本地 checkpoint 与完整 revision；无需 TypeSafe key |
+| `kev` | 本地结构化决策、片段重排 | 独立兼容环境，提供可信 adapter/head 与匹配基础模型；无需 TypeSafe key |
 | `kalman_filter` | 固定参数的前向状态滤波 | 基础依赖；不包含使用未来数据的平滑器 |
 | `ledoit_wolf_covariance`、`ewma_covariance`、`pca_covariance` | 协方差估计 | 基础依赖；传入小数收益 |
 | `nelson_siegel`、`svensson` | 期限结构拟合 | 基础依赖；横截面曲线拟合不是未来收益预测 |
@@ -38,6 +40,8 @@ restored = load_model("ridge_zoo.zip", trusted=True)
 
 原算法注册表的模型也能通过 `create_model` 调用。JSON/MCP 新增 `list_models`
 和 `run_model`：后者只执行模型卡中 `json_run=True` 的方法，不加载磁盘模型或任意代码。
+
+本地决策模型的安装、使用与证据边界见 [LOCAL_DECISION_USAGE.md](LOCAL_DECISION_USAGE.md)。
 深度学习、RL、记忆模型的有状态生命周期目前使用 Python API。
 
 ## 深度学习与强化学习
