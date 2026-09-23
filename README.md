@@ -67,7 +67,7 @@ The AI-for-finance ecosystem is saturated at two extremes—**API wrappers** (ho
 
 **`fin-skills` solves this at two levels:**
 1. **Source-Verified Knowledge Base (`plugins/*/skills/`)**: Every claim is dated (`verified_on`) and tagged with primary-source provenance (✅ verified in source code / exchange rulebook · ⚠️ secondhand · ❓ unverified).
-2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **36 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **62 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
+2. **Executable Audit Engine (`fin_skills.api`)**: Reading a skill changes what an LLM *says*; running an executable guard changes what its pipeline is *allowed to report*. We package **37 guards that return a `GuardResult`** behind a unified `Bundle` container and `check()` API, plus **63 tools an agent can call over JSON** via MCP or OpenAI/Anthropic tool schemas.
 
 ---
 

@@ -12,6 +12,7 @@ Module -> owning skill:
     leveraged_reset              etf-mechanics
     option_lifecycle             options-backtesting
     overfitting                  backtest-overfitting
+    panel_balance                research-integrity-guards
     paper_account_guard          broker-execution-apis
     pit_universe                 research-integrity-guards
     pre_trade                    pre-trade-checks
@@ -38,6 +39,7 @@ __all__ = [
     'leveraged_reset',
     'option_lifecycle',
     'overfitting',
+    'panel_balance',
     'paper_account_guard',
     'pit_universe',
     'pre_trade',

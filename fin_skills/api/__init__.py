@@ -49,9 +49,10 @@ from fin_skills.api.bundle import (Bundle, Coverage, Slot, Suite, check, coverag
 
 # Importing the guards package populates the registry.
 from fin_skills.api import guards  # noqa: F401,E402  (registration side effect)
+from fin_skills.api.guards.panel_balance import check_panel_balance
 
 __all__ = [
     "Bundle", "Coverage", "Finding", "Guard", "GuardResult", "Outcome", "RunReport", "Slot",
-    "Suite", "check", "conventions", "coverage", "get", "input_names", "register",
+    "Suite", "check", "check_panel_balance", "conventions", "coverage", "get", "input_names", "register",
     "registry", "run_all", "slots", "vocabulary",
 ]

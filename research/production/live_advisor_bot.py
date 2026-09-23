@@ -13,6 +13,9 @@ The bridge between quantitative research and daily execution:
    - Feishu (飞书) Rich Card / WeChat Work (企业微信) Markdown / DingTalk / Terminal.
 5. Execution Confirmation:
    - Pass `--confirm` to apply suggested trades directly to `holdings.json`.
+6. 2D Company×Year Balanced Panel Calibration (`2018-2026`, `215,478` rows):
+   - Prior predictability tiers and KOL credibility priors calibrated under `check_panel_balance`
+     (`Mean Daily Rank IC = +0.02916`, Cross-Year IC Std `-44.8%`, Cross-Board IC Std `-56.1%`).
 
 Usage:
     # 1. Run live check with existing portfolio:

@@ -141,6 +141,7 @@ def main():
             "kol_cued_greedy_checked_sharpe": fly_ablation["datasets"]["kol_cued_4asset"]["arms"]["fly_v3_greedy_checked_hold_adv"]["mean_sharpe_5bps"],
             "kol_cued_unchecked_1step_sharpe": fly_ablation["datasets"]["kol_cued_4asset"]["arms"]["fly_v3_unchecked_1step"]["mean_sharpe_5bps"],
         },
+        "company_year_balance_ablation": json.loads((ROOT / "benchmarks/COMPANY_YEAR_BALANCE_ABLATION_RESULTS.json").read_text(encoding="utf-8")),
         "extended_ablations": {
             "e9_silent_leak_python_exceptions": ablations["E9_summary"]["python_runtime_exceptions_raised_on_silent_leaks"],
             "e10_rolling_60d_daily_ic": ablations["E10_summary"]["overall_rolling_60d_daily_ic"],
@@ -148,6 +149,7 @@ def main():
             "e12_progressive_tokens": ablations["E12_summary"]["modes"]["progressive_manifest_plus_top1_skill"]["mean_prompt_tokens"],
         },
     }
+    panel_ablation = manifest["company_year_balance_ablation"]
     (ROOT / "paper/evidence.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     macros = {
         "PilotRuns": len(pilot["grades"]),
@@ -172,6 +174,13 @@ def main():
         "FlySynCheckedSharpe": f"{fly_ablation['datasets']['synthetic_101']['arms']['fly_v3_greedy_checked_hold_adv']['mean_sharpe_5bps']:+.3f}",
         "FlyKOLCheckedSharpe": f"{fly_ablation['datasets']['kol_cued_4asset']['arms']['fly_v3_greedy_checked_hold_adv']['mean_sharpe_5bps']:+.3f}",
         "FlyKOLUncheckedSharpe": f"{fly_ablation['datasets']['kol_cued_4asset']['arms']['fly_v3_unchecked_1step']['mean_sharpe_5bps']:+.3f}",
+        "PanelBalancedRows": f"{panel_ablation['balanced_panel_total_rows']:,}",
+        "PanelUnbalDailyIC": f"{panel_ablation['conditions']['A_Unbalanced_Raw_Panel']['mean_daily_rank_ic']:+.4f}",
+        "PanelBalDailyIC": f"{panel_ablation['conditions']['D_2D_Company_Year_Balanced_PIT_Gated']['mean_daily_rank_ic']:+.4f}",
+        "PanelDeltaDailyIC": f"{panel_ablation['paired_improvement_D_vs_A']['delta_mean_daily_rank_ic']:+.4f}",
+        "PanelYrStdRedPct": f"{panel_ablation['paired_improvement_D_vs_A']['cross_year_ic_std_reduction_pct']:.1f}",
+        "PanelBoardStdRedPct": f"{panel_ablation['paired_improvement_D_vs_A']['cross_board_ic_std_reduction_pct']:.1f}",
+        "PanelBalSharpe": f"{panel_ablation['conditions']['D_2D_Company_Year_Balanced_PIT_Gated']['annualized_net_sharpe']:+.2f}",
         "KOLTotalAccounts": f"{kol['bilingual_corpus_scale']['total_kol_entities']:,}",
         "KOLCNCount": f"{kol['bilingual_corpus_scale']['china_xueqiu_verified_kol_profiles']:,}",
         "KOLUSCount": f"{kol['bilingual_corpus_scale']['us_stocktwits_verified_kol_profiles']:,}",

@@ -267,4 +267,26 @@ We compare Qwen2.5-Coder 7B and 14B across four conditions on 2025 ECB reference
 \paragraph{Fruit-Fly Mushroom-Body Memory with Checked Delayed Feedback (\texttt{FLY\_CHECKED\_FEEDBACK\_ABLATION.json}).}
 Adapting the short- and long-term mushroom-body memory dynamics of \citet{huang2024memory} (\path{benchmarks/fly_paper/online.py}), our online feedback interface treats an entry and its holding periods as one completed episode with target $G = \sum_{t=0}^{T-1}\log(W_{t+1}/W_t) = \log(W_T/W_0)$. Isolating evaluation exploration noise (\texttt{eval\_epsilon = 0.0} vs.\ $0.20$) and complete-episode checked feedback (\texttt{CreditGate} + \texttt{audit\_option} + \texttt{HOLD} advantage baseline) across three environments proves: (1) on \texttt{ecb\_proxy}, the \texttt{HOLD} fraction rises from $14.0\%$ to $64.7\%$, cutting cumulative fee drag by $10.9\times$ ($9.68\% \to 0.89\%$) and improving Sharpe from $-0.361$ to $-0.134$; (2) on \texttt{synthetic\_101} regime-switching equities, \texttt{fly\_v3\_greedy\_checked\_hold\_adv} achieves \textbf{\FlySynCheckedSharpe{}} Sharpe, outperforming \texttt{linear\_v3\_greedy} ($-0.134$), \texttt{dense\_v3\_greedy} ($+0.121$), and \texttt{fly\_v3\_unchecked\_1step} ($-0.041$); and (3) on \texttt{kol\_cued\_4asset} (\KOLPredRows{} timestamped KOL signals), checked mushroom-body memory achieves \textbf{\FlyKOLCheckedSharpe{}} Sharpe ($+3.69\%$ net return, $-4.54\%$ max drawdown), beating both \texttt{linear\_v3\_greedy} ($+0.189$) and \texttt{fly\_v3\_unchecked\_1step} (\textbf{\FlyKOLUncheckedSharpe{}}, $-9.88\%$ max drawdown).
 
+\paragraph{2D Company$\times$Year Panel Balance \& \texttt{check\_panel\_balance} Guard.}
+Raw financial text crawls (\path{COMPANY_YEAR_BALANCE_ABLATION_RESULTS.json}) exhibit two-dimensional concentration: top-decile mega-cap tickers dominate cross-sectional volume ($\text{Company Gini} = 0.449\text{--}0.490$, $\text{Max/Median} = 20.2\times$) while recent years ($2024\text{--}2026$) overshadow earlier regimes ($2018\text{--}2021$). Our 37th executable guard, \texttt{check\_panel\_balance} (\path{fin_skills/api/guards/panel_balance.py}), audits both $(\text{Company Gini}, \text{Year Gini})$ and enforces a stratified cell quota $q_{c,y} = \min(n_{c,y}, Q)$. Table~\ref{tab:panel_balance_ablation} evaluates all four panel-conditioning policies across \PanelBalancedRows{} aligned multi-source rows ($2018\text{--}2026$, $7$ boards: \texttt{SH600}, \texttt{SH601\_603}, \texttt{SH688}, \texttt{SZ000}, \texttt{SZ002}, \texttt{SZ300}, \texttt{US\_Equities}). Two-dimensional company$\times$year balancing combined with PIT gating (\texttt{Cond.\ D}) lifts Mean Daily Rank IC from $\PanelUnbalDailyIC{}$ to $\mathbf{\PanelBalDailyIC{}}$ ($\Delta = \mathbf{\PanelDeltaDailyIC{}}$), cuts Cross-Year IC dispersion by $\mathbf{\PanelYrStdRedPct{}\%}$ ($0.01531 \to 0.00845$) and Cross-Board dispersion by $\mathbf{\PanelBoardStdRedPct{}\%}$ ($0.02973 \to 0.01304$), and improves net annualized Sharpe from $-1.999$ to $\mathbf{\PanelBalSharpe{}}$ ($\text{Max DD} = -10.82\%$).
 
+\vspace{-0.12cm}
+\begin{table}[!h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Panel Conditioning Policy (\PanelBalancedRows{} Rows, 2018--2026)} & \textbf{Daily Rank IC} & \textbf{Year IC Std} & \textbf{Board IC Std} & \textbf{Net Sharpe} & \textbf{Max DD} \\
+\midrule
+A: Unbalanced Raw Panel ($\text{Gini}_C=0.490$) & $\PanelUnbalDailyIC{}$ & $0.01531$ & $0.02973$ & $-1.999$ & $-80.81\%$ \\
+B: Company-Balanced Only ($q_c \le Q_c$) & $+0.00509$ & $0.01064$ & $0.00906$ & $-0.159$ & $-18.79\%$ \\
+C: Year-Balanced Only ($q_y \le Q_y$) & $+0.00861$ & $0.00896$ & $0.01320$ & $+0.181$ & $-26.40\%$ \\
+\textbf{D: 2D Company$\times$Year Balanced + PIT (\texttt{check\_panel\_balance})} & $\mathbf{\PanelBalDailyIC{}}$ & $\mathbf{0.00845}$ ($\downarrow\mathbf{\PanelYrStdRedPct{}\%}$) & $\mathbf{0.01304}$ ($\downarrow\mathbf{\PanelBoardStdRedPct{}\%}$) & $\mathbf{\PanelBalSharpe{}}$ & $\mathbf{-10.82\%}$ \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{-0.14cm}
+\caption{2D Company$\times$Year panel balance ablation across $2018\text{--}2026$ and $7$ market boards.}
+\label{tab:panel_balance_ablation}
+\vspace{-0.16cm}
+\end{table}

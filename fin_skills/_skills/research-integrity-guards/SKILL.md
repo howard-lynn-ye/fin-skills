@@ -257,8 +257,14 @@ is the same content this skill's gates already demand, so meeting the gates meet
 but the floor applies whether or not you care about the gates. See
 `../us-market-rules/SKILL.md` §6.
 
-## Regime coverage has a skill now
+## Regime coverage and 2D panel balance (`scripts/panel_balance.py`)
 
 `scripts/result_manifest.py` fails a result that states no regime coverage. How to detect, label
 and report regimes - and the look-ahead hidden in smoothed regime probabilities - is
 `../regime-detection/SKILL.md`.
+
+When building alternative-data panels (corporate announcements, social streams, analyst revisions),
+use `scripts/panel_balance.py` (`audit_panel_balance` and `rebalance_company_year_panel`) to audit
+and correct cross-sectional mega-cap dominance (`company_gini > 0.35`, `max/median > 5.0x`) and
+temporal recency inflation (`year_gini > 0.25`).
+
