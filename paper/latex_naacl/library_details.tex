@@ -66,3 +66,24 @@ Research interfaces enforce chronological validation splits, out-of-sample holdo
 reporting, and standardized trial records. Python and JSON tool interfaces return
 structured dictionary outputs, ensuring that all intermediate calculations can be logged
 and audited.
+
+\paragraph{Local decision models.}
+Adapters for Kev\footnote{\url{https://github.com/jaredpalmer/kev}} and
+Laya\footnote{\url{https://github.com/NandhaKishorM/laya}} expose structured decisions
+and passage reranking from local checkpoints, without hosted API credentials.
+Real GPU integration checks covered Kev-0.8B, Kev-4B, and the English and multilingual
+Laya checkpoints, including RAG composition and rejection of oversized inputs.
+Original responses and checkpoint identities are retained; bounded normalization
+of rounded probabilities does not establish calibration.
+
+\paragraph{Exploratory routing regression.}
+We froze the same three BM25 skill candidates for each of 108 public regression
+queries and evaluated a seeded shuffled order and its reversal. BM25 selected the
+expected skill on 76 queries. Kev-4B selected it on 79 and 82 queries, respectively,
+but changed its decision on 24 queries when the order changed. Kev-0.8B obtained
+45 and 50 correct selections. Both Laya variants were rejected before inference on
+all queries because their option budgets would truncate the full skill descriptions;
+these rejections do not estimate prediction accuracy. The fixtures were previously
+used in development and contain only two Chinese queries. This comparison measures
+public routing regression, not unseen financial-task performance or successful tool
+execution. BM25 remains the default, with Kev-4B available as an optional decision step.
