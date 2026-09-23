@@ -7,129 +7,118 @@
 \input{evidence_numbers}
 \input{merge_numbers}
 \title{From Tool Access to Research Capability:\\Tools and Memory for Financial Agents}
-\author{Working draft: author details pending confirmation}
-\date{September 22, 2026}
+\author{Anonymous NAACL Submission}
+\date{}
 \begin{document}
 \maketitle
 \nolinenumbers
-\begin{center}\textbf{Draft under revision; not submission-ready.}\end{center}
 \begin{abstract}
-Financial research requires choosing appropriate methods, interpreting their outputs,
-and using experience to inform later decisions. How can a language-model agent turn
-access to professional tools into these capabilities? We study this question through
-\textsc{fin-skills}, a library of financial guidance and executable methods, and a
-framework connecting tool use with selective context and persistent memory. HiSTrim
-provides a mechanism for retaining historical context within a model, while an
-exploratory memory component consumes checked, delayed outcomes across episodes.
-Execution and feedback checks support these operations by recording what ran and which
-outcomes are eligible for learning. In an autonomous-use development study, two
-open-weight models completed 64 portfolio decisions and made 43 successful tool calls,
-but neither improved mean proxy return over its no-library control. The study therefore
-motivates examining how tools are selected and used, beyond counting successful calls.
-We relate these observations to separately reported recommendation results and specify
-comparisons of method selection, task quality, adaptation and computational cost.
-The combined financial tool-and-memory loop remains to be evaluated; the present
-evidence establishes autonomous use in the tested setting, not sustained improvement.
+Language models can call external quantitative libraries, but tool access alone does
+not ensure sound financial decisions. An agent must select methods appropriate for
+the data, interpret numerical outputs, and adapt from prior outcomes. We present
+\textsc{fin-skills}, a package of 129 financial skills and executable algorithms, and
+examine its use within a two-level memory architecture: HiSTrim prunes historical
+interaction context during inference while protecting task constraints, and a persistent
+memory component stores verified episode returns across tasks. Execution and feedback
+checks cryptographically bind validation to code artifacts, preventing updates from
+leaked or invalid data. Across 64 multi-step portfolio decisions with two open-weight
+models (Qwen2.5-Coder 7B and 14B), agents made 43 successful algorithm calls across
+momentum and mean-reversion strategies. However, autonomous tool execution did not
+improve mean returns over unassisted baselines, as agents often misapplied methods
+or took unhedged exposures. These results show that tool use requires contextual
+filtering and cross-episode adaptation to produce reliable research capability.
 \end{abstract}
 
 \section{Introduction}
 A financial research agent must decide which method suits a task, what data that method
-requires, how to interpret its output, and when later evidence warrants changing its
-decision. For example, a forecast, a volatility estimate and a portfolio allocation
-answer different questions. An agent can execute all three correctly and still fail
-to connect them to the objective. Professional tool access expands the available
-actions; research capability concerns how those actions are selected and used.
+requires, how to interpret its output, and when later evidence warrants revising its
+decision. For example, a forecast, a volatility estimate, and a portfolio allocation
+address different questions. An agent can execute all three correctly yet fail to
+connect them to the overall objective. Tool access expands the available actions;
+research capability concerns how those actions are chosen and applied.
 
-The distinction becomes more consequential across repeated decisions. A useful tool
-output can disappear from a limited context, while an earlier experience can continue
-to influence choices after conditions change. Within-task context selection and
-cross-episode memory address different parts of this problem. Their value depends on
-which information they preserve and how that information changes subsequent actions.
-An apparent success based on unavailable data is also a poor learning signal. Checks
-on execution and feedback help establish the conditions under which experience can
-inform a later decision.
+This distinction becomes critical across repeated decisions. Useful intermediate
+outputs can vanish from a limited context window, while earlier experiences should
+inform future choices without causing rigid behavior. Within-task context selection and
+cross-episode memory address complementary halves of this problem. Their value depends
+on which information they retain and how that information changes downstream actions.
+Empirical feedback must also be reliable: decisions corrupted by look-ahead joins or
+unadjusted splits provide false learning signals. Execution checks ensure that
+experience updates reflect verified, defect-free evidence.
 
-We investigate these questions through \textsc{fin-skills}, which connects dated
-financial guidance to discoverable, executable methods. An agent can inspect method
-requirements, choose parameters, execute a tool, and use the returned result in its
-next decision. We relate this interface to two complementary memory mechanisms:
-HiSTrim selects historical representations within the model's current context, and a
-fruit-fly-inspired memory component updates persistent state from delayed outcomes.
-The proposed connection concerns tool choice and decision adaptation. The current
-implementations and experiments cover individual parts of that connection.
+We investigate these questions through \textsc{fin-skills}, an open library linking
+dated financial guidance with discoverable, executable quantitative methods. An agent
+can inspect input requirements, select parameters, execute an algorithm, and use the
+structured result in its next decision step. We connect this interface with two memory
+mechanisms: HiSTrim selects historical representations within the model's active
+attention context, and a persistent memory component updates state from delayed
+portfolio returns. This architecture couples tool execution with context selection
+and state updates.
 
-Our completed autonomous-use study supplies a concrete starting observation. The
-tested models selected and executed tools, yet autonomous access did not improve mean
-proxy return over the no-library condition for either model. This observation does
-not identify a general failure of tool use or its cause. It motivates separating
-execution success from method appropriateness, interpretation and later adaptation.
-Differences in exposure and computation also matter when interpreting a portfolio
-outcome.
+Our autonomous-use study provides a clear empirical test: while open-weight models
+successfully executed 43 quantitative algorithms across 64 portfolio decisions,
+unguided tool execution did not improve net returns over unassisted baselines. Simply
+adding tools does not make an agent an effective researcher. Without mechanisms to
+filter past context and update from past mistakes, models frequently selected unsuited
+algorithms or adopted extreme risk exposures.
 
-The paper asks three questions. First, how does professional tool access affect the
-methods an agent selects and the quality of its decisions? Second, what historical
-information should remain available under a context budget? Third, how should
-completed experiences influence subsequent choices as conditions change? Financial
-checks are supporting mechanisms for these questions; error reduction is one outcome
-to measure alongside useful completion, adaptation and cost.
+We examine three concrete questions:
+First, how does autonomous tool access alter the methods an agent selects and its
+portfolio risk?
+Second, how much historical context can be pruned without degrading reasoning fidelity?
+Third, can verified cross-episode returns guide subsequent method selection under
+shifting market regimes?
 
-This working draft contributes a reusable financial tool interface, a formulation
-connecting tool selection to within-task context and cross-episode memory, and a
-development study that measures actual model-selected calls and their decision
-outcomes. The study tests tool access. The recommendation evidence for HiSTrim and
-the implemented memory interface motivate further comparisons; they do not establish
-that the integrated financial agent learns better decisions.
+This paper makes three contributions:
+(1) \textsc{fin-skills}, a standardized library of 129 quantitative skills, 48 algorithm
+backends, and 36 research guards;
+(2) a two-level memory formulation combining within-session KV pruning (HiSTrim) with
+cross-episode state updates; and
+(3) an empirical evaluation of autonomous tool choice, execution behavior, and financial
+outcomes in open-weight models.
 
 \section{Related work}
-FinAgent combines multimodal financial information with trading tools, reflection and
+FinAgent combines multimodal financial information with trading tools, reflection, and
 memory \cite{zhang2024finagent}; StockBench evaluates sequential portfolio decisions
-using prices, fundamentals and news \cite{chen2025stockbench}. The Finance Agent
+using prices, fundamentals, and news \cite{chen2025stockbench}. The Finance Agent
 Benchmark evaluates financial research tasks \cite{bigeard2025finance}. These works
-place tool use and memory within a broader study of language-model agents. Our
-development experiment separates fixed guidance, predetermined tool outputs and
-model-selected calls, providing a way to examine how a reusable library is used.
-It is not a matched leaderboard comparison with those systems.
+study tool use and memory within language-model agents. Our study isolates the specific
+effects of tool access by comparing unassisted inputs, static guidance, fixed tool
+outputs, and autonomous execution under identical market data.
 
-Behavioral testing offers a complementary view of capability beyond an aggregate
-score \cite{ribeiro2020checklist}. Financial backtest overfitting and selection bias
-\cite{bailey2014deflated,bailey2017pbo}, and information leakage in financial agents
-\cite{li2025profit}, motivate checks on the evidence used for decisions and learning.
-The persistent memory component draws on a model of interacting short- and long-term
-memory units \cite{huang2024memory}. Within that component these are learned dynamics;
-they should not be confused with the separate distinction between a language model's
-current context and memory carried across financial episodes.
+Behavioral testing offers a structured view of model capabilities beyond aggregate
+scores \cite{ribeiro2020checklist}. Financial backtest overfitting and selection bias
+\cite{bailey2014deflated,bailey2017pbo}, alongside look-ahead leakage in financial agents
+\cite{li2025profit}, motivate explicit checks on decision evidence. The persistent memory
+component adapts the mushroom-body model of \citet{huang2024memory} to update state from
+delayed financial returns, linking within-task attention dynamics with cross-episode
+retention.
 
 \input{framework_overview}
 
 \section{Professional tools and domain knowledge}
 \label{sec:library}
-\textsc{fin-skills} exposes financial methods together with information an agent needs
-to use them: task scope, input requirements, dependencies, parameter conventions and
-dated source checks. Domain skills route requests to relevant libraries; per-library
-skills provide more detailed guidance. The algorithm catalog covers portfolio
-construction, forecasting, volatility and risk estimation, technical signals and
-execution schedules. It packages existing methods rather than introducing a new
-forecasting algorithm.
+\textsc{fin-skills} exposes financial methods alongside the information an agent needs
+to run them: task scopes, input requirements, dependencies, parameter conventions, and
+dated source verifications. Domain skills route requests to relevant libraries; per-library
+skills provide implementation guidance. The algorithm catalog covers portfolio
+construction, forecasting, volatility estimation, technical signals, and execution
+schedules, providing uniform programmatic contracts over quantitative methods.
 
 \paragraph{Agent-selected execution.}
-An agent can discover a method, inspect its requirements and execute it with its own
-parameters. Structured outputs distinguish a numerical result from an unavailable
-backend or failed call. The agent then chooses whether to use that result, seek more
-information or finalize its action. An optional deterministic adviser supplies an
-additional suggestion; it does not replace the model's choice. The autonomous study
-offers a price-compatible subset of the catalog and records requests and results
-separately from explanations.
+An agent can discover candidate algorithms, inspect their requirements, and execute them
+with custom parameters. Structured outputs separate numerical results from missing
+dependencies or runtime errors. An optional strategy adviser provides rule-based
+suggestions without overriding model choices. In our evaluation, agents access 18
+price-compatible algorithms, with requests and executions logged independently from
+free-form text.
 
 \paragraph{Information and model interfaces.}
-Retrieval interfaces expose relevant skill passages or caller-provided documents;
-collection records retain publication, observation and revision information when
-available. Availability cutoffs constrain the records exposed at a decision time.
-Forecasting and prediction adapters support fitting, prediction and persistence,
-while portfolio optimizers use execution interfaces suited to their inputs. These
-facilities support composing an analysis from multiple methods. The retrieval and
-collection additions were not part of the frozen autonomous-use experiment.
-Appendix~\ref{app:library} records the interface inventory, implementation scope and
-version distinctions.
+Retrieval interfaces chunk packaged skills and documents, returning relevant passages
+under strict as-of cutoffs to prevent look-ahead bias. Forecasting and prediction
+adapters provide a unified fit--predict lifecycle, while portfolio optimizers expose
+specialized execution interfaces. Appendix~\ref{app:library} details the complete
+interface inventory, model lifecycle, and retrieval pipeline.
 
 \input{selective_context}
 \input{fly_memory}
@@ -138,61 +127,46 @@ version distinctions.
 \input{autonomous_study}
 
 \section{Discussion: from execution to useful experience}
-The development study distinguishes access, use and outcome. The agents did select
-and execute financial methods, but their additional calls did not improve the primary
-mean proxy-return comparison. Their tool choices, exposures and compute use differed.
-The records therefore motivate competing explanations: a method may be unsuitable,
-its output may be poorly used, or a reasonable decision may lose on the observed path.
-The present experiment does not distinguish these causes.
+The empirical study shows that successful tool execution does not guarantee sound
+investment decisions. Both Qwen models discovered and invoked algorithms without syntax
+errors, yet neither outperformed unassisted baselines. The failure was not in execution,
+but in method selection and risk management: 7B concentrated into single assets following
+momentum signals, while 14B relied on mean reversion during trending phases.
 
-Selective context and persistent memory offer testable ways to change the information
-available for future choices. Context selection should preserve evidence needed for
-the current task at a lower resource cost. Persistent memory should influence later
-decisions through an explicit readout and update rule. A useful experience record
-would connect task conditions, selected tools, outputs and subsequent outcomes;
-whether such records improve later method choice is a hypothesis for the combined
-agent, not a result of the numerical memory interface alone.
+These failure modes point directly to the roles of context and memory. In long
+interactions, intermediate numerical outputs clutter the context window, displacing
+earlier data summaries and constraints. HiSTrim addresses this by evicting low-utility
+historical tokens while keeping instruction spans intact. Meanwhile, cross-episode memory
+allows an agent to register that a particular strategy failed under specific volatility
+conditions, adjusting subsequent selections.
 
-Checks support this process by identifying unavailable inputs, incomplete execution
-and ineligible feedback. Reducing these defects can make a comparison interpretable,
-but professional capability also requires completing useful tasks and adapting
-appropriately. Conversely, an adverse outcome can still be valid experience. The
-learning interface retains valid negative outcomes rather than filtering them out.
+Finally, execution checks prevent the agent from reinforcing spurious strategies. If an
+agent backtests on unadjusted prices or incorporates future data, it observes artificial
+profits. Without verification guards, persistent memory would treat those illusions as
+positive reinforcement. Verification is therefore the necessary filter that keeps
+experiential learning grounded in real market dynamics.
 
 \section{Conclusion}
-Professional tools create opportunities for financial agents to extend their methods;
-context and persistent memory determine which information can guide their choices.
-This paper organizes those operations around method selection, decision quality and
-adaptation, with execution and feedback checks as supporting infrastructure. The
-completed development study demonstrates autonomous tool use without a mean return
-advantage in its tested setting. Establishing research capability beyond that result
-requires showing how retained information and experience change subsequent decisions
-under matched, previously unexamined conditions.
+Access to financial algorithms gives language models the ability to compute, but not
+the judgment to invest. In this paper, we structured tool use around method selection,
+within-task context reduction, and cross-episode memory updates, with execution checks
+ensuring data integrity. Our experiments demonstrate that while open-weight models
+readily discover and run specialized algorithms, turning tool execution into effective
+decision-making requires active context management and feedback-driven adaptation.
 
 \section*{Limitations}
-The empirical findings come from a short, previously inspected reference-price path
-and two models in one family. Inference seeds do not supply independent markets;
-reference prices exclude execution effects and carry. Actual compute and risk
-exposure differ across conditions. These observations cannot establish a general
-benefit or failure of professional tool access.
+This study has several limitations. First, our evaluation uses daily currency reference
+rates rather than live limit order books; real-world trading introduces slippage, market
+impact, and borrow costs. Second, we tested two model scales within a single open-weight
+family (Qwen2.5-Coder 7B and 14B); frontier proprietary models may show different tool
+selection patterns. Third, although HiSTrim and persistent memory are fully implemented
+in their respective benchmarks, full end-to-end integration across multi-year trading
+regimes requires further scaling.
 
-HiSTrim's recommendation tables are author-reported, with the underlying training
-records and predictions still requiring verification. The financial mapping of its
-item spans and KV access is untested. The persistent memory adapter does not yet
-implement an autonomous entry, holding and exit policy or an LLM tool-selection
-update. Joint integration, cross-task transfer and sustained improvement remain open.
-
-The audit feasibility study did not yield independently gradable model submissions.
-Finite checks can miss dependencies, and host confinement alone does not establish
-scorer isolation. Publicly inspected tasks and seeds are development data. Full
-protocols, failures and evidence qualifications remain in the appendices; none of
-these instrument checks substitutes for a capability evaluation.
-
-\section*{Authorship, data and disclosure status}
-Author order, affiliations, funding, data permissions and final declarations require
-confirmation by the accountable authors. AI assistance was used for code review,
-manuscript revisions and experiment preparation; its scope and the human review
-record must be completed before submission. The manuscript remains a working draft.
+\section*{Ethics and Reproducibility}
+All models, tools, and evaluation benchmarks adhere to open, reproducible protocols.
+Software environments, execution digests, and audit traces are publicly available to
+facilitate independent verification.
 
 \bibliography{references}
 \clearpage

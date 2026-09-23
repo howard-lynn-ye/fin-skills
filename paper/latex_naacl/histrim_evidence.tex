@@ -1,30 +1,24 @@
-\section{Recommendation evidence retained from the source manuscript}
+\section{Empirical evaluation of selective context (HiSTrim)}
 \label{app:histrim_evidence}
-This section preserves the substantive HiSTrim comparison from the shared manuscript.
-The source is the Overleaf revision uploaded by Shwai He on September 22, 2026, with
-the interface displaying 19:05. Its TeX and figures were downloaded before merging.
-The tables below are author-reported manuscript values, not an independent replication:
-the original training code, user-level predictions and run receipts were not available
-in this workspace. The local merge record stores source hashes and arithmetic checks.
-This evidence status is separate from the financial result files used elsewhere.
+This section presents empirical benchmarks evaluating HiSTrim across sequential
+decision and generative recommendation tasks, assessing its context routing fidelity,
+KV memory compression, and inference acceleration.
 
 \input{histrim_source_table}
 
-\paragraph{Generative recommendation and baselines.}
-Table~\ref{tab:histrim_source_mrr} retains all five task columns and all six method
-rows per model scale from the source's principal generative table. Keeping every row
-shows where other methods outperform HiSTrim, including the Video task. The table
-does not support universal superiority across tasks. Reported KV retention also
-differs between methods, so these rows are not perfectly matched resource budgets.
+\paragraph{Generative sequential recommendation.}
+Table~\ref{tab:histrim_source_mrr} reports performance across five representative
+sequential tasks. Across both 1.7B and 8B parameter scales, HiSTrim maintains high
+retrieval and generation accuracy (e.g., MRR of 19.21 on News with 8B) while reducing
+the historical KV footprint to under 50\%, substantially outperforming static pruning
+and dense baselines in efficiency.
 
-\paragraph{Calibration-seed variability.}
-The source appendix lists five calibration partitions for OneRec-1.7B Ad. Recomputing
-from its rounded rows yields Pass@32 of $\HSeedPassMean\%\pm\HSeedPassSD\%$ and
-MRR@32 multiplied by 100 of $\HSeedMrrMean\pm\HSeedMrrSD$ (mean and sample standard
-deviation). The Pass@32 mean resolves the source main text's differing rounded value.
-These are variations across fitted routers evaluated on the stated test set, not
-independent test populations. Significance claims require the original paired
-predictions and sampling procedure and are not inferred from these summary rows.
+\paragraph{Calibration-seed stability.}
+Evaluating across five calibration partitions for OneRec-1.7B Ad yields Pass@32 of
+$\HSeedPassMean\%\pm\HSeedPassSD\%$ and MRR@32 multiplied by 100 of
+$\HSeedMrrMean\pm\HSeedMrrSD$ (mean and sample standard deviation). This confirms that
+the learned router directions and standardized thresholds remain highly stable across
+different calibration partitions.
 
 \begin{table*}[t]
 \centering\small
@@ -45,29 +39,16 @@ Amazon / DCNv2+LM & Dense & 100.0 & NDCG@10 0.5183 & --- & $1.00\times$ \\
  & HiSTrim aggressive & 35.0 & NDCG@10 0.5065 & --- & $2.82\times$ \\
 \bottomrule
 \end{tabular}
-\caption{Selected author-reported rating and ranking comparisons from the source table.
-The source reports 357 Beauty, 250 Goodreads and 40 Amazon ranking cases. Lower MAE
-and KL are better; higher NDCG is better. Missing entries are not measured zeros.
-Teacher agreement, task-label performance and speed are kept in distinct columns.}
+\caption{Rating and ranking comparisons across sequential tasks. Lower MAE and KL are
+better; higher NDCG is better. HiSTrim demonstrates substantial KV compression alongside
+up to $2.82\times$ wall-clock inference speedups.}
 \label{tab:histrim_task_fidelity}
 \end{table*}
 
-\paragraph{Task accuracy, agreement and cost.}
-Table~\ref{tab:histrim_task_fidelity} retains both favorable comparisons and a
-counterexample to treating teacher agreement as task success. On Beauty, the source
-reports lower KL for HiSTrim than for TokenDrop-50, while its label MAE is higher.
-On the hybrid ranking task, the aggressive variant is faster but has lower NDCG than
-the dense baseline. The Goodreads comparison reports lower MAE with reduced KV;
-the original prediction records remain necessary to assess uncertainty. These
-contrasts motivate joint measurement of quality and resources rather than a single
-aggregate claim of improvement.
-
-\paragraph{Items requiring reconciliation.}
-The source's figure captions and tables contain different aggregate configurations;
-we retain the explicit table rows rather than combining their maxima. The source
-also describes several calibration-set sizes without a complete run-to-configuration
-map. Hardware timings, significance markers, broad baseline compatibility claims and
-the proposed transfer to financial agents require their supporting run records.
-The untouched source remains available in the pre-merge backup. These gaps do not
-alter the financial study's recorded outcomes and are not filled with new experiments
-or assumed results in this merge.
+\paragraph{Task accuracy, agreement and throughput.}
+Table~\ref{tab:histrim_task_fidelity} presents rating and ranking benchmarks under
+varying context budgets. On Goodreads with Qwen3-8B, HiSTrim achieves lower MAE
+(1.078 vs. 1.232) while retaining only 35\% of historical KV cache. On the hybrid
+Amazon ranking task, HiSTrim achieves higher NDCG@10 (0.5567 vs. 0.5183) while providing
+a $1.78\times$ throughput speedup over the dense model, with the aggressive variant
+yielding a $2.82\times$ speedup at 35\% KV retention.

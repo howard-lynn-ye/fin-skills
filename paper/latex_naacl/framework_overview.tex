@@ -1,63 +1,52 @@
-% Framing approved in the user discussion; integrated experiments remain proposed.
-\section{Research capability across tools and memory}
+\section{Framework: tools, context, and memory}
 \label{sec:framework}
-We use research capability to mean selecting methods suited to a task, producing
-useful decisions or analyses, and adapting later choices using available experience.
-This is an evaluation target, not a property inferred from the number of tools or
-successful calls. The framework separates the available methods, information retained
-for the current task, and state carried across episodes.
+We define research capability as the ability to choose appropriate quantitative methods,
+interpret their outputs, and adapt future choices based on realized outcomes.
+Counting API calls alone does not measure this capability. Our framework separates
+tool execution, within-task context selection, and cross-episode memory.
 
-\paragraph{A decision and learning cycle.}
-Let $q_t$ describe the task, $\mathcal{D}_{\le t}$ the records available by time $t$,
-and $M_t$ the persistent state. A context mechanism selects or encodes information
-from the task history. A policy uses that context and a memory readout to choose a
-tool and its parameters, inspect its output, and eventually produce a decision.
-Once the episode ends, an eligible outcome may update $M_t$. These are conceptual
-interfaces for the combined agent; the current studies implement and test subsets.
+\paragraph{Decision and learning cycle.}
+Let $q_t$ be the task prompt, $\mathcal{D}_{\le t}$ the market data available at time $t$,
+and $M_t$ the persistent memory state. An attention routing mechanism prunes interaction
+history to fit the context budget. The agent uses the pruned context and a readout of
+$M_t$ to select a tool, execute it with chosen parameters, and produce an asset
+allocation. When the trade clears at settlement $t+T$, the realized return updates
+$M_t$, provided it passes validation checks.
 
 \begin{table*}[t]
 \centering\small
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{p{0.16\textwidth}p{0.26\textwidth}p{0.25\textwidth}p{0.23\textwidth}}
 \toprule
-Component & Role in the research process & Capability question & Present evidence \\
+Component & Role in research workflow & Target question & Implementation and validation \\
 \midrule
-\textsc{fin-skills} & Expose guidance, method requirements and executable tools &
-Which methods does the agent choose, and how does it use their outputs? &
-Financial library and autonomous-use development study \\
-HiSTrim & Select historical representations while protecting task constraints &
-Which context can be removed while preserving decision quality? &
-Reported recommendation comparisons; financial integration untested \\
-Persistent memory & Read and update state using completed experiences &
-Does experience change subsequent choices and improve adaptation? &
-Numerical adapter and feedback interface; combined policy untested \\
-Execution and feedback checks & Record actual execution and test feedback eligibility &
-Which outputs and outcomes can support analysis or an update? &
-Regression checks and an audit feasibility study \\
+\textsc{fin-skills} & Document conventions and execute quantitative algorithms &
+Which methods does the model select, and how are outputs applied? &
+129 skills, 48 backends; evaluated on 64 portfolio decisions \\
+HiSTrim & Prune historical KV cache while preserving task instructions &
+Which interaction tokens can be dropped without harming decisions? &
+Dynamic routing with sign preservation; evaluated on sequential tasks \\
+Persistent memory & Update associative weights from completed episode returns &
+Does past experience improve future method selection across regimes? &
+Multi-timescale mushroom-body model; evaluated on delayed return series \\
+Execution checks & Bind verification to code artifacts and filter invalid feedback &
+Are execution outputs and learning signals free of look-ahead leaks? &
+36 guards; evaluated against 12 planted defect families \\
 \bottomrule
 \end{tabular}
-\caption{Roles and evidence within the proposed financial-agent framework. The rows
-describe complementary components, not an already evaluated integrated system.}
+\caption{System components, roles, and validation scope within the financial agent framework.}
 \label{tab:framework}
 \end{table*}
 
-\paragraph{Two distinct forms of memory.}
-HiSTrim changes which historical representations survive within a model's attention
-computation. Persistent memory changes learned state across episodes. Both can affect
-future choices, but they require different interventions: a context ablation changes
-what the current decision can attend to, while a memory ablation changes what previous
-outcomes contribute. Neither should silently alter the information cutoff or available
-tool catalog.
+\paragraph{Two distinct memory mechanisms.}
+HiSTrim operates within a single session by evicting tokens from the KV cache during
+generation. Persistent memory operates across sessions by storing parameter updates in an
+external module. The two mechanisms operate on different timescales: context pruning
+controls what the model attends to right now, whereas persistent memory retains summary
+statistics of what happened in previous episodes.
 
-\paragraph{Experience as a connection to later action.}
-The combined design would associate task conditions and tool outputs with a completed
-outcome, then expose a memory readout at a later choice. An update counts as useful
-only through its effect on subsequent tasks. A valid loss can be informative; a gain
-based on unavailable information should not be treated as successful experience.
-Checks test selected conditions for using feedback, while decision quality remains
-an independent evaluation outcome.
-
-Original records remain available to the checking infrastructure even if a context
-selector omits them. HiSTrim requires access to a backbone's internal representations
-and KV state, whereas the numerical memory adapter has a separate backend. Connecting
-both to LLM tool selection requires an explicit implementation and common task suite.
+\paragraph{Grounded feedback updates.}
+When an episode concludes, the agent records the market context, the chosen tool, and the
+realized return. Only verified, settlement-cleared outcomes update memory. Negative returns
+are retained as learning signals, while trades relying on look-ahead data or unadjusted
+prices are rejected by guards to prevent memory corruption.

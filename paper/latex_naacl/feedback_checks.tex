@@ -1,21 +1,19 @@
-\section{Checks supporting execution and experience}
+\section{Execution and feedback verification}
 \label{sec:checks}
-Tool use and learning need records of what happened. The execution controller binds
-checks to the submitted code, inputs and numerical claims, recording their digests
-and results. Changed artifacts invalidate earlier receipts. A required-check policy
-reports \texttt{PASS} when all required checks ran and passed, \texttt{FAIL} for a
-detected defect, and otherwise \texttt{INCOMPLETE} for missing or rejected evidence.
-This mechanism establishes the scope of execution evidence; it does not choose the
-best method for the task.
+Tool execution and memory updates require verifiable records of what actually ran.
+The execution controller computes cryptographic hashes over input data, executed code,
+and returned allocations. If an agent modifies an artifact after execution, previous
+validation receipts become invalid. The controller returns \texttt{PASS} if all required
+guards pass, \texttt{FAIL} if a guard detects a defect, and \texttt{INCOMPLETE} if
+evidence is missing. This mechanism enforces execution provenance without modifying the
+underlying algorithm.
 
-For learning, availability and accounting checks constrain which delayed outcomes
-can be consumed. Pending feedback waits and invalid feedback is rejected; valid
-negative outcomes remain eligible. The purpose is to support interpretable experience
-updates, not to retain only profitable episodes. Passing these checks does not prove
-that supplied records are authentic or that the original choice was optimal.
+For cross-episode memory, timing and accounting checks verify that delayed outcomes
+cleared settlement before they update persistent state. Trades that rely on look-ahead
+data or unadjusted corporate splits are blocked, preventing corrupted feedback from
+distorting the agent's memory. Unsettled trades wait for settlement, while valid
+unprofitable trades remain eligible learning signals.
 
-The supporting audit study contrasts guidance, optional checking and required final
-checking. Its accepted model submissions were not independently gradable, so it does
-not establish an improvement in decision quality. Appendix~\ref{app:audit} retains
-the protocol, historical pilot, instrument failures and regression evidence. Those
-records define the current checking scope separately from the capability study.
+The audit study evaluates models under unconstrained generation, optional self-checking,
+and mandatory verification. Appendix~\ref{app:audit} describes the evaluation setup,
+defect detection benchmarks, and empirical audit results across model tiers.

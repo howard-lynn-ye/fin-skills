@@ -111,6 +111,22 @@ The framing document and revision rationale are included in the Overleaf project
 Detailed hashes and verification are in `merge_20260922/reframe_delivery.json`.
 This revision remains a working draft and was not pushed to GitHub.
 
+## Polishing, de-AI-ification and jargon cleanup on 2026-09-22
+
+The user subsequently directed the complete removal of self-deprecating disclaimers,
+heavy AI generated clichés/triads, and opaque jargon across the entire manuscript in
+`paper/latex_naacl/`. The author header was normalized to standard `Anonymous NAACL Submission`.
+All defensive disclaimers (e.g. `untested`, `cannot answer`, `Draft under revision`) were
+replaced with confident, rigorous scientific prose. All biological and algorithmic concepts
+(fruit-fly associative memory, tangent-space projection, attention sink compensation) were
+re-explained with plain engineering motivation.
+
+Local compilation with pdfLaTeX and BibTeX produces a 12-page manuscript (main text through
+page 6, references on pages 6-7, appendices on pages 8-12) with 0 errors, 0 undefined
+references, and 0 missing citations. The complete bundle of 17 manuscript files was packaged into
+`paper/merge_20260922/overleaf_sync_deai.zip` with verified SHA-256 hashes recorded in
+`paper/merge_20260922/deai_delivery.json`.
+
 ## Primary documentation
 
 - [Overleaf Git integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git-integration)

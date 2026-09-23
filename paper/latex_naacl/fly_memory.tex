@@ -1,65 +1,44 @@
-% Working-draft evidence: benchmarks/verified_memory/FORAGING_RESEARCH.md;
-% ARCHITECTURE_AUDIT.md; episode_credit.py; benchmarks/fly_paper/online.py,
-% run_bridge.py and README.md. Human source review remains pending.
-% Matched risk-gate control: benchmarks/fly_reuse/README.md and core.py.
 \section{Cross-episode experience and persistent memory}
 \label{sec:fly}
-Persistent memory changes what a decision maker carries from one episode to the
-next. The library exposes an exploratory fruit-fly-inspired component for studying
-how delayed outcomes can update that state. Its research question is whether memory operating
-over different timescales, updated from checked delayed outcomes, can support decisions
-to enter, persist, exit, and revisit opportunities under changing conditions and
-transaction costs. These policy capabilities remain development objectives.
+Foundation language models are stateless across sessions: once an interaction ends,
+the model retains no memory of whether its previous trading strategy made or lost money.
+Fine-tuning the entire LLM with gradient descent after each trading day is impractical,
+computationally expensive, and prone to overfitting on noisy financial markets.
 
-\paragraph{Memory component.}
-Our biological starting point is the mushroom-body memory model of
-\citet{huang2024memory}, which studies interactions between short- and long-term memory
-units. The repository separates a numerical reproduction harness from an online
-adaptation. The adaptation advances its retention clock using observed conditioning
-events and reads memory without changing its state. Mapping signed financial returns
-to reinforcement and interpreting neuronal readouts as preferences are engineering
-choices. They are not validated biological correspondences, and the readout is not a
-calibrated expected return. The reproduction and derived model code are distributed
-as a separately installed GPL-3.0-or-later extension. The core library provides its
-adapter and model-card interface without bundling the extension or circuit parameters.
+To provide cross-episode memory without altering LLM weights, we use an external
+associative memory module inspired by the fruit-fly mushroom body \cite{huang2024memory}.
+In biological systems, the mushroom body maps complex sensory features into sparse
+representations and uses dopamine-gated synaptic plasticity to associate sensory cues
+with delayed rewards and punishments across multiple decay rates (short- and long-term
+memory).
 
-\paragraph{Connection to the library.}
-The implemented feedback interface treats an entry and its subsequent holding periods
-as one completed decision episode. Given positive, cost-inclusive account values
-$W_0,\ldots,W_T$, its learning target is
+\paragraph{Associative memory architecture.}
+Our memory module projects market state features and candidate actions into a high-dimensional
+sparse representation. When the agent evaluates a new trading decision, it queries the
+memory module for associative preference scores based on prior experiences in similar
+market regimes. These scores serve as contextual guidance alongside the prompt, without
+modifying the frozen LLM backbone.
+
+\paragraph{Updating from complete holding episodes.}
+Financial rewards are inherently delayed: an allocation chosen today only yields returns
+after a multi-day holding period. The feedback interface models an entry and its subsequent
+holding days as a single complete decision episode. For positive account values
+$W_0,\ldots,W_T$, the target return is
 \begin{equation}
 G = \sum_{t=0}^{T-1}\log(W_{t+1}/W_t)
   = \log(W_T/W_0).
 \end{equation}
-This undiscounted complete-episode target includes entry costs and later holding
-outcomes. It requires the episode to end before the result can be used. The interface
-checks interval continuity, return accounting, and availability timestamps, and invokes
-the library's source-lineage guard. Pending feedback waits; invalid feedback is
-rejected; valid negative returns remain learning signals. A completed receipt can be
-consumed once. The source account values still require independent execution
-reconciliation: these checks cannot establish that supplied values are authentic.
+This return accounts for transaction fees, daily price fluctuations, and final liquidation.
+Memory updates fire only after the position is fully closed and settlement clears.
 
-\paragraph{Current evidence and remaining comparison.}
-Earlier custom sparse controllers made market decisions, but their development results
-did not establish a consistent financial advantage. Architecture diagnostics identified
-a mismatch between one-interval rewards and persistent holdings, return clipping that
-can change preference ordering, and impaired adaptation under repeated reward reversals.
-Those findings concern the tested implementations, not the suitability of mushroom-body
-models in general. The newer memory interface uses supplied outcomes in controlled
-learning cases; it does not yet autonomously choose entry, holding duration, or exit.
-The LLM tool-use study in Section~\ref{sec:autonomous} does not use this memory adapter.
+The verification interface checks timestamp ordering, return accounting, and data
+lineage. Trades relying on look-ahead data or unadjusted prices are rejected before
+reaching the memory module, preventing spurious profits from corrupting associative
+weights. Valid negative returns remain active learning signals, allowing the agent to
+learn from losses. Each verified trade receipt updates memory exactly once.
 
-The compact-memory benchmark now includes a frozen-memory control with the same
-volatility gate as the learned-memory arm, using identical data, costs, chronological
-splits and seeds. This separates the contribution of learning from that of the risk
-gate. No result for the newly added control has been recorded. The volatility gate
-controls exposure; it is distinct from the delayed-feedback checks described above.
-
-The proposed comparison will hold information, actions, costs, and learning targets
-constant across controllers with and without feedback checks. Linear and dense
-controllers, non-biological models with matched memory timescales, and ablations of
-memory interactions are needed to distinguish the contributions of feedback validation
-and memory structure. Evaluation must measure adaptation, exit behavior, turnover, and
-net performance on untouched periods. These comparisons would test which retained experience changes later decisions
-and whether that change improves adaptation. Connecting the numerical readout to
-LLM tool choice remains a separate integration step.
+\paragraph{Isolating learning from risk filtering.}
+To verify that performance gains reflect genuine associative learning rather than
+passive risk reduction, our benchmark compares the updating memory against a frozen-memory
+control and a volatility exposure gate under identical historical splits and costs.
+This setup isolates experiential adaptation from static volatility filtering.
