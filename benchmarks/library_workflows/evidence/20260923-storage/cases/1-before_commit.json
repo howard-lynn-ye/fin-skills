@@ -1,0 +1,58 @@
+{
+  "phase": "before_commit",
+  "repeat": 1,
+  "passed": true,
+  "returncode": -9,
+  "barrier": "BARRIER:before_commit",
+  "stderr": "",
+  "after": {
+    "integrity": "ok",
+    "counts": {
+      "events": 1,
+      "latest": 1,
+      "alerts": 1
+    },
+    "state": {
+      "cursor": 0
+    },
+    "pending": [
+      {
+        "seq": 1,
+        "watch_id": "recovery-study",
+        "actor": "",
+        "data": {
+          "revision": 0,
+          "value": 0
+        },
+        "id": "0",
+        "kind": "report",
+        "observed_at": "2026-01-02T00:00:00+00:00",
+        "published_at": null,
+        "source": "fixture",
+        "symbol": "",
+        "title": "cash",
+        "url": "https://example.invalid/report"
+      }
+    ],
+    "latest": [
+      {
+        "seq": 1,
+        "watch_id": "recovery-study",
+        "actor": "",
+        "data": {
+          "revision": 0,
+          "value": 0
+        },
+        "id": "0",
+        "kind": "report",
+        "observed_at": "2026-01-02T00:00:00+00:00",
+        "published_at": null,
+        "source": "fixture",
+        "symbol": "",
+        "title": "cash",
+        "url": "https://example.invalid/report"
+      }
+    ],
+    "open_and_check_seconds": 0.06441357918083668
+  }
+}

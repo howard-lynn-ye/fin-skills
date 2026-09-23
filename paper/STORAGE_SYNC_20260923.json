@@ -1,0 +1,34 @@
+{
+  "verified_utc": "2026-09-23T06:33:03.614713+00:00",
+  "library_commit": "f1afa42",
+  "file": "paper/latex_naacl/library_details.tex",
+  "local_sha256": "ff63e0af5a4fc4e2e6ff435317762f54e2ca8ea9149c6f316ea5d6460b65ba0f",
+  "overleaf_project": "https://www.overleaf.com/project/6aad9a03f27c3c07a182965d",
+  "history_label": "Storage recovery evidence - GitHub f1afa42 - 2026-09-23",
+  "change": "Append completed storage recovery and revision ordering results only; no pending model effectiveness claims",
+  "browser_verification": {
+    "appended_text_visible": true,
+    "pdf_page_13_contains_new_paragraph": true,
+    "errors": 0,
+    "warnings": 0,
+    "log_messages": 39,
+    "history_label_visible": true
+  },
+  "evidence": {
+    "crash_replay": "benchmarks/library_workflows/evidence/20260923-storage/recovery-verified.json",
+    "scale_and_revision_results": "benchmarks/library_workflows/evidence/20260923-storage/results.json"
+  },
+  "local_pdf": {
+    "path": "paper/latex_naacl/main.pdf",
+    "sha256": "485df21a76ca1c926de65d917827c2a58c1a7256b87850163a73da0763735e75",
+    "pages": 13,
+    "bytes": 270106,
+    "build": "pdflatex, bibtex, pdflatex, pdflatex; all exit 0",
+    "warnings": 0,
+    "visual_review": "Page 13 inspected; new paragraph fits without clipping",
+    "provenance": "Local compilation from synchronized source, not downloaded Overleaf PDF"
+  },
+  "verifier": "Codex automated artifact and browser verification",
+  "human_verification": "Not recorded; manuscript draft, not submission approval",
+  "limits": "Append-only paragraph checked; no whole-project byte identity claim."
+}

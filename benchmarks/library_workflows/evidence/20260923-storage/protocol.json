@@ -1,0 +1,19 @@
+{
+  "phases": [
+    "before_save",
+    "during_batch",
+    "before_commit",
+    "after_commit"
+  ],
+  "repeats": 3,
+  "scales": [
+    100,
+    1000,
+    10000
+  ],
+  "warm_query_repeats": 7,
+  "termination": "SIGSTOP at exact child barrier followed by parent SIGKILL",
+  "transaction": "actual Store.save, SQLite trace callback observes but does not alter SQL",
+  "latest_semantics": "last observed arrival, not maximum source publication timestamp",
+  "limits": "Synthetic reliability and timing only; SIGKILL is not power-loss or network-filesystem failure."
+}

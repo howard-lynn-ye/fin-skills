@@ -1,0 +1,24 @@
+{
+  "status": "submission_in_progress",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=angliece",
+    "--partition=beacon",
+    "--qos=medium",
+    "--nodes=1",
+    "--ntasks=1",
+    "--cpus-per-task=4",
+    "--mem=64G",
+    "--time=04:00:00",
+    "--job-name=fin-rerank-mistral",
+    "--chdir=/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1",
+    "--output=/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1/logs/slurm-%j.out",
+    "--error=/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1/logs/slurm-%j.err",
+    "--gres=gpu:1",
+    "--dependency=afterok:1654297",
+    "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1/job.sh",
+    "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1"
+  ],
+  "started_utc": "2026-09-23T06:22:32.817224+00:00"
+}

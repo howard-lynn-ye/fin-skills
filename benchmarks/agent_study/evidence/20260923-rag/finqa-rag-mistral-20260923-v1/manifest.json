@@ -1,0 +1,28 @@
+{
+  "plan": {
+    "remote_root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-mistral-20260923-v1",
+    "name": "fin-rag-mistral",
+    "gpu": true,
+    "memory": "64G",
+    "time": "04:00:00",
+    "afterok": "1654259",
+    "family": "mistral",
+    "model": "mistralai/Mistral-Nemo-Instruct-2407",
+    "revision": "04d8a90549d23fc6bd7f642064003592df51e9b3",
+    "qualification_root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rag-qualification-20260923-v1"
+  },
+  "sha256": {
+    "source/finqa_rag_ablation.py": "c085ebd4eecb9cab2d7abd0f11b22bc2f53c1e4e086903e37f6a2511c15007f0",
+    "source/finqa_reuse.py": "8219143eee4e883d3440a1bc260476d496270902055d2a0e6f6104e7a7db29aa",
+    "source/protocol.md": "51d8f29990ef6a160eb3c443fbcf2b36548b268f056e2223760da797c3834b88",
+    "source/skill.md": "9b3f09c267a777247a4c2cae5947fe8e04de872c69a361d62a2c7d93725f12e2",
+    "source/transformers_chat.py": "a184bbdc169509ff416eab749ab8d18c12004b331de726e89d40efa5f5dc4889",
+    "source/fin_skills/__init__.py": "1bc097811d4658cf4b2ba523f8310a944dce430990bffbaf3b77c8b0f2a4e93c",
+    "source/fin_skills/rag/documents.py": "755e393c661539e980ec70d0a23f91b3063b9813f22da6376a5978a26eb465d0",
+    "source/fin_skills/rag/index.py": "b09d332b03486a2b380449a64ed22ee2aadc1e25f6648ed7d3026494ac646b08",
+    "source/fin_skills/rag/pipeline.py": "ab14d8fc45929712013f9b67732bc36375b1e2d8050b945f16439b9e7ff6b6f1",
+    "source/fin_skills/rag/__init__.py": "db73157b39a140d0f9dc34bc15abc055761533775ea9f987ade8600b72661747",
+    "job.sh": "bc5c50326ffa3aadf7e55fb3083c6739b44ff92664959bb679696921ae99bc99",
+    "source/submit_model_followup.py": "3ee6b4538a49e00b285dc23c6decda8ea5b9c499ca3998ee411f21bacb3f051f"
+  }
+}
