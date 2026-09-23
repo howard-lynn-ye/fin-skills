@@ -1,0 +1,122 @@
+{
+  "verified_utc": "2026-09-23T02:18:18.233463+00:00",
+  "github_commit": "94ce7dad60e3d148de487fd0350a705aa717d73b",
+  "github_branch": "codex/library-paper-readiness-2026-09-22",
+  "overleaf_project": "6aad9a03f27c3c07a182965d",
+  "overleaf_version": 191,
+  "history_label": "Manuscript polish synced — GitHub 94ce7da — 2026-09-22",
+  "online_compile": {
+    "success": true,
+    "pages": 12,
+    "errors": 0,
+    "warnings": 0,
+    "typesetting": "underfull hbox notices"
+  },
+  "local_build": "Existing deai_delivery.json build receipt; all 17 corresponding file hashes verified, no local rebuild in sync task.",
+  "files": {
+    "acl.sty": {
+      "matches": true,
+      "local_sha256": "19dfeddc2c0e448f3926a0bef048a9db3f3611b46265b760caabd7ada4f361de",
+      "remote_sha256": "19dfeddc2c0e448f3926a0bef048a9db3f3611b46265b760caabd7ada4f361de",
+      "normalized_sha256": "9f2313e69fbd445d04eba74a6245dec9530e6aacee76da3e3ee301006118002d"
+    },
+    "acl_natbib.bst": {
+      "matches": true,
+      "local_sha256": "6fbb306202290f4b68e74ac1460a8b27398500cb6dfeb4492e74c457eae7cd1e",
+      "remote_sha256": "6fbb306202290f4b68e74ac1460a8b27398500cb6dfeb4492e74c457eae7cd1e",
+      "normalized_sha256": "9730f17dd5c218770d3ad4b267f25baff7d56431bc38c28bd0327185712b2450"
+    },
+    "autonomous_study.tex": {
+      "matches": true,
+      "local_sha256": "14f7a901da2eb381e5627e895e0ce809974641f62e81f2920d0745d0c0cdd56e",
+      "remote_sha256": "14f7a901da2eb381e5627e895e0ce809974641f62e81f2920d0745d0c0cdd56e",
+      "normalized_sha256": "24a11a24e7e0938323701e3c99c880a4c4d0503266230ca7368f227257d0132d"
+    },
+    "capability_evaluation.tex": {
+      "matches": true,
+      "local_sha256": "1602b4ad0cb515fffffd0848d8e0ac9219ef140ed30d420c30a5fec2248ef9ef",
+      "remote_sha256": "1602b4ad0cb515fffffd0848d8e0ac9219ef140ed30d420c30a5fec2248ef9ef",
+      "normalized_sha256": "93d3a54d3d279019f341fdf3eb4d7e0130aa0fbbd3a212a9feefc4091f671980"
+    },
+    "evidence_numbers.tex": {
+      "matches": true,
+      "local_sha256": "389df712c75f74d79c74dd880521192d099f52384a16e44101e9bc1876c03f48",
+      "remote_sha256": "7b9273061350451447d0c50344dcc1cc5ddbe76459c862c82440af6af3a21e6a",
+      "normalized_sha256": "9d4da4989ff22f1242446b5156075e16d2fd3b0658fe29a98dd81dcb3591a4c7"
+    },
+    "feedback_checks.tex": {
+      "matches": true,
+      "local_sha256": "832a29dde1fb06dbc7f856feb0b300b615f79e36e42dab700ed61f2be2be7624",
+      "remote_sha256": "832a29dde1fb06dbc7f856feb0b300b615f79e36e42dab700ed61f2be2be7624",
+      "normalized_sha256": "3778e9cba1e01d9872dab355dc470bc296f10a48a1a442c4fa74afe9da60b98b"
+    },
+    "fly_memory.tex": {
+      "matches": true,
+      "local_sha256": "51f700cef6b9c04fda72a902eb7c3e7d88787ba873689976e5c5a63fec6d5210",
+      "remote_sha256": "51f700cef6b9c04fda72a902eb7c3e7d88787ba873689976e5c5a63fec6d5210",
+      "normalized_sha256": "9c58eac7a70c921540bde1f1c7e937408848c6fb1291338d6f47849307bbe38e"
+    },
+    "framework_overview.tex": {
+      "matches": true,
+      "local_sha256": "12bde340bd19a890d729219f5cbbea47e8574e5b3b7ea9adcd129ceeaaf86a1b",
+      "remote_sha256": "12bde340bd19a890d729219f5cbbea47e8574e5b3b7ea9adcd129ceeaaf86a1b",
+      "normalized_sha256": "d80da9053444fe59e9c7f0f13b6eed3711ff052900f0c3decc5cd70ee0426edb"
+    },
+    "histrim_evidence.tex": {
+      "matches": true,
+      "local_sha256": "d83031a89e3de854dfc4a0203aa0e6268038e23f99c6061e6aa24f963d25f84e",
+      "remote_sha256": "d83031a89e3de854dfc4a0203aa0e6268038e23f99c6061e6aa24f963d25f84e",
+      "normalized_sha256": "afba81bf9cda1577315d3191b8f7c44ed7c17f1e71d6a5da59d5f62f863843e9"
+    },
+    "histrim_source_table.tex": {
+      "matches": true,
+      "local_sha256": "668139c0dc83500abf2d0cf475c058d4b9fe664bfa11f36005034e7e5c868396",
+      "remote_sha256": "668139c0dc83500abf2d0cf475c058d4b9fe664bfa11f36005034e7e5c868396",
+      "normalized_sha256": "b5dc61b44d29d0db567842e2172dd2a8c73908bd8f221335419bd77bac1ab43a"
+    },
+    "library_details.tex": {
+      "matches": true,
+      "local_sha256": "3b91b0afc929fea1ae14ad0e30670e464acc122ba7d2a7bb376725b07a88acaf",
+      "remote_sha256": "3b91b0afc929fea1ae14ad0e30670e464acc122ba7d2a7bb376725b07a88acaf",
+      "normalized_sha256": "fcd82a6f3682ef0b3961be80101375211938326c803e5ad986c94a9d66c70f4a"
+    },
+    "main.pdf": {
+      "matches": true,
+      "local_sha256": "7eda01629000becca31d070474bc2a041d99698f3f036999d640f419b5c5bcca",
+      "remote_sha256": "7eda01629000becca31d070474bc2a041d99698f3f036999d640f419b5c5bcca",
+      "normalized_sha256": "7eda01629000becca31d070474bc2a041d99698f3f036999d640f419b5c5bcca"
+    },
+    "main.tex": {
+      "matches": true,
+      "local_sha256": "7bcbc3762f46c4f5a68d09ba69c943819b8e2da396eefd597087e31dc7e33154",
+      "remote_sha256": "7bcbc3762f46c4f5a68d09ba69c943819b8e2da396eefd597087e31dc7e33154",
+      "normalized_sha256": "d2073cdb60363a1520561d0bc33062a82212d27e9fd1da619e56a9a539de017b"
+    },
+    "merge_numbers.tex": {
+      "matches": true,
+      "local_sha256": "c9f236ad74b3191b89bafff9775a0259b5106d6ddd4d9aacf942981aa272faae",
+      "remote_sha256": "030933bf6ed845619aeec7bb85e0221b324710d71ebc911e9b088c790e8c0c84",
+      "normalized_sha256": "66d56f075f169e986f7a5bdb4cac43f74ae350847251a1e97a0d7a36ac680f34"
+    },
+    "references.bib": {
+      "matches": true,
+      "local_sha256": "428c7bb9573092714d7d1287345eb652347b9f63a3e356148662e4e764f3df35",
+      "remote_sha256": "428c7bb9573092714d7d1287345eb652347b9f63a3e356148662e4e764f3df35",
+      "normalized_sha256": "51809f18750fdbaedcbecc1800e445f2ea1cc7af1953c58d3f2e31786f219bb7"
+    },
+    "selective_context.tex": {
+      "matches": true,
+      "local_sha256": "ef120f64d1a81152cd9b2eb6ab276ef33040f1702ef142661242ea52e6ffd33f",
+      "remote_sha256": "ef120f64d1a81152cd9b2eb6ab276ef33040f1702ef142661242ea52e6ffd33f",
+      "normalized_sha256": "4264fe8b6641efbef0234e889c3bea97d52b5f643d96fdd581a8fa846365ab5c"
+    },
+    "supporting_evidence.tex": {
+      "matches": true,
+      "local_sha256": "1a96994fe28f426e89700ac83a972ec7dc9bf041e3e37cdb136f1050713c0011",
+      "remote_sha256": "1a96994fe28f426e89700ac83a972ec7dc9bf041e3e37cdb136f1050713c0011",
+      "normalized_sha256": "6c59ab80447424cb9d0ee368d85f29df8c6e5ffc12e5a0a3a078e01c985b9a22"
+    }
+  },
+  "unrelated_files_unchanged": 71,
+  "all_17_files_match": true
+}

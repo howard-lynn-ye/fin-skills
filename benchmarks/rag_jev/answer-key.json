@@ -1,0 +1,5 @@
+{
+  "scope": "public_development",
+  "answers": {"q-clock": 1, "q-retrieval": 0, "q-routing": 2, "q-feedback": 1, "q-citation": 0, "q-gate": 2},
+  "relevant": {"q-clock": "clock", "q-retrieval": "retrieval", "q-routing": "routing", "q-feedback": "feedback", "q-citation": "citation", "q-gate": "gate"}
+}

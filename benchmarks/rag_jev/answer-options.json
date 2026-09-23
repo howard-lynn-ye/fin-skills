@@ -1,0 +1,8 @@
+{
+  "q-clock": ["Fiscal period end", "Publication or availability timestamp", "The date the backtest is run"],
+  "q-retrieval": ["It changes the order of the retrieved candidates", "It changes the documents' publication dates", "It proves every passage is correct"],
+  "q-routing": ["Execute every tool and accept the first result", "Let any generated function name execute directly", "Select an allowed tool, validate the choice, then execute it"],
+  "q-feedback": ["Before the decision is made", "Once the recorded outcome has become available", "Whenever the model predicts a likely outcome"],
+  "q-citation": ["No; support for the answer needs a separate assessment", "Yes; a valid label proves content support", "Yes; retrieval relevance guarantees entailment"],
+  "q-gate": ["Only the model's display name", "Only the final reported return", "The gate, transaction costs and chronological input data"]
+}

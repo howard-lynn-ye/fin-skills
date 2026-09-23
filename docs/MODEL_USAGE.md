@@ -157,6 +157,20 @@ JSON/MCP 通过 `run_model` 调用同一接口，`data` 包含 `state` 和 `ques
 和一个新的输出目录才会调用真实服务；错误、实际模型 ID、用量和耗时分别留存。
 该探测只核对连接和接口，不证明检索质量或置信度校准。
 
+完整接线示例见 [collected_rag.py](../examples/collected_rag.py)：SQLite 保存文档修订，
+先按查询时点筛选可用修订，再建立 RAG 索引；当前技能知识单独提供，避免把今天的知识
+冒充成历史上已经可用的信息。默认运行不调用模型，也不使用模拟 Jev 回答。
+
+```bash
+python examples/collected_rag.py --output runs/collected-rag-local
+```
+
+配置密钥后，增加 `--live-jev` 并选择新的输出目录，可发送一次真实重排请求。
+示例固定使用 `jev-1.13.0`，该 ID 已于 2026-09-22 在
+[官方模型目录](https://docs.typesafe.ai/models)确认。`result.json` 保存实际响应模型、用量、
+上下文和来源；失败不会切换到模拟答案。将返回的 `evidence["messages"]` 交给自己的
+生成函数即可继续回答。本例使用公开合成文档，只验证组件组合，不测量模型质量。
+
 需要比较检索增益时，使用 [BM25／Jev 配对实验](../benchmarks/rag_jev/README.md)。
 它冻结同一候选集合和上下文预算，在保存推理结果后单独读取相关性标签评分。
 内置问题只是公开合成开发样例；正式论文仍需要独立标注的问题集和下游任务评估。

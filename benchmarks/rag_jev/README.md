@@ -26,7 +26,7 @@ before execution. Use a new output directory for every attempt.
 
 ```bash
 python -m benchmarks.rag_jev.run infer --prepared runs/jev-example/prepared \
-  --output runs/jev-example/inference --allow-network --max-requests 6
+  --output runs/jev-example/inference --allow-network --model jev-1.13.0 --max-requests 6
 ```
 
 Then score the saved result using the separately supplied relevance labels:
@@ -52,8 +52,10 @@ means; failed Jev calls remain missing and are counted. Means over successful
 pairs must not be presented as success over all planned queries. Hash receipts
 detect accidental changes, not tampering by an actor who can replace receipts.
 
-`jev-latest` is a mutable alias. Start with a connectivity probe, then use the
-provider-supported resolved version through `--model` for comparisons. If
+`jev-latest` is a mutable alias. The [official models reference](https://docs.typesafe.ai/models),
+checked on 2026-09-22, lists `jev-1.13.0` as a supported fixed ID. The commands here
+and the Beacon entry use that version; the general Python/CLI interface still permits
+an explicit `--model`. Start with a connectivity probe. If
 response versions differ within a run, the scorer withholds a pooled treatment
 effect. The [official API](https://docs.typesafe.ai/api) and
 [confidence documentation](https://docs.typesafe.ai/confidence), checked on
@@ -68,21 +70,25 @@ Stage the committed repository source under a new direct RADFM child, such as
 `beacon_run.sh` uses the existing RADFM Python runtime, runs the regression tests,
 prepares the snapshot, runs up to six real requests and scores the receipt.
 It puts temporary files and application caches under the same new root.
-Submit with absolute scheduler paths; create `logs` under the new root first:
+Use the submission helper after staging the source. It sets absolute scheduler
+paths before `sbatch` opens any logs, checks for redirected paths and records each
+submission attempt. Omitting `--submit` only prints the command:
 
 ```bash
 root=/beacon-projects/radfm/wy891/fin-skills-rag-jev-20260922-v1
-mkdir -p "$root/logs"
-sbatch --account=angliece --partition=beacon --qos=medium --nodes=1 --ntasks=1 \
-  --cpus-per-task=1 --mem=8G --time=00:10:00 --chdir="$root" \
-  --output="$root/logs/slurm-%j.out" --error="$root/logs/slurm-%j.err" \
-  "$root/source/benchmarks/rag_jev/beacon_run.sh" "$root"
+py=/beacon-projects/radfm/wy891/fin-skills-audit-20260921/env/bin/python
+"$py" "$root/source/scripts/submit_model_followup.py" rag-jev "$root" --submit
 ```
 
 This is a prepared command, not evidence that the current account can submit
 or reach TypeSafe from a compute node. The hosted model does not use a Beacon
 GPU. The API key must be available to the scheduled process without putting it
 in a command argument, source file or log.
+
+If a submission is interrupted, retain `submission-started.json` and inspect
+Slurm before retrying. A receipt with a job ID confirms submission only. A complete
+source snapshot for this study must include `benchmarks/rag_jev`, its tests and
+the helper; the separate Agent follow-up v2 bundle does not include this study.
 
 ## Before a paper comparison
 

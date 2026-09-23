@@ -8,11 +8,18 @@
 Working title: **FAST: A Financial Agent Skill Tester and Verified Execution Engine**
 (Former working title: Verified Execution and Autonomous Tool Use for Financial Research Agents)
 
-Updated: 2026-09-21. Working Resource/Benchmark outline for an AI/NLP conference
+Updated: 2026-09-22. Working Resource/Benchmark outline for an AI/NLP conference
 (e.g., NAACL/ACL). The framework, recorded validation and planned agent comparisons are
 distinguished below. The experimental design follows the revised [study protocol][S1].
 
 Shared manuscript: https://www.overleaf.com/project/6aad9a03f27c3c07a182965d
+
+The current LaTeX draft uses the title *Verified Execution and Autonomous Tool Use for
+Financial Research Agents*. FAST remains the audit study's working name in this outline;
+the final title needs a single author-approved choice. The library description includes
+skills, retrieval, collection storage and model interfaces. Audit, autonomous tool use
+and exploratory memory learning have separate experiments and evidence requirements.
+Manuscript delivery follows [SYNC.md](SYNC.md).
 
 ## Central argument / 论文主线
 
@@ -52,15 +59,23 @@ FAST 将领域知识、实际执行的检查和独立评测连接起来，使研
   useful completion, failure modes and resource use vary across models and conditions?
   These outcomes are measured together so that rejection alone cannot count as improvement.
   *不同模型在结果正确性、任务完成和调用成本之间表现如何？哪些错误可以修复，哪些仍会通过检查？*
+- **RQ4 — Retrieval and Autonomous Library Use.** Under matched tasks and information,
+  how do fixed skill guidance, retrieved passages, predetermined tool outputs and
+  agent-selected calls affect correct completion and cost? Retrieval quality and citation
+  support are measured separately from the correctness of the final research artifact.
+  *知识检索与自主调用分别帮助了哪些任务？改善是否来自更相关的知识、工具执行，还是额外预算？*
 
 ## Contributions / 贡献定位
 
-1. **The FAST Knowledge Base (Agent Skills).** The recorded resource contains 129 skills
+1. **The Reusable Library and FAST Knowledge Base.** The recorded resource contains 129 skills
    across 17 plugins, connecting task and library selection with dated sources, conventions,
    failure modes and executable examples. Skills are documents with different scopes;
    their count is not a count of distinct defects. [S2]
    **金融研究知识资源：** 将工具选择、默认行为和方法注意事项组织成 Agent 可按需使用的知识，
    并记录来源与核查日期。
+   The current library also connects those skills to built-in RAG, persistent collection
+   records and a shared model registry. The September 22 additions are distinguished
+   from the frozen interfaces used by earlier experiments. [S8] [S9]
 2. **An Executable Audit Engine.** A common interface exposes 36 registered guards and
    reports findings, execution evidence and missing inputs. Final-audit policies bind checks
    to the submitted artifact and distinguish failed checks from incomplete evidence. [S2] [S3]
@@ -73,9 +88,11 @@ FAST 将领域知识、实际执行的检查和独立评测连接起来，使研
    **基准与受控评测：** 一部分实验检验工具能否发现已知错误，另一部分检验 Agent 是否能产出
    正确的研究结果，并比较不同干预的收益与成本。
 
-The fruit-fly memory and trading-utility studies remain separate research directions.
-They are not needed to establish this paper's core contributions. The wider data, model and
-research capabilities remain documented in the [project overview][S2].
+The manuscript also presents autonomous library use and fruit-fly memory as distinct
+applications of the library. Their results are not pooled with the audit study. The memory
+adapter is implemented, while its entry/persistence/exit policy remains exploratory;
+including it in the library does not establish a financial or biological advantage.
+The wider capabilities remain documented in the [project overview][S2]. [S9] [S10]
 
 ---
 
@@ -159,6 +176,21 @@ workflows. Data provenance, information availability and the reference backtest 
 supporting inputs and reproducible accounting. The framework figure follows one research
 artifact from task guidance through implementation, checking, revision and final scoring,
 with a visibly separate path for the independent evaluator. [S2] [S3]
+
+#### 3.5 Retrieval, Storage and Model Composition / 检索、存储与模型组合
+
+The current library exposes a common document representation for packaged skills and
+caller-supplied text. BM25 retrieval runs locally; embedding, reranking and generation
+callbacks let callers choose additional models. Retrieved passages retain source offsets
+and availability timestamps. Collection uses SQLite for records, revisions and polling
+state, while RAG uses an in-memory index with JSON persistence. These components support
+a pipeline from collected evidence to context, a model decision and checked feedback. [S8]
+
+Jev provides a hosted structured-decision and reranking adapter. The fruit-fly memory
+adapter uses a separately installed extension and supplied circuit parameters. Model cards
+describe the operations and dependencies rather than requiring every model to generate
+text or expose the same training lifecycle. The architecture includes these components;
+earlier frozen experiments did not test the September 22 RAG/Jev additions. [S8] [S9]
 
 ### 4. The Leak Detection Benchmark / 审计引擎有效性验证
 
@@ -277,6 +309,39 @@ be reported regardless of whether guidance or enforcement improves outcomes. [S3
 *本节的核心是“知识、工具和强制检查分别改变了什么”。当前先导记录和正式比较分开，
 不预先写成“大模型表现显著下降”或“FAST 显著提升正确率”。*
 
+#### 5.6 Autonomous Tool Use and Retrieval / 自主调用与检索评测
+
+The existing autonomous-use development study examines whether models produce valid
+decisions and use the offered tools; its reported proxy-return comparison does not
+establish an economic advantage. This study has different tasks and conditions from
+C0--C3 and is reported separately. [S10]
+
+A retrieval comparison will use independently labeled questions and supporting passages.
+Fixed guidance, BM25 retrieval, embedding retrieval and optional Jev reranking share the
+same permitted corpus and downstream model budget. It will report passage recall/ranking,
+whether citations support answers, correct task completion, latency and token/call cost.
+Empty evidence, unavailable historical documents and provider failures remain outcomes.
+A paired BM25/Jev runner now freezes the candidate passages, time cutoff and context
+budget before inference, then scores saved outputs against separately supplied relevance
+labels. Its public synthetic fixtures exercise the pipeline; they are not independently
+annotated evaluation data. Live-service results and downstream answer quality remain
+outstanding evidence requirements. [S8] [S12]
+
+#### 5.7 Exploratory Memory Application / 果蝇记忆应用
+
+The model section explains memory prediction, checked delayed-feedback updates and
+save/load through the shared library interface. A subsequent study should compare
+controllers with and without feedback checks and with matched non-biological memory,
+using the same observations, actions, costs and learning targets. Adaptation and memory
+retention are distinct from net financial performance; the implemented adapter is not
+a completed autonomous trading policy. [S9] [S11]
+
+The compact-memory benchmark now includes a frozen-memory control with the same
+volatility gate as the learned-memory arm. This comparison holds data, costs, chronological
+splits and seeds fixed, addressing whether learning contributes beyond the gate. The new
+control has no recorded result yet. This risk-gate comparison is distinct from testing
+the delayed-feedback checks described above. [S13]
+
 ### 6. Discussion and Limitations / 讨论与局限
 
 The discussion connects the observed tradeoff between correctness, completion and cost to
@@ -312,6 +377,7 @@ cost, within the tested setting.
 | Table 1 — Resource and experimental coverage | Separates the 129-skill/36-guard resource from the fixed excerpt, 13-guard defect run and narrower agent-study adapters. |
 | Table 2 — Defect detection matrix | Reports applicable checks, detected and missed defects, and clean controls with explicit case counts. |
 | Table 3 — Main four-condition comparison | Presents acceptance, independent correctness, incorrect accepted outputs, unresolved grades and resource use together. Values await complete scored batches. |
+| Separate application results | Reports autonomous tool use and planned retrieval comparisons with their own tasks, denominators and evidence status; the memory application remains exploratory until measured. |
 
 Full skill inventories, schemas, individual guard details, frozen prompts and revisions,
 historical pilots, per-run outcomes and additional checks belong in the appendix or repository.
@@ -331,6 +397,12 @@ rerun for this outline. The related-work summaries use the primary records check
 - [S5] Implementation status: numerical validation and recorded feasibility outcomes.
 - [S6] Contamination probe source: declared cutoff overlap and optional behavioral probes.
 - [S7] Summary implementation: correctness thresholds, missingness and denominators.
+- [S8] Built-in RAG: retrieval, provenance, model composition and recorded interface tests.
+- [S9] Model usage: operations, dependencies, Jev access and optional memory installation.
+- [S10] Autonomous library-use development results, distinct from the audit study.
+- [S11] Memory manuscript section: implemented feedback path and planned comparisons.
+- [S12] Paired BM25/Jev development runner: frozen candidates and separate relevance scoring.
+- [S13] Compact-memory benchmark: matched learned and frozen controls with the same risk gate.
 
 [S1]: STUDY_PLAN.md
 [S2]: ../PROJECT_OVERVIEW_ZH.md
@@ -339,6 +411,12 @@ rerun for this outline. The related-work summaries use the primary records check
 [S5]: IMPLEMENTATION_STATUS.md
 [S6]: ../plugins/fin-llm/skills/llm-finance-agents/scripts/contamination_probe.py
 [S7]: ../benchmarks/agent_study/summarize_matrix.py
+[S8]: ../docs/RAG_PIPELINE.md
+[S9]: ../docs/MODEL_USAGE.md
+[S10]: LIBRARY_UTILITY_RESULTS.md
+[S11]: latex_naacl/fly_memory.tex
+[S12]: ../benchmarks/rag_jev/README.md
+[S13]: ../benchmarks/fly_reuse/README.md
 [R1]: https://aclanthology.org/2020.acl-main.442/ "Ribeiro et al. (2020), Beyond Accuracy: Behavioral Testing of NLP Models with CheckList"
 [R2]: https://arxiv.org/abs/2510.07920 "Li et al. (2025), Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents"
 [R3]: https://arxiv.org/abs/2508.00828 "Bigeard et al. (2025), Finance Agent Benchmark: Benchmarking LLMs on Real-world Financial Research Tasks"
