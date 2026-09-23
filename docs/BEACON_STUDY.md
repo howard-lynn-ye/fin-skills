@@ -1,5 +1,21 @@
 # Running the agent study on Beacon
 
+## Connection route verified on 2026-09-23 UTC
+
+Use the existing connection guide at `D:/ct_agent_vqa/BEACON_CONNECTION_GUIDE.md`.
+Its credential-isolated helper is `D:/ct_agent_vqa/scripts/beacon_ssh_session.py`;
+it verifies the pinned Beacon host key and uses the existing local password file.
+The SSH key `id_ed25519_beacon_gnwt` was rejected in this session, while the documented
+password-file route authenticated and executed remote commands successfully. A failed
+key-only attempt does not establish that Beacon is unreachable or that the password
+must be reset. Do not print credential contents or copy them into this repository.
+
+The helper initially enters the medical project's directory. For fin-skills commands,
+explicitly change to `/beacon-projects/radfm/wy891` and use a fin-skills run directory.
+Do not change the helper's project defaults or touch another project's jobs.
+The current parallel batch is recorded in
+[the campaign note](../paper/BEACON_CAMPAIGN_20260923.md).
+
 The current workspace is `/beacon-projects/radfm/wy891/fin-skills-audit-20260921`.
 Source, the virtual environment, temporary files, model caches, Slurm logs and results
 are all stored there. Do not stage this experiment under the Beacon home directory.

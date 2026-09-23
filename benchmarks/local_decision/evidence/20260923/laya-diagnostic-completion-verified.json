@@ -1,0 +1,351 @@
+{
+  "status": "completed_with_contract_failures",
+  "code_revision": "c7527708f9f5220c669d8aa385077cd28d04708a",
+  "records": [
+    {
+      "model": "laya",
+      "revision": "1c5edc17a7acd8701df6fc341c0d179f1c62c982",
+      "case": "english-retrieval",
+      "response": {
+        "model": "laya-rl-agent",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "retrieve",
+            "probabilities": {
+              "retrieve": 0.9554,
+              "calculate": 0.0446
+            },
+            "confidence": 0.7372,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "urgent": {
+            "type": "noul",
+            "noul": 0.0682,
+            "confidence": 0.9318,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "priority": {
+            "type": "score",
+            "score": 0.2117,
+            "legend": {
+              "0": "No urgency stated",
+              "1": "Soon",
+              "2": "Immediately"
+            },
+            "probabilities": {
+              "0": 0.8377,
+              "1": 0.1129,
+              "2": 0.0494
+            },
+            "confidence": 0.5055,
+            "action": {
+              "act_probability": 1.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 124,
+          "output_tokens": 0
+        }
+      },
+      "seconds": 3.2220738027244806,
+      "load_seconds": 35.768665864132345,
+      "library_contract": "passed"
+    },
+    {
+      "model": "laya",
+      "revision": "1c5edc17a7acd8701df6fc341c0d179f1c62c982",
+      "case": "english-calculation",
+      "response": {
+        "model": "laya-rl-agent",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "calculate",
+            "probabilities": {
+              "retrieve": 0.0206,
+              "calculate": 0.9794
+            },
+            "confidence": 0.8551,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "urgent": {
+            "type": "noul",
+            "noul": 0.8389,
+            "confidence": 0.8389,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "priority": {
+            "type": "score",
+            "score": 1.8394,
+            "legend": {
+              "0": "No urgency stated",
+              "1": "Soon",
+              "2": "Immediately"
+            },
+            "probabilities": {
+              "0": 0.0198,
+              "1": 0.121,
+              "2": 0.8592
+            },
+            "confidence": 0.5781,
+            "action": {
+              "act_probability": 1.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 115,
+          "output_tokens": 0
+        }
+      },
+      "seconds": 0.021034423727542162,
+      "load_seconds": 35.768665864132345,
+      "library_contract": "passed"
+    },
+    {
+      "model": "laya",
+      "revision": "1c5edc17a7acd8701df6fc341c0d179f1c62c982",
+      "case": "chinese-retrieval",
+      "response": {
+        "model": "laya-rl-agent",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "retrieve",
+            "probabilities": {
+              "retrieve": 0.9731,
+              "calculate": 0.0269
+            },
+            "confidence": 0.8216,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "urgent": {
+            "type": "noul",
+            "noul": 0.172,
+            "confidence": 0.828,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "priority": {
+            "type": "score",
+            "score": 0.6545,
+            "legend": {
+              "0": "No urgency stated",
+              "1": "Soon",
+              "2": "Immediately"
+            },
+            "probabilities": {
+              "0": 0.6155,
+              "1": 0.1144,
+              "2": 0.27
+            },
+            "confidence": 0.1805,
+            "action": {
+              "act_probability": 1.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 172,
+          "output_tokens": 0
+        }
+      },
+      "seconds": 0.019959891214966774,
+      "load_seconds": 35.768665864132345,
+      "library_contract": "failed",
+      "contract_error": "invalid Jev response: probabilities must sum to one"
+    },
+    {
+      "model": "laya-multilingual",
+      "revision": "052592a15d198d9ad47da779604259b10b47b7aa",
+      "case": "english-retrieval",
+      "response": {
+        "model": "laya-rl-agent",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "calculate",
+            "probabilities": {
+              "retrieve": 0.2651,
+              "calculate": 0.7349
+            },
+            "confidence": 0.1656,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "urgent": {
+            "type": "noul",
+            "noul": 0.0979,
+            "confidence": 0.9021,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "priority": {
+            "type": "score",
+            "score": 1.7668,
+            "legend": {
+              "0": "No urgency stated",
+              "1": "Soon",
+              "2": "Immediately"
+            },
+            "probabilities": {
+              "0": 0.0205,
+              "1": 0.1922,
+              "2": 0.7873
+            },
+            "confidence": 0.4676,
+            "action": {
+              "act_probability": 1.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 127,
+          "output_tokens": 0
+        }
+      },
+      "seconds": 0.02158947102725506,
+      "load_seconds": 11.256432255264372,
+      "library_contract": "passed"
+    },
+    {
+      "model": "laya-multilingual",
+      "revision": "052592a15d198d9ad47da779604259b10b47b7aa",
+      "case": "english-calculation",
+      "response": {
+        "model": "laya-rl-agent",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "calculate",
+            "probabilities": {
+              "retrieve": 0.0008,
+              "calculate": 0.9992
+            },
+            "confidence": 0.9902,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "urgent": {
+            "type": "noul",
+            "noul": 0.9958,
+            "confidence": 0.9958,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "priority": {
+            "type": "score",
+            "score": 1.942,
+            "legend": {
+              "0": "No urgency stated",
+              "1": "Soon",
+              "2": "Immediately"
+            },
+            "probabilities": {
+              "0": 0.0027,
+              "1": 0.0527,
+              "2": 0.9447
+            },
+            "confidence": 0.7956,
+            "action": {
+              "act_probability": 1.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 130,
+          "output_tokens": 0
+        }
+      },
+      "seconds": 0.01616590330377221,
+      "load_seconds": 11.256432255264372,
+      "library_contract": "failed",
+      "contract_error": "invalid Jev response: probabilities must sum to one"
+    },
+    {
+      "model": "laya-multilingual",
+      "revision": "052592a15d198d9ad47da779604259b10b47b7aa",
+      "case": "chinese-retrieval",
+      "response": {
+        "model": "laya-rl-agent",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "retrieve",
+            "probabilities": {
+              "retrieve": 0.9833,
+              "calculate": 0.0167
+            },
+            "confidence": 0.8778,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "urgent": {
+            "type": "noul",
+            "noul": 0.0154,
+            "confidence": 0.9846,
+            "action": {
+              "act_probability": 1.0
+            }
+          },
+          "priority": {
+            "type": "score",
+            "score": 1.5388,
+            "legend": {
+              "0": "No urgency stated",
+              "1": "Soon",
+              "2": "Immediately"
+            },
+            "probabilities": {
+              "0": 0.0836,
+              "1": 0.294,
+              "2": 0.6224
+            },
+            "confidence": 0.2149,
+            "action": {
+              "act_probability": 1.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 133,
+          "output_tokens": 0
+        }
+      },
+      "seconds": 0.01594561990350485,
+      "load_seconds": 11.256432255264372,
+      "library_contract": "passed"
+    }
+  ],
+  "gpu": "NVIDIA RTX 6000 Ada Generation",
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "4.57.6",
+    "huggingface_hub": "0.36.2",
+    "safetensors": "0.8.0"
+  },
+  "limits": [
+    "Six authored smoke requests, not a financial benchmark.",
+    "Response validity does not establish correctness or calibrated confidence.",
+    "Timing includes cold requests and is not a comparative speed result."
+  ],
+  "hosted_api_calls": 0
+}

@@ -1,0 +1,775 @@
+{
+  "rows": [
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "skills",
+      "file": "episodes/19-skills.json",
+      "sha256": "6f3ce203991209c4d47aebd770ee637aa2d1a28e7c8393386710d12992a5c052"
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/26-rag_api.json",
+      "sha256": "1768e0c85826da990b4034fb98b5e53370a6cb75366202c1eb0c3d2da6ca39ca"
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/19-rag_api.json",
+      "sha256": "0395d00d4e9dc130cd9330a2599a29968ba392df8e68f53ed72352a593a80ee6"
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/27-rag_api.json",
+      "sha256": "956965652ea110cb3b9bdf28c152b4e01077756f6cfb756918a2bcf046b67771"
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/05-full_report.json",
+      "sha256": "a73f29d0ded26ece5aeccfa236d7cae13334ed6fe04b2623298d70bc96cb8627"
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "components",
+      "file": "episodes/17-components.json",
+      "sha256": "6531f516e3bf3400a87609a23b6db1640169cc41e9b47667401a6f65a71662f2"
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "components",
+      "file": "episodes/15-components.json",
+      "sha256": "a84ccfc5e8322c9baef4d1ba01fb4ab6fa1144986f7c9de3cca97547ef736ee3"
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/09-full_report.json",
+      "sha256": "fe5edd71f56dbde0dfcfaf008c301547f2cf5f33fd3d163c3cfea3d626a0c5ac"
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/13-rag_api.json",
+      "sha256": "63570a8ff10f5c2c2ff9b4bf3fcfc244a2c464681dc2a7019e0a98a8c077b9cb"
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "skills",
+      "file": "episodes/28-skills.json",
+      "sha256": "302225c5abfeb85981c463a5b59b3d4d9145709342b49a8e6b8c6560fc087a23"
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "skills",
+      "file": "episodes/11-skills.json",
+      "sha256": "67ca176fa65e3fe4e36d9ea45f1e4dade43cef2cd29ec3dc9f74f7891b04a972"
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "skills",
+      "file": "episodes/22-skills.json",
+      "sha256": "c578c1af36dfd6f66a53ef6afe4991ec9ca78e2ac157669160eda6bf1168f86f"
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "skills",
+      "file": "episodes/04-skills.json",
+      "sha256": "fa04a5ce7fdb5bcec3634710bab837c5595ce67fc7bd5ce4d3cd0c8e60878a14"
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/14-rag_api.json",
+      "sha256": "383b6bcbea76bcd9b087370f25964ce29abef79997b361bccb4b99a3ae321090"
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "components",
+      "file": "episodes/26-components.json",
+      "sha256": "d999f46939412e4ce5f1feb23ea84e429ca268deaf9c6e631fb1e6facf5e4484"
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "skills",
+      "file": "episodes/15-skills.json",
+      "sha256": "f400f352fdec44814f46c3f1928d06bd4f0fe97a3500cf2cc3e98ead42a67008"
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/08-full_report.json",
+      "sha256": "04b4b86b94b08feb759a14fb84d8732c9196a843c943800a4a6fe43a833512a0"
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "skills",
+      "file": "episodes/05-skills.json",
+      "sha256": "ff03e85a36bad6cae00ffdc9031e3d39a6ee65227d7b3b8693f5969cb3450c12"
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "components",
+      "file": "episodes/14-components.json",
+      "sha256": "2d2e4d20997f2396f620bbff0b1756cd1b3cfb1a99707aeaff1ceca78781ebc4"
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "skills",
+      "file": "episodes/06-skills.json",
+      "sha256": "b7433e758bca041a68428fe7e568fe76ae4b0f91ac7f734202cb32f2cf587709"
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/26-full_report.json",
+      "sha256": "8a51df98d839d1c45db0a824f79b3a33454990d06ddeee5209e7ac696e03753b"
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "skills",
+      "file": "episodes/07-skills.json",
+      "sha256": "8fc1c1e2eadae60859db99ef0baee64357614814c17eb78539d5b54f3f6b079d"
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/11-rag_api.json",
+      "sha256": "b2298888f338c46e0e0c451681c3e13e101efda10f1da77855714f05b6e7dbfe"
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "components",
+      "file": "episodes/03-components.json",
+      "sha256": "48ce919a6aa3544ae20ce1385c2bf7b1c7a646940d21c73e031690413f0b3c85"
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/02-full_report.json",
+      "sha256": "b3e9101b25d3523adc0b4b46a3d2e1d738be2766b98e0110ebb516391de6573d"
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/27-full_report.json",
+      "sha256": "fdb4b4a6ca97c717b4b260bc198681deb7e5a98402f3641ac21369663f3262f9"
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/03-rag_api.json",
+      "sha256": "dc851e69d2519e610f4f05592eee9dcac6e7d1b61f45074a02f4047c488f6537"
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "components",
+      "file": "episodes/23-components.json",
+      "sha256": "8f74e0794a36bba87e7dd49944bb4191027a835ef30f954ea07b9d4be5003ddd"
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/17-rag_api.json",
+      "sha256": "8a7dad51dc5a6e4dde23b1753d402ec58592a1f0779c0c9d4d3b7476660be35e"
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "components",
+      "file": "episodes/02-components.json",
+      "sha256": "ddef6d3047729e4c37bed72cfa8e8cc5bec9e26e82085ecaeb9882022b517301"
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "components",
+      "file": "episodes/10-components.json",
+      "sha256": "3aed42ed9737becb6e3358c609e7bd1ac8e04aa59484fcf85c049cba66152dd9"
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "components",
+      "file": "episodes/11-components.json",
+      "sha256": "ba8aca7c3fe781aa1dc72a4c4151c2e88da4b4ac01da59a065829469176efbfb"
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/14-full_report.json",
+      "sha256": "707297dad96db48a7091cf243b9a508e75105ac432983b8630ddb65e059980c4"
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/00-rag_api.json",
+      "sha256": "91f528dadb36c4fa5a5488d3effa60f35a5ad6a1c9872710131ed1d68ab04259"
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/13-full_report.json",
+      "sha256": "031eaaa5ad5bcf5453905db12ab43274f83b6a4d1c8d221c4f01ccd4bdcc6ada"
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/01-rag_api.json",
+      "sha256": "285de19741d2c59d75171758c74c578308e410255d273a109db823ead0394b21"
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/22-full_report.json",
+      "sha256": "a520659f6b093b4562777f29d5f5758aabe6e5efe7545ec86fd375e0ca0c7f10"
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/31-full_report.json",
+      "sha256": "452c4e3d8f493b0d4b8abf82f3c4491f162388f57addbe241a03b8dabd6b1213"
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/06-full_report.json",
+      "sha256": "8c664421e23fe0531d187b629646243b1792a739a8b4fd042c86c7cb6ca3b0f4"
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/21-rag_api.json",
+      "sha256": "abb945dae864f0feda8078c3b2bcc9d57a0d61336f2f40979e598403c04c6635"
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/30-full_report.json",
+      "sha256": "00c174a4db0628feeba6271c951920fda10ab0a26871fed8ae680cc9177981f3"
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "skills",
+      "file": "episodes/26-skills.json",
+      "sha256": "83f687e56ed2a595da1801221d6efbb5d565510e84841c88149457d6bd349a81"
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "skills",
+      "file": "episodes/31-skills.json",
+      "sha256": "47f1ae511fddce05079f6755c0a6e0bef3f2a99a67c3fd18551941b9123ca957"
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "skills",
+      "file": "episodes/10-skills.json",
+      "sha256": "2cce6a34f9c463c9dc73a2b09bf451aa1e1698134c72285d03fa644b7aa9f64a"
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "components",
+      "file": "episodes/24-components.json",
+      "sha256": "a33dfed445bf9090486ebe25e0494fe58378e0737fa6e7f2f5331a4154a86062"
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "components",
+      "file": "episodes/29-components.json",
+      "sha256": "798d4deaeba2532238413aa0b453ad480c8213e86e4d796df00a81d5f71c47c9"
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/12-rag_api.json",
+      "sha256": "1fb286ff71222e13c23ba661cc1f10a08dcf2f5ecc2161a7c0de65e07d9a37e7"
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/22-rag_api.json",
+      "sha256": "6987194fbc6726a38b6ba376b14523c45f937d76f1ff392db30bcc55785762c0"
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "full_report",
+      "file": "episodes/20-full_report.json",
+      "sha256": "e284dc2171848bf4102ea64332afb19ddfc32afb01ac58923ff4996090b89115"
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/18-full_report.json",
+      "sha256": "b0fbe70486d336896dc40dc51ce1f3428cb14fa13d378aaaa8f72245df46ed8c"
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "components",
+      "file": "episodes/09-components.json",
+      "sha256": "d2aa4029aa51384bf79a30d6276e6a015838223a573108bce3d43952b083e973"
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "skills",
+      "file": "episodes/00-skills.json",
+      "sha256": "9eeedb91f4be56a26780c1e8843d22b3ef0140b485927d78fbe6f7fc167c6cd0"
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "components",
+      "file": "episodes/30-components.json",
+      "sha256": "6fd7a445ae2c67d35a363bb3437d1cef38538a56a77c3da8ee7ba16f96da5a70"
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "components",
+      "file": "episodes/04-components.json",
+      "sha256": "4d65f7ceafaaa3c136ae27383c3ad466d767c9e8f0fb8e98e757a06b1e96cf7b"
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "skills",
+      "file": "episodes/25-skills.json",
+      "sha256": "7292f4b667342300ceab08d57ebefb152bc6b6d9a610fd02ad1f49e02050388a"
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/23-full_report.json",
+      "sha256": "7b9fc19c5e198d87a15d574ca2f85eed93532b5f99fc29187b2cfb1f56cec647"
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/24-rag_api.json",
+      "sha256": "183eabac628eb5028b2bd91e3be6611f281a1870d7a2eee7780ee7831e8fcc3b"
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "skills",
+      "file": "episodes/21-skills.json",
+      "sha256": "a78737835ff4061fff2476a160357251923291526ff0503ce42e8b9838fa2e0e"
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "skills",
+      "file": "episodes/17-skills.json",
+      "sha256": "c4500727784231f83ba44ce96c1c382bffdc0663e4c909694dd70f0fa482fc68"
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/28-full_report.json",
+      "sha256": "23f06205f09dccd5a6e6adefb5f92c2a140f6ab9229694f2149be6f65da3b05f"
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "components",
+      "file": "episodes/12-components.json",
+      "sha256": "dda35dc9cab88233baf259a519282bdb1e75b75ae7975f48b6db25d9d298f316"
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/03-full_report.json",
+      "sha256": "ea82da45dba031dacd8a91e9a393c5ea255af64dec2c1a5baae8c143a0d93201"
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "skills",
+      "file": "episodes/01-skills.json",
+      "sha256": "912d047cab692a27774b76ddcf3984540a7a30988150417922f1f3861799931f"
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "components",
+      "file": "episodes/05-components.json",
+      "sha256": "b3338452a61a3732cf16fd5c75d1fd91dc8ae36faa893b1102b5c6a56f45b468"
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/12-full_report.json",
+      "sha256": "b0f6791c36db1bfda4c7b06f08ccfbdcf6951abf3f5ea9d194601625dd5ae5a4"
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/07-rag_api.json",
+      "sha256": "039afb72d0ebea5f85f3341fae2d2eee6e7058a3146d95bded9697537267411a"
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "components",
+      "file": "episodes/08-components.json",
+      "sha256": "3935b64eb57ce1d7bfa76847e701e19c7674f1c8eca5978fbeaa953d4fe9ac17"
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/30-rag_api.json",
+      "sha256": "00b5cf32fe8bb1aa9171479bbe43dd209cf33e7bfabfd5593c5f0aab2cc4f613"
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/23-rag_api.json",
+      "sha256": "2444cbffe019ca47226e50deb9316327ccfcf46d015a0be6cf40f602eb898a9d"
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "components",
+      "file": "episodes/13-components.json",
+      "sha256": "f00d3cd157f0137a8f1ac5f443efd9b3b86012cf34e5c220fb8d7ab96b7cc943"
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "skills",
+      "file": "episodes/02-skills.json",
+      "sha256": "c4f54eb460eb06d14d1a495d56de6bcbf41562257309e738be8cb147aced1270"
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "skills",
+      "file": "episodes/18-skills.json",
+      "sha256": "fdb0dba2a52910157917107d0a697165db6b0b0c8e66f51c732e5e07a504fcea"
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/19-full_report.json",
+      "sha256": "70e9e3fdc6461ee23c55c74ecc8dffbd35e56872b3821363d3f689af88b721fa"
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "skills",
+      "file": "episodes/14-skills.json",
+      "sha256": "4adc57c10406f1a607cc44d5e85a66a34d9220d6fafe8a8cbf2975d490dcf4de"
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/05-rag_api.json",
+      "sha256": "7cc3943771e1c91994056773c4a03beeef131b18d3cf6828d6e35f998c3290be"
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/04-rag_api.json",
+      "sha256": "ed78019f6a0835af6ab546b3e4dfb05afcb7318ee04366f003d6761cc1a71da2"
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/08-rag_api.json",
+      "sha256": "1f5f3ce69bc777509a125b64a345b04c01c79199477d2f9a2156e13555f16343"
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/25-full_report.json",
+      "sha256": "ca7058f1c6877a237bc383b1683956b4ac11df3422604bb4bef3e9a1b41ee2d9"
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "skills",
+      "file": "episodes/24-skills.json",
+      "sha256": "6bbcd80950dce67a1f622c50b84afe57a3f50923efca3bf3df3186eb4942cfdf"
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "skills",
+      "file": "episodes/16-skills.json",
+      "sha256": "ef90819b24da342ab916571bd7a15290ce4dc8ff92a82d55c1b02770ae4861b7"
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "components",
+      "file": "episodes/16-components.json",
+      "sha256": "abc6372cfe445496db00c5338ed5f7f3851d14c2968df617cd8e30a75c368af6"
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/09-rag_api.json",
+      "sha256": "93b1654ea82006d2ed0abc0d12dc737719591baf47b0dab6dae2dd804ac7c7c2"
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "skills",
+      "file": "episodes/03-skills.json",
+      "sha256": "49229505f093e454019c2bb952fb7ea0b71f7a981014f848439c5fd5bc6687c4"
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "skills",
+      "file": "episodes/08-skills.json",
+      "sha256": "81b7e899bbe8f9bd873e010abc78dc8af7c5cac4b4fdb940543b1adf9e0ece22"
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/04-full_report.json",
+      "sha256": "14c3f8c02a6b286df1f3057e3820f0e0f65d0aeaed5eb8ce934a618c4f480d64"
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "components",
+      "file": "episodes/19-components.json",
+      "sha256": "b28b0fad760cacad78f9183c2586b316efa7f040eccc23b7d90244a1b0317428"
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "skills",
+      "file": "episodes/30-skills.json",
+      "sha256": "f6efc051b113937c171ce1911d6e5871fdc9e073a89e8ebeeb1447f58efd74a2"
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "components",
+      "file": "episodes/18-components.json",
+      "sha256": "ec8d82afc8da8e406d136ecd102da1cd88a7966a6afbd4fe0fc8b6d8977d3177"
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "components",
+      "file": "episodes/28-components.json",
+      "sha256": "d9462c8593c98103da39899b2b4d98aa187c5b57b6732f06f06e3a8a51254926"
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/16-full_report.json",
+      "sha256": "4053ddb8928a03fe378102bc0321960a5cab8fc76503f6b64b7d872c80e409de"
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "skills",
+      "file": "episodes/12-skills.json",
+      "sha256": "35401cabca1b3fb0f0572f0a9a45fc058c2cf896271753ff48d97ef4f65b80ee"
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "skills",
+      "file": "episodes/20-skills.json",
+      "sha256": "09f5769962a976050af53be7f75e08f2c78ad8a7aa02564336afa6a9522b6be5"
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "components",
+      "file": "episodes/20-components.json",
+      "sha256": "913b087e5bce5fed02600290b7cfc5bbbd3382f8956cb1df7e9b06fb514e13dc"
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/24-full_report.json",
+      "sha256": "405e6a87c27b89f7ec385082f82d279e3dae96a3d3c9ef0f074e0b731bea6cb4"
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "components",
+      "file": "episodes/06-components.json",
+      "sha256": "c255128174291e3924842fe8fe5acc4816aad1b909763b0b5cfbb06562fff9d7"
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "skills",
+      "file": "episodes/23-skills.json",
+      "sha256": "8a9be7b8face2d158d2cf9354b580d952b9136cd1449a9cd56d52108b13db250"
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "components",
+      "file": "episodes/00-components.json",
+      "sha256": "3b9a31e1ded57451412956d0760e0f49bb4734b325ecb7c0843c39ca306c7e65"
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/10-full_report.json",
+      "sha256": "eb83a926bb2a29265a3f270ff525063fb5ca58af926a83c87af160d248520c0e"
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "components",
+      "file": "episodes/31-components.json",
+      "sha256": "61be49c8338d0b90bb3e9c740dc07a045b6118ae8e4ddb02e14c1dcc0870e6ac"
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/17-full_report.json",
+      "sha256": "bf861af07839eb98ce84d5d1d200649ce6510cfd532f390b8623c610c73bfad9"
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/29-rag_api.json",
+      "sha256": "8bb5953044ff23b0edc07e3680965da1f768af7534b12b9c45c7321006201de9"
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "components",
+      "file": "episodes/07-components.json",
+      "sha256": "f5307e06ccdf630e04c70404b3a553fe50265f4b72711eaf6fb119a786ae3b64"
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/10-rag_api.json",
+      "sha256": "08695c99266b92fa1e5137008c94f50fa00b33a82148a969cb802beb34f2498f"
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "components",
+      "file": "episodes/27-components.json",
+      "sha256": "22da862f1e48d65a4a2446888b593c9d10ae7c74dfc2bd003ff71a7a11aabcfc"
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/02-rag_api.json",
+      "sha256": "cbecf5b16c57df835550e20a8dd4c0052d4b5affff7212fdb792dbd4d5862414"
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "full_report",
+      "file": "episodes/21-full_report.json",
+      "sha256": "e5c583e1fc6d1d90c5afedb289d69ed99d4be87d4535b3992309dacf75f5a416"
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "components",
+      "file": "episodes/21-components.json",
+      "sha256": "023c4564de7d75040dc0dc0402b125a28e03eadf2a821c3663fd6d5bfc8aa29e"
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/15-rag_api.json",
+      "sha256": "571abc209d5f6d01f187b303c6071e814794753dc351069f2a5c39cd10fd08bc"
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/01-full_report.json",
+      "sha256": "40126f723abc265509968c3c0a9e0d377f38b4117422394af94c61201b54c769"
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/18-rag_api.json",
+      "sha256": "2eaa0a539ef9a96033e6ae1534e9c6dbc8aa9dd2a6bfa581c53414dba68db1f0"
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/28-rag_api.json",
+      "sha256": "ad823cff906c136650c4ed443dcfee1deffbf284536a2c38839b93fbc3e57e55"
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/29-full_report.json",
+      "sha256": "a22152df482e291457ac3b029e0acb3f4e343c5f1f14a94e699aa8a61a0760f9"
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "skills",
+      "file": "episodes/29-skills.json",
+      "sha256": "faebb02d68eec0d74845965c1a7043660748182e4d1c7fac5c6d12547c0b30d9"
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "skills",
+      "file": "episodes/27-skills.json",
+      "sha256": "762f4d66d63e5e8b2133341516dcfa5da80d200be7756f2991951a3c2bc2db0a"
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "rag_api",
+      "file": "episodes/16-rag_api.json",
+      "sha256": "1c085911e501fdce56d6d5ff7f532f7c5b1abc5a9822c4c172d265f2bbbc8517"
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "components",
+      "file": "episodes/01-components.json",
+      "sha256": "f79468bb5f4c26ecc29d20dd9632fa258e53d62b0b54060a4370605873ae8c49"
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "rag_api",
+      "file": "episodes/20-rag_api.json",
+      "sha256": "0f1d50c1258013eca3cc4ab7885599b92b4045a5719f2ce26d4e2ca01a18f537"
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/25-rag_api.json",
+      "sha256": "0cb15f84add67d00b509a242981671abd3fd7b4bbe6f4eb5e5b030ae341fab84"
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/00-full_report.json",
+      "sha256": "8493dd435d6f069ab89e9f633a0eaa7aa87d77d960b872af8b781c2154fd5fcf"
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "rag_api",
+      "file": "episodes/06-rag_api.json",
+      "sha256": "9e6c883fdf7657103edd97e75c6c04f320d4163335f90ebf1d5f750b1f986258"
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/15-full_report.json",
+      "sha256": "26b35428b98c36a1aa583403ddd2b853d19dd0486a664462ce53a4541da41d49"
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "skills",
+      "file": "episodes/13-skills.json",
+      "sha256": "669c49d3810c5cfbe375b70e46d782d2a1bb121ab9c6a6a90e6084435ae6b1f2"
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "rag_api",
+      "file": "episodes/31-rag_api.json",
+      "sha256": "4242893aa8e418aa6434e680acf6d94279a8442ec12be8c50e04a89b3b9ba7d9"
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "components",
+      "file": "episodes/25-components.json",
+      "sha256": "b007420224f8464807512f5b0143f341ef7c549455a2dcaac7d8bf06a944bfd2"
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "full_report",
+      "file": "episodes/11-full_report.json",
+      "sha256": "457c1ad502aeea4ab3e4fbc8ad32532dc7ffc1e4d97128f27a42680a3cff42a4"
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "skills",
+      "file": "episodes/09-skills.json",
+      "sha256": "52edc94c26be17d1dda18e19adfc730e0baa852416f6c9a8cc5d57632b43f091"
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "full_report",
+      "file": "episodes/07-full_report.json",
+      "sha256": "dffcce0d97f77fd613a36fcb2eaceed48f3ffcf99f6ea0acee3ad79460228881"
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "components",
+      "file": "episodes/22-components.json",
+      "sha256": "da93c1ca006c11adbfef082b33ddd40fc6e48c1ecefcb87e57d1ad44c0419e68"
+    }
+  ],
+  "planned": 128,
+  "protocol_sha256": "7335b7609e0457c7095eee5771f5fa3f1406beead552dd822deda53f5bdd9a8c",
+  "order_sha256": "a765e49608c817babb21b39f81454b09cca6cff655e8587998c1ddc4b56c529a"
+}

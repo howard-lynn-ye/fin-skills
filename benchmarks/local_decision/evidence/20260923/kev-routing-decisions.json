@@ -1,0 +1,3674 @@
+[
+  {
+    "model": "kev-0.8b",
+    "id": "q0000",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 39.834658068139106
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.052389971911907196
+      }
+    },
+    "response_file_sha256": "b4cc40ef83b8a32dfb640eaf807b913e33fcbc66d184a936143bc1b2f01d5adf"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0001",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "choosing-a-data-vendor",
+        "seconds": 0.05629914999008179
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.04945338424295187
+      }
+    },
+    "response_file_sha256": "28896062f174274e4674ee743c6f4b7ef08837d50a783a1f5cc148326362620a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0002",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.05589264119043946
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.05129729583859444
+      }
+    },
+    "response_file_sha256": "58e154308eae23c601d6d764b8dd6a3c80d641fe5b316d1f892d3f1197c0661d"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0003",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.054990109987556934
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.04909906815737486
+      }
+    },
+    "response_file_sha256": "111bdd48c35f8a879d1a3fae75cbd5a8f71fe986e79a15201dc59bae1f5313aa"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0004",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.05700551671907306
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.05124526610597968
+      }
+    },
+    "response_file_sha256": "8feedf4b9b0e6b95b9e426208d9daf09cdd8b9b9b25e7abfb9bcb3e4c4d803b9"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0005",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "macro-release-calendar-and-embargo",
+        "seconds": 0.0552869881503284
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "security-master-and-symbology",
+        "seconds": 0.04916730197146535
+      }
+    },
+    "response_file_sha256": "65f7f5425332afb5f2d36c369421de654fac680025524b73c02908b10fffd050"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0006",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.05615489091724157
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.04750440502539277
+      }
+    },
+    "response_file_sha256": "c8ba3d6af2db97766b0d2be5eaa547597f31223d7752c398fa2b682d8dd7298d"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0007",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.058830877766013145
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.047574891708791256
+      }
+    },
+    "response_file_sha256": "d1dca6f7117aeb85c6ba37ad54f3542df2eaf3b2f27439c83e030fb63c9e06ca"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0008",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.052877315785735846
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.04742221534252167
+      }
+    },
+    "response_file_sha256": "879db2a444b911e6fbb73e9658b526cb75ab71f086030973b5d44c61ed27d377"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0009",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.05165350390598178
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.047455440275371075
+      }
+    },
+    "response_file_sha256": "3941a5b19dc6bbe658d6dd883f777aaf2fb861ad2591884088c3f7f8ea5c42a3"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0010",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "fundamental-and-macro-data",
+        "seconds": 0.05283509287983179
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "fundamental-and-macro-data",
+        "seconds": 0.047527806367725134
+      }
+    },
+    "response_file_sha256": "0fd984ca3d48609e70b15c4d930a719aff9946872f3be2db0bd37160be91340c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0011",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-edgartools",
+        "seconds": 0.053535968996584415
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-edgartools",
+        "seconds": 0.04955228324979544
+      }
+    },
+    "response_file_sha256": "86c20acd74b7c6eb5a23ea3ba712521805f58f1b4c87684d32c0a0b18e581d8a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0012",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "real-time-macro-backtesting",
+        "seconds": 0.051176891196519136
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "real-time-macro-backtesting",
+        "seconds": 0.04736880725249648
+      }
+    },
+    "response_file_sha256": "ed984d4156cbba74f114e7c0bb7d74cfa3e319b2fc9efdf46f206800e17b9a98"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0013",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "security-master-and-symbology",
+        "seconds": 0.05092877568677068
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finding-and-searching-data",
+        "seconds": 0.047710946295410395
+      }
+    },
+    "response_file_sha256": "0e4426df9123a277aa84d604618349b8405f84ce75d7dfa62daa3ec74e396902"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0014",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.05416155094280839
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.04744833707809448
+      }
+    },
+    "response_file_sha256": "61b5632f83ade9618f346a58b82404410dde32a9135b1970c61bab1f12723b0a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0015",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-backtesting-py",
+        "seconds": 0.05407108785584569
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-backtesting-py",
+        "seconds": 0.0477134226821363
+      }
+    },
+    "response_file_sha256": "6f31cb3e64f1b864a524bbcafa7c973fa64b6cdcf2c70d7487fa4016fa3726eb"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0016",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-vectorbt",
+        "seconds": 0.05459370370954275
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-vectorbt",
+        "seconds": 0.04934218619018793
+      }
+    },
+    "response_file_sha256": "29a834f17a8af499301d4c7ec4493ca3508945385be316334e9aded43105b6fd"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0017",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.05526433698832989
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "meta-labeling",
+        "seconds": 0.04929105984047055
+      }
+    },
+    "response_file_sha256": "90119049e5871099254612eee37b711b7059931139a3a232043205466e348d7a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0018",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-ib-async",
+        "seconds": 0.05329695390537381
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-alpaca-py",
+        "seconds": 0.04931018641218543
+      }
+    },
+    "response_file_sha256": "a846c174e56e435c56fddfc15180c6c8c72a9feeb6c400825b3ea1d772952bf1"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0019",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-alpaca-py",
+        "seconds": 0.05623748525977135
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.04701424762606621
+      }
+    },
+    "response_file_sha256": "745868b5b72d923e4d8410672171ddf3d850734daca1b9e39c0c6c2b8d60c236"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0020",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-alpaca-py",
+        "seconds": 0.05169516475871205
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-alpaca-py",
+        "seconds": 0.04581556282937527
+      }
+    },
+    "response_file_sha256": "49f1db6a51bfacb9d83ee26436af77f84f05b4ad653d0b15330f516ecf0903fd"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0021",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.05323285469785333
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.049193326849490404
+      }
+    },
+    "response_file_sha256": "c89513b9fbe27b022627f7a3823e48131d0466f183370c3d9f4c5fdce1b6f65b"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0022",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.05534639302641153
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.04743677796795964
+      }
+    },
+    "response_file_sha256": "c15ad69f6c2ad83035f3f57e50f6e175f7d70fc3b289fcb8582dc2fe055432da"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0023",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.04986282018944621
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.04585681203752756
+      }
+    },
+    "response_file_sha256": "f66b2cf6349d8be79de2b8bf7b615952041d91844fdf2e3e39f699bca0cd21a5"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0024",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.055533880833536386
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.04734778590500355
+      }
+    },
+    "response_file_sha256": "0a0859b78451c0458b77bae71866d4ec2b71b16292d0253161a4ec6a7188e4a8"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0025",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.05078467959538102
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.045773047022521496
+      }
+    },
+    "response_file_sha256": "a3e50cceef4c9178e15622e28653b6afe5becd4d0f2e33476c5fa8693df3f91d"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0026",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.04978166799992323
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.045946259051561356
+      }
+    },
+    "response_file_sha256": "ad56f6f28774c835867bcf98fc47fe7ea804c9b31f39e2b29f70d1a890392c98"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0027",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "volatility-models",
+        "seconds": 0.052589500322937965
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.04746477724984288
+      }
+    },
+    "response_file_sha256": "cddbf59fe20478e9c82966d8c18f848a824e59b5f694d07392a5411f28548542"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0028",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.05225481791421771
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.0458624130114913
+      }
+    },
+    "response_file_sha256": "89364f8d18b47e30d46d6b6c43e6b486d003364d50fd65a6a31b6fb61a422f4e"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0029",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-pyportfolioopt",
+        "seconds": 0.05474101332947612
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-pyportfolioopt",
+        "seconds": 0.047639911994338036
+      }
+    },
+    "response_file_sha256": "acdc985de237efbff259cc3703bc26fec7de5b3bf57a48dff306a102ebd6111d"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0030",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.055786233860999346
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.049484578892588615
+      }
+    },
+    "response_file_sha256": "6b427013cf2cdb1526c959edff7b23e63f0c887ea37ee8e4212c92acf78f6b51"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0031",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.056279716081917286
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.0475053689442575
+      }
+    },
+    "response_file_sha256": "9f2a52ca779c99ce8079269a015d71333f38fc915cdc0ba2ddea7604b20eb315"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0032",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-optimizers",
+        "seconds": 0.056149922311306
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-optimizers",
+        "seconds": 0.049449075013399124
+      }
+    },
+    "response_file_sha256": "00cad8ea2857f7e867ae8a0591b6e765d3e0aeb52680d27fb9b87f669aa221a0"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0033",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.05885915132239461
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.05124929407611489
+      }
+    },
+    "response_file_sha256": "078a1e6206ea12257bbb952c568eabc115c3ff658936b086b896999c5e1a740c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0034",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.05756132770329714
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.04918067995458841
+      }
+    },
+    "response_file_sha256": "e14a6087d89a1193ca7ec69b6d59b1da1f83d5bc5992dcd43afe06b1538b85b6"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0035",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "meta-labeling",
+        "seconds": 0.05538058606907725
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "meta-labeling",
+        "seconds": 0.04935329034924507
+      }
+    },
+    "response_file_sha256": "70b4195b8646cb01a3acc64f3fe73f68b496397e2c910162c297cd6aada927f1"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0036",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.05556991323828697
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.0491941599175334
+      }
+    },
+    "response_file_sha256": "a81187b77ea448847a2beecaf4a310af32bbd0e33d48e71965df410830dca24c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0037",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.05570615781471133
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.049414617009460926
+      }
+    },
+    "response_file_sha256": "381ac9f988211ebf7b8b55dc1453b290f7a774be74d4750d1e140037191c1f69"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0038",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.05661356635391712
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.04916890384629369
+      }
+    },
+    "response_file_sha256": "cc54afe819ed33b9784a5324d237d6e490e90fb2a12370be9739605aea205a4d"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0039",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.05351574486121535
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-talib",
+        "seconds": 0.049308466259390116
+      }
+    },
+    "response_file_sha256": "e776f6e0f32d5c8809d323057b9fc5937da67c210060ac97d25a0036cc786cea"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0040",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "credit-spread-measures",
+        "seconds": 0.05531720072031021
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "credit-spread-measures",
+        "seconds": 0.05133072705939412
+      }
+    },
+    "response_file_sha256": "888eebef6d7c81f9e968ab19d041257db4fda1552af3284f4208b134858d218c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0041",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.05651944875717163
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.0475962427444756
+      }
+    },
+    "response_file_sha256": "351e0ce3f3161343e5baa12946a343315a10978df0001b343307ed540311c063"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0042",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "crypto-token-events",
+        "seconds": 0.0513187600299716
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "crypto-token-events",
+        "seconds": 0.047536591067910194
+      }
+    },
+    "response_file_sha256": "049f395902b52079cfa2ee603849449760210b8705b57b5497eaa45da3079e65"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0043",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.056018253322690725
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.04939101031050086
+      }
+    },
+    "response_file_sha256": "f14f4f69cf751554d512c441263921e60fb5bd457ff1e10a864531038f3fb469"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0044",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.05507169617339969
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.049393854569643736
+      }
+    },
+    "response_file_sha256": "8248b4e4eb8fa11bc820778c4ba2ddb7c2dcaddce5906c02c8936faa40346f2f"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0045",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.05516315717250109
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-tushare",
+        "seconds": 0.04917705990374088
+      }
+    },
+    "response_file_sha256": "c2cf9f7a0a29ad03abd54709727906a95e02c4138a83284f1b58321b0bb863bd"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0046",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "security-master-and-symbology",
+        "seconds": 0.053997539915144444
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "choosing-a-data-vendor",
+        "seconds": 0.049320515245199203
+      }
+    },
+    "response_file_sha256": "047b30c74c8bfa043dad8f383cadf1f23bec1b5cf8cf6bce82784f143c92ccc9"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0047",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "china-trading-stack",
+        "seconds": 0.0530199590139091
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "china-ashare-trading-taxes",
+        "seconds": 0.04755512299016118
+      }
+    },
+    "response_file_sha256": "95ce75578692e8678dc3c6c8418de583a5f87fe0f2553311b58489e2e562bda7"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0048",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-edgartools",
+        "seconds": 0.05221261130645871
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-edgartools",
+        "seconds": 0.045661681331694126
+      }
+    },
+    "response_file_sha256": "9022877ea0aac1112a3a0bd44e52dbd7de737e92100f36345654edc975a77f2f"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0049",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "crypto-market-structure",
+        "seconds": 0.04851161269471049
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "crypto-market-structure",
+        "seconds": 0.042049067094922066
+      }
+    },
+    "response_file_sha256": "4d7c75fb2a7b0da89a47fd9aea2b6770bee3d3869541a3760cd582c941108df2"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0050",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtesting-engines",
+        "seconds": 0.04886892205104232
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.0441082282923162
+      }
+    },
+    "response_file_sha256": "7b4515b03b641d4807c5d10266a62d1ffcee4370d499381ac43d055dc455a5fa"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0051",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-ccxt",
+        "seconds": 0.052690606098622084
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-ccxt",
+        "seconds": 0.049397468101233244
+      }
+    },
+    "response_file_sha256": "61b00ae490be51a040c854bece65232e245cd7e6b0ab75171b6806cceddca2ab"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0052",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.05105223599821329
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.04762382106855512
+      }
+    },
+    "response_file_sha256": "9b861ffe93cac09e5ff26dec66d7f026fcea62e6198c20229e93bbb90ba6dbbf"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0053",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.051780282985419035
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.04577952530235052
+      }
+    },
+    "response_file_sha256": "b2ad9b25d43bee68e06156fbe40948502a95aeb8ad937306599e218211c8c6e3"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0054",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "fin-skills-as-tools",
+        "seconds": 0.04977851128205657
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "fin-skills-as-tools",
+        "seconds": 0.0458905347622931
+      }
+    },
+    "response_file_sha256": "45a3d05d17155224690492ac138dc4913069e21792b988c9841cb0e42a903266"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0055",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-edgartools",
+        "seconds": 0.05094728013500571
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-mcp-servers",
+        "seconds": 0.04582570167258382
+      }
+    },
+    "response_file_sha256": "d08dde105b431e66869b6e5f40f5a1a533c377a5dd138fe72d927f68ef3dc671"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0056",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.049513202626258135
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.045748929027467966
+      }
+    },
+    "response_file_sha256": "139b0c163600ac6e3f3c2d18ef9f4e73bc3745f86f83cc97463713db03b6bb28"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0057",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-qlib",
+        "seconds": 0.05392936896532774
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-qlib",
+        "seconds": 0.05143848014995456
+      }
+    },
+    "response_file_sha256": "e9f19e7125222b977847db63d68345e60f5e5a91737cb918ced813082b554058"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0058",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.052571519277989864
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.04757942399010062
+      }
+    },
+    "response_file_sha256": "b6d1c3aa94b431edea8d6cc1cc753043ae804edfd23eee4e02c5f26f0e9b25a8"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0059",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "asia-pacific-markets",
+        "seconds": 0.04283683514222503
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "hong-kong-markets",
+        "seconds": 0.038374756928533316
+      }
+    },
+    "response_file_sha256": "ff5dc64e54da15b825f7dea811fd4194bbd9f18df98ea169f87be586238df993"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0060",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-tushare",
+        "seconds": 0.050125709269195795
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "korea-taiwan-markets",
+        "seconds": 0.04593103798106313
+      }
+    },
+    "response_file_sha256": "cea166a6e512661a642654749355c692eb2a11cd211d3ecef231f9d08e81d15d"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0061",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "india-markets",
+        "seconds": 0.04510251060128212
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "india-markets",
+        "seconds": 0.03829893283545971
+      }
+    },
+    "response_file_sha256": "cf6417684910bee0288139a9cac343ee9987512168b336a27655ca836890180a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0062",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.05309638101607561
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.04943035589531064
+      }
+    },
+    "response_file_sha256": "635b95e8752b250b4122fa2c3eb752298ddb2328b07e328b81426f89b8b88838"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0063",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-quantstats",
+        "seconds": 0.052337904926389456
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-quantstats",
+        "seconds": 0.04748931899666786
+      }
+    },
+    "response_file_sha256": "23c4a4a9e24ec79d0793b41842e29cdeb4d4bd107a94889adea8c008eb4fa02a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0064",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-pyportfolioopt",
+        "seconds": 0.05117390304803848
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-pyportfolioopt",
+        "seconds": 0.047526821959763765
+      }
+    },
+    "response_file_sha256": "42a371ff7992524fa910a98a01bc31c2b7d53db41c07c2a4206ce46651f3eb51"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0065",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-quantlib",
+        "seconds": 0.05643117008730769
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-quantlib",
+        "seconds": 0.049115634988993406
+      }
+    },
+    "response_file_sha256": "0ac68d0f9de1d461dcee0971dc86bd050bfa188a9637af11aacf1a20fbaf2667"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0066",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-arch",
+        "seconds": 0.05415062885731459
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-arch",
+        "seconds": 0.04944604309275746
+      }
+    },
+    "response_file_sha256": "9d39aeb2aca3fd516660d4008c5fdd67fb9dd3747c1a63154a6bad779e584266"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0067",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-tushare",
+        "seconds": 0.05033235298469663
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-tushare",
+        "seconds": 0.045759462751448154
+      }
+    },
+    "response_file_sha256": "381a703f8b62beef9519f21448c9072c5a1bcaeba20cd814a8b456b195ec9b15"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0068",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.05223411088809371
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.047459997702389956
+      }
+    },
+    "response_file_sha256": "ecd5fb1420633b0e25fa01b8c3148adb27a223dbdb78fb6d0d095b9c217debbf"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0069",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-freqtrade",
+        "seconds": 0.050897351000458
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-freqtrade",
+        "seconds": 0.04744067322462797
+      }
+    },
+    "response_file_sha256": "265f57fd4c0be1bf03b55311da9f4658fb0b716ab6a73b853494c72db22bdf68"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0070",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.05576064484193921
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.04951197700574994
+      }
+    },
+    "response_file_sha256": "f089b40191d7fe5a93adc04d01b334d7cc0e1f2424cd844fe2e70e388611aac5"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0071",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.05595438089221716
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.04911076510325074
+      }
+    },
+    "response_file_sha256": "12c50a5b12b458a98ff7eb29ccc214ec521b8b477498fd60e3d098b0ee99e8be"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0072",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.05338954506441951
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.0495866141282022
+      }
+    },
+    "response_file_sha256": "c82baffd05c6a5ef05fddb44ead5fb0e3af353405029b2294db3197fd9e61253"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0073",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "choosing-a-data-vendor",
+        "seconds": 0.05346373002976179
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "choosing-a-data-vendor",
+        "seconds": 0.04950014082714915
+      }
+    },
+    "response_file_sha256": "47df00399eae99dcbf7fc9588ab82b123beb31f90732aa0cbe058594e64571f7"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0074",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.04983050702139735
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.04631281225010753
+      }
+    },
+    "response_file_sha256": "2ba61914ff63f5c3c462c193ff513478b043ca7a71f613d32da99b15c900e7cb"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0075",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "ex-dividend-and-rebate-interest",
+        "seconds": 0.056411480996757746
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.04948792792856693
+      }
+    },
+    "response_file_sha256": "4924dd0c91ca1bf603000afacc638510683231b6833633cde567cd8c1fa2df44"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0076",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.05579586187377572
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.050700416788458824
+      }
+    },
+    "response_file_sha256": "bec5828f8af388ed71d072f6a53c25194675ce6abbb9165c155f436840fefa84"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0077",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-riskfolio",
+        "seconds": 0.05667718080803752
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.04941707057878375
+      }
+    },
+    "response_file_sha256": "77825a35235494a79ad438e726e8664ee62d21849af443cc22108aa9b4e2a83c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0078",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.05423716735094786
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.04753604903817177
+      }
+    },
+    "response_file_sha256": "e60cf34c93086e37b94620d25c8ccff810f5471797bd4bb9cacb4cfe3554184c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0079",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.05169579992070794
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-quantstats",
+        "seconds": 0.04765669209882617
+      }
+    },
+    "response_file_sha256": "68fe49bc83326b7021c1fc58283cf5a779e96f12b00feb269e6420e012df11fb"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0080",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "meta-labeling",
+        "seconds": 0.05331323901191354
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "meta-labeling",
+        "seconds": 0.04765293188393116
+      }
+    },
+    "response_file_sha256": "6fc0a4b3f95f8748772926e582ff56f4f979cb593f7f5f7379ae391b930d69f8"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0081",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.053533671889454126
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.04943551495671272
+      }
+    },
+    "response_file_sha256": "8225a1ee1f43cb79949fa8f59a4a1c618a42890e19415fe70995d2dcc5747a97"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0082",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.057215042412281036
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.051212018355727196
+      }
+    },
+    "response_file_sha256": "a29c0e9841f58664e99f83aff259fab5a3a3d7a882ba7e575c6cbdfa1d6dd0e2"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0083",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-alphalens",
+        "seconds": 0.05305118719115853
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.04740807693451643
+      }
+    },
+    "response_file_sha256": "e2c317f2da49f460ce217242b500a4c35f87e5eeef0738e3c1b8c5309e46f56a"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0084",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.05438847607001662
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.049350414890795946
+      }
+    },
+    "response_file_sha256": "08e7e15e5ac16eff7386c5632f87fc39db129c5db44be01faaa5836291b5ff0f"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0085",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.05547838704660535
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.0474754786118865
+      }
+    },
+    "response_file_sha256": "82293e3f020a86470511678c9975f4904c4183575adee8f77b19d28cfa8cfbe2"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0086",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.05452737119048834
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.049387210980057716
+      }
+    },
+    "response_file_sha256": "0d8bf2d5df5b5d4fbd159097f1f8e012f1e91b7f737451ade6bcd67c2c415b2c"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0087",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "corporate-actions-processing",
+        "seconds": 0.049215863924473524
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.04579740110784769
+      }
+    },
+    "response_file_sha256": "523b4df98e091dd5d6f17a3dc08b208ee774995a6b4a63971fad65b708372423"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0088",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.05085619306191802
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.04752172203734517
+      }
+    },
+    "response_file_sha256": "1e0617a0260b364e27413723da70e62f0b085261491f29f7cd7c3ffd5d261026"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0089",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-algorithms",
+        "seconds": 0.05248586507514119
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "execution-algorithms",
+        "seconds": 0.04778298083692789
+      }
+    },
+    "response_file_sha256": "0cc8724fb1cd46d4e83d49afbaf0d1b463ee5e6b6a227fb85624422fead7563b"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0090",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-making-models",
+        "seconds": 0.054095768835395575
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "duration-convexity-and-dv01",
+        "seconds": 0.04778366722166538
+      }
+    },
+    "response_file_sha256": "68cb61f5b26d51a3ec9ecb968110ebd4213756713cbc6322c9b44f479b28039f"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0091",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "limit-order-book-models",
+        "seconds": 0.052224528044462204
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "limit-order-book-models",
+        "seconds": 0.04761581216007471
+      }
+    },
+    "response_file_sha256": "16b4d518b02ffd3b72cfc5f9b05e92b481015eeddf8ed2163745560e95bd2601"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0092",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.05417264811694622
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "limit-order-book-models",
+        "seconds": 0.047326480969786644
+      }
+    },
+    "response_file_sha256": "caee2f69a2c08b7cd7b39db226e81c8c41f57e27c75627f5375282449c4c486e"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0093",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "state-space-and-kalman",
+        "seconds": 0.05233582202345133
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.0474336757324636
+      }
+    },
+    "response_file_sha256": "fffb2fb7331a45a534dc0e83b4eed771cf0185836d41932aa414c82cc0520af5"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0094",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtest-overfitting",
+        "seconds": 0.05560355819761753
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtest-overfitting",
+        "seconds": 0.049360990058630705
+      }
+    },
+    "response_file_sha256": "1b33cb487694b81bbd51a923d068b2f7ec2a8e6a907c15e42fad2eb53e2dad41"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0095",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.05318413395434618
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.049339707009494305
+      }
+    },
+    "response_file_sha256": "7f980c752eb2b9f44beb325517fcfa2dae4c3c70ec4f44f4f3daa9197047a6f6"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0096",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.052305778954178095
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.0475764567963779
+      }
+    },
+    "response_file_sha256": "81d7ae6ba1def1a22f5ba9b46054a33bbc39a0ad988ef3911f025e8b7c697d26"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0097",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.0509364940226078
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.045920918229967356
+      }
+    },
+    "response_file_sha256": "96e5d23a7566ea0f370e9e0f9f1e5d374be17f99645dfdbc26b593310a7e7bab"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0098",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.048813865054398775
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.041952814906835556
+      }
+    },
+    "response_file_sha256": "f9325418a1ad54b86a84a3b46a6ecfc71952d55cf389b145e34f18d2950041b2"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0099",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "crypto-data-and-execution",
+        "seconds": 0.04905104171484709
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "crypto-market-structure",
+        "seconds": 0.045637034345418215
+      }
+    },
+    "response_file_sha256": "94aa7c5ac24d1dfa8d5491b9d9aeadb4af974a549146873d808b12784fb90cc2"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0100",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.04514017794281244
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.04215936316177249
+      }
+    },
+    "response_file_sha256": "be12eaacfc42e984c7a829ea74625d3281531594e3d4bfedd5c213538b3de66b"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0101",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.04996541189029813
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.04736997094005346
+      }
+    },
+    "response_file_sha256": "b608a8f6e4426dab14481afde2000d52768ce0a675751bf7dbc60337d9562911"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0102",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.05184441292658448
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.047501024790108204
+      }
+    },
+    "response_file_sha256": "48da7fd0605589ad935a643aaa6ab9f3289a230cbb02765671c49df621898211"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0103",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.05149672273546457
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.047531803138554096
+      }
+    },
+    "response_file_sha256": "bd9741eff1607474c635ad7f43cb7c84fff00d6a4840fe9801def8d52b8974de"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0104",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.05096974689513445
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.04752822918817401
+      }
+    },
+    "response_file_sha256": "99748c45125f3a3dbb49569393c61032eabc9f689a74a1d601cb8c7e685a0cb7"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0105",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.05099295545369387
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.04757564887404442
+      }
+    },
+    "response_file_sha256": "22b0aa2ed468788546a900599f521a058e06304a615cdf7ec4802181877b7980"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0106",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.0525789363309741
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.047707851976156235
+      }
+    },
+    "response_file_sha256": "4754eb2a26420c6ddce86370e8ea7e163f0cfa44b8ba94439200085b547fcb52"
+  },
+  {
+    "model": "kev-0.8b",
+    "id": "q0107",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "llm-finance-agents",
+        "seconds": 0.0519795510917902
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.045655608642846346
+      }
+    },
+    "response_file_sha256": "3f2123720158dfc07ce6a4ae78db3ff362e8c8e298d893df006bf3e90262bbb2"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0000",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 12.609393872320652
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.08410610444843769
+      }
+    },
+    "response_file_sha256": "d95b03834248f197d06d55cac19a22e8b88abb5b6b3d9a670545e2e043e4249e"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0001",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.08286813599988818
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "choosing-a-data-vendor",
+        "seconds": 0.07846829574555159
+      }
+    },
+    "response_file_sha256": "d5858fcb95314ca9d8bb3c57409bb7b476c9012b0f93173109867124860559c2"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0002",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.08772135898470879
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.08354259328916669
+      }
+    },
+    "response_file_sha256": "28edb0a30b6c26e6a164ae297005247b1e54bb1c926de4aa18ff6699717e1f4d"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0003",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.08704965095967054
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.07947411574423313
+      }
+    },
+    "response_file_sha256": "b9eca93141270dfa8c37176e0821e6f3e2d9ccd29f0af96e299aa08a6668c779"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0004",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.08727928483858705
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-sourcing",
+        "seconds": 0.0836948910728097
+      }
+    },
+    "response_file_sha256": "a91895cb14cabe9cc59ba6dc3af76f0e7ba3d8ad8d304173e8661f55509a759e"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0005",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "macro-release-calendar-and-embargo",
+        "seconds": 0.08318407321348786
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "security-master-and-symbology",
+        "seconds": 0.07804481126368046
+      }
+    },
+    "response_file_sha256": "23b46d4cbe1fed6e71c9800096cba0989a454fe27304f15efb892370307c2ca1"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0006",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.08127290615811944
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.07511000335216522
+      }
+    },
+    "response_file_sha256": "5343ef62d1ebd2593b4db4bb8ccc6f00997b6fa6b046432bedf9b813a3029d4c"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0007",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.07749210903421044
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.0745420390740037
+      }
+    },
+    "response_file_sha256": "e9e1c60556c5fbe5fe50a9b3671b24cc39f6388aade0a68fbe4731cc95ea0352"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0008",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.08075431687757373
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.07482356578111649
+      }
+    },
+    "response_file_sha256": "de4de32b3c1f4cce211ac9a62d1fa0d852dad75c46a8fb47aeee52c6042355c1"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0009",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.07841876242309809
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "market-data-engineering",
+        "seconds": 0.0745396469719708
+      }
+    },
+    "response_file_sha256": "6049452b0f22c894d6b9de7e951a180ad733cebe3c42b40274ca4b5a60629dde"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0010",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "fundamental-and-macro-data",
+        "seconds": 0.07836737995967269
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "fundamental-and-macro-data",
+        "seconds": 0.0744346808642149
+      }
+    },
+    "response_file_sha256": "4b7d937705ceeed241aeb0a3c1effadf4dd81a7cb6b6e74d6bc8bfaad5e15657"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0011",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "fundamental-and-macro-data",
+        "seconds": 0.08157331915572286
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-edgartools",
+        "seconds": 0.07858104212209582
+      }
+    },
+    "response_file_sha256": "595646943e953312f55a85ba8d4bd032c27c4bd69d27087afed130a899ff77e0"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0012",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "real-time-macro-backtesting",
+        "seconds": 0.07839720696210861
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "fundamental-and-macro-data",
+        "seconds": 0.07426887098699808
+      }
+    },
+    "response_file_sha256": "ad323c50c905201c4bba1c3a48d555c399295b2885b222a979819105af742612"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0013",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "security-master-and-symbology",
+        "seconds": 0.07904869504272938
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "security-master-and-symbology",
+        "seconds": 0.07497523399069905
+      }
+    },
+    "response_file_sha256": "6629e9ae5978d5b2094b961b69b39e95e7f1f5e64b34db751a51edf5ce29c1b6"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0014",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.07999902963638306
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.07396953506395221
+      }
+    },
+    "response_file_sha256": "34389cec916160a7354900432b44bab39d9c05a9687d316b5813a78695d33284"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0015",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-backtesting-py",
+        "seconds": 0.08124880818650126
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "quant-stack-router",
+        "seconds": 0.07468751072883606
+      }
+    },
+    "response_file_sha256": "7258217b80cd7d0d2eea3f319422732875af07fb57b3c9486ea5e9d610fecf65"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0016",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-vectorbt",
+        "seconds": 0.08614424103870988
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-vectorbt",
+        "seconds": 0.0794287552125752
+      }
+    },
+    "response_file_sha256": "2760e18f6753e994b8ccf112cf3b6691576370839e4b315d0b5a8b5d06ee78ab"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0017",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtesting-engines",
+        "seconds": 0.08263190230354667
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtesting-engines",
+        "seconds": 0.07811890402808785
+      }
+    },
+    "response_file_sha256": "3a12edc3b7b5aad808544b9921f6c7d66adcb99d3df366591d534f61df244882"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0018",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.08610623003914952
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-ib-async",
+        "seconds": 0.07945333514362574
+      }
+    },
+    "response_file_sha256": "789553d691d6b5c29e2634ad8bc85cde519ac569b04ef48e1eeaac7a0989645a"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0019",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.0785366059280932
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.07482028240337968
+      }
+    },
+    "response_file_sha256": "3d3ced329acdd164a6c0c9924ee61f6caaaf9108920daa490ffb61c8fbd2b962"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0020",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.07597963511943817
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-alpaca-py",
+        "seconds": 0.07039268594235182
+      }
+    },
+    "response_file_sha256": "1b516c6306655c707bbaea9b206e4a6ac8af0f9ef898740b6fabbd46c703136d"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0021",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.08328811218962073
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "broker-execution-apis",
+        "seconds": 0.07948947744444013
+      }
+    },
+    "response_file_sha256": "9558a91a459249910f2153a249bbafe193d821866d5a7566eaa274b8ab358533"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0022",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "signal-construction",
+        "seconds": 0.07720996998250484
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "signal-construction",
+        "seconds": 0.07388097979128361
+      }
+    },
+    "response_file_sha256": "791734a9650564f4aa9df28e403dc86e21e65f07c96474f242f5713eb7308e18"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0023",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "signal-construction",
+        "seconds": 0.07468360988423228
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "signal-construction",
+        "seconds": 0.07074715429916978
+      }
+    },
+    "response_file_sha256": "6eafd0f7fd57eaecb1c4527b9d4693d6300edad80fad2707016adfb939bbee10"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0024",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "signal-construction",
+        "seconds": 0.07636853400617838
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "signal-construction",
+        "seconds": 0.07399968802928925
+      }
+    },
+    "response_file_sha256": "3970d2b44ac78f09d2ffb06238dd902c1e0135a0ae7d109f330af0c5cbe1fdd6"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0025",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.07341625029221177
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-alphalens",
+        "seconds": 0.06929189944639802
+      }
+    },
+    "response_file_sha256": "c979a3bae45d77be98179ba2108ddd4cdfaffb37ba99b60fe075b0d88e896bac"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0026",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.07557109091430902
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.07050954084843397
+      }
+    },
+    "response_file_sha256": "999dfa2f5df7040d8dacb9402e0048ad132254be62e862201cd40bef8ea13015"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0027",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "volatility-models",
+        "seconds": 0.07730088103562593
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "volatility-models",
+        "seconds": 0.07468723598867655
+      }
+    },
+    "response_file_sha256": "3f80c93f5d2f0b837686a642708d4566efe0a161d2ba408f4db6016fdb840d33"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0028",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.07451786287128925
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "factor-and-timeseries-research",
+        "seconds": 0.07037993986159563
+      }
+    },
+    "response_file_sha256": "038fe287b984fd3004fcd105cca497125a5249e6ce9eefb6025e8670c0ab1a2d"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0029",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-optimizers",
+        "seconds": 0.07788174692541361
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-optimizers",
+        "seconds": 0.07498924667015672
+      }
+    },
+    "response_file_sha256": "ccdd6ee163a95aa5cb0ea8caf74789005a8c5e3b5843017c32fb1bc864683f73"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0030",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.08165940130129457
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.07852166378870606
+      }
+    },
+    "response_file_sha256": "5bff9ceef1ea7488445fc49f2980a28afd12b9395565322fa60945a4177fb378"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0031",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.07928641187027097
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.07516053831204772
+      }
+    },
+    "response_file_sha256": "244f53a9d435abf6e5ac001e45bacacd3ba2a56cd979218777694813e98872f2"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0032",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "portfolio-and-risk",
+        "seconds": 0.0806292430497706
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "portfolio-optimizers",
+        "seconds": 0.07831307081505656
+      }
+    },
+    "response_file_sha256": "0cfd2bf79e26a5b2b5739ee25424073bfac9a51643dc38eb8d2b9d7d247ef32b"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0033",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.08665624400600791
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.08382713655009866
+      }
+    },
+    "response_file_sha256": "c9ba1a618851f3f54e2a45c432f2b0c8301c5ab837999901bd75292e62a88ca0"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0034",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.08423786936327815
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.07882648054510355
+      }
+    },
+    "response_file_sha256": "d161c2ea8498dbe672deb6a971c716be7dad16f09ea8fceb414acdcdc9fa2d37"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0035",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.08426247909665108
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.07921657618135214
+      }
+    },
+    "response_file_sha256": "88b4dd62a8979045f8026ec2ffc36db4fb783d2d9815734cdb644e42af568fdf"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0036",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.08354030596092343
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtest-validation",
+        "seconds": 0.07950603077188134
+      }
+    },
+    "response_file_sha256": "62d4a507a2e82386a137c4c6c2df56a7e334cbf1b3700270f9f1e88da0b39bb1"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0037",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "option-pricing-models",
+        "seconds": 0.0817998549900949
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "option-pricing-models",
+        "seconds": 0.07872474007308483
+      }
+    },
+    "response_file_sha256": "09f81598dc45df2370cc8b3ab56c7fd54966c55d8ccf8c043d01884d98e20247"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0038",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.08277429593726993
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.07856687717139721
+      }
+    },
+    "response_file_sha256": "985286216090a2913b2b3efa9686677f01a8e1764e40a60a8db0c2595404e53d"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0039",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "derivatives-pricing",
+        "seconds": 0.08226929325610399
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "derivatives-pricing",
+        "seconds": 0.0788320261053741
+      }
+    },
+    "response_file_sha256": "995d6423541349f931fe71ea47aa795ef507f9489447374dca89a78e342edacc"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0040",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "term-structure-models",
+        "seconds": 0.08713407814502716
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "term-structure-models",
+        "seconds": 0.0836008689366281
+      }
+    },
+    "response_file_sha256": "d24f86a48e8ba8653808243e4dc1bca039b5c3271d60c515ca9c63751a5ccf92"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0041",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.07763581024482846
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.07529720198363066
+      }
+    },
+    "response_file_sha256": "ee5df97582f9b5fdf3b3a394e6519cbee9b1dccd18bd808063dd1dc2675d3a48"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0042",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "crypto-token-events",
+        "seconds": 0.07632445776835084
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtest-overfitting",
+        "seconds": 0.07415471831336617
+      }
+    },
+    "response_file_sha256": "ccff51cb105a978ae9b5fe46ff6b729cec15849cd55eefd9ff6297523b5d91a1"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0043",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.08158929971978068
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "research-integrity-guards",
+        "seconds": 0.0787657331675291
+      }
+    },
+    "response_file_sha256": "30f9c0579924f8a2feef23e5f70316cd8b7f71fd36b62953e78db1e94f648d1b"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0044",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.08363788900896907
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "china-ashare-data",
+        "seconds": 0.07876642374321818
+      }
+    },
+    "response_file_sha256": "a8e3066b9efec0b240d5785954c79cd1a0fa1f75cb9246dd8db004924d5f2f68"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0045",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-akshare",
+        "seconds": 0.08163290191441774
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-tushare",
+        "seconds": 0.07870654109865427
+      }
+    },
+    "response_file_sha256": "d58f9d52c4ec13f483964b3648a5e377806e4a4e0742acad14934274fdd567f5"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0046",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "china-ashare-data",
+        "seconds": 0.08095736801624298
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "china-ashare-data",
+        "seconds": 0.07852059789001942
+      }
+    },
+    "response_file_sha256": "b552c08ead395b6520b855ad23ad82c0fbdd722d8ff3d2e9a9bff699d0b94553"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0047",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "china-trading-stack",
+        "seconds": 0.08014895487576723
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "china-trading-stack",
+        "seconds": 0.0747563517652452
+      }
+    },
+    "response_file_sha256": "9c8b9191724985815075c7e24a143ad19079f92a68b826e1c6b86040e4329430"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0048",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "china-trading-stack",
+        "seconds": 0.07379346573725343
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "china-trading-stack",
+        "seconds": 0.07016519084572792
+      }
+    },
+    "response_file_sha256": "b87a0c5191ae9501a78899168a1ab7ade10b6986dfebc6f63ccc5efafa71596b"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0049",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.05996175995096564
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "crypto-data-and-execution",
+        "seconds": 0.05638241907581687
+      }
+    },
+    "response_file_sha256": "2def8b05fe2cab0f509fa5c372122728ff031fe0861182b7f8bc0afd9a9602da"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0050",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.06657805293798447
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtesting-engines",
+        "seconds": 0.06301143206655979
+      }
+    },
+    "response_file_sha256": "a8b2e74e3891777f34ec2a9a0296ba22361f3df011e859492ae840d6eaabb0b2"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0051",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-ccxt",
+        "seconds": 0.08190581994131207
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-ccxt",
+        "seconds": 0.078333695884794
+      }
+    },
+    "response_file_sha256": "3c4e01935d686bad84b64eb31c8be5e1ca073870de14a5ace2ee3b557e6985b6"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0052",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.08001197082921863
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.0754474033601582
+      }
+    },
+    "response_file_sha256": "1640c3e0dadb5bb61e1f363f7fa8918deeaf45f341c8976717183e5c69ee17f0"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0053",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.0715264999307692
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "social-and-influencer-feeds",
+        "seconds": 0.06904623983427882
+      }
+    },
+    "response_file_sha256": "6e73fc3c526f27568517d1962e52288baf15a9e4d5b560026d07f84860e43ea7"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0054",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-mcp-servers",
+        "seconds": 0.07394595164805651
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-mcp-servers",
+        "seconds": 0.07031435938552022
+      }
+    },
+    "response_file_sha256": "24f3c54db452c3a2e164c840da98bf9b51ffee18c027441007db8f099503124e"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0055",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-mcp-servers",
+        "seconds": 0.07301828218623996
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-mcp-servers",
+        "seconds": 0.07021048991009593
+      }
+    },
+    "response_file_sha256": "816b48df2703eb5edcaa942b81e412a1b29999f8826ee4ba633a2d4919a1160e"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0056",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.0724179302342236
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.06886277720332146
+      }
+    },
+    "response_file_sha256": "82f58b4d341cd018b194ecd1d8ac017e283228af06029fceaab39559daebad5c"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0057",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.07732806680724025
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.07395112002268434
+      }
+    },
+    "response_file_sha256": "c8fcceebab44fb7386bb73b57bc93c61ff6d36cf7a8d1f6264899fe36b74e23e"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0058",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.07762962393462658
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.07468519872054458
+      }
+    },
+    "response_file_sha256": "68748fa02f7a0e370ccf04df5c482334caedb94a7df23b3a170aed56a43100d8"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0059",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "hong-kong-markets",
+        "seconds": 0.05458735302090645
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "hong-kong-markets",
+        "seconds": 0.0510851819999516
+      }
+    },
+    "response_file_sha256": "2f910b415242dd12823ecbe96e198a7c80daf92c0b74a049a2366898f04f28a6"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0060",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "korea-taiwan-markets",
+        "seconds": 0.0725030810572207
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "korea-taiwan-markets",
+        "seconds": 0.07003768440335989
+      }
+    },
+    "response_file_sha256": "9d8b7a1d94236c4c06ba2f39a504004a2f9633cf6ff0dea3632ada84d21cfe12"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0061",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "india-markets",
+        "seconds": 0.0588273867033422
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "india-markets",
+        "seconds": 0.05098398495465517
+      }
+    },
+    "response_file_sha256": "a3ee280f4177bc6cc5e140b124a5f6510cf450cf490cf1cb72154c520f97f872"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0062",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.0858095376752317
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-yfinance",
+        "seconds": 0.07929923664778471
+      }
+    },
+    "response_file_sha256": "43071e55a9c5a79d1819dd0020511e9f38a86efd53aebd04136fb7ff28006adf"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0063",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-quantstats",
+        "seconds": 0.07964068977162242
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-quantstats",
+        "seconds": 0.0753672057762742
+      }
+    },
+    "response_file_sha256": "e91fb1e5921ca1fd851ec24f93f0b3c97cb732139621964de595bbf7479ecebf"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0064",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-pyportfolioopt",
+        "seconds": 0.07856586622074246
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-pyportfolioopt",
+        "seconds": 0.07477822108194232
+      }
+    },
+    "response_file_sha256": "67ce2ce9f04dcbb077e58357acbb1dc61fb9bd6084c11f65a3181ba286d283e5"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0065",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-quantlib",
+        "seconds": 0.08259800588712096
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-quantlib",
+        "seconds": 0.07976079219952226
+      }
+    },
+    "response_file_sha256": "d22265d65c2771832ef638718adf274f1916ab027681185622f08e7c71cb3331"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0066",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-arch",
+        "seconds": 0.08221123786643147
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-arch",
+        "seconds": 0.07959232106804848
+      }
+    },
+    "response_file_sha256": "5509e1e7bfc59b44059e98042077bb38a4ff4ae5d77a78056685a790e1fc04bc"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0067",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "china-ashare-data",
+        "seconds": 0.07214809721335769
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "china-ashare-data",
+        "seconds": 0.06878659268841147
+      }
+    },
+    "response_file_sha256": "664549901deb5cf3ac80d41930f215a2c4a7fc41ffb0fa61d46561ffd69e8fb8"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0068",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.07834254065528512
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-polars",
+        "seconds": 0.07453538663685322
+      }
+    },
+    "response_file_sha256": "e73f115d5b244847114b77f13270a59356a7f5e45a102e854892dd5153a950b0"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0069",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "lib-freqtrade",
+        "seconds": 0.07747072679921985
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "lib-freqtrade",
+        "seconds": 0.07497424678876996
+      }
+    },
+    "response_file_sha256": "4758e0e16996cd3fe055d21e12fd7be6b0f33d609dc761d26157573ec6b5a551"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0070",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.08477421663701534
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.07966916495934129
+      }
+    },
+    "response_file_sha256": "e9d67900fc14bed9070c6b4e0e1de416ab5075efa0d5551306552154210a1a64"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0071",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.0819502416998148
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.07984997238963842
+      }
+    },
+    "response_file_sha256": "9dfe4d2e892ee95e4ec9a1d65e0d572db9a8f4e33eb6ec545abcc7ff52205116"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0072",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "wash-sale-rules",
+        "seconds": 0.08244283264502883
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "wash-sale-rules",
+        "seconds": 0.07932454021647573
+      }
+    },
+    "response_file_sha256": "336dff4620b221c42b089911d81f893d5d1a5722673bc72bf94fc4cb39db84df"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0073",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "choosing-a-data-vendor",
+        "seconds": 0.08307169377803802
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "us-market-rules",
+        "seconds": 0.07862873701378703
+      }
+    },
+    "response_file_sha256": "2e0a5a24383b67f28ed0161fb6051734bd755ca89acfa827508d8c393b6a618c"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0074",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.0741697340272367
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.07065235497429967
+      }
+    },
+    "response_file_sha256": "e5c82717f4b40a7d0f39c4ea4e74092f4562523bfcb44cc117bd78f7f55ea5fd"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0075",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "ex-dividend-and-rebate-interest",
+        "seconds": 0.0826302976347506
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.07891173893585801
+      }
+    },
+    "response_file_sha256": "e42d76e325ef13d63286a9c37574dd0a43ca98cd14a1f59868bc60c647aae5ec"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0076",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "implied-vol-surface",
+        "seconds": 0.08276422694325447
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.07859401078894734
+      }
+    },
+    "response_file_sha256": "442bc99afaab19380718a43eca9a45af0be4d9743eda614faf61ebe1b6d38527"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0077",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.0819335631094873
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "options-backtesting",
+        "seconds": 0.0787471872754395
+      }
+    },
+    "response_file_sha256": "58999764405faf177ddd9dcd12730ff755393cb6269e864942fa7a6acd7f9bf0"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0078",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.07837278302758932
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.07566590886563063
+      }
+    },
+    "response_file_sha256": "4c1b09d924aec04c39411b137d28d6718a367f922c7a12ba2968ebd75ae61390"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0079",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.07797457790002227
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.07532511185854673
+      }
+    },
+    "response_file_sha256": "f8ed61147b0e817a86f8a0135c4ba4468fe92cb9c8b38ebf5996fa6e16f192aa"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0080",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.07797929411754012
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.075527205131948
+      }
+    },
+    "response_file_sha256": "bebe71e992933540bcf053fe0d472be2a346a20997e9bf8402d4fd8bc5f1454a"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0081",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "execution-cost-analysis",
+        "seconds": 0.08227680111303926
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtesting-engines",
+        "seconds": 0.0787720000371337
+      }
+    },
+    "response_file_sha256": "88670709891eda17b61614d46017a7fb0ceead09e8ae2fb28b4788b88327104d"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0082",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.0880318395793438
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.08526618266478181
+      }
+    },
+    "response_file_sha256": "bf86976a8e350a249e13770f25a980d92625bbd0e4ebb60f0843a85c0fb748c4"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0083",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.07767041493207216
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.07567300787195563
+      }
+    },
+    "response_file_sha256": "56f23b2a928f9f4a74d1598fabbf90f4b8c29d345755a5817213e6e51796bb1e"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0084",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.08221838809549809
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.07930301176384091
+      }
+    },
+    "response_file_sha256": "add374c902321ec0a4548615534928f10c9677872c0294ffcc41c3333c66ca1a"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0085",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.07638043211773038
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.07402115501463413
+      }
+    },
+    "response_file_sha256": "cb82623d35e457a8af717e0b9a4dfb053153c85652d02e60ebf4f3466b46abe9"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0086",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.08174213487654924
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.07882979698479176
+      }
+    },
+    "response_file_sha256": "fe2e9207a3fd44437bf24ea5e606d3c1eba9f87cdf9c060dd7b81222a5cf87a6"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0087",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "corporate-actions-processing",
+        "seconds": 0.07226128596812487
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "etf-mechanics",
+        "seconds": 0.0704586929641664
+      }
+    },
+    "response_file_sha256": "6b8dd2750462fa8119835a2b1a481b6ee5b93d78b08207823cea69142da06246"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0088",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07616254407912493
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07437832513824105
+      }
+    },
+    "response_file_sha256": "cc0d44de8d16fbc6d77031b6b21dcecd7b49f318dddb7a048fac80a0fd51413f"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0089",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07734281430020928
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07506241323426366
+      }
+    },
+    "response_file_sha256": "2ef3a8135607279c4bb508453b5fd5b6852d345bb96d2eaf9eef52b14f4bd2d4"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0090",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07742606988176703
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07519816281273961
+      }
+    },
+    "response_file_sha256": "f56cd3a93f499fc358914802f65e3ec05d659732d3993f6888d7380bbb1aa891"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0091",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07714045699685812
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07532458333298564
+      }
+    },
+    "response_file_sha256": "83642342ba13cceefcc73812c7a09bf0959952bed18d26ee574d8fb4b45520dd"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0092",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.078344841953367
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "limit-order-book-models",
+        "seconds": 0.07588442461565137
+      }
+    },
+    "response_file_sha256": "564d8c6e1d658c291a9afa0612eb3e3270683a52b985603a576e30ae23106238"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0093",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.07892977260053158
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.07571404799818993
+      }
+    },
+    "response_file_sha256": "3cc950a0200376aa230d9c00e695517858b8b8f306a2ab220212c5ec6fd7513d"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0094",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.08208127925172448
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.07883254485204816
+      }
+    },
+    "response_file_sha256": "51a7c417a669176b0565e8116d0cd35b974c86035c207c251081e89bfdb9b9fe"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0095",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.08059022901579738
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.07862702896818519
+      }
+    },
+    "response_file_sha256": "7807d995274c5dea1c606c81884fbf4aa368740a9c31773a4e290159064a53f8"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0096",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.07802022574469447
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "regime-detection",
+        "seconds": 0.07532708579674363
+      }
+    },
+    "response_file_sha256": "6ffe4018b2964824ff72b30d842c2f3832c0a1579c5abcdb0433f7c55551b92c"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0097",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.07240700116381049
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.07077754708006978
+      }
+    },
+    "response_file_sha256": "90e8fd40130a20654f95dafd06c22771b1aa3aeb257e2e1aa7101fc3b6745796"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0098",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.06020822795107961
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.05655574286356568
+      }
+    },
+    "response_file_sha256": "8a15f314eee3d647d8c975cc33b768bd4661d20cc222c89196588fd4f00a3bfa"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0099",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "crypto-market-structure",
+        "seconds": 0.07327390508726239
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "crypto-market-structure",
+        "seconds": 0.06871196627616882
+      }
+    },
+    "response_file_sha256": "d6f7c5962fdde5020072ea5ed7c20286eea13daa91ca3031a13620275a352520"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0100",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.061922083143144846
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "perpetuals-and-funding",
+        "seconds": 0.056440258864313364
+      }
+    },
+    "response_file_sha256": "0c6d8b72c170a5148076b5e0b7d4b90b637e6e91d00dd1acc6d05f5dbf8a0d2c"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0101",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07828837400302291
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.0755915199406445
+      }
+    },
+    "response_file_sha256": "c8111b7cf4c3d6a4de04230c80374762e9728be7a9d187aec58d5572e027d650"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0102",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07755444664508104
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07464633509516716
+      }
+    },
+    "response_file_sha256": "f82006b97551872f6970d361535ff3dd3d276e21a2d8ae412ed75060708e9968"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0103",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07905383268371224
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07482529198750854
+      }
+    },
+    "response_file_sha256": "bdc3b0de076fe1a9d008d6ea6a2996e1dd31ac9f9790f11adb6a916b354d0726"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0104",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07710341131314635
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "finance-agent-architectures",
+        "seconds": 0.07445610407739878
+      }
+    },
+    "response_file_sha256": "ed8a20b0772192adb2d918c5609838b3c0c5e8717b4d4532e64f8bb1e9a60945"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0105",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "trend-following-models",
+        "seconds": 0.07719185668975115
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "backtesting-engines",
+        "seconds": 0.07422292092815042
+      }
+    },
+    "response_file_sha256": "b6804a01842428d654359bb46414afece433f1a20def497717be1d95e5eeaa33"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0106",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "market-making-models",
+        "seconds": 0.0781514816917479
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "intraday-microstructure",
+        "seconds": 0.07560461992397904
+      }
+    },
+    "response_file_sha256": "42a9f4946e49d2ca41a20384757035ebf72a76abb85f98b386f18e3c6e889338"
+  },
+  {
+    "model": "kev-4b",
+    "id": "q0107",
+    "outcomes": {
+      "shuffled": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.07144005363807082
+      },
+      "reversed": {
+        "status": "ok",
+        "selected": "rl-and-ml-trading",
+        "seconds": 0.06909462297335267
+      }
+    },
+    "response_file_sha256": "3fd65be2e32be75c786ec64d5b4c5f612db40bfd1a6288ac565a952ada94e136"
+  }
+]

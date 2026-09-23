@@ -1,0 +1,335 @@
+{
+  "verified_on": "2026-09-23",
+  "purpose": "Source and public-checkpoint identity; not a quality ranking or deployment receipt",
+  "repositories": [
+    {
+      "id": "Heman10x-NGU/openJev-verdict-2.0",
+      "revision": "bff28567cff463b833bf044f351a8b7945d53e07",
+      "license": "NOASSERTION",
+      "archived": false
+    },
+    {
+      "id": "jaredpalmer/kev",
+      "revision": "557598fced1dada75dfbf36ed144dce309ac6ceb",
+      "license": "Apache-2.0",
+      "archived": false
+    },
+    {
+      "id": "NandhaKishorM/laya",
+      "revision": "c7527708f9f5220c669d8aa385077cd28d04708a",
+      "license": "Apache-2.0",
+      "archived": false
+    },
+    {
+      "id": "nico-martin/open-jev",
+      "revision": "52667199e8a55553e1865a41f43fcb7d4dd92779",
+      "license": "MIT",
+      "archived": false
+    },
+    {
+      "id": "TianyuCodings/NanoJev",
+      "revision": "76fdfc9ecdca45a9bcef17991a07d3041a87685a",
+      "license": "MIT",
+      "archived": false
+    }
+  ],
+  "models": [
+    {
+      "id": "convaiinnovations/laya-multilingual",
+      "revision": "052592a15d198d9ad47da779604259b10b47b7aa",
+      "gated": false,
+      "private": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "rfilename": "model.safetensors",
+          "blobId": "b99c8bea239c53f6f6bce734557dc6c403fa6b3e",
+          "size": 643835514,
+          "lfs": {
+            "sha256": "9d628fd971b700382ac6f65920a86f149777b2e748e0c955fb3b19695aa8f204",
+            "size": 643835514,
+            "pointerSize": 134
+          }
+        }
+      ]
+    },
+    {
+      "id": "convaiinnovations/laya-typed-decisions",
+      "revision": "f9ab0b228f0fc0f14d873dbc99038f135c2da1b2",
+      "gated": false,
+      "private": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "rfilename": "model.safetensors",
+          "blobId": "3fb9c9678050815e76d0c847115919d7871ace3e",
+          "size": 842609220,
+          "lfs": {
+            "sha256": "4fa56de72383a9d3efa9cfa78955733c81b9fc8067a587ca4beb82c78107a24e",
+            "size": 842609220,
+            "pointerSize": 134
+          }
+        }
+      ]
+    },
+    {
+      "id": "convaiinnovations/laya",
+      "revision": "1c5edc17a7acd8701df6fc341c0d179f1c62c982",
+      "gated": false,
+      "private": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "rfilename": "model.safetensors",
+          "blobId": "9bef25a12dcb807627a798837cfbb0ea73c0e38d",
+          "size": 842609210,
+          "lfs": {
+            "sha256": "891102d372688fc2a094dac56a384bc537b87c63f21f9f3dac0be2b7cbc8d86c",
+            "size": 842609210,
+            "pointerSize": 134
+          }
+        },
+        {
+          "rfilename": "multilingual/model.safetensors",
+          "blobId": "b99c8bea239c53f6f6bce734557dc6c403fa6b3e",
+          "size": 643835514,
+          "lfs": {
+            "sha256": "9d628fd971b700382ac6f65920a86f149777b2e748e0c955fb3b19695aa8f204",
+            "size": 643835514,
+            "pointerSize": 134
+          }
+        },
+        {
+          "rfilename": "typed-decisions/model.safetensors",
+          "blobId": "3fb9c9678050815e76d0c847115919d7871ace3e",
+          "size": 842609220,
+          "lfs": {
+            "sha256": "4fa56de72383a9d3efa9cfa78955733c81b9fc8067a587ca4beb82c78107a24e",
+            "size": 842609220,
+            "pointerSize": 134
+          }
+        }
+      ]
+    },
+    {
+      "id": "heman10x/rlcd-modernbert-151m",
+      "revision": "8af2496eb63c7fa66d7d234e1f62629380030eb4",
+      "gated": false,
+      "private": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "rfilename": "model.safetensors",
+          "blobId": "6bbc9a631751a90b2405fed4b89b2a1c9cfa9b8a",
+          "size": 605529340,
+          "lfs": {
+            "sha256": "d252823994d47a7933217fc86449493299643af6a0c0d83d6bd5a7666d3253ef",
+            "size": 605529340,
+            "pointerSize": 134
+          }
+        }
+      ]
+    },
+    {
+      "id": "jaredpalmer/kev-0.8b",
+      "revision": "54f4f8777356cd5bbbb6c6919c657f26e6f2f6d8",
+      "gated": false,
+      "private": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "rfilename": "adapter_model.safetensors",
+          "blobId": "ca104055bb99cb4e0062d05b70ae79f1009d516c",
+          "size": 43338624,
+          "lfs": {
+            "sha256": "c81d5716f0af7622d8d2b97013c333d48263ca01113f9a7cf4526e96f6ac0b26",
+            "size": 43338624,
+            "pointerSize": 133
+          }
+        },
+        {
+          "rfilename": "head.pt",
+          "blobId": "e65a7dbdec707f160fff92b05a3939942481d2c7",
+          "size": 2103103,
+          "lfs": {
+            "sha256": "39f4343ccccc65e583bbfff0de0e11bfedb849fcfaaf94b50ac4f2b73bc79c65",
+            "size": 2103103,
+            "pointerSize": 132
+          }
+        }
+      ],
+      "base_model": "Qwen/Qwen3.5-0.8B-Base",
+      "base_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68"
+    },
+    {
+      "id": "jaredpalmer/kev-4b",
+      "revision": "485ace8703592fcf405488b262449990824cfed1",
+      "gated": false,
+      "private": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "rfilename": "adapter_model.safetensors",
+          "blobId": "499e1b8bd4b185d05284cc3f5fb1414d7969c090",
+          "size": 129924032,
+          "lfs": {
+            "sha256": "9797de69a42188e411b17b7b4fcb66a23374dcebc21d71a7a66f836b5d34df2b",
+            "size": 129924032,
+            "pointerSize": 134
+          }
+        },
+        {
+          "rfilename": "head.pt",
+          "blobId": "994cc9d07261f66e54144853f363a5b1f4c05377",
+          "size": 5248767,
+          "lfs": {
+            "sha256": "d8f796da36ff7bd7c0fb9496b452139bb7851af4fc82b07b500b682d3f721d6a",
+            "size": 5248767,
+            "pointerSize": 132
+          }
+        }
+      ],
+      "base_model": "Qwen/Qwen3.5-4B-Base",
+      "base_revision": "1001bb4d826a52d1f399e183466143f4da7b741b"
+    }
+  ],
+  "source_records": [
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/README.md",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\README.md",
+      "sha256": "1b6ec88cd1f10b988e8e108fd8e0aef0bbf19b3a275bca46bc91d98c09a43e31"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/pyproject.toml",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\pyproject.toml",
+      "sha256": "7c17fbe9efcadda3eb488b59adf1b6db5938cd33af4d3bd389ce4359b73fcc7d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/kev/model.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\kev\\model.py",
+      "sha256": "2260e2fab077a2a53b9e0d265fde2b7d021acd924dfbcdc668962df124426d5d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/kev/serve.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\kev\\serve.py",
+      "sha256": "c210b1f4598e64b49c399f73603ed372f4314c165ceda50e1340c0466ec1c735"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/docs/model-cards/kev-0.8b.md",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\docs\\model-cards\\kev-0.8b.md",
+      "sha256": "a15952889cbd864a4aa61a2a22f807d115f4bfbe8149796c369a23ad282090f5"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/docs/model-cards/kev-4b.md",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\docs\\model-cards\\kev-4b.md",
+      "sha256": "3213d5fe5a0367f7affb981824b22f97dd12921fdfccfc1310a12b84911b7d10"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jaredpalmer/kev/557598fced1dada75dfbf36ed144dce309ac6ceb/LICENSE",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\jaredpalmer\\kev\\LICENSE",
+      "sha256": "6b08bb37982c233aa12bcbdf19106da12f3f4fcf800773ea42e28ebeddd34fb8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/pyproject.toml",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\pyproject.toml",
+      "sha256": "e6b14200d354a02e2800ae8ea54cd69ef2d815eb5c144e121b1ee76f441c9301"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/setup.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\setup.py",
+      "sha256": "f462066ed9db7ab9e9db6937b39225772bce1bd641acba0d06384b9ea639aa0b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/LICENSE",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\LICENSE",
+      "sha256": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/BENCHMARKS.md",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\BENCHMARKS.md",
+      "sha256": "5fc778ac5bc87dd5ec81c43d6692d267b3688c336220b944194a66d0b86a7b6d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/__init__.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\__init__.py",
+      "sha256": "f6d6368e68a5570382481f2d87b165865e062dd1672c9003b47577cd362a7a65"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/agent.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\agent.py",
+      "sha256": "128567096446c5d39af8e4a3a7c4dd9e32a134a1b099ce5a5eed383beeff1b89"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/common.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\common.py",
+      "sha256": "f231d42fcec84da203222fcaa89c083b22776e00341e66e118183d754e1dcabf"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/email.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\email.py",
+      "sha256": "481440b9f4dfc1d8c0c297322581ec2ba567f4286c1988c6e0b5163889f32088"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/lang.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\lang.py",
+      "sha256": "59589b1476b02a54e64926399a012e49b9615a668309fe429f440bf4af19a43b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/presets.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\presets.py",
+      "sha256": "2a3370f587cae29696bfa487edcc51caf47a211518733fdb192cf6d4eddbf1ea"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/router.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\router.py",
+      "sha256": "1bdb5f3eda41a9dafddc3cd0cde150538b1bd36fbc1dba9f9d06ea00c774efa1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/NandhaKishorM/laya/c7527708f9f5220c669d8aa385077cd28d04708a/laya/shortlist.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\NandhaKishorM\\laya\\laya\\shortlist.py",
+      "sha256": "0d5a2a0f59ceb3e7fbf1f087864fcce41bb73eb039cf73357792976c10bfdb76"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/TianyuCodings/NanoJev/76fdfc9ecdca45a9bcef17991a07d3041a87685a/README.en.md",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\TianyuCodings\\NanoJev\\README.en.md",
+      "sha256": "4536f6769de55391a83a2282632f5ad66f16966a7204cf3278242fe5d2892809"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/TianyuCodings/NanoJev/76fdfc9ecdca45a9bcef17991a07d3041a87685a/LICENSE",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\TianyuCodings\\NanoJev\\LICENSE",
+      "sha256": "c69c1bb0b33112f68f9e8ef7e91dd38ec59066fcba3f62f70cbc8c9c83cf6a8e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Heman10x-NGU/openJev-verdict-2.0/bff28567cff463b833bf044f351a8b7945d53e07/LICENSE",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\Heman10x-NGU\\openJev-verdict-2.0\\LICENSE",
+      "sha256": "936dfcf776d91682f02528cde6f5ff440104a689aa19448fa33aa2f4dd4b19a4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Heman10x-NGU/openJev-verdict-2.0/bff28567cff463b833bf044f351a8b7945d53e07/pyproject.toml",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\Heman10x-NGU\\openJev-verdict-2.0\\pyproject.toml",
+      "sha256": "c733e0788e92b699dd585f3fcee8a4c1b585b481cd81419d96dd087d72a7193b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Heman10x-NGU/openJev-verdict-2.0/bff28567cff463b833bf044f351a8b7945d53e07/verdict2/evaluate.py",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\Heman10x-NGU\\openJev-verdict-2.0\\verdict2\\evaluate.py",
+      "sha256": "bd4f3e1e46e9211c91eb21db230a51ed8284ec4686785022d86739ce7a096772"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Heman10x-NGU/openJev-verdict-2.0/bff28567cff463b833bf044f351a8b7945d53e07/README.md",
+      "path": "runs\\open-decision-research-20260923-v1\\sources\\Heman10x-NGU\\openJev-verdict-2.0\\README.md",
+      "sha256": "4f75677f7f18cc7983e46ed15094b31fd531538ba2e014fee7fcda4907e1ab46"
+    }
+  ],
+  "laya_qualification_jobs": [
+    {
+      "job_id": "1653341",
+      "role": "strict contract check",
+      "observed_status": "FAILED: rounded probability sum rejected"
+    },
+    {
+      "job_id": "1653362",
+      "role": "diagnostic continuation preserving all raw outputs and strict failures",
+      "observed_status": "submitted"
+    }
+  ]
+}

@@ -30,6 +30,8 @@ restored = load_model("ridge_zoo.zip", trusted=True)
 | `ppo`、`sac` | 环境训练、动作预测、保存加载 | Stable-Baselines3；用户提供 Gymnasium 环境 |
 | `fly_memory` | 记忆读出、经过检查的完整过程反馈更新、保存加载 | 单独安装 GPL 扩展，显式提供电路参数 |
 | `jev` | 结构化决策、概率评分、检索片段重排 | TypeSafe 托管 API；需要 API key；本库包含适配器，不分发权重 |
+| `laya` | 本地结构化决策、片段重排 | 单独安装 Laya，提供本地 checkpoint 与完整 revision；无需 TypeSafe key |
+| `kev` | 本地结构化决策、片段重排 | 独立兼容环境，提供可信 adapter/head 与匹配基础模型；无需 TypeSafe key |
 | `kalman_filter` | 固定参数的前向状态滤波 | 基础依赖；不包含使用未来数据的平滑器 |
 | `ledoit_wolf_covariance`、`ewma_covariance`、`pca_covariance` | 协方差估计 | 基础依赖；传入小数收益 |
 | `nelson_siegel`、`svensson` | 期限结构拟合 | 基础依赖；横截面曲线拟合不是未来收益预测 |
@@ -38,6 +40,8 @@ restored = load_model("ridge_zoo.zip", trusted=True)
 
 原算法注册表的模型也能通过 `create_model` 调用。JSON/MCP 新增 `list_models`
 和 `run_model`：后者只执行模型卡中 `json_run=True` 的方法，不加载磁盘模型或任意代码。
+
+本地决策模型的安装、使用与证据边界见 [LOCAL_DECISION_USAGE.md](LOCAL_DECISION_USAGE.md)。
 深度学习、RL、记忆模型的有状态生命周期目前使用 Python API。
 
 ## 深度学习与强化学习
@@ -152,6 +156,20 @@ JSON/MCP 通过 `run_model` 调用同一接口，`data` 包含 `state` 和 `ques
 公开合成输入的探测计划，不联网。配置环境中的 `TYPESAFE_API_KEY` 后，使用 `--run`
 和一个新的输出目录才会调用真实服务；错误、实际模型 ID、用量和耗时分别留存。
 该探测只核对连接和接口，不证明检索质量或置信度校准。
+
+完整接线示例见 [collected_rag.py](../examples/collected_rag.py)：SQLite 保存文档修订，
+先按查询时点筛选可用修订，再建立 RAG 索引；当前技能知识单独提供，避免把今天的知识
+冒充成历史上已经可用的信息。默认运行不调用模型，也不使用模拟 Jev 回答。
+
+```bash
+python examples/collected_rag.py --output runs/collected-rag-local
+```
+
+配置密钥后，增加 `--live-jev` 并选择新的输出目录，可发送一次真实重排请求。
+示例固定使用 `jev-1.13.0`，该 ID 已于 2026-09-22 在
+[官方模型目录](https://docs.typesafe.ai/models)确认。`result.json` 保存实际响应模型、用量、
+上下文和来源；失败不会切换到模拟答案。将返回的 `evidence["messages"]` 交给自己的
+生成函数即可继续回答。本例使用公开合成文档，只验证组件组合，不测量模型质量。
 
 需要比较检索增益时，使用 [BM25／Jev 配对实验](../benchmarks/rag_jev/README.md)。
 它冻结同一候选集合和上下文预算，在保存推理结果后单独读取相关性标签评分。

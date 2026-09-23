@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-answers-20260923-v1/source/beacon_serial_frozen_jobs.py", line 19, in <module>
+    assert hashlib.sha256((child/'manifest.json').read_bytes()).hexdigest()==item['manifest_sha256']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

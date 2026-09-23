@@ -1,0 +1,59 @@
+{
+  "verified": true,
+  "generated_rows": 128,
+  "reported_rows": 160,
+  "unique_tasks": 32,
+  "unique_companies": 16,
+  "aggregate": {
+    "components": {
+      "planned": 32,
+      "correct": 0,
+      "correct_accepted": 0,
+      "incorrect_accepted": 1,
+      "rejected": 31,
+      "format_errors": 31,
+      "scorer_errors": 0
+    },
+    "skills": {
+      "planned": 32,
+      "correct": 0,
+      "correct_accepted": 0,
+      "incorrect_accepted": 0,
+      "rejected": 32,
+      "format_errors": 32,
+      "scorer_errors": 0
+    },
+    "rag_api": {
+      "planned": 32,
+      "correct": 0,
+      "correct_accepted": 0,
+      "incorrect_accepted": 0,
+      "rejected": 32,
+      "format_errors": 32,
+      "scorer_errors": 0
+    },
+    "rag_gate": {
+      "planned": 32,
+      "correct": 0,
+      "correct_accepted": 0,
+      "incorrect_accepted": 0,
+      "rejected": 32,
+      "format_errors": 32,
+      "scorer_errors": 0
+    },
+    "full_report": {
+      "planned": 32,
+      "correct": 0,
+      "correct_accepted": 0,
+      "incorrect_accepted": 0,
+      "rejected": 32,
+      "format_errors": 32,
+      "scorer_errors": 0
+    }
+  },
+  "inference_receipt_sha256": "670ea54a94f367d8c94844b93dfc2b83469ee3f77ee9e30f0bdcc6fa6b001a4d",
+  "labels_sha256": "831dbfb2e785dbc227f895ce3f24046433467aec67b09db2bd6ac7692a8a30dc",
+  "score_sha256": "255438af02d4ac57adb8e97c2fc5aa05f27fca8446df2b2cc0cafbb6afe492bf",
+  "audit_source_sha256": "e895773d291656f60121c6638ec995f12907a2722df8d7d52bd6b363bf1f1cbd",
+  "limits": "Replay verifies original numerical/program grades and receipts, not citation semantic support or contamination."
+}

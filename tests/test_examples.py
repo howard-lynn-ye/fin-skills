@@ -48,7 +48,7 @@ def run_example(name: str) -> str:
 
 
 def test_examples_are_indexed():
-    assert EXAMPLES == ["algorithm_selection.py", "audit_a_backtest.py", "futures_roll.py",
+    assert EXAMPLES == ["algorithm_selection.py", "audit_a_backtest.py", "collected_rag.py", "futures_roll.py",
                         "market_strategy.py", "model_zoo.py", "point_in_time_fundamentals.py",
                         "rag_pipeline.py", "research_workflow.py"]
     index = (EXAMPLES_DIR / "README.md").read_text(encoding="utf-8")
@@ -68,6 +68,14 @@ def test_rag_example_preserves_source_and_labels_mock_inference():
     assert "SOURCE: example/rag" in out
     assert "CITATION LABEL CHECK: True" in out
     assert "no live Jev inference" in out
+
+
+def test_collection_example_uses_historical_revision_without_model_calls():
+    out = run_example("collected_rag.py")
+    assert "MODE: local_retrieval" in out
+    assert "LIVE JEV INFERENCE: False" in out
+    assert "SOURCE: synthetic:collection/availability" in out
+    assert "FUTURE REVISION EXCLUDED: True" in out
 
 
 def test_audit_a_backtest_finds_two_defects_and_then_finds_none():

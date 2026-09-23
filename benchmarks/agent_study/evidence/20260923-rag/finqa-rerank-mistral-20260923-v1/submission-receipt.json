@@ -1,0 +1,7 @@
+{
+  "status": "submission_failed",
+  "exit_code": 1,
+  "scheduler_error": "sbatch: error: AssocMaxSubmitJobLimit\nsbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)\n",
+  "finished_utc": "2026-09-23T06:22:32.832136+00:00",
+  "interpretation": "Submission is not evidence of job execution or completion."
+}

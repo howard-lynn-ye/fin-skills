@@ -1,0 +1,83 @@
+{
+  "inserted_per_batch": [
+    1,
+    0,
+    1,
+    0,
+    1
+  ],
+  "latest": [
+    {
+      "seq": 3,
+      "watch_id": "recovery-study",
+      "actor": "",
+      "data": {
+        "revision": 0,
+        "value": 0
+      },
+      "id": "0",
+      "kind": "report",
+      "observed_at": "2026-01-01T00:00:00+00:00",
+      "published_at": null,
+      "source": "fixture",
+      "symbol": "",
+      "title": "cash",
+      "url": "https://example.invalid/report"
+    }
+  ],
+  "all": [
+    {
+      "seq": 1,
+      "watch_id": "recovery-study",
+      "actor": "",
+      "data": {
+        "revision": 0,
+        "value": 0
+      },
+      "id": "0",
+      "kind": "report",
+      "observed_at": "2026-01-02T00:00:00+00:00",
+      "published_at": null,
+      "source": "fixture",
+      "symbol": "",
+      "title": "cash",
+      "url": "https://example.invalid/report"
+    },
+    {
+      "seq": 2,
+      "watch_id": "recovery-study",
+      "actor": "",
+      "data": {
+        "revision": 1,
+        "value": 0
+      },
+      "id": "0",
+      "kind": "report",
+      "observed_at": "2026-01-02T00:00:00+00:00",
+      "published_at": null,
+      "source": "fixture",
+      "symbol": "",
+      "title": "cash",
+      "url": "https://example.invalid/report"
+    },
+    {
+      "seq": 3,
+      "watch_id": "recovery-study",
+      "actor": "",
+      "data": {
+        "revision": 0,
+        "value": 0
+      },
+      "id": "0",
+      "kind": "report",
+      "observed_at": "2026-01-01T00:00:00+00:00",
+      "published_at": null,
+      "source": "fixture",
+      "symbol": "",
+      "title": "cash",
+      "url": "https://example.invalid/report"
+    }
+  ],
+  "passed": true,
+  "interpretation": "Adjacent identical content is deduplicated. An older revision arriving last becomes latest; callers need separate chronological selection."
+}

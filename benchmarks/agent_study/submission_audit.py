@@ -96,6 +96,10 @@ def run_guard(task: Path, name: str) -> dict:
     else:
         weights = positions(task)
         used = weights.columns[weights.abs().sum() > 0]
+        if len(used) == 0:
+            return {"status": "UNASSESSABLE", "guard": name, "verified_by_runtime": True,
+                    "passed": False, "reason": "no active securities in submitted positions",
+                    "scope": "empty traded universe; no survivorship conclusion is available"}
         listings = pd.read_csv(task / "data/listings.csv", parse_dates=["listing_date", "delisting_date"])
         result = guard.run(prices=close.loc[:, used], listings=listings)
         dead_mass = 0.0
@@ -146,6 +150,19 @@ def accounting(task: Path) -> dict:
             "scope": "report consistency at stated costs; not proof of tradability"}
 
 
+def generic_checks(task: Path) -> dict:
+    """Ordinary output assertions; deliberately no information-timing interventions."""
+    frame = positions(task)
+    repeated = positions(task)
+    close = pd.read_csv(task / "data/close_quoted.csv", index_col=0, parse_dates=True)
+    checks = dict(deterministic=frame.equals(repeated),
+                  full_dates=frame.index.equals(close.index),
+                  full_tickers=set(frame.columns) == set(close.columns),
+                  nonzero=bool((frame.abs().sum(axis=1) > 0).any()))
+    return dict(status="EXECUTED", passed=all(checks.values()), assertions=checks,
+                scope="schema, finite values, exposure, determinism and nonempty activity; no causal claim")
+
+
 def same_session_probe(task: Path) -> dict:
     """Public probe uses multiplicative shocks, separate from oracle permutations."""
     baseline = positions(task)
@@ -164,6 +181,7 @@ def same_session_probe(task: Path) -> dict:
             shutil.copytree(task, copied)
             for file in ("close_quoted.csv", "llm_score.csv", "volume.csv"):
                 path = copied / "data" / file
+                # Fractional shocks also apply to integer-valued volume columns.
                 frame = pd.read_csv(path, index_col=0, parse_dates=True).astype(float)
                 frame.index.name = "date"
                 frame.loc[day] *= np.linspace(0.7, 1.3, len(frame.columns))
@@ -201,12 +219,19 @@ def main() -> None:
             if shared:
                 readonly.append(Path(shared))
             confinement = confine(args.task.parent, readonly)
-        if args.action == "positions":
+        if args.action == "execution":
+            frame = positions(args.task)
+            value = {"status": "EXECUTED", "passed": True,
+                     "rows": len(frame), "columns": len(frame.columns),
+                     "scope": "execution and output schema only; no correctness claim"}
+        elif args.action == "positions":
             frame = positions(args.task)
             value = {"status": "EXECUTED", "positions": {"index": frame.index.astype(str).tolist(),
                      "columns": frame.columns.tolist(), "data": frame.to_numpy().tolist()}}
         elif args.action == "accounting":
             value = accounting(args.task)
+        elif args.action == "generic":
+            value = generic_checks(args.task)
         elif args.action == "same_session_probe":
             value = same_session_probe(args.task)
         else:

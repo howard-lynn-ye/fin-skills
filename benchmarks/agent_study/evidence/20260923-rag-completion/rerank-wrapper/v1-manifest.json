@@ -1,0 +1,25 @@
+{
+  "plan": {
+    "remote_root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-answers-20260923-v1",
+    "name": "fin-rerank-answers",
+    "gpu": true,
+    "memory": "64G",
+    "time": "04:00:00",
+    "afterok": "1654297",
+    "targets": [
+      {
+        "root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-qwen-20260923-v1",
+        "manifest_sha256": "165a5dc349d4205f1a03b4593b0693f8aee21dc717511605e6dce1ea1545b2a4"
+      },
+      {
+        "root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1",
+        "manifest_sha256": "ce5849f3cd83cbb4456064babea5b8d369e9a1b940ecac55e7d2b5bb623544e0"
+      }
+    ]
+  },
+  "sha256": {
+    "source/beacon_serial_frozen_jobs.py": "343f83970e773affb99f335ee958d07616fa725260226804090f85c98580fed3",
+    "job.sh": "5c2e28a2822efa69b66e6781d9c37b47420f160466718d7f1393664201b355b5",
+    "source/submit_model_followup.py": "3ee6b4538a49e00b285dc23c6decda8ea5b9c499ca3998ee411f21bacb3f051f"
+  }
+}

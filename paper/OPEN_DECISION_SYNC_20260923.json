@@ -1,0 +1,49 @@
+{
+  "verified_utc": "2026-09-23T05:57:43.377559+00:00",
+  "library_commit": "d0b07ff0ed9729800e90c799bbcf55d72da41302",
+  "file": "paper/latex_naacl/library_details.tex",
+  "local_sha256": "b87b10127e852af9b0a44468c862d73dfb9b8884863d65772e34552bad9e76c7",
+  "overleaf_project": "https://www.overleaf.com/project/6aad9a03f27c3c07a182965d",
+  "overleaf_version": 192,
+  "history_label": "Local Kev/Laya evidence - GitHub d0b07ff - 2026-09-23",
+  "change": "Append two paragraphs to the existing library implementation appendix",
+  "browser_verification": {
+    "appended_text_visible": true,
+    "pdf_contains_new_paragraphs": true,
+    "pages": 13,
+    "errors": 0,
+    "warnings": 0,
+    "typesetting_messages": 39,
+    "history_label_visible": true
+  },
+  "evidence": {
+    "E1": {
+      "path": "benchmarks/local_decision/evidence/20260923/kev-completion.json",
+      "claim": "Both Kev checkpoints completed local prediction and RAG checks"
+    },
+    "E2": {
+      "path": "benchmarks/local_decision/evidence/20260923/laya-adapter-completion.json",
+      "claim": "Both Laya checkpoints completed local prediction and RAG checks"
+    },
+    "E3": {
+      "path": "benchmarks/local_decision/evidence/20260923/kev-routing-score.json",
+      "claim": "108 queries, BM25 76, Kev4B 79/82 and 24 order flips, Kev0.8B 45/50, two Chinese queries"
+    },
+    "E4": {
+      "path": "benchmarks/local_decision/evidence/20260923/laya-routing-decisions.json",
+      "claim": "All routing calls rejected before inference because upstream truncates input"
+    }
+  },
+  "verifier": "Codex automated artifact and browser verification",
+  "human_verification": "Not recorded; this is a manuscript draft, not submission approval",
+  "limits": "Checked the appended text, new PDF content and compile diagnostics; no claim of a full-project byte-for-byte audit.",
+  "local_pdf": {
+    "path": "paper/latex_naacl/main.pdf",
+    "sha256": "7d3376bd9f7d5ce979807bbe793d7d8e93d1af5b63d1598d02e076809708f28b",
+    "pages": 13,
+    "build": "pdflatex, bibtex, pdflatex, pdflatex; all exit 0",
+    "warnings": 0,
+    "render_review": "Pages 12 and 13 checked; new paragraphs visible and no clipping",
+    "provenance": "Compiled locally from synchronized LaTeX; not a byte-identical download of the Overleaf PDF"
+  }
+}

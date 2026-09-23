@@ -1,7 +1,7 @@
 # Examples
 
 Runnable scripts, in the order to read them. Each one is self-contained: seeded
-synthetic data, no network, numpy/pandas plus the installed `fin_skills` package, ASCII
+synthetic data, no network by default, numpy/pandas plus the installed `fin_skills` package, ASCII
 output, under five seconds, under 200 lines. Each ends with a `TAKEAWAY` block that says what
 you were supposed to see.
 
@@ -14,6 +14,7 @@ python examples/algorithm_selection.py
 python examples/market_strategy.py
 python examples/model_zoo.py
 python examples/rag_pipeline.py
+python examples/collected_rag.py
 ```
 
 `tests/test_examples.py` runs each example in a subprocess and asserts its **conclusions**, not
@@ -30,6 +31,15 @@ job.
 | [`market_strategy.py`](market_strategy.py) | Causal market-state rules, news screening and next-bar strategy candidates | Offline |
 | [`model_zoo.py`](model_zoo.py) | Model discovery, fitted forecast and covariance through one API | Offline |
 | [`rag_pipeline.py`](rag_pipeline.py) | Built-in retrieval, source citations, JSON persistence, and Jev reranking with explicitly offline callbacks | Offline |
+| [`collected_rag.py`](collected_rag.py) | SQLite revision history to time-filtered RAG, current skill guidance, and optional real Jev reranking | Offline by default |
+
+`collected_rag.py --output <new-directory>` preserves its public example database and
+prepared context. Add `--live-jev` only with `TYPESAFE_API_KEY` configured to allow one
+hosted reranking request. It uses `jev-1.13.0`, listed in the
+[official models documentation](https://docs.typesafe.ai/models) on 2026-09-22,
+and retains the returned model and usage in `result.json`. It does not generate an
+answer or measure retrieval quality. Historical records are filtered before choosing
+the latest eligible revision; current skill guidance is presented separately.
 
 ## 1. `audit_a_backtest.py`
 

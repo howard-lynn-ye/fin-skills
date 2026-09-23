@@ -127,6 +127,24 @@ references, and 0 missing citations. The complete bundle of 17 manuscript files 
 `paper/merge_20260922/overleaf_sync_deai.zip` with verified SHA-256 hashes recorded in
 `paper/merge_20260922/deai_delivery.json`.
 
+## External baselines, 7-arm component ablation, and `main` path alignment on 2026-09-23 (`v2`)
+
+On 2026-09-23, `v2` was synchronized with `origin/master` (`4cc8ef7`) so that all `paper/` and
+`docs/` paths match `origin/master` (`main`) 1-to-1 for seamless merging:
+
+1. **Zero `HiSTrim` Contamination**: Removed all legacy `HiSTrim` references (`histrim_evidence.tex`,
+   `histrim_source_table.tex`, `selective_context.tex`, and stray non-`main` folders) from
+   `paper/latex_naacl/` and `paper/`.
+2. **External Baselines (`Table 7`, `benchmarks/BASELINE_AND_COMPONENT_ABLATION_RESULTS.json`)**:
+   Added 9 external baselines (`Equal-Weight 1/N`, `TSMOM`, `HRP`, `ReAct + Tools`, `Reflexion`,
+   `FinMem`, `TradingAgents`, `FinAgent`, and `Fin-Skills Closed-Loop`) across $M=5$ seeds (`[11, 23, 37, 42, 73]`),
+   `FinGuardBench-60`, and 21 Out-of-Sample market episodes (`233,138`-row 2D-balanced panel).
+3. **7-Arm Leave-One-Out Component Ablation Study (`Table 8`)**: Evaluated `w/o Progressive Routing`,
+   `w/o Point-in-Time Cutoff`, `w/o Counterfactual Guards`, `w/o Associative Plasticity (frozen_with_gate)`,
+   `w/o 64-KC Sparse Expansion`, and `w/o 2D Panel Balance`.
+4. **Compiled Manuscript & Overleaf Bundle**: Recompiled `paper/latex_naacl/main.pdf` (`12 pages`,
+   `0` errors, `0` Overfull `\hbox`) and updated `paper/merge_20260922/overleaf_sync_v2.zip`.
+
 ## Primary documentation
 
 - [Overleaf Git integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git-integration)

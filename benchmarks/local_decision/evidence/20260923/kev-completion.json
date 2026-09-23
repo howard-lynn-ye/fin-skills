@@ -1,0 +1,40 @@
+{
+  "status": "completed",
+  "models": [
+    {
+      "model": "0.8b",
+      "status": "completed",
+      "predictions": 3,
+      "prediction_wall_seconds": [
+        45.8363216817379,
+        0.03622379805892706,
+        0.030817830003798008
+      ],
+      "first_request_includes_loading": true,
+      "oversized_request": {
+        "rejected": true,
+        "reason": "state exceeds 8192 tokens: 40002"
+      },
+      "reranking_responses": 4,
+      "rag_pipelines": 1
+    },
+    {
+      "model": "4b",
+      "status": "completed",
+      "predictions": 3,
+      "prediction_wall_seconds": [
+        3.931382381822914,
+        0.04137476719915867,
+        0.0432946621440351
+      ],
+      "first_request_includes_loading": true,
+      "oversized_request": {
+        "rejected": true,
+        "reason": "state exceeds 8192 tokens: 40002"
+      },
+      "reranking_responses": 4,
+      "rag_pipelines": 1
+    }
+  ],
+  "limits": "Authored smoke and integration cases only; no measured financial advantage."
+}

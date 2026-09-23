@@ -1,0 +1,13 @@
+{
+  "job_id": "1653573",
+  "gpu": "NVIDIA L40S",
+  "cuda": "12.8",
+  "versions": {
+    "torch": "2.8.0",
+    "transformers": "5.17.0",
+    "peft": "0.21.0",
+    "kev": "0.1.0"
+  },
+  "snapshot_manifest_sha256": "2c0a9a8ff8510fb42850be74d5cbd8a0a5710d703d6d08e542591cb4c9bd4087",
+  "inputs_sha256": "b14aed707dcd9207cfb42e4d02ed2e90fdae2a70071005547f75043cc06c6641"
+}
