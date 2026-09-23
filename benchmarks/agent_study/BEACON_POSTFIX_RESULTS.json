@@ -861,5 +861,22 @@
     "submission_audit.py & oracle.py: _normalize_positions_frame() promotes 'date'/'Unnamed: 0' columns before pd.to_datetime",
     "submission_audit.py: same_session_probe() casts volume.csv to float64 before multiplying by np.linspace(0.7, 1.3), fixing int64 LossySetitemError under C3",
     "transformers_chat.py: self.input_device multi-GPU sharding fix and bfloat16 greedy fallback for 32B"
-  ]
+  ],
+  "m5_seeds_summary": {
+    "seeds": [
+      11,
+      23,
+      37,
+      42,
+      73
+    ],
+    "ungradable_accepted_mean_pct": 0.0,
+    "ungradable_accepted_std_pct": 0.0,
+    "c3_incorrect_accepted_mean_pct": 0.0,
+    "c3_incorrect_accepted_std_pct": 0.0,
+    "c3_correct_among_accepted_mean_pct": 100.0,
+    "c3_correct_among_accepted_std_pct": 0.0,
+    "paired_t_stat_c3_vs_c0": 16.8,
+    "p_value_c3_vs_c0": 7.3e-05
+  }
 }

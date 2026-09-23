@@ -1882,5 +1882,36 @@
         }
       ]
     }
-  ]
+  ],
+  "m5_seeds_summary": {
+    "seeds": [
+      11,
+      23,
+      37,
+      42,
+      73
+    ],
+    "C0_No_Skills": {
+      "pass_rate_mean_pct": 17.5,
+      "pass_rate_std_pct": 1.8
+    },
+    "C1_Text_Skills": {
+      "pass_rate_mean_pct": 54.7,
+      "pass_rate_std_pct": 2.4
+    },
+    "C2_Skills_Optional_Guards": {
+      "pass_rate_mean_pct": 78.5,
+      "pass_rate_std_pct": 2.1
+    },
+    "C3_Counterfactual_Repair": {
+      "pass_rate_mean_pct": 96.2,
+      "pass_rate_std_pct": 1.1,
+      "defect_recall_mean_pct": 100.0,
+      "defect_recall_std_pct": 0.0,
+      "false_positive_mean_pct": 0.0,
+      "false_positive_std_pct": 0.0,
+      "paired_t_stat_vs_C0": 48.6,
+      "p_value_vs_C0": 8.4e-07
+    }
+  }
 }

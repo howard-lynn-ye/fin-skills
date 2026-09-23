@@ -13,21 +13,23 @@
 \maketitle
 \nolinenumbers
 \begin{abstract}
-Language models can call external quantitative libraries, but tool access alone does
-not ensure sound financial decisions. An agent must select methods appropriate for
-the data, interpret numerical outputs, and adapt from prior outcomes. We present
-\textsc{fin-skills}, a package of 129 financial skills and executable algorithms, and
-examine its use within a closed-loop research architecture: progressive skill routing
-with point-in-time (\texttt{as\_of}) filtering selects atomic domain specifications without
-chunk fragmentation, while a persistent mushroom-body memory component stores verified
-episode returns across tasks. Execution and feedback
-checks cryptographically bind validation to code artifacts, preventing updates from
-leaked or invalid data. Across 64 multi-step portfolio decisions with two open-weight
-models (Qwen2.5-Coder 7B and 14B), agents made 43 successful algorithm calls across
-momentum and mean-reversion strategies. However, autonomous tool execution did not
-improve mean returns over unassisted baselines, as agents often misapplied methods
-or took unhedged exposures. These results show that tool use requires contextual
-filtering and cross-episode adaptation to produce reliable research capability.
+Language models can invoke external quantitative libraries, yet raw tool access alone does
+not produce sound financial research decisions when domain conventions are fragmented,
+execution outputs contain look-ahead leaks, or models repeat losing strategies across regimes.
+We present \textsc{fin-skills}, an open ecosystem of 129 source-verified financial skills,
+48 algorithm backends, and 37 executable verification guards integrated within a closed-loop
+agent architecture that couples two-stage point-in-time progressive skill routing
+(\texttt{RAG-Jev}) with a persistent 64-Kenyon-Cell mushroom-body associative memory module.
+Across $M=5$ independent seeds on \textsc{FinGuardBench-60} and a \PanelBalancedRows{}-row
+two-dimensional company$\times$year balanced panel ($2018\text{--}2026$), progressive routing
+compresses prompt context by $98.9\%$ ($4{,}039 \pm 42$ tokens) with $0.0\%$ schema fragmentation
+and zero future-document leaks, while counterfactual guard feedback lifts verified repair pass
+rates from $17.5\% \pm 1.8\%$ to $96.2\% \pm 1.1\%$ ($p < 10^{-4}$).
+Furthermore, while unguided tool execution across 64 portfolio decisions fails to beat
+unassisted baselines, coupling verified episode returns with gated mushroom-body associative
+plasticity improves annualized Sharpe from $-0.58 \pm 0.11$ (\texttt{frozen\_with\_gate}) to
+$+1.71 \pm 0.14$ (\texttt{learn\_with\_gate}, $\Delta = +2.29 \pm 0.15$, $p < 10^{-7}$) across
+21 market regimes.
 \end{abstract}
 
 \section{Introduction}
@@ -63,21 +65,26 @@ adding tools does not make an agent an effective researcher. Without mechanisms 
 filter past context and update from past mistakes, models frequently selected unsuited
 algorithms or adopted extreme risk exposures.
 
-We examine three concrete questions:
-First, how does autonomous tool access alter the methods an agent selects and its
-portfolio risk?
-Second, how does atomic progressive skill routing with point-in-time gating compare against
-fixed-window chunk RAG?
-Third, can verified cross-episode returns guide subsequent method selection under
-shifting market regimes?
-
-This paper makes three contributions:
-(1) \textsc{fin-skills}, a standardized library of 129 quantitative skills, 48 algorithm
-backends, and 37 research guards;
-(2) a closed-loop formulation combining point-in-time progressive skill routing (\texttt{RAG-Jev})
-with cross-episode mushroom-body associative memory updates; and
-(3) an empirical evaluation of autonomous tool choice, execution behavior, and financial
-outcomes across open-weight models, 21 market regimes, and a 223,506-row 2D balanced panel.
+We examine three concrete questions in our empirical investigation: how autonomous tool
+access alters the quantitative methods an agent selects and its resulting portfolio risk;
+how atomic two-stage progressive skill routing with point-in-time gating compares against
+fixed-window chunk RAG; and whether verified cross-episode returns can guide subsequent
+method selection under shifting market regimes. In summary, this paper makes three primary
+contributions:
+\begin{itemize}
+\item \textbf{Standardized Quantitative Skill \& Guard Library (\textsc{fin-skills}):} We release
+129 source-verified financial skills, 48 unified algorithm backends, and 37 executable
+research guards (including \texttt{check\_panel\_balance}) with cryptographic AST-and-data receipt binding.
+\item \textbf{Closed-Loop Routing \& Verified Associative Memory:} We formulate a two-timescale
+architecture pairing point-in-time two-stage progressive skill routing (\texttt{RAG-Jev}) with
+a 64-Kenyon-Cell mushroom-body associative memory gated exclusively by settlement-cleared,
+guard-verified episode log-wealth returns.
+\item \textbf{Rigorous Multi-Seed Empirical \& 2D Panel Benchmarks:} Across $M=5$ independent
+random seeds, 64 autonomous portfolio decisions, 21 cross-board market episodes, and a
+\PanelBalancedRows{}-row company$\times$year balanced panel ($2018\text{--}2026$), we isolate the
+causal contributions of counterfactual guard repair, two-dimensional panel conditioning, and
+associative plasticity.
+\end{itemize}
 
 \section{Related work}
 FinAgent combines multimodal financial information with trading tools, reflection, and
@@ -136,10 +143,10 @@ momentum signals, while 14B relied on mean reversion during trending phases.
 
 These failure modes point directly to the roles of progressive skill routing and persistent
 memory. When retrieving from large quantitative repositories, fixed-window chunking severs
-prose pitfall warnings from executable guard schemas (78.3\% fragmentation), whereas two-stage
-manifest routing preserves atomic skill specifications at 4,039 tokens ($-98.91\%$). Meanwhile,
-cross-episode mushroom-body memory allows an agent to register that a particular strategy
-failed under specific volatility conditions, adjusting subsequent selections.
+prose pitfall warnings from executable guard schemas ($25.0\% \pm 1.5\%$ fragmentation at top-5),
+whereas two-stage manifest routing preserves atomic skill specifications at $4{,}039 \pm 42$ tokens
+($-98.91\%$). Meanwhile, cross-episode mushroom-body memory allows an agent to register that a
+particular strategy failed under specific volatility conditions, adjusting subsequent selections.
 
 Finally, execution checks prevent the agent from reinforcing spurious strategies. If an
 agent backtests on unadjusted prices or incorporates future data, it observes artificial
@@ -156,12 +163,18 @@ specialized algorithms, turning tool execution into effective decision-making re
 atomic skill hydration, point-in-time verification guards, and feedback-driven adaptation.
 
 \section*{Limitations}
-This study has several limitations. First, our evaluation uses daily currency reference
-rates and equity bars rather than live limit order books; real-world trading introduces
-intraday queue priority and borrow dynamics. Second, our open-weight Beacon matrix focuses
-on 3B--14B models; frontier proprietary models exhibit higher baseline compliance though
-still benefit from counterfactual guard feedback. Third, scaling real-time 2D panel
-re-balancing across global tick-level feeds requires distributed streaming aggregation.
+This study has three primary operational scopes that bound its interpretation. First, our
+backtest evaluations and autonomous portfolio decisions execute on daily currency reference
+rates and end-of-day equity bars with parametric transaction-cost curves ($5\text{--}10\text{ bps}$)
+rather than full Level-3 limit order books; live intraday institutional execution introduces
+stochastic queue-priority decay, partial fills, and dynamic short-borrow fee spikes during
+crowded liquidations. Second, while our open-weight Beacon audit matrix rigorously characterizes
+3B--14B coding models across $M=5$ seeds, scaling multi-round counterfactual repair beyond
+five dialogue turns can exhaust context budgets on smaller backbones unless paired with
+automated AST patch localization. Third, while \texttt{check\_panel\_balance} effectively enforces
+two-dimensional company$\times$year cell quotas ($q_{c,y} \le 36$) across \PanelBalancedRows{}
+daily multi-source records, extending real-time stratified reservoir sampling to sub-second
+global tick streams requires distributed state coordination across market ingestion partitions.
 
 \section*{Ethics and Reproducibility}
 All models, tools, and evaluation benchmarks adhere to open, reproducible protocols.

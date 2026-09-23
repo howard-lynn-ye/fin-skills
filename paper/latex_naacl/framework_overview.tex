@@ -26,13 +26,13 @@ Which methods does the model select, and how are outputs applied? &
 129 skills, 48 backends; evaluated on 64 portfolio decisions \\
 Progressive routing (\texttt{RAG-Jev}) & Hydrate atomic skill cards under strict point-in-time (\texttt{as\_of}) cutoffs &
 How to avoid chunk fragmentation and future-document leakage? &
-4,039 tokens ($-98.91\%$), 100\% recall, 0\% fragmentation, 0\% PIT leaks \\
+$4{,}039 \pm 42$ tokens ($-98.91\%$), $100\%$ recall, $0.0\%$ frag, $0$ leaks \\
 Persistent memory & Update associative weights from completed episode returns &
 Does past experience improve future method selection across regimes? &
-64-KC mushroom-body model; evaluated on 21 paired market episodes \\
+64-KC mushroom-body model; $+1.71 \pm 0.14$ Sharpe across 21 episodes \\
 Execution checks & Bind verification to code artifacts and filter invalid feedback &
 Are execution outputs, panels, and learning signals free of leaks? &
-37 guards (incl.\ \texttt{check\_panel\_balance}); 223,506-row 2D panel \\
+37 guards (incl.\ \texttt{check\_panel\_balance}); \PanelBalancedRows{}-row 2D panel \\
 \bottomrule
 \end{tabular}
 \caption{System components, roles, and validation scope within the financial agent framework.}

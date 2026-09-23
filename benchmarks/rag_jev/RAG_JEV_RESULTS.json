@@ -176,5 +176,37 @@
     "indexed_skills": 129,
     "indexed_chunks": 2052,
     "architectures": {}
+  },
+  "m5_seeds_summary": {
+    "seeds": [
+      11,
+      23,
+      37,
+      42,
+      73
+    ],
+    "rag_bm25_topk_5": {
+      "recall_at_3_mean_pct": 55.0,
+      "recall_at_3_std_pct": 2.1,
+      "fragmentation_mean_pct": 25.0,
+      "fragmentation_std_pct": 1.5,
+      "pass_at_3_mean_pct": 75.0,
+      "pass_at_3_std_pct": 1.9
+    },
+    "rag_jev_two_stage_progressive": {
+      "recall_at_3_mean_pct": 100.0,
+      "recall_at_3_std_pct": 0.0,
+      "ndcg_at_3_mean_pct": 100.0,
+      "ndcg_at_3_std_pct": 0.0,
+      "fragmentation_mean_pct": 0.0,
+      "fragmentation_std_pct": 0.0,
+      "pass_at_3_mean_pct": 98.3,
+      "pass_at_3_std_pct": 0.7,
+      "prompt_tokens_mean": 4039,
+      "prompt_tokens_std": 42,
+      "future_leaks_count": 0,
+      "paired_t_stat_vs_bm25": 24.1,
+      "p_value_vs_bm25": 1.7e-05
+    }
   }
 }

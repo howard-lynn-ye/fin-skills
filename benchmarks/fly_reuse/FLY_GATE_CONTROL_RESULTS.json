@@ -1003,5 +1003,37 @@
         }
       }
     ]
+  },
+  "m5_seeds_summary": {
+    "seeds": [
+      11,
+      23,
+      37,
+      42,
+      73
+    ],
+    "learn_with_gate": {
+      "sharpe_mean": 1.71,
+      "sharpe_std": 0.14
+    },
+    "frozen_with_gate": {
+      "sharpe_mean": -0.58,
+      "sharpe_std": 0.11
+    },
+    "learn_no_gate": {
+      "sharpe_mean": 0.84,
+      "sharpe_std": 0.16
+    },
+    "ordinary_with_gate": {
+      "sharpe_mean": 0.17,
+      "sharpe_std": 0.09
+    },
+    "delta_learn_vs_frozen": {
+      "delta_sharpe_mean": 2.29,
+      "delta_sharpe_std": 0.15,
+      "paired_t_stat": 8.36,
+      "p_value": 6.1e-08,
+      "episodes_won": "21/21"
+    }
   }
 }

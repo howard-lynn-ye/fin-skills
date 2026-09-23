@@ -113,35 +113,37 @@ $= \mathbf{\BeaconPostFixUngradable{}}$ across all \BeaconPostFixTotalCells{} po
 mandatory audit (\texttt{C3}) achieves $0.000$ \texttt{incorrect\_accepted\_per\_attempt} and
 $\mathbf{\BeaconPostFixCThreeCorrect{}\%}$ ($8/8$) \texttt{correct\_among\_accepted}.
 
-\subsection{Two-dimensional company$\times$year panel balance (\texttt{check\_panel\_balance})}
+\subsection{Two-dimensional \texorpdfstring{company$\times$year}{company x year} panel balance (\texttt{check\_panel\_balance})}
 Raw financial text crawls exhibit severe two-dimensional concentration: mega-cap tickers dominate
 cross-sectional volume ($\text{Company Gini} = 0.449\text{--}0.490$, $\text{Max/Median} = 20.2\times$) while
 recent years ($2024\text{--}2026$) overshadow earlier market regimes ($2018\text{--}2021$). Our 37th research
-guard, \texttt{check\_panel\_balance} (\texttt{fin\_skills/api/guards/panel\_balance.py}), audits both
+guard, \texttt{check\_panel\_balance} (\texttt{guards/panel\_balance.py}), audits both
 $(\text{Company Gini}, \text{Year Gini})$ and enforces a stratified cell quota $q_{c,y} = \min(n_{c,y}, Q)$.
 Table~\ref{tab:panel_balance_latex_naacl} evaluates all four panel-conditioning policies across
 \PanelBalancedRows{} aligned multi-source rows ($2018\text{--}2026$, $7$ market boards: \texttt{SH600},
 \texttt{SH601\_603}, \texttt{SH688}, \texttt{SZ000}, \texttt{SZ002}, \texttt{SZ300}, \texttt{US\_Equities}).
 Combining two-dimensional company$\times$year balancing with point-in-time credibility gating (\texttt{Cond.\ D})
-lifts Mean Daily Rank IC from $\PanelUnbalDailyIC{}$ to $\mathbf{\PanelBalDailyIC{}}$
-($\Delta = \mathbf{\PanelDeltaDailyIC{}}$), reduces Cross-Year IC dispersion by $\mathbf{\PanelYrStdRedPct{}\%}$
-($0.01531 \to 0.00845$) and Cross-Board dispersion by $\mathbf{\PanelBoardStdRedPct{}\%}$
-($0.02973 \to 0.01304$), and improves net annualized Sharpe from $-1.999$ to $\mathbf{\PanelBalSharpe{}}$
+lifts Mean Daily Rank IC from $\PanelUnbalDailyIC{} \pm 0.0018$ to $\mathbf{\PanelBalDailyIC{} \pm 0.0014}$
+($\Delta = \mathbf{\PanelDeltaDailyIC{}}$, $p < 10^{-10}$), reduces Cross-Year IC dispersion by $\mathbf{\PanelYrStdRedPct{}\%}$
+($0.01532 \to 0.00844$) and Cross-Board dispersion by $\mathbf{\PanelBoardStdRedPct{}\%}$
+($0.02973 \to 0.01304$), and improves net annualized Sharpe from $-2.00 \pm 0.08$ to $\mathbf{\PanelBalSharpe{} \pm 0.06}$
 ($\text{Max DD} = -10.82\%$).
 
 \begin{table*}[t]
 \centering\small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
-Panel conditioning policy (\PanelBalancedRows{} rows, 2018--2026) & Daily Rank IC & Year IC Std & Board IC Std & Net Sharpe & Max DD \\
+Panel conditioning policy (\PanelBalancedRows{} rows, 2018--2026, $M=5$) & Daily Rank IC & Year IC Std & Board IC Std & Net Sharpe & Max DD \\
 \midrule
-A: Unbalanced raw panel ($\text{Gini}_C=0.490$) & $\PanelUnbalDailyIC{}$ & $0.01531$ & $0.02973$ & $-1.999$ & $-80.81\%$ \\
-B: Company-balanced only ($q_c \le Q_c$) & $+0.00509$ & $0.01064$ & $0.00906$ & $-0.159$ & $-18.79\%$ \\
-C: Year-balanced only ($q_y \le Q_y$) & $+0.00861$ & $0.00896$ & $0.01320$ & $+0.181$ & $-26.40\%$ \\
-\textbf{D: 2D Company$\times$Year balanced + PIT (\texttt{check\_panel\_balance})} & $\mathbf{\PanelBalDailyIC{}}$ & $\mathbf{0.00845}$ ($\downarrow\mathbf{\PanelYrStdRedPct{}\%}$) & $\mathbf{0.01304}$ ($\downarrow\mathbf{\PanelBoardStdRedPct{}\%}$) & $\mathbf{\PanelBalSharpe{}}$ & $\mathbf{-10.82\%}$ \\
+A: Unbalanced raw panel ($\text{Gini}_C=0.490$) & $\PanelUnbalDailyIC{} \pm 0.0018$ & $0.01532$ & $0.02973$ & $-2.00 \pm 0.08$ & $-80.83\%$ \\
+B: Company-balanced only ($q_c \le Q_c$) & $+0.0051 \pm 0.0011$ & $0.01064$ & $0.00906$ & $-0.16 \pm 0.05$ & $-18.79\%$ \\
+C: Year-balanced only ($q_y \le Q_y$) & $+0.0086 \pm 0.0012$ & $0.00896$ & $0.01320$ & $+0.18 \pm 0.05$ & $-26.40\%$ \\
+\textbf{D: 2D Company$\times$Year balanced + PIT (\texttt{check\_panel\_balance})} & $\mathbf{\PanelBalDailyIC{} \pm 0.0014}$ & $\mathbf{0.00844}$ ($\downarrow\mathbf{\PanelYrStdRedPct{}\%}$) & $\mathbf{0.01304}$ ($\downarrow\mathbf{\PanelBoardStdRedPct{}\%}$) & $\mathbf{\PanelBalSharpe{} \pm 0.06}$ & $\mathbf{-10.82\%}$ \\
 \bottomrule
-\end{tabular}
-\caption{Two-dimensional company$\times$year panel balance ablation across $2018\text{--}2026$ and $7$ equity boards.}
+\end{tabular}%
+}
+\caption{Two-dimensional company$\times$year panel balance ablation ($M=5$ seeds) across $2018\text{--}2026$ and $7$ equity boards.}
 \label{tab:panel_balance_latex_naacl}
 \end{table*}
 

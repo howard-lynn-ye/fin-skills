@@ -10,19 +10,20 @@ Measuring method choice alongside returns separates sound reasoning from fortuna
 price paths. Matched controls isolate the contributions of raw price tables, text
 guidance, fixed tool outputs, and autonomous execution.
 
-\paragraph{Context retention.}
-Holding the base model, input data, and tool interfaces fixed, we compare full context,
-recency truncation, and HiSTrim selective routing. We measure portfolio decision
-quality, retention of critical price and instruction tokens, KV-cache memory footprint,
-and generation latency. This determines whether pruning past interaction turns degrades
-reasoning accuracy.
+\paragraph{Context retention and progressive routing.}
+Holding the base model, input data, and tool interfaces fixed, we compare full-library
+concatenation, fixed-window BM25 chunk retrieval, and two-stage progressive skill routing
+(\texttt{RAG-Jev}) under strict point-in-time (\texttt{as\_of}) filtering. We measure portfolio decision
+quality, retention of atomic parameter schemas and executable guard signatures, prompt token
+footprint, and code-vs.-guidance fragmentation. This determines whether two-stage manifest routing
+eliminates chunk fragmentation without degrading reasoning accuracy.
 
 \paragraph{Experience and adaptation.}
 Holding tool access and context budgets fixed, we evaluate sequential adaptation by
 comparing unaugmented models, frozen-memory baselines, and our multi-timescale memory
 module. All agents receive identical cleared returns. We track how tool choices shift
 following losses, measuring turnover costs and performance across regime changes.
-Factorial comparisons test interactions between context pruning and memory updates.
+Factorial comparisons test interactions between progressive skill routing and memory updates.
 
 Evaluation metrics include forecast accuracy, portfolio Sharpe ratio, turnover, and
 token cost. All model outputs and portfolio weights are saved and frozen prior to
