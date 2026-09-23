@@ -87,21 +87,33 @@ associative plasticity.
 \end{itemize}
 
 \section{Related work}
-FinAgent combines multimodal financial information with trading tools, reflection, and
-memory \cite{zhang2024finagent}; StockBench evaluates sequential portfolio decisions
-using prices, fundamentals, and news \cite{chen2025stockbench}. The Finance Agent
-Benchmark evaluates financial research tasks \cite{bigeard2025finance}. These works
-study tool use and memory within language-model agents. Our study isolates the specific
-effects of tool access by comparing unassisted inputs, static guidance, fixed tool
-outputs, and autonomous execution under identical market data.
+\paragraph{Financial agent frameworks and benchmarks.}
+Classical quantitative portfolio rules such as equal-weight diversification ($1/N$)
+\cite{demiguel2009optimal}, time-series momentum (TSMOM) \cite{moskowitz2012time}, and
+hierarchical risk parity (HRP) \cite{lopez2016building} provide transparent, leak-free
+baselines but cannot synthesize unstructured disclosures or adapt across shifting tool
+catalogs. Recent LLM agent frameworks augment language models with reasoning loops,
+episodic memory, and multi-agent debate: ReAct \cite{yao2023react} and Reflexion
+\cite{shinn2023reflexion} interleave tool execution with verbal self-critique; FinMem
+\cite{yu2024finmem} introduces layered short-, mid-, and long-term FAISS episodic memory;
+TradingAgents \cite{xiao2024tradingagents} orchestrates bull--bear analyst debates; and
+FinAgent \cite{zhang2024finagent} combines multimodal market signals with tool reflection.
+Meanwhile, InvestorBench \cite{kou2024investorbench}, StockBench \cite{chen2025stockbench},
+and the Finance Agent Benchmark \cite{bigeard2025finance} evaluate sequential financial
+decisions. However, existing frameworks rely on natural-language reflection or dense chunk
+retrieval without executable counterfactual verification, leaving them vulnerable to silent
+look-ahead joins and unadjusted corporate actions. Our study isolates the effects of tool
+access, point-in-time progressive routing, counterfactual guards, and associative memory
+under identical market panels and transaction costs.
 
+\paragraph{Verification guards and cross-episode plasticity.}
 Behavioral testing offers a structured view of model capabilities beyond aggregate
 scores \cite{ribeiro2020checklist}. Financial backtest overfitting and selection bias
 \cite{bailey2014deflated,bailey2017pbo}, alongside look-ahead leakage in financial agents
-\cite{li2025profit}, motivate explicit checks on decision evidence. The persistent memory
-component adapts the mushroom-body model of \citet{huang2024memory} to update state from
-delayed financial returns, linking within-task attention dynamics with cross-episode
-retention.
+\cite{li2025profit}, motivate explicit checks on decision evidence. Our persistent memory
+component adapts the fruit-fly mushroom-body model of \citet{huang2024memory} to update
+sparse associative readouts exclusively from guard-verified, settlement-cleared financial
+returns.
 
 \input{framework_overview}
 
