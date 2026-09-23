@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "coverage": {
-    "total": 347,
+    "total": 349,
     "by_kind": {
       "strategy": 51,
-      "decision": 38,
+      "decision": 40,
       "algorithm": 258
     },
     "by_status": {
       "reference": 17,
       "external": 45,
-      "integrated": 285
+      "integrated": 287
     },
     "by_family": {
       "allocation": 21,
@@ -40,7 +40,7 @@
       "risk_control": 5,
       "signal": 7,
       "stat_arb": 1,
-      "structured_decision": 1,
+      "structured_decision": 3,
       "supervised": 10,
       "technical": 158,
       "time_series": 12,
@@ -10588,6 +10588,77 @@
         {
           "location": "https://docs.typesafe.ai/api",
           "verified_on": "2026-09-22",
+          "verification": "inherited adapter metadata"
+        }
+      ],
+      "evidence": "adapter_registered",
+      "performance_evidence": null
+    },
+    {
+      "id": "model:kev",
+      "name": "kev",
+      "name_zh": "",
+      "kind": "decision",
+      "family": "structured_decision",
+      "asset_classes": [
+        "input_dependent"
+      ],
+      "required_data": [
+        "local_checkpoint",
+        "local_base_checkpoint",
+        "state",
+        "questions"
+      ],
+      "status": "integrated",
+      "availability": "check_model_catalog_at_runtime",
+      "model_id": "kev",
+      "operations": [
+        "predict",
+        "run",
+        "rerank"
+      ],
+      "json_run": false,
+      "related_model_ids": [],
+      "caution": "Local typed decisions; needs trusted head.pt and matching base revision. No automatic downloads or date preprocessing; Python lifecycle only.",
+      "sources": [
+        {
+          "location": "https://github.com/jaredpalmer/kev",
+          "verified_on": "2026-09-23",
+          "verification": "inherited adapter metadata"
+        }
+      ],
+      "evidence": "adapter_registered",
+      "performance_evidence": null
+    },
+    {
+      "id": "model:laya",
+      "name": "laya",
+      "name_zh": "",
+      "kind": "decision",
+      "family": "structured_decision",
+      "asset_classes": [
+        "input_dependent"
+      ],
+      "required_data": [
+        "local_checkpoint",
+        "state",
+        "questions"
+      ],
+      "status": "integrated",
+      "availability": "check_model_catalog_at_runtime",
+      "model_id": "laya",
+      "operations": [
+        "predict",
+        "run",
+        "rerank"
+      ],
+      "json_run": false,
+      "related_model_ids": [],
+      "caution": "Local typed decisions; rejects truncation, preserves raw rounded probabilities. No automatic downloads; Python lifecycle only. Confidence is not financial verification.",
+      "sources": [
+        {
+          "location": "https://github.com/NandhaKishorM/laya",
+          "verified_on": "2026-09-23",
           "verification": "inherited adapter metadata"
         }
       ],

@@ -1,0 +1,125 @@
+{
+  "scope": "public_regression_routing",
+  "groups": {
+    "all": {
+      "planned": 108,
+      "bm25_correct": 76,
+      "candidate_coverage": 100,
+      "models": {
+        "kev-0.8b": {
+          "variants": {
+            "shuffled": {
+              "correct": 45,
+              "successful": 108,
+              "errors": 0
+            },
+            "reversed": {
+              "correct": 50,
+              "successful": 108,
+              "errors": 0
+            }
+          },
+          "both_successful": 108,
+          "order_flips": 36
+        },
+        "kev-4b": {
+          "variants": {
+            "shuffled": {
+              "correct": 79,
+              "successful": 108,
+              "errors": 0
+            },
+            "reversed": {
+              "correct": 82,
+              "successful": 108,
+              "errors": 0
+            }
+          },
+          "both_successful": 108,
+          "order_flips": 24
+        }
+      }
+    },
+    "en": {
+      "planned": 106,
+      "bm25_correct": 75,
+      "candidate_coverage": 98,
+      "models": {
+        "kev-0.8b": {
+          "variants": {
+            "shuffled": {
+              "correct": 45,
+              "successful": 106,
+              "errors": 0
+            },
+            "reversed": {
+              "correct": 49,
+              "successful": 106,
+              "errors": 0
+            }
+          },
+          "both_successful": 106,
+          "order_flips": 34
+        },
+        "kev-4b": {
+          "variants": {
+            "shuffled": {
+              "correct": 78,
+              "successful": 106,
+              "errors": 0
+            },
+            "reversed": {
+              "correct": 80,
+              "successful": 106,
+              "errors": 0
+            }
+          },
+          "both_successful": 106,
+          "order_flips": 23
+        }
+      }
+    },
+    "zh": {
+      "planned": 2,
+      "bm25_correct": 1,
+      "candidate_coverage": 2,
+      "models": {
+        "kev-0.8b": {
+          "variants": {
+            "shuffled": {
+              "correct": 0,
+              "successful": 2,
+              "errors": 0
+            },
+            "reversed": {
+              "correct": 1,
+              "successful": 2,
+              "errors": 0
+            }
+          },
+          "both_successful": 2,
+          "order_flips": 2
+        },
+        "kev-4b": {
+          "variants": {
+            "shuffled": {
+              "correct": 1,
+              "successful": 2,
+              "errors": 0
+            },
+            "reversed": {
+              "correct": 2,
+              "successful": 2,
+              "errors": 0
+            }
+          },
+          "both_successful": 2,
+          "order_flips": 1
+        }
+      }
+    }
+  },
+  "receipt_sha256": "8d30ea8b5efe2aa13db57b59f095fbd0c6ab6e17aac3e596b59468e56c94d3b9",
+  "limits": "Historically exposed public skill-routing fixtures; not a holdout or end-task evaluation.",
+  "denominator": "All planned queries, including errors and missing candidates."
+}
