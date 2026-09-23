@@ -87,3 +87,17 @@ these rejections do not estimate prediction accuracy. The fixtures were previous
 used in development and contain only two Chinese queries. This comparison measures
 public routing regression, not unseen financial-task performance or successful tool
 execution. BM25 remains the default, with Kev-4B available as an optional decision step.
+
+\paragraph{Storage recovery and revision ordering.}
+In a separate engineering study, we terminated collector processes before saving,
+during a batch, immediately before transaction commit, and after commit returned,
+with three repeats per boundary. All 12 cases recovered the expected atomic state
+across event records, latest-version pointers, pending alerts, and the collection
+cursor; independent read-only database checks confirmed these states. Runs with
+100, 1,000, and 10,000 synthetic events retained the expected record counts and
+cursor. These checks cover process termination, not machine power loss or financial
+task accuracy. An out-of-order revision test also exposed an interface boundary:
+the storage layer's \texttt{latest} pointer follows arrival order, so an older
+revision arriving last becomes current. Historical research must therefore apply
+an explicit chronological or availability-time selection policy rather than infer
+publication order from that pointer.
