@@ -2,6 +2,10 @@
 
 日期：2026-09-22。当前状态：**本地准备完成，远端尚未提交**。
 
+续接批次见 [2026-09-23 执行记录](BEACON_CAMPAIGN_20260923.md)：已新增独立作业提交器和
+数据库历史版本开发实验，并冻结新的批次；已按连接指南成功认证，提交作业
+`1649141–1649145`。Jev 仍因缺少 API 密钥未提交；完整实验尚未完成。
+
 ## 最值得补的实验
 
 | 顺序 | 实验 | 要回答的问题 | 主要测量 |
@@ -51,7 +55,7 @@
 预定远端目录：
 
 ```text
-/beacon-projects/radfm/wy891/fin-skills-followup-20260922-v1/
+/beacon-projects/radfm/wy891/fin-skills-followup-20260922-v2/
 ```
 
 源代码、结果、应用缓存、临时文件、pytest 缓存和 Slurm 标准输出／错误均配置到
@@ -59,10 +63,12 @@ RADFM。只以离线模式复用旧 RADFM 目录的模型缓存及 Python 环境
 绝对 `--chdir`、`--output` 和 `--error`，运行器拒绝非 RADFM 路径及输出目录中的符号链接。
 没有修改 HOME 或设置把 HOME 当实验根目录的回退路径。
 
-本地运行包位于 `D:/fin_skill/runs/beacon-followup-20260922-v1/`，其中有
+当前 Agent 运行包位于 `D:/fin_skill/runs/beacon-followup-20260922-v2/`，其中有
 `source.tar.gz`、`bundle-manifest.json`、`submit.sh` 和 `plan/protocol.json`。
 运行包只包含允许的源码及所需测试；不包含凭据、旧实验输出或论文归档。
 `bundle-manifest.json` 保存实际源码哈希及工作树状态，标为 `prepared_not_submitted`。
+v2 在 `cad9c06` 后生成，包含季度日期频率修复；v1 及其历史检查日志保持原样。
+该 Agent 包不包含后来独立运行的 Jev 检索与果蝇门控实验，不能直接拿它提交这两项。
 
 准备入口为 [prepare_followup.py](../benchmarks/agent_study/prepare_followup.py)，它只在
 本地生成运行包，不登录、上传或提交。运行入口为
@@ -77,7 +83,7 @@ RADFM。只以离线模式复用旧 RADFM 目录的模型缓存及 Python 环境
 
 ```powershell
 Set-Location D:/fin_skill
-python -m scripts.deploy_beacon_followup runs/beacon-followup-20260922-v1
+python -m scripts.deploy_beacon_followup runs/beacon-followup-20260922-v2
 ```
 
 密码只在本机终端的隐藏输入提示中输入，不写进命令、论文或回执。该入口不会搜索旧
@@ -144,6 +150,32 @@ GitHub PR #4 的 [Ubuntu Python 3.11 日志](https://github.com/howard-lynn-ye/f
 原失败日志保留在 `runs/beacon-followup-20260922-v1/full-regression.log`；受支持环境的
 Agent 测试日志为同目录的 `targeted-supported.log`。v1 保持冻结；任何后续源码修复
 都必须生成不同版本的运行包，不能覆盖 v1。
+
+## 完整使用示例与模型作业提交入口
+
+[collected_rag.py](../examples/collected_rag.py) 将 SQLite 修订记录、历史检索、当前技能
+知识和可选 Jev 重排串接起来。默认只运行真实本地检索；不会生成模拟模型答案。
+它先按可用时点筛选，再选择每条记录的最新可用修订，避免未来修订遮掉历史旧版本。
+`--live-jev` 要求环境密钥和新的输出目录；最多调用一次托管重排，并保留实际模型和用量。
+
+Jev 对照命令与 Beacon 默认参数固定为 `jev-1.13.0`，该固定 ID 于 2026-09-22 在
+[供应商模型目录](https://docs.typesafe.ai/models)核实。模型调用测试仍不能替代真实实验。
+续接检查中，进程、用户和系统环境均未配置 `TYPESAFE_API_KEY`，SSH agent 服务仍为
+Stopped；没有新的模型响应或 Beacon 提交记录。
+
+专用 [submit_model_followup.py](../scripts/submit_model_followup.py) 在调用 Slurm 前
+设置 RADFM 内的绝对工作目录、标准输出和错误日志路径。它默认只打印计划；只有
+`--submit` 才提交。提交前保存标记，超时或返回内容无法确认时记为状态未知，拒绝重复
+提交。`submitted` 只说明拿到作业号，不说明实验完成。
+
+Jev 使用 `rag-jev <新RADFM根目录>`；果蝇使用
+`fly-gate <新RADFM根目录> --prior-root <已有果蝇RADFM根目录>`。
+两个入口都要求事先把各自所需源码放到新目录的 `source/` 下。
+
+本次组成示例、提交边界及既有 Jev／RAG／果蝇门控检查共 **109 项通过**；独立示例检查
+**15 项通过**。再次按顺序运行目录生成、包生成和校验后，`validate.py` 输出 OK，
+保留原有 1 条技能发现预算警告。提交入口的实际本地调用返回
+`prepared_not_submitted`，确认绝对日志路径已进入命令；并未调用 Slurm。
 
 路径选项的依据为 [Slurm sbatch 文档](https://slurm.schedmd.com/sbatch.html)；模型缓存与
 离线选项的依据为 [Hugging Face 环境变量文档](https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables)，

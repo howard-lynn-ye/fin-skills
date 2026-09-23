@@ -30,7 +30,7 @@ result="$root/results/inference-$SLURM_JOB_ID"
   --output "$prepared" --top-k 3 --fetch-k 8 --max-context-chars 4000
 status=0
 "$py" -m benchmarks.rag_jev.run infer --prepared "$prepared" --output "$result" \
-  --allow-network --model "${JEV_MODEL:-jev-latest}" --max-requests 6 || status=$?
+  --allow-network --model "${JEV_MODEL:-jev-1.13.0}" --max-requests 6 || status=$?
 if test -f "$result/receipt.json"; then
   "$py" -m benchmarks.rag_jev.run score --prepared "$prepared" --run "$result" \
     --qrels benchmarks/rag_jev/development-qrels.json \
