@@ -1,0 +1,390 @@
+{
+  "rows": [
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "bge",
+      "file": "episodes/29-bge.json",
+      "sha256": "74ed3365af190fe399afb8f5793d8bf529e1da25a59ca9baeb44f1f24c929f4f"
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "bge",
+      "file": "episodes/17-bge.json",
+      "sha256": "559a78851669e3fc4428e0b69a9add3ec231eb1d6b89496f87887236a35ec7d9"
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "kev",
+      "file": "episodes/12-kev.json",
+      "sha256": "e578876a5abcbfd01ba1f72a12fa34e5710d8a10b1b10b66e4a2ec33007f9197"
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "kev",
+      "file": "episodes/26-kev.json",
+      "sha256": "81663d326719d4c88d6a9ef23279e9d0dfde71486817a62338ea6b729ccb39d0"
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "bge",
+      "file": "episodes/10-bge.json",
+      "sha256": "2b2cef1b97cc937d9936caf6fcb9d7948e5fd90468f605a3992dbb1ff10adde2"
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "bge",
+      "file": "episodes/24-bge.json",
+      "sha256": "2fdc549e4abc2616eaea77724dfb6515fd72c95cf9634af753dfce1b0b294ea0"
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "bge",
+      "file": "episodes/11-bge.json",
+      "sha256": "ffac0dfccfcfeec8e9a57509c2f21f4dc0e36a688f6b5eefa6cf897b64bae5e5"
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "bge",
+      "file": "episodes/03-bge.json",
+      "sha256": "80aa33d79f69cb32a62425b5e277c085803fa4b7dfc5b1a12059f597680e0086"
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "bge",
+      "file": "episodes/15-bge.json",
+      "sha256": "4f41e191ddfb08e9a3d06edcc7332665cf394c539ed1d3e3fe455f92647b03e9"
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "kev",
+      "file": "episodes/05-kev.json",
+      "sha256": "fe04e87db20927c4fd6d9c4324eb09a7a0a1fc411e2f68380e6f53c970bcf276"
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "kev",
+      "file": "episodes/14-kev.json",
+      "sha256": "0dde6b4a5b89278748ca7db9ba521a5d5d8d23fbed6131117b87e7c52e5bb105"
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "kev",
+      "file": "episodes/08-kev.json",
+      "sha256": "52941761985ed85a9ed53c6fbae8c2eceece671c2c4c6b68905c5fa8be85e1a5"
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "kev",
+      "file": "episodes/19-kev.json",
+      "sha256": "585128a68c235c2fcc750c6bc61a261e19d58ff22abb983e1456bf4bb78e189d"
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "kev",
+      "file": "episodes/03-kev.json",
+      "sha256": "66db56ee3d67f09a669a5c3802358b6e6856e5ffa0d8358b7c9fd513ee6e3021"
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "kev",
+      "file": "episodes/13-kev.json",
+      "sha256": "7a3b4e95f2ed0f16da6a112d0ca51e64bee5ee5f08530f7caff5f7d55374295e"
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "kev",
+      "file": "episodes/31-kev.json",
+      "sha256": "e9be84ac5eb269760771f36cffcd5b3b4c0af1324237985c8dcde956cc53eeaf"
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "kev",
+      "file": "episodes/28-kev.json",
+      "sha256": "3ba78df7c7e68ef00271f6205412879cbfd8079596a36595c33702c24b20fb2b"
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "bge",
+      "file": "episodes/16-bge.json",
+      "sha256": "0e8bf2bda2ddd5d201cb50fd97c5e8680382c2835aec539a05a3645ad21471f6"
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "bge",
+      "file": "episodes/19-bge.json",
+      "sha256": "f9403b90a718ca3c0d870b383aae18994665f67557a1a838124a54ec20697729"
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "bge",
+      "file": "episodes/05-bge.json",
+      "sha256": "35c46209a47b7c73413e3880a4816036be99386f617cfbbcbdbe7949ed334bb9"
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "kev",
+      "file": "episodes/22-kev.json",
+      "sha256": "3b04f2fc25c727406d0eb16d16a05f3d663a34158ad1a44ced4a7736f79afbf4"
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "bge",
+      "file": "episodes/08-bge.json",
+      "sha256": "dc6da53ddf93a8d27c52996fd6fb3bf345370523b3cfa1e34466de5b7dbe7604"
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "kev",
+      "file": "episodes/04-kev.json",
+      "sha256": "ff915832d34591ddeb5fa69d546d206711697b40428b4a7a9c7d5fee1ea0446d"
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "bge",
+      "file": "episodes/26-bge.json",
+      "sha256": "d8e2a6f0d8f0b55201bfac1abfff5a5f1a85a7eb6d536252ebefe5a6be0a4bea"
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "bge",
+      "file": "episodes/04-bge.json",
+      "sha256": "04a32b5b0b7729f8e3b4ead10d76283169fe0ff9425d5e1dd35c95de0bb6c70e"
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "bge",
+      "file": "episodes/18-bge.json",
+      "sha256": "8c0fba2136abd9ea78c5c6d8496409d6072a9ab74da2a9e35bc7b8e97b51b9f5"
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "bge",
+      "file": "episodes/02-bge.json",
+      "sha256": "873fc88783a19022894c43ce5521b5d63947486e58176b2538381cb3d2ac5d4c"
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "kev",
+      "file": "episodes/09-kev.json",
+      "sha256": "fccafca40d52da41db7b51a469592739fc1501dec4c3f533aa73f1db6d9638c1"
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "kev",
+      "file": "episodes/24-kev.json",
+      "sha256": "8e7f7a816ef8c519e9a695e18e72e862a25b091b71afcce2848de36cd167cb49"
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "bge",
+      "file": "episodes/14-bge.json",
+      "sha256": "ff6812ca109d4378d091eda0d67e2856a048f589c5c603de274b11be9e8e432f"
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "kev",
+      "file": "episodes/30-kev.json",
+      "sha256": "90d72d2be8a25721ea18e2fe457cf207515f571ce04eab83f7bcfb5129a78056"
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "kev",
+      "file": "episodes/23-kev.json",
+      "sha256": "6b93652102d2a034847566988b75b7704755aa92058f88c7ab411800b8885f49"
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "bge",
+      "file": "episodes/12-bge.json",
+      "sha256": "c1ab55cf187c42ebbf045c545ee8b7ef36ed7257e4d1dd4773adc4820e2f5fd2"
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "bge",
+      "file": "episodes/06-bge.json",
+      "sha256": "f051c1a24ffcd6912cd0c2ae6a47033bd24e6306d3b88ac55b28a66979c4b926"
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "bge",
+      "file": "episodes/00-bge.json",
+      "sha256": "da1e3b9cc7296964fd7ca179c6a6d16b4ae9aab6534b5fece532d82fd5eb8b5f"
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "bge",
+      "file": "episodes/20-bge.json",
+      "sha256": "b8d826b68f75d7007768b3fc5c4411e729c57690cd4d81373a32022b06842211"
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "bge",
+      "file": "episodes/30-bge.json",
+      "sha256": "12a2344e9ba62311053791106c3561b37ab81ec787990edaec0406e1a0a3e8be"
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "kev",
+      "file": "episodes/17-kev.json",
+      "sha256": "075150b35081861519d2f6557854669cecd5ec1d592e964f4d1af7f8677065e1"
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "bge",
+      "file": "episodes/27-bge.json",
+      "sha256": "bd4c590fcee045f982992cbc79a6161a235e5f6993d9a05fbb2906cfe8f711a1"
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "bge",
+      "file": "episodes/07-bge.json",
+      "sha256": "8096dc25a906fbf6d2c599ffa14ded681bf90e4cc5c8b8756902deb7987f4fa0"
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "kev",
+      "file": "episodes/10-kev.json",
+      "sha256": "6b8083a9d20702f12593f0e61910d341ef4ac8e79761015c51a6a3938e4c8c4a"
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "bge",
+      "file": "episodes/23-bge.json",
+      "sha256": "67ad9a126b9fac5749a8a2c2d74e1da443468a2d10a80e3e2f272543c5d29f3b"
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "kev",
+      "file": "episodes/02-kev.json",
+      "sha256": "bb71a894dd36649875720100278931ec18f5cbcd2e98de472ec1e1263b4e677e"
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "kev",
+      "file": "episodes/21-kev.json",
+      "sha256": "8636ddae4d7b1dff6a6d96bc41f88c5bfee4b32d40025c2c3595379477e949de"
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "bge",
+      "file": "episodes/21-bge.json",
+      "sha256": "1c4d364f11bf660271506d1d0df0c87c644a7a9ed8797fadd7b641df96092467"
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "bge",
+      "file": "episodes/28-bge.json",
+      "sha256": "8cf63decfedfac33ad3e253992bb7d9d5cc7418d25383dc85df7531a7e29d5fb"
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "kev",
+      "file": "episodes/01-kev.json",
+      "sha256": "d48d8e5634baa3e459679d8c326f88560dd5165d397f490e363621c52bb410bd"
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "kev",
+      "file": "episodes/18-kev.json",
+      "sha256": "ae3450e4451bfc49aa9086d05286e3d43373ffdbcadf252bd09de1bbd2336bd5"
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "kev",
+      "file": "episodes/29-kev.json",
+      "sha256": "7979027f1d4f55198c561e466009d88897a671f6915b4957b03b3329670fb0b7"
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "kev",
+      "file": "episodes/27-kev.json",
+      "sha256": "bd3a0e88f71b91bd54727ed6422b9d72014d7df1e60d93d4e1020c858ca0666f"
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "kev",
+      "file": "episodes/16-kev.json",
+      "sha256": "505bc43640ff9c3716b5af7b7e7f4b59431bd4a0231f08ff7db4a30b68ac6e42"
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "bge",
+      "file": "episodes/01-bge.json",
+      "sha256": "be0b49889430a0f578efba55950a0e3deb7e3e4ef744cb8d089ad1638ce5f260"
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "kev",
+      "file": "episodes/20-kev.json",
+      "sha256": "002cab3a9e4e433c050d23340735bb06f06d260b6032046a6fd677f35ada6cf7"
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "kev",
+      "file": "episodes/25-kev.json",
+      "sha256": "6b93e1a006a66a6e0179437a9cde9d0c29f523651e923d6b7f333486c870499b"
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "kev",
+      "file": "episodes/00-kev.json",
+      "sha256": "e6e313b00e35dfc1f69d11bb3ead5b114b7e8050246f315648f54900f6f1cdf0"
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "kev",
+      "file": "episodes/06-kev.json",
+      "sha256": "69eb66da169a4171228d393959dc2ba883ebb115d02e36a66ce19d6b31500795"
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "kev",
+      "file": "episodes/15-kev.json",
+      "sha256": "5c91629151ea2836199a84683ff39382189d896ab6d7bce26e5dfc47ab6d3396"
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "bge",
+      "file": "episodes/13-bge.json",
+      "sha256": "7d73f610afda00549bcb31324747debff4247d8f9485daea74c3c55d82554dec"
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "bge",
+      "file": "episodes/31-bge.json",
+      "sha256": "a33ca21f75911fcaa9196b59bf84b5ea00b782e146a6527b42c519222a210cb6"
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "bge",
+      "file": "episodes/25-bge.json",
+      "sha256": "0ab51d4b4ea24e6df27609ace84fb97169a6f3cabea9b61ceba79738dddd811a"
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "kev",
+      "file": "episodes/11-kev.json",
+      "sha256": "380fa1c19f59ab26e72d9bc228b3b3edcdac2778e17af6476078ca55768b9b34"
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "bge",
+      "file": "episodes/09-bge.json",
+      "sha256": "3299680484402287da66629548e6c8081ffbf61db367e3cc497a3ef585cf6ee1"
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "kev",
+      "file": "episodes/07-kev.json",
+      "sha256": "8d58c8e628a8461a7c2c20584f900ea0c3edde39bebf81fe01f9bf302994d81a"
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "bge",
+      "file": "episodes/22-bge.json",
+      "sha256": "7402f26191f64cfaeab2c09f875e45af4abb1f8c658082003a3bf641d5ef7c57"
+    }
+  ],
+  "planned": 64,
+  "protocol_sha256": "dfdff4142cf1378790c154a90da3594235ec719fb1e8f4bc84f4cd82c9eddb04"
+}
