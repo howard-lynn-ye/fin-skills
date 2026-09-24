@@ -1,0 +1,968 @@
+{
+  "rows": [
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11444,
+      "output_tokens": 266,
+      "seconds": 19.722625209018588
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10944,
+      "output_tokens": 351,
+      "seconds": 18.212309612892568
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10843,
+      "output_tokens": 193,
+      "seconds": 10.71861516078934
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11594,
+      "output_tokens": 279,
+      "seconds": 14.925889312755316
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11269,
+      "output_tokens": 310,
+      "seconds": 16.309436909854412
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11291,
+      "output_tokens": 322,
+      "seconds": 16.86466151289642
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11138,
+      "output_tokens": 297,
+      "seconds": 15.652417421806604
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10977,
+      "output_tokens": 188,
+      "seconds": 10.580057541374117
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35864,
+      "output_tokens": 1035,
+      "seconds": 54.0909063112922
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "input_tokens": 16993,
+      "output_tokens": 384,
+      "seconds": 20.72707949578762
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11061,
+      "output_tokens": 194,
+      "seconds": 10.907613588031381
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11261,
+      "output_tokens": 301,
+      "seconds": 15.87100040121004
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11508,
+      "output_tokens": 249,
+      "seconds": 13.542182434350252
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10980,
+      "output_tokens": 379,
+      "seconds": 19.38532356126234
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11233,
+      "output_tokens": 252,
+      "seconds": 13.639818219002336
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11497,
+      "output_tokens": 153,
+      "seconds": 9.106418212875724
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11440,
+      "output_tokens": 231,
+      "seconds": 12.69337009685114
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37204,
+      "output_tokens": 501,
+      "seconds": 29.83792998827994
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11507,
+      "output_tokens": 310,
+      "seconds": 16.35224583512172
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "input_tokens": 16995,
+      "output_tokens": 381,
+      "seconds": 20.589215693064034
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": null,
+      "model_calls": 4,
+      "tool_calls": 3,
+      "input_tokens": 22614,
+      "output_tokens": 419,
+      "seconds": 23.336261190939695
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "bge",
+      "execution_correct": true,
+      "program_correct": true,
+      "error": null,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11175,
+      "output_tokens": 184,
+      "seconds": 10.469353224150836
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "input_tokens": 5515,
+      "output_tokens": 128,
+      "seconds": 6.919991809874773
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11552,
+      "output_tokens": 232,
+      "seconds": 12.76061829039827
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "input_tokens": 5499,
+      "output_tokens": 128,
+      "seconds": 6.885602431837469
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11074,
+      "output_tokens": 301,
+      "seconds": 15.828004853334278
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11169,
+      "output_tokens": 294,
+      "seconds": 15.54302360676229
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11264,
+      "output_tokens": 384,
+      "seconds": 19.717047446407378
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35243,
+      "output_tokens": 494,
+      "seconds": 29.061447789426893
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11261,
+      "output_tokens": 290,
+      "seconds": 15.3715924420394
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 5,
+      "tool_calls": 4,
+      "input_tokens": 29852,
+      "output_tokens": 401,
+      "seconds": 23.77254069177434
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "input_tokens": 5404,
+      "output_tokens": 130,
+      "seconds": 6.945458448957652
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10898,
+      "output_tokens": 251,
+      "seconds": 13.43893209611997
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10928,
+      "output_tokens": 215,
+      "seconds": 11.808683934155852
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11106,
+      "output_tokens": 235,
+      "seconds": 12.811615967191756
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11117,
+      "output_tokens": 345,
+      "seconds": 17.889036782085896
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11473,
+      "output_tokens": 229,
+      "seconds": 12.629368199966848
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10944,
+      "output_tokens": 338,
+      "seconds": 17.509218423161656
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "input_tokens": 17005,
+      "output_tokens": 585,
+      "seconds": 30.011746052186936
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11020,
+      "output_tokens": 221,
+      "seconds": 12.160345965065062
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11230,
+      "output_tokens": 282,
+      "seconds": 15.01853348268196
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "input_tokens": 5385,
+      "output_tokens": 149,
+      "seconds": 7.83116490393877
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11243,
+      "output_tokens": 247,
+      "seconds": 13.41928840521723
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10926,
+      "output_tokens": 299,
+      "seconds": 15.692586306948215
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 34925,
+      "output_tokens": 643,
+      "seconds": 35.915175111964345
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 4,
+      "tool_calls": 3,
+      "input_tokens": 23325,
+      "output_tokens": 421,
+      "seconds": 23.55434606410563
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11159,
+      "output_tokens": 276,
+      "seconds": 14.721414081286639
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11034,
+      "output_tokens": 305,
+      "seconds": 15.98343938216567
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11409,
+      "output_tokens": 252,
+      "seconds": 13.638365578372031
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 4,
+      "tool_calls": 3,
+      "input_tokens": 23129,
+      "output_tokens": 486,
+      "seconds": 26.476358419749886
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37928,
+      "output_tokens": 763,
+      "seconds": 42.107417554594576
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 6,
+      "tool_calls": 5,
+      "input_tokens": 35026,
+      "output_tokens": 542,
+      "seconds": 31.159480317961425
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11085,
+      "output_tokens": 331,
+      "seconds": 17.22938999393955
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "input_tokens": 16761,
+      "output_tokens": 434,
+      "seconds": 22.9291219599545
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11097,
+      "output_tokens": 235,
+      "seconds": 12.786053098738194
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10905,
+      "output_tokens": 196,
+      "seconds": 10.941358151845634
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35883,
+      "output_tokens": 1035,
+      "seconds": 54.05397644173354
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11242,
+      "output_tokens": 277,
+      "seconds": 14.774520088918507
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11446,
+      "output_tokens": 199,
+      "seconds": 11.195631979964674
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "bge",
+      "execution_correct": true,
+      "program_correct": true,
+      "error": null,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11020,
+      "output_tokens": 216,
+      "seconds": 11.900137632153928
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11141,
+      "output_tokens": 283,
+      "seconds": 15.009862839244306
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11329,
+      "output_tokens": 317,
+      "seconds": 16.613910377956927
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 10984,
+      "output_tokens": 225,
+      "seconds": 12.31445446703583
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "input_tokens": 16887,
+      "output_tokens": 314,
+      "seconds": 17.46987910196185
+    }
+  ],
+  "aggregate": {
+    "bge": {
+      "planned": 32,
+      "correct": 2,
+      "errors": 30
+    },
+    "kev": {
+      "planned": 32,
+      "correct": 0,
+      "errors": 31
+    }
+  },
+  "inference_receipt_sha256": "f53b09f65b18be439f95d7e5989eeda6675b7a8e21774230625ec024e5990fe1"
+}

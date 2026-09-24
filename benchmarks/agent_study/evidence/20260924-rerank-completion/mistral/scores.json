@@ -1,0 +1,977 @@
+{
+  "rows": [
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37388,
+      "output_tokens": 678,
+      "seconds": 34.08179606311023
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35807,
+      "output_tokens": 598,
+      "seconds": 27.938661810941994
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35433,
+      "output_tokens": 563,
+      "seconds": 26.58813599590212
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 38237,
+      "output_tokens": 679,
+      "seconds": 31.580344419926405
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11545,
+      "output_tokens": 275,
+      "seconds": 12.169999867212027
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 5,
+      "tool_calls": 3,
+      "input_tokens": 29891,
+      "output_tokens": 401,
+      "seconds": 19.636800193227828
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36343,
+      "output_tokens": 606,
+      "seconds": 28.383291670121253
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36138,
+      "output_tokens": 763,
+      "seconds": 34.39113381318748
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37224,
+      "output_tokens": 861,
+      "seconds": 38.35465243784711
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36331,
+      "output_tokens": 1022,
+      "seconds": 44.398374235257506
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 0,
+      "input_tokens": 40799,
+      "output_tokens": 3072,
+      "seconds": 125.86742047592998
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "input_tokens": 5637,
+      "output_tokens": 112,
+      "seconds": 5.089573513716459
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 0,
+      "input_tokens": 43466,
+      "output_tokens": 3072,
+      "seconds": 127.99501487798989
+    },
+    {
+      "id": "AAPL/2006/page_131.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 3,
+      "input_tokens": 36223,
+      "output_tokens": 902,
+      "seconds": 39.75689470814541
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36831,
+      "output_tokens": 617,
+      "seconds": 28.918471201788634
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37441,
+      "output_tokens": 641,
+      "seconds": 29.97511522192508
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 4,
+      "input_tokens": 37279,
+      "output_tokens": 1175,
+      "seconds": 50.39056098693982
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37491,
+      "output_tokens": 590,
+      "seconds": 28.026490991935134
+    },
+    {
+      "id": "IP/2009/page_84.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11811,
+      "output_tokens": 237,
+      "seconds": 10.756987247150391
+    },
+    {
+      "id": "ADI/2011/page_61.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 2,
+      "input_tokens": 37374,
+      "output_tokens": 801,
+      "seconds": 36.09315983392298
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 0,
+      "input_tokens": 35406,
+      "output_tokens": 736,
+      "seconds": 33.17908655107021
+    },
+    {
+      "id": "MKTX/2004/page_99.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 1,
+      "input_tokens": 37598,
+      "output_tokens": 414,
+      "seconds": 21.29777501570061
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37060,
+      "output_tokens": 677,
+      "seconds": 31.29125495394692
+    },
+    {
+      "id": "JKHY/2017/page_26.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 38842,
+      "output_tokens": 783,
+      "seconds": 35.76518777012825
+    },
+    {
+      "id": "ADI/2019/page_29.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36255,
+      "output_tokens": 612,
+      "seconds": 28.62729444494471
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 38883,
+      "output_tokens": 1191,
+      "seconds": 51.5093539073132
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36372,
+      "output_tokens": 552,
+      "seconds": 26.34267260506749
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 0,
+      "input_tokens": 12808,
+      "output_tokens": 564,
+      "seconds": 23.56357500469312
+    },
+    {
+      "id": "NWS/2019/page_116.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37032,
+      "output_tokens": 721,
+      "seconds": 32.93989540403709
+    },
+    {
+      "id": "FIS/2017/page_64.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36355,
+      "output_tokens": 496,
+      "seconds": 24.179164732806385
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11829,
+      "output_tokens": 192,
+      "seconds": 9.0547142829746
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35660,
+      "output_tokens": 714,
+      "seconds": 32.429533993825316
+    },
+    {
+      "id": "HIG/2011/page_53.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11129,
+      "output_tokens": 137,
+      "seconds": 6.803114308975637
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35281,
+      "output_tokens": 595,
+      "seconds": 27.799108351115137
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36982,
+      "output_tokens": 791,
+      "seconds": 35.64594024466351
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36862,
+      "output_tokens": 635,
+      "seconds": 29.647937190253288
+    },
+    {
+      "id": "ANSS/2016/page_47.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11777,
+      "output_tokens": 185,
+      "seconds": 8.77155352383852
+    },
+    {
+      "id": "HUM/2017/page_118.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37284,
+      "output_tokens": 886,
+      "seconds": 39.34175073495135
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36946,
+      "output_tokens": 756,
+      "seconds": 34.267686759121716
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11322,
+      "output_tokens": 220,
+      "seconds": 10.007395677734166
+    },
+    {
+      "id": "MMM/2007/page_84.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36559,
+      "output_tokens": 1387,
+      "seconds": 58.397860046010464
+    },
+    {
+      "id": "DG/2009/page_77.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35310,
+      "output_tokens": 569,
+      "seconds": 26.783831369131804
+    },
+    {
+      "id": "AAPL/2005/page_43.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11526,
+      "output_tokens": 280,
+      "seconds": 12.368206195067614
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 0,
+      "input_tokens": 40089,
+      "output_tokens": 3072,
+      "seconds": 125.52348086005077
+    },
+    {
+      "id": "BLK/2015/page_124.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 0,
+      "input_tokens": 40826,
+      "output_tokens": 3072,
+      "seconds": 126.87189787998796
+    },
+    {
+      "id": "CDW/2015/page_93.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37907,
+      "output_tokens": 895,
+      "seconds": 39.75120145408437
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11378,
+      "output_tokens": 179,
+      "seconds": 8.461665275041014
+    },
+    {
+      "id": "IP/2006/page_31.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35298,
+      "output_tokens": 411,
+      "seconds": 20.74435491207987
+    },
+    {
+      "id": "CDW/2017/page_38.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37347,
+      "output_tokens": 687,
+      "seconds": 31.700910955201834
+    },
+    {
+      "id": "JKHY/2019/page_18.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36698,
+      "output_tokens": 569,
+      "seconds": 27.07919706311077
+    },
+    {
+      "id": "HUM/2014/page_44.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37660,
+      "output_tokens": 460,
+      "seconds": 23.0531082903035
+    },
+    {
+      "id": "RSG/2016/page_135.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 37664,
+      "output_tokens": 833,
+      "seconds": 37.38544509001076
+    },
+    {
+      "id": "BLK/2014/page_120.pdf-4",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 2,
+      "input_tokens": 36917,
+      "output_tokens": 596,
+      "seconds": 28.22997540095821
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35333,
+      "output_tokens": 402,
+      "seconds": 20.408586642239243
+    },
+    {
+      "id": "RSG/2012/page_93.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35606,
+      "output_tokens": 384,
+      "seconds": 19.779485632199794
+    },
+    {
+      "id": "GPN/2008/page_78.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11152,
+      "output_tokens": 146,
+      "seconds": 7.165673544164747
+    },
+    {
+      "id": "FIS/2006/page_31.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35844,
+      "output_tokens": 645,
+      "seconds": 29.80889384681359
+    },
+    {
+      "id": "HIG/2004/page_140.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36826,
+      "output_tokens": 621,
+      "seconds": 29.127532312646508
+    },
+    {
+      "id": "ANSS/2012/page_93.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 3,
+      "input_tokens": 37575,
+      "output_tokens": 794,
+      "seconds": 35.934876593761146
+    },
+    {
+      "id": "NWS/2017/page_119.pdf-2",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 35342,
+      "output_tokens": 402,
+      "seconds": 20.452551919035614
+    },
+    {
+      "id": "MMM/2015/page_93.pdf-2",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "TypeError",
+        "message": "the JSON object must be str, bytes or bytearray, not NoneType"
+      },
+      "model_calls": 6,
+      "tool_calls": 6,
+      "input_tokens": 36359,
+      "output_tokens": 602,
+      "seconds": 28.257056951057166
+    },
+    {
+      "id": "MKTX/2012/page_42.pdf-3",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 0,
+      "input_tokens": 12889,
+      "output_tokens": 564,
+      "seconds": 23.592211075127125
+    },
+    {
+      "id": "GPN/2013/page_92.pdf-1",
+      "arm": "kev",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Extra data: line 1 column 4 (char 3)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11251,
+      "output_tokens": 226,
+      "seconds": 10.285844786092639
+    },
+    {
+      "id": "DG/2005/page_44.pdf-1",
+      "arm": "bge",
+      "execution_correct": false,
+      "program_correct": false,
+      "error": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "input_tokens": 11408,
+      "output_tokens": 187,
+      "seconds": 8.823227821849287
+    }
+  ],
+  "aggregate": {
+    "bge": {
+      "planned": 32,
+      "correct": 0,
+      "errors": 32
+    },
+    "kev": {
+      "planned": 32,
+      "correct": 0,
+      "errors": 32
+    }
+  },
+  "inference_receipt_sha256": "ff46048fb3d206abbb47147ed3de0836db56fc38732511354f9a73ef1920fec9"
+}

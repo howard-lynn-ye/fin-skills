@@ -1,0 +1,22 @@
+{
+  "mistral/completion.json": "7a42b54285e70496e50a7e9aeec51122aff0355a5703c01eca4de0d9cdaf9ed8",
+  "mistral/inference-receipt.json": "ff46048fb3d206abbb47147ed3de0836db56fc38732511354f9a73ef1920fec9",
+  "mistral/logs/shared-1660691.err": "dcd6d0be561739f9bee44fe0228572b9e5655970b965e67b7de2f0b418901d00",
+  "mistral/manifest.json": "90168fba6ed9fb6edcebcc31db05fb0f206edc21e9abd4bdd6bd38822faa511d",
+  "mistral/protocol.json": "17ef8da0ff3271fc0d73b6d20331eb3c1e8ef59ab9a83fa41ee4562138dc6983",
+  "mistral/rag-verified-summary.json": "43c3c9ab44fc63e9692cb7134427b8daabb19897d7b98c7263dec73283dc78b6",
+  "mistral/scores.json": "cd01580c5beaad4644d5b8ce405e51b90bcf502dd69db508c9e556595fbefc27",
+  "mistral/shared-allocation.json": "f91d1ca68a0f5c0e50363831ba6ac18956b7ed3de4cade5aacdbabf41d7b36aa",
+  "qwen/completion.json": "9b01372f3c72e9b4d3e3fc688a5fd5c69ac2690e00418034f7be09e0e5b22877",
+  "qwen/inference-receipt.json": "f53b09f65b18be439f95d7e5989eeda6675b7a8e21774230625ec024e5990fe1",
+  "qwen/logs/shared-1660691.err": "96ec4a426c86e92daa3a4215350b6f53dd0cc52c7dcbe9a889bd231c7a14944f",
+  "qwen/manifest.json": "1d7f24bbf6c2471f183cb01b104bd5a995cb37d397856eea76b0e4dbe3d8bde7",
+  "qwen/protocol.json": "dfdff4142cf1378790c154a90da3594235ec719fb1e8f4bc84f4cd82c9eddb04",
+  "qwen/rag-verified-summary.json": "1332f9e5f29439b43bbca06fcede68f9e9d39f188e4f6c1daa7a443737391243",
+  "qwen/scores.json": "308450b1e9d0c15960392ee837fdfa10aa8de5c195f96f0b6387b50a1e1cc93e",
+  "qwen/shared-allocation.json": "f91d1ca68a0f5c0e50363831ba6ac18956b7ed3de4cade5aacdbabf41d7b36aa",
+  "scheduler.txt": "800e1535f8acced558a72ccfe057c3bfefceadedaed9399bb0ddd693b9ce429c",
+  "wrapper/completion.json": "db05094c38f29d6b3ae981173b3aa16e46843ff750dd6294f0f0f23276ba448b",
+  "wrapper/manifest.json": "516593190fb095d12f2087f4431b527a0f7688b008ec69b8a9f844687c5750ef",
+  "wrapper/submission-receipt.json": "cd8eef2621778f7a795c6460c40b81c99bbbaa90cb99bb546dee44870e11da93"
+}

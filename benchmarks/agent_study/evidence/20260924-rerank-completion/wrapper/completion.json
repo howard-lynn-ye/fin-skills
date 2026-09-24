@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "rows": [
+    {
+      "root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-qwen-20260923-v1",
+      "returncode": 0,
+      "seconds": 1266.4717927910388
+    },
+    {
+      "root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1",
+      "returncode": 0,
+      "seconds": 2192.3798586069606
+    }
+  ]
+}

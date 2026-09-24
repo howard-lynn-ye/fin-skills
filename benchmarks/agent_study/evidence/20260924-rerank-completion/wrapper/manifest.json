@@ -1,0 +1,26 @@
+{
+  "plan": {
+    "remote_root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-answers-20260923-v3",
+    "name": "fin-rerank-answers-v3",
+    "gpu": true,
+    "memory": "64G",
+    "time": "04:00:00",
+    "targets": [
+      {
+        "root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-qwen-20260923-v1",
+        "manifest_sha256": "1d7f24bbf6c2471f183cb01b104bd5a995cb37d397856eea76b0e4dbe3d8bde7"
+      },
+      {
+        "root": "/beacon-projects/radfm/wy891/fin-skills-campaign-finqa-rerank-mistral-20260923-v1",
+        "manifest_sha256": "90168fba6ed9fb6edcebcc31db05fb0f206edc21e9abd4bdd6bd38822faa511d"
+      }
+    ],
+    "repair_reason": "Original wrapper checked Windows CRLF manifest bytes against the remote LF serialization and failed before either model ran. Bind exact previously archived remote manifests; scientific sources and per-model roots unchanged.",
+    "dependency_note": "Slurm rejected v2 old-job dependency. Ranking already completed successfully with all 64 outputs and no per-row errors, verified before submission; child workers still require completed ranking and verify its receipts."
+  },
+  "sha256": {
+    "source/beacon_serial_frozen_jobs.py": "343f83970e773affb99f335ee958d07616fa725260226804090f85c98580fed3",
+    "job.sh": "5c2e28a2822efa69b66e6781d9c37b47420f160466718d7f1393664201b355b5",
+    "source/submit_model_followup.py": "3ee6b4538a49e00b285dc23c6decda8ea5b9c499ca3998ee411f21bacb3f051f"
+  }
+}
