@@ -101,3 +101,56 @@ the storage layer's \texttt{latest} pointer follows arrival order, so an older
 revision arriving last becomes current. Historical research must therefore apply
 an explicit chronological or availability-time selection policy rather than infer
 publication order from that pointer.
+
+\paragraph{Report-QA workflow ablation.}
+On 32 public FinQA questions from 16 companies, we compared BM25S components,
+the same retrieval with a frozen financial skill, the library RAG interface with
+that skill, and all supplied report text and tables. Qwen2.5-Coder-14B-Instruct
+produced 3, 2, 2, and 1 correct answers, respectively; Mistral-Nemo-Instruct-2407
+produced none in these conditions. Each model generated 128 answers. Applying
+the citation-label gate to the same frozen RAG answers changed no outcomes;
+this paired check adds no independent samples and does not test semantic support.
+For Qwen, incorrect accepted answers numbered 5, 1, 0, and 5, respectively.
+The smaller number of wrong acceptances therefore accompanies low correct
+completion and frequent rejection or format failure, rather than demonstrating
+an overall accuracy improvement. The full-context condition uses FinQA's
+extracted text and tables, not complete original annual reports.
+
+\paragraph{Downstream transfer from passage reranking.}
+Using the same 32 questions, we froze the ten BM25 passage candidates and
+reranked them with BGE or local Kev-4B before supplying up to five passages
+within the same context budget. The answer agent, financial skill, calculator,
+and response limits were held fixed. All 64 planned answers per model were
+saved. Table~\ref{tab:finqa-rerank-final} reports their original scores, which
+were independently replayed against the official numerical and program labels.
+These questions overlap the workflow and memory studies; the 128 generated
+answers are not 128 independent tasks.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{llrr}
+\toprule
+Answer model & Reranker & Correct & Errors \\
+\midrule
+Qwen & BGE & 2/32 & 30/32 \\
+Qwen & Kev-4B & 0/32 & 31/32 \\
+Mistral & BGE & 0/32 & 32/32 \\
+Mistral & Kev-4B & 0/32 & 32/32 \\
+\bottomrule
+\end{tabular}
+\caption{Exploratory FinQA reranking transfer. Errors count saved scoring or
+answer-format exceptions, not failed compute jobs. One Qwen/Kev answer was
+incorrect without such an exception. Model identities are given in the text.}
+\label{tab:finqa-rerank-final}
+\end{table}
+
+\paragraph{Interpretation and runtime limitation.}
+The reranking study does not demonstrate a Kev downstream-answer advantage.
+Answer-format and scoring exceptions dominate these runs. The original Mistral
+runtime also emitted a tokenizer-regex warning; the frozen run was not modified
+after inspecting its outcomes. Consequently, its zero correct counts do not
+isolate model capability from tokenization and answer-format problems. The
+audit verifies saved outputs, tool receipts, and grades, not the validity of
+every runtime choice. These public, overlapping tasks do not establish
+unseen-task generalization, semantic citation support, or human development-time
+savings.

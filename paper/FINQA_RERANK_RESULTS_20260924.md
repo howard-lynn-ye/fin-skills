@@ -3,6 +3,10 @@
 Verified against Beacon outputs on 2026-09-24. This is an execution and automated
 scoring audit, not human scientific sign-off. Protocol:
 [FINQA_RERANK_TRANSFER_PROTOCOL_20260923.md](FINQA_RERANK_TRANSFER_PROTOCOL_20260923.md).
+Publication update: the result summary and runtime limitation have since been saved
+in Overleaf and compiled successfully. See the
+[synchronization receipt](RAG_RERANK_OVERLEAF_SYNC_20260924.json); the original scope
+statement at the end of this report describes the earlier GitHub-only update.
 
 ## Completion and evidence
 

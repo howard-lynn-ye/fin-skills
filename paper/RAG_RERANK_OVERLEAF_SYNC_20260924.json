@@ -1,0 +1,27 @@
+{
+  "verified_utc": "2026-09-24T18:38:05.502370+00:00",
+  "evidence_commit": "d0dd2e1877524313d28e2d4f420326a94e95f1fe",
+  "overleaf_project": "https://www.overleaf.com/project/6aad9a03f27c3c07a182965d",
+  "file": "library_details.tex",
+  "history_label": "Final RAG and Kev results - GitHub d0dd2e1 - 2026-09-24",
+  "change": "Append report-QA ablation, final BGE/Kev downstream scores, and interpretation/runtime limitations.",
+  "browser_verification": {
+    "appended_text_read_back_matches": true,
+    "history_label_visible": true,
+    "pdf_pages": 13,
+    "result_page": 13,
+    "table_number": 8,
+    "errors": 0,
+    "warnings": 0,
+    "info_messages": 41,
+    "visual_review": "New paragraphs and four-row table visible on page 13 without clipping or overlap."
+  },
+  "local_source_sha256": "60f8df3bdb468c13226a710a2e76cb8d8ae3c600609390bc9f68453bd3673250",
+  "evidence": [
+    "benchmarks/agent_study/evidence/20260923-rag-completion/",
+    "benchmarks/agent_study/evidence/20260924-rerank-completion/"
+  ],
+  "verifier": "Codex automated source and browser checks",
+  "human_verification": "Not recorded; draft update, not submission approval",
+  "limits": "Append-only update. No whole-project byte identity claim. Compiled PDF checked in Overleaf; local main.pdf was not regenerated."
+}

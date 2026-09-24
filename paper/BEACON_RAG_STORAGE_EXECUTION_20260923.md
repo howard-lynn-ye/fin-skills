@@ -4,6 +4,9 @@ This record distinguishes accepted jobs, actual execution and verified completed
 Latest status (2026-09-24): all batches in this record have completed, including replacement
 answer job **1660691**. Both 64-answer model outputs passed the independent scoring replay.
 See [the final results](FINQA_RERANK_RESULTS_20260924.md) for evidence and limitations.
+The RAG and final reranking summaries are now saved in Overleaf; the
+[synchronization receipt](RAG_RERANK_OVERLEAF_SYNC_20260924.json) records the history label
+and successful compile/visual checks. Earlier pending-sync statements are historical.
 The dated running/queued entries below are retained as execution history.
 All remote roots below are direct children of `/beacon-projects/radfm/wy891`, prefixed
 `fin-skills-campaign-`. Source snapshots, temporary files, model caches and Slurm stdout /
