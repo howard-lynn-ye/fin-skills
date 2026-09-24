@@ -58,14 +58,22 @@ its code execution trace. This superficial compliance inflated its discrepancy t
 demonstrating that smaller models require automated code execution verification rather than
 relying on self-reported compliance.
 
-\paragraph{Social sentiment verification.}
-On 1.72 million financial posts across 2,521 social media accounts, raw uncalibrated sentiment
-scores exhibited negative out-of-sample rank correlation with subsequent asset returns
-($\text{Rank IC} = -0.0318$): blindly following social media sentiment lost money.
-By evaluating each account's historical prediction accuracy and applying Bayesian credibility
-weighting (including inverting signals from consistently inaccurate accounts), the out-of-sample
-correlation flipped to $+0.0104$. This demonstrates that unstructured text signals require
-empirical track-record verification before driving investment decisions.
+\paragraph{Social sentiment and multi-source corpus verification.}
+Across our consolidated \CorpusTotalRecords{}-record (\CorpusTotalShort{}, \CorpusTotalSizeGB{}\,GB)
+cross-market financial corpus (\texttt{shards\_v4}: \CorpusGubaRecords{} EastMoney Guba posts across
+\CorpusGubaTickers{} tickers, \CorpusAnnounceRecords{} A-share corporate disclosures across
+\CorpusAnnounceTickers{} tickers, \CorpusXueqiuRecords{} Xueqiu longitudinal posts across
+\CorpusXueqiuTickers{} tickers, and \CorpusStockTwitsRecords{} US StockTwits messages across
+\CorpusStockTwitsTickers{} tickers) and \KOLTotalAccounts{} verified KOL profiles (\KOLCNCount{} CN,
+\KOLUSCount{} US; \KOLPredRows{} timestamped predictions over \KOLTradingDates{} trading dates),
+naive follower-weighted sentiment exhibited negative out-of-sample rank correlation with subsequent
+asset returns ($\text{Rank IC} = \KOLNaiveDailyIC{}$): blindly following raw social volume lost money.
+By auditing each account's strictly lagged prediction accuracy and applying point-in-time Bayesian
+credibility gating (including sign-flipping persistently anti-predictive accounts), out-of-sample
+Daily Rank IC flipped to $\KOLGatedDailyIC{}$ ($\Delta = \KOLPairedDiffIC{}$, block-bootstrap $95\%$ CI
+$[+0.0295, +0.0480]$) and reached $\KOLRollingDailyIC{}$ under 60-day rolling adaptive recalibration.
+This confirms that unstructured text signals require empirical track-record verification before
+driving investment decisions.
 
 \subsection{Four-condition audit feasibility}
 We evaluated models under four audit conditions: unassisted baseline (C0), text guidance
@@ -114,36 +122,89 @@ mandatory audit (\texttt{C3}) achieves $0.000$ \texttt{incorrect\_accepted\_per\
 $\mathbf{\BeaconPostFixCThreeCorrect{}\%}$ ($8/8$) \texttt{correct\_among\_accepted}.
 
 \subsection{Two-dimensional \texorpdfstring{company$\times$year}{company x year} panel balance (\texttt{check\_panel\_balance})}
-Raw financial text crawls exhibit severe two-dimensional concentration: mega-cap tickers dominate
-cross-sectional volume ($\text{Company Gini} = 0.449\text{--}0.490$, $\text{Max/Median} = 20.2\times$) while
-recent years ($2024\text{--}2026$) overshadow earlier market regimes ($2018\text{--}2021$). Our 37th research
-guard, \texttt{check\_panel\_balance} (\texttt{guards/panel\_balance.py}), audits both
-$(\text{Company Gini}, \text{Year Gini})$ and enforces a stratified cell quota $q_{c,y} = \min(n_{c,y}, Q)$.
-Table~\ref{tab:panel_balance_latex_naacl} evaluates all four panel-conditioning policies across
-\PanelBalancedRows{} aligned multi-source rows ($2018\text{--}2026$, $7$ market boards: \texttt{SH600},
-\texttt{SH601\_603}, \texttt{SH688}, \texttt{SZ000}, \texttt{SZ002}, \texttt{SZ300}, \texttt{US\_Equities}).
-Combining two-dimensional company$\times$year balancing with point-in-time credibility gating (\texttt{Cond.\ D})
-lifts Mean Daily Rank IC from $\PanelUnbalDailyIC{} \pm 0.0018$ to $\mathbf{\PanelBalDailyIC{} \pm 0.0014}$
-($\Delta = \mathbf{\PanelDeltaDailyIC{}}$, $p < 10^{-10}$), reduces Cross-Year IC dispersion by $\mathbf{\PanelYrStdRedPct{}\%}$
-($0.01532 \to 0.00844$) and Cross-Board dispersion by $\mathbf{\PanelBoardStdRedPct{}\%}$
-($0.02973 \to 0.01304$), and improves net annualized Sharpe from $-2.00 \pm 0.08$ to $\mathbf{\PanelBalSharpe{} \pm 0.06}$
-($\text{Max DD} = -10.82\%$).
+Raw financial text crawls across our \CorpusTotalRecords{}-record (\CorpusTotalSizeGB{}\,GB) multi-source
+repository (\CorpusGubaRecords{} \texttt{eastmoney\_guba}, \CorpusAnnounceRecords{} \texttt{announcements},
+\CorpusXueqiuRecords{} \texttt{unified\_longitudinal}, and \CorpusStockTwitsRecords{} \texttt{stocktwits})
+exhibit severe two-dimensional concentration: mega-cap tickers dominate cross-sectional volume
+($\text{Company Gini} = 0.466\text{--}0.540$, $\text{Max/Median} = 20.2\times$) while recent years
+($2024\text{--}2026$) overshadow earlier market regimes ($2018\text{--}2021$). Our 37th research guard,
+\texttt{check\_panel\_balance} (\texttt{guards/panel\_balance.py}), audits both
+$(\text{Company Gini}, \text{Year Gini})$ and enforces a stratified cell quota $q_{c,y} = \min(n_{c,y}, Q)$
+($Q=36$). Table~\ref{tab:panel_balance_latex_naacl} evaluates all four panel-conditioning policies across
+\PanelBalancedRows{} aligned multi-source rows (\PanelEvalReturnObs{} return observations, $2018\text{--}2026$,
+$7$ market boards: \texttt{SH600}, \texttt{SH601\_603}, \texttt{SH688}, \texttt{SZ000}, \texttt{SZ002},
+\texttt{SZ300}, \texttt{US\_Equities}). Combining two-dimensional company$\times$year balancing with
+point-in-time credibility gating (\texttt{Cond.\ D}) lifts Mean Daily Rank IC from
+$\PanelUnbalDailyIC{} \pm 0.0018$ to $\mathbf{\PanelBalDailyIC{} \pm 0.0014}$
+($\Delta\text{Rank IC} = \mathbf{\PanelDeltaDailyIC{}}$), reduces Cross-Year IC dispersion by
+$\mathbf{\PanelYrStdRedPct{}\%}$ ($0.01532 \to 0.00844$) and Cross-Board dispersion by
+$\mathbf{\PanelBoardStdRedPct{}\%}$ ($0.02973 \to 0.01304$), and improves net annualized Sharpe by
+$\Delta\text{Sharpe} = \mathbf{\PanelDeltaSharpe{}}$ from $\PanelUnbalSharpe{} \pm 0.08$ to
+$\mathbf{\PanelBalSharpe{} \pm 0.06}$ ($t = \mathbf{\PanelPairedTStat{}}, p = \mathbf{\PanelPairedPVal{}}$,
+$\text{Max DD} = -10.82\%$).
 
 \begin{table*}[t]
 \centering\small
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccccc}
 \toprule
-Panel conditioning policy (\PanelBalancedRows{} rows, 2018--2026, $M=5$) & Daily Rank IC & Year IC Std & Board IC Std & Net Sharpe & Max DD \\
+Panel conditioning policy (\PanelBalancedRows{} rows from \CorpusTotalShort{} corpus, $M=5$) & Daily Rank IC & Year IC Std & Board IC Std & Net Sharpe & $\Delta$Sharpe ($t$-stat) & Max DD \\
 \midrule
-A: Unbalanced raw panel ($\text{Gini}_C=0.490$) & $\PanelUnbalDailyIC{} \pm 0.0018$ & $0.01532$ & $0.02973$ & $-2.00 \pm 0.08$ & $-80.83\%$ \\
-B: Company-balanced only ($q_c \le Q_c$) & $+0.0051 \pm 0.0011$ & $0.01064$ & $0.00906$ & $-0.16 \pm 0.05$ & $-18.79\%$ \\
-C: Year-balanced only ($q_y \le Q_y$) & $+0.0086 \pm 0.0012$ & $0.00896$ & $0.01320$ & $+0.18 \pm 0.05$ & $-26.40\%$ \\
-\textbf{D: 2D Company$\times$Year balanced + PIT (\texttt{check\_panel\_balance})} & $\mathbf{\PanelBalDailyIC{} \pm 0.0014}$ & $\mathbf{0.00844}$ ($\downarrow\mathbf{\PanelYrStdRedPct{}\%}$) & $\mathbf{0.01304}$ ($\downarrow\mathbf{\PanelBoardStdRedPct{}\%}$) & $\mathbf{\PanelBalSharpe{} \pm 0.06}$ & $\mathbf{-10.82\%}$ \\
+A: Unbalanced raw panel ($\text{Gini}_C=0.490, \text{Gini}_Y=0.433$) & $\PanelUnbalDailyIC{} \pm 0.0018$ & $0.01532$ & $0.02973$ & $\PanelUnbalSharpe{} \pm 0.08$ & Baseline & $-80.83\%$ \\
+B: Company-balanced only ($q_c \le Q_c, \text{Gini}_C=0.280$) & $+0.0051 \pm 0.0011$ & $0.01064$ & $0.00906$ & $-0.16 \pm 0.05$ & $+1.84$ & $-18.79\%$ \\
+C: Year-balanced only ($q_y \le Q_y, \text{Gini}_Y=0.134$) & $+0.0086 \pm 0.0012$ & $0.00896$ & $0.01320$ & $+0.18 \pm 0.05$ & $+2.18$ & $-26.40\%$ \\
+\textbf{D: 2D Company$\times$Year balanced + PIT (\texttt{check\_panel\_balance})} & $\mathbf{\PanelBalDailyIC{} \pm 0.0014}$ & $\mathbf{0.00844}$ ($\downarrow\mathbf{\PanelYrStdRedPct{}\%}$) & $\mathbf{0.01304}$ ($\downarrow\mathbf{\PanelBoardStdRedPct{}\%}$) & $\mathbf{\PanelBalSharpe{} \pm 0.06}$ & $\mathbf{\PanelDeltaSharpe{}}$ ($\mathbf{t=\PanelPairedTStat{}}$) & $\mathbf{-10.82\%}$ \\
 \bottomrule
 \end{tabular}%
 }
-\caption{Two-dimensional company$\times$year panel balance ablation ($M=5$ seeds) across $2018\text{--}2026$ and $7$ equity boards.}
+\caption{Two-dimensional company$\times$year panel balance ablation ($M=5$ seeds: $11, 23, 37, 42, 73$) across $2018\text{--}2026$ and $7$ equity boards ($\Delta\text{Rank IC} = \PanelDeltaDailyIC{}, \Delta\text{Sharpe} = \PanelDeltaSharpe{}, t = \PanelPairedTStat{}, p = \PanelPairedPVal{}$).}
 \label{tab:panel_balance_latex_naacl}
 \end{table*}
+
+\subsection{JEV System-One calibration and MMAN multimodal CPCV audit}
+\label{app:jev_mman}
+Finally, Table~\ref{tab:jev_mman_audit} summarizes the out-of-sample evaluation of (i) the
+\textbf{JEV System-One (RLCD) Isotonic Calibration \& 80th-Percentile Volatility Gate}
+(\JEVTestSamples{} OOS test observations across $2021\text{--}2025$) against uncalibrated raw JEV
+and pure point-in-time hard-threshold gating, and (ii) the \textbf{Multi-Modal Attention Network
+(MMAN)} 5-fold Purged Combinatorial Cross-Validation ($5$-day purge window, $10$-day embargo,
+mean CPCV Daily Rank IC $= \MMANCPCVMeanIC{}$, positive-IC day ratio $= \MMANCPCVPosRatio{}\%$)
+and $2023\text{--}2025$ out-of-sample holdout across $727$ trading days. Isotonic calibration with learned
+Platt temperature $T = \JEVPlattTemp{}$ reduces 10-bin Expected Calibration Error (ECE) by
+$\mathbf{\JEVECERedPct{}\%}$ ($\JEVECEUncal{} \to \JEVECECal{}$) and Brier score from
+$\JEVBrierUncal{}$ to $\JEVBrierCal{}$, lifting 5-year all-weather annualized Sharpe from
+$\JEVRegimeCSharpe{}$ (\texttt{Regime C} hard-threshold PIT gate) to $\mathbf{\JEVSharpe{}}$
+($\Delta\text{Sharpe} = \JEVDeltaSharpeVsC{}$, $\text{CAGR} = \JEVCAGRPct{}\%$,
+$\text{Max DD} = \JEVMaxDDPct{}\%$, $\text{Calmar} = \JEVCalmar{}$, monthly win rate
+$= \JEVMonthlyWinPct{}\%$). Meanwhile, replacing sparse uncalibrated social posts
+($\text{Rank IC} = \MMANSparseSocialIC{}$) with fact-rewritten structured catalysts and a
+Barra-orthogonal dual head lifts 5-day Daily Rank IC to $\mathbf{\MMANBarraDualIC{}}$ ($t = 11.50,
+p < 10^{-29}$) and excess Sharpe IR to $\mathbf{\MMANBarraDualSharpe{}}$ while compressing maximum
+Barra style-exposure correlation from $0.4357$ to $\mathbf{\MMANBarraStyleCorr{}}$.
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccc}
+\toprule
+Evaluation Suite & Model / Gating Regime ($2021\text{--}2025$ / $2023\text{--}2025$ OOS) & Primary Signal / Calibration Metric & CAGR / Alpha & Annualized Sharpe / IR & Max Drawdown & Calmar / Style Corr \\
+\midrule
+\multirow{4}{*}{JEV System-One}
+  & Regime A: Uncalibrated Long-Only Baseline & $\text{ECE}_{10} = \JEVECEUncal{}$, $\text{Brier} = \JEVBrierUncal{}$ & $+8.60\%$ & $+0.491$ & $-18.87\%$ & $\text{Calmar} = 0.46$ \\
+  & Regime B: Static Market-Neutral (No Gate) & Uncalibrated Raw JEV ($\text{ECE}_{10} = \JEVECEUncal{}$) & $+7.74\%$ & $+1.119$ & $-8.43\%$ & $\text{Calmar} = 0.92$ \\
+  & Regime C: Pure PIT Hard-Threshold Gate & Uncalibrated + 80\% Vol Gate & $\JEVRegimeCCAGRPct{}\%$ & $\JEVRegimeCSharpe{}$ & $\JEVRegimeCMaxDDPct{}\%$ & $\text{Calmar} = 2.61$ \\
+  & \textbf{Regime D: JEV System-One Isotonic + 80\% Vol Gate} & $\mathbf{\text{ECE}_{10} = \JEVECECal{}}$ ($\downarrow\mathbf{\JEVECERedPct{}\%}$), $T=\JEVPlattTemp{}$ & $\mathbf{\JEVCAGRPct{}\%}$ & $\mathbf{\JEVSharpe{}}$ & $\mathbf{\JEVMaxDDPct{}\%}$ & $\mathbf{\text{Calmar} = \JEVCalmar{}}$ \\
+\midrule
+\multirow{4}{*}{MMAN (727d OOS)}
+  & Model 1: Pure Price--Volume BiLSTM Baseline & 5d Daily Rank IC $= \MMANBiLSTMIC{}$ ($t=8.13$) & $+2.17\%$ & $+0.202$ & $-36.73\%$ & $|\rho_{\text{Barra}}| = 0.3369$ \\
+  & Model 2: Price--Volume + Sparse Old Social (7-dim) & 5d Daily Rank IC $= \MMANSparseSocialIC{}$ ($t=4.56$) & $+1.53\%$ & $+0.149$ & $-32.68\%$ & $|\rho_{\text{Barra}}| = 0.4357$ \\
+  & Model 3: Price--Volume + Fact-Rewritten Catalysts (17-dim) & 5d Daily Rank IC $= \MMANFactCatalystIC{}$ ($t=14.24$) & $+5.80\%$ & $+0.628$ & $-48.40\%$ & $|\rho_{\text{Barra}}| = 0.1905$ \\
+  & \textbf{Model 4: Fact-Rewritten + Barra-Orthogonal Dual Head} & \textbf{5d Daily Rank IC $= \MMANBarraDualIC{}$} ($t=11.50$) & $\mathbf{+8.17\%}$ & $\mathbf{\MMANBarraDualSharpe{}}$ & $\mathbf{-25.99\%}$ & $\mathbf{|\rho_{\text{Barra}}| = \MMANBarraStyleCorr{}}$ \\
+\bottomrule
+\end{tabular}%
+}
+\caption{JEV System-One isotonic calibration and 80th-percentile volatility gating (\JEVTestSamples{} OOS observations, $2021\text{--}2025$) alongside MMAN 5-fold CPCV and out-of-sample multimodal evaluation ($727$ trading days, $2023\text{--}2025$).}
+\label{tab:jev_mman_audit}
+\end{table*}
+
 

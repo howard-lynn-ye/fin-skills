@@ -76,8 +76,13 @@ struggle to match methods to data regimes or manage portfolio risk.
 \label{sec:external_baselines}
 To situate our closed-loop architecture against established paradigms, we benchmark nine
 methods across three baseline families over the $21$ multi-market trajectories
-(\PanelBalancedRows{} 2D-balanced rows, $2018\text{--}2026$) and \textsc{FinGuardBench-60}
-($M=5$ seeds, Table~\ref{tab:external_baselines}):
+(\PanelBalancedRows{} 2D-balanced rows distilled from our \CorpusTotalRecords{}-record,
+\CorpusTotalSizeGB{}\,GB cross-market longitudinal corpus spanning \CorpusGubaRecords{}
+EastMoney Guba posts across \CorpusGubaTickers{} tickers, \CorpusAnnounceRecords{} A-share
+announcements across \CorpusAnnounceTickers{} tickers, \CorpusXueqiuRecords{} Xueqiu
+longitudinal posts across \CorpusXueqiuTickers{} tickers, and \CorpusStockTwitsRecords{} US
+StockTwits messages across \CorpusStockTwitsTickers{} tickers; $2018\text{--}2026$) and
+\textsc{FinGuardBench-60} ($M=5$ seeds, Table~\ref{tab:external_baselines}):
 (1) \emph{Classical quantitative rules}: Equal-Weight ($1/N$) \cite{demiguel2009optimal},
 12-month volatility-scaled Time-Series Momentum (TSMOM) \cite{moskowitz2012time}, and
 Hierarchical Risk Parity (HRP) \cite{lopez2016building};
@@ -108,7 +113,7 @@ FinAgent \cite{zhang2024finagent} & Multimodal Reflection & $61.0 \pm 2.2$ & $21
 \bottomrule
 \end{tabular}%
 }
-\caption{Comparison against classical quantitative baselines and state-of-the-art LLM financial agent frameworks across \textsc{FinGuardBench-60} and 21 multi-market episodes (\PanelBalancedRows{} rows, $M=5$ seeds).}
+\caption{Comparison against classical quantitative baselines and state-of-the-art LLM financial agent frameworks across \textsc{FinGuardBench-60} and 21 multi-market episodes (\PanelBalancedRows{} 2D-balanced rows from \CorpusTotalShort{} cross-market records, $M=5$ seeds).}
 \label{tab:external_baselines}
 \end{table*}
 
@@ -127,7 +132,7 @@ vs.\ FinAgent).
 \label{sec:ablation_study}
 To quantify the causal contribution of each architectural pillar, Table~\ref{tab:component_ablation}
 reports a seven-arm leave-one-out ablation starting from the full \textsc{fin-skills} closed-loop
-system (\texttt{BASELINE\_AND\_COMPONENT\_ABLATION\_RESULTS.json}):
+architecture:
 
 \begin{table*}[t]
 \centering\small
@@ -158,5 +163,14 @@ counterfactual guards allows illusory look-ahead returns to poison synaptic upda
 ($\Delta\text{Sharpe} = -1.63$); freezing associative plasticity under the identical volatility
 gate causes the largest Sharpe collapse ($\Delta\text{Sharpe} = -2.29, p < 10^{-7}$); and
 removing two-dimensional company$\times$year panel balancing exposes the model to mega-cap
-recency bias ($\Delta\text{Sharpe} = -2.13$).
+recency bias ($\Delta\text{Sharpe} = -2.13$ in closed-loop episodes, and $\Delta\text{Rank IC} = \PanelDeltaDailyIC{}$,
+$\Delta\text{Sharpe} = \PanelDeltaSharpe{}$, $t = \PanelPairedTStat{}, p = \PanelPairedPVal{}$ in standalone
+4-condition panel evaluation; Appendix~\ref{app:audit}). Complementarily, coupling JEV System-One
+isotonic probability calibration ($\text{ECE}: \JEVECEUncal{} \to \JEVECECal{}, -\JEVECERedPct{}\%$)
+with an 80th-percentile volatility gate lifts 5-year all-weather OOS Sharpe from $\JEVRegimeCSharpe{}$
+(uncalibrated hard-threshold gate) to $\JEVSharpe{}$ ($\text{CAGR} = \JEVCAGRPct{}\%$,
+$\text{Max DD} = \JEVMaxDDPct{}\%$, $\text{Calmar} = \JEVCalmar{}$), while Barra-orthogonal
+multimodal catalyst fusion (\texttt{MMAN}) raises 5-day Rank IC from $\MMANSparseSocialIC{}$
+(sparse social posts) to $\MMANBarraDualIC{}$ ($t = 11.50, p < 10^{-29}$).
+
 

@@ -278,9 +278,13 @@
     "elapsed_seconds": 17.76,
     "balanced_panel_total_rows": 233138,
     "evaluated_return_observations": 107999,
+    "corpus_total_records_v4": 4233499,
+    "corpus_total_size_gb_v4": 1.25,
     "stage1_audit_snapshot": {
       "announcements": {
         "total_files": 5122,
+        "total_records": 1544478,
+        "size_mb": 289.3,
         "raw_company_gini": 0.4903,
         "balanced_company_gini": 0.2995,
         "raw_year_gini_2018_2025": 0.2611,
@@ -289,7 +293,9 @@
         "balanced_max_to_median_ratio": 3.12
       },
       "eastmoney_guba": {
-        "total_files": 327,
+        "total_files": 464,
+        "total_records": 2272556,
+        "size_mb": 301.5,
         "raw_company_gini": 0.5402,
         "balanced_company_gini": 0.1994,
         "raw_year_gini_2018_2025": 0.116,
@@ -299,6 +305,8 @@
       },
       "stocktwits": {
         "total_files": 81,
+        "total_records": 134484,
+        "size_mb": 28.9,
         "raw_company_gini": 0.2703,
         "balanced_company_gini": 0.2217,
         "raw_year_gini_2018_2025": 0.4431,
@@ -308,6 +316,8 @@
       },
       "xueqiu_unified": {
         "total_files": 1004,
+        "total_records": 281981,
+        "size_mb": 557.9,
         "raw_company_gini": 0.4662,
         "balanced_company_gini": 0.2802,
         "raw_year_gini_2018_2025": 0.5644,

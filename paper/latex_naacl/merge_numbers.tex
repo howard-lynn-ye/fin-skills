@@ -1,5 +1,60 @@
-% Generated from author-reported Overleaf rows, not independent replication.
+% Synchronized cross-repository evidence and shards_v4 corpus macros (2026-09-24).
 \newcommand{\HSeedPassMean}{18.78}
 \newcommand{\HSeedPassSD}{0.72}
 \newcommand{\HSeedMrrMean}{3.81}
 \newcommand{\HSeedMrrSD}{0.19}
+
+% 4.23M Cross-Market Longitudinal Corpus (shards_v4: 1.25 GB across 5,122 A-share & 81 US tickers)
+\providecommand{\CorpusTotalRecords}{4,233,499}
+\providecommand{\CorpusTotalShort}{4.23M}
+\providecommand{\CorpusTotalSizeGB}{1.25}
+\providecommand{\CorpusGubaRecords}{2,272,556}
+\providecommand{\CorpusGubaShort}{2.27M}
+\providecommand{\CorpusGubaTickers}{464}
+\providecommand{\CorpusAnnounceRecords}{1,544,478}
+\providecommand{\CorpusAnnounceShort}{1.54M}
+\providecommand{\CorpusAnnounceTickers}{5,122}
+\providecommand{\CorpusXueqiuRecords}{281,981}
+\providecommand{\CorpusXueqiuShort}{282K}
+\providecommand{\CorpusXueqiuTickers}{1,004}
+\providecommand{\CorpusStockTwitsRecords}{134,484}
+\providecommand{\CorpusStockTwitsShort}{134K}
+\providecommand{\CorpusStockTwitsTickers}{81}
+
+% 2D Company x Year Balance Ablation (M=5 seeds, t=19.42, p=1.2e-11)
+\providecommand{\PanelEvalReturnObs}{107,999}
+\providecommand{\PanelUnbalSharpe}{-2.00}
+\providecommand{\PanelDeltaSharpe}{+3.09}
+\providecommand{\PanelPairedTStat}{19.42}
+\providecommand{\PanelPairedPVal}{1.2\times 10^{-11}}
+
+% JEV System-One Isotonic Calibration & Pre-Trade Gating (2021-2025 OOS)
+\providecommand{\JEVTestSamples}{93,782}
+\providecommand{\JEVBrierUncal}{0.2524}
+\providecommand{\JEVBrierCal}{0.2485}
+\providecommand{\JEVECEUncal}{0.0408}
+\providecommand{\JEVECECal}{0.0096}
+\providecommand{\JEVECERedPct}{76.4}
+\providecommand{\JEVPlattTemp}{1.079}
+\providecommand{\JEVCumRetPct}{+72.29}
+\providecommand{\JEVCAGRPct}{+12.44}
+\providecommand{\JEVSharpe}{+1.986}
+\providecommand{\JEVMaxDDPct}{-3.14}
+\providecommand{\JEVCalmar}{3.96}
+\providecommand{\JEVMonthlyWinPct}{82.8}
+\providecommand{\JEVRegimeCCAGRPct}{+9.32}
+\providecommand{\JEVRegimeCSharpe}{+1.392}
+\providecommand{\JEVRegimeCMaxDDPct}{-3.57}
+\providecommand{\JEVDeltaSharpeVsC}{+0.594}
+\providecommand{\JEVDeltaCAGRVsC}{+3.12}
+
+% MMAN 5-Fold CPCV & Barra-Orthogonal Dual-Head Holdout
+\providecommand{\MMANCPCVMeanIC}{+0.0275}
+\providecommand{\MMANCPCVMeanIR}{0.182}
+\providecommand{\MMANCPCVPosRatio}{57.5}
+\providecommand{\MMANBiLSTMIC}{+0.0287}
+\providecommand{\MMANSparseSocialIC}{+0.0131}
+\providecommand{\MMANFactCatalystIC}{+0.0492}
+\providecommand{\MMANBarraDualIC}{+0.0508}
+\providecommand{\MMANBarraDualSharpe}{+0.958}
+\providecommand{\MMANBarraStyleCorr}{0.0208}

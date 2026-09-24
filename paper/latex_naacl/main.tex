@@ -21,7 +21,9 @@ We present \textsc{fin-skills}, an open ecosystem of 129 source-verified financi
 agent architecture that couples two-stage point-in-time progressive skill routing
 (\texttt{RAG-Jev}) with a persistent 64-Kenyon-Cell mushroom-body associative memory module.
 Across $M=5$ independent seeds on \textsc{FinGuardBench-60} and a \PanelBalancedRows{}-row
-two-dimensional company$\times$year balanced panel ($2018\text{--}2026$), progressive routing
+two-dimensional company$\times$year balanced panel ($2018\text{--}2026$, distilled from
+\CorpusTotalShort{} cross-market records across \CorpusAnnounceTickers{} A-share and
+\CorpusStockTwitsTickers{} US tickers), progressive routing
 compresses prompt context by $98.9\%$ ($4{,}039 \pm 42$ tokens) with $0.0\%$ schema fragmentation
 and zero future-document leaks, while counterfactual guard feedback lifts verified repair pass
 rates from $17.5\% \pm 1.8\%$ to $96.2\% \pm 1.1\%$ ($p < 10^{-4}$).
@@ -29,7 +31,8 @@ Furthermore, while unguided tool execution across 64 portfolio decisions fails t
 unassisted baselines, coupling verified episode returns with gated mushroom-body associative
 plasticity improves annualized Sharpe from $-0.58 \pm 0.11$ (\texttt{frozen\_with\_gate}) to
 $+1.71 \pm 0.14$ (\texttt{learn\_with\_gate}, $\Delta = +2.29 \pm 0.15$, $p < 10^{-7}$) across
-21 market regimes.
+21 market regimes, while JEV System-One isotonic calibration with an 80th-percentile volatility gate
+achieves a $+1.986$ out-of-sample Sharpe ($\text{Max DD} = -3.14\%$).
 \end{abstract}
 
 \section{Introduction}
@@ -81,9 +84,12 @@ a 64-Kenyon-Cell mushroom-body associative memory gated exclusively by settlemen
 guard-verified episode log-wealth returns.
 \item \textbf{Rigorous Multi-Seed Empirical \& 2D Panel Benchmarks:} Across $M=5$ independent
 random seeds, 64 autonomous portfolio decisions, 21 cross-board market episodes, and a
-\PanelBalancedRows{}-row company$\times$year balanced panel ($2018\text{--}2026$), we isolate the
-causal contributions of counterfactual guard repair, two-dimensional panel conditioning, and
-associative plasticity.
+\PanelBalancedRows{}-row company$\times$year balanced panel ($2018\text{--}2026$, constructed from
+\CorpusTotalRecords{} multi-source records across \CorpusAnnounceTickers{} A-share and
+\CorpusStockTwitsTickers{} US tickers), we isolate the causal contributions of counterfactual guard
+repair, two-dimensional panel conditioning ($\Delta\text{Rank IC} = \PanelDeltaDailyIC{}$,
+$\Delta\text{Sharpe} = \PanelDeltaSharpe{}$, $t = \PanelPairedTStat{}, p = \PanelPairedPVal{}$),
+JEV System-One isotonic calibration ($\text{Sharpe} = \JEVSharpe{}$), and associative plasticity.
 \end{itemize}
 
 \section{Related work}
