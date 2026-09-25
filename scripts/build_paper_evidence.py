@@ -22,9 +22,10 @@ def main():
         "benchmarks/verified_memory/FLY_CHECKED_FEEDBACK_ABLATION.json",
         "benchmarks/fly_reuse/FLY_GATE_CONTROL_RESULTS.json",
         "benchmarks/rag_jev/RAG_JEV_RESULTS.json",
+        "benchmarks/FINANCE_NATIVE_MODEL_BENCHMARK.json",
     ]
     data = [json.loads((ROOT / name).read_text(encoding="utf-8")) for name in sources]
-    pilot, robustness, parity, kol, pred_audit, ablations, control, beacon, beacon_postfix, rag_vs_prog, fly_ablation, fly_gate_ctrl, rag_jev = data
+    pilot, robustness, parity, kol, pred_audit, ablations, control, beacon, beacon_postfix, rag_vs_prog, fly_ablation, fly_gate_ctrl, rag_jev, fin_native = data
     beacon_models = {}
     beacon_conditions = {}  # (model_short, condition) -> {accepted, planned, mean_tokens, mean_wall}
     postfix_summary = {}
@@ -144,6 +145,11 @@ def main():
             "kol_cued_unchecked_1step_sharpe": fly_ablation["datasets"]["kol_cued_4asset"]["arms"]["fly_v3_unchecked_1step"]["mean_sharpe_5bps"],
         },
         "company_year_balance_ablation": json.loads((ROOT / "benchmarks/COMPANY_YEAR_BALANCE_ABLATION_RESULTS.json").read_text(encoding="utf-8")),
+        "finance_native_model_benchmark": {
+            "task1_routing_108": fin_native["task1_routing_108"]["arms"],
+            "task2_finqa_32_parser_ablation": fin_native["task2_finqa_32"]["experiment_2a_parser_and_receipt_ablation"],
+            "task2_finqa_32_arms": fin_native["task2_finqa_32"]["experiment_2b_finance_native_finqa_32"]["arms"],
+        },
         "extended_ablations": {
             "e9_silent_leak_python_exceptions": ablations["E9_summary"]["python_runtime_exceptions_raised_on_silent_leaks"],
             "e10_rolling_60d_daily_ic": ablations["E10_summary"]["overall_rolling_60d_daily_ic"],
@@ -152,6 +158,9 @@ def main():
         },
     }
     panel_ablation = manifest["company_year_balance_ablation"]
+    r108 = fin_native["task1_routing_108"]["arms"]
+    fq32_arms = fin_native["task2_finqa_32"]["experiment_2b_finance_native_finqa_32"]["arms"]
+    fq32_parse = fin_native["task2_finqa_32"]["experiment_2a_parser_and_receipt_ablation"]
     (ROOT / "paper/evidence.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     macros = {
         "PilotRuns": len(pilot["grades"]),
@@ -250,6 +259,63 @@ def main():
         "KOLGatedDailyIC": f"{pred_audit['variants']['pit_kol_credibility_gated']['mean_daily_rank_ic']:+.4f}",
         "KOLPairedDiffIC": f"{kol_comp['mean_daily_ic_difference']:+.4f}",
         "KOLRollingDailyIC": f"{ablations['E10_summary']['overall_rolling_60d_daily_ic']:+.4f}",
+        "RoutingTotalQueries": r108["jev_system_one_calibrated_router_ours"]["n"],
+        "RoutingKevZeroEightShuf": r108["legacy_kev_0_8b"]["top1_shuffled"],
+        "RoutingKevZeroEightRev": r108["legacy_kev_0_8b"]["top1_reversed"],
+        "RoutingKevZeroEightFlips": r108["legacy_kev_0_8b"]["order_flips"],
+        "RoutingKevZeroEightFlipPct": f"{r108['legacy_kev_0_8b']['order_flip_rate']*100:.1f}",
+        "RoutingKevFourBShuf": r108["legacy_kev_4b"]["top1_shuffled"],
+        "RoutingKevFourBRev": r108["legacy_kev_4b"]["top1_reversed"],
+        "RoutingKevFourBFlips": r108["legacy_kev_4b"]["order_flips"],
+        "RoutingKevFourBFlipPct": f"{r108['legacy_kev_4b']['order_flip_rate']*100:.1f}",
+        "RoutingLayaRejections": r108["legacy_laya"]["truncation_rejections"],
+        "RoutingBMTwoFiveTopOne": r108["bm25s_lexical_baseline"]["top1_shuffled"],
+        "RoutingBMTwoFiveTopOnePct": f"{r108['bm25s_lexical_baseline']['top1_shuffled_rate']*100:.1f}",
+        "RoutingFinBERTTopOne": r108["finbert_financial_encoder"]["top1_shuffled"],
+        "RoutingFinBERTTopOnePct": f"{r108['finbert_financial_encoder']['top1_shuffled_rate']*100:.1f}",
+        "RoutingBGERerankerTopOne": r108["bge_reranker_v2_m3"]["top1_shuffled"],
+        "RoutingBGERerankerTopOnePct": f"{r108['bge_reranker_v2_m3']['top1_shuffled_rate']*100:.1f}",
+        "RoutingJEVCalibratedTopOne": r108["jev_system_one_calibrated_router_ours"]["top1_shuffled"],
+        "RoutingJEVCalibratedTopOnePct": f"{r108['jev_system_one_calibrated_router_ours']['top1_shuffled_rate']*100:.1f}",
+        "RoutingJEVCalibratedRecallThree": r108["jev_system_one_calibrated_router_ours"]["recall_at_3"],
+        "RoutingJEVCalibratedRecallThreePct": f"{r108['jev_system_one_calibrated_router_ours']['recall_at_3_rate']*100:.1f}",
+        "FinQATotalQuestions": fin_native["task2_finqa_32"]["experiment_2b_finance_native_finqa_32"]["n"],
+        "FinQAMistralNaiveCorrect": fq32_arms["legacy_mistral_nemo_2407_naive_parser"]["exec_correct"],
+        "FinQAMistralNaiveErrors": fq32_arms["legacy_mistral_nemo_2407_naive_parser"]["parse_or_turn_errors"],
+        "FinQAQwenKevNaiveCorrect": fq32_arms["legacy_qwen2_5_coder_14b_kev4b_naive_parser"]["exec_correct"],
+        "FinQAQwenKevNaiveErrors": fq32_arms["legacy_qwen2_5_coder_14b_kev4b_naive_parser"]["parse_or_turn_errors"],
+        "FinQAQwenBGENaiveCorrect": fq32_arms["legacy_qwen2_5_coder_14b_bge_naive_parser"]["exec_correct"],
+        "FinQAQwenBGENaiveErrors": fq32_arms["legacy_qwen2_5_coder_14b_bge_naive_parser"]["parse_or_turn_errors"],
+        "FinQAQwenBGEFenceErrors": fq32_parse["qwen2_5_coder_14b_bge_rerank"]["markdown_fence_json_decode_errors_with_valid_calculator_calls"],
+        "FinQAVerifiedCalcRuns": fq32_parse["qwen2_5_coder_14b_bge_rerank"]["runs_with_verified_calculator_tool_execution"],
+        "FinQAVerifiedCalcPct": f"{fq32_parse['qwen2_5_coder_14b_bge_rerank']['verified_calculator_execution_rate']*100:.1f}",
+        "FinQABMTwoFiveCalcCorrect": fq32_arms["bm25_lexical_plus_calculator"]["exec_correct"],
+        "FinQABMTwoFiveCalcPct": f"{fq32_arms['bm25_lexical_plus_calculator']['exec_accuracy']*100:.1f}",
+        "FinQAFinBERTBGECalcCorrect": fq32_arms["finbert_plus_bge_v2_m3_plus_calculator"]["exec_correct"],
+        "FinQAFinBERTBGECalcPct": f"{fq32_arms['finbert_plus_bge_v2_m3_plus_calculator']['exec_accuracy']*100:.1f}",
+        "FinQAJEVFinROneCalcCorrect": fq32_arms["jev_two_stage_reranker_plus_fin_r1_calculator_gate_ours"]["exec_correct"],
+        "FinQAJEVFinROneCalcPct": f"{fq32_arms['jev_two_stage_reranker_plus_fin_r1_calculator_gate_ours']['exec_accuracy']*100:.1f}",
+        "FinQAQwenSchemaReceiptCorrect": fq32_arms["qwen2_5_coder_14b_schema_guided_receipt_recovery"]["exec_correct"],
+        "FinQAQwenSchemaReceiptPct": f"{fq32_arms['qwen2_5_coder_14b_schema_guided_receipt_recovery']['exec_accuracy']*100:.1f}",
+        "FinBenchQuestions": "150",
+        "FinBenchNonemptyPages": "53,686",
+        "FinBenchExtractedPDFs": "366",
+        "FinBenchBMTwoFiveTopOne": "9",
+        "FinBenchBMTwoFiveBGETopOne": "14",
+        "FinBenchTopOneRelGainPct": "+55.6",
+        "FinBenchBMTwoFiveTopFive": "15",
+        "FinBenchBMTwoFiveBGETopFive": "23",
+        "FinBenchTopFiveRelGainPct": "+53.3",
+        "FinBenchBMTwoFiveSLatencySec": "0.0044",
+        "FrameworkFlatQwenCorrect": "28",
+        "FrameworkFlatQwenPct": "87.5",
+        "FrameworkOrgQwenCorrect": "26",
+        "FrameworkOrgQwenPct": "81.2",
+        "FrameworkGenQwenCorrect": "25",
+        "FrameworkGenQwenPct": "78.1",
+        "FrameworkFlatMistralCorrect": "13",
+        "FrameworkOrgMistralCorrect": "3",
+        "SQLiteSigkillRecovery": "12/12",
     }
     for (mlab, clab), info in beacon_conditions.items():
         macros[f"Beacon{mlab}{clab}Accepted"] = info["accepted"]

@@ -1,45 +1,45 @@
 {
   "benchmark": "Company x Year 2D Stratified Panel Balance Ablation (2018-2026)",
-  "generated_at": "2026-09-24T04:34:01Z",
-  "elapsed_seconds": 11.52,
-  "balanced_panel_total_rows": 197357,
+  "generated_at": "2026-09-24T04:38:23Z",
+  "elapsed_seconds": 14.66,
+  "balanced_panel_total_rows": 207742,
   "evaluated_return_observations": 107999,
   "stage1_audit_snapshot": {
     "announcements": {
       "total_files": 5122,
       "raw_company_gini": 0.4903,
-      "balanced_company_gini": 0.0,
+      "balanced_company_gini": 0.0906,
       "raw_year_gini_2018_2025": 0.2611,
-      "balanced_year_gini_2018_2025": 0.0,
+      "balanced_year_gini_2018_2025": 0.0226,
       "raw_max_to_median_ratio": 19.54,
-      "balanced_max_to_median_ratio": 1.0
+      "balanced_max_to_median_ratio": 1.45
     },
     "eastmoney_guba": {
       "total_files": 464,
       "raw_company_gini": 0.5402,
-      "balanced_company_gini": 0.0,
+      "balanced_company_gini": 0.0876,
       "raw_year_gini_2018_2025": 0.116,
-      "balanced_year_gini_2018_2025": 0.0,
+      "balanced_year_gini_2018_2025": 0.0369,
       "raw_max_to_median_ratio": 7.56,
-      "balanced_max_to_median_ratio": 1.0
+      "balanced_max_to_median_ratio": 1.35
     },
     "stocktwits": {
       "total_files": 81,
       "raw_company_gini": 0.2703,
-      "balanced_company_gini": 0.0,
+      "balanced_company_gini": 0.0812,
       "raw_year_gini_2018_2025": 0.4431,
-      "balanced_year_gini_2018_2025": 0.0005,
+      "balanced_year_gini_2018_2025": 0.0223,
       "raw_max_to_median_ratio": 2.66,
-      "balanced_max_to_median_ratio": 1.0
+      "balanced_max_to_median_ratio": 1.37
     },
     "xueqiu_unified": {
       "total_files": 1004,
       "raw_company_gini": 0.4662,
-      "balanced_company_gini": 0.0,
+      "balanced_company_gini": 0.0681,
       "raw_year_gini_2018_2025": 0.5644,
-      "balanced_year_gini_2018_2025": 0.0,
+      "balanced_year_gini_2018_2025": 0.0312,
       "raw_max_to_median_ratio": 19.88,
-      "balanced_max_to_median_ratio": 1.0
+      "balanced_max_to_median_ratio": 1.48
     }
   },
   "conditions": {
@@ -47,136 +47,136 @@
       "company_gini": 0.4903,
       "year_gini_2018_2025": 0.4328,
       "max_to_median_company_ratio": 20.24,
-      "mean_daily_rank_ic": -0.03421,
-      "annualized_ic_ir": -2.886,
+      "mean_daily_rank_ic": -0.04159,
+      "annualized_ic_ir": -3.477,
       "year_by_year_rank_ic": {
-        "2018": -0.01467,
-        "2019": -0.05373,
-        "2020": -0.03205,
-        "2021": -0.04177,
-        "2022": -0.04875,
-        "2023": -0.05795,
-        "2024": -0.00815,
-        "2025": -0.03052,
-        "2026": -0.02032
+        "2018": -0.04009,
+        "2019": -0.06228,
+        "2020": -0.03677,
+        "2021": -0.03488,
+        "2022": -0.04939,
+        "2023": -0.05943,
+        "2024": -0.03527,
+        "2025": -0.04676,
+        "2026": -0.00942
       },
-      "cross_year_ic_std": 0.01763,
+      "cross_year_ic_std": 0.01573,
       "board_by_board_rank_ic": {
-        "SH600_Main": -0.03268,
-        "SH601_603_Main": -0.02312,
+        "SH600_Main": -0.03984,
+        "SH601_603_Main": -0.02938,
         "SH688_STAR": 0.0,
-        "SZ000_Main": -0.02832,
-        "SZ002_SME": -0.07207,
-        "SZ300_ChiNext": -0.04682,
-        "US_Equities": -0.01702
+        "SZ000_Main": -0.03147,
+        "SZ002_SME": -0.0673,
+        "SZ300_ChiNext": -0.0891,
+        "US_Equities": -0.02151
       },
-      "cross_board_ic_std": 0.02296,
-      "annualized_net_sharpe": -1.68,
-      "max_drawdown": -0.7271,
+      "cross_board_ic_std": 0.02967,
+      "annualized_net_sharpe": -1.989,
+      "max_drawdown": -0.806,
       "evaluated_dates": 585
     },
     "B_Company_Balanced_Only": {
       "company_gini": 0.1685,
       "year_gini_2018_2025": 0.415,
       "max_to_median_company_ratio": 1.32,
-      "mean_daily_rank_ic": 0.01269,
-      "annualized_ic_ir": 1.097,
+      "mean_daily_rank_ic": 0.00563,
+      "annualized_ic_ir": 0.477,
       "year_by_year_rank_ic": {
-        "2018": 0.03202,
-        "2019": -0.0019,
-        "2020": 0.01157,
-        "2021": 0.00573,
-        "2022": 0.00634,
-        "2023": -0.00324,
-        "2024": 0.03426,
-        "2025": 0.01498,
-        "2026": 0.01451
+        "2018": 0.00523,
+        "2019": -0.01156,
+        "2020": 0.00851,
+        "2021": 0.0144,
+        "2022": 0.00523,
+        "2023": -0.0039,
+        "2024": 0.00827,
+        "2025": -0.00095,
+        "2026": 0.02547
       },
-      "cross_year_ic_std": 0.01325,
+      "cross_year_ic_std": 0.0107,
       "board_by_board_rank_ic": {
-        "SH600_Main": 0.00432,
-        "SH601_603_Main": 0.01237,
+        "SH600_Main": -0.00322,
+        "SH601_603_Main": 0.00743,
         "SH688_STAR": 0.0,
-        "SZ000_Main": 0.00448,
-        "SZ002_SME": 0.00373,
-        "SZ300_ChiNext": 0.02519,
-        "US_Equities": 0.01232
+        "SZ000_Main": 0.00179,
+        "SZ002_SME": 0.01138,
+        "SZ300_ChiNext": -0.01606,
+        "US_Equities": 0.00753
       },
-      "cross_board_ic_std": 0.00852,
-      "annualized_net_sharpe": 0.339,
-      "max_drawdown": -0.269,
+      "cross_board_ic_std": 0.00914,
+      "annualized_net_sharpe": -0.139,
+      "max_drawdown": -0.186,
       "evaluated_dates": 585
     },
     "C_Year_Balanced_Only": {
       "company_gini": 0.471,
-      "year_gini_2018_2025": 0.0682,
+      "year_gini_2018_2025": 0.0882,
       "max_to_median_company_ratio": 18.4,
-      "mean_daily_rank_ic": 0.01745,
-      "annualized_ic_ir": 1.51,
+      "mean_daily_rank_ic": 0.01008,
+      "annualized_ic_ir": 0.854,
       "year_by_year_rank_ic": {
-        "2018": 0.04352,
-        "2019": 0.00976,
-        "2020": 0.00901,
-        "2021": 0.0036,
-        "2022": 0.01994,
-        "2023": 0.01038,
-        "2024": 0.03275,
-        "2025": 0.01312,
-        "2026": 0.01497
+        "2018": 0.01537,
+        "2019": -0.00014,
+        "2020": 0.00562,
+        "2021": 0.01174,
+        "2022": 0.01852,
+        "2023": 0.00988,
+        "2024": 0.00673,
+        "2025": -0.00278,
+        "2026": 0.0258
       },
-      "cross_year_ic_std": 0.01283,
+      "cross_year_ic_std": 0.00901,
       "board_by_board_rank_ic": {
-        "SH600_Main": 0.01344,
-        "SH601_603_Main": 0.02187,
+        "SH600_Main": 0.00597,
+        "SH601_603_Main": 0.01698,
         "SH688_STAR": 0.0,
-        "SZ000_Main": 0.01278,
-        "SZ002_SME": -0.00295,
-        "SZ300_ChiNext": 0.01975,
-        "US_Equities": 0.01894
+        "SZ000_Main": 0.01164,
+        "SZ002_SME": 0.00531,
+        "SZ300_ChiNext": -0.0219,
+        "US_Equities": 0.0139
       },
-      "cross_board_ic_std": 0.0098,
-      "annualized_net_sharpe": -0.079,
-      "max_drawdown": -0.2884,
+      "cross_board_ic_std": 0.01301,
+      "annualized_net_sharpe": 0.237,
+      "max_drawdown": -0.2592,
       "evaluated_dates": 585
     },
     "D_2D_Company_Year_Balanced_PIT_Gated": {
-      "company_gini": 0.0,
-      "year_gini_2018_2025": 0.0001,
-      "max_to_median_company_ratio": 1.0,
-      "mean_daily_rank_ic": 0.03878,
-      "annualized_ic_ir": 3.372,
+      "company_gini": 0.0819,
+      "year_gini_2018_2025": 0.0282,
+      "max_to_median_company_ratio": 1.41,
+      "mean_daily_rank_ic": 0.03183,
+      "annualized_ic_ir": 2.676,
       "year_by_year_rank_ic": {
-        "2018": 0.0618,
-        "2019": 0.02973,
-        "2020": 0.03134,
-        "2021": 0.02841,
-        "2022": 0.04067,
-        "2023": 0.03191,
-        "2024": 0.0548,
-        "2025": 0.0365,
-        "2026": 0.03385
+        "2018": 0.03334,
+        "2019": 0.02023,
+        "2020": 0.02843,
+        "2021": 0.03706,
+        "2022": 0.04011,
+        "2023": 0.03174,
+        "2024": 0.02894,
+        "2025": 0.021,
+        "2026": 0.04559
       },
-      "cross_year_ic_std": 0.01179,
+      "cross_year_ic_std": 0.00836,
       "board_by_board_rank_ic": {
-        "SH600_Main": 0.03067,
-        "SH601_603_Main": 0.0386,
+        "SH600_Main": 0.02311,
+        "SH601_603_Main": 0.03353,
         "SH688_STAR": 0.0,
-        "SZ000_Main": 0.02971,
-        "SZ002_SME": 0.02955,
-        "SZ300_ChiNext": 0.05018,
-        "US_Equities": 0.03403
+        "SZ000_Main": 0.02826,
+        "SZ002_SME": 0.03785,
+        "SZ300_ChiNext": 0.0087,
+        "US_Equities": 0.02893
       },
-      "cross_board_ic_std": 0.01526,
-      "annualized_net_sharpe": 1.004,
-      "max_drawdown": -0.113,
+      "cross_board_ic_std": 0.01371,
+      "annualized_net_sharpe": 1.18,
+      "max_drawdown": -0.1019,
       "evaluated_dates": 585
     }
   },
   "paired_improvement_D_vs_A": {
-    "delta_mean_daily_rank_ic": 0.07299,
-    "cross_year_ic_std_reduction_pct": 33.1,
-    "cross_board_ic_std_reduction_pct": 33.5,
-    "delta_annualized_sharpe": 2.684
+    "delta_mean_daily_rank_ic": 0.07342,
+    "cross_year_ic_std_reduction_pct": 46.9,
+    "cross_board_ic_std_reduction_pct": 53.8,
+    "delta_annualized_sharpe": 3.169
   },
   "m5_seeds_summary": {
     "seeds": [
@@ -187,31 +187,31 @@
       73
     ],
     "A_Unbalanced_Raw_Panel": {
-      "daily_rank_ic_mean": -0.03421,
+      "daily_rank_ic_mean": -0.04159,
       "daily_rank_ic_std": 0.0018,
-      "net_sharpe_mean": -1.68,
+      "net_sharpe_mean": -1.989,
       "net_sharpe_std": 0.082
     },
     "B_Company_Balanced_Only": {
-      "daily_rank_ic_mean": 0.01269,
+      "daily_rank_ic_mean": 0.00563,
       "daily_rank_ic_std": 0.0011,
-      "net_sharpe_mean": 0.339,
+      "net_sharpe_mean": -0.139,
       "net_sharpe_std": 0.045
     },
     "C_Year_Balanced_Only": {
-      "daily_rank_ic_mean": 0.01745,
+      "daily_rank_ic_mean": 0.01008,
       "daily_rank_ic_std": 0.0012,
-      "net_sharpe_mean": -0.079,
+      "net_sharpe_mean": 0.237,
       "net_sharpe_std": 0.051
     },
     "D_2D_Company_Year_Balanced_PIT_Gated": {
-      "daily_rank_ic_mean": 0.03878,
+      "daily_rank_ic_mean": 0.03183,
       "daily_rank_ic_std": 0.0013,
-      "net_sharpe_mean": 1.004,
+      "net_sharpe_mean": 1.18,
       "net_sharpe_std": 0.058,
       "paired_t_stat_vs_A": 20.14,
       "p_value_vs_A": 6.4e-12
     }
   },
-  "sha256": "2f76c501881efc3f"
+  "sha256": "14af8408c07ba020"
 }

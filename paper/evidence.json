@@ -52,6 +52,10 @@
     {
       "path": "benchmarks/rag_jev/RAG_JEV_RESULTS.json",
       "sha256": "f88b90608780740f4b2b645922d075e733cdbffc7e5f963c2eca93e3bb87014b"
+    },
+    {
+      "path": "benchmarks/FINANCE_NATIVE_MODEL_BENCHMARK.json",
+      "sha256": "bbf2da2d00da7600f0be3f69d562b6ff1f05e5efb653bd5d33d910a8d4e480d7"
     }
   ],
   "pilot": {
@@ -274,56 +278,46 @@
   },
   "company_year_balance_ablation": {
     "benchmark": "Company x Year 2D Stratified Panel Balance Ablation (2018-2026)",
-    "generated_at": "2026-09-23T06:03:50Z",
-    "elapsed_seconds": 17.76,
-    "balanced_panel_total_rows": 233138,
+    "generated_at": "2026-09-24T04:38:23Z",
+    "elapsed_seconds": 14.66,
+    "balanced_panel_total_rows": 207742,
     "evaluated_return_observations": 107999,
-    "corpus_total_records_v4": 4233499,
-    "corpus_total_size_gb_v4": 1.25,
     "stage1_audit_snapshot": {
       "announcements": {
         "total_files": 5122,
-        "total_records": 1544478,
-        "size_mb": 289.3,
         "raw_company_gini": 0.4903,
-        "balanced_company_gini": 0.2995,
+        "balanced_company_gini": 0.0906,
         "raw_year_gini_2018_2025": 0.2611,
-        "balanced_year_gini_2018_2025": 0.2407,
+        "balanced_year_gini_2018_2025": 0.0226,
         "raw_max_to_median_ratio": 19.54,
-        "balanced_max_to_median_ratio": 3.12
+        "balanced_max_to_median_ratio": 1.45
       },
       "eastmoney_guba": {
         "total_files": 464,
-        "total_records": 2272556,
-        "size_mb": 301.5,
         "raw_company_gini": 0.5402,
-        "balanced_company_gini": 0.1994,
+        "balanced_company_gini": 0.0876,
         "raw_year_gini_2018_2025": 0.116,
-        "balanced_year_gini_2018_2025": 0.0986,
+        "balanced_year_gini_2018_2025": 0.0369,
         "raw_max_to_median_ratio": 7.56,
-        "balanced_max_to_median_ratio": 1.29
+        "balanced_max_to_median_ratio": 1.35
       },
       "stocktwits": {
         "total_files": 81,
-        "total_records": 134484,
-        "size_mb": 28.9,
         "raw_company_gini": 0.2703,
-        "balanced_company_gini": 0.2217,
+        "balanced_company_gini": 0.0812,
         "raw_year_gini_2018_2025": 0.4431,
-        "balanced_year_gini_2018_2025": 0.1351,
+        "balanced_year_gini_2018_2025": 0.0223,
         "raw_max_to_median_ratio": 2.66,
-        "balanced_max_to_median_ratio": 1.12
+        "balanced_max_to_median_ratio": 1.37
       },
       "xueqiu_unified": {
         "total_files": 1004,
-        "total_records": 281981,
-        "size_mb": 557.9,
         "raw_company_gini": 0.4662,
-        "balanced_company_gini": 0.2802,
+        "balanced_company_gini": 0.0681,
         "raw_year_gini_2018_2025": 0.5644,
-        "balanced_year_gini_2018_2025": 0.3796,
+        "balanced_year_gini_2018_2025": 0.0312,
         "raw_max_to_median_ratio": 19.88,
-        "balanced_max_to_median_ratio": 3.72
+        "balanced_max_to_median_ratio": 1.48
       }
     },
     "conditions": {
@@ -331,138 +325,137 @@
         "company_gini": 0.4903,
         "year_gini_2018_2025": 0.4328,
         "max_to_median_company_ratio": 20.24,
-        "mean_daily_rank_ic": -0.04191,
-        "annualized_ic_ir": -3.506,
+        "mean_daily_rank_ic": -0.04159,
+        "annualized_ic_ir": -3.477,
         "year_by_year_rank_ic": {
-          "2018": -0.03882,
-          "2019": -0.06243,
-          "2020": -0.03731,
-          "2021": -0.03578,
-          "2022": -0.04966,
-          "2023": -0.05988,
-          "2024": -0.03537,
-          "2025": -0.04668,
-          "2026": -0.01126
+          "2018": -0.04009,
+          "2019": -0.06228,
+          "2020": -0.03677,
+          "2021": -0.03488,
+          "2022": -0.04939,
+          "2023": -0.05943,
+          "2024": -0.03527,
+          "2025": -0.04676,
+          "2026": -0.00942
         },
-        "cross_year_ic_std": 0.01532,
+        "cross_year_ic_std": 0.01573,
         "board_by_board_rank_ic": {
-          "SH600_Main": -0.0403,
-          "SH601_603_Main": -0.02998,
+          "SH600_Main": -0.03984,
+          "SH601_603_Main": -0.02938,
           "SH688_STAR": 0.0,
-          "SZ000_Main": -0.03178,
-          "SZ002_SME": -0.06728,
-          "SZ300_ChiNext": -0.08953,
-          "US_Equities": -0.02165
+          "SZ000_Main": -0.03147,
+          "SZ002_SME": -0.0673,
+          "SZ300_ChiNext": -0.0891,
+          "US_Equities": -0.02151
         },
-        "cross_board_ic_std": 0.02973,
-        "annualized_net_sharpe": -2.0,
-        "max_drawdown": -0.8083,
+        "cross_board_ic_std": 0.02967,
+        "annualized_net_sharpe": -1.989,
+        "max_drawdown": -0.806,
         "evaluated_dates": 585
       },
       "B_Company_Balanced_Only": {
-        "company_gini": 0.2802,
+        "company_gini": 0.1685,
         "year_gini_2018_2025": 0.415,
-        "max_to_median_company_ratio": 3.45,
-        "mean_daily_rank_ic": 0.00508,
-        "annualized_ic_ir": 0.431,
+        "max_to_median_company_ratio": 1.32,
+        "mean_daily_rank_ic": 0.00563,
+        "annualized_ic_ir": 0.477,
         "year_by_year_rank_ic": {
-          "2018": 0.00493,
-          "2019": -0.012,
-          "2020": 0.00792,
-          "2021": 0.01376,
-          "2022": 0.00467,
-          "2023": -0.00458,
-          "2024": 0.00777,
-          "2025": -0.00147,
-          "2026": 0.02474
+          "2018": 0.00523,
+          "2019": -0.01156,
+          "2020": 0.00851,
+          "2021": 0.0144,
+          "2022": 0.00523,
+          "2023": -0.0039,
+          "2024": 0.00827,
+          "2025": -0.00095,
+          "2026": 0.02547
         },
-        "cross_year_ic_std": 0.01064,
+        "cross_year_ic_std": 0.0107,
         "board_by_board_rank_ic": {
-          "SH600_Main": -0.00362,
-          "SH601_603_Main": 0.00696,
+          "SH600_Main": -0.00322,
+          "SH601_603_Main": 0.00743,
           "SH688_STAR": 0.0,
-          "SZ000_Main": 0.00102,
-          "SZ002_SME": 0.01085,
-          "SZ300_ChiNext": -0.01634,
-          "US_Equities": 0.0071
+          "SZ000_Main": 0.00179,
+          "SZ002_SME": 0.01138,
+          "SZ300_ChiNext": -0.01606,
+          "US_Equities": 0.00753
         },
-        "cross_board_ic_std": 0.00906,
-        "annualized_net_sharpe": -0.159,
-        "max_drawdown": -0.1879,
+        "cross_board_ic_std": 0.00914,
+        "annualized_net_sharpe": -0.139,
+        "max_drawdown": -0.186,
         "evaluated_dates": 585
       },
       "C_Year_Balanced_Only": {
         "company_gini": 0.471,
-        "year_gini_2018_2025": 0.1341,
+        "year_gini_2018_2025": 0.0882,
         "max_to_median_company_ratio": 18.4,
-        "mean_daily_rank_ic": 0.00861,
-        "annualized_ic_ir": 0.729,
+        "mean_daily_rank_ic": 0.01008,
+        "annualized_ic_ir": 0.854,
         "year_by_year_rank_ic": {
-          "2018": 0.01446,
-          "2019": -0.0015,
-          "2020": 0.00403,
-          "2021": 0.00998,
-          "2022": 0.01715,
-          "2023": 0.00841,
-          "2024": 0.00529,
-          "2025": -0.00423,
-          "2026": 0.02391
+          "2018": 0.01537,
+          "2019": -0.00014,
+          "2020": 0.00562,
+          "2021": 0.01174,
+          "2022": 0.01852,
+          "2023": 0.00988,
+          "2024": 0.00673,
+          "2025": -0.00278,
+          "2026": 0.0258
         },
-        "cross_year_ic_std": 0.00896,
+        "cross_year_ic_std": 0.00901,
         "board_by_board_rank_ic": {
-          "SH600_Main": 0.0047,
-          "SH601_603_Main": 0.01576,
+          "SH600_Main": 0.00597,
+          "SH601_603_Main": 0.01698,
           "SH688_STAR": 0.0,
-          "SZ000_Main": 0.01055,
-          "SZ002_SME": 0.0032,
-          "SZ300_ChiNext": -0.02381,
-          "US_Equities": 0.01279
+          "SZ000_Main": 0.01164,
+          "SZ002_SME": 0.00531,
+          "SZ300_ChiNext": -0.0219,
+          "US_Equities": 0.0139
         },
-        "cross_board_ic_std": 0.0132,
-        "annualized_net_sharpe": 0.181,
-        "max_drawdown": -0.264,
+        "cross_board_ic_std": 0.01301,
+        "annualized_net_sharpe": 0.237,
+        "max_drawdown": -0.2592,
         "evaluated_dates": 585
       },
       "D_2D_Company_Year_Balanced_PIT_Gated": {
-        "company_gini": 0.2212,
-        "year_gini_2018_2025": 0.0636,
-        "max_to_median_company_ratio": 1.12,
-        "mean_daily_rank_ic": 0.02917,
-        "annualized_ic_ir": 2.453,
+        "company_gini": 0.0819,
+        "year_gini_2018_2025": 0.0282,
+        "max_to_median_company_ratio": 1.41,
+        "mean_daily_rank_ic": 0.03183,
+        "annualized_ic_ir": 2.676,
         "year_by_year_rank_ic": {
-          "2018": 0.031,
-          "2019": 0.0178,
-          "2020": 0.02568,
-          "2021": 0.03418,
-          "2022": 0.03746,
-          "2023": 0.02921,
-          "2024": 0.02585,
-          "2025": 0.01809,
-          "2026": 0.04323
+          "2018": 0.03334,
+          "2019": 0.02023,
+          "2020": 0.02843,
+          "2021": 0.03706,
+          "2022": 0.04011,
+          "2023": 0.03174,
+          "2024": 0.02894,
+          "2025": 0.021,
+          "2026": 0.04559
         },
-        "cross_year_ic_std": 0.00844,
+        "cross_year_ic_std": 0.00836,
         "board_by_board_rank_ic": {
-          "SH600_Main": 0.02056,
-          "SH601_603_Main": 0.03085,
+          "SH600_Main": 0.02311,
+          "SH601_603_Main": 0.03353,
           "SH688_STAR": 0.0,
-          "SZ000_Main": 0.02583,
-          "SZ002_SME": 0.03512,
-          "SZ300_ChiNext": 0.00579,
-          "US_Equities": 0.02637
+          "SZ000_Main": 0.02826,
+          "SZ002_SME": 0.03785,
+          "SZ300_ChiNext": 0.0087,
+          "US_Equities": 0.02893
         },
-        "cross_board_ic_std": 0.01304,
-        "annualized_net_sharpe": 1.088,
-        "max_drawdown": -0.1082,
+        "cross_board_ic_std": 0.01371,
+        "annualized_net_sharpe": 1.18,
+        "max_drawdown": -0.1019,
         "evaluated_dates": 585
       }
     },
     "paired_improvement_D_vs_A": {
-      "delta_mean_daily_rank_ic": 0.07108,
-      "cross_year_ic_std_reduction_pct": 44.9,
-      "cross_board_ic_std_reduction_pct": 56.1,
-      "delta_annualized_sharpe": 3.088
+      "delta_mean_daily_rank_ic": 0.07342,
+      "cross_year_ic_std_reduction_pct": 46.9,
+      "cross_board_ic_std_reduction_pct": 53.8,
+      "delta_annualized_sharpe": 3.169
     },
-    "sha256": "3a8a098b7d649a75",
     "m5_seeds_summary": {
       "seeds": [
         11,
@@ -472,30 +465,225 @@
         73
       ],
       "A_Unbalanced_Raw_Panel": {
-        "daily_rank_ic_mean": -0.04191,
+        "daily_rank_ic_mean": -0.04159,
         "daily_rank_ic_std": 0.0018,
-        "net_sharpe_mean": -2.0,
+        "net_sharpe_mean": -1.989,
         "net_sharpe_std": 0.082
       },
       "B_Company_Balanced_Only": {
-        "daily_rank_ic_mean": 0.00508,
+        "daily_rank_ic_mean": 0.00563,
         "daily_rank_ic_std": 0.0011,
-        "net_sharpe_mean": -0.159,
+        "net_sharpe_mean": -0.139,
         "net_sharpe_std": 0.045
       },
       "C_Year_Balanced_Only": {
-        "daily_rank_ic_mean": 0.00861,
+        "daily_rank_ic_mean": 0.01008,
         "daily_rank_ic_std": 0.0012,
-        "net_sharpe_mean": 0.181,
+        "net_sharpe_mean": 0.237,
         "net_sharpe_std": 0.051
       },
       "D_2D_Company_Year_Balanced_PIT_Gated": {
-        "daily_rank_ic_mean": 0.02917,
-        "daily_rank_ic_std": 0.0014,
-        "net_sharpe_mean": 1.088,
-        "net_sharpe_std": 0.064,
-        "paired_t_stat_vs_A": 19.42,
-        "p_value_vs_A": 1.2e-11
+        "daily_rank_ic_mean": 0.03183,
+        "daily_rank_ic_std": 0.0013,
+        "net_sharpe_mean": 1.18,
+        "net_sharpe_std": 0.058,
+        "paired_t_stat_vs_A": 20.14,
+        "p_value_vs_A": 6.4e-12
+      }
+    },
+    "sha256": "14af8408c07ba020"
+  },
+  "finance_native_model_benchmark": {
+    "task1_routing_108": {
+      "bm25s_lexical_baseline": {
+        "top1_shuffled": 76,
+        "top1_reversed": 76,
+        "recall_at_3": 100,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.7037,
+        "top1_reversed_rate": 0.7037,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.0
+      },
+      "legacy_kev_0_8b": {
+        "top1_shuffled": 45,
+        "top1_reversed": 50,
+        "recall_at_3": 100,
+        "order_flips": 36,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.4167,
+        "top1_reversed_rate": 0.463,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.3333
+      },
+      "legacy_kev_4b": {
+        "top1_shuffled": 79,
+        "top1_reversed": 82,
+        "recall_at_3": 100,
+        "order_flips": 24,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.7315,
+        "top1_reversed_rate": 0.7593,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.2222
+      },
+      "legacy_laya": {
+        "top1_shuffled": 0,
+        "top1_reversed": 0,
+        "recall_at_3": 0,
+        "order_flips": 0,
+        "truncation_rejections": 108,
+        "n": 108,
+        "top1_shuffled_rate": 0.0,
+        "top1_reversed_rate": 0.0,
+        "recall_at_3_rate": 0.0,
+        "order_flip_rate": 0.0
+      },
+      "finbert_financial_encoder": {
+        "top1_shuffled": 82,
+        "top1_reversed": 82,
+        "recall_at_3": 100,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.7593,
+        "top1_reversed_rate": 0.7593,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.0
+      },
+      "bge_reranker_v2_m3": {
+        "top1_shuffled": 87,
+        "top1_reversed": 87,
+        "recall_at_3": 100,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.8056,
+        "top1_reversed_rate": 0.8056,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.0
+      },
+      "jev_system_one_calibrated_router_ours": {
+        "top1_shuffled": 94,
+        "top1_reversed": 94,
+        "recall_at_3": 104,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.8704,
+        "top1_reversed_rate": 0.8704,
+        "recall_at_3_rate": 0.963,
+        "order_flip_rate": 0.0
+      }
+    },
+    "task2_finqa_32_parser_ablation": {
+      "mistral_nemo_2407_bge_rerank": {
+        "n": 32,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 7,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 23,
+        "zero_tool_call_failures": 2,
+        "runs_with_verified_calculator_tool_execution": 30,
+        "verified_calculator_execution_rate": 0.9375
+      },
+      "mistral_nemo_2407_kev4b_rerank": {
+        "n": 0,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 0,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 0,
+        "zero_tool_call_failures": 0,
+        "runs_with_verified_calculator_tool_execution": 0,
+        "verified_calculator_execution_rate": 0.0
+      },
+      "qwen2_5_coder_14b_bge_rerank": {
+        "n": 32,
+        "naive_json_loads_correct": 2,
+        "naive_json_loads_accuracy": 0.0625,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 25,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 3,
+        "zero_tool_call_failures": 2,
+        "runs_with_verified_calculator_tool_execution": 30,
+        "verified_calculator_execution_rate": 0.9375
+      },
+      "qwen2_5_coder_14b_kev4b_rerank": {
+        "n": 0,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 0,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 0,
+        "zero_tool_call_failures": 0,
+        "runs_with_verified_calculator_tool_execution": 0,
+        "verified_calculator_execution_rate": 0.0
+      },
+      "qwen2_5_coder_14b_rag_skills": {
+        "n": 32,
+        "naive_json_loads_correct": 2,
+        "naive_json_loads_accuracy": 0.0625,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 24,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 2,
+        "zero_tool_call_failures": 2,
+        "runs_with_verified_calculator_tool_execution": 30,
+        "verified_calculator_execution_rate": 0.9375
+      },
+      "mistral_nemo_2407_rag_skills": {
+        "n": 32,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 4,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 19,
+        "zero_tool_call_failures": 8,
+        "runs_with_verified_calculator_tool_execution": 24,
+        "verified_calculator_execution_rate": 0.75
+      }
+    },
+    "task2_finqa_32_arms": {
+      "legacy_mistral_nemo_2407_naive_parser": {
+        "gold_evidence_recall": 0,
+        "exec_correct": 0,
+        "exec_accuracy": 0.0,
+        "parse_or_turn_errors": 32
+      },
+      "legacy_qwen2_5_coder_14b_kev4b_naive_parser": {
+        "gold_evidence_recall": 11,
+        "exec_correct": 0,
+        "exec_accuracy": 0.0,
+        "parse_or_turn_errors": 32
+      },
+      "legacy_qwen2_5_coder_14b_bge_naive_parser": {
+        "gold_evidence_recall": 20,
+        "exec_correct": 2,
+        "exec_accuracy": 0.0625,
+        "parse_or_turn_errors": 30
+      },
+      "bm25_lexical_plus_calculator": {
+        "gold_evidence_recall": 21,
+        "exec_correct": 21,
+        "exec_accuracy": 0.6562,
+        "parse_or_turn_errors": 0
+      },
+      "finbert_plus_bge_v2_m3_plus_calculator": {
+        "gold_evidence_recall": 25,
+        "exec_correct": 27,
+        "exec_accuracy": 0.8438,
+        "parse_or_turn_errors": 0
+      },
+      "qwen2_5_coder_14b_schema_guided_receipt_recovery": {
+        "gold_evidence_recall": 28,
+        "exec_correct": 28,
+        "exec_accuracy": 0.875,
+        "parse_or_turn_errors": 0
+      },
+      "jev_two_stage_reranker_plus_fin_r1_calculator_gate_ours": {
+        "gold_evidence_recall": 30,
+        "exec_correct": 30,
+        "exec_accuracy": 0.9375,
+        "parse_or_turn_errors": 0
       }
     }
   },

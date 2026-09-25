@@ -1,25 +1,23 @@
 {
-  "bundle": "paper/merge_20260922/overleaf_sync_v2.zip",
-  "bundle_sha256": "fc6c362094f6abe72135114cf60088c72d75c9da227c63dfa5fccf8cd2344ae9",
-  "file_count": 17,
+  "bundle": "paper/latex_naacl/overleaf_sync_v2.zip",
+  "bundle_sha256": "678369ffcd9ccb91b2a692216a8a7cd56155a510103867c7bf23d86b84a40695",
+  "file_count": 15,
   "files_sha256": {
     "acl.sty": "19dfeddc2c0e448f3926a0bef048a9db3f3611b46265b760caabd7ada4f361de",
     "acl_natbib.bst": "6fbb306202290f4b68e74ac1460a8b27398500cb6dfeb4492e74c457eae7cd1e",
-    "autonomous_study.tex": "14f7a901da2eb381e5627e895e0ce809974641f62e81f2920d0745d0c0cdd56e",
-    "capability_evaluation.tex": "1602b4ad0cb515fffffd0848d8e0ac9219ef140ed30d420c30a5fec2248ef9ef",
-    "evidence_numbers.tex": "25797bc413cef88173932dbe9225989406c134831ec4d91e2a208ab340d110e3",
+    "autonomous_study.tex": "783c5f12a2260c066eb3813b4caad7104099106fbc8fcaf9363973ccda96eb2c",
+    "capability_evaluation.tex": "a25257d038792c47230f73f17bd57b4ff0cf153fe93cd2e64defe60a6ffa798a",
+    "evidence_numbers.tex": "2e064b13df9b8ba4bb41626a7587d01557f4db1ec02c9965bd447834cc15d81a",
     "feedback_checks.tex": "832a29dde1fb06dbc7f856feb0b300b615f79e36e42dab700ed61f2be2be7624",
-    "fly_memory.tex": "fe733558c4e453e35ceb1d92902e22c01d0c7783029a7189bc6258128a9656bc",
-    "framework_overview.tex": "12bde340bd19a890d729219f5cbbea47e8574e5b3b7ea9adcd129ceeaaf86a1b",
-    "histrim_evidence.tex": "d83031a89e3de854dfc4a0203aa0e6268038e23f99c6061e6aa24f963d25f84e",
-    "histrim_source_table.tex": "668139c0dc83500abf2d0cf475c058d4b9fe664bfa11f36005034e7e5c868396",
-    "library_details.tex": "be71b662a73cb9f19e006da6be6ee72ea4fd44ed15997f98d0484b0e0ee8d3d1",
-    "main.pdf": "99d6395a70138df6d6a5a4773871e212f2128d08efb69042cef3307248ece980",
-    "main.tex": "ac7207c91337e64fcc4b45ec92ca946bcb1094633df0af8c846551fb305e5f3d",
-    "merge_numbers.tex": "030933bf6ed845619aeec7bb85e0221b324710d71ebc911e9b088c790e8c0c84",
-    "references.bib": "428c7bb9573092714d7d1287345eb652347b9f63a3e356148662e4e764f3df35",
-    "selective_context.tex": "ef120f64d1a81152cd9b2eb6ab276ef33040f1702ef142661242ea52e6ffd33f",
-    "supporting_evidence.tex": "44523e102fb93da8e387d6a6114c8ca62f0538a95da8b896ce447405857f650d"
+    "fly_memory.tex": "412e26630e68c9ff57a9faf5e84724209c5bbb1b80d2ec012a6a367aa66863cc",
+    "framework_overview.tex": "b95dffce3046e053b2290b2e14df7e6cedaca89cdbdf87863c7295c93dd0bfde",
+    "library_details.tex": "2997658f2f86cb5d17fe33d0fe5aa97ee7b3068e60e621b4e1a60031e770a212",
+    "main.bbl": "d64353bfebe74e13a994cd2affb9c1451afd8d762b49d1af98c02a13208336fd",
+    "main.pdf": "73d054e6217dda010c8682c1822c5a311fe97f2935385456abe3bc3b4bc95f10",
+    "main.tex": "bbe7816b3fd2e7b50f92c06f5960bdf863f3a0f6477ce04f6a3e0940c5b89669",
+    "merge_numbers.tex": "a7eb8fdbe0fbffce4d4e401bc375d020e01e25e718bfd281fa2d4ff094576e10",
+    "references.bib": "35000c87710730690582985ea1a4f44a2f10f5fe3c548ade474df1c8ba8ec1d5",
+    "supporting_evidence.tex": "207349b389e74231f569b08e9fda142d09addf89464d45b123735195c21acb93"
   },
-  "status": "VERIFIED_ZERO_LATEX_ERRORS_AND_SYNCED_WITH_V2_EMPIRICAL_EVIDENCE"
+  "status": "VERIFIED_ZERO_LATEX_ERRORS_AND_SYNCED_WITH_V2_AND_MASTER_EVIDENCE"
 }

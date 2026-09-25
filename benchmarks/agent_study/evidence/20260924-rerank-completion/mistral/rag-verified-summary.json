@@ -1,0 +1,24 @@
+{
+  "verified": true,
+  "generated_rows": 64,
+  "reported_rows": 64,
+  "unique_tasks": 32,
+  "unique_companies": 16,
+  "aggregate": {
+    "bge": {
+      "planned": 32,
+      "correct": 0,
+      "errors": 32
+    },
+    "kev": {
+      "planned": 32,
+      "correct": 0,
+      "errors": 32
+    }
+  },
+  "inference_receipt_sha256": "ff46048fb3d206abbb47147ed3de0836db56fc38732511354f9a73ef1920fec9",
+  "labels_sha256": "831dbfb2e785dbc227f895ce3f24046433467aec67b09db2bd6ac7692a8a30dc",
+  "score_sha256": "cd01580c5beaad4644d5b8ce405e51b90bcf502dd69db508c9e556595fbefc27",
+  "audit_source_sha256": "e895773d291656f60121c6638ec995f12907a2722df8d7d52bd6b363bf1f1cbd",
+  "limits": "Replay verifies original numerical/program grades and receipts, not citation semantic support or contamination."
+}

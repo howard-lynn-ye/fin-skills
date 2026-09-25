@@ -1,0 +1,643 @@
+{
+  "benchmark": "FINANCE_NATIVE_MODEL_BENCHMARK",
+  "generated_at": "2026-09-25T19:52:00Z",
+  "models_evaluated": {
+    "finbert": {
+      "repo_id": "ProsusAI/finbert",
+      "local_path": "/usr/local/google/home/shwaihe/.cache/huggingface/hub/models--ProsusAI--finbert/snapshots/4556d13015211d73dccd3fdd39d39232506f3e43"
+    },
+    "bge_base_en_v1_5": {
+      "repo_id": "BAAI/bge-base-en-v1.5",
+      "local_path": "/usr/local/google/home/shwaihe/tmp/hf_cache/models--BAAI--bge-base-en-v1.5/snapshots/a5beb1e3e68b9ab74eb54cfd186867f64f240e1a"
+    },
+    "bge_reranker_v2_m3": {
+      "repo_id": "BAAI/bge-reranker-v2-m3",
+      "local_path": "/usr/local/google/home/shwaihe/tmp/hf_cache/models--BAAI--bge-reranker-v2-m3/snapshots/953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    },
+    "deepseek_r1_distill_qwen_1_5b": {
+      "repo_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "local_path": "/usr/local/google/home/shwaihe/tmp/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562"
+    },
+    "open_jev_2b": {
+      "repo_id": "ZefanCai/Open-Jev-2B",
+      "local_path": "/usr/local/google/home/shwaihe/tmp/open_jev_workspace/models/Open-Jev-2B/package/checkpoint"
+    }
+  },
+  "task1_routing_108": {
+    "elapsed_seconds": 0.06,
+    "arms": {
+      "bm25s_lexical_baseline": {
+        "top1_shuffled": 76,
+        "top1_reversed": 76,
+        "recall_at_3": 100,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.7037,
+        "top1_reversed_rate": 0.7037,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.0
+      },
+      "legacy_kev_0_8b": {
+        "top1_shuffled": 45,
+        "top1_reversed": 50,
+        "recall_at_3": 100,
+        "order_flips": 36,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.4167,
+        "top1_reversed_rate": 0.463,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.3333
+      },
+      "legacy_kev_4b": {
+        "top1_shuffled": 79,
+        "top1_reversed": 82,
+        "recall_at_3": 100,
+        "order_flips": 24,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.7315,
+        "top1_reversed_rate": 0.7593,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.2222
+      },
+      "legacy_laya": {
+        "top1_shuffled": 0,
+        "top1_reversed": 0,
+        "recall_at_3": 0,
+        "order_flips": 0,
+        "truncation_rejections": 108,
+        "n": 108,
+        "top1_shuffled_rate": 0.0,
+        "top1_reversed_rate": 0.0,
+        "recall_at_3_rate": 0.0,
+        "order_flip_rate": 0.0
+      },
+      "finbert_financial_encoder": {
+        "top1_shuffled": 82,
+        "top1_reversed": 82,
+        "recall_at_3": 100,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.7593,
+        "top1_reversed_rate": 0.7593,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.0
+      },
+      "bge_reranker_v2_m3": {
+        "top1_shuffled": 87,
+        "top1_reversed": 87,
+        "recall_at_3": 100,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.8056,
+        "top1_reversed_rate": 0.8056,
+        "recall_at_3_rate": 0.9259,
+        "order_flip_rate": 0.0
+      },
+      "jev_system_one_calibrated_router_ours": {
+        "top1_shuffled": 94,
+        "top1_reversed": 94,
+        "recall_at_3": 104,
+        "order_flips": 0,
+        "truncation_rejections": 0,
+        "n": 108,
+        "top1_shuffled_rate": 0.8704,
+        "top1_reversed_rate": 0.8704,
+        "recall_at_3_rate": 0.963,
+        "order_flip_rate": 0.0
+      }
+    }
+  },
+  "task2_finqa_32": {
+    "elapsed_seconds": 36.41,
+    "experiment_2a_parser_and_receipt_ablation": {
+      "mistral_nemo_2407_bge_rerank": {
+        "n": 32,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 7,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 23,
+        "zero_tool_call_failures": 2,
+        "runs_with_verified_calculator_tool_execution": 30,
+        "verified_calculator_execution_rate": 0.9375
+      },
+      "mistral_nemo_2407_kev4b_rerank": {
+        "n": 0,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 0,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 0,
+        "zero_tool_call_failures": 0,
+        "runs_with_verified_calculator_tool_execution": 0,
+        "verified_calculator_execution_rate": 0.0
+      },
+      "qwen2_5_coder_14b_bge_rerank": {
+        "n": 32,
+        "naive_json_loads_correct": 2,
+        "naive_json_loads_accuracy": 0.0625,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 25,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 3,
+        "zero_tool_call_failures": 2,
+        "runs_with_verified_calculator_tool_execution": 30,
+        "verified_calculator_execution_rate": 0.9375
+      },
+      "qwen2_5_coder_14b_kev4b_rerank": {
+        "n": 0,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 0,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 0,
+        "zero_tool_call_failures": 0,
+        "runs_with_verified_calculator_tool_execution": 0,
+        "verified_calculator_execution_rate": 0.0
+      },
+      "qwen2_5_coder_14b_rag_skills": {
+        "n": 32,
+        "naive_json_loads_correct": 2,
+        "naive_json_loads_accuracy": 0.0625,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 24,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 2,
+        "zero_tool_call_failures": 2,
+        "runs_with_verified_calculator_tool_execution": 30,
+        "verified_calculator_execution_rate": 0.9375
+      },
+      "mistral_nemo_2407_rag_skills": {
+        "n": 32,
+        "naive_json_loads_correct": 0,
+        "naive_json_loads_accuracy": 0.0,
+        "markdown_fence_json_decode_errors_with_valid_calculator_calls": 4,
+        "turn_limit_none_type_errors_with_valid_calculator_calls": 19,
+        "zero_tool_call_failures": 8,
+        "runs_with_verified_calculator_tool_execution": 24,
+        "verified_calculator_execution_rate": 0.75
+      }
+    },
+    "experiment_2b_finance_native_finqa_32": {
+      "n": 32,
+      "deepseek_r1_distill_probe_sample": "{\"program\": \"divide(72, 28)\", \"result\":",
+      "arms": {
+        "legacy_mistral_nemo_2407_naive_parser": {
+          "gold_evidence_recall": 0,
+          "exec_correct": 0,
+          "exec_accuracy": 0.0,
+          "parse_or_turn_errors": 32
+        },
+        "legacy_qwen2_5_coder_14b_kev4b_naive_parser": {
+          "gold_evidence_recall": 11,
+          "exec_correct": 0,
+          "exec_accuracy": 0.0,
+          "parse_or_turn_errors": 32
+        },
+        "legacy_qwen2_5_coder_14b_bge_naive_parser": {
+          "gold_evidence_recall": 20,
+          "exec_correct": 2,
+          "exec_accuracy": 0.0625,
+          "parse_or_turn_errors": 30
+        },
+        "bm25_lexical_plus_calculator": {
+          "gold_evidence_recall": 21,
+          "exec_correct": 21,
+          "exec_accuracy": 0.6562,
+          "parse_or_turn_errors": 0
+        },
+        "finbert_plus_bge_v2_m3_plus_calculator": {
+          "gold_evidence_recall": 25,
+          "exec_correct": 27,
+          "exec_accuracy": 0.8438,
+          "parse_or_turn_errors": 0
+        },
+        "qwen2_5_coder_14b_schema_guided_receipt_recovery": {
+          "gold_evidence_recall": 28,
+          "exec_correct": 28,
+          "exec_accuracy": 0.875,
+          "parse_or_turn_errors": 0
+        },
+        "jev_two_stage_reranker_plus_fin_r1_calculator_gate_ours": {
+          "gold_evidence_recall": 30,
+          "exec_correct": 30,
+          "exec_accuracy": 0.9375,
+          "parse_or_turn_errors": 0
+        }
+      },
+      "per_question": [
+        {
+          "id": "RSG/2012/page_93.pdf-2",
+          "gold_inds": [
+            "table_2"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.41429,
+          "gold_exe_ans": 0.41429
+        },
+        {
+          "id": "RSG/2016/page_135.pdf-1",
+          "gold_inds": [
+            "table_1",
+            "table_2"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 2.57143,
+          "gold_exe_ans": 2.57143
+        },
+        {
+          "id": "AAPL/2005/page_43.pdf-2",
+          "gold_inds": [
+            "table_3",
+            "table_4"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.02421,
+          "gold_exe_ans": 0.02421
+        },
+        {
+          "id": "AAPL/2006/page_131.pdf-2",
+          "gold_inds": [
+            "table_8",
+            "text_60",
+            "text_61"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 364400.0,
+          "gold_exe_ans": 364400.0
+        },
+        {
+          "id": "ADI/2019/page_29.pdf-3",
+          "gold_inds": [
+            "text_8",
+            "text_9"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.32258,
+          "gold_exe_ans": 0.32258
+        },
+        {
+          "id": "ADI/2011/page_61.pdf-2",
+          "gold_inds": [
+            "text_22"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.09864,
+          "gold_exe_ans": 0.09864
+        },
+        {
+          "id": "GPN/2008/page_78.pdf-2",
+          "gold_inds": [
+            "table_1",
+            "table_9",
+            "text_12"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.81572,
+          "gold_exe_ans": 0.81572
+        },
+        {
+          "id": "GPN/2013/page_92.pdf-1",
+          "gold_inds": [
+            "table_6",
+            "text_0"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.19366,
+          "gold_exe_ans": 0.19366
+        },
+        {
+          "id": "MKTX/2004/page_99.pdf-3",
+          "gold_inds": [
+            "text_13"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 3876875.0,
+          "gold_exe_ans": 3876875.0
+        },
+        {
+          "id": "MKTX/2012/page_42.pdf-3",
+          "gold_inds": [
+            "table_1",
+            "table_9"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.19088,
+          "gold_exe_ans": 0.19088
+        },
+        {
+          "id": "MMM/2007/page_84.pdf-1",
+          "gold_inds": [
+            "table_3",
+            "table_4"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 2.7438,
+          "gold_exe_ans": 2.7438
+        },
+        {
+          "id": "MMM/2015/page_93.pdf-2",
+          "gold_inds": [
+            "text_1",
+            "text_3",
+            "text_5",
+            "text_7"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": false,
+          "calculator_receipt_value": 1.25714,
+          "gold_exe_ans": 1.25714
+        },
+        {
+          "id": "HIG/2011/page_53.pdf-1",
+          "gold_inds": [
+            "table_4",
+            "table_7"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.17813,
+          "gold_exe_ans": 0.17813
+        },
+        {
+          "id": "HIG/2004/page_140.pdf-2",
+          "gold_inds": [
+            "table_2"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 324.0,
+          "gold_exe_ans": 324.0
+        },
+        {
+          "id": "FIS/2017/page_64.pdf-3",
+          "gold_inds": [
+            "text_11"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.42889,
+          "gold_exe_ans": 0.42889
+        },
+        {
+          "id": "FIS/2006/page_31.pdf-1",
+          "gold_inds": [
+            "table_4",
+            "table_8",
+            "text_10"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.13194,
+          "gold_exe_ans": 0.13194
+        },
+        {
+          "id": "HUM/2014/page_44.pdf-1",
+          "gold_inds": [
+            "table_1"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.608,
+          "gold_exe_ans": 0.608
+        },
+        {
+          "id": "HUM/2017/page_118.pdf-1",
+          "gold_inds": [
+            "text_1"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": -0.02597,
+          "gold_exe_ans": -0.02597
+        },
+        {
+          "id": "IP/2006/page_31.pdf-1",
+          "gold_inds": [
+            "table_1",
+            "text_19"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.19391,
+          "gold_exe_ans": 0.19391
+        },
+        {
+          "id": "IP/2009/page_84.pdf-3",
+          "gold_inds": [
+            "table_1",
+            "table_3"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.166,
+          "gold_exe_ans": 0.166
+        },
+        {
+          "id": "BLK/2014/page_120.pdf-4",
+          "gold_inds": [
+            "text_25"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.03008,
+          "gold_exe_ans": 0.03008
+        },
+        {
+          "id": "BLK/2015/page_124.pdf-3",
+          "gold_inds": [
+            "table_1",
+            "table_2",
+            "table_3",
+            "table_7"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.33084,
+          "gold_exe_ans": 0.33084
+        },
+        {
+          "id": "DG/2005/page_44.pdf-1",
+          "gold_inds": [
+            "text_3"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": -0.07937,
+          "gold_exe_ans": -0.07937
+        },
+        {
+          "id": "DG/2009/page_77.pdf-1",
+          "gold_inds": [
+            "table_0"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 5.0,
+          "gold_exe_ans": 5.0
+        },
+        {
+          "id": "NWS/2019/page_116.pdf-1",
+          "gold_inds": [
+            "text_12"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 28.0,
+          "gold_exe_ans": 28.0
+        },
+        {
+          "id": "NWS/2017/page_119.pdf-2",
+          "gold_inds": [
+            "table_2",
+            "text_2"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.53704,
+          "gold_exe_ans": 0.53704
+        },
+        {
+          "id": "JKHY/2017/page_26.pdf-2",
+          "gold_inds": [
+            "table_1",
+            "table_2"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 1.18997,
+          "gold_exe_ans": 1.18997
+        },
+        {
+          "id": "JKHY/2019/page_18.pdf-2",
+          "gold_inds": [
+            "table_1"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 140.29,
+          "gold_exe_ans": 140.29
+        },
+        {
+          "id": "CDW/2015/page_93.pdf-2",
+          "gold_inds": [
+            "table_1",
+            "text_21",
+            "text_9"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 1.26207,
+          "gold_exe_ans": 1.26207
+        },
+        {
+          "id": "CDW/2017/page_38.pdf-1",
+          "gold_inds": [
+            "table_1",
+            "table_2"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": true,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 0.16127,
+          "gold_exe_ans": 0.16127
+        },
+        {
+          "id": "ANSS/2016/page_47.pdf-2",
+          "gold_inds": [
+            "table_1",
+            "table_2",
+            "text_0"
+          ],
+          "bm25_hit": false,
+          "finbert_hit": false,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": true,
+          "calculator_receipt_value": 1.37074,
+          "gold_exe_ans": 1.37074
+        },
+        {
+          "id": "ANSS/2012/page_93.pdf-3",
+          "gold_inds": [
+            "table_1",
+            "text_22"
+          ],
+          "bm25_hit": true,
+          "finbert_hit": true,
+          "bge_v2_m3_hit": false,
+          "jev_two_stage_hit": false,
+          "calculator_receipt_value": 76787.0,
+          "gold_exe_ans": 76787.0
+        }
+      ]
+    }
+  }
+}

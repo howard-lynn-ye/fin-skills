@@ -1,6 +1,13 @@
 # Additional Beacon experiments: execution and evidence
 
 This record distinguishes accepted jobs, actual execution and verified completed results.
+Latest status (2026-09-24): all batches in this record have completed, including replacement
+answer job **1660691**. Both 64-answer model outputs passed the independent scoring replay.
+See [the final results](FINQA_RERANK_RESULTS_20260924.md) for evidence and limitations.
+The RAG and final reranking summaries are now saved in Overleaf; the
+[synchronization receipt](RAG_RERANK_OVERLEAF_SYNC_20260924.json) records the history label
+and successful compile/visual checks. Earlier pending-sync statements are historical.
+The dated running/queued entries below are retained as execution history.
 All remote roots below are direct children of `/beacon-projects/radfm/wy891`, prefixed
 `fin-skills-campaign-`. Source snapshots, temporary files, model caches and Slurm stdout /
 stderr remain in RADFM. Existing task outputs and negative results are preserved.
@@ -137,3 +144,15 @@ execution failure. The experiment is not yet fully complete.
 The existing FinQA memory jobs 1653915/1653932 and FinanceBench retrieval/reranking jobs
 1653482/1653602 also report COMPLETED 0:0. Memory completion auditors already exist and
 were not rerun. Their task units overlap this study and must not be counted again.
+
+## Final update: 2026-09-24
+
+Job **1660691** completed 0:0 on September 23 at 10:01:50 America/New_York, with
+00:57:52 elapsed. Qwen and Mistral each saved all 64 planned answers; both frozen
+auditors passed on September 24. Exact receipts and original runtime warnings are
+preserved in `benchmarks/agent_study/evidence/20260924-rerank-completion/`.
+Qwen correct counts are BGE 2/32 and local Kev 0/32; Mistral is 0/32 in both arms.
+Frequent answer-format errors and the recorded Mistral tokenizer warning limit
+interpretation. Completion does not establish a reranking or whole-library advantage.
+See [the result report](FINQA_RERANK_RESULTS_20260924.md). Nothing from this batch remains
+running or queued; Overleaf synchronization of this final evidence is still outstanding.
